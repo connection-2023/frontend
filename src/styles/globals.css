@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './reset.css';
+
+:root {
+  --max-width: 1440px;
+  --main-color: #ff3e9a;
+  --sub-color1: #8338ec;
+  --font-regular: 400;
+  --font-bold: 700;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
