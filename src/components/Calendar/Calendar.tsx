@@ -1,7 +1,7 @@
 'use client';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './calendar.css';
+import './Calendar.css';
 
 const Calendar = ({ selectedDates }: { selectedDates: Date[] }) => {
   const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
