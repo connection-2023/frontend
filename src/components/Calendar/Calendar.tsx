@@ -1,4 +1,3 @@
-'use client';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
@@ -37,18 +36,16 @@ const Calendar = ({ selectedDates }: { selectedDates: Date[] }) => {
   };
 
   return (
-    <>
-      <ReactCalendar
-        locale="ko-KR"
-        formatMonthYear={(locale, date) =>
-          date.toLocaleString(locale, { month: 'long' })
-        }
-        formatShortWeekday={(locale, date) => weekDays[date.getDay()]}
-        calendarType="gregory"
-        tileClassName={tileClassName}
-        formatDay={(locale, date) => `${date.getDate()}`}
-      />
-    </>
+    <ReactCalendar
+      locale="ko-KR"
+      formatMonthYear={(locale, date) =>
+        date.toLocaleString(locale, { month: 'long' })
+      }
+      formatShortWeekday={(locale, date) => weekDays[date.getDay()]}
+      calendarType="gregory"
+      tileClassName={tileClassName}
+      formatDay={(locale, date) => `${date.getDate()}`}
+    />
   );
 };
 
