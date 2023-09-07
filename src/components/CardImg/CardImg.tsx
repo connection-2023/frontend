@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Arrow } from '../../../public/icons/svg';
 
 interface CardImgProps {
   imgURL: string[];
@@ -8,6 +9,7 @@ interface CardImgProps {
   optimizationMode?: boolean;
 }
 
+let timer: NodeJS.Timeout | null = null;
 const CardImg = ({
   imgURL: originalImgURL,
   focus,
@@ -35,8 +37,6 @@ const CardImg = ({
   }, [focus]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-
     if (focus) {
       timer = setInterval(() => {
         setCurrentImgIndex((prev) => {
@@ -59,7 +59,25 @@ const CardImg = ({
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [focus, loadedImagesCount]);
+  }, [focus, loadedImagesCount, isAnimating]);
+
+  const goBackward = () => {
+    setIsAnimating(false);
+    setCurrentImgIndex((prev) =>
+      prev === 0 ? originalImgURL.length - 1 : prev - 1,
+    );
+    if (timer) clearInterval(timer);
+    setTimeout(() => setIsAnimating(true), 1300);
+  };
+
+  const goForward = () => {
+    setIsAnimating(false);
+    setCurrentImgIndex((prev) =>
+      prev === originalImgURL.length - 1 ? 0 : prev + 1,
+    );
+    if (timer) clearInterval(timer);
+    setTimeout(() => setIsAnimating(true), 1300);
+  };
 
   return (
     <div className="display: flex h-full ">
@@ -103,12 +121,18 @@ const CardImg = ({
 
       {focus && arrow && (
         <>
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 transform">
+          <Arrow
+            onClick={goBackward}
+            className="absolute left-3 top-1/2 -translate-y-1/2 -scale-x-100 transform cursor-pointer"
+          >
             뒤로
-          </div>
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 transform">
+          </Arrow>
+          <Arrow
+            onClick={goForward}
+            className="absolute right-3 top-1/2 -translate-y-1/2 transform cursor-pointer"
+          >
             앞으로
-          </div>
+          </Arrow>
         </>
       )}
     </div>
