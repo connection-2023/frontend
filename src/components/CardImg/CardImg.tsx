@@ -4,17 +4,21 @@ import { Arrow } from '../../../public/icons/svg';
 
 interface CardImgProps {
   imgURL: string[];
-  focus: boolean;
+  move: boolean;
   arrow?: boolean;
   optimizationMode?: boolean;
+  showCurrentImage?: boolean;
+  gap?: number;
 }
 
 let timer: NodeJS.Timeout | null = null;
 const CardImg = ({
   imgURL: originalImgURL,
-  focus,
+  move,
   arrow = true,
   optimizationMode = true,
+  showCurrentImage = true,
+  gap = 0,
 }: CardImgProps) => {
   const imgURL = [
     originalImgURL.at(-1),
@@ -23,7 +27,6 @@ const CardImg = ({
   ];
 
   const imgLength = imgURL.length;
-
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [loadedImagesCount, setLoadedImagesCount] = useState(
     optimizationMode ? 1 : imgLength,
@@ -31,13 +34,13 @@ const CardImg = ({
   const [isAnimating, setIsAnimating] = useState(true);
 
   useEffect(() => {
-    if (focus && loadedImagesCount < imgLength) {
+    if (move && loadedImagesCount < imgLength) {
       setLoadedImagesCount(imgLength);
     }
-  }, [focus]);
+  }, [move]);
 
   useEffect(() => {
-    if (focus) {
+    if (move) {
       timer = setInterval(() => {
         setCurrentImgIndex((prev) => {
           if (prev + 1 === imgLength - 2) {
@@ -59,7 +62,7 @@ const CardImg = ({
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [focus, loadedImagesCount, isAnimating]);
+  }, [move, loadedImagesCount, isAnimating]);
 
   const goBackward = () => {
     setIsAnimating(false);
@@ -80,14 +83,17 @@ const CardImg = ({
   };
 
   return (
-    <div className="display: flex h-full ">
+    <div className="display: flex h-full">
       {imgURL.slice(0, loadedImagesCount).map((imgSrc, index) => (
         <picture
           key={index}
           className="relative h-full w-full flex-shrink-0"
           style={{
-            transform: `translateX(-${100 * currentImgIndex}%)`,
+            transform: `translateX(calc(-${100 * currentImgIndex}% - ${
+              gap * currentImgIndex
+            }rem)`,
             transition: isAnimating ? 'transform ease-out 1.1s' : 'none',
+            marginRight: `${gap}rem`,
           }}
         >
           {imgSrc && (
@@ -102,7 +108,7 @@ const CardImg = ({
         </picture>
       ))}
 
-      {focus && (
+      {move && showCurrentImage && (
         <div className="display: absolute bottom-0 flex h-[10%] w-full items-center justify-center bg-black/[.5]">
           {originalImgURL.map((_, index) => (
             <span
@@ -119,7 +125,7 @@ const CardImg = ({
         </div>
       )}
 
-      {focus && arrow && (
+      {move && arrow && (
         <>
           <Arrow
             onClick={goBackward}
