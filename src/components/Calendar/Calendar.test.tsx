@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import Calendar from './Calendar';
+import Calendar from './DisplayCalendar';
 
 describe('Calendar', () => {
   it('renders without crashing', () => {
