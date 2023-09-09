@@ -30,7 +30,7 @@ import { Arrow } from '../../../public/icons/svg';
  * @property {boolean} move - 이미지 캐러셀 활성화
  * @property {boolean} [arrow=true] - 탐색을 위해 화살표를 표시해야 하는지 여부를 나타내는 선택적 플래그 (기본값 = true)
  * @property {boolean} [priority=1] - true => 이미지 한개만 미리 로드 move true 변경시 나머지 이미지 로드, false => 이미지 배열 전부를 로드 (기본값 = true)
- * @property {boolean} [showCurrentImage=true] - 현재 캐러셀 이미지 표시의 상태창 표시 여부를 나타내는 선택적 플래그 (기본값 = true)
+ * @property {boolean} [showCurrentElement =true] - 현재 캐러셀 이미지 표시의 상태창 표시 여부를 나타내는 선택적 플래그 (기본값 = true)
  * @property {number} [gap=0] - 이미지 사이의 간격을 rem으로 지정하는 선택적 숫자 (기본값 = 0)
  */
 
@@ -41,7 +41,8 @@ interface Props {
   move: boolean;
   arrow?: boolean;
   priority?: number;
-  showCurrentImage?: boolean;
+  showCurrentElement?: boolean;
+  showCurrentElementBackGround?: boolean;
   gap?: number;
 }
 
@@ -62,9 +63,10 @@ const Carousel = ({
   move,
   arrow = true,
   priority = 1,
-  showCurrentImage = true,
+  showCurrentElement = true,
   gap = 0,
   children,
+  showCurrentElementBackGround,
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
   const extendForCarousel = (elementArr: React.ReactNode[] | string[]) => {
@@ -182,8 +184,12 @@ const Carousel = ({
         </picture>
       ))}
 
-      {showCurrentImage && (
-        <div className="display: absolute bottom-0 flex h-[10%] w-full items-center justify-center bg-black/[.5]">
+      {showCurrentElement && (
+        <div
+          className={`display: absolute bottom-0 flex h-[10%] w-full items-center justify-center ${
+            showCurrentElementBackGround && 'bg-black/[.5]'
+          } `}
+        >
           {originalElements.map((_, index) => (
             <span
               key={index}
