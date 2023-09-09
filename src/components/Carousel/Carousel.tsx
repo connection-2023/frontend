@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Arrow } from '../../../public/icons/svg';
 
@@ -17,7 +17,16 @@ import { Arrow } from '../../../public/icons/svg';
  *   <CardImg/>
  * </ 이미지 크기 제어 및 relative overflow-hidden>
  *
- * @property {string[]} imgURL - 표시할 이미지들의 URL들이 담긴 배열
+ * 사용법 3
+ * <relative overflow-hidden 컨테이너>
+ *  <이미지 크기 제어 컨테이너>
+ *    <CardImg>
+ *      ...children 요소
+ *    </CardImg>
+ *  </이미지 크기 제어 컨테이너>
+ * </ relative overflow-hidden 컨테이너>
+ *
+ * @property {string[]} imgURL - 표시할 이미지들의 URL들이 담긴 배열,
  * @property {boolean} move - 이미지 캐러셀 활성화
  * @property {boolean} [arrow=true] - 탐색을 위해 화살표를 표시해야 하는지 여부를 나타내는 선택적 플래그 (기본값 = true)
  * @property {boolean} [optimizationMode=true] - true => 이미지 한개만 미리 로드 move true 변경시 나머지 이미지 로드, false => 이미지 배열 전부를 로드 (기본값 = true)
@@ -25,8 +34,10 @@ import { Arrow } from '../../../public/icons/svg';
  * @property {number} [gap=0] - 이미지 사이의 간격을 rem으로 지정하는 선택적 숫자 (기본값 = 0)
  */
 
-interface CardImgProps {
-  imgURL: string[];
+const IMG_MOVE_INTERVAL_TIME = 2000;
+const ARROW_WAIT_TIME = 2000;
+
+interface Props {
   move: boolean;
   arrow?: boolean;
   optimizationMode?: boolean;
@@ -34,40 +45,53 @@ interface CardImgProps {
   gap?: number;
 }
 
-const IMG_MOVE_INTERVAL_TIME = 2000;
-const ARROW_WAIT_TIME = 2000;
+interface ChildrenProps extends Props {
+  children: React.ReactNode;
+  imgURL?: never;
+}
 
-let intervalId: NodeJS.Timeout | null = null;
-let timeoutId: NodeJS.Timeout | null = null;
+interface ImgURLProps extends Props {
+  imgURL: string[];
+  children?: never;
+}
 
-const CardImg = ({
-  imgURL: originalImgURL,
+type CarouselProps = ChildrenProps | ImgURLProps;
+
+const Carousel = ({
+  imgURL,
   move,
   arrow = true,
   optimizationMode = true,
   showCurrentImage = true,
   gap = 0,
-}: CardImgProps) => {
-  const imgURL = [
-    originalImgURL.at(-1),
-    ...originalImgURL,
-    ...originalImgURL.slice(0, 2),
-  ];
-  const imgLength = imgURL.length;
+  children,
+}: CarouselProps) => {
+  const childrenArray = React.Children.toArray(children);
+  const extendForCarousel = (elementArr: React.ReactNode[] | string[]) => {
+    return [elementArr.at(-1), ...elementArr, ...elementArr.slice(0, 2)];
+  };
 
-  const [currentImgIndex, setCurrentImgIndex] = useState(0);
-  const [loadedImagesCount, setLoadedImagesCount] = useState(
-    optimizationMode ? 1 : imgLength,
+  const carouselElements = extendForCarousel(
+    children ? [...childrenArray] : [...(imgURL || [])],
+  );
+  const carouselLength = carouselElements.length;
+  const originalElements = children ? childrenArray : [...(imgURL || [])];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedElementCount, setLoadedElementCount] = useState(
+    optimizationMode ? 1 : carouselLength,
   );
   const [isAnimating, setIsAnimating] = useState(true);
+  const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
 
-  if (move && loadedImagesCount < imgLength) {
-    setLoadedImagesCount(imgLength);
+  if (move && loadedElementCount < carouselLength) {
+    setLoadedElementCount(carouselLength);
   }
 
   const updateImageIndex = () => {
-    setCurrentImgIndex((prev) => {
-      if (prev + 1 === imgLength - 2) {
+    setCurrentIndex((prev) => {
+      if (prev + 1 === carouselLength - 2) {
         setIsAnimating(false);
         return 0;
       } else if (prev === 0) {
@@ -84,37 +108,44 @@ const CardImg = ({
       if (optimizationMode) {
         updateImageIndex();
       }
-      intervalId = setInterval(updateImageIndex, IMG_MOVE_INTERVAL_TIME);
+      intervalIdRef.current = setInterval(
+        updateImageIndex,
+        IMG_MOVE_INTERVAL_TIME,
+      );
     } else {
       setIsAnimating(false);
-      setCurrentImgIndex(0);
+      setCurrentIndex(0);
       setTimeout(() => setIsAnimating(true), 100);
-      if (intervalId) clearInterval(intervalId);
+      if (intervalIdRef.current) clearInterval(intervalIdRef.current);
     }
 
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+      if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
     };
-  }, [move, loadedImagesCount]);
+  }, [move, loadedElementCount]);
 
   const changeImage = (direction: 'BACKWARD' | 'FORWARD') => {
-    if (intervalId) clearInterval(intervalId);
-    if (timeoutId) clearTimeout(timeoutId);
+    if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+    if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
 
     setIsAnimating(false);
-    setCurrentImgIndex((prev) =>
+    setCurrentIndex((prev) =>
       direction === 'BACKWARD'
-        ? prev === 0
-          ? originalImgURL.length - 1
+        ? prev <= 0
+          ? carouselLength - 4
           : prev - 1
-        : prev === originalImgURL.length - 1
+        : prev >= carouselLength - 4
         ? 0
         : prev + 1,
     );
 
-    timeoutId = setTimeout(() => {
+    timeoutIdRef.current = setTimeout(() => {
       setIsAnimating(true);
-      intervalId = setInterval(updateImageIndex, IMG_MOVE_INTERVAL_TIME);
+      intervalIdRef.current = setInterval(
+        updateImageIndex,
+        IMG_MOVE_INTERVAL_TIME,
+      );
     }, ARROW_WAIT_TIME);
   };
 
@@ -125,39 +156,41 @@ const CardImg = ({
         gap: `${gap}rem`,
       }}
     >
-      {imgURL.slice(0, loadedImagesCount).map((imgSrc, index) => (
+      {carouselElements.slice(0, loadedElementCount).map((element, index) => (
         <picture
           key={index}
           className={`relative h-full w-full flex-shrink-0 ${
             isAnimating && 'transition-transform duration-[1600ms] ease-out'
           }`}
           style={{
-            transform: `translateX(calc(-${100 * currentImgIndex}% - ${
-              gap * currentImgIndex
+            transform: `translateX(calc(-${100 * currentIndex}% - ${
+              gap * currentIndex
             }rem)`,
           }}
         >
-          {imgSrc && (
-            <Image
-              src={imgSrc}
-              alt="Connection 댄스 이미지"
-              fill
-              sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
-              priority={index === 0 || !optimizationMode}
-            />
-          )}
+          {children
+            ? element
+            : typeof element === 'string' && (
+                <Image
+                  src={element}
+                  alt="Connection 댄스 춤 이미지"
+                  fill
+                  sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
+                  priority={index === 0 || !optimizationMode}
+                />
+              )}
         </picture>
       ))}
 
       {showCurrentImage && (
         <div className="display: absolute bottom-0 flex h-[10%] w-full items-center justify-center bg-black/[.5]">
-          {originalImgURL.map((_, index) => (
+          {originalElements.map((_, index) => (
             <span
               key={index}
               className={`mr-1.5 inline-block h-1.5 w-1.5 rounded-full ${
                 index === 0 ||
-                (currentImgIndex < originalImgURL.length &&
-                  index <= currentImgIndex)
+                (currentIndex < originalElements.length &&
+                  index <= currentIndex)
                   ? 'bg-white'
                   : 'bg-neutral-500'
               }`}
@@ -182,4 +215,4 @@ const CardImg = ({
   );
 };
 
-export default CardImg;
+export default Carousel;
