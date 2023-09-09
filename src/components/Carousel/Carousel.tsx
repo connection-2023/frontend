@@ -29,7 +29,7 @@ import { Arrow } from '../../../public/icons/svg';
  * @property {string[]} imgURL - 표시할 이미지들의 URL들이 담긴 배열,
  * @property {boolean} move - 이미지 캐러셀 활성화
  * @property {boolean} [arrow=true] - 탐색을 위해 화살표를 표시해야 하는지 여부를 나타내는 선택적 플래그 (기본값 = true)
- * @property {boolean} [optimizationMode=true] - true => 이미지 한개만 미리 로드 move true 변경시 나머지 이미지 로드, false => 이미지 배열 전부를 로드 (기본값 = true)
+ * @property {boolean} [priority=1] - true => 이미지 한개만 미리 로드 move true 변경시 나머지 이미지 로드, false => 이미지 배열 전부를 로드 (기본값 = true)
  * @property {boolean} [showCurrentImage=true] - 현재 캐러셀 이미지 표시의 상태창 표시 여부를 나타내는 선택적 플래그 (기본값 = true)
  * @property {number} [gap=0] - 이미지 사이의 간격을 rem으로 지정하는 선택적 숫자 (기본값 = 0)
  */
@@ -40,7 +40,7 @@ const ARROW_WAIT_TIME = 2000;
 interface Props {
   move: boolean;
   arrow?: boolean;
-  optimizationMode?: boolean;
+  priority?: number;
   showCurrentImage?: boolean;
   gap?: number;
 }
@@ -61,7 +61,7 @@ const Carousel = ({
   imgURL,
   move,
   arrow = true,
-  optimizationMode = true,
+  priority = 1,
   showCurrentImage = true,
   gap = 0,
   children,
@@ -79,7 +79,7 @@ const Carousel = ({
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadedElementCount, setLoadedElementCount] = useState(
-    optimizationMode ? 1 : carouselLength,
+    priority > 1 ? priority : 1,
   );
   const [isAnimating, setIsAnimating] = useState(true);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
@@ -105,7 +105,7 @@ const Carousel = ({
 
   useEffect(() => {
     if (move && isAnimating) {
-      if (optimizationMode) {
+      if (priority > 1) {
         updateImageIndex();
       }
       intervalIdRef.current = setInterval(
@@ -176,7 +176,7 @@ const Carousel = ({
                   alt="Connection 댄스 춤 이미지"
                   fill
                   sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
-                  priority={index === 0 || !optimizationMode}
+                  priority={index < priority}
                 />
               )}
         </picture>
