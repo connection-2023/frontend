@@ -26,16 +26,17 @@ import { Arrow } from '../../../public/icons/svg';
  *  </이미지 크기 제어 컨테이너>
  * </ relative overflow-hidden 컨테이너>
  *
- * @property {string[]} imgURL - 표시할 이미지들의 URL들이 담긴 배열,
- * @property {boolean} move - 이미지 캐러셀 활성화
+ * @property {string[]} imgURL - 표시할 이미지들의 URL들이 담긴 배열, children 우선 렌더
+ * @property {React.ReactNode} children - 표시할 요소들, imgURL 보다 우선순위 높음
+ * @property {boolean} move - 캐러셀 움직임 활성화
  * @property {boolean} [arrow=true] - 탐색을 위해 화살표를 표시해야 하는지 여부를 나타내는 선택적 플래그 (기본값 = true)
- * @property {boolean} [priority=1] - true => 이미지 한개만 미리 로드 move true 변경시 나머지 이미지 로드, false => 이미지 배열 전부를 로드 (기본값 = true)
- * @property {boolean} [showCurrentElement =true] - 현재 캐러셀 이미지 표시의 상태창 표시 여부를 나타내는 선택적 플래그 (기본값 = true)
- * @property {number} [gap=0] - 이미지 사이의 간격을 rem으로 지정하는 선택적 숫자 (기본값 = 0)
+ * @property {boolean} [priority=1] - 해당 숫자 만큼 요소 미리 렌더 (기본값 = 1)
+ * @property {boolean} [showCurrentElement =true] - 현재 캐러셀 위치 표시의 상태창 표시 여부를 나타내는 선택적 플래그 (기본값 = true)
+ * @property {number} [gap=0] - 캐러셀 요소 사이의 간격을 rem으로 지정하는 선택적 숫자 (기본값 = 0)
+ * @property {number} [carouselMoveIntervalTime = 2000] - 캐러셀 움직이는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
+ * @property {number} [arrowPushMoveWaitTime = 2000] - Arrow를 누른 후 캐러셀 움직임을 멈추는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
+ *
  */
-
-const IMG_MOVE_INTERVAL_TIME = 2000;
-const ARROW_WAIT_TIME = 2000;
 
 interface Props {
   move: boolean;
@@ -44,6 +45,8 @@ interface Props {
   showCurrentElement?: boolean;
   showCurrentElementBackGround?: boolean;
   gap?: number;
+  carouselMoveIntervalTime?: number;
+  arrowPushMoveWaitTime?: number;
 }
 
 interface ChildrenProps extends Props {
@@ -67,6 +70,8 @@ const Carousel = ({
   gap = 0,
   children,
   showCurrentElementBackGround,
+  carouselMoveIntervalTime = 2000,
+  arrowPushMoveWaitTime = 2000,
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
   const extendForCarousel = (elementArr: React.ReactNode[] | string[]) => {
@@ -112,7 +117,7 @@ const Carousel = ({
       }
       intervalIdRef.current = setInterval(
         updateImageIndex,
-        IMG_MOVE_INTERVAL_TIME,
+        carouselMoveIntervalTime,
       );
     } else {
       setIsAnimating(false);
@@ -146,9 +151,9 @@ const Carousel = ({
       setIsAnimating(true);
       intervalIdRef.current = setInterval(
         updateImageIndex,
-        IMG_MOVE_INTERVAL_TIME,
+        carouselMoveIntervalTime,
       );
-    }, ARROW_WAIT_TIME);
+    }, arrowPushMoveWaitTime);
   };
 
   return (
