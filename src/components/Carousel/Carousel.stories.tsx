@@ -49,6 +49,10 @@ const meta: Meta<typeof Carousel> = {
         'Arrow를 누른 후 캐러셀 움직임을 멈추는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)',
       defaultValue: 2000,
     },
+    movePause: {
+      description: '캐러셀의 움직임을 true 동안 일시정지 (기본값 = false)',
+      defaultValue: false,
+    },
   },
   args: {
     imgURL: [
@@ -107,7 +111,6 @@ export function Focus동작() {
         ]}
         move={focus}
         arrow={focus}
-        priority={2}
         showCurrentElement={focus}
       />
     </div>
@@ -172,17 +175,32 @@ const classCardData = [
   },
 ];
 
-export const ClassCard사용: Story = {
-  render: () => (
+export function ClassCard사용() {
+  const [focus, setFocus] = useState(false);
+
+  const onFocus = () => {
+    setFocus(true);
+  };
+
+  const offFocus = () => {
+    setFocus(false);
+  };
+
+  return (
     <div className="relative flex h-80 w-full justify-center ">
       <div className="flex h-full w-11/12 items-center overflow-hidden">
-        <div className="w-[30rem]">
+        <div
+          className="w-[30rem]"
+          onMouseOver={onFocus}
+          onMouseLeave={offFocus}
+        >
           <Carousel
             move={true}
             showCurrentElement={false}
             carouselMoveIntervalTime={3000}
             priority={3}
             gap={2}
+            movePause={focus}
           >
             {classCardData.map((state, index) => (
               <ClassCard key={index} {...state} />
@@ -191,5 +209,5 @@ export const ClassCard사용: Story = {
         </div>
       </div>
     </div>
-  ),
-};
+  );
+}

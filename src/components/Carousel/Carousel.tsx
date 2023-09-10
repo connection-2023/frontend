@@ -118,8 +118,9 @@ const Carousel = ({
       clearInterval(intervalIdRef.current);
     } else {
       if (move) {
+        setIsAnimating(true);
         if (priority === 1) {
-          updateImageIndex();
+          setTimeout(() => updateImageIndex(), 100);
         }
         intervalIdRef.current = setInterval(
           updateImageIndex,
