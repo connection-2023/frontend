@@ -1,0 +1,10 @@
+@import '../../styles/calendar.css';
+
+.react-calendar {
+  box-shadow: none;
+}
+
+/* month-view 스타일 */
+.react-calendar__month-view__days {
+  pointer-events: initial;
+}

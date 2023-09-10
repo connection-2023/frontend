@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import { WEEK_DAYS } from '../../constants/constants';
 import { tileClassName as generateTileClass } from './tileClassName';
-import '../../styles/calendar.css';
+import './interactionCalendar.css';
 
 type CalendarValuePiece = Date | null;
 type CalendarValue =
