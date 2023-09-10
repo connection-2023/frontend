@@ -66,13 +66,14 @@ jobs:
         run: |
           npm install
           npm run build-storybook
-          mv ./storybook-static ./build/storybook
+          mkdir -p ./storybook-build
+          mv ./storybook-static ./storybook-build/storybook
           
       - name: Deploy Storybook to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages
-          publish_dir: ./build
+          publish_dir: ./storybook-build
           token: ${{ secrets.GH_TOKEN }}
           clean: true
       
