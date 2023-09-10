@@ -2,6 +2,7 @@ import CalendarSVG from './calendar.svg';
 import HeartSVG from './heart.svg';
 import StarSVG from './star.svg';
 import ProfileSVG from './profile_default.svg';
+import Arrow from './arrow.svg';
 import ResetSVG from './reset.svg';
 import ArrowUpSVG from './ArrowUp.svg';
 import ArrowDownSVG from './ArrowDown.svg';
@@ -14,4 +15,5 @@ export {
   ResetSVG,
   ArrowUpSVG,
   ArrowDownSVG,
+  Arrow
 };
