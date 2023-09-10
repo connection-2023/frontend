@@ -1,9 +1,14 @@
 import { render } from '@testing-library/react';
-import Calendar from './DisplayCalendar';
+import DisplayCalendar from './DisplayCalendar';
+import InteractionCalendar from './InteractionCalendar';
 
 describe('Calendar', () => {
-  it('renders without crashing', () => {
+  it('renders DisplayCalendar without crashing', () => {
     const selectedDates = [new Date()];
-    render(<Calendar selectedDates={selectedDates} />);
+    render(<DisplayCalendar selectedDates={selectedDates} />);
+  });
+
+  it('renders InteractionCalendar without crashing', () => {
+    render(<InteractionCalendar />);
   });
 });
