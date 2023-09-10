@@ -36,7 +36,7 @@ import { Arrow } from '../../../public/icons/svg';
  * @property {number} [gap=0] - 캐러셀 요소 사이의 간격을 rem으로 지정하는 선택적 숫자 (기본값 = 0)
  * @property {number} [carouselMoveIntervalTime = 2000] - 캐러셀 움직이는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
  * @property {number} [arrowPushMoveWaitTime = 2000] - Arrow를 누른 후 캐러셀 움직임을 멈추는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
- *
+ * @property {boolean} [movePause = false] - 캐러셀의 움직임을 true 동안 일시정지 (기본값 = false)
  */
 
 interface Props {
@@ -48,6 +48,7 @@ interface Props {
   gap?: number;
   carouselMoveIntervalTime?: number;
   arrowPushMoveWaitTime?: number;
+  movePause?: boolean;
 }
 
 interface ChildrenProps extends Props {
@@ -73,6 +74,7 @@ const Carousel = ({
   showCurrentElementBackGround = true,
   carouselMoveIntervalTime = 2000,
   arrowPushMoveWaitTime = 2000,
+  movePause = false,
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
   const extendForCarousel = (elementArr: React.ReactNode[] | string[]) => {
@@ -112,26 +114,30 @@ const Carousel = ({
   };
 
   useEffect(() => {
-    if (move && isAnimating) {
-      if (priority > 1) {
-        updateImageIndex();
-      }
-      intervalIdRef.current = setInterval(
-        updateImageIndex,
-        carouselMoveIntervalTime,
-      );
+    if (movePause && intervalIdRef.current) {
+      clearInterval(intervalIdRef.current);
     } else {
-      setIsAnimating(false);
-      setCurrentIndex(0);
-      setTimeout(() => setIsAnimating(true), 100);
-      if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+      if (move) {
+        if (priority === 1) {
+          updateImageIndex();
+        }
+        intervalIdRef.current = setInterval(
+          updateImageIndex,
+          carouselMoveIntervalTime,
+        );
+      } else {
+        setIsAnimating(false);
+        setCurrentIndex(0);
+        setTimeout(() => setIsAnimating(true), 100);
+        if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+      }
     }
 
     return () => {
       if (intervalIdRef.current) clearInterval(intervalIdRef.current);
       if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
     };
-  }, [move, loadedElementCount]);
+  }, [move, loadedElementCount, movePause]);
 
   const changeImage = (direction: 'BACKWARD' | 'FORWARD') => {
     if (intervalIdRef.current) clearInterval(intervalIdRef.current);
