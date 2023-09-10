@@ -1,5 +1,4 @@
 import type { StorybookConfig } from '@storybook/nextjs';
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 import { RuleSetRule } from 'webpack';
 
 const config: StorybookConfig = {
@@ -12,30 +11,22 @@ const config: StorybookConfig = {
     {
       name: '@storybook/addon-styling',
       options: {
-        // Check out https://github.com/storybookjs/addon-styling/blob/main/docs/api.md
-        // For more details on this addon's options.
         postCss: {
           implementation: require.resolve('postcss'),
         },
       },
     },
   ],
+
   framework: {
     name: '@storybook/nextjs',
     options: {},
   },
-  /*
-  webpackFinal(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
-    });
-    //config.resolve.plugins = [new TsconfigPathsPlugin()];
-    return config;
 
+  typescript: {
+    reactDocgen: false,
   },
-*/
+
   webpackFinal: async (config) => {
     const rules = config?.module?.rules as RuleSetRule[];
     const imageRule = rules.find(
@@ -48,6 +39,7 @@ const config: StorybookConfig = {
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     });
+
     return config;
   },
 
@@ -55,4 +47,5 @@ const config: StorybookConfig = {
     autodocs: 'tag',
   },
 };
+
 export default config;
