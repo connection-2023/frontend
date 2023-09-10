@@ -64,6 +64,7 @@ jobs:
         
       - name: Build storybook
         run: |
+          npm install
           npm run build-storybook
           mv ./storybook-static ./build/storybook
           
@@ -72,7 +73,7 @@ jobs:
         with:
           branch: gh-pages
           publish_dir: ./build
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
           clean: true
       
       - name: Set up Docker
