@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Calendar from '../Calendar/Calendar';
+import DisplayCalendar from '../Calendar/DisplayCalendar';
 import { CalendarSVG } from '../../../public/icons/svg';
 
 const Date = ({ selectedDates }: { selectedDates: Date[] }) => {
@@ -23,7 +23,7 @@ const Date = ({ selectedDates }: { selectedDates: Date[] }) => {
       />
       {isHovered && (
         <div className="absolute z-10 bg-white ">
-          <Calendar selectedDates={selectedDates} />
+          <DisplayCalendar selectedDates={selectedDates} />
         </div>
       )}
     </div>

@@ -1,5 +1,4 @@
 import { StarSVG } from '../../../public/icons/svg';
-
 interface ReviewProps {
   average: number;
   count?: number;
@@ -12,6 +11,16 @@ export const calculateStarArray = (average: number) =>
     return 0;
   });
 
+const Star = ({
+  fill,
+  className = '',
+}: {
+  fill: string;
+  className?: string;
+}) => (
+  <StarSVG width={15} height={14} className={`fill-${fill} ${className}`} />
+);
+
 const Review = ({ average, count }: ReviewProps) => {
   const starArray = calculateStarArray(average);
   return (
@@ -19,21 +28,21 @@ const Review = ({ average, count }: ReviewProps) => {
       <div className="flex gap-1">
         {starArray.map((star, i) =>
           star === 1 ? (
-            <StarSVG key={i} className="fill-sub-color1" />
+            <Star key={i} fill="sub-color1" />
           ) : star > 0 ? (
-            <div className="relative h-5 w-5 overflow-hidden">
-              <StarSVG className="absolute fill-[#D8D8D8]" />
+            <div className="relative h-[14px] w-[15px] overflow-hidden">
+              <Star fill="[#D8D8D8]" className="absolute" />
               <div
                 className="absolute overflow-hidden"
                 style={{
-                  width: `${star * 100}%`,
+                  width: `${star * 15}px`,
                 }}
               >
-                <StarSVG key={i} className="fill-sub-color1" />
+                <Star fill="sub-color1" />
               </div>
             </div>
           ) : (
-            <StarSVG key={i} className="fill-[#D8D8D8]" />
+            <Star key={i} fill="[#D8D8D8]" />
           ),
         )}
       </div>
