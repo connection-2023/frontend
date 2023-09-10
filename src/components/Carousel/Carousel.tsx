@@ -30,8 +30,9 @@ import { Arrow } from '../../../public/icons/svg';
  * @property {React.ReactNode} children - 표시할 요소들, imgURL 보다 우선순위 높음
  * @property {boolean} move - 캐러셀 움직임 활성화
  * @property {boolean} [arrow=true] - 탐색을 위해 화살표를 표시해야 하는지 여부를 나타내는 선택적 플래그 (기본값 = true)
- * @property {boolean} [priority=1] - 해당 숫자 만큼 요소 미리 렌더 (기본값 = 1)
+ * @property {boolean} [priority=1] - 해당 숫자 만큼 요소를 미리 렌더 (기본값 = 1)
  * @property {boolean} [showCurrentElement =true] - 현재 캐러셀 위치 표시의 상태창 표시 여부를 나타내는 선택적 플래그 (기본값 = true)
+ * @property {boolean} [showCurrentElementBackGround =true] - 상태창 표시 배경 여부를 나타내는 선택적 플래그 (기본값 = true)
  * @property {number} [gap=0] - 캐러셀 요소 사이의 간격을 rem으로 지정하는 선택적 숫자 (기본값 = 0)
  * @property {number} [carouselMoveIntervalTime = 2000] - 캐러셀 움직이는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
  * @property {number} [arrowPushMoveWaitTime = 2000] - Arrow를 누른 후 캐러셀 움직임을 멈추는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
@@ -51,12 +52,12 @@ interface Props {
 
 interface ChildrenProps extends Props {
   children: React.ReactNode;
-  imgURL?: never;
+  imgURL?: string[];
 }
 
 interface ImgURLProps extends Props {
   imgURL: string[];
-  children?: never;
+  children?: React.ReactNode;
 }
 
 type CarouselProps = ChildrenProps | ImgURLProps;
@@ -69,7 +70,7 @@ const Carousel = ({
   showCurrentElement = true,
   gap = 0,
   children,
-  showCurrentElementBackGround,
+  showCurrentElementBackGround = true,
   carouselMoveIntervalTime = 2000,
   arrowPushMoveWaitTime = 2000,
 }: CarouselProps) => {
