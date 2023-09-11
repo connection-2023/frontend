@@ -6,6 +6,9 @@ import Arrow from './arrow.svg';
 import ResetSVG from './reset.svg';
 import ArrowUpSVG from './ArrowUp.svg';
 import ArrowDownSVG from './ArrowDown.svg';
+import SearchSVG from './search.svg';
+import CloseSVG from './close.svg';
+import ClearSVG from './clear.svg';
 
 export {
   CalendarSVG,
@@ -15,5 +18,8 @@ export {
   ResetSVG,
   ArrowUpSVG,
   ArrowDownSVG,
-  Arrow
+  Arrow,
+  SearchSVG,
+  CloseSVG,
+  ClearSVG,
 };
