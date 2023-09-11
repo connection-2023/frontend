@@ -1,28 +1,29 @@
+'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Arrow } from '../../../public/icons/svg';
 
 /**
- * CardImgProps Interface
+ * CarouselProps Interface
  *
  * 사용법 1
  * <relative overflow-hidden 컨테이너>
  *  <이미지 크기 제어 컨테이너>
- *    <CardImg/>
+ *    <Carousel/>
  *  </이미지 크기 제어 컨테이너>
  * </ relative overflow-hidden 컨테이너>
  *
  * 사용법 2
  * <이미지 크기 제어 및 relative overflow-hidden>
- *   <CardImg/>
+ *   <Carousel/>
  * </ 이미지 크기 제어 및 relative overflow-hidden>
  *
  * 사용법 3
  * <relative overflow-hidden 컨테이너>
  *  <이미지 크기 제어 컨테이너>
- *    <CardImg>
+ *    <Carousel>
  *      ...children 요소
- *    </CardImg>
+ *    </Carousel>
  *  </이미지 크기 제어 컨테이너>
  * </ relative overflow-hidden 컨테이너>
  *
@@ -120,7 +121,7 @@ const Carousel = ({
       if (move) {
         setIsAnimating(true);
         if (priority === 1) {
-          setTimeout(() => updateImageIndex(), 100);
+          timeoutIdRef.current = setTimeout(() => updateImageIndex(), 100);
         }
         intervalIdRef.current = setInterval(
           updateImageIndex,
@@ -138,11 +139,17 @@ const Carousel = ({
       if (intervalIdRef.current) clearInterval(intervalIdRef.current);
       if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [move, loadedElementCount, movePause]);
 
-  const changeImage = (direction: 'BACKWARD' | 'FORWARD') => {
+  const changeImage = (
+    event: React.MouseEvent,
+    direction: 'BACKWARD' | 'FORWARD',
+  ) => {
     if (intervalIdRef.current) clearInterval(intervalIdRef.current);
     if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
+    event.stopPropagation();
+    event.nativeEvent.preventDefault();
 
     setIsAnimating(false);
     setCurrentIndex((prev) =>
@@ -221,11 +228,11 @@ const Carousel = ({
       {arrow && (
         <>
           <Arrow
-            onClick={() => changeImage('BACKWARD')}
+            onClick={(e: React.MouseEvent) => changeImage(e, 'BACKWARD')}
             className="absolute left-3 top-1/2 -translate-y-1/2 -scale-x-100 transform cursor-pointer"
           />
           <Arrow
-            onClick={() => changeImage('FORWARD')}
+            onClick={(e: React.MouseEvent) => changeImage(e, 'FORWARD')}
             className="absolute right-3 top-1/2 -translate-y-1/2 transform cursor-pointer"
           />
         </>
