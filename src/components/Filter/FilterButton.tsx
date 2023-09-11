@@ -50,13 +50,12 @@ const FilterBtn = ({ label, content }: FilterBtnProps) => {
           {content}
 
           <div className="box-border flex justify-between border-t border-solid border-[#B6B6B6] px-[0.94rem] py-[0.69rem]">
-            <Button mode="reset" label="초기화" onClick={() => {}} />
-            <Button
-              primary={true}
-              size="small"
-              label="적용"
-              onClick={onClickApply}
-            />
+            <Button mode="reset" onClick={() => {}}>
+              초기화
+            </Button>
+            <Button primary={true} size="small" onClick={onClickApply}>
+              적용
+            </Button>
           </div>
         </div>
       )}
