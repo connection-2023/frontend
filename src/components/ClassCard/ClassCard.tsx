@@ -82,7 +82,11 @@ const ClassCard = (props: ClassCardType) => {
             {price}원
           </p>
           <div className="text-sm">
-            <Profile src={profile?.src} nickname={profile.nickname} size={34} />
+            <Profile
+              src={profile?.src || null}
+              nickname={profile.nickname}
+              size={34}
+            />
           </div>
         </div>
       </div>
