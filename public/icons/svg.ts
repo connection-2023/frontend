@@ -9,6 +9,12 @@ import ArrowDownSVG from './ArrowDown.svg';
 import SearchSVG from './search.svg';
 import CloseSVG from './close.svg';
 import ClearSVG from './clear.svg';
+import ChatSVG from './chat.svg';
+import GroupSVG from './group.svg';
+import LevelSVG from './level.svg';
+import LocationSVG from './location.svg';
+import NoticeSVG from './notice.svg';
+import TimeSVG from './time.svg';
 
 export {
   CalendarSVG,
@@ -22,4 +28,10 @@ export {
   SearchSVG,
   CloseSVG,
   ClearSVG,
+  ChatSVG,
+  GroupSVG,
+  LevelSVG,
+  LocationSVG,
+  NoticeSVG,
+  TimeSVG,
 };
