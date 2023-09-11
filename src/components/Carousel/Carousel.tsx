@@ -138,6 +138,7 @@ const Carousel = ({
       if (intervalIdRef.current) clearInterval(intervalIdRef.current);
       if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [move, loadedElementCount, movePause]);
 
   const changeImage = (direction: 'BACKWARD' | 'FORWARD') => {

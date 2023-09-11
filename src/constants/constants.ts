@@ -1,6 +1,6 @@
 export const WEEK_DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-export const REGION = [
+export const ADMINISTRATIVE_DISTRICT = [
   {
     city: '서울',
     ward: [
@@ -29,6 +29,27 @@ export const REGION = [
       '강남구',
       '송파구',
       '강동구',
+    ],
+  },
+  {
+    city: '부산',
+    ward: [
+      '중구',
+      '서구',
+      '동구',
+      '영도구',
+      '부산진구',
+      '동래구',
+      '남구',
+      '북구',
+      '강서구',
+      '해운대구',
+      '사하구',
+      '금정구',
+      '연제구',
+      '수영구',
+      '사상구',
+      '기장군',
     ],
   },
   {
@@ -63,7 +84,7 @@ export const REGION = [
   { city: '울산', ward: ['중구', '남구', '동구', '북구', '울주군'] },
   { city: '세종', ward: ['세종'] },
   {
-    city: '경기도',
+    city: '경기',
     ward: [
       '수원시',
       '장안구',
