@@ -1,7 +1,5 @@
 import { StoryObj, Meta } from '@storybook/react';
 import InstructorCard from './InstructorCard';
-import { useState } from 'react';
-import ClassCard from '../ClassCard/ClassCard';
 
 const meta: Meta<typeof InstructorCard> = {
   title: 'Components/InstructorCard',

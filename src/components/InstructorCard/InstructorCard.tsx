@@ -4,7 +4,6 @@ import ImagesViewer from './ImagesViewer';
 import Review from '../Review/Review';
 import Like from '../Like/Like';
 import Link from 'next/link';
-import Carousel from '../Carousel/Carousel';
 
 interface InstructorCardProps {
   name: string;
