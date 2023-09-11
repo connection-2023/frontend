@@ -19,7 +19,7 @@ const MyKeyword = () => {
           최근 검색어
         </h1>
         <button
-          className="text-sm font-bold text-[#B6B6B6]"
+          className="text-sm text-[#B6B6B6] underline"
           onClick={onClickRemoveAll}
         >
           전체삭제
