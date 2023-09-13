@@ -1,4 +1,6 @@
-export const CITY_LIST = [
+import { CityList } from '@/types/regionFilter';
+
+export const CITY_LIST: CityList[] = [
   '서울',
   '부산',
   '대구',

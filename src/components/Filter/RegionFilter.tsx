@@ -1,116 +1,95 @@
 'use client';
-import { ADMINISTRATIVE_DISTRICT } from '@/constants/constants';
+import { CITY_LIST, WARD_LIST } from '@/constants/administrativeDistrict';
+import { CityList, RegionFilterList } from '@/types/regionFilter';
 import React, { useState } from 'react';
 
 const RegionFilter = () => {
-  // const [focus, setFocus] = useState<string[]>();
+  const [selectedCity, setSelectedCity] = useState<CityList>('서울');
+  const [filterList, setFilterList] = useState<RegionFilterList>({});
 
-  // const onFocus = (city : string) => {
-  //   setFocus(true);
-  // };
+  const changeFilterList = (ward: string) => {
+    const currentWards = filterList[selectedCity] || [];
+    const isWardSelected = currentWards.includes(ward);
+
+    if (isWardSelected) {
+      if (currentWards.length === 1) {
+        deleteFilterCity();
+      } else {
+        setFilterList({
+          ...filterList,
+          [selectedCity]: currentWards.filter(
+            (currentWard) => currentWard !== ward,
+          ),
+        });
+      }
+    } else {
+      setFilterList({
+        ...filterList,
+        [selectedCity]: [...currentWards, ward],
+      });
+    }
+  };
+
+  const changeCheckBox = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    city: CityList,
+  ) => {
+    if (event.target.checked) {
+      setFilterList({
+        ...filterList,
+        [city]: [...WARD_LIST[city]],
+      });
+    } else {
+      deleteFilterCity();
+    }
+  };
+
+  const deleteFilterCity = () => {
+    const newFilterList = { ...filterList };
+    delete newFilterList[selectedCity];
+    setFilterList(newFilterList);
+  };
 
   return (
-    <div className="flex max-h-[17rem] w-64 text-sm ">
-      <ul className="scrollbar-thin scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6] flex w-2/5 flex-col gap-2 overflow-y-auto pt-3">
-        {ADMINISTRATIVE_DISTRICT.map(({ city }) => (
+    <div className="flex max-h-[17rem] w-[16.5rem] text-sm ">
+      <ul className="flex w-4/12 flex-col overflow-y-auto pt-1 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6]  scrollbar-thumb-rounded-lg scrollbar-w-1">
+        {CITY_LIST.map((city) => (
           <li
             key={city}
-            className="flex w-full items-center justify-center gap-2 "
-            // onClick={() => onFocus(city)}
+            className={`flex w-full cursor-pointer items-center  gap-2 whitespace-nowrap px-2 py-2  ${
+              city === selectedCity && 'bg-[#D9D9D9]'
+            } ${filterList[city] && 'font font-bold text-sub-color1'}`}
+            onClick={() => setSelectedCity(city)}
           >
-            <input type="checkbox" className="h-[1.12rem] w-[1.12rem]" />
+            <input
+              type="checkbox"
+              className="h-[1.12rem] w-[1.12rem] accent-sub-color1"
+              checked={
+                (filterList[city] || []).length === WARD_LIST[city].length
+              }
+              onChange={(event) => changeCheckBox(event, city)}
+            />
             {city}
           </li>
         ))}
       </ul>
-      <ul className="scrollbar-thin scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6] flex w-3/5 flex-wrap content-start overflow-y-auto pt-3">
-        {/* {ADMINISTRATIVE_DISTRICT.map(({ ward }) => (
-          <li key={ward} className="">
+      <ul className="flex w-8/12 flex-wrap content-start overflow-y-auto px-3 pt-3 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6] scrollbar-thumb-rounded-lg scrollbar-w-1">
+        {WARD_LIST[selectedCity].map((ward) => (
+          <li
+            key={ward}
+            className={`mb-4 mr-4 h-5 w-[3.5rem] cursor-pointer align-middle ${
+              filterList[selectedCity]?.includes(ward) &&
+              'font font-bold text-sub-color1'
+            }`}
+            onClick={() => changeFilterList(ward)}
+          >
             {ward}
           </li>
-        ))} */}
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
-        <div className="mb-2  h-5 w-1/2 text-center align-middle">
-          {'중랑구'}
-        </div>
+        ))}
       </ul>
     </div>
   );
 };
 
 export default RegionFilter;
-
-const CityComponent = ({ city }: { city: string }) => {
-  return (
-    <li className="flex w-full items-center justify-center gap-2 ">
-      <input type="checkbox" className="h-[1.12rem] w-[1.12rem]" />
-      {city}
-    </li>
-  );
-};
+// text-center
