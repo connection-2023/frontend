@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { PROGRESS_METHOD } from '@/constants/constants';
+import { PROGRESS_METHOD } from '../../constants/constants';
 
 const ProgressMethodFilter = () => {
   const [filterList, setFilterList] = useState<string[]>([]);
@@ -14,7 +14,7 @@ const ProgressMethodFilter = () => {
   };
 
   return (
-    <ul className="flex w-[16.5rem] select-none flex-wrap pb-1 pt-3">
+    <ul className="flex w-[16.6rem] select-none flex-wrap pb-1 pt-3">
       {PROGRESS_METHOD.map((method) => {
         const isMethodIncluded = filterList.includes(method);
 
