@@ -1,5 +1,5 @@
 'use client';
-import { CITY_LIST, WARD_LIST } from '@/constants/administrativeDistrict';
+import { CITY_LIST, WARD_LIST } from '../../constants/administrativeDistrict';
 import { CityList, RegionFilterList } from '@/types/regionFilter';
 import React, { useState } from 'react';
 
@@ -51,7 +51,7 @@ const RegionFilter = () => {
   };
 
   return (
-    <div className="flex max-h-[17rem] w-[16.5rem] text-sm ">
+    <div className="flex max-h-[17rem] w-[16.8rem] select-none text-sm">
       <ul className="flex w-4/12 flex-col overflow-y-auto pt-1 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6]  scrollbar-thumb-rounded-lg scrollbar-w-1">
         {CITY_LIST.map((city) => (
           <li
@@ -77,7 +77,7 @@ const RegionFilter = () => {
         {WARD_LIST[selectedCity].map((ward) => (
           <li
             key={ward}
-            className={`mb-4 mr-4 h-5 w-[3.5rem] cursor-pointer align-middle ${
+            className={`mb-4 basis-1/2 cursor-pointer pl-2 align-middle ${
               filterList[selectedCity]?.includes(ward) &&
               'font font-bold text-sub-color1'
             }`}

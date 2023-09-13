@@ -3,6 +3,7 @@ import FilterButton from './FilterButton';
 import DateFilter from './DateFilter';
 import PriceFilter from './PriceFilter';
 import ReviewFilter from './ReviewFilter';
+import RegionFilter from './RegionFilter';
 
 const meta: Meta<typeof FilterButton> = {
   title: 'Components/FilterButton',
@@ -33,5 +34,12 @@ export const Date: Story = {
   args: {
     label: '지정날짜',
     content: <DateFilter />,
+  },
+};
+
+export const Region: Story = {
+  args: {
+    label: '지역',
+    content: <RegionFilter />,
   },
 };
