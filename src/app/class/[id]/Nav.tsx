@@ -6,10 +6,10 @@ const Nav = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const sections = [
-    'intro-section',
-    'date-section',
-    'location-section',
-    'review-section',
+    { id: 'intro-section', label: '클래스 소개' },
+    { id: 'date-section', label: '일정 및 시간' },
+    { id: 'location-section', label: '진행 장소' },
+    { id: 'review-section', label: '후기' },
   ];
 
   useEffect(() => {
@@ -24,14 +24,14 @@ const Nav = () => {
       { threshold: 0.9 },
     );
 
-    sections.forEach((id) => {
+    sections.forEach(({ id }) => {
       const elem = document.getElementById(id);
       if (elem) observer.observe(elem);
       sectionRefs.current[id] = elem;
     });
 
     return () => {
-      sections.forEach((id) => {
+      sections.forEach(({ id }) => {
         const elem = sectionRefs.current[id];
         if (elem) observer.unobserve(elem);
       });
@@ -62,50 +62,20 @@ const Nav = () => {
       onClick={handleNavLinkClick}
       className="sticky top-0 mb-[0.87rem] flex h-[64px] w-full items-center justify-between scroll-smooth whitespace-nowrap bg-white text-lg font-bold text-[#B6B6B6]"
     >
-      <Link
-        href="#intro-section"
-        ref={(ref) => (sectionRefs.current['intro-section'] = ref)}
-        className={`${
-          activeSection === 'intro-section'
-            ? 'text-sub-color1 underline underline-offset-8'
-            : 'text-[#B6B6B6]'
-        }`}
-      >
-        클래스 소개
-      </Link>
-      <Link
-        href="#date-section"
-        ref={(ref) => (sectionRefs.current['date-section'] = ref)}
-        className={`${
-          activeSection === 'date-section'
-            ? 'text-sub-color1 underline underline-offset-8'
-            : 'text-[#B6B6B6]'
-        }`}
-      >
-        일정 및 시간
-      </Link>
-      <Link
-        href="#location-section"
-        ref={(ref) => (sectionRefs.current['location-section'] = ref)}
-        className={`${
-          activeSection === 'location-section'
-            ? 'text-sub-color1 underline underline-offset-8'
-            : 'text-[#B6B6B6]'
-        }`}
-      >
-        진행 장소
-      </Link>
-      <Link
-        href="#review-section"
-        ref={(ref) => (sectionRefs.current['review-section'] = ref)}
-        className={`${
-          activeSection === 'review-section'
-            ? 'text-sub-color1 underline underline-offset-8'
-            : 'text-[#B6B6B6]'
-        }`}
-      >
-        후기
-      </Link>
+      {sections.map(({ id, label }) => (
+        <Link
+          key={id}
+          href={`#${id}`}
+          ref={(ref) => (sectionRefs.current[id] = ref)}
+          className={`${
+            activeSection === id
+              ? 'text-sub-color1 underline underline-offset-8'
+              : 'text-[#B6B6B6]'
+          }`}
+        >
+          {label}
+        </Link>
+      ))}
     </nav>
   );
 };
