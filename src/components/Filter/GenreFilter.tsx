@@ -1,5 +1,5 @@
 'use client';
-import { DANCE_GENRE, DANCE_GENRE_ENGLISH } from '@/constants/constants';
+import { DANCE_GENRE, DANCE_GENRE_ENGLISH } from '../../constants/constants';
 import React, { useState } from 'react';
 
 const GenreFilter = () => {
