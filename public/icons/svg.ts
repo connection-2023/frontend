@@ -15,6 +15,7 @@ import LevelSVG from './level.svg';
 import LocationSVG from './location.svg';
 import NoticeSVG from './notice.svg';
 import TimeSVG from './time.svg';
+import BasicCalendarSVG from './BasicCalendar.svg';
 
 export {
   CalendarSVG,
@@ -34,4 +35,5 @@ export {
   LocationSVG,
   NoticeSVG,
   TimeSVG,
+  BasicCalendarSVG,
 };
