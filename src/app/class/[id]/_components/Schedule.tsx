@@ -1,6 +1,6 @@
 import InteractionCalendar from '@/components/Calendar/InteractionCalendar';
 
-interface SListProps {
+interface IScheduleListProps {
   date: string;
   space: {
     current: number;
@@ -9,10 +9,10 @@ interface SListProps {
 }
 
 const textStyle = {
-  normal: 'text-[#414141]',
-  full: 'text-[#B6B6B6]',
+  normal: 'text-sub-color3',
+  full: 'text-sub-color2',
 };
-const ScheduleList = ({ date, space }: SListProps) => {
+const ScheduleList = ({ date, space }: IScheduleListProps) => {
   const mode = space.current === space.total ? 'full' : 'normal';
 
   return (

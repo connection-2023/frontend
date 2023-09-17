@@ -1,8 +1,8 @@
 'use client';
 import { Button } from '@/components/Button/Button';
-import { ChatSVG } from '../../../../public/icons/svg';
+import { ChatSVG } from '@/../public/icons/svg';
 
-const ProfileButtons = () => {
+const ProfileButtons = ({ id }: { id: number }) => {
   return (
     <>
       <Button mode="default" size="medium" onClick={() => {}}>
