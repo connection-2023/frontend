@@ -3,7 +3,9 @@ import FilterButton from './FilterButton';
 import DateFilter from './DateFilter';
 import PriceFilter from './PriceFilter';
 import ReviewFilter from './ReviewFilter';
+import ProgressMethodFilter from './ProgressMethodFilter';
 import RegionFilter from './RegionFilter';
+
 
 const meta: Meta<typeof FilterButton> = {
   title: 'Components/FilterButton',
@@ -37,6 +39,13 @@ export const Date: Story = {
   },
 };
 
+export const ProgressMethod: Story = {
+  args: {
+    label: '진행방식',
+    content: <ProgressMethodFilter />,
+  },
+};
+  
 export const Region: Story = {
   args: {
     label: '지역',
