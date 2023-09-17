@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import { WEEK_DAYS } from '../../constants/constants';
 import { tileClassName as generateTileClass } from './tileClassName';
@@ -10,11 +10,19 @@ type CalendarValue =
   | CalendarValuePiece
   | [CalendarValuePiece, CalendarValuePiece];
 
-const InteractionCalendar = () => {
+interface ICalendarProps {
+  mode: 'filter' | 'class';
+  dateList?: Date[] | null;
+}
+const InteractionCalendar = ({ mode, dateList = null }: ICalendarProps) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
+  useEffect(() => {
+    if (dateList !== null) setSelectedDates(dateList);
+  }, []);
+
   const onChangeDateSelection = (value: CalendarValue) => {
-    if (value instanceof Date) {
+    if (value instanceof Date && mode === 'filter') {
       setSelectedDates((prevSelectedDays) => {
         const dateAsString = value.toDateString();
         const isSelected = prevSelectedDays.some(
@@ -35,6 +43,15 @@ const InteractionCalendar = () => {
   const tileClassGenerator = ({ date }: { date: Date }) =>
     generateTileClass({ date, selectedDates });
 
+  const isTileDisabled = ({ date }: { date: Date }) => {
+    return !selectedDates.some(
+      (selectedDate) =>
+        selectedDate.getDate() === date.getDate() &&
+        selectedDate.getMonth() === date.getMonth() &&
+        selectedDate.getFullYear() === date.getFullYear(),
+    );
+  };
+
   return (
     <Calendar
       onChange={onChangeDateSelection}
@@ -45,7 +62,9 @@ const InteractionCalendar = () => {
       formatShortWeekday={(locale, date) => WEEK_DAYS[date.getDay()]}
       calendarType="gregory"
       tileClassName={tileClassGenerator}
+      tileDisabled={isTileDisabled}
       formatDay={(locale, date) => `${date.getDate()}`}
+      className={`${mode === 'filter' ? 'filter-mode' : 'class-mode'}`}
     />
   );
 };
