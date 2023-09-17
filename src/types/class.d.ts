@@ -11,3 +11,13 @@ export interface ClassCardType {
   profile: { src?: string; nickname: string };
   selectedDates: Date[];
 }
+export interface Space {
+  current: number;
+  total: number;
+}
+
+export interface DateTime {
+  date: string;
+  space: Space;
+  count: number;
+}
