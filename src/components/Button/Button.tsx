@@ -22,7 +22,7 @@ const btnMode = {
   secondary: 'text-white bg-black',
 };
 
-const commonStyle = 'flex cursor-pointer items-center';
+const commonStyle = 'flex cursor-pointer items-center whitespace-nowrap';
 
 export const Button = ({
   primary = false,
