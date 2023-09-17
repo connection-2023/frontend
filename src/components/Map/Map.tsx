@@ -1,15 +1,38 @@
 'use client';
+import { DEFAULT_ADDRESS } from '../../constants/constants';
 import React, { useEffect, useState } from 'react';
 import {
   InfoWindow,
-  Container as MapDiv,
   Marker,
   NaverMap,
+  NavermapsProvider,
   useNavermaps,
+  Container as MapDiv,
 } from 'react-naver-maps';
-import { NavermapsProvider } from 'react-naver-maps';
+interface MapProps {
+  address: string;
+  studioName: string;
+}
 
-const Map = ({ address }: { address: string }) => {
+const Map = ({ ...props }: MapProps) => {
+  return (
+    <NavermapsProvider
+      submodules={['geocoder']}
+      ncpClientId={process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID!}
+    >
+      <MapDiv
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <NaverMapRenderer {...props} />
+      </MapDiv>
+    </NavermapsProvider>
+  );
+};
+
+const NaverMapRenderer = ({ address, studioName }: MapProps) => {
   const navermaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [infowindow, setInfoWindow] = useState<naver.maps.InfoWindow | null>(
@@ -17,7 +40,7 @@ const Map = ({ address }: { address: string }) => {
   );
 
   const [latLng, setLatLng] = useState(
-    new navermaps.LatLng(37.5666103, 126.9783882),
+    new navermaps.LatLng(DEFAULT_ADDRESS.X, DEFAULT_ADDRESS.Y),
   );
 
   useEffect(() => {
@@ -29,13 +52,10 @@ const Map = ({ address }: { address: string }) => {
         if (status === navermaps.Service.Status.ERROR) {
           return console.error('Geocode Error, address:' + address);
         }
-
         if (response.v2.meta.totalCount === 0) {
           return console.error('No result.');
         }
-
         let item = response.v2.addresses[0];
-
         setLatLng(new navermaps.LatLng(Number(item.y), Number(item.x)));
       },
     );
@@ -46,8 +66,8 @@ const Map = ({ address }: { address: string }) => {
       map.setCenter(latLng);
 
       infowindow.setContent(
-        '<div style="position: absolute; top: 20px; font-weight: bold; color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">' +
-          address +
+        '<div style="position: absolute; top: 22px; font-weight: bold; color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">' +
+          studioName +
           '</div>',
       );
       infowindow.open(map, latLng);
@@ -68,25 +88,7 @@ const Map = ({ address }: { address: string }) => {
   );
 };
 
-const MapContainer = ({ address }: { address: string }) => {
-  return (
-    <NavermapsProvider
-      submodules={['geocoder']}
-      ncpClientId={process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID!}
-    >
-      <MapDiv
-        style={{
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        <Map address={address} />
-      </MapDiv>
-    </NavermapsProvider>
-  );
-};
-
-export default MapContainer;
+export default Map;
 
 // const icon = {
 //   content: [
@@ -99,4 +101,4 @@ export default MapContainer;
 //   ].join(''),
 //   size: new navermaps.Size(30, 50),
 //   anchor: new navermaps.Point(20, 28),
-// };
+// }; 추후 마커 커스텀 시 추가 예정
