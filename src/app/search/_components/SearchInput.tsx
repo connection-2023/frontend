@@ -1,20 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { SearchSVG, ClearSVG } from '../../../public/icons/svg';
+import { SearchSVG, ClearSVG } from '@/../public/icons/svg';
+import { dummyUserInputSuggestion } from '@/constants/dummy';
 
 const SearchInput = () => {
   const [keyword, setKeyword] = useState('');
-
-  const suggestions = [
-    '댄스',
-    '댄스 영상',
-    '댄서',
-    '댄스팀',
-    '레슨',
-    '방송댄스',
-    '폴댄스',
-    '댄싱',
-  ];
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
@@ -41,7 +31,7 @@ const SearchInput = () => {
       />
       {keyword.trim() !== '' && (
         <div className="absolute top-[10rem] flex min-h-[450px] w-[95%] flex-col gap-3 bg-white p-2 text-lg">
-          {suggestions.map((suggestion) => (
+          {dummyUserInputSuggestion.map((suggestion) => (
             <p key={suggestion}>
               {suggestion
                 .split(new RegExp(`(${keyword})`, 'gi'))

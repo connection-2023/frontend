@@ -5,14 +5,10 @@ export const metadata: Metadata = {
   description: 'Connection 전체 검색',
 };
 
-export default function RootLayout({
+export default function SearchLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body suppressHydrationWarning={true}>{children}</body>
-    </html>
-  );
+  return <>{children}</>;
 }

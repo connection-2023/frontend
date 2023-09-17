@@ -1,25 +1,10 @@
-import Close from './Close';
-import MyKeyword from './MyKeyword';
-import SearchInput from './SearchInput';
-import ListItem from './ListItem';
+import Close from './_components/Close';
+import MyKeyword from './_components/MyKeyword';
+import SearchInput from './_components/SearchInput';
+import ListItem from './_components/ListItem';
+import { dummySearchData } from '@/constants/dummy';
 
-const popularKeywords = [
-  '스트릿 우먼 파이터',
-  '원데이 클래스',
-  '커스틴',
-  'K-pop',
-  '원밀리언',
-];
-
-const suggestKeywords = [
-  'K-pop',
-  '원데이 클래스',
-  '스트릿 댄스',
-  '댄스 초보 수업',
-  '기본기 클래스',
-];
-
-export default function SearchPage() {
+const SearchPage = async () => {
   return (
     <div className="border-box mx-auto w-full max-w-[50rem] overflow-hidden px-[30px]">
       <nav className="mb-10 mt-[1.69rem] flex w-full justify-end">
@@ -32,12 +17,12 @@ export default function SearchPage() {
         </section>
 
         <section className="col-span-2 mb-[2.25rem] w-full">
-          <MyKeyword />
+          <MyKeyword userKeywords={dummySearchData.userKeywords} />
         </section>
 
         <Section title="이런 검색어는 어떠세요?">
           <ul className="flex flex-wrap gap-2">
-            {suggestKeywords.map((keyword, index) => (
+            {dummySearchData.suggestion.map((keyword, index) => (
               <ListItem key={index} label={keyword} />
             ))}
           </ul>
@@ -45,7 +30,7 @@ export default function SearchPage() {
 
         <Section title="인기 검색어">
           <ul className="flex flex-col divide-y divide-solid divide-[#D9D9D9]">
-            {popularKeywords.map((keyword, i) => (
+            {dummySearchData.popular.map((keyword, i) => (
               <li
                 key={i}
                 className="ml-[7px] flex h-[2.62rem] cursor-pointer items-center whitespace-nowrap text-base"
@@ -59,7 +44,9 @@ export default function SearchPage() {
       </main>
     </div>
   );
-}
+};
+
+export default SearchPage;
 
 const Section = ({
   title,
