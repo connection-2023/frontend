@@ -1,16 +1,15 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 
-const Nav = () => {
+interface NavSection {
+  id: string;
+  label: string;
+}
+
+const Nav = ({ sections }: { sections: NavSection[] }) => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
-  const sections = [
-    { id: 'intro-section', label: '클래스 소개' },
-    { id: 'date-section', label: '일정 및 시간' },
-    { id: 'location-section', label: '진행 장소' },
-    { id: 'review-section', label: '후기' },
-  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -60,7 +59,7 @@ const Nav = () => {
   return (
     <nav
       onClick={handleNavLinkClick}
-      className="sticky top-0 mb-[0.87rem] flex h-[64px] w-full items-center justify-between scroll-smooth whitespace-nowrap bg-white text-lg font-bold text-[#B6B6B6]"
+      className="sticky top-0 z-20 mb-[0.87rem] flex h-[64px] w-full items-center justify-between whitespace-nowrap bg-white text-lg font-bold"
     >
       {sections.map(({ id, label }) => (
         <Link
@@ -70,7 +69,7 @@ const Nav = () => {
           className={`${
             activeSection === id
               ? 'text-sub-color1 underline underline-offset-8'
-              : 'text-[#B6B6B6]'
+              : 'text-sub-color2'
           }`}
         >
           {label}
