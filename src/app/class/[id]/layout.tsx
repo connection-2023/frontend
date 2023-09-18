@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Connection | 검색',
-  description: 'Connection 전체 검색',
+  title: 'Connection | 강의 상세페이지',
+  description: 'Connection 강의 상세페이지',
 };
 
-export default function SearchLayout({
+export default function ClassLayout({
   children,
 }: {
   children: React.ReactNode;

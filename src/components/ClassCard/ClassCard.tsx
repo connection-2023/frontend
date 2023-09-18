@@ -53,11 +53,9 @@ const ClassCard = (props: ClassCardType) => {
             <Like />
           </div>
         </div>
-
         <p className="mb-2 w-full text-ellipsis text-lg font-bold text-black">
           {title.length < 20 ? title : title.slice(0, 19) + '...'}
         </p>
-
         <div className="mb-2 flex w-full flex-wrap justify-between text-sm">
           <span>
             {location.length > 1
@@ -76,17 +74,20 @@ const ClassCard = (props: ClassCardType) => {
             {time.length > 1 ? time[0] + ' 외 ' + (time.length - 1) : time[0]}
           </span>
         </div>
-
         <div>
           {review && <Review average={review.average} count={review.count} />}
         </div>
-
         <div className=" mt-auto flex w-full items-center justify-between">
           <p className="text-lg font-bold text-[#414141] text-black">
             {price}원
           </p>
-
-          <Profile src={profile?.src} nickname={profile.nickname} />
+          <div className="text-sm">
+            <Profile
+              src={profile?.src || null}
+              nickname={profile.nickname}
+              size={34}
+            />
+          </div>
         </div>
       </div>
     </div>

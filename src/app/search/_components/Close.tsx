@@ -1,5 +1,5 @@
 'use client';
-import { CloseSVG } from '../../../public/icons/svg';
+import { CloseSVG } from '@/../public/icons/svg';
 import { useRouter } from 'next/navigation';
 
 const Close = () => {

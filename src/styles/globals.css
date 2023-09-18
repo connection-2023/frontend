@@ -8,6 +8,8 @@
   --max-width: 1440px;
   --main-color: #ff3e9a;
   --sub-color1: #8338ec;
+  --sub-color2: #b6b6b6;
+  --sub-color3: #414141;
   --font-regular: 400;
   --font-bold: 700;
 }
@@ -15,4 +17,8 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
