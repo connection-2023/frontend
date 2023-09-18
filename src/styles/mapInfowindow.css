@@ -28,6 +28,7 @@
   width: 5.625rem;
   height: 1.5625rem;
   justify-content: space-between;
+  user-select: none;
 }
 
 .start-button {
