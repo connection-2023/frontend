@@ -1,7 +1,7 @@
 'use client';
 import { CITY_LIST, WARD_LIST } from '../../constants/administrativeDistrict';
 import { CityList, RegionFilterList } from '@/types/regionFilter';
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 
 const RegionFilter = () => {
   const [selectedCity, setSelectedCity] = useState<CityList>('서울');
@@ -13,7 +13,7 @@ const RegionFilter = () => {
 
     if (isWardSelected) {
       if (currentWards.length === 1) {
-        deleteFilterCity();
+        deleteFilterCity(selectedCity);
       } else {
         setFilterList({
           ...filterList,
@@ -40,13 +40,13 @@ const RegionFilter = () => {
         [city]: [...WARD_LIST[city]],
       });
     } else {
-      deleteFilterCity();
+      deleteFilterCity(city);
     }
   };
 
-  const deleteFilterCity = () => {
+  const deleteFilterCity = (city : CityList) => {
     const newFilterList = { ...filterList };
-    delete newFilterList[selectedCity];
+    delete newFilterList[city];
     setFilterList(newFilterList);
   };
 

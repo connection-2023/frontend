@@ -43,3 +43,12 @@ export const PROGRESS_METHOD = [
   '원데이 레슨',
   '다회차',
 ];
+
+export const FILTER_WEEK = ['월', '화', '수', '목', '금', '토', '일'];
+
+export const FILTER_TIME = [
+  '오전(6시-11시)',
+  '오후(12시-17시)',
+  '저녁(18시-23시)',
+  '새벽(00시-05시)',
+];
