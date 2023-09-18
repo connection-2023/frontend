@@ -1,5 +1,17 @@
-export const WEEK_DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+export const DAY_MODIFIERS = {
+  saturday: (date: Date) => date.getDay() === 6,
+  sunday: (date: Date) => date.getDay() === 0,
+};
 
+export const DAY_MODIFIERS_CLASSNAMES = {
+  saturday: 'saturday',
+  sunday: 'sunday',
+};
+
+export const SCHEDULE_MODIFIERS_CLASSNAMES = {
+  ...DAY_MODIFIERS_CLASSNAMES,
+  selectableDays: 'selectableDays',
+};
 
 export const CLASS_SECTIONS = [
   { id: 'intro-section', label: '클래스 소개' },

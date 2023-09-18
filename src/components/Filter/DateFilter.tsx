@@ -1,7 +1,7 @@
-import InteractionCalendar from '../Calendar/InteractionCalendar';
+import BasicCalendar from '../Calendar/BasicCalendar';
 
 const DateFilter = () => {
-  return <InteractionCalendar mode="filter" />;
+  return <BasicCalendar mode="filter" />;
 };
 
 export default DateFilter;
