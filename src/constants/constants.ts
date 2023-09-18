@@ -13,6 +13,8 @@ export const SCHEDULE_MODIFIERS_CLASSNAMES = {
   selectableDays: 'selectableDays',
 };
 
+export const DEFAULT_ADDRESS = { X: 37.5666103, Y: 126.9783882 };
+
 export const CLASS_SECTIONS = [
   { id: 'intro-section', label: '클래스 소개' },
   { id: 'date-section', label: '일정 및 시간' },
