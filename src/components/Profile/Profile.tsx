@@ -2,25 +2,31 @@ import Image from 'next/image';
 import { ProfileSVG } from '../../../public/icons/svg';
 
 interface ProfileProps {
-  src?: string;
+  src: string | null;
   nickname: string;
+  size: number;
+  label?: boolean;
 }
 
 const commonProps = {
-  width: 34,
-  height: 34,
-  className: 'mr-1.5 h-[2.125rem] w-[2.125rem] rounded-[2.125rem]',
+  className: 'rounded-[2.125rem]',
 };
 
-const Profile = ({ src, nickname }: ProfileProps) => {
+const Profile = ({ src, nickname, size, label = true }: ProfileProps) => {
   return (
-    <div className="color-inherit flex items-center text-sm">
+    <div className="color-inherit flex items-center">
       {src ? (
-        <Image src={src} alt="프로필 사진" {...commonProps} />
+        <Image
+          src={src}
+          width={size}
+          height={size}
+          alt="프로필 사진"
+          {...commonProps}
+        />
       ) : (
-        <ProfileSVG {...commonProps} />
+        <ProfileSVG width={size} height={size} {...commonProps} />
       )}
-      <span>{nickname}</span>
+      {label && <span className="ml-1.5">{nickname}</span>}
     </div>
   );
 };

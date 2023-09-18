@@ -11,6 +11,8 @@ const config: Config = {
       colors: {
         'main-color': 'var(--main-color)',
         'sub-color1': 'var(--sub-color1)',
+        'sub-color2': 'var(--sub-color2)',
+        'sub-color3': 'var(--sub-color3)',
       },
     },
   },

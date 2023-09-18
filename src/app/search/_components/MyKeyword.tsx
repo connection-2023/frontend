@@ -1,16 +1,8 @@
 'use client';
-import { useState } from 'react';
 import ListItem from './ListItem';
 
-const MyKeyword = () => {
-  const [userKeywords, setUserKeywords] = useState([
-    'K-pop',
-    '원데이 클래스',
-    '스트릿 댄스',
-  ]);
-  const onClickRemoveAll = () => {
-    setUserKeywords([]);
-  };
+const MyKeyword = ({ userKeywords }: { userKeywords: string[] }) => {
+  const onClickRemoveAll = () => {};
 
   return (
     <>

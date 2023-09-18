@@ -13,5 +13,8 @@ export default meta;
 type Story = StoryObj<typeof InteractionCalendar>;
 
 export const Default: Story = {
-  render: () => <InteractionCalendar />,
+  args: {
+    mode: 'filter',
+  },
+  render: (args) => <InteractionCalendar {...args} />,
 };
