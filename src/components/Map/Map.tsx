@@ -1,4 +1,5 @@
 'use client';
+import '../../styles/mapInfowindow.css';
 import { DEFAULT_ADDRESS } from '../../constants/constants';
 import React, { useEffect, useState } from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   useNavermaps,
   Container as MapDiv,
 } from 'react-naver-maps';
+
 interface MapProps {
   address: string;
   studioName: string;
@@ -55,6 +57,7 @@ const NaverMapRenderer = ({ address, studioName }: MapProps) => {
         if (response.v2.meta.totalCount === 0) {
           return console.error('No result.');
         }
+
         let item = response.v2.addresses[0];
         setLatLng(new navermaps.LatLng(Number(item.y), Number(item.x)));
       },
@@ -66,8 +69,13 @@ const NaverMapRenderer = ({ address, studioName }: MapProps) => {
       map.setCenter(latLng);
 
       infowindow.setContent(
-        '<div style="position: absolute; top: 22px; font-weight: bold; color: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">' +
-          studioName +
+        '<div class="infowindow-container">' +
+          `<address class="studio-name">${studioName}</address>` +
+          `<address class="studio-address">${address}</address>` +
+          `<div class="button-container">
+            <a class="start-button" href="https://www.naver.com" target="_blank" rel="noopener noreferrer">출발</a>
+            <a class="destination-button" href="https://www.naver.com" target="_blank" rel="noopener noreferrer">도착</a>
+          </div>` +
           '</div>',
       );
       infowindow.open(map, latLng);
@@ -80,9 +88,9 @@ const NaverMapRenderer = ({ address, studioName }: MapProps) => {
       <InfoWindow
         content={address}
         ref={setInfoWindow}
-        backgroundColor="none"
-        disableAnchor={true}
         borderWidth={0}
+        backgroundColor="none"
+        anchorSize={new naver.maps.Size(0, 40)}
       />
     </NaverMap>
   );
