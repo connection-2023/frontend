@@ -1,6 +1,5 @@
 export const WEEK_DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-
 export const CLASS_SECTIONS = [
   { id: 'intro-section', label: '클래스 소개' },
   { id: 'date-section', label: '일정 및 시간' },
@@ -41,4 +40,13 @@ export const PROGRESS_METHOD = [
   '그룹레슨',
   '원데이 레슨',
   '다회차',
+];
+
+export const FILTER_WEEK = ['월', '화', '수', '목', '금', '토', '일'];
+
+export const FILTER_TIME = [
+  '오전(6시-11시)',
+  '오후(12시-17시)',
+  '저녁(18시-23시)',
+  '새벽(00시-05시)',
 ];
