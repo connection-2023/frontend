@@ -1,4 +1,17 @@
-export const WEEK_DAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+export const DAY_MODIFIERS = {
+  saturday: (date: Date) => date.getDay() === 6,
+  sunday: (date: Date) => date.getDay() === 0,
+};
+
+export const DAY_MODIFIERS_CLASSNAMES = {
+  saturday: 'saturday',
+  sunday: 'sunday',
+};
+
+export const SCHEDULE_MODIFIERS_CLASSNAMES = {
+  ...DAY_MODIFIERS_CLASSNAMES,
+  selectableDays: 'selectableDays',
+};
 
 export const DEFAULT_ADDRESS = { X: 37.5666103, Y: 126.9783882 };
 

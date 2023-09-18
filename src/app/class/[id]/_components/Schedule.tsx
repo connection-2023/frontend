@@ -1,4 +1,4 @@
-import InteractionCalendar from '@/components/Calendar/InteractionCalendar';
+import ScheduleCalendar from '@/components/Calendar/ScheduleCalendar';
 
 interface IScheduleListProps {
   date: string;
@@ -39,10 +39,9 @@ const lectureSchedule = [
 const Schedule = () => {
   return (
     <div className="flex w-full whitespace-nowrap">
-      <div className="">
-        <InteractionCalendar
-          mode="class"
-          dateList={[
+      <div className="rounded-[0.625rem] shadow-[1px_1px_6px_1px_rgba(0,0,0,0.25)]">
+        <ScheduleCalendar
+          clickableDates={[
             new Date(2023, 8, 6),
             new Date(2023, 8, 20),
             new Date(2023, 8, 22),

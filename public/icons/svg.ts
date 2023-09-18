@@ -16,6 +16,7 @@ import LocationSVG from './location.svg';
 import NoticeSVG from './notice.svg';
 import TimeSVG from './time.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
+import ArrowRightSVG from './ArrowRight.svg';
 
 export {
   CalendarSVG,
@@ -36,4 +37,5 @@ export {
   NoticeSVG,
   TimeSVG,
   BasicCalendarSVG,
+  ArrowRightSVG,
 };

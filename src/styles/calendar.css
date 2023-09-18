@@ -1,141 +1,54 @@
-.react-calendar {
-  background: #fff;
-  color: black;
-  width: 231px;
-  max-width: 100%;
+.rdp {
+  --rdp-cell-size: 30px;
+  --rdp-caption-font-size: 14px;
+  --rdp-accent-color: var(--sub-color1);
+  --rdp-background-color: #d9d9d9;
+  margin: 1em;
+}
+
+.rdp-table {
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.rdp-head_row th {
   font-size: 0.75rem;
   font-weight: bold;
-  line-height: normal;
-  border: none;
-  border-radius: 10px;
-  box-sizing: border-box;
 }
 
-/* tile 스타일 */
-.react-calendar__year-view .react-calendar__tile,
-.react-calendar__decade-view .react-calendar__tile,
-.react-calendar__century-view .react-calendar__tile {
-  padding: 1em 0.5em;
+.rdp-cell {
+  padding: 1px;
 }
 
-.react-calendar__tile {
-  padding: 5px;
+.rdp-button[disabled]:not(.rdp-day_selected) {
+  opacity: 1;
 }
 
-/* navigation */
-.react-calendar__navigation {
-  display: flex;
-  height: 35px;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+  color: white;
+  opacity: 1;
+  background-color: var(--sub-color1);
 }
 
-.react-calendar__navigation button {
-  min-width: 44px;
-  background: none;
-}
-
-.react-calendar__navigation__prev2-button,
-.react-calendar__navigation__next2-button {
-  display: none;
-}
-
-/* month-view 스타일 */
-.react-calendar__month-view {
-  padding: 0 1rem;
-}
-
-.react-calendar__month-view__weekdays {
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.75em;
-  margin-bottom: 0.44rem;
-}
-
-.react-calendar__month-view__weekdays__weekday {
-  padding: 0.5em;
-}
-
-.react-calendar__month-view__weekdays__weekday abbr {
-  text-decoration: none;
-  font-size: 0.75rem;
-}
-
-.react-calendar__month-view__weekdays__weekday:first-of-type {
-  color: var(--main-color);
-}
-
-.react-calendar__month-view__weekdays__weekday:last-child {
+/* Custom Style*/
+.saturday:not(.rdp-day_outside):not(.rdp-day_selected) {
   color: blue;
 }
-
-.react-calendar__month-view__days {
-  margin-bottom: 0.56rem;
-  gap: 0.19rem 0;
+.sunday:not(.rdp-day_outside):not(.rdp-day_selected) {
+  color: red;
 }
 
-/* 주말(토/일) 색상 스타일 */
-.react-calendar__month-view__days__day--weekend {
-  color: var(--main-color);
-}
-
-.react-calendar__month-view__days
-  button:nth-of-type(7n):not(
-    .react-calendar__month-view__days__day--neighboringMonth
-  ):not(.selected-continuous):not(.selected-continuous-first):not(
-    .selected-continuous-last
-  ) {
-  color: blue;
-}
-
-/* 선택된 날짜 스타일 */
-.selected:not(
-    .react-calendar__month-view__days__day--neighboringMonth
-  )::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background-color: var(--sub-color1);
-}
-
-.selected {
-  position: relative;
-}
-
-.selected:not(.react-calendar__month-view__days__day--neighboringMonth) abbr {
-  position: relative;
-  z-index: 10;
+.selectableDays {
+  background-color: var(--rdp-background-color);
   color: white;
 }
 
-/* 연속 선택된 날짜 스타일 */
-.selected-continuous {
-  background-color: var(--sub-color1);
+.schedule-selected-day,
+.schedule-selected-day:focus-visible,
+.schedule-selected-day:hover {
   color: white;
-}
-
-.selected-continuous-first {
-  background-color: var(--sub-color1);
-  color: white;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
-}
-
-.selected-continuous-last {
-  background-color: var(--sub-color1);
-  color: white;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
-}
-
-/* 이전/이후 달 날짜 스타일 */
-.react-calendar__month-view__days__day--neighboringMonth {
-  background: white;
-  color: #757575;
+  opacity: 1;
+  background-color: var(--main-color) !important;
 }
