@@ -1,5 +1,5 @@
 'use client';
-import { FILTER_TIME, FILTER_WEEK } from '@/constants/constants';
+import { FILTER_TIME, FILTER_WEEK } from '../../constants/constants';
 import React, { useState } from 'react';
 
 const DateTimeFilter = () => {

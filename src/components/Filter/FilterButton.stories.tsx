@@ -6,6 +6,7 @@ import ReviewFilter from './ReviewFilter';
 import GenreFilter from './GenreFilter';
 import ProgressMethodFilter from './ProgressMethodFilter';
 import RegionFilter from './RegionFilter';
+import DateTimeFilter from './DateTimeFilter';
 
 const meta: Meta<typeof FilterButton> = {
   title: 'Components/FilterButton',
@@ -52,11 +53,17 @@ export const ProgressMethod: Story = {
     content: <ProgressMethodFilter />,
   },
 };
-  
+
 export const Region: Story = {
   args: {
     label: '지역',
     content: <RegionFilter />,
+  },
+};
 
+export const DateTime: Story = {
+  args: {
+    label: '시간',
+    content: <DateTimeFilter />,
   },
 };
