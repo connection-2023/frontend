@@ -8,7 +8,7 @@ import Notice from './_components/Notice';
 import ProfileButtons from './_components/ProfileButtons';
 import Schedule from './_components/Schedule';
 import { CLASS_SECTIONS } from '@/constants/constants';
-import { dummyClass } from '@/constants/dummy';
+import { dummyClass, dummyImgURL } from '@/constants/dummy';
 import {
   LocationSVG,
   TimeSVG,
@@ -16,6 +16,8 @@ import {
   LevelSVG,
   BasicCalendarSVG,
 } from '@/../public/icons/svg';
+import Carousel from '@/components/Carousel/Carousel';
+import Image from 'next/image';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -41,7 +43,27 @@ const ClassDetailPage = () => {
   return (
     <main className="grid-auto-rows-2 border-box mt-[1.38rem]  grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
       <section className="col-span-3 mb-4 flex flex-col items-center shadow-[0_1px_3px_0_rgba(0,0,0,0.25)]">
-        <div className="mb-5 h-[18rem] w-full bg-slate-100">사진 캐러셀</div>
+        {/* 클래스 이미지 */}
+        <div className="mb-5 flex h-[18rem] w-full justify-center px-5">
+          {dummyImgURL.length > 2 ? (
+            <div className="relative h-full w-full overflow-hidden">
+              <div className="h-full w-1/3">
+                <Carousel imgURL={dummyImgURL} move={true} priority={3} />
+              </div>
+            </div>
+          ) : (
+            dummyImgURL.map((imgURL) => (
+              <div key={imgURL} className="relative h-full w-1/3">
+                <Image
+                  src={imgURL}
+                  alt="Connection 댄스 춤 이미지"
+                  fill
+                  sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
+                />
+              </div>
+            ))
+          )}
+        </div>
 
         <h1 className="relative flex w-full max-w-[40rem] justify-center text-lg font-bold">
           {title}
@@ -52,7 +74,7 @@ const ClassDetailPage = () => {
         {/* Review */}
         <div className="mb-4 mt-2 flex gap-1">
           <Review average={review.average} />
-          <span className="text-sub-color2 text-sm font-bold">
+          <span className="text-sm font-bold text-sub-color2">
             ({review.average})
           </span>
         </div>
@@ -191,7 +213,7 @@ const ClassDetailPage = () => {
           <h2 className={`mb-6 flex items-center scroll-smooth ${h2Style}`}>
             클래스 후기 {review.count}건 <span className="ml-3" />
             <Review average={review.average} />
-            <span className="text-sub-color2 ml-1">({review.average})</span>
+            <span className="ml-1 text-sub-color2">({review.average})</span>
           </h2>
           <div className="flex flex-col gap-6">
             {review.reviewer.map((review) => (
