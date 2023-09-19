@@ -70,6 +70,7 @@ const dummyClass = {
   },
   location: '서울시 마포구',
   locationDetail: '서울 특별시 성동구 뚝섬로 13길 33',
+  studioName: '원밀리언 댄스 스튜디오',
   duration: '1시간',
   method: '그룹레슨(6인)',
   level: '초급',

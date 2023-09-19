@@ -17,6 +17,7 @@ import {
   BasicCalendarSVG,
 } from '@/../public/icons/svg';
 import Carousel from '@/components/Carousel/Carousel';
+import Map from '@/components/Map/Map';
 import Image from 'next/image';
 
 const h2Style = 'mb-2 text-lg font-bold';
@@ -39,6 +40,7 @@ const ClassDetailPage = () => {
     dateTimeData,
     coupon,
     price,
+    studioName,
   } = dummyClass;
   return (
     <main className="grid-auto-rows-2 border-box mt-[1.38rem]  grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
@@ -52,7 +54,7 @@ const ClassDetailPage = () => {
               </div>
             </div>
           ) : (
-            dummyImgURL.map((imgURL) => (
+            dummyImgURL.map((imgURL, index) => (
               <div key={imgURL} className="relative h-full w-1/3">
                 <Image
                   src={imgURL}
@@ -204,7 +206,7 @@ const ClassDetailPage = () => {
             <LocationSVG /> {locationDetail}
           </span>
           <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
-            지도 표시하기
+            <Map address={locationDetail} studioName={studioName} />
           </div>
         </section>
 
