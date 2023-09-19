@@ -120,7 +120,7 @@ export function Focus동작() {
 export const 여러요소표시: Story = {
   render: ({ imgURL }) => (
     <div className="relative w-full overflow-hidden">
-      <div className="h-80 w-80">
+      <div className="h-80 w-1/3">
         {imgURL && (
           <Carousel imgURL={imgURL} move={true} priority={imgURL?.length} />
         )}

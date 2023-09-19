@@ -50,11 +50,16 @@ const ClassDetailPage = () => {
           {dummyImgURL.length > 2 ? (
             <div className="relative h-full w-full overflow-hidden">
               <div className="h-full w-1/3">
-                <Carousel imgURL={dummyImgURL} move={true} priority={3} />
+                <Carousel
+                  imgURL={dummyImgURL}
+                  move={true}
+                  priority={3}
+                  showCurrentElementBackGround={false}
+                />
               </div>
             </div>
           ) : (
-            dummyImgURL.map((imgURL, index) => (
+            dummyImgURL.map((imgURL) => (
               <div key={imgURL} className="relative h-full w-1/3">
                 <Image
                   src={imgURL}

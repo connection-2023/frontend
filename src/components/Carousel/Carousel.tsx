@@ -172,38 +172,38 @@ const Carousel = ({
   };
 
   return (
-    <div
-      className="display: flex h-full"
-      style={{
-        gap: `${gap}rem`,
-      }}
-    >
-      {carouselElements.slice(0, loadedElementCount).map((element, index) => (
-        <picture
-          key={index}
-          className={`relative h-full w-full flex-shrink-0 ${
-            isAnimating && 'transition-transform duration-[1600ms] ease-out'
-          }`}
-          style={{
-            transform: `translateX(calc(-${100 * currentIndex}% - ${
-              gap * currentIndex
-            }rem)`,
-          }}
-        >
-          {children
-            ? element
-            : typeof element === 'string' && (
-                <Image
-                  src={element}
-                  alt="Connection 댄스 춤 이미지"
-                  fill
-                  sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
-                  priority={index < priority}
-                />
-              )}
-        </picture>
-      ))}
-
+    <>
+      <div
+        className={`display: flex h-full ${
+          isAnimating && 'transition-transform duration-[1600ms] ease-out'
+        }`}
+        style={{
+          transform: `translateX(calc(-${100 * currentIndex}% - ${
+            gap * currentIndex
+          }rem)`,
+          gap: `${gap}rem`,
+        }}
+      >
+        {carouselElements.slice(0, loadedElementCount).map((element, index) => (
+          <picture
+            key={index}
+            className={`relative h-full w-full flex-shrink-0 `}
+          >
+            {children
+              ? element
+              : typeof element === 'string' && (
+                  <Image
+                    src={element}
+                    alt="Connection 댄스 춤 이미지"
+                    fill
+                    sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
+                    priority={index < priority}
+                    style={{ objectFit: 'cover' }}
+                  />
+                )}
+          </picture>
+        ))}
+      </div>
       {showCurrentElement && (
         <div
           className={`display: absolute bottom-0 flex h-[10%] w-full items-center justify-center ${
@@ -237,7 +237,7 @@ const Carousel = ({
           />
         </>
       )}
-    </div>
+    </>
   );
 };
 
