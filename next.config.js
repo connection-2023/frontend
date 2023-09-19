@@ -11,4 +11,7 @@ module.exports = {
     });
     return config;
   },
+  images: {
+    domains: ['img.freepik.com'],
+  },
 };
