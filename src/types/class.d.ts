@@ -2,6 +2,7 @@ export interface ClassCardType {
   status: '모집중' | '마감임박' | '마감';
   date: string;
   title: string;
+  imgURL: string[];
   location: string[];
   genre: string[];
   type: string[];

@@ -1,8 +1,12 @@
+'use client';
 import Date from './Date';
 import { ClassCardType } from '../../types/class';
 import Like from '../Like/Like';
 import Profile from '../Profile/Profile';
 import Review from '../Review/Review';
+import Carousel from '../Carousel/Carousel';
+import { useState } from 'react';
+import Image from 'next/image';
 
 const ClassCard = (props: ClassCardType) => {
   const {
@@ -17,7 +21,9 @@ const ClassCard = (props: ClassCardType) => {
     price,
     profile,
     selectedDates,
+    imgURL,
   } = props;
+  const [focus, setFocus] = useState(false);
 
   const getStatusStyles = (status: string) => {
     switch (status) {
@@ -32,9 +38,27 @@ const ClassCard = (props: ClassCardType) => {
     }
   };
   return (
-    <div className="flex max-h-[13.5rem] w-full max-w-[40rem] cursor-pointer whitespace-nowrap p-3.5 shadow-[1px_1px_4px_-1px_rgba(0,0,0,0.25)] hover:scale-[1.02]">
-      <div className="mr-4 h-[188px] w-[297px] w-full bg-cyan-500">
-        사진 컴포넌트
+    <div
+      className="flex max-h-[13.5rem] w-full max-w-[40rem] cursor-pointer whitespace-nowrap p-3.5 shadow-[1px_1px_4px_-1px_rgba(0,0,0,0.25)] hover:scale-[1.02]"
+      onMouseLeave={() => setFocus(false)}
+      onMouseOver={() => setFocus(true)}
+    >
+      <div className="relative mr-4 h-[188px] w-full overflow-hidden">
+        {imgURL.length > 1 ? (
+          <Carousel
+            imgURL={imgURL}
+            move={focus}
+            arrow={focus}
+            showCurrentElement={focus}
+          />
+        ) : (
+          <Image
+            src={imgURL[0]}
+            alt="Connection 댄스 춤 이미지"
+            fill
+            sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
+          />
+        )}
       </div>
       <div className="flex w-full flex-col text-[#414141]">
         <div className="mb-3 flex w-full items-center">
