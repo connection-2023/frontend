@@ -7,7 +7,14 @@ const Close = () => {
   const onClickClose = () => {
     router.back();
   };
-  return <CloseSVG onClick={onClickClose} className="cursor-pointer" />;
+  return (
+    <CloseSVG
+      width={24}
+      height={24}
+      onClick={onClickClose}
+      className="stroke-sub-color2 cursor-pointer stroke-2"
+    />
+  );
 };
 
 export default Close;
