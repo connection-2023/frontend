@@ -16,7 +16,7 @@ export type CityList =
   | '경남'
   | '제주';
 
-export interface RegionFilterList {
+export interface LocationFilterList {
   서울?: string[];
   부산?: string[];
   대구?: string[];

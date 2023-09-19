@@ -1,11 +1,11 @@
 'use client';
 import { CITY_LIST, WARD_LIST } from '../../constants/administrativeDistrict';
-import { CityList, RegionFilterList } from '@/types/regionFilter';
-import React, {  useState } from 'react';
+import { CityList, LocationFilterList } from '@/types/locationFilter';
+import React, { useState } from 'react';
 
-const RegionFilter = () => {
+const LocationFilter = () => {
   const [selectedCity, setSelectedCity] = useState<CityList>('서울');
-  const [filterList, setFilterList] = useState<RegionFilterList>({});
+  const [filterList, setFilterList] = useState<LocationFilterList>({});
 
   const changeFilterList = (ward: string) => {
     const currentWards = filterList[selectedCity] || [];
@@ -44,7 +44,7 @@ const RegionFilter = () => {
     }
   };
 
-  const deleteFilterCity = (city : CityList) => {
+  const deleteFilterCity = (city: CityList) => {
     const newFilterList = { ...filterList };
     delete newFilterList[city];
     setFilterList(newFilterList);
@@ -52,7 +52,7 @@ const RegionFilter = () => {
 
   return (
     <div className="flex max-h-[17rem] w-[16.8rem] select-none text-sm">
-      <ul className="flex w-4/12 flex-col overflow-y-auto pt-1 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6]  scrollbar-thumb-rounded-lg scrollbar-w-1">
+      <ul className="scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6] scrollbar-thumb-rounded-lg scrollbar-w-1 flex w-4/12 flex-col  overflow-y-auto pt-1">
         {CITY_LIST.map((city) => (
           <li
             key={city}
@@ -73,7 +73,7 @@ const RegionFilter = () => {
           </li>
         ))}
       </ul>
-      <ul className="flex w-8/12 flex-wrap content-start overflow-y-auto px-3 pt-3 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6] scrollbar-thumb-rounded-lg scrollbar-w-1">
+      <ul className="scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-[#B6B6B6] scrollbar-thumb-rounded-lg scrollbar-w-1 flex w-8/12 flex-wrap content-start overflow-y-auto px-3 pt-3">
         {WARD_LIST[selectedCity].map((ward) => (
           <li
             key={ward}
@@ -91,5 +91,4 @@ const RegionFilter = () => {
   );
 };
 
-export default RegionFilter;
-// text-center
+export default LocationFilter;

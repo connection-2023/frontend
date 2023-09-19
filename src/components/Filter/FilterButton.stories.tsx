@@ -5,7 +5,7 @@ import PriceFilter from './PriceFilter';
 import ReviewFilter from './ReviewFilter';
 import GenreFilter from './GenreFilter';
 import ProgressMethodFilter from './ProgressMethodFilter';
-import RegionFilter from './RegionFilter';
+import LocationFilter from './LocationFilter';
 import DateTimeFilter from './DateTimeFilter';
 
 const meta: Meta<typeof FilterButton> = {
@@ -54,10 +54,10 @@ export const ProgressMethod: Story = {
   },
 };
 
-export const Region: Story = {
+export const Location: Story = {
   args: {
     label: '지역',
-    content: <RegionFilter />,
+    content: <LocationFilter />,
   },
 };
 
