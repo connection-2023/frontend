@@ -10,6 +10,7 @@ import ReviewFilter from './ReviewFilter';
 import { Button } from '../Button/Button';
 import { CloseSVG } from '../../../public/icons/svg';
 import { IFilterOptions } from '@/types/types';
+import { LocationFilterList } from '@/types/locationFilter';
 import { WARD_LIST } from '../../constants/administrativeDistrict';
 
 const INIT_FILTER_OPTIONS: IFilterOptions = {
@@ -29,7 +30,7 @@ const Filters = ({ type }: { type: string }) => {
   useEffect(() => {
     if (filterOption) {
       const values = Object.entries(filterOption).reduce<
-        { type: string; value: any }[]
+        { type: string; value: string }[]
       >((acc, [key, value]) => {
         // 값이 없는 경우 저장하지 않음
         if (
@@ -41,7 +42,6 @@ const Filters = ({ type }: { type: string }) => {
         ) {
           return acc;
         }
-
         if (Array.isArray(value)) {
           if (key === 'price') {
             acc.push({ type: key, value: value.join(', ') });
@@ -72,8 +72,22 @@ const Filters = ({ type }: { type: string }) => {
     }
   }, [filterOption]);
 
-  const updateFilterOption = (label: string, option: any) => {
-    const updateFunction = (key: string, value: any) => {
+  const updateFilterOption = (
+    label: string,
+    option:
+      | IFilterOptions['review']
+      | IFilterOptions['price']
+      | IFilterOptions['date']
+      | LocationFilterList,
+  ) => {
+    const updateFunction = (
+      key: string,
+      value:
+        | IFilterOptions['review']
+        | IFilterOptions['price']
+        | IFilterOptions['date']
+        | LocationFilterList,
+    ) => {
       setFilterOption((prev) => ({ ...prev, [key]: value }));
     };
 
@@ -83,7 +97,13 @@ const Filters = ({ type }: { type: string }) => {
         break;
       case '장르':
         updateFunction('genre', option);
-        setOptions((prev) => [...prev, ...option]);
+        setOptions((prev) => [
+          ...prev,
+          ...(Array.isArray(option)
+            ? option.map((item) => ({ type: '장르', value: item.toString() }))
+            : [{ type: '장르', value: option.toString() }]),
+        ]);
+
         break;
       case '평점':
         updateFunction('review', option);
@@ -216,13 +236,17 @@ const Filters = ({ type }: { type: string }) => {
         </Button>
       </div>
       <ul className="flex w-full flex-wrap gap-x-5 gap-y-1">
-        {options.map((option) => (
-          <OptionList
-            key={`${option.type}-${option.value}`}
-            option={option}
-            onClickDelete={onClickDelete}
-          />
-        ))}
+        {options.map(
+          (option) =>
+            option.type &&
+            option.value && (
+              <OptionList
+                key={`${option.type}-${option.value}`}
+                option={option}
+                onClickDelete={onClickDelete}
+              />
+            ),
+        )}
       </ul>
     </>
   );

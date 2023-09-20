@@ -4,7 +4,7 @@ import { CityList, LocationFilterList } from '@/types/locationFilter';
 import { CITY_LIST, WARD_LIST } from '../../constants/administrativeDistrict';
 interface ILocationFilterProps {
   filterOption: {};
-  updateFilterOption: (label: string, option: any) => void;
+  updateFilterOption: (label: string, option: LocationFilterList) => void;
 }
 
 const LocationFilter = ({

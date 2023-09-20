@@ -3,7 +3,7 @@ import Rating from '../Review/Rating';
 import FilterModal from './FilterModal';
 
 interface IReviewFilterProps {
-  updateFilterOption: (label: string, option: any) => void;
+  updateFilterOption: (label: string, option: number) => void;
   filterOption: number;
 }
 

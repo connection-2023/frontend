@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import FilterModal from './FilterModal';
+import { IFilterOptions } from '@/types/types';
 
 const MIN = 0;
 const MAX = 1000000;
 interface IPriceFilterProps {
   filterOption: number[];
-  updateFilterOption: (label: string, option: any) => void;
+  updateFilterOption: (label: string, option: IFilterOptions['price']) => void;
 }
 
 const PriceFilter = ({

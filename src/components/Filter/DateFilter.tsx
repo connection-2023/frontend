@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import BasicCalendar from '../Calendar/BasicCalendar';
 import FilterModal from './FilterModal';
+import { IFilterOptions } from '@/types/types';
 
 interface IDateFilterProps {
   filterOption: string[];
-  updateFilterOption: (label: string, option: any) => void;
+  updateFilterOption: (label: string, option: IFilterOptions['date']) => void;
 }
 
 const DateFilter = ({ filterOption, updateFilterOption }: IDateFilterProps) => {

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import FilterModal from './FilterModal';
 import { PROGRESS_METHOD } from '../../constants/constants';
+import { IFilterOptions } from '@/types/types';
 
 interface IMethodFilterProps {
-  updateFilterOption: (label: string, option: any) => void;
+  updateFilterOption: (label: string, option: IFilterOptions['method']) => void;
   filterOption: string[];
 }
 

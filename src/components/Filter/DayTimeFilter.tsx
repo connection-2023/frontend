@@ -3,7 +3,7 @@ import FilterModal from './FilterModal';
 import { FILTER_TIME, FILTER_WEEK } from '../../constants/constants';
 
 interface IDayTimeFilterProps {
-  updateFilterOption: (label: string, option: any) => void;
+  updateFilterOption: (label: string, option: string[]) => void;
   filterOption: string[];
 }
 

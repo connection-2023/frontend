@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import FilterModal from './FilterModal';
 import { DANCE_GENRE, DANCE_GENRE_ENGLISH } from '../../constants/constants';
+import { IFilterOptions } from '@/types/types';
 
 interface IGenreFilterProps {
-  updateFilterOption: (label: string, option: any) => void;
+  updateFilterOption: (label: string, option: IFilterOptions['genre']) => void;
   filterOption: string[];
 }
 
