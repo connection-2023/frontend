@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps, useNavigation } from 'react-day-picker';
 import { ko } from 'date-fns/esm/locale';
 import { format } from 'date-fns';
@@ -14,10 +14,25 @@ import '../../styles/calendar.css';
 interface ICalendarProps {
   mode: 'preview' | 'filter';
   selectedDates?: Date[];
+  handleSelected?: (value: Date[]) => void;
 }
 
-const BasicCalendar = ({ mode, selectedDates = [] }: ICalendarProps) => {
+const BasicCalendar = ({
+  mode,
+  selectedDates = [],
+  handleSelected,
+}: ICalendarProps) => {
   const [selected, setSelected] = useState<Date[] | undefined>(selectedDates);
+
+  useEffect(() => {
+    if (handleSelected !== undefined && selected) {
+      handleSelected(selected);
+    }
+  }, [selected]);
+
+  useEffect(() => {
+    setSelected(selectedDates);
+  }, [selectedDates]);
 
   return (
     <div
