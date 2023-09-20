@@ -19,7 +19,7 @@ export const CITY_LIST: CityList[] = [
   '제주',
 ];
 
-export const WARD_LIST = {
+export const WARD_LIST: { [key: string]: string[] } = {
   서울: [
     '종로구',
     '중구',
