@@ -13,6 +13,7 @@ const config: Config = {
         'sub-color1': 'var(--sub-color1)',
         'sub-color2': 'var(--sub-color2)',
         'sub-color3': 'var(--sub-color3)',
+        'sub-color4': 'var(--sub-color4)',
       },
     },
   },

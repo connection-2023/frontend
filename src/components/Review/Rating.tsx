@@ -1,14 +1,29 @@
 'use client';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StarSVG } from '../../../public/icons/svg';
 
-const Rating = () => {
-  const [selectedStar, setSelectedStar] = useState(0);
+interface IRatingProps {
+  rate: number;
+  handleRate: (value: number) => void;
+}
+
+const Rating = ({ rate, handleRate }: IRatingProps) => {
+  const [selectedStar, setSelectedStar] = useState(rate);
   const [hoveredStar, setHoveredStar] = useState(0);
 
   const handleClick = (index: number) => {
-    setSelectedStar(index);
+    if (selectedStar === index) {
+      setSelectedStar(0);
+      handleRate(0);
+    } else {
+      setSelectedStar(index);
+      handleRate(index);
+    }
   };
+
+  useEffect(() => {
+    setSelectedStar(rate);
+  }, [rate]);
 
   const handleMouseEnter = (index: number) => {
     setHoveredStar(index);
