@@ -48,6 +48,30 @@ const UploadImage = () => {
     });
   };
 
+  const handleDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    index: number,
+  ) => {
+    event.dataTransfer.setData('selectedIdx', index.toString());
+    event.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (
+    event: React.DragEvent<HTMLDivElement>,
+    index: number,
+  ) => {
+    const selectedIdxStr = event.dataTransfer.getData('selectedIdx');
+    if (selectedIdxStr !== null) {
+      const selectedIdx = Number(selectedIdxStr);
+      setImages((prevImages) => {
+        const newImages = [...prevImages];
+        const [removed] = newImages.splice(selectedIdx, 1);
+        newImages.splice(index, 0, removed);
+        return newImages;
+      });
+    }
+  };
+
   return (
     <div className="flex w-full flex-col items-center">
       {images.length === 0 ? (
@@ -93,12 +117,16 @@ const UploadImage = () => {
             )}
           </div>
           {/* 추가한 이미지 리스트 */}
-          <div className="mt-2 flex gap-2">
+          <div className="mt-2 flex w-full justify-center gap-3">
             {images.map((image, index) => (
               <div
                 key={index}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDrop={(e) => handleDrop(e, index)}
+                onDragOver={(e) => e.preventDefault()}
                 className={`relative h-[4rem] w-[6.3rem] ${
-                  index === 0
+                  image.url === selectedImage
                     ? 'border-[3px] border-solid border-sub-color1'
                     : ''
                 }`}
