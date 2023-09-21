@@ -1,12 +1,13 @@
-import Image from 'next/image';
 import Carousel from '@/components/Carousel/Carousel';
 import Review from '@/components/Review/Review';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
-import { dummyInstructor } from '@/constants/dummy';
-import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import ClassCard from '@/components/ClassCard/ClassCard';
 import ReviewComment from '@/components/Review/ReviewComment';
+import InstructorCarousel from './_components/InstructorCarousel';
+import { dummyInstructor } from '@/constants/dummy';
+import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
+import ManagementButton from './_components/ManagementButton';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -27,47 +28,21 @@ const InstructorDetailPage = () => {
   return (
     <main className="flex w-screen flex-col items-center">
       <section className="flex w-full max-w-[1440px] flex-col items-center ">
-        {/* 강사 이미지 */}
-        <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
-          {imgURL.length > 2 ? (
-            <div className="relative h-full w-full overflow-hidden">
-              <div className="h-full w-1/3">
-                <Carousel
-                  imgURL={imgURL}
-                  move={true}
-                  priority={3}
-                  showCurrentElementBackGround={false}
-                />
-              </div>
-            </div>
-          ) : (
-            imgURL.map((imgURL) => (
-              <div key={imgURL} className="relative h-full w-1/3">
-                <Image
-                  src={imgURL}
-                  alt="Connection 댄스 춤 이미지"
-                  fill
-                  sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
-                />
-              </div>
-            ))
-          )}
-        </div>
+        <InstructorCarousel imgURL={imgURL} />
 
-        {/* title */}
         <div className="flex flex-col items-center">
-          {/* Name */}
           <div className=" relative flex w-full min-w-[23rem] items-center justify-center ">
             <h1 className="box-border flex items-center gap-1 pl-6 text-lg font-bold">
               {nickname}
               <Like />
             </h1>
-            <div className="absolute right-0">신차</div>{' '}
-            {/* 클라이언트 컴포넌트로 */}
+            <div className="absolute right-0">
+              <ManagementButton>신차</ManagementButton>
+            </div>
           </div>
 
           {/* Review */}
-          <div className="mb-6 mt-2 box-border flex gap-1 pl-4">
+          <div className="mb-4 mt-2 box-border flex h-4 gap-1 pl-4">
             <Review average={review.average} />
             <span className="text-sm font-bold text-sub-color2">
               ({review.average})
