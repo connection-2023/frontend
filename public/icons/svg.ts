@@ -17,6 +17,7 @@ import NoticeSVG from './notice.svg';
 import TimeSVG from './time.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import ArrowRightSVG from './ArrowRight.svg';
+import UploadImageSVG from './UploadImg.svg';
 
 export {
   CalendarSVG,
@@ -38,4 +39,5 @@ export {
   TimeSVG,
   BasicCalendarSVG,
   ArrowRightSVG,
+  UploadImageSVG,
 };
