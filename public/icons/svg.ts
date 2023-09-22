@@ -17,8 +17,24 @@ import NoticeSVG from './notice.svg';
 import TimeSVG from './time.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import ArrowRightSVG from './ArrowRight.svg';
+import InstagramSVG from './instagram.svg';
+import LinkSVG from './link.svg';
+import YoutubeSVG from './youtube.svg';
+import NoneInstagramSVG from './noneInstaagram.svg';
+import NoneLinkSVG from './noneLink.svg';
+import NoneYoutubeSVG from './noneYoutube.svg';
+import OptionSVG from './option.svg';
+import ShareSVG from './share.svg';
 
 export {
+  InstagramSVG,
+  YoutubeSVG,
+  LinkSVG,
+  NoneInstagramSVG,
+  NoneLinkSVG,
+  NoneYoutubeSVG,
+  OptionSVG,
+  ShareSVG,
   CalendarSVG,
   HeartSVG,
   StarSVG,

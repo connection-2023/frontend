@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Carousel from '@/components/Carousel/Carousel';
 import Review from '@/components/Review/Review';
 import Like from '@/components/Like/Like';
@@ -8,6 +9,16 @@ import InstructorCarousel from './_components/InstructorCarousel';
 import { dummyInstructor } from '@/constants/dummy';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import ManagementButton from './_components/ManagementButton';
+import {
+  OptionSVG,
+  InstagramSVG,
+  YoutubeSVG,
+  LinkSVG,
+  NoneInstagramSVG,
+  NoneLinkSVG,
+  NoneYoutubeSVG,
+  ShareSVG,
+} from '@/../public/icons/svg';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -36,8 +47,11 @@ const InstructorDetailPage = () => {
               {nickname}
               <Like />
             </h1>
-            <div className="absolute right-0">
-              <ManagementButton>신차</ManagementButton>
+            <div className="absolute right-0 flex gap-3">
+              <ShareSVG />
+              <ManagementButton>
+                <OptionSVG />
+              </ManagementButton>
             </div>
           </div>
 
@@ -49,31 +63,45 @@ const InstructorDetailPage = () => {
             </span>
           </div>
 
-          <dl className="inline-grid min-w-[31rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-[#D9D9D9] py-5">
+          <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-[#D9D9D9] py-5">
             <div className="flex gap-3">
-              <dt className="text-sub-color1">지역</dt>
+              <dt className="font-bold text-sub-color1">지역</dt>
               <dd>{location}</dd>
             </div>
             <div className="flex gap-3">
-              <dt className="text-sub-color1">인스타</dt>
+              <dt className="text-sub-color1">
+                {instagramID ? <InstagramSVG /> : <NoneInstagramSVG />}
+              </dt>
               <dd>{instagramID}</dd>
             </div>
             <div className="flex gap-3">
-              <dt className="text-sub-color1">장르</dt>
+              <dt className="font-bold text-sub-color1">장르</dt>
               <dd>{genre.join(', ')}</dd>
             </div>
-            <a href={youtubeURL} target="_blank" className="flex gap-3">
-              <dt className="text-sub-color1">유튜브</dt>
+            <Link
+              href={youtubeURL || ''}
+              target="_blank"
+              className={`${youtubeURL ?? 'pointer-events-none'} flex gap-3`}
+            >
+              <dt className="text-sub-color1">
+                {youtubeURL ? <YoutubeSVG /> : <NoneYoutubeSVG />}
+              </dt>
               <dd>{youtubeURL}</dd>
-            </a>
+            </Link>
             <div className="flex gap-3">
-              <dt className="text-sub-color1">소속</dt>
+              <dt className="font-bold text-sub-color1">소속</dt>
               <dd>{teamAffiliation.join(', ')}</dd>
             </div>
-            <a href={anyURL} className="flex gap-3" target="_blank">
-              <dt className="text-sub-color1">뭔데이거</dt>
+            <Link
+              href={anyURL || ''}
+              className={`${anyURL ?? 'pointer-events-none'} flex gap-3`}
+              target="_blank"
+            >
+              <dt className="text-sub-color1">
+                {anyURL ? <LinkSVG /> : <NoneLinkSVG />}
+              </dt>
               <dd>{anyURL}</dd>
-            </a>
+            </Link>
           </dl>
         </div>
       </section>
@@ -134,9 +162,14 @@ const InstructorDetailPage = () => {
         </div>
       </section>
 
-      <section id="class-section" className="w-full max-w-[51.1rem] pt-20">
-        <h2 className={h2Style}>진행중인 강의 </h2>
-        <div className="relative flex h-60 w-full justify-center ">
+      <section
+        id="class-section"
+        className="flex w-full flex-col items-center pt-20"
+      >
+        <div className="w-full max-w-[51.1rem] ">
+          <h2 className={h2Style}>진행중인 강의 </h2>
+        </div>
+        <div className="relative flex h-60 w-full max-w-[56.2rem] justify-center ">
           <div className="flex h-full w-11/12 items-center overflow-hidden">
             <div className="w-[30rem]">
               <Carousel
@@ -154,7 +187,7 @@ const InstructorDetailPage = () => {
         </div>
       </section>
 
-      <section id="review-section" className="w-full max-w-[51.1rem] pt-20">
+      <section id="review-section" className="w-full max-w-[51.1rem] py-20">
         <h2 className={`flex items-center ${h2Style}`}>
           클래스 후기 {review.count}건 <span className="ml-3" />
           <Review average={review.average} />

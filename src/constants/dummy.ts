@@ -113,6 +113,10 @@ const dummyImgURL = [
   'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
 ];
 
+//'https://www.youtube.com/@Connection_dance'
+// '@Connection_dance'
+//'https://www.Connection.com'
+
 const dummyInstructor = {
   imgURL: dummyImgURL,
   nickname: '리아킴',
@@ -120,9 +124,9 @@ const dummyInstructor = {
   like: false,
   genre: ['힙합', '스트릿댄스', '현대무용'],
   teamAffiliation: ['원밀리언', '프리랜서'],
-  instagramID: '@Connection_dance',
-  youtubeURL: 'https://www.youtube.com/@Connection_dance',
-  anyURL: 'https://www.Connection.com',
+  instagramID: null,
+  youtubeURL: null,
+  anyURL: null,
   classList: [
     {
       status: '모집중' as const,
