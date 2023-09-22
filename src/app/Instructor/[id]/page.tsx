@@ -1,9 +1,7 @@
 import Link from 'next/link';
-import Carousel from '@/components/Carousel/Carousel';
 import Review from '@/components/Review/Review';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
-import ClassCard from '@/components/ClassCard/ClassCard';
 import ReviewComment from '@/components/Review/ReviewComment';
 import InstructorCarousel from './_components/InstructorCarousel';
 import { dummyInstructor } from '@/constants/dummy';
@@ -19,6 +17,7 @@ import {
   NoneYoutubeSVG,
   ShareSVG,
 } from '@/../public/icons/svg';
+import ClassList from './_components/ClassList';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -38,10 +37,12 @@ const InstructorDetailPage = () => {
   } = dummyInstructor;
   return (
     <main className="flex w-screen flex-col items-center">
+      {/* 강의 상세 헤더 섹션 */}
       <section className="flex w-full max-w-[1440px] flex-col items-center ">
         <InstructorCarousel imgURL={imgURL} />
 
         <div className="flex flex-col items-center">
+          {/* 강사 이름 및 이벤트 */}
           <div className=" relative flex w-full min-w-[23rem] items-center justify-center ">
             <h1 className="box-border flex items-center gap-1 pl-6 text-lg font-bold">
               {nickname}
@@ -55,7 +56,7 @@ const InstructorDetailPage = () => {
             </div>
           </div>
 
-          {/* Review */}
+          {/* 리뷰 */}
           <div className="mb-4 mt-2 box-border flex h-4 gap-1 pl-4">
             <Review average={review.average} />
             <span className="text-sm font-bold text-sub-color2">
@@ -63,6 +64,7 @@ const InstructorDetailPage = () => {
             </span>
           </div>
 
+          {/* 강사 여러 정보 */}
           <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-[#D9D9D9] py-5">
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">지역</dt>
@@ -114,6 +116,7 @@ const InstructorDetailPage = () => {
         </div>
       </div>
 
+      {/* 인스타그램 섹션 */}
       <section className="flex gap-3">
         <div className="h-[22.6875rem] w-[16.6875rem] bg-yellow-200">
           인스타 그램
@@ -126,6 +129,7 @@ const InstructorDetailPage = () => {
         </div>
       </section>
 
+      {/* 강사소개 섹션 */}
       <section
         id="introduction-section"
         className="w-full max-w-[51.1rem] pt-20"
@@ -152,6 +156,7 @@ const InstructorDetailPage = () => {
         </div>
       </section>
 
+      {/* 강사 경력 섹션 */}
       <section
         id="work-experience-section"
         className=" w-full max-w-[51.1rem] pt-20"
@@ -162,6 +167,7 @@ const InstructorDetailPage = () => {
         </div>
       </section>
 
+      {/* 진행중인 강의 섹션 */}
       <section
         id="class-section"
         className="flex w-full flex-col items-center pt-20"
@@ -169,27 +175,13 @@ const InstructorDetailPage = () => {
         <div className="w-full max-w-[51.1rem] ">
           <h2 className={h2Style}>진행중인 강의 </h2>
         </div>
-        <div className="relative flex h-60 w-full max-w-[56.2rem] justify-center ">
-          <div className="flex h-full w-11/12 items-center overflow-hidden">
-            <div className="w-[30rem]">
-              <Carousel
-                move={true}
-                showCurrentElement={false}
-                carouselMoveIntervalTime={3000}
-                gap={2}
-              >
-                {classList.map((state, index) => {
-                  return <ClassCard key={state.title + index} {...state} />;
-                })}
-              </Carousel>
-            </div>
-          </div>
-        </div>
+        <ClassList classList={classList} />
       </section>
 
+      {/* 강사 후기 */}
       <section id="review-section" className="w-full max-w-[51.1rem] py-20">
         <h2 className={`flex items-center ${h2Style}`}>
-          클래스 후기 {review.count}건 <span className="ml-3" />
+          강사 후기 {review.count}건 <span className="ml-3" />
           <Review average={review.average} />
           <span className="ml-1 text-sub-color2">({review.average})</span>
         </h2>
