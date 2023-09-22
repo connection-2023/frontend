@@ -4,20 +4,17 @@ import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import ReviewComment from '@/components/Review/ReviewComment';
 import InstructorCarousel from './_components/InstructorCarousel';
+import ManagementButton from './_components/ManagementButton';
+import ClassList from './_components/ClassList';
 import { dummyInstructor } from '@/constants/dummy';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import ManagementButton from './_components/ManagementButton';
 import {
   OptionSVG,
   InstagramSVG,
   YoutubeSVG,
   LinkSVG,
-  NoneInstagramSVG,
-  NoneLinkSVG,
-  NoneYoutubeSVG,
   ShareSVG,
 } from '@/../public/icons/svg';
-import ClassList from './_components/ClassList';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -72,7 +69,11 @@ const InstructorDetailPage = () => {
             </div>
             <div className="flex gap-3">
               <dt className="text-sub-color1">
-                {instagramID ? <InstagramSVG /> : <NoneInstagramSVG />}
+                <InstagramSVG
+                  className={`${
+                    instagramID ? 'fill-sub-color1' : 'fill-sub-color2'
+                  }`}
+                />
               </dt>
               <dd>{instagramID}</dd>
             </div>
@@ -86,7 +87,13 @@ const InstructorDetailPage = () => {
               className={`${youtubeURL ?? 'pointer-events-none'} flex gap-3`}
             >
               <dt className="text-sub-color1">
-                {youtubeURL ? <YoutubeSVG /> : <NoneYoutubeSVG />}
+                <YoutubeSVG
+                  className={`${
+                    youtubeURL
+                      ? 'stroke-sub-color1 [&>*:nth-child(1)]:fill-sub-color1'
+                      : 'stroke-sub-color2 [&>*:nth-child(1)]:fill-sub-color2'
+                  }`}
+                />
               </dt>
               <dd>{youtubeURL}</dd>
             </Link>
@@ -100,7 +107,11 @@ const InstructorDetailPage = () => {
               target="_blank"
             >
               <dt className="text-sub-color1">
-                {anyURL ? <LinkSVG /> : <NoneLinkSVG />}
+                <LinkSVG
+                  className={`${
+                    anyURL ? 'fill-sub-color1' : 'fill-sub-color2'
+                  }`}
+                />
               </dt>
               <dd>{anyURL}</dd>
             </Link>
