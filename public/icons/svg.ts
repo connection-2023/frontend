@@ -18,6 +18,7 @@ import TimeSVG from './time.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import ArrowRightSVG from './ArrowRight.svg';
 import UploadImageSVG from './UploadImg.svg';
+import CheckSVG from './check.svg';
 
 export {
   CalendarSVG,
@@ -40,4 +41,5 @@ export {
   BasicCalendarSVG,
   ArrowRightSVG,
   UploadImageSVG,
+  CheckSVG,
 };
