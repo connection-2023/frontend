@@ -1,7 +1,10 @@
 'use client';
-import { Button } from '@/components/Button/Button';
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { hookForm } from './_recoil/hookForm/atom';
+import { Button } from '@/components/Button/Button';
 import { ArrowRightSVG } from '../../../../public/icons/svg';
+import { useForm } from 'react-hook-form';
 
 const steps = [
   { title: '사진, 카테고리, 가격 설정', component: null },
@@ -12,11 +15,24 @@ const steps = [
 
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
+  const formMethods = useRecoilValue(hookForm);
+
+  if (!formMethods) {
+    //ts 에러 명시적 해결
+    return;
+  }
+
+  const { handleSubmit } = formMethods;
 
   const nextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
     }
+  };
+
+  const onValid = (data) => {
+    console.log(data);
+    nextStep();
   };
 
   return (
@@ -70,10 +86,12 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
         </button>
         <div className="flex">
           <Button>임시저장</Button>
-          <button onClick={nextStep} className="ml-4 flex items-center">
-            다음
-            <ArrowRightSVG className="ml-3" />
-          </button>
+          <form onSubmit={handleSubmit(onValid)}>
+            <button className="ml-4 flex items-center">
+              다음
+              <ArrowRightSVG className="ml-3" />
+            </button>
+          </form>
         </div>
       </nav>
     </main>
