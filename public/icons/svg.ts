@@ -17,8 +17,18 @@ import NoticeSVG from './notice.svg';
 import TimeSVG from './time.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import ArrowRightSVG from './ArrowRight.svg';
+import InstagramSVG from './instagram.svg';
+import LinkSVG from './link.svg';
+import YoutubeSVG from './youtube.svg';
+import OptionSVG from './option.svg';
+import ShareSVG from './share.svg';
 
 export {
+  InstagramSVG,
+  YoutubeSVG,
+  LinkSVG,
+  OptionSVG,
+  ShareSVG,
   CalendarSVG,
   HeartSVG,
   StarSVG,
