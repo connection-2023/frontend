@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil';
 import { hookForm } from './_recoil/hookForm/atom';
 import { Button } from '@/components/Button/Button';
 import { ArrowRightSVG } from '../../../../public/icons/svg';
-import { useForm } from 'react-hook-form';
 
 const steps = [
   { title: '사진, 카테고리, 가격 설정', component: null },
@@ -12,6 +11,19 @@ const steps = [
   { title: '일정 및 공지사항', component: null },
   { title: '클래스 장소', component: null },
 ];
+/**
+ *
+ * @returns 예시
+ * const {
+ *   register,
+ * formState: { errors },
+ * } = useForm();
+ *
+ * formState에서 errors를 받아
+ * <span>{errors?.email(registerID)?.message as string}</span>
+ * 해당 방식으로 에러 표시 하면 됩니다.
+ *
+ */
 
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
@@ -30,8 +42,8 @@ export default function ClassCreate() {
     }
   };
 
-  const onValid = (data) => {
-    console.log(data);
+  const onValid = (data: any) => {
+    //Validation 작성 하면서 data 타입 변경 요망
     nextStep();
   };
 

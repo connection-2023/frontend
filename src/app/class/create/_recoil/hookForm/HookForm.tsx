@@ -1,3 +1,4 @@
+'use client';
 import { useForm } from 'react-hook-form';
 import { hookForm } from './atom';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
@@ -16,7 +17,7 @@ const HookForm = ({ children }: { children: React.ReactNode }) => {
     }
   }, [formMethods, setFormState]);
 
-  return <>{isHookForm !== null && children}</>;
+  return <>{isHookForm !== null ? children : null}</>;
 };
 
 export default HookForm;
