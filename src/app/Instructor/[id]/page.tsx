@@ -30,6 +30,7 @@ const InstructorDetailPage = () => {
     instagramID,
     youtubeURL,
     anyURL,
+    instagrams,
     classList,
   } = dummyInstructor;
   return (
@@ -128,16 +129,8 @@ const InstructorDetailPage = () => {
       </div>
 
       {/* 인스타그램 섹션 */}
-      <section className="flex gap-3">
-        <div className="h-[22.6875rem] w-[16.6875rem] bg-yellow-200">
-          인스타 그램
-        </div>
-        <div className="h-[22.6875rem] w-[16.6875rem] bg-yellow-200">
-          인스타 그램
-        </div>
-        <div className="h-[22.6875rem] w-[16.6875rem] bg-yellow-200">
-          인스타 그램
-        </div>
+      <section className="flex h-[387px] w-full max-w-[51.1rem] gap-3 ">
+        {instagrams.map((insta) => InstagramIframe(insta))}
       </section>
 
       {/* 강사소개 섹션 */}
@@ -215,3 +208,18 @@ const InstructorDetailPage = () => {
 };
 
 export default InstructorDetailPage;
+
+const InstagramIframe = (link: string) => {
+  return (
+    <div className="h-[387px] w-[16.6875rem] overflow-hidden">
+      <iframe
+        height="387"
+        width="363"
+        src={`${link}/embed/`}
+        scrolling="no"
+        frameBorder="0"
+        className="h-full w-full"
+      />
+    </div>
+  );
+};

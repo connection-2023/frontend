@@ -123,6 +123,11 @@ const dummyInstructor = {
   instagramID: '@Connection',
   youtubeURL: 'https://www.youtube.com/@Connection_dance',
   anyURL: 'https://www.Connection.com',
+  instagrams: [
+    'https://www.instagram.com/reel/CqDcjXEJQt_',
+    'https://www.instagram.com/p/CtagBRcPETS',
+    'https://www.instagram.com/p/CtvYoispwLg',
+  ],
   classList: [
     {
       status: '모집중' as const,
