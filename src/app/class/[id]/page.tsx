@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import { parse } from 'date-fns';
 import Profile from '@/components/Profile/Profile';
 import Review from '@/components/Review/Review';
 import ReviewComment from '@/components/Review/ReviewComment';
@@ -6,7 +8,6 @@ import Like from '@/components/Like/Like';
 import Apply from './_components/Apply';
 import Notice from './_components/Notice';
 import ProfileButtons from './_components/ProfileButtons';
-import Schedule from './_components/Schedule';
 import { CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass, dummyImgURL } from '@/constants/dummy';
 import {
@@ -17,8 +18,8 @@ import {
   BasicCalendarSVG,
 } from '@/../public/icons/svg';
 import Carousel from '@/components/Carousel/Carousel';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Map from '@/components/Map/Map';
-import Image from 'next/image';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -38,6 +39,7 @@ const ClassDetailPage = () => {
     curriculum,
     schedule,
     dateTimeData,
+    lectureSchedule,
     coupon,
     price,
     studioName,
@@ -202,7 +204,10 @@ const ClassDetailPage = () => {
           <p className="mb-2 text-sm font-medium text-main-color">
             *궁금한 날짜를 클릭해주세요
           </p>
-          <Schedule />
+          <ScheduleView
+            clickableDates={Object.keys(dateTimeData).map(createDate)}
+            lectureSchedule={lectureSchedule}
+          />
         </section>
 
         <section id="location-section" className="mb-14 scroll-mt-16">
@@ -246,3 +251,17 @@ const ClassDetailPage = () => {
 };
 
 export default ClassDetailPage;
+
+const createDate = (str: string) => {
+  const currentYear = new Date().getFullYear(); // 현재 연도
+  const currentMonth = new Date().getMonth() + 1; // 현재 월
+  // 월 추출
+  const month = Number(str.slice(0, 2));
+  // 현재 월보다 작으면 내년으로 설정
+  const year = month < currentMonth ? currentYear + 1 : currentYear;
+
+  // "MM.dd" 형식으로 변환
+  const dateStr = str.slice(0, -5).replace('월 ', '.').replace('일', '');
+
+  return parse(dateStr, 'MM.dd', new Date(year, 0));
+};

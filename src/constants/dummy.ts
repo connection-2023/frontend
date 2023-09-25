@@ -98,6 +98,11 @@ const dummyClass = {
       time: ['10:00-11:00', '13:00-14:00'],
     },
   },
+  lectureSchedule: [
+    { date: '09.06(수) 13:00-15:00', space: { current: 0, total: 8 } },
+    { date: '09.06(수) 16:00-17:00', space: { current: 2, total: 8 } },
+    { date: '09.06(수) 17:00-18:00', space: { current: 8, total: 8 } },
+  ],
   coupon: 2,
   price: {
     origin: '120,000',
