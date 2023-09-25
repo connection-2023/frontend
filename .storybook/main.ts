@@ -46,6 +46,11 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+  env: (config) => ({
+    ...config,
+    NEXT_PUBLIC_NAVER_MAP_CLIENT_ID:
+      process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID || '',
+  }),
 };
 
 export default config;

@@ -117,7 +117,7 @@ const ClassDetailPage = () => {
           <div className="text-lg font-bold">
             <Profile src={profile.src} nickname={profile.nickname} size={59} />
           </div>
-          <div className="flex flex gap-[0.81rem] text-sm font-normal">
+          <div className="flex gap-[0.81rem] text-sm font-normal">
             <ProfileButtons id={profile.id} />
           </div>
         </div>

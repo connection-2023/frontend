@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import HookForm from '../../../recoil/hookForm/HookForm';
+import HookForm from '@/recoil/hookForm/HookForm';
 import RecoilProvider from '@/recoil/RecoilProvider';
 
 export const metadata: Metadata = {

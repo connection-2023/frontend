@@ -174,20 +174,20 @@ const Carousel = ({
   return (
     <>
       <div
-        className={`display: flex h-full ${
+        className={`flex h-full ${
           isAnimating && 'transition-transform duration-[1600ms] ease-out'
         }`}
         style={{
           transform: `translateX(calc(-${100 * currentIndex}% - ${
             gap * currentIndex
           }rem)`,
-          gap: `${gap}rem`,
         }}
       >
         {carouselElements.slice(0, loadedElementCount).map((element, index) => (
           <picture
             key={index}
             className={`relative h-full w-full flex-shrink-0 `}
+            style={{ marginRight: `${gap}rem` }}
           >
             {children
               ? element
