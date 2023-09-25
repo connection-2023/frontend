@@ -22,3 +22,8 @@ export interface DateTime {
   space: Space;
   count: number;
 }
+
+export interface DayTimeList {
+  day: string[];
+  timeSlots: string[];
+}
