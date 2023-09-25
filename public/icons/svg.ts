@@ -18,6 +18,7 @@ import TimeSVG from './time.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import ArrowRightSVG from './ArrowRight.svg';
 import UploadImageSVG from './UploadImg.svg';
+import CheckSVG from './check.svg';
 import InstagramSVG from './instagram.svg';
 import LinkSVG from './link.svg';
 import YoutubeSVG from './youtube.svg';
@@ -56,4 +57,5 @@ export {
   CropSVG,
   ZoomInSVG,
   ZoomOutSVG,
+  CheckSVG,
 };

@@ -42,9 +42,10 @@ const ScheduleCalendar = ({ clickableDates }: { clickableDates: Date[] }) => {
 
   return (
     <DayPicker
+      mode="single"
       locale={ko}
       showOutsideDays
-      mode="single"
+      defaultMonth={clickableDates[0]}
       selected={selected}
       onSelect={handleSelect}
       modifiers={scheduleModifiers}
@@ -58,6 +59,7 @@ const ScheduleCalendar = ({ clickableDates }: { clickableDates: Date[] }) => {
             displayMonth,
           }),
       }}
+      className="rounded-[0.625rem] px-5 py-4 shadow-[1px_1px_6px_1px_rgba(0,0,0,0.25)]"
     />
   );
 };
