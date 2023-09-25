@@ -32,6 +32,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.46.1",
     "react-naver-maps": "^0.1.2",
+    "react-quill": "^2.0.0",
     "react-range": "^1.8.14",
     "recoil": "^0.7.7",
     "tailwind-scrollbar": "^3.0.5",
