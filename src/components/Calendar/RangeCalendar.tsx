@@ -1,0 +1,47 @@
+import {
+  DateRange,
+  DayPicker,
+  SelectRangeEventHandler,
+  CaptionProps,
+} from 'react-day-picker';
+import { ko } from 'date-fns/esm/locale';
+import { FormattedCaption } from './BasicCalendar';
+import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
+import 'react-day-picker/dist/style.css';
+import '../../styles/calendar.css';
+
+interface IRangeCalendarProps {
+  selectedRange: DateRange | undefined;
+  handleRangeSelect: SelectRangeEventHandler;
+}
+const RangeCalendar = ({
+  selectedRange,
+  handleRangeSelect,
+}: IRangeCalendarProps) => {
+  const dateOptions = {
+    ...DAY_MODIFIERS,
+    disabled: { before: new Date() },
+  };
+
+  return (
+    <DayPicker
+      mode="range"
+      locale={ko}
+      showOutsideDays
+      selected={selectedRange}
+      onSelect={handleRangeSelect}
+      numberOfMonths={2}
+      modifiers={dateOptions}
+      modifiersClassNames={DAY_MODIFIERS_CLASSNAMES}
+      className="absolute left-0 top-0 z-10 flex w-fit -translate-x-4 translate-y-5 rounded-[0.31rem] border border-solid border-sub-color2 bg-white px-3 py-4"
+      components={{
+        Caption: ({ displayMonth }: CaptionProps) =>
+          FormattedCaption({
+            displayMonth,
+          }),
+      }}
+    />
+  );
+};
+
+export default RangeCalendar;
