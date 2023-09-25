@@ -22,6 +22,13 @@ export const CLASS_SECTIONS = [
   { id: 'review-section', label: '후기' },
 ];
 
+export const INSTRUCTOR_SECTIONS = [
+  { id: 'introduction-section', label: 'introduction' },
+  { id: 'work-experience-section', label: 'Work Experience' },
+  { id: 'class-section', label: '강의' },
+  { id: 'review-section', label: '후기' },
+];
+
 export const DANCE_GENRE = [
   'K-pop',
   '브레이킹',
