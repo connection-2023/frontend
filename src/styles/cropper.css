@@ -1,0 +1,16 @@
+.cropper-modal {
+  background-color: none;
+}
+
+.cropper-view-box {
+  outline: 1px solid var(--sub-color1);
+  outline-color: var(--sub-color1);
+}
+
+.cropper-line {
+  background-color: var(--sub-color1);
+}
+
+.cropper-point {
+  background-color: var(--sub-color1);
+}
