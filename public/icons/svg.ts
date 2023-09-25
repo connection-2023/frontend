@@ -23,6 +23,9 @@ import LinkSVG from './link.svg';
 import YoutubeSVG from './youtube.svg';
 import OptionSVG from './option.svg';
 import ShareSVG from './share.svg';
+import CropSVG from './crop.svg';
+import ZoomInSVG from './zoomIn.svg';
+import ZoomOutSVG from './zoomOut.svg';
 
 export {
   InstagramSVG,
@@ -50,4 +53,7 @@ export {
   BasicCalendarSVG,
   ArrowRightSVG,
   UploadImageSVG,
+  CropSVG,
+  ZoomInSVG,
+  ZoomOutSVG,
 };
