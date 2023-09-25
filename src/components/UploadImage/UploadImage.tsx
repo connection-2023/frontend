@@ -9,11 +9,11 @@ const UploadImage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
-    setIsModalOpen(true);
+    if (!isModalOpen) setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    if (isModalOpen) setIsModalOpen(false);
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,12 +131,13 @@ const UploadImage = () => {
                   src={selectedImage}
                   alt="선택된 클래스 업로드 이미지"
                   fill
-                  objectFit="contain"
+                  style={{ objectFit: 'contain' }}
                 />
                 <div className="absolute right-0 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-sub-color3">
                   <CropSVG
                     width={19}
                     height={19}
+                    aria-label="이미지 크롭"
                     onClick={handleOpenModal}
                     className="fill-white"
                   />
@@ -164,13 +165,14 @@ const UploadImage = () => {
                     src={image.url}
                     alt={`클래스 업로드 이미지 ${index + 1}`}
                     fill
-                    objectFit="cover"
+                    style={{ objectFit: 'cover' }}
                     onClick={() => setSelectedImage(image.url)}
                   />
                 </div>
                 <ClearSVG
                   height={19}
                   width={19}
+                  aria-label="이미지 삭제"
                   onClick={() => handleRemoveImage(index)}
                   className="absolute right-0 top-0 cursor-pointer fill-sub-color3"
                 />
