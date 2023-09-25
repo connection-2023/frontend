@@ -59,3 +59,11 @@
   background-color: var(--sub-color4);
   color: white;
 }
+
+.dayOff-selected-day,
+.dayOff-selected-day:focus-visible,
+.dayOff-selected-day:hover {
+  color: white;
+  opacity: 1;
+  background-color: var(--sub-color1) !important;
+}
