@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import HookForm from './_recoil/hookForm/HookForm';
-import RecoilProvider from './_recoil/RecoilProvider';
+import HookForm from '../../../recoil/hookForm/HookForm';
+import RecoilProvider from '@/recoil/RecoilProvider';
 
 export const metadata: Metadata = {
   title: 'Connection | 클래스 작성',
