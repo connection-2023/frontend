@@ -1,10 +1,20 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import { ClearSVG, UploadImageSVG } from '@/../public/icons/svg';
+import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
+import CropperModal from './CropperModal';
 
 const UploadImage = () => {
   const [images, setImages] = useState<{ file: File; url: string }[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    if (!isModalOpen) setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    if (isModalOpen) setIsModalOpen(false);
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -72,6 +82,16 @@ const UploadImage = () => {
     }
   };
 
+  const handleCroppedData = (croppedDataURL: string) => {
+    setSelectedImage(croppedDataURL);
+
+    setImages((prevImages) =>
+      prevImages.map((image) =>
+        image.url === selectedImage ? { ...image, url: croppedDataURL } : image,
+      ),
+    );
+  };
+
   return (
     <div className="flex w-full flex-col items-center">
       {images.length === 0 ? (
@@ -111,8 +131,17 @@ const UploadImage = () => {
                   src={selectedImage}
                   alt="선택된 클래스 업로드 이미지"
                   fill
-                  objectFit="contain"
+                  style={{ objectFit: 'contain' }}
                 />
+                <div className="absolute right-0 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-sub-color3">
+                  <CropSVG
+                    width={19}
+                    height={19}
+                    aria-label="이미지 크롭"
+                    onClick={handleOpenModal}
+                    className="fill-white"
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -131,18 +160,19 @@ const UploadImage = () => {
                     : ''
                 }`}
               >
-                <div className="relative h-full w-full overflow-hidden">
+                <div className="relative h-full w-full cursor-grab overflow-hidden">
                   <Image
                     src={image.url}
                     alt={`클래스 업로드 이미지 ${index + 1}`}
                     fill
-                    objectFit="cover"
+                    style={{ objectFit: 'cover' }}
                     onClick={() => setSelectedImage(image.url)}
                   />
                 </div>
                 <ClearSVG
                   height={19}
                   width={19}
+                  aria-label="이미지 삭제"
                   onClick={() => handleRemoveImage(index)}
                   className="absolute right-0 top-0 cursor-pointer fill-sub-color3"
                 />
@@ -173,6 +203,14 @@ const UploadImage = () => {
             )}
           </div>
         </>
+      )}
+      {isModalOpen && selectedImage && (
+        <CropperModal
+          isOpen={isModalOpen}
+          selectedImage={selectedImage}
+          closeModal={handleCloseModal}
+          handleCroppedData={handleCroppedData}
+        />
       )}
     </div>
   );
