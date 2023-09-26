@@ -3,6 +3,7 @@ import Review from '@/components/Review/Review';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import ReviewComment from '@/components/Review/ReviewComment';
+import Sharing from '@/components/Sharing/Sharing';
 import InstructorCarousel from './_components/InstructorCarousel';
 import ManagementButton from './_components/ManagementButton';
 import ClassList from './_components/ClassList';
@@ -13,7 +14,6 @@ import {
   InstagramSVG,
   YoutubeSVG,
   LinkSVG,
-  ShareSVG,
 } from '@/../public/icons/svg';
 
 const h2Style = 'mb-2 text-lg font-bold';
@@ -46,7 +46,7 @@ const InstructorDetailPage = () => {
               <Like />
             </h1>
             <div className="absolute right-0 flex gap-3">
-              <ShareSVG />
+              <Sharing header={nickname} mode="instructor" />
               <ManagementButton>
                 <OptionSVG />
               </ManagementButton>
