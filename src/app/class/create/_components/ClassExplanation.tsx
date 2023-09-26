@@ -5,12 +5,25 @@ import {
   TOOLBAR,
 } from '@/constants/constants';
 import SunEditor from 'suneditor-react';
+import {
+  UploadBeforeHandler,
+  UploadBeforeReturn,
+} from 'suneditor-react/dist/types/upload';
 import 'suneditor/dist/css/suneditor.min.css';
 
 const scrollStyle =
   'scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-sub-color2 scrollbar-thumb-rounded-lg scrollbar-w-2';
 
 const ClassExplanation = () => {
+  const handleImageUploadBefore = (
+    files: Array<File>,
+    info: object,
+    uploadHandler: UploadBeforeHandler,
+  ): UploadBeforeReturn => {
+    uploadHandler(files);
+    return true;
+  }; // 추후 S3로 변경 예정
+
   return (
     <>
       <section className="mt-9 flex flex-col">
@@ -38,6 +51,7 @@ const ClassExplanation = () => {
           height="652px"
           defaultValue={QUILL_DEFAULT_VALUE}
           setOptions={{ buttonList: TOOLBAR }}
+          onImageUploadBefore={handleImageUploadBefore}
         />
       </section>
     </>
