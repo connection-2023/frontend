@@ -1,5 +1,7 @@
 import type { StorybookConfig } from '@storybook/nextjs';
 import { RuleSetRule } from 'webpack';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import path from 'path';
 
 const config: StorybookConfig = {
   stories: ['../**/*.mdx', '../**/*.stories.@(js|jsx|ts|tsx)'],
@@ -39,6 +41,13 @@ const config: StorybookConfig = {
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     });
+
+    config.resolve.plugins = config.resolve.plugins || [];
+    config.resolve.plugins.push(
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, '../tsconfig.json'),
+      }),
+    );
 
     return config;
   },
