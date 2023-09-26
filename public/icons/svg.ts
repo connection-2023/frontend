@@ -24,7 +24,7 @@ import LinkSVG from './link.svg';
 import YoutubeSVG from './youtube.svg';
 import OptionSVG from './option.svg';
 import ShareSVG from './share.svg';
-import KaKaoTalkSVG from './KaKaoTalk.svg';
+import KaKaoTalkSVG from './kakaoTalk.svg';
 import TwitterSVG from './twitter.svg';
 import FacebookSVG from './facebook.svg';
 
