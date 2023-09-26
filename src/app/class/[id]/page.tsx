@@ -20,6 +20,7 @@ import {
 import Carousel from '@/components/Carousel/Carousel';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Map from '@/components/Map/Map';
+import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -76,7 +77,8 @@ const ClassDetailPage = () => {
 
         <h1 className="relative flex w-full max-w-[40rem] justify-center text-lg font-bold">
           {title}
-          <div className="absolute right-0">
+          <div className="absolute right-0 flex items-center gap-2">
+            <Sharing mode="class" header={title} />
             <Like />
           </div>
         </h1>
