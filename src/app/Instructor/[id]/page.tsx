@@ -3,6 +3,7 @@ import Review from '@/components/Review/Review';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import ReviewComment from '@/components/Review/ReviewComment';
+import Sharing from '@/components/Sharing/Sharing';
 import InstructorCarousel from './_components/InstructorCarousel';
 import ManagementButton from './_components/ManagementButton';
 import ClassList from './_components/ClassList';
@@ -13,7 +14,6 @@ import {
   InstagramSVG,
   YoutubeSVG,
   LinkSVG,
-  ShareSVG,
 } from '@/../public/icons/svg';
 
 const h2Style = 'mb-2 text-lg font-bold';
@@ -30,6 +30,7 @@ const InstructorDetailPage = () => {
     instagramID,
     youtubeURL,
     anyURL,
+    instagrams,
     classList,
   } = dummyInstructor;
   return (
@@ -46,7 +47,7 @@ const InstructorDetailPage = () => {
               <Like />
             </h1>
             <div className="absolute right-0 flex gap-3">
-              <ShareSVG />
+              <Sharing header={nickname} mode="instructor" />
               <ManagementButton>
                 <OptionSVG />
               </ManagementButton>
@@ -128,16 +129,8 @@ const InstructorDetailPage = () => {
       </div>
 
       {/* 인스타그램 섹션 */}
-      <section className="flex gap-3">
-        <div className="h-[22.6875rem] w-[16.6875rem] bg-yellow-200">
-          인스타 그램
-        </div>
-        <div className="h-[22.6875rem] w-[16.6875rem] bg-yellow-200">
-          인스타 그램
-        </div>
-        <div className="h-[22.6875rem] w-[16.6875rem] bg-yellow-200">
-          인스타 그램
-        </div>
+      <section className="flex h-[387px] w-full max-w-[51.1rem] gap-3 ">
+        {instagrams.map((insta) => InstagramIframe(insta))}
       </section>
 
       {/* 강사소개 섹션 */}
@@ -215,3 +208,18 @@ const InstructorDetailPage = () => {
 };
 
 export default InstructorDetailPage;
+
+const InstagramIframe = (link: string) => {
+  return (
+    <div className="h-[387px] w-[16.6875rem] overflow-hidden">
+      <iframe
+        height="387"
+        width="363"
+        src={`${link}/embed/`}
+        scrolling="no"
+        frameBorder="0"
+        className="h-full w-full"
+      />
+    </div>
+  );
+};

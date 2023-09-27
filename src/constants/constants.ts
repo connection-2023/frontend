@@ -1,3 +1,5 @@
+export const DOMAIN = 'http://localhost:3000'; // 변경 필요
+
 export const DAY_MODIFIERS = {
   saturday: (date: Date) => date.getDay() === 6,
   sunday: (date: Date) => date.getDay() === 0,
