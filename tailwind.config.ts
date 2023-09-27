@@ -17,6 +17,26 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('tailwind-scrollbar')({ nocompatible: true })],
+  plugins: [
+    require('tailwind-scrollbar')({ nocompatible: true }),
+    function ({
+      addUtilities,
+    }: {
+      addUtilities: (
+        utilities: Record<string, Record<string, string>>,
+        variants?: Array<string>,
+      ) => void;
+    }) {
+      const newUtilities = {
+        '.shrink': {
+          animationName: 'shrink',
+          animationTimingFunction: 'linear',
+          animationDuration: '10s',
+        },
+      };
+
+      addUtilities(newUtilities);
+    },
+  ],
 };
 export default config;
