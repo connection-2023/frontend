@@ -1,59 +1,25 @@
-import {
-  ANNOUNCEMENT,
-  CLASS_OPERATION_PLAN,
-  QUILL_DEFAULT_VALUE,
-  TOOLBAR,
-} from '@/constants/constants';
-import SunEditor from 'suneditor-react';
-import {
-  UploadBeforeHandler,
-  UploadBeforeReturn,
-} from 'suneditor-react/dist/types/upload';
-import 'suneditor/dist/css/suneditor.min.css';
-
-const scrollStyle =
-  'scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-sub-color2 scrollbar-thumb-rounded-lg scrollbar-w-2';
+import TextAreaSection from './ClassExplanation/TextAreaSection';
+import CurriculumSection from './ClassExplanation/CurriculumSection';
+import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
 
 const ClassExplanation = () => {
-  const handleImageUploadBefore = (
-    files: Array<File>,
-    info: object,
-    uploadHandler: UploadBeforeHandler,
-  ): UploadBeforeReturn => {
-    uploadHandler(files);
-    return true;
-  }; // 추후 S3로 변경 예정
-
   return (
     <>
-      <section className="mt-9 flex flex-col">
-        <h2 className="text-lg font-bold">중요 공지사항을 입력해주세요.</h2>
-        <textarea
-          className={`mt-3 h-24 resize-none rounded-md border border-sub-color2 p-3
-          ${scrollStyle}`}
-          placeholder={ANNOUNCEMENT}
-        />
-      </section>
+      <TextAreaSection
+        title="중요 공지사항을 입력해주세요."
+        placeholder={ANNOUNCEMENT}
+        valueKey="announcement"
+        maxLength={200}
+      />
 
-      <section className="mt-9 flex flex-col">
-        <h2 className="text-lg font-bold">어떤 클래스를 운영할 계획인가요?</h2>
-        <textarea
-          className={`mt-3 h-40 resize-none rounded-md border border-sub-color2 p-3
-          ${scrollStyle}`}
-          placeholder={CLASS_OPERATION_PLAN}
-        />
-      </section>
+      <TextAreaSection
+        title="어떤 클래스를 운영할 계획인가요?"
+        placeholder={CLASS_OPERATION_PLAN}
+        valueKey="explanation"
+        maxLength={500}
+      />
 
-      <section className="mt-9 flex flex-col">
-        <h2 className="text-lg font-bold">커리큘럼</h2>
-        <SunEditor
-          lang="ko"
-          height="652px"
-          defaultValue={QUILL_DEFAULT_VALUE}
-          setOptions={{ buttonList: TOOLBAR }}
-          onImageUploadBefore={handleImageUploadBefore}
-        />
-      </section>
+      <CurriculumSection />
     </>
   );
 };
