@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 
 const HookForm = ({ children }: { children: React.ReactNode }) => {
-  const formMethods = useForm();
+  const formMethods = useForm({ shouldFocusError: false });
   const setFormState = useSetRecoilState(hookForm);
   const isHookForm = useRecoilValue(hookForm);
 
