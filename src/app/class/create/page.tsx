@@ -13,26 +13,13 @@ const steps = [
   { title: '클래스 장소', component: null },
   { title: '가격 설정', component: null },
 ];
-/**
- *
- * @returns 예시
- * const {
- *   register,
- * formState: { errors },
- * } = useForm();
- *
- * formState에서 errors를 받아
- * <span>{errors?.email(registerID)?.message as string}</span>
- * 해당 방식으로 에러 표시 하면 됩니다.
- *
- */
+
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const formMethods = useRecoilValue(hookForm);
 
   if (!formMethods) {
-    //ts 에러 명시적 해결
     return;
   }
 
@@ -60,6 +47,7 @@ export default function ClassCreate() {
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
         클래스 작성
       </h1>
+
       {/* 상태 바  */}
       <ul className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
         {steps.map((step, index) => (
@@ -115,6 +103,8 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           </div>
         </nav>
       </section>
+
+      {/* 유효성 토스트 메세지 */}
       {invalidData && <ValidationToast invalidData={invalidData} />}
     </main>
   );
