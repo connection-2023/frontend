@@ -1,3 +1,4 @@
+import ConnectionLogoSVG from './connectionLogo.svg';
 import CalendarSVG from './calendar.svg';
 import HeartSVG from './heart.svg';
 import StarSVG from './star.svg';
@@ -30,8 +31,13 @@ import FacebookSVG from './facebook.svg';
 import CropSVG from './crop.svg';
 import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
+import MainPopularSVG from './mainPopular.svg';
+import MainTopSVG from './mainTop.svg';
+import SmallLogoSVG from './smallLogo.svg';
 
 export {
+  ConnectionLogoSVG,
+  SmallLogoSVG,
   InstagramSVG,
   YoutubeSVG,
   LinkSVG,
@@ -64,4 +70,6 @@ export {
   KaKaoTalkSVG,
   TwitterSVG,
   FacebookSVG,
+  MainPopularSVG,
+  MainTopSVG,
 };

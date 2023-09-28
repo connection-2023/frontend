@@ -1,3 +1,5 @@
+import { ClassCardType } from '@/types/class';
+
 const dummyUserInputSuggestion = [
   '댄스',
   '댄스 영상',
@@ -239,7 +241,259 @@ const dummyInstructor = {
   },
 };
 
+interface MainProps {
+  topInstructorList: {
+    nickname: string;
+    id: number;
+    image: string;
+  }[];
+  suggestionClass: {
+    title: string;
+    image: string;
+    range: string;
+    review: string;
+  }[];
+  recentClass: ClassCardType[];
+}
+const dummyMain: MainProps = {
+  topInstructorList: [
+    {
+      nickname: 'Harriet',
+      id: 7,
+      image:
+        'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+    },
+    {
+      nickname: 'Wang',
+      id: 4,
+      image:
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    },
+    {
+      nickname: 'Ignacia',
+      id: 8,
+      image:
+        'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+    },
+    {
+      nickname: 'Lana',
+      id: 10,
+      image:
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    },
+    {
+      nickname: 'Edward',
+      id: 4,
+      image:
+        'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+    },
+    {
+      nickname: 'Walter',
+      id: 9,
+      image:
+        'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+    },
+    {
+      nickname: 'Marah',
+      id: 10,
+      image:
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    },
+    {
+      nickname: 'Alden',
+      id: 8,
+      image:
+        'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+    },
+  ],
+  suggestionClass: [
+    {
+      title: '21년 최고매출, 22년 최다판매 친절한 쁨선생 케이팝',
+      image:
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      range: '08/30-09/25',
+      review: '5.0',
+    },
+    {
+      title: 'Cost Accountant',
+      image:
+        'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      range: '9/1/2023',
+      review: '4.6',
+    },
+    {
+      title: 'Research Assistant II',
+      image:
+        'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      range: '11/16/2022',
+      review: '1.8',
+    },
+    {
+      title: 'Recruiting Manager',
+      image:
+        'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      range: '4/4/2023',
+      review: '2.6',
+    },
+  ],
+  recentClass: [
+    {
+      status: '모집중',
+      date: '2023-10-01',
+      title: '요리 클래스',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['서울', '강남구'],
+      genre: ['요리'],
+      type: ['오프라인'],
+      time: ['14시~16시'],
+      review: { average: 4.5, count: 20 },
+      price: '50000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '요리사',
+      },
+      selectedDates: [new Date('2023-10-01'), new Date('2023-10-02')],
+    },
+    {
+      status: '마감임박',
+      date: '2023-10-03',
+      title: '피아노 클래스',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['서울', '종로구'],
+      genre: ['음악', '피아노'],
+      type: ['오프라인'],
+      time: ['18시~20시'],
+      review: { average: 4.7, count: 25 },
+      price: '70000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '피아니스트',
+      },
+      selectedDates: [new Date('2023-10-03'), new Date('2023-10-04')],
+    },
+    {
+      status: '마감임박',
+      date: '2023-10-05',
+      title: '미술 클래스 ',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['부산', '해운대구'],
+      genre: ['미술'],
+      type: ['오프라인'],
+      time: ['15시~17시'],
+      review: { average: 4.9, count: 30 },
+      price: '60000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '화가',
+      },
+      selectedDates: [new Date('2023_10_05'), new Date('2023_10_06')],
+    },
+    {
+      status: '마감임박',
+      date: '2023_11_07',
+      title: '사진 촬영 클래스 ',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['대전', '유성구'],
+      genre: ['사진'],
+      type: ['오프라인'],
+      time: ['13시~15시'],
+      review: { average: 4.6, count: 22 },
+      price: '80000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '사진작가',
+      },
+      selectedDates: [new Date('2023_11_07'), new Date('2023_11_08')],
+    },
+    {
+      status: '마감',
+      date: '2023-12-10',
+      title: '코딩 클래스 ',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['인천', '연수구'],
+      genre: ['코딩'],
+      type: ['온라인'],
+      time: ['20시~22시'],
+      review: { average: 4.8, count: 27 },
+      price: '90000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '개발자',
+      },
+      selectedDates: [new Date('2023-12-10'), new Date('2023-12-11')],
+    },
+    {
+      status: '모집중',
+      date: '2024-01-15',
+      title: '영어회화 클래스',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['광주', '서구'],
+      genre: ['언어', '영어'],
+      type: ['오프라인'],
+      time: ['16시~18시'],
+      review: { average: 5.0, count: 32 },
+      price: '100000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '영어강사',
+      },
+      selectedDates: [new Date('2024-01-15'), new Date('2024-01-16')],
+    },
+    {
+      status: '마감임박',
+      date: '2024_02_20',
+      title: '체육 클래스',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['울산', '남구'],
+      genre: ['스포츠', '체육'],
+      type: ['오프라인'],
+      time: ['09시~11시'],
+      review: { average: 4.9, count: 33 },
+      price: '110000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '운동선수',
+      },
+      selectedDates: [new Date('2024_02_20'), new Date('2024_02_21')],
+    },
+    {
+      status: '마감임박',
+      date: '2024_03_25',
+      title: '과학 실험 클래스 ',
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ],
+      location: ['대구', '중구'],
+      genre: ['과학'],
+      type: ['오프라인'],
+      time: ['10시~12시'],
+      review: { average: 5.0, count: 35 },
+      price: '120000',
+      profile: {
+        src: 'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+        nickname: '과학자',
+      },
+      selectedDates: [new Date('2024_03_25'), new Date('2024_03_26')],
+    },
+  ],
+};
+
 export {
+  dummyMain,
   dummyClass,
   dummyUserInputSuggestion,
   dummySearchData,
