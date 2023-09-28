@@ -108,7 +108,7 @@ const Carousel = ({
 
   const updateImageIndex = () => {
     setCurrentIndex((prev) => {
-      if (prev + 1 === carouselLength - 2) {
+      if (prev === carouselLength - priority) {
         setIsAnimating(false);
         return 0;
       } else if (prev === 0) {
@@ -158,15 +158,13 @@ const Carousel = ({
     event.nativeEvent.preventDefault();
 
     setIsAnimating(false);
-    setCurrentIndex((prev) =>
-      direction === 'BACKWARD'
-        ? prev <= 0
-          ? carouselLength - 4
-          : prev - 1
-        : prev >= carouselLength - 4
-        ? 0
-        : prev + 1,
-    );
+    setCurrentIndex((prev) => {
+      if (direction === 'FORWARD') {
+        return prev >= carouselLength - priority ? 0 : prev + 1;
+      } else {
+        return prev <= 0 ? carouselLength - priority : prev - 1;
+      }
+    });
 
     timeoutIdRef.current = setTimeout(() => {
       setIsAnimating(true);
