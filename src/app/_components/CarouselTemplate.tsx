@@ -11,6 +11,7 @@ const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
   const [focus, setFocus] = useState(false);
   const width = mode === 'class' ? 'w-[30rem]' : 'w-[9.25rem]';
   const height = mode === 'class' ? 'h-[14rem]' : 'h-[6.5rem]';
+  const priority = mode === 'class' ? 3 : 8;
 
   const onFocus = () => {
     setFocus(true);
@@ -27,7 +28,7 @@ const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
             move={true}
             showCurrentElement={false}
             carouselMoveIntervalTime={3000}
-            priority={8}
+            priority={priority}
             gap={1}
             movePause={focus}
           >
