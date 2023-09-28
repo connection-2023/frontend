@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { hookForm } from '@/recoil/hookForm/atom';
 import { Button } from '@/components/Button/Button';
+import ValidationToast from '@/components/ValidationToast/ValidationToast';
 import { ArrowRightSVG } from '@/../public/icons/svg';
 
 const steps = [
@@ -12,26 +13,13 @@ const steps = [
   { title: '클래스 장소', component: null },
   { title: '가격 설정', component: null },
 ];
-/**
- *
- * @returns 예시
- * const {
- *   register,
- * formState: { errors },
- * } = useForm();
- *
- * formState에서 errors를 받아
- * <span>{errors?.email(registerID)?.message as string}</span>
- * 해당 방식으로 에러 표시 하면 됩니다.
- *
- */
 
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
+  const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const formMethods = useRecoilValue(hookForm);
 
   if (!formMethods) {
-    //ts 에러 명시적 해결
     return;
   }
 
@@ -48,11 +36,18 @@ export default function ClassCreate() {
     nextStep();
   };
 
+  const invalid = (data: any) => {
+    //Validation 작성 하면서 data 타입 변경 요망
+    setinvalidData(Object.keys(data));
+    setTimeout(() => setinvalidData(null), 10000);
+  };
+
   return (
     <main className="mx-auto max-w-[1440px] px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
         클래스 작성
       </h1>
+
       {/* 상태 바  */}
       <ul className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
         {steps.map((step, index) => (
@@ -99,7 +94,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           </button>
           <div className="flex">
             <Button>임시저장</Button>
-            <form onSubmit={handleSubmit(onValid)}>
+            <form onSubmit={handleSubmit(onValid, invalid)}>
               <button className="ml-4 flex items-center">
                 다음
                 <ArrowRightSVG className="ml-3" />
@@ -108,6 +103,9 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           </div>
         </nav>
       </section>
+
+      {/* 유효성 토스트 메세지 */}
+      {invalidData && <ValidationToast invalidData={invalidData} />}
     </main>
   );
 }
