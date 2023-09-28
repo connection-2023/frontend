@@ -79,7 +79,13 @@ const Carousel = ({
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
   const extendForCarousel = (elementArr: React.ReactNode[] | string[]) => {
-    return [elementArr.at(-1), ...elementArr, ...elementArr.slice(0, 2)];
+    const newElementArr = [...elementArr, elementArr[0]];
+    newElementArr.shift();
+    return [
+      newElementArr.at(-1),
+      ...newElementArr,
+      ...newElementArr.slice(0, priority - 1),
+    ];
   };
 
   const carouselElements = extendForCarousel(
