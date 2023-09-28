@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { StarSVG } from '../../../public/icons/svg';
 interface ReviewProps {
   average: number;
@@ -23,14 +24,18 @@ const Star = ({
 
 const Review = ({ average, count }: ReviewProps) => {
   const starArray = calculateStarArray(average);
+  const key = nanoid();
   return (
     <div className="flex items-center">
       <div className="flex gap-1">
         {starArray.map((star, i) =>
           star === 1 ? (
-            <Star key={i} fill="sub-color1" />
+            <Star key={key + i} fill="sub-color1" />
           ) : star > 0 ? (
-            <div className="relative h-[14px] w-[15px] overflow-hidden">
+            <div
+              key={key + i}
+              className="relative h-[14px] w-[15px] overflow-hidden"
+            >
               <Star fill="[#D8D8D8]" className="absolute" />
               <div
                 className="absolute overflow-hidden"
@@ -42,7 +47,7 @@ const Review = ({ average, count }: ReviewProps) => {
               </div>
             </div>
           ) : (
-            <Star key={i} fill="[#D8D8D8]" />
+            <Star key={key + i} fill="[#D8D8D8]" />
           ),
         )}
       </div>
