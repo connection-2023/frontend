@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { hookForm } from '@/recoil/hookForm/atom';
 import { Button } from '@/components/Button/Button';
+import ValidationToast from '@/components/ValidationToast/ValidationToast';
 import { ArrowRightSVG } from '@/../public/icons/svg';
 
 const steps = [
@@ -25,9 +26,9 @@ const steps = [
  * 해당 방식으로 에러 표시 하면 됩니다.
  *
  */
-
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
+  const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const formMethods = useRecoilValue(hookForm);
 
   if (!formMethods) {
@@ -46,6 +47,12 @@ export default function ClassCreate() {
   const onValid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
     nextStep();
+  };
+
+  const invalid = (data: any) => {
+    //Validation 작성 하면서 data 타입 변경 요망
+    setinvalidData(Object.keys(data));
+    setTimeout(() => setinvalidData(null), 10000);
   };
 
   return (
@@ -99,7 +106,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           </button>
           <div className="flex">
             <Button>임시저장</Button>
-            <form onSubmit={handleSubmit(onValid)}>
+            <form onSubmit={handleSubmit(onValid, invalid)}>
               <button className="ml-4 flex items-center">
                 다음
                 <ArrowRightSVG className="ml-3" />
@@ -108,6 +115,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           </div>
         </nav>
       </section>
+      {invalidData && <ValidationToast invalidData={invalidData} />}
     </main>
   );
 }
