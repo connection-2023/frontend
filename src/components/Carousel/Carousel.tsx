@@ -1,5 +1,11 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import { Arrow } from '../../../public/icons/svg';
 
@@ -78,19 +84,26 @@ const Carousel = ({
   movePause = false,
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
-  const extendForCarousel = (elementArr: React.ReactNode[] | string[]) => {
-    const newElementArr = [...elementArr, elementArr[0]];
-    newElementArr.shift();
-    return [
-      newElementArr.at(-1),
-      ...newElementArr,
-      ...newElementArr.slice(0, priority - 1),
-    ];
-  };
 
-  const carouselElements = extendForCarousel(
-    children ? [...childrenArray] : [...(imgURL || [])],
+  const extendForCarousel = useCallback(
+    (elementArr: React.ReactNode[] | string[]) => {
+      const newElementArr = [...elementArr, elementArr[0]];
+      newElementArr.shift();
+      return [
+        newElementArr.at(-1),
+        ...newElementArr,
+        ...newElementArr.slice(0, priority - 1),
+      ];
+    },
+    [priority],
   );
+
+  const carouselElements = useMemo(
+    () =>
+      extendForCarousel(children ? [...childrenArray] : [...(imgURL || [])]),
+    [childrenArray, imgURL],
+  );
+
   const carouselLength = carouselElements.length;
   const originalElements = children ? childrenArray : [...(imgURL || [])];
 
@@ -210,7 +223,7 @@ const Carousel = ({
       </div>
       {showCurrentElement && (
         <div
-          className={`display: absolute bottom-0 flex h-[10%] w-full items-center justify-center ${
+          className={`absolute bottom-0 flex h-[10%] w-full items-center justify-center ${
             showCurrentElementBackGround && 'bg-black/[.5]'
           } `}
         >
