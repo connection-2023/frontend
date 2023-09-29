@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { classRangeState, classTimeState } from '@/recoil/ClassSchedule/atoms';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import {
+  classRangeState,
+  classTimeState,
+  classDayTypeState,
+} from '@/recoil/ClassSchedule/atoms';
 import DayByDay from './DayByDay';
 import SpecificDate from './SpecificDate';
 import { CheckSVG } from '@/../public/icons/svg';
@@ -18,7 +22,13 @@ const ClassDay = () => {
   const [selectedType, setSelectedType] = useState('요일별로 달라요');
   const classRange = useRecoilValue(classRangeState);
   const classTime = useRecoilValue(classTimeState);
+  const [classType, setClassType] = useRecoilState(classDayTypeState);
   const isDisabled = !(classRange && classTime);
+
+  useEffect(() => {
+    const classType = selectedType === '요일별로 달라요' ? '요일' : '특정 날짜';
+    setClassType(classType);
+  }, [selectedType]);
 
   return (
     <>
