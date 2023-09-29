@@ -12,3 +12,8 @@ export interface IFilterOptions {
   method: string[];
   daytime: string[];
 }
+
+export interface dateTimes {
+  date: Date;
+  time: string[];
+}

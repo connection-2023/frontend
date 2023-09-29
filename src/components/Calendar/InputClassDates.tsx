@@ -11,18 +11,24 @@ import '../../styles/calendar.css';
 
 interface IRangeCalendarProps {
   clickableDates: Date[];
+  handleSelectedDate: (date: Date) => void;
 }
-const InputClassDates = ({ clickableDates }: IRangeCalendarProps) => {
+const InputClassDates = ({
+  clickableDates,
+  handleSelectedDate,
+}: IRangeCalendarProps) => {
   const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const [selected, setSelected] = useState<Date[] | undefined>();
+  const [selected, setSelected] = useState<Date | undefined>();
 
   useEffect(() => {
-    if (selected) {
-      setClassDates(selected);
-    } else {
-      setClassDates([]);
-    }
+    if (selected) handleSelectedDate(selected);
   }, [selected]);
+
+  if (!clickableDates.length) {
+    return null;
+  }
+
+  const classDateObjects = classDates?.map((dateStr) => new Date(dateStr));
 
   const clickableDateObjects = clickableDates.map(
     (dateStr) => new Date(dateStr),
@@ -43,6 +49,12 @@ const InputClassDates = ({ clickableDates }: IRangeCalendarProps) => {
     disabled: (date: Date) => {
       return !isDateSelectable(date);
     },
+
+    classDay: (date: Date) => {
+      return classDateObjects
+        ? classDateObjects.some((classDate) => isSameDay(classDate, date))
+        : false;
+    },
   };
 
   const isDateSelectable = (date: Date) => {
@@ -57,12 +69,12 @@ const InputClassDates = ({ clickableDates }: IRangeCalendarProps) => {
   const inputModifiersClassNames = {
     ...DAY_MODIFIERS_CLASSNAMES,
     selectableDays: 'class-input-selectable',
-    root: 'class-input-rdp',
+    classDay: 'selected-class-day',
   };
 
   return (
     <DayPicker
-      mode="multiple"
+      mode="single"
       locale={ko}
       showOutsideDays
       defaultMonth={clickableDates[0]}

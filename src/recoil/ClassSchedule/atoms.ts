@@ -15,3 +15,8 @@ export const classDatesState = atom<Date[] | null>({
   key: 'classDates',
   default: null,
 });
+
+export const classDaysDatesState = atom<Date[] | null>({
+  key: 'classDaysDates',
+  default: null,
+});
