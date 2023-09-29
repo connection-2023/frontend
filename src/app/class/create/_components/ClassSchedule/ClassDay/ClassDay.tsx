@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { classRangeState, classTimeState } from '@/recoil/ClassSchedule/atoms';
 import DayByDay from './DayByDay';
@@ -61,4 +61,4 @@ const ClassDay = () => {
   );
 };
 
-export default ClassDay;
+export default React.memo(ClassDay);
