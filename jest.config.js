@@ -12,7 +12,17 @@ const customJestConfig = {
     '^.+\\.(svg)$': '<rootDir>/src/utils/svg-mock.tsx',
   },
   testEnvironment: 'jest-environment-jsdom',
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/__tests__/utils/setup.ts',
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-module.exports = createJestConfig(customJestConfig);
+module.exports = async () => ({
+  ...(await createJestConfig(customJestConfig)()),
+  transformIgnorePatterns: [
+    'node_modules/(?!nanoid/)',
+    '^.+\\.module\\.(css|sass|scss)$',
+  ],
+});
