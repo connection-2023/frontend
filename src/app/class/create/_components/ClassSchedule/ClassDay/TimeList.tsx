@@ -6,7 +6,7 @@ import { ClearSVG } from '@/../public/icons/svg';
 interface ITimeListProps {
   startTime: string;
   onChange: (newStartTime: string) => void;
-  onRemove: () => void;
+  onRemove?: () => void;
 }
 
 const TimeList = ({ startTime, onChange, onRemove }: ITimeListProps) => {

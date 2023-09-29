@@ -13,6 +13,10 @@ import '../../styles/calendar.css';
 const ScheduleCalendar = ({ clickableDates }: { clickableDates: Date[] }) => {
   const [selected, setSelected] = useState<Date | undefined>(undefined);
 
+  if (!clickableDates.length) {
+    return null;
+  }
+
   const scheduleModifiers = {
     ...DAY_MODIFIERS,
 

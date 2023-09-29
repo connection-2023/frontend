@@ -21,20 +21,17 @@ const DayOffCalendar = ({
   handleSelected,
 }: ICalendarProps) => {
   const [selected, setSelected] = useState<Date[] | undefined>(selectedDates);
+  const initialSelectedDates = selectedDates;
 
   useEffect(() => {
     if (handleSelected !== undefined && selected) {
-      const unselectedDates = selectedDates.filter(
+      const unselectedDates = initialSelectedDates.filter(
         (date) => !selected.some((selDate) => isSameDay(selDate, date)),
       );
 
       handleSelected(unselectedDates);
     }
   }, [selected]);
-
-  useEffect(() => {
-    setSelected(selectedDates);
-  }, [selectedDates]);
 
   const disabledDays = (date: Date) =>
     !selectedDates.some((clickableDate) => isSameDay(clickableDate, date));

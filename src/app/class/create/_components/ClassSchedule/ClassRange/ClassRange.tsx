@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useClickAway } from 'react-use';
 import { useRecoilState } from 'recoil';
 import { classRangeState } from '@/recoil/ClassSchedule/atoms';
@@ -101,7 +101,7 @@ const ClassRange = () => {
   );
 };
 
-export default ClassRange;
+export default React.memo(ClassRange);
 
 interface IDateInputProps {
   placeholder: string;

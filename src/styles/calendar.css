@@ -33,12 +33,10 @@
 }
 
 /* Custom Style*/
-.saturday:not(.rdp-day_outside):not(.rdp-day_selected)
-  .saturday:not(.rdp-day_outside):not(.class-input-selectable) {
+.saturday:not(.rdp-day_selected) {
   color: blue;
 }
-.sunday:not(.rdp-day_outside):not(.rdp-day_selected)
-  .sunday:not(.rdp-day_outside):not(.class-input-selectable) {
+.sunday:not(.rdp-day_selected) {
   color: red;
 }
 
@@ -55,15 +53,50 @@
   background-color: var(--main-color) !important;
 }
 
-.class-input-selectable {
-  background-color: var(--sub-color4);
-  color: white;
-}
-
 .dayOff-selected-day,
 .dayOff-selected-day:focus-visible,
 .dayOff-selected-day:hover {
   color: white;
   opacity: 1;
   background-color: var(--sub-color1) !important;
+}
+/* range-cell  */
+.range-cell {
+  padding: 1px 0px;
+}
+
+.range-cell .saturday:not(.rdp-day_selected) {
+  color: blue;
+}
+
+.range-cell .sunday:not(.rdp-day_selected) {
+  color: red;
+}
+
+.range-cell .rdp-button[disabled]:not(.rdp-day_selected),
+.rdp-day_outside {
+  opacity: 0.5;
+}
+.rdp-day_range_middle {
+  background: rgba(131, 56, 236, 0.5);
+  border-radius: 0;
+}
+
+/* input class date */
+.specific-selectable,
+.class-input-selectable {
+  background-color: var(--sub-color4);
+  color: white;
+}
+
+.specific-class-day,
+.specific-class-day:hover {
+  background-color: black !important;
+  color: white !important;
+}
+
+.specific-selected-day,
+.specific-selected-day:hover {
+  background-color: var(--main-color) !important;
+  color: white !important;
 }

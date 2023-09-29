@@ -1,3 +1,4 @@
+import React from 'react';
 import ScheduleCalendar from '@/components/Calendar/ScheduleCalendar';
 
 const textStyle = {
@@ -11,6 +12,7 @@ interface IScheduleProps {
 }
 
 const ScheduleView = ({ clickableDates, lectureSchedule }: IScheduleProps) => {
+  if (!clickableDates.length) return null;
   return (
     <div className="flex w-full justify-between whitespace-nowrap">
       <ScheduleCalendar clickableDates={clickableDates} />
@@ -24,7 +26,7 @@ const ScheduleView = ({ clickableDates, lectureSchedule }: IScheduleProps) => {
   );
 };
 
-export default ScheduleView;
+export default React.memo(ScheduleView);
 
 interface IScheduleListProps {
   date: string;
