@@ -33,7 +33,10 @@ const RangeCalendar = ({
       numberOfMonths={2}
       modifiers={dateOptions}
       modifiersClassNames={DAY_MODIFIERS_CLASSNAMES}
-      className="absolute left-0 top-0 z-10 flex w-fit -translate-x-4 translate-y-5 rounded-[0.31rem] border border-solid border-sub-color2 bg-white px-3 py-4"
+      classNames={{
+        cell: 'range-cell',
+      }}
+      className="absolute left-4 top-3 z-10 flex w-fit -translate-x-4 translate-y-5 rounded-[0.31rem] border border-solid border-sub-color2 bg-white px-3 py-4"
       components={{
         Caption: ({ displayMonth }: CaptionProps) =>
           FormattedCaption({

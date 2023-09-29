@@ -68,8 +68,8 @@ const InputClassDates = ({
 
   const inputModifiersClassNames = {
     ...DAY_MODIFIERS_CLASSNAMES,
-    selectableDays: 'class-input-selectable',
-    classDay: 'selected-class-day',
+    selectableDays: 'specific-selectable',
+    classDay: 'specific-class-day',
   };
 
   return (
@@ -85,7 +85,7 @@ const InputClassDates = ({
       modifiersClassNames={inputModifiersClassNames}
       className="flex w-fit rounded-[0.625rem] px-4 py-6 shadow-[1px_1px_3px_1px_rgba(0,0,0,0.25)]"
       classNames={{
-        day_selected: 'schedule-selected-day',
+        day_selected: 'specific-selected-day',
       }}
       components={{
         Caption: ({ displayMonth }: CaptionProps) =>
