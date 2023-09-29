@@ -12,6 +12,7 @@ interface IScheduleProps {
 }
 
 const ScheduleView = ({ clickableDates, lectureSchedule }: IScheduleProps) => {
+  if (!clickableDates.length) return null;
   return (
     <div className="flex w-full justify-between whitespace-nowrap">
       <ScheduleCalendar clickableDates={clickableDates} />
