@@ -35,8 +35,8 @@ const DayOff = () => {
   };
 
   useEffect(() => {
-    if (unselectedDates.length > 0 && classDates) {
-      const newClassDates = classDates.filter(
+    if (classDates && initDates) {
+      const newClassDates = initDates.filter(
         (date) => !unselectedDates.includes(date),
       );
       setClassDates(newClassDates);
