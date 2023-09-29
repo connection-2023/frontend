@@ -187,6 +187,7 @@ const TimeSlotManager = ({
   addTimeSlot,
   removeTimeSlot,
 }: TimeSlotManagerProps) => {
+  const key = useId();
   return (
     <>
       <ul className="mt-2 flex w-auto flex-col gap-2">
@@ -203,7 +204,7 @@ const TimeSlotManager = ({
           ))
         ) : (
           <TimeList
-            key={useId()}
+            key={key}
             startTime=""
             onChange={(newStartTime) => handleStartTimeChange(0, newStartTime)}
           />
