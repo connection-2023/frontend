@@ -34,8 +34,12 @@ import ZoomOutSVG from './zoomOut.svg';
 import MainPopularSVG from './mainPopular.svg';
 import MainTopSVG from './mainTop.svg';
 import SmallLogoSVG from './smallLogo.svg';
+import MapSVG from './map.svg';
+import AlarmSVG from './alarm.svg';
+import CommentSVG from './comment.svg';
 
 export {
+  CommentSVG,
   ConnectionLogoSVG,
   SmallLogoSVG,
   InstagramSVG,
@@ -72,4 +76,6 @@ export {
   FacebookSVG,
   MainPopularSVG,
   MainTopSVG,
+  MapSVG,
+  AlarmSVG,
 };
