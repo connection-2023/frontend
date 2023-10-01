@@ -146,3 +146,11 @@ export const TOOLBAR = [
 export const QUILL_DEFAULT_VALUE = `
 <p><strong>클래스가 어떤 방식으로 진행되는지 알려주세요.</strong></p><p><span style="color: rgb(136, 136, 136);">상단 문구는 지우고 원하는 방식으로 커리큘럼을 작성해보세요 :) </span></p><p><br></p><p>일정</p><p><br></p><p>수업시간 </p><p><br></p><p>장소 </p><p><br></p><p>회차 별 수강계획 </p><p>ex) 어느 곡/파트를 진행할 예정인지 </p><p><br></p><p>1회차 </p><p><br></p><p>2회차 </p><p><br></p><p>3회차 </p><p><br></p><p>4회차 </p><p><br></p><p>5회차 </p>
 `;
+
+export const NON_STICKY_HEADER_PATHS = [
+  '/class/',
+  '/instructor/',
+  '/class/creat',
+];
+
+export const NO_HEADER_PATHS = ['/search'];
