@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ConnectionLogoSVG, MapSVG } from '../../../public/icons/svg';
 
-const Menu = () => {
+const HeaderMenu = () => {
   return (
     <nav className="flex">
       <Link href={'/'} className="mr-6">
@@ -12,7 +12,7 @@ const Menu = () => {
       </h1>
       <ul className="flex gap-6 text-lg">
         <h2 className="text-0 overflow-hidden indent-[-9999px]">
-          서비스 주요 메뉴
+          Connection 서비스 주요 메뉴
         </h2>
         <li>
           <Link href={'/'}>강사</Link>
@@ -30,4 +30,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default HeaderMenu;
