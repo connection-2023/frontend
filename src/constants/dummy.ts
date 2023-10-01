@@ -492,7 +492,16 @@ const dummyMain: MainProps = {
   ],
 };
 
+const dummyUserInfo = {
+  profileImg:
+    'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+  name: '홍길동',
+  alarmCount: 9,
+  commentCount: 10,
+};
+
 export {
+  dummyUserInfo,
   dummyMain,
   dummyClass,
   dummyUserInputSuggestion,
