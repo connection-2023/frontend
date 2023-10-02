@@ -1,5 +1,11 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import { Arrow } from '../../../public/icons/svg';
 
@@ -78,13 +84,26 @@ const Carousel = ({
   movePause = false,
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
-  const extendForCarousel = (elementArr: React.ReactNode[] | string[]) => {
-    return [elementArr.at(-1), ...elementArr, ...elementArr.slice(0, 2)];
-  };
 
-  const carouselElements = extendForCarousel(
-    children ? [...childrenArray] : [...(imgURL || [])],
+  const extendForCarousel = useCallback(
+    (elementArr: React.ReactNode[] | string[]) => {
+      const newElementArr = [...elementArr, elementArr[0]];
+      newElementArr.shift();
+      return [
+        newElementArr.at(-1),
+        ...newElementArr,
+        ...newElementArr.slice(0, priority - 1),
+      ];
+    },
+    [priority],
   );
+
+  const carouselElements = useMemo(
+    () =>
+      extendForCarousel(children ? [...childrenArray] : [...(imgURL || [])]),
+    [childrenArray, imgURL],
+  );
+
   const carouselLength = carouselElements.length;
   const originalElements = children ? childrenArray : [...(imgURL || [])];
 
@@ -102,7 +121,7 @@ const Carousel = ({
 
   const updateImageIndex = () => {
     setCurrentIndex((prev) => {
-      if (prev + 1 === carouselLength - 2) {
+      if (prev === carouselLength - priority) {
         setIsAnimating(false);
         return 0;
       } else if (prev === 0) {
@@ -152,15 +171,13 @@ const Carousel = ({
     event.nativeEvent.preventDefault();
 
     setIsAnimating(false);
-    setCurrentIndex((prev) =>
-      direction === 'BACKWARD'
-        ? prev <= 0
-          ? carouselLength - 4
-          : prev - 1
-        : prev >= carouselLength - 4
-        ? 0
-        : prev + 1,
-    );
+    setCurrentIndex((prev) => {
+      if (direction === 'FORWARD') {
+        return prev >= carouselLength - priority ? 0 : prev + 1;
+      } else {
+        return prev <= 0 ? carouselLength - priority : prev - 1;
+      }
+    });
 
     timeoutIdRef.current = setTimeout(() => {
       setIsAnimating(true);
@@ -206,7 +223,7 @@ const Carousel = ({
       </div>
       {showCurrentElement && (
         <div
-          className={`display: absolute bottom-0 flex h-[10%] w-full items-center justify-center ${
+          className={`absolute bottom-0 flex h-[10%] w-full items-center justify-center ${
             showCurrentElementBackGround && 'bg-black/[.5]'
           } `}
         >
