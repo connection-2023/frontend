@@ -57,7 +57,7 @@ const FullCalendar = () => {
   };
 
   return (
-    <div className="mb-[0.88rem] mt-[1.47rem] max-w-[60.67rem]">
+    <div className="relative mb-[0.88rem] mt-[1.47rem] max-w-[60.67rem]">
       <Calendar
         localizer={localizer}
         formats={formats}
@@ -86,7 +86,6 @@ const FullCalendar = () => {
 
       {modalIsOpen && selectedEvent && selectedDate && (
         <CalendarDetail
-          isOpen={modalIsOpen}
           closeModal={closeModal}
           events={selectedEvent}
           selectedDate={format(selectedDate, 'yyyy년 MM월 dd일 eeee', {

@@ -1,4 +1,5 @@
 import ConnectionLogoSVG from './connectionLogo.svg';
+import CalendarDetailSVG from './calendarDetail.svg';
 import CalendarSVG from './calendar.svg';
 import HeartSVG from './heart.svg';
 import StarSVG from './star.svg';
@@ -37,6 +38,7 @@ import SmallLogoSVG from './smallLogo.svg';
 
 export {
   ConnectionLogoSVG,
+  CalendarDetailSVG,
   SmallLogoSVG,
   InstagramSVG,
   YoutubeSVG,
