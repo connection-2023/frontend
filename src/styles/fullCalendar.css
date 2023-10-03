@@ -1,0 +1,101 @@
+.rbc-header:nth-child(1),
+.rbc-date-cell:nth-child(1) {
+  color: #e92c2c;
+}
+
+.rbc-header:nth-child(7),
+.rbc-date-cell:nth-child(7) {
+  color: #2144ff;
+}
+
+.rbc-off-range {
+  visibility: hidden;
+}
+
+.rbc-off-range-bg {
+  background: none;
+}
+
+.rbc-date-cell {
+  padding-left: 5px;
+  text-align: left;
+}
+
+.rbc-header {
+  text-align: left;
+  font-weight: 500;
+  color: #969696;
+  font-size: 0.74969rem;
+  height: 1.625rem;
+  display: flex;
+  align-items: center;
+}
+
+.rbc-date-cell.rbc-now {
+  font-weight: 500;
+  color: white;
+}
+
+.rbc-date-cell.rbc-now {
+  position: relative;
+  z-index: 10;
+}
+
+.rbc-date-cell.rbc-now::after {
+  content: '';
+  display: inline-block;
+  width: 27px;
+  height: 27px;
+  background-color: var(--sub-color1);
+  border-radius: 50%;
+  margin-left: 0.5em;
+
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: -10;
+}
+
+.rbc-month-row {
+  color: #969696;
+  font-size: 0.98394rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.rbc-date-cell {
+  padding: 0.56rem;
+  box-sizing: border-box;
+}
+
+.rbc-today {
+  background: none;
+}
+
+.rbc-event-content {
+  height: 26px;
+  font-size: 10.496px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.rbc-row-segment {
+  padding: 3px 5px 1px 5px;
+  box-sizing: border-box;
+}
+
+.rbc-show-more {
+  color: #414141;
+  font-size: 0.656rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.rbc-event:focus,
+.rbc-day-slot .rbc-background-event:focus {
+  outline: none;
+}

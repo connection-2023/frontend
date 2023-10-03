@@ -17,3 +17,10 @@ export interface dateTimes {
   date: Date;
   time: string[];
 }
+
+export interface IFullCalendarEvent {
+  id: number;
+  start: Date;
+  end: Date;
+  title: string;
+}
