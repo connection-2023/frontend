@@ -39,8 +39,12 @@ import MapSVG from './map.svg';
 import AlarmSVG from './alarm.svg';
 import CommentSVG from './comment.svg';
 import TransFormSVG from './transform.svg';
+import CheckMarkSVG from './checkMark.svg';
+import PlusesSVG from './pluses.svg';
 
 export {
+  PlusesSVG,
+  CheckMarkSVG,
   TransFormSVG,
   CommentSVG,
   ConnectionLogoSVG,

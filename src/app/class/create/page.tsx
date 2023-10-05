@@ -3,11 +3,12 @@ import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { hookForm } from '@/recoil/hookForm/atom';
 import { Button } from '@/components/Button/Button';
+import ClassCategory from './_components/ClassCategory';
 import ValidationToast from '@/components/ValidationToast/ValidationToast';
 import { ArrowRightSVG } from '@/../public/icons/svg';
 
 const steps = [
-  { title: '사진, 카테고리 설정', component: null },
+  { title: '사진, 카테고리 설정', component: <ClassCategory /> },
   { title: '클래스 상세 설명', component: null },
   { title: '일정 및 공지사항', component: null },
   { title: '클래스 장소', component: null },
