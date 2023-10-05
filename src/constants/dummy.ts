@@ -500,6 +500,71 @@ const dummyUserInfo = {
   commentCount: 10,
 };
 
+const dummyClasstableData = [
+  {
+    classInfo: '1회차',
+    dateTime: '23.09.19 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '2회차',
+    dateTime: '23.9.19 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '3회차',
+    dateTime: '23.09.29 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '4회차',
+    dateTime: '23.10.01 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '5회차',
+    dateTime: '23.10.03 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.10.01 14:00',
+  },
+  {
+    classInfo: '6회차',
+    dateTime: '23.10.18 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.10.18 14:00',
+  },
+  {
+    classInfo: '7회차',
+    dateTime: '23.10.22 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.10.18 14:00',
+  },
+];
 export {
   dummyUserInfo,
   dummyMain,
@@ -508,4 +573,5 @@ export {
   dummySearchData,
   dummyImgURL,
   dummyInstructor,
+  dummyClasstableData,
 };
