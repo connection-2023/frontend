@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { hookForm } from '@/recoil/hookForm/atom';
 import GenreListAddition from './GenreListAddition';
 import { DANCE_GENRE } from '@/constants/constants';
 import { CheckMarkSVG } from '../../../public/icons/svg';
@@ -7,6 +9,7 @@ const GenreCheckboxGroup = () => {
   const [genreList, setGenreList] = useState(['전체', ...DANCE_GENRE]);
   const [numColumns, setNumColumns] = useState(5);
   const [selectGenreList, setSelectGenreList] = useState<string[]>([]);
+  const formMethods = useRecoilValue(hookForm);
 
   useEffect(() => {
     const updateNumColumns = () => {
@@ -31,14 +34,26 @@ const GenreCheckboxGroup = () => {
     };
   }, []);
 
+  if (!formMethods) {
+    return;
+  }
+
+  const { register, setValue } = formMethods;
+
   const changeSelectGenreList = (genre: string, isChecked: boolean) => {
     setSelectGenreList((currentList) => {
+      let newList;
       if (isChecked && !currentList.includes(genre)) {
-        return [...currentList, genre];
+        newList = [...currentList, genre];
       } else if (!isChecked && currentList.includes(genre)) {
-        return currentList.filter((g) => g !== genre);
+        newList = currentList.filter((g) => g !== genre);
+      } else {
+        return currentList;
       }
-      return currentList;
+
+      setValue('장르', newList);
+
+      return newList;
     });
   };
 
@@ -76,13 +91,17 @@ const GenreCheckboxGroup = () => {
                     `}
                   >
                     <input
+                      {...register('장르', {
+                        validate: (value) => value && value.length > 0,
+                      })}
                       id={genre}
                       type="checkbox"
+                      value={genre}
                       className="hidden"
-                      onChange={(e) =>
-                        changeSelectGenreList(genre, e.target.checked)
-                      }
                       checked={selectGenreList.includes(genre)}
+                      onChange={(e) => {
+                        changeSelectGenreList(genre, e.target.checked);
+                      }}
                     />
                     <label
                       htmlFor={genre}
