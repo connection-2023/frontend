@@ -1,11 +1,23 @@
 import { useState } from 'react';
 import { parse, isPast, isFuture } from 'date-fns';
 import { dummyClasstableData } from '@/constants/dummy';
+import EnrollmentModal from './EnrollmentModal';
 
 const TableCellStyle = 'border border-solid border-[#D9D9D9] py-2';
 
 const ClassTable = () => {
   const [showPastClasses, setShowPastClasses] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [selectedItem, setSelectedItem] = useState(null);
+
+  const openModal = (item: any) => {
+    //setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // 데이터 가공
   const processedTableData = dummyClasstableData.map((item) => {
@@ -55,9 +67,11 @@ const ClassTable = () => {
             isFirstClass={
               showPastClasses ? idx === firstFutureClassIndex : idx === 0
             }
+            onClick={() => openModal(item)}
           />
         ))}
       </table>
+      <EnrollmentModal isOpen={isModalOpen} closeModal={closeModal} />
     </>
   );
 };
@@ -80,6 +94,7 @@ interface ITableList {
   };
   isPastClass: boolean;
   isFirstClass: boolean;
+  onClick: () => void;
 }
 
 const TableList = ({
@@ -89,6 +104,7 @@ const TableList = ({
   apply,
   isPastClass,
   isFirstClass,
+  onClick,
 }: ITableList) => {
   const textColor = isFirstClass
     ? 'text-sub-color1'
@@ -101,7 +117,10 @@ const TableList = ({
     <tr className={textColor}>
       <th className={`${TableCellStyle} ${textBold}`}>{classInfo}</th>
       <th className={`${TableCellStyle}`}>{dateTime}</th>
-      <th className={`cursor-pointer ${TableCellStyle} underline`}>
+      <th
+        onClick={onClick}
+        className={`cursor-pointer ${TableCellStyle} underline`}
+      >
         {apply.current}/{apply.total}명
       </th>
       <th className={`${TableCellStyle}`}>{duedate}</th>

@@ -40,3 +40,36 @@ html {
     width: 0%;
   }
 }
+
+.speech-bubble {
+  position: relative;
+  background: white;
+  border: solid 1px var(--sub-color1);
+  border-radius: 0.4em;
+  margin-top: 0.5rem;
+  max-width: 28.5rem;
+  padding: 0.44rem 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.speech-bubble::before,
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  right: 110px;
+}
+
+.speech-bubble::before {
+  bottom: 100%;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 18px solid var(--sub-color1);
+}
+
+.speech-bubble::after {
+  bottom: calc(100% - 2px);
+  border-left: calc(8px - 1px) solid transparent;
+  border-right: calc(8px - 1px) solid transparent;
+  border-bottom: calc(18px - 2px) solid white;
+}
