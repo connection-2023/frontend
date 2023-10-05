@@ -23,7 +23,7 @@ const CalendarDetail = ({
   return (
     <div
       ref={modalRef}
-      className="absolute left-1/4 top-20 z-10 flex h-[20.3125rem] w-[26.0625rem] w-[26rem] flex-col overflow-y-auto rounded-[0.3125rem] bg-white px-4 py-[1.19rem] shadow-[0px_2px_5px_1px_rgba(0,0,0,0.25)]"
+      className="absolute left-1/4 top-20 z-10 flex h-[20.3125rem] w-[26rem] flex-col overflow-y-auto rounded-[0.3125rem]  bg-white px-4 py-[1.19rem] shadow-[0px_2px_5px_1px_rgba(0,0,0,0.25)]"
     >
       <h1 className="mb-3 flex w-full items-center justify-center border-b border-solid border-[#D9D9D9] bg-white pb-[0.69rem]">
         {selectedDate}
