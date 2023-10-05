@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import GenreListAddition from './GenreListAddition';
 import { DANCE_GENRE } from '@/constants/constants';
 import { CheckMarkSVG } from '../../../public/icons/svg';
@@ -6,15 +6,7 @@ import { CheckMarkSVG } from '../../../public/icons/svg';
 const GenreCheckboxGroup = () => {
   const [genreList, setGenreList] = useState(['전체', ...DANCE_GENRE]);
   const [numColumns, setNumColumns] = useState(5);
-
-  const addGenreList = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const input = form.elements[0] as HTMLInputElement;
-
-    setGenreList([...genreList, input.value]);
-    input.value = '';
-  };
+  const [selectGenreList, setSelectGenreList] = useState<string[]>([]);
 
   useEffect(() => {
     const updateNumColumns = () => {
@@ -39,6 +31,22 @@ const GenreCheckboxGroup = () => {
     };
   }, []);
 
+  const changeSelectGenreList = (genre: string, isChecked: boolean) => {
+    setSelectGenreList((currentList) => {
+      if (isChecked && !currentList.includes(genre)) {
+        return [...currentList, genre];
+      } else if (!isChecked && currentList.includes(genre)) {
+        return currentList.filter((g) => g !== genre);
+      }
+      return currentList;
+    });
+  };
+
+  const addGenreList = (value: string) => {
+    setGenreList((currentList) => [...currentList, value]);
+    setSelectGenreList((currentList) => [...currentList, value]);
+  };
+
   return (
     <div className="grid grid-cols-8">
       <h2 className="text-lg font-bold">장르</h2>
@@ -55,21 +63,43 @@ const GenreCheckboxGroup = () => {
                 if (index % numColumns === 0) {
                   rows.push([]);
                 }
+                const isSelected = selectGenreList.includes(genre);
+
                 rows[rows.length - 1].push(
                   <td
-                    key={genre}
-                    className="border border-solid border-sub-color2"
+                    key={genre + index}
+                    className={`border-solid ${
+                      isSelected
+                        ? 'border-2 border-sub-color1 bg-[#F5F5F5]'
+                        : 'border border-sub-color2'
+                    }
+                    `}
                   >
-                    <input id={genre} type="checkbox" className="hidden" />
+                    <input
+                      id={genre}
+                      type="checkbox"
+                      className="hidden"
+                      onChange={(e) =>
+                        changeSelectGenreList(genre, e.target.checked)
+                      }
+                      checked={selectGenreList.includes(genre)}
+                    />
                     <label
                       htmlFor={genre}
-                      className="flex h-8 w-full cursor-pointer select-none items-center justify-center gap-1 fill-sub-color2 text-sm text-sub-color2"
+                      className={`flex h-8 w-full cursor-pointer select-none items-center justify-center gap-1 text-sm 
+                       ${
+                         isSelected
+                           ? 'fill-sub-color1 font-bold '
+                           : 'fill-sub-color2 text-sub-color2'
+                       }
+                      `}
                     >
                       <CheckMarkSVG />
                       <p className="max-w-[80%] truncate">{genre}</p>
                     </label>
                   </td>,
                 );
+
                 return rows;
               }, [])
               .map((rowItems, rowIndex) => (
@@ -88,6 +118,3 @@ const GenreCheckboxGroup = () => {
 };
 
 export default GenreCheckboxGroup;
-
-// peer-checked:border-2 peer-checked:border-sub-color1 peer-checked:bg-[#F5F5F5]
-//     peer-checked:fill-sub-color1 peer-checked:font-bold peer-checked:text-black

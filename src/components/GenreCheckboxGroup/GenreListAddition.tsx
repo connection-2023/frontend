@@ -18,7 +18,7 @@ const getWidthClass = (numColumns: number) => {
 };
 
 interface GenreListAdditionProps {
-  addGenreList: (e: FormEvent<HTMLFormElement>) => void;
+  addGenreList: (value: string) => void;
   numColumns: number;
 }
 
@@ -35,8 +35,13 @@ const GenreListAddition = ({
   });
 
   const addSubmit = (e: FormEvent<HTMLFormElement>) => {
-    addGenreList(e);
-    inputRef?.current?.focus();
+    e.preventDefault();
+
+    if (inputRef.current && inputRef.current.value) {
+      addGenreList(inputRef.current.value);
+      inputRef.current.value = '';
+      inputRef.current.focus();
+    }
   };
 
   return (
