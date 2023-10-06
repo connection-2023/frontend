@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { hookForm } from '@/recoil/hookForm/atom';
+import RadioComponent from './RadioComponent';
 import ClassSizeSelect from './ClassSizeSelect';
-import { CATEGORY_CLASSSIZE } from '@/constants/constants';
-import { CheckMarkSVG } from '../../../../../../public/icons/svg';
+import { CATEGORY_LESSON_TYPE } from '@/constants/constants';
 
 const LessonTypeSelect = () => {
   const [lessonType, setLessonType] = useState('');
@@ -13,7 +13,7 @@ const LessonTypeSelect = () => {
     return null;
   }
 
-  const { register, setValue } = formMethods;
+  const { setValue } = formMethods;
 
   const selectClassSize = (e: ChangeEvent<HTMLInputElement>) => {
     setLessonType(e.target.value);
@@ -25,34 +25,12 @@ const LessonTypeSelect = () => {
   };
 
   return (
-    <ul className="flex flex-grow gap-4">
-      {CATEGORY_CLASSSIZE.map((lessonType) => (
-        <li key={lessonType} className="flex items-center gap-1">
-          <input
-            {...register('인원', {
-              validate: (value) => !!value,
-            })}
-            id={lessonType}
-            type="radio"
-            name="lessonTypeGroup"
-            value={lessonType}
-            className="peer hidden"
-            onChange={(e) => selectClassSize(e)}
-          />
-          <div className="relative h-[1.125rem] w-[1.125rem] cursor-pointer rounded-sm border border-solid border-gray-500 fill-none peer-checked:bg-sub-color1 peer-checked:fill-white">
-            <CheckMarkSVG />
-          </div>
-          <label
-            htmlFor={lessonType}
-            className="flex cursor-pointer justify-center text-center
-            peer-checked:font-bold peer-checked:text-sub-color1
-            "
-          >
-            {lessonType}
-          </label>
-        </li>
-      ))}
-
+    <ul className="flex gap-4">
+      <RadioComponent
+        title="인원"
+        checkList={CATEGORY_LESSON_TYPE}
+        changFunction={selectClassSize}
+      />
       <ClassSizeSelect lessonType={lessonType} />
     </ul>
   );

@@ -71,11 +71,11 @@ const GenreCheckboxGroup = () => {
   };
 
   return (
-    <div className="grid grid-cols-8">
-      <h2 id="장르" className="text-lg font-bold ">
+    <div className="grid grid-cols-6">
+      <h2 id="장르" className="text-lg font-bold">
         장르
       </h2>
-      <div className="col-span-7 ">
+      <div className="col-span-5">
         <table className="w-full table-fixed border-collapse">
           <colgroup>
             {Array.from({ length: numColumns }).map((_, index) => (

@@ -155,4 +155,8 @@ export const NON_STICKY_HEADER_PATHS = [
 
 export const NO_HEADER_PATHS = ['/search'];
 
-export const CATEGORY_CLASSSIZE = ['개인(1:1)레슨', '그룹레슨'];
+export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
+
+export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
+
+export const CATEGORY_DIFFICULTY_LEVEL = ['초급(입문)', '중급', '상급'];
