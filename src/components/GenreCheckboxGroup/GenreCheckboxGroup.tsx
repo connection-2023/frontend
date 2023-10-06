@@ -35,7 +35,7 @@ const GenreCheckboxGroup = () => {
   }, []);
 
   if (!formMethods) {
-    return;
+    return null;
   }
 
   const { register, setValue } = formMethods;
@@ -43,15 +43,17 @@ const GenreCheckboxGroup = () => {
   const changeSelectGenreList = (genre: string, isChecked: boolean) => {
     setSelectGenreList((currentList) => {
       let newList: string[];
+      const isAlreadyIncluded = currentList.includes(genre);
+
       if (genre === '전체') {
         if (isChecked) {
           newList = [...genreList.filter((g) => g !== '전체')];
         } else {
           newList = [];
         }
-      } else if (isChecked && !currentList.includes(genre)) {
+      } else if (isChecked && !isAlreadyIncluded) {
         newList = [...currentList, genre];
-      } else if (!isChecked && currentList.includes(genre)) {
+      } else if (!isChecked && isAlreadyIncluded) {
         newList = currentList.filter((g) => g !== genre);
       } else {
         return currentList;
@@ -70,7 +72,9 @@ const GenreCheckboxGroup = () => {
 
   return (
     <div className="grid grid-cols-8">
-      <h2 className="text-lg font-bold">장르</h2>
+      <h2 id="장르" className="text-lg font-bold ">
+        장르
+      </h2>
       <div className="col-span-7 ">
         <table className="w-full table-fixed border-collapse">
           <colgroup>

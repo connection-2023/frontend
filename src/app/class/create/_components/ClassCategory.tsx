@@ -1,5 +1,6 @@
 import UploadImage from '@/components/UploadImage/UploadImage';
 import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
+import LessonTypeSelect from './ClassCategory/LessonTypeSelect';
 
 const ClassCategory = () => {
   return (
@@ -15,13 +16,13 @@ const ClassCategory = () => {
 
       <GenreCheckboxGroup />
 
-      <div className="flex w-full">
-        <div className="w-[5.6rem]">전체</div>
-        <div className="flex-grow">xptmxm</div>
+      <div className="mt-5 flex w-full">
+        <h2 className="min-w-[5.269rem] text-lg font-bold ">인원</h2>
+        <LessonTypeSelect />
       </div>
 
-      <div className="flex w-full">
-        <div className="w-[5.6rem]">장르</div>
+      <div className="mb-96 flex w-full">
+        <div className="w-[5.269rem]">장르</div>
         <div className="flex-grow">xptmxm</div>
       </div>
     </>

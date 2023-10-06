@@ -154,3 +154,5 @@ export const NON_STICKY_HEADER_PATHS = [
 ];
 
 export const NO_HEADER_PATHS = ['/search'];
+
+export const CATEGORY_CLASSSIZE = ['개인(1:1)레슨', '그룹레슨'];
