@@ -3,7 +3,7 @@ import { dummyClassRoster } from '@/constants/dummy';
 
 const ClassOverview = () => {
   return (
-    <aside className="flex h-[35.75rem] w-[19.5625rem] flex-col whitespace-nowrap shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
+    <aside className="flex h-fit w-[19.5625rem] flex-col whitespace-nowrap shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
       <div className="flex h-[5.13rem] divide-x  divide-solid divide-[#D9D9D9] border-b border-solid border-[#D9D9D9] py-[0.69rem] text-sm font-semibold text-sub-color3">
         <div className="flex w-1/2 flex-col items-center justify-center">
           진행한 클래스
@@ -25,7 +25,7 @@ const ClassOverview = () => {
             전체 채팅
           </button>
         </h3>
-        <ul className="flex h-[27rem] w-full flex-col gap-4 overflow-y-auto py-4 pr-1">
+        <ul className="flex w-full flex-col gap-4 py-4 ">
           {dummyClassRoster.map((item) => (
             <ClassRoster
               key={item.id}
