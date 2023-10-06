@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import Select, {
   components,
   DropdownIndicatorProps,
   IndicatorSeparatorProps,
 } from 'react-select';
+import { hookForm } from '@/recoil/hookForm/atom';
 
 const { DropdownIndicator, IndicatorSeparator } = components;
 
@@ -26,6 +28,7 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
     value: i,
     label: String(i),
   }));
+  const formMethods = useRecoilValue(hookForm);
 
   const [minStudent, setMinStudent] = useState({
     select: allOptions[0],
@@ -35,8 +38,6 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
     select: allOptions[allOptions.length - 1],
     option: allOptions,
   });
-
-  const isDisabled = '그룹레슨' !== lessonType;
 
   useEffect(() => {
     const { value: minValue } = minStudent.select;
@@ -58,22 +59,49 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
     { title: '최대', state: maxStudent, setState: setMaxStudent },
   ];
 
+  const isDisabled = '그룹레슨' !== lessonType;
+
+  if (!formMethods) {
+    return null;
+  }
+
+  const { setValue } = formMethods;
+
+  type OptionType = { value: number; label: string };
+  type StateType = {
+    select: OptionType;
+    option: OptionType[];
+  };
+
+  const selectClassSize = (
+    selected: OptionType | null,
+    title: string,
+    setState: React.Dispatch<React.SetStateAction<StateType>>,
+    option: OptionType[],
+  ) => {
+    setState({
+      select:
+        selected ||
+        (title === '최소' ? allOptions[0] : allOptions[allOptions.length - 1]),
+      option,
+    });
+    setValue('수강생제한', { min: minStudent.select, max: maxStudent.select });
+  };
+
   return (
     <>
       {studentCounts.map(({ title, state, setState }) => (
-        <div key={title} className="flex items-center gap-1">
-          <h3 className={(isDisabled && 'text-sub-color4') || ''}>{title}</h3>
+        <div
+          key={title}
+          className={`flex items-center gap-1 ${
+            isDisabled && 'text-sub-color4'
+          }`}
+        >
+          <h3>{title}</h3>
           <Select
             defaultValue={state.select}
             onChange={(selected) =>
-              setState({
-                select:
-                  selected ||
-                  (title === '최소'
-                    ? allOptions[0]
-                    : allOptions[allOptions.length - 1]),
-                option: state.option,
-              })
+              selectClassSize(selected, title, setState, state.option)
             }
             isDisabled={isDisabled}
             options={state.option}
@@ -90,8 +118,8 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
                     ? '1.3rem 1.3rem 0 0'
                     : '1.875rem',
                 boxShadow: 'none',
-                borderColor: '#D9D9D9',
-                '&:hover': { borderColor: '#D9D9D9' },
+                borderColor: 'var(--sub-color4)',
+                '&:hover': { borderColor: 'var(--sub-color4)' },
               }),
               valueContainer: (provided, state) => ({
                 ...provided,
@@ -105,12 +133,14 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
                 ...provided,
                 marginTop: '-10px',
                 boxShadow: 'none',
-                border: '1px solid #D9D9D9',
+                border: '1px solid var(--sub-color4)',
                 borderTop: 'none',
               }),
               option: (provided, state) => ({
                 ...provided,
-                backgroundColor: state.isSelected ? '#D9D9D9' : 'white',
+                backgroundColor: state.isSelected
+                  ? 'var(--sub-color4)'
+                  : 'white',
                 color: 'black',
                 '&:hover': {
                   backgroundColor: '#eceaea',

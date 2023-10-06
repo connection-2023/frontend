@@ -1,13 +1,27 @@
 import { ChangeEvent, useState } from 'react';
-import { CATEGORY_CLASSSIZE } from '@/constants/constants';
+import { useRecoilValue } from 'recoil';
+import { hookForm } from '@/recoil/hookForm/atom';
 import ClassSizeSelect from './ClassSizeSelect';
+import { CATEGORY_CLASSSIZE } from '@/constants/constants';
 import { CheckMarkSVG } from '../../../../../../public/icons/svg';
 
 const LessonTypeSelect = () => {
   const [lessonType, setLessonType] = useState('');
+  const formMethods = useRecoilValue(hookForm);
+
+  if (!formMethods) {
+    return null;
+  }
+
+  const { register, setValue } = formMethods;
 
   const selectClassSize = (e: ChangeEvent<HTMLInputElement>) => {
     setLessonType(e.target.value);
+
+    if (e.target.value === '그룹레슨') {
+      setValue('수강생제한', { min: 0, max: 100 });
+    }
+    setValue('인원', e.target.value);
   };
 
   return (
@@ -15,6 +29,9 @@ const LessonTypeSelect = () => {
       {CATEGORY_CLASSSIZE.map((lessonType) => (
         <li key={lessonType} className="flex items-center gap-1">
           <input
+            {...register('인원', {
+              validate: (value) => !!value,
+            })}
             id={lessonType}
             type="radio"
             name="lessonTypeGroup"
