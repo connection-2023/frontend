@@ -582,6 +582,64 @@ const dummyEnrollmentPerson = [
     request: null,
   },
 ];
+
+const dummyClassRoster = [
+  {
+    id: 1,
+    src: null,
+    nickname: '제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 2,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 3,
+    src: null,
+    nickname: '제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 4,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 5,
+    src: null,
+    nickname: '제이제이제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 6,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 7,
+    src: null,
+    nickname: '제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 8,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 9,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+];
+
 export {
   dummyUserInfo,
   dummyMain,
@@ -592,4 +650,5 @@ export {
   dummyInstructor,
   dummyClasstableData,
   dummyEnrollmentPerson,
+  dummyClassRoster,
 };
