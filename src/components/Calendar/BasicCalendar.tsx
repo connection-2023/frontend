@@ -71,7 +71,7 @@ export const FormattedCaption = ({ displayMonth }: CaptionProps) => {
         disabled={!previousMonth}
         onClick={() => previousMonth && goToMonth(previousMonth)}
       >
-        <ArrowRightSVG className="origin-center rotate-180" />
+        <ArrowRightSVG className="origin-center rotate-180 stroke-black" />
       </button>
       <p className="text-base font-bold">
         {format(displayMonth, 'yy년 MM월', { locale: ko })}
@@ -80,7 +80,7 @@ export const FormattedCaption = ({ displayMonth }: CaptionProps) => {
         disabled={!nextMonth}
         onClick={() => nextMonth && goToMonth(nextMonth)}
       >
-        <ArrowRightSVG />
+        <ArrowRightSVG stroke="black" />
       </button>
     </div>
   );

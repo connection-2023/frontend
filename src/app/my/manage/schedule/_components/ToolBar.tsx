@@ -20,7 +20,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
         onClick={() => onNavigate('PREV')}
         className={`origin-center rotate-180 ${NavButtonStyle}`}
       >
-        <ArrowRightSVG />
+        <ArrowRightSVG stroke="black" />
       </button>
       <button
         onClick={() => onNavigate('TODAY')}
@@ -32,7 +32,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
         onClick={() => onNavigate('NEXT')}
         className={`${NavButtonStyle}`}
       >
-        <ArrowRightSVG />
+        <ArrowRightSVG stroke="black" />
       </button>
     </div>
     <h2 className="text-lg font-bold text-sub-color3">{label}</h2>
