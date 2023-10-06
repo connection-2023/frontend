@@ -17,7 +17,7 @@ const ClassCategory = () => {
       <GenreCheckboxGroup />
 
       <div className="mt-5 flex w-full">
-        <h2 className="min-w-[5.269rem] text-lg font-bold ">인원</h2>
+        <h2 className="min-w-[5.269rem] pt-1.5 text-lg font-bold">인원</h2>
         <LessonTypeSelect />
       </div>
 
