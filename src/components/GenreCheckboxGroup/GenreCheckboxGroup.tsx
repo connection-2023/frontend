@@ -42,8 +42,14 @@ const GenreCheckboxGroup = () => {
 
   const changeSelectGenreList = (genre: string, isChecked: boolean) => {
     setSelectGenreList((currentList) => {
-      let newList;
-      if (isChecked && !currentList.includes(genre)) {
+      let newList: string[];
+      if (genre === '전체') {
+        if (isChecked) {
+          newList = [...genreList.filter((g) => g !== '전체')];
+        } else {
+          newList = [];
+        }
+      } else if (isChecked && !currentList.includes(genre)) {
         newList = [...currentList, genre];
       } else if (!isChecked && currentList.includes(genre)) {
         newList = currentList.filter((g) => g !== genre);
@@ -78,7 +84,10 @@ const GenreCheckboxGroup = () => {
                 if (index % numColumns === 0) {
                   rows.push([]);
                 }
-                const isSelected = selectGenreList.includes(genre);
+                const isSelected =
+                  genre !== '전체'
+                    ? selectGenreList.includes(genre)
+                    : genreList.length - 1 === selectGenreList.length;
 
                 rows[rows.length - 1].push(
                   <td
@@ -98,7 +107,7 @@ const GenreCheckboxGroup = () => {
                       type="checkbox"
                       value={genre}
                       className="hidden"
-                      checked={selectGenreList.includes(genre)}
+                      checked={isSelected}
                       onChange={(e) => {
                         changeSelectGenreList(genre, e.target.checked);
                       }}
