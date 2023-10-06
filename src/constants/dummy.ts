@@ -640,6 +640,39 @@ const dummyClassRoster = [
   },
 ];
 
+const dummyClassList = [
+  {
+    id: 1,
+    status: '모집중',
+    date: '23.08.03-23.09.28',
+    title: '"원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문',
+    count: {
+      current: 16,
+      total: 20,
+    },
+  },
+  {
+    id: 2,
+    status: '모집중',
+    date: '23.08.03-23.09.28',
+    title: '"원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문',
+    count: {
+      current: 16,
+      total: 20,
+    },
+  },
+  {
+    id: 3,
+    status: '모집중',
+    date: '23.08.03-23.09.28',
+    title: '"원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문',
+    count: {
+      current: 16,
+      total: 20,
+    },
+  },
+];
+
 export {
   dummyUserInfo,
   dummyMain,
@@ -651,4 +684,5 @@ export {
   dummyClasstableData,
   dummyEnrollmentPerson,
   dummyClassRoster,
+  dummyClassList,
 };
