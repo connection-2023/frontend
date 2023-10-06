@@ -24,7 +24,7 @@ const ClassDetailView = ({ onGoBack }: { onGoBack: () => void }) => {
             모집중
           </p>
           <h1 className="text-base font-bold text-black">
-            "원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문
+            &quot;원밀리언 댄스 스튜디오 with리아킴&quot; 에게 배우는 댄스 입문
           </h1>
         </div>
         <button className="flex h-[2.125rem] w-[7.5625rem] items-center justify-center gap-[0.44rem] rounded-[0.3125rem] bg-sub-color1 text-sm font-semibold text-white">
