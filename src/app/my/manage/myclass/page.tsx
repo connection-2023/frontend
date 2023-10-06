@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ClassDetailView from './_components/ClassDetailView';
 import ClassListView from './_components/ClassListView';
 
-const myClassPage = () => {
+const MyClassPage = () => {
   const [activeView, setActiveView] = useState('list');
 
   const handleItemClick = () => {
@@ -25,4 +25,4 @@ const myClassPage = () => {
   );
 };
 
-export default myClassPage;
+export default MyClassPage;
