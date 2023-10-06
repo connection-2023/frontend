@@ -137,7 +137,7 @@ const Person = ({ userId, src, nickname, memo, request }: IPerson) => {
         </p>
         <button aria-label="유저와 채팅" className="cursor-pointer">
           {/* 누르면 useId로 채팅 연결 예정 */}
-          <CommentSVG fill="black" />
+          <CommentSVG fill="black" width="29" height="30" />
         </button>
       </div>
       <div className="flex w-full items-center justify-end ">

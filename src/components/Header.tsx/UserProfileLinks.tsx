@@ -23,7 +23,7 @@ const UserProfileLinks = () => {
       </button>
 
       <button className="relative">
-        <CommentSVG />
+        <CommentSVG fill="black" width="29" height="30" />
         <span className="absolute -right-1.5 top-0 min-w-[1rem] rounded-full bg-main-color px-1 text-xs font-bold text-white">
           {commentCount}
         </span>
