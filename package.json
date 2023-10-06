@@ -37,6 +37,7 @@
     "react-modal": "^3.16.1",
     "react-naver-maps": "^0.1.2",
     "react-range": "^1.8.14",
+    "react-select": "^5.7.7",
     "recoil": "^0.7.7",
     "suneditor": "^2.45.1",
     "suneditor-react": "^3.6.1",
