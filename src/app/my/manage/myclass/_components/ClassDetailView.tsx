@@ -13,7 +13,7 @@ const ClassDetailView = ({ onGoBack }: { onGoBack: () => void }) => {
   // --- ClassListView에서 제목과 같은 데이터를 넘겨 받을지 서버에서 받을지 고민 ---
 
   return (
-    <section className="flex flex-col justify-between">
+    <section className="flex max-w-[60rem] flex-col justify-between">
       {/* Top Section */}
       <section className="flex whitespace-nowrap border-b border-solid border-[#D9D9D9] py-3">
         <div className="flex w-full items-center">
