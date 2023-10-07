@@ -1,18 +1,12 @@
 import { ChangeEvent, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { hookForm } from '@/recoil/hookForm/atom';
+import { useFormContext } from 'react-hook-form';
 import RadioComponent from './RadioComponent';
 import ClassSizeSelect from './ClassSizeSelect';
 import { CATEGORY_LESSON_TYPE } from '@/constants/constants';
 
 const LessonTypeSelect = () => {
   const [lessonType, setLessonType] = useState('');
-  const formMethods = useRecoilValue(hookForm);
-
-  if (!formMethods) {
-    return null;
-  }
-
+  const formMethods = useFormContext();
   const { setValue } = formMethods;
 
   const selectClassSize = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,14 +19,14 @@ const LessonTypeSelect = () => {
   };
 
   return (
-    <ul className="flex gap-4">
+    <>
       <RadioComponent
         title="인원"
         checkList={CATEGORY_LESSON_TYPE}
         changFunction={selectClassSize}
       />
       <ClassSizeSelect lessonType={lessonType} />
-    </ul>
+    </>
   );
 };
 

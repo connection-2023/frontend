@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { hookForm } from '@/recoil/hookForm/atom';
+import { useFormContext } from 'react-hook-form';
 import GenreListAddition from './GenreListAddition';
 import { DANCE_GENRE } from '@/constants/constants';
 import { CheckMarkSVG } from '../../../public/icons/svg';
@@ -9,7 +8,7 @@ const GenreCheckboxGroup = () => {
   const [genreList, setGenreList] = useState(['전체', ...DANCE_GENRE]);
   const [numColumns, setNumColumns] = useState(5);
   const [selectGenreList, setSelectGenreList] = useState<string[]>([]);
-  const formMethods = useRecoilValue(hookForm);
+  const formMethods = useFormContext();
 
   useEffect(() => {
     const updateNumColumns = () => {
@@ -33,10 +32,6 @@ const GenreCheckboxGroup = () => {
       window.removeEventListener('resize', updateNumColumns);
     };
   }, []);
-
-  if (!formMethods) {
-    return null;
-  }
 
   const { register, setValue } = formMethods;
 

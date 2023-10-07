@@ -1,7 +1,6 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { CheckMarkSVG } from '../../../../../../public/icons/svg';
-import { useRecoilValue } from 'recoil';
-import { hookForm } from '@/recoil/hookForm/atom';
 
 interface RadioComponentProps {
   title: string;
@@ -14,12 +13,7 @@ const RadioComponent = ({
   checkList,
   changFunction,
 }: RadioComponentProps) => {
-  const formMethods = useRecoilValue(hookForm);
-
-  if (!formMethods) {
-    return null;
-  }
-
+  const formMethods = useFormContext();
   const { register, setValue } = formMethods;
 
   return (

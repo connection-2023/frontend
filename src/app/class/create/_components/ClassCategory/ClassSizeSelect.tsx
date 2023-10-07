@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useFormContext } from 'react-hook-form';
 import Select, {
   components,
   DropdownIndicatorProps,
   IndicatorSeparatorProps,
 } from 'react-select';
-import { hookForm } from '@/recoil/hookForm/atom';
 
 const { DropdownIndicator, IndicatorSeparator } = components;
 
@@ -28,7 +27,7 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
     value: i,
     label: String(i),
   }));
-  const formMethods = useRecoilValue(hookForm);
+  const formMethods = useFormContext();
 
   const [minStudent, setMinStudent] = useState({
     select: allOptions[0],
@@ -60,10 +59,6 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
   ];
 
   const isDisabled = '그룹레슨' !== lessonType;
-
-  if (!formMethods) {
-    return null;
-  }
 
   const { setValue } = formMethods;
 
@@ -99,6 +94,7 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
         >
           <h3>{title}</h3>
           <Select
+            instanceId="select-component"
             defaultValue={state.select}
             onChange={(selected) =>
               selectClassSize(selected, title, setState, state.option)

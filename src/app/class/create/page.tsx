@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { hookForm } from '@/recoil/hookForm/atom';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/Button/Button';
 import ClassCategory from './_components/ClassCategory';
 import ValidationToast from '@/components/ValidationToast/ValidationToast';
@@ -18,11 +17,7 @@ const steps = [
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
-  const formMethods = useRecoilValue(hookForm);
-
-  if (!formMethods) {
-    return;
-  }
+  const formMethods = useForm({ shouldFocusError: false });
 
   const { handleSubmit } = formMethods;
 
@@ -34,13 +29,15 @@ export default function ClassCreate() {
 
   const onValid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
-    nextStep();
+    console.log(data);
+    // nextStep();
   };
 
   const invalid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
-    setinvalidData(Object.keys(data));
-    setTimeout(() => setinvalidData(null), 10000);
+    console.log(data);
+    // setinvalidData(Object.keys(data));
+    // setTimeout(() => setinvalidData(null), 10000);
   };
 
   return (
@@ -85,7 +82,9 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
         </h2>
 
         {/* 해당 컴포넌트*/}
-        {steps[activeStep].component}
+        <FormProvider {...formMethods}>
+          {steps[activeStep].component}
+        </FormProvider>
 
         {/* 하단 버튼 */}
         <nav className="my-10 flex w-full justify-between text-lg font-bold">
