@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { classCreateState } from '@/recoil/Create/atoms';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/Button/Button';
 import ClassCategory from './_components/ClassCategory';
-import { ArrowRightSVG } from '@/../public/icons/svg';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { ArrowRightSVG } from '@/../public/icons/svg';
 
 const steps = [
   { title: '사진, 카테고리 설정', component: <ClassCategory /> },
@@ -17,6 +19,7 @@ const steps = [
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
+  const setClassCreate = useSetRecoilState(classCreateState);
 
   const formMethods = useForm({ shouldFocusError: false });
 
@@ -28,15 +31,25 @@ export default function ClassCreate() {
     }
   };
 
+  const prevStep = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    }
+  };
+
   const onValid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
-    console.log(data);
-    // nextStep();
+
+    setClassCreate((prevState) => ({
+      ...prevState,
+      ...data,
+    }));
+
+    nextStep();
   };
 
   const invalid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
-    console.log(data);
     setinvalidData(Object.keys(data));
   };
 
@@ -92,7 +105,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
 
         {/* 하단 버튼 */}
         <nav className="my-10 flex w-full justify-between text-lg font-bold">
-          <button className="flex items-center">
+          <button onClick={prevStep} className="flex items-center">
             <ArrowRightSVG className="mr-2 origin-center rotate-180" />
             이전
           </button>

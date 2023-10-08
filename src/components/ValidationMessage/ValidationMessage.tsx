@@ -27,6 +27,8 @@ const ValidationMessage = ({ invalidData, closeModal }: ValidationMessage) => {
     }
     clearTimeout(timeID);
     closeModal();
+
+    //추후 api 연결시 invaludData명 변경하는 로직 제작 예정
   };
 
   return (

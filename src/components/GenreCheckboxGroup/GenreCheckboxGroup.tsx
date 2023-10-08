@@ -1,13 +1,22 @@
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { classCreateState } from '@/recoil/Create/atoms';
 import { useFormContext, useFormState } from 'react-hook-form';
 import GenreListAddition from './GenreListAddition';
 import { DANCE_GENRE } from '@/constants/constants';
 import { CheckMarkSVG } from '../../../public/icons/svg';
 
 const GenreCheckboxGroup = () => {
-  const [genreList, setGenreList] = useState(['전체', ...DANCE_GENRE]);
+  const classData = useRecoilValue(classCreateState);
+  const [selectGenreList, setSelectGenreList] = useState<string[]>(
+    classData['장르'],
+  );
+  const [genreList, setGenreList] = useState([
+    '전체',
+    ...DANCE_GENRE,
+    ...classData['장르'],
+  ]);
   const [numColumns, setNumColumns] = useState(5);
-  const [selectGenreList, setSelectGenreList] = useState<string[]>([]);
   const formMethods = useFormContext();
   const { errors } = useFormState({ control: formMethods.control });
 

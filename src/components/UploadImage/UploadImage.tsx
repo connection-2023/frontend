@@ -1,17 +1,29 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { classCreateState } from '@/recoil/Create/atoms';
+import { useEffect, useState } from 'react';
 import { useFormContext, useFormState } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 import CropperModal from './CropperModal';
 
 const UploadImage = () => {
-  const [images, setImages] = useState<{ file: File; url: string }[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const classData = useRecoilValue(classCreateState);
+
+  const [images, setImages] = useState<{ file: File; url: string }[]>(
+    classData['이미지'],
+  );
+  const [selectedImage, setSelectedImage] = useState<string | null>(
+    classData['이미지']?.[0]?.url || null,
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formMethods = useFormContext();
   const { errors } = useFormState({ control: formMethods.control });
   const { register, setValue } = formMethods;
+
+  useEffect(() => {
+    setValue('이미지', images);
+  }, [images]);
 
   const handleOpenModal = () => {
     if (!isModalOpen) setIsModalOpen(true);
@@ -37,7 +49,6 @@ const UploadImage = () => {
         ]);
       } else {
         setImages((prevImages) => [...prevImages, ...filesArray]);
-        setValue('이미지', images);
       }
 
       if (!selectedImage && filesArray.length > 0) {
