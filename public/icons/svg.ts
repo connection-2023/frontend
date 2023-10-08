@@ -1,5 +1,7 @@
 import ConnectionLogoSVG from './connectionLogo.svg';
 import AuthWelcomeSVG from './authWelcome.svg';
+import ImageSVG from './image.svg';
+import AddImageSVG from './addimage.svg';
 import CalendarDetailSVG from './calendarDetail.svg';
 import CalendarSVG from './calendar.svg';
 import HeartSVG from './heart.svg';
@@ -43,6 +45,8 @@ import TransFormSVG from './transform.svg';
 
 export {
   AuthWelcomeSVG,
+  ImageSVG,
+  AddImageSVG,
   TransFormSVG,
   CommentSVG,
   ConnectionLogoSVG,
