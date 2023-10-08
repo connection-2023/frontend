@@ -7,11 +7,13 @@ import {
 import SunEditorCore from 'suneditor/src/lib/core';
 import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface CustomEditorProps {
   title: string;
   defaultValue: string;
   maxLength: number;
+  minLength: number;
   height: string;
 }
 
@@ -19,11 +21,15 @@ const CustomEditor = ({
   title,
   defaultValue,
   maxLength,
+  minLength,
   height,
 }: CustomEditorProps) => {
   const editor = useRef<SunEditorCore>();
   const editorText = useRef<string>(defaultValue);
   const [textLength, setTextLenght] = useState(defaultValue.length);
+
+  const formMethods = useFormContext();
+  const { control } = formMethods;
 
   useEffect(() => {
     handleEditorChange();
@@ -55,22 +61,51 @@ const CustomEditor = ({
     }
   };
 
+  const validateMinLength = () => {
+    if (editor.current) {
+      const textLength = editor.current.getText().trim().length;
+      return textLength >= minLength || '최소 글자 수 미만';
+    }
+  };
+
   return (
-    <section className="relative mt-9 flex flex-col">
-      <h2 className="mb-3 text-lg font-bold">{title}</h2>
-      <SunEditor
-        lang="ko"
-        height={height}
+    <section className="relative z-0 mt-9 flex flex-col">
+      <h2 id={title} className="mb-3 text-lg font-bold">
+        {title}
+      </h2>
+
+      <Controller
+        name={title}
+        control={control}
         defaultValue={defaultValue}
-        setOptions={{
-          buttonList: TOOLBAR,
+        rules={{
+          required: '필수 입력',
+          validate: validateMinLength,
         }}
-        onImageUploadBefore={handleImageUploadBefore}
-        getSunEditorInstance={getSunEditorInstance}
-        onKeyUp={handleEditorChange}
+        render={({ field }) => (
+          <SunEditor
+            lang="ko"
+            height={height}
+            setContents={field.value}
+            setOptions={{
+              buttonList: TOOLBAR,
+            }}
+            onImageUploadBefore={handleImageUploadBefore}
+            getSunEditorInstance={getSunEditorInstance}
+            onChange={(content) => {
+              field.onChange(content);
+            }}
+            onKeyUp={handleEditorChange}
+          />
+        )}
       />
-      <div className="absolute -bottom-1 right-3 z-20 text-sub-color2">
-        ({textLength} / {maxLength})
+
+      <div className="absolute -bottom-1 right-3 z-10 flex gap-1 text-sub-color2">
+        (
+        <p className={`${textLength < minLength && 'text-main-color'}`}>
+          {textLength}
+        </p>
+        / {maxLength})
       </div>
     </section>
   );
