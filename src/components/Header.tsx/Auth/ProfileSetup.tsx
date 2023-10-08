@@ -43,7 +43,7 @@ const ProfileSetup = ({ defaultProfile }: IProfileSetup) => {
   };
 
   return (
-    <section className="flex flex-col items-center">
+    <section className="mt-6 flex flex-col items-center">
       <h1 className="mb-[0.31rem] text-2xl font-semibold">프로필 설정</h1>
       <p className="mb-6 text-sm">
         프로필 변경은 마이페이지에서 언제든지 가능합니다.
