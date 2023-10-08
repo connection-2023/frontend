@@ -14,7 +14,20 @@ const RadioComponent = ({
   changFunction,
 }: RadioComponentProps) => {
   const formMethods = useFormContext();
-  const { register, setValue } = formMethods;
+  const { register, setValue, clearErrors } = formMethods;
+
+  const handleRadioChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    title: string,
+  ) => {
+    if (changFunction) {
+      changFunction(e);
+    } else {
+      setValue(title, e.target.value);
+    }
+
+    clearErrors(title);
+  };
 
   return (
     <>
@@ -29,9 +42,7 @@ const RadioComponent = ({
             name={`${title}Group`}
             value={element}
             className="peer hidden"
-            onChange={(e) =>
-              changFunction ? changFunction(e) : setValue(title, e.target.value)
-            }
+            onChange={(e) => handleRadioChange(e, title)}
           />
           <div className="relative h-[1.125rem] w-[1.125rem] cursor-pointer rounded-sm border border-solid border-gray-500 fill-none peer-checked:bg-sub-color1 peer-checked:fill-white">
             <CheckMarkSVG />

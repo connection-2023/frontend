@@ -34,7 +34,7 @@ const GenreCheckboxGroup = () => {
     };
   }, []);
 
-  const { register, setValue } = formMethods;
+  const { register, setValue, clearErrors } = formMethods;
 
   const changeSelectGenreList = (genre: string, isChecked: boolean) => {
     setSelectGenreList((currentList) => {
@@ -59,6 +59,8 @@ const GenreCheckboxGroup = () => {
 
       return newList;
     });
+
+    clearErrors('장르');
   };
 
   const addGenreList = (value: string) => {
