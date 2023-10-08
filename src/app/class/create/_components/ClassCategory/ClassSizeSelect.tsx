@@ -1,3 +1,4 @@
+import { classCreateState } from '@/recoil/Create/atoms';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Select, {
@@ -7,6 +8,7 @@ import Select, {
   IndicatorSeparatorProps,
   StylesConfig,
 } from 'react-select';
+import { useRecoilValue } from 'recoil';
 
 const { DropdownIndicator, IndicatorSeparator } = components;
 
@@ -25,18 +27,27 @@ const CustomIndicatorSeparator = (
 };
 
 const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
+  const classData = useRecoilValue(classCreateState);
   const allOptions = Array.from({ length: 101 }, (_, i) => ({
     value: i,
     label: String(i),
   }));
   const formMethods = useFormContext();
 
+  const { setValue } = formMethods;
+
   const [minStudent, setMinStudent] = useState({
-    select: allOptions[0],
+    select: {
+      value: classData['수강생제한'].min,
+      label: String(classData['수강생제한'].min),
+    },
     option: allOptions,
   });
   const [maxStudent, setMaxStudent] = useState({
-    select: allOptions[allOptions.length - 1],
+    select: {
+      value: classData['수강생제한'].max,
+      label: String(classData['수강생제한'].max),
+    },
     option: allOptions,
   });
 
@@ -53,6 +64,11 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
       select: maxStudent.select,
       option: allOptions.slice(minValue),
     });
+
+    setValue('수강생제한', {
+      min: minStudent.select.value,
+      max: maxStudent.select.value,
+    });
   }, [minStudent.select, maxStudent.select]);
 
   const studentCounts = [
@@ -61,8 +77,6 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
   ];
 
   const isDisabled = '그룹레슨' !== lessonType;
-
-  const { setValue } = formMethods;
 
   type OptionType = { value: number; label: string };
   type StateType = {
@@ -82,7 +96,6 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
         (title === '최소' ? allOptions[0] : allOptions[allOptions.length - 1]),
       option,
     });
-    setValue('수강생제한', { min: minStudent.select, max: maxStudent.select });
   };
 
   return (
@@ -96,7 +109,7 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
         >
           <h3>{title}</h3>
           <Select
-            instanceId="select-component"
+            instanceId={`select-${title}`}
             defaultValue={state.select}
             onChange={(selected) =>
               selectClassSize(selected, title, setState, state.option)

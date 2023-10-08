@@ -1,11 +1,15 @@
 import { ChangeEvent, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { classCreateState } from '@/recoil/Create/atoms';
 import { useFormContext } from 'react-hook-form';
 import RadioComponent from './RadioComponent';
 import ClassSizeSelect from './ClassSizeSelect';
 import { CATEGORY_LESSON_TYPE } from '@/constants/constants';
 
 const LessonTypeSelect = () => {
-  const [lessonType, setLessonType] = useState('');
+  const classData = useRecoilValue(classCreateState);
+
+  const [lessonType, setLessonType] = useState(classData['인원']);
   const formMethods = useFormContext();
   const { setValue } = formMethods;
 
@@ -13,7 +17,10 @@ const LessonTypeSelect = () => {
     setLessonType(e.target.value);
 
     if (e.target.value === '그룹레슨') {
-      setValue('수강생제한', { min: 0, max: 100 });
+      setValue('수강생제한', {
+        min: classData['수강생제한'].min,
+        max: classData['수강생제한'].max,
+      });
     }
     setValue('인원', e.target.value);
   };
