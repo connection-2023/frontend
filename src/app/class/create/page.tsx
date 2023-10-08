@@ -89,7 +89,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
         {/* 하단 버튼 */}
         <nav className="my-10 flex w-full justify-between text-lg font-bold">
           <button className="flex items-center">
-            <ArrowRightSVG className="mr-2 origin-center rotate-180" />
+            <ArrowRightSVG className="mr-2 origin-center rotate-180 stroke-black" />
             이전
           </button>
           <div className="flex">
@@ -97,7 +97,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
             <form onSubmit={handleSubmit(onValid, invalid)}>
               <button className="ml-4 flex items-center">
                 다음
-                <ArrowRightSVG className="ml-3" />
+                <ArrowRightSVG className="ml-3 stroke-black" />
               </button>
             </form>
           </div>

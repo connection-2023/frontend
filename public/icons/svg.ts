@@ -39,6 +39,7 @@ import MapSVG from './map.svg';
 import AlarmSVG from './alarm.svg';
 import CommentSVG from './comment.svg';
 import TransFormSVG from './transform.svg';
+import EditSVG from './edit.svg';
 
 export {
   TransFormSVG,
@@ -82,4 +83,5 @@ export {
   MainTopSVG,
   MapSVG,
   AlarmSVG,
+  EditSVG,
 };

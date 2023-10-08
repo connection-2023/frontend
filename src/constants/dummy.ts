@@ -500,6 +500,179 @@ const dummyUserInfo = {
   commentCount: 10,
 };
 
+const dummyClasstableData = [
+  {
+    classInfo: '1회차',
+    dateTime: '23.09.19 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '2회차',
+    dateTime: '23.9.19 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '3회차',
+    dateTime: '23.09.29 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '4회차',
+    dateTime: '23.10.01 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.09.18 14:00',
+  },
+  {
+    classInfo: '5회차',
+    dateTime: '23.10.03 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.10.01 14:00',
+  },
+  {
+    classInfo: '6회차',
+    dateTime: '23.10.18 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.10.18 14:00',
+  },
+  {
+    classInfo: '7회차',
+    dateTime: '23.10.22 13:00-15:00',
+    apply: {
+      total: 6,
+      current: 5,
+    },
+    duedate: '23.10.18 14:00',
+  },
+];
+
+const dummyEnrollmentPerson = [
+  {
+    userId: 1,
+    src: null,
+    nickname: '닉네임',
+    memo: '',
+    request: `회원이 강사에게 전하는 요청사항 제가 실내용 신발이 없어서 그런데 따로 준비해 주실 수 있나요? 그리고 수업 시간보다 한 10분 정도 늦을 것 같아요 제가 그날 회사가 몇시에 끝날지 아직 몰라서... 일찍 갈 수도 있는데 어쨋든 최대한 노력해볼게요`,
+  },
+  {
+    userId: 2,
+    src: null,
+    nickname: '닉네임2',
+    memo: '',
+    request: null,
+  },
+];
+
+const dummyClassRoster = [
+  {
+    id: 1,
+    src: null,
+    nickname: '제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 2,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 3,
+    src: null,
+    nickname: '제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 4,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 5,
+    src: null,
+    nickname: '제이제이제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 6,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 7,
+    src: null,
+    nickname: '제이제이',
+    applyCount: 3,
+  },
+  {
+    id: 8,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+  {
+    id: 9,
+    src: null,
+    nickname: '구슬',
+    applyCount: 1,
+  },
+];
+
+const dummyClassList = [
+  {
+    id: 1,
+    status: '모집중',
+    date: '23.08.03-23.09.28',
+    title: '"원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문',
+    count: {
+      current: 16,
+      total: 20,
+    },
+  },
+  {
+    id: 2,
+    status: '모집중',
+    date: '23.08.03-23.09.28',
+    title: '"원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문',
+    count: {
+      current: 16,
+      total: 20,
+    },
+  },
+  {
+    id: 3,
+    status: '모집중',
+    date: '23.08.03-23.09.28',
+    title: '"원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문',
+    count: {
+      current: 16,
+      total: 20,
+    },
+  },
+];
+
 export {
   dummyUserInfo,
   dummyMain,
@@ -508,4 +681,8 @@ export {
   dummySearchData,
   dummyImgURL,
   dummyInstructor,
+  dummyClasstableData,
+  dummyEnrollmentPerson,
+  dummyClassRoster,
+  dummyClassList,
 };
