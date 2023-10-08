@@ -1,27 +1,25 @@
-import { useTextInput } from '../../../../../utils/useTextInput';
+import { useTextInput } from '@/utils/useTextInput';
 
 interface TextAreaSectionProps {
   title: string;
   placeholder: string;
-  valueKey: string;
   maxLength: number;
+  height?: string;
 }
-
-const scrollStyle =
-  'scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-sub-color2 scrollbar-thumb-rounded-lg scrollbar-w-2';
 
 const TextAreaSection = ({
   title,
   placeholder,
   maxLength,
+  height = 'h-24',
 }: TextAreaSectionProps) => {
   const { value, length, handleChange } = useTextInput('', maxLength);
 
   return (
     <section className="relative mt-9 flex flex-col">
-      <h2 className="text-lg font-bold">{title}</h2>
+      <h2 className="mb-3 text-lg font-bold">{title}</h2>
       <textarea
-        className={`mt-3 h-24 resize-none rounded-md border border-sub-color2 p-3 ${scrollStyle}`}
+        className={`${height} resize-none rounded-md border border-sub-color2 p-3`}
         placeholder={placeholder}
         onChange={handleChange}
         value={value}

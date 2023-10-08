@@ -5,19 +5,20 @@ import { classCreateState } from '@/recoil/Create/atoms';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/Button/Button';
 import ClassCategory from './_components/ClassCategory';
+import ClassExplanation from './_components/ClassExplanation';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { ArrowRightSVG } from '@/../public/icons/svg';
 
 const steps = [
   { title: '사진, 카테고리 설정', component: <ClassCategory /> },
-  { title: '클래스 상세 설명', component: null },
+  { title: '클래스 상세 설명', component: <ClassExplanation /> },
   { title: '일정 및 공지사항', component: null },
   { title: '클래스 장소', component: null },
   { title: '가격 설정', component: null },
 ];
 
 export default function ClassCreate() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const setClassCreate = useSetRecoilState(classCreateState);
 

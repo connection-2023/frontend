@@ -4,35 +4,28 @@ import { classCreateState } from '@/recoil/Create/atoms';
 import { useFormContext, useFormState } from 'react-hook-form';
 import GenreListAddition from './GenreListAddition';
 import { DANCE_GENRE } from '@/constants/constants';
-import { CheckMarkSVG } from '../../../public/icons/svg';
+import GenreCheckboxs from './GenreCheckboxs';
 
 const GenreCheckboxGroup = () => {
   const classData = useRecoilValue(classCreateState);
   const [selectGenreList, setSelectGenreList] = useState<string[]>(
     classData['장르'],
   );
-  const [genreList, setGenreList] = useState([
-    '전체',
-    ...DANCE_GENRE,
-    ...classData['장르'],
+  const combinedArray = ['전체', ...DANCE_GENRE, ...classData['장르']];
+  const [genreList, setGenreList] = useState<string[]>([
+    ...new Set(combinedArray),
   ]);
-  const [numColumns, setNumColumns] = useState(5);
+  const [numColumns, setNumColumns] = useState<number>(5);
   const formMethods = useFormContext();
+  const { setValue, clearErrors } = formMethods;
   const { errors } = useFormState({ control: formMethods.control });
 
   useEffect(() => {
     const updateNumColumns = () => {
       const width = window.innerWidth;
-
-      if (width < 600) {
-        setNumColumns(2);
-      } else if (width < 900) {
-        setNumColumns(3);
-      } else if (width < 1200) {
-        setNumColumns(4);
-      } else {
-        setNumColumns(5);
-      }
+      if (width < 600) setNumColumns(2);
+      else if (width < 900) setNumColumns(3);
+      else setNumColumns(5);
     };
 
     window.addEventListener('resize', updateNumColumns);
@@ -43,19 +36,14 @@ const GenreCheckboxGroup = () => {
     };
   }, []);
 
-  const { register, setValue, clearErrors } = formMethods;
-
   const changeSelectGenreList = (genre: string, isChecked: boolean) => {
     setSelectGenreList((currentList) => {
       let newList: string[];
       const isAlreadyIncluded = currentList.includes(genre);
 
       if (genre === '전체') {
-        if (isChecked) {
-          newList = [...genreList.filter((g) => g !== '전체')];
-        } else {
-          newList = [];
-        }
+        if (isChecked) newList = [...genreList.filter((g) => g !== '전체')];
+        else newList = [];
       } else if (isChecked && !isAlreadyIncluded) {
         newList = [...currentList, genre];
       } else if (!isChecked && isAlreadyIncluded) {
@@ -65,7 +53,6 @@ const GenreCheckboxGroup = () => {
       }
 
       setValue('장르', newList);
-
       return newList;
     });
 
@@ -106,42 +93,14 @@ const GenreCheckboxGroup = () => {
                     : genreList.length - 1 === selectGenreList.length;
 
                 rows[rows.length - 1].push(
-                  <td
+                  <GenreCheckboxs
                     key={genre + index}
-                    className={`border-solid ${
-                      isSelected
-                        ? 'border-2 border-sub-color1 bg-[#F5F5F5]'
-                        : 'border border-sub-color2'
+                    genre={genre}
+                    isSelected={isSelected}
+                    onChange={(e) =>
+                      changeSelectGenreList(genre, e.target.checked)
                     }
-                    `}
-                  >
-                    <input
-                      {...register('장르', {
-                        validate: (value) => value && value.length > 0,
-                      })}
-                      id={genre}
-                      type="checkbox"
-                      value={genre}
-                      className="hidden"
-                      checked={isSelected}
-                      onChange={(e) => {
-                        changeSelectGenreList(genre, e.target.checked);
-                      }}
-                    />
-                    <label
-                      htmlFor={genre}
-                      className={`flex h-8 w-full cursor-pointer select-none items-center justify-center gap-1 text-sm 
-                       ${
-                         isSelected
-                           ? 'fill-sub-color1 font-bold '
-                           : 'fill-sub-color2 text-sub-color2'
-                       }
-                      `}
-                    >
-                      <CheckMarkSVG />
-                      <p className="max-w-[80%] truncate">{genre}</p>
-                    </label>
-                  </td>,
+                  />,
                 );
 
                 return rows;

@@ -5,13 +5,25 @@ import {
   UploadBeforeReturn,
 } from 'suneditor-react/dist/types/upload';
 import SunEditorCore from 'suneditor/src/lib/core';
-import { QUILL_DEFAULT_VALUE, TOOLBAR } from '@/constants/constants';
+import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
 
-const CurriculumSection = () => {
+interface CustomEditorProps {
+  title: string;
+  defaultValue: string;
+  maxLength: number;
+  height: string;
+}
+
+const CustomEditor = ({
+  title,
+  defaultValue,
+  maxLength,
+  height,
+}: CustomEditorProps) => {
   const editor = useRef<SunEditorCore>();
-  const editorText = useRef<string>(QUILL_DEFAULT_VALUE);
-  const [textLength, setTextLenght] = useState(QUILL_DEFAULT_VALUE.length);
+  const editorText = useRef<string>(defaultValue);
+  const [textLength, setTextLenght] = useState(defaultValue.length);
 
   useEffect(() => {
     handleEditorChange();
@@ -33,7 +45,6 @@ const CurriculumSection = () => {
   const handleEditorChange = () => {
     if (editor.current) {
       const textLength = editor.current.getText().trim().length;
-      const maxLength = 3000;
 
       if (textLength > maxLength) {
         editor.current.setContents(editorText.current);
@@ -46,11 +57,11 @@ const CurriculumSection = () => {
 
   return (
     <section className="relative mt-9 flex flex-col">
-      <h2 className="text-lg font-bold">커리큘럼</h2>
+      <h2 className="mb-3 text-lg font-bold">{title}</h2>
       <SunEditor
         lang="ko"
-        height="652px"
-        defaultValue={QUILL_DEFAULT_VALUE}
+        height={height}
+        defaultValue={defaultValue}
         setOptions={{
           buttonList: TOOLBAR,
         }}
@@ -59,10 +70,10 @@ const CurriculumSection = () => {
         onKeyUp={handleEditorChange}
       />
       <div className="absolute -bottom-1 right-3 z-20 text-sub-color2">
-        ({textLength} / 3000)
+        ({textLength} / {maxLength})
       </div>
     </section>
   );
 };
 
-export default CurriculumSection;
+export default CustomEditor;
