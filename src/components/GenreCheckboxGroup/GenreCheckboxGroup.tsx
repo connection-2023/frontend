@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useFormState } from 'react-hook-form';
 import GenreListAddition from './GenreListAddition';
 import { DANCE_GENRE } from '@/constants/constants';
 import { CheckMarkSVG } from '../../../public/icons/svg';
@@ -9,6 +9,7 @@ const GenreCheckboxGroup = () => {
   const [numColumns, setNumColumns] = useState(5);
   const [selectGenreList, setSelectGenreList] = useState<string[]>([]);
   const formMethods = useFormContext();
+  const { errors } = useFormState({ control: formMethods.control });
 
   useEffect(() => {
     const updateNumColumns = () => {
@@ -67,7 +68,12 @@ const GenreCheckboxGroup = () => {
 
   return (
     <div className="grid grid-cols-6">
-      <h2 id="장르" className="text-lg font-bold">
+      <h2
+        id="장르"
+        className={`text-lg font-bold ${
+          errors.장르 && 'animate-heartbeat text-main-color'
+        }`}
+      >
         장르
       </h2>
       <div className="col-span-5">

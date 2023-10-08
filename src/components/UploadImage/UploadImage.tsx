@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
+import { useFormContext, useFormState } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 import CropperModal from './CropperModal';
 
@@ -7,6 +8,10 @@ const UploadImage = () => {
   const [images, setImages] = useState<{ file: File; url: string }[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const formMethods = useFormContext();
+  const { errors } = useFormState({ control: formMethods.control });
+  const { register, setValue } = formMethods;
 
   const handleOpenModal = () => {
     if (!isModalOpen) setIsModalOpen(true);
@@ -32,6 +37,7 @@ const UploadImage = () => {
         ]);
       } else {
         setImages((prevImages) => [...prevImages, ...filesArray]);
+        setValue('이미지', images);
       }
 
       if (!selectedImage && filesArray.length > 0) {
@@ -105,7 +111,15 @@ const UploadImage = () => {
               height={107}
               className="fill-sub-color2"
             />
-            <p className="mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold text-sub-color2 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]">
+            <p
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
+            ${
+              errors.이미지
+                ? 'animate-heartbeat text-main-color'
+                : 'text-sub-color2'
+            }
+            `}
+            >
               클래스 사진 업로드
             </p>
             <p className="text-sm text-sub-color1">
@@ -113,6 +127,9 @@ const UploadImage = () => {
             </p>
           </label>
           <input
+            {...register('이미지', {
+              validate: (value) => value && value.length > 0,
+            })}
             id="image-upload"
             type="file"
             accept="image/*"

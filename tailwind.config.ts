@@ -6,6 +6,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+
   theme: {
     extend: {
       colors: {
@@ -15,8 +16,18 @@ const config: Config = {
         'sub-color3': 'var(--sub-color3)',
         'sub-color4': 'var(--sub-color4)',
       },
+      animation: {
+        heartbeat: 'heartbeat 1s 3',
+      },
+      keyframes: {
+        heartbeat: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.2)' },
+        },
+      },
     },
   },
+
   plugins: [
     require('tailwind-scrollbar')({ nocompatible: true }),
     function ({

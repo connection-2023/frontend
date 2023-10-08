@@ -1,9 +1,9 @@
 import { StoryObj, Meta } from '@storybook/react';
-import ValidationToast from './ValidationToast';
+import ValidationMessage from './ValidationMessage';
 
-const meta: Meta<typeof ValidationToast> = {
-  title: 'Components/ValidationToast',
-  component: ValidationToast,
+const meta: Meta<typeof ValidationMessage> = {
+  title: 'Components/ValidationMessage',
+  component: ValidationMessage,
   tags: ['autodocs'],
   argTypes: {
     invalidData: {
@@ -16,8 +16,8 @@ const meta: Meta<typeof ValidationToast> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ValidationToast>;
+type Story = StoryObj<typeof ValidationMessage>;
 
 export const 기본: Story = {
-  render: (args) => <ValidationToast {...args} />,
+  render: (args) => <ValidationMessage {...args} />,
 };

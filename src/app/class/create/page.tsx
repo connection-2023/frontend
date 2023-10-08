@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/Button/Button';
 import ClassCategory from './_components/ClassCategory';
-import ValidationToast from '@/components/ValidationToast/ValidationToast';
 import { ArrowRightSVG } from '@/../public/icons/svg';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 
 const steps = [
   { title: '사진, 카테고리 설정', component: <ClassCategory /> },
@@ -17,6 +17,7 @@ const steps = [
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
+
   const formMethods = useForm({ shouldFocusError: false });
 
   const { handleSubmit } = formMethods;
@@ -36,8 +37,11 @@ export default function ClassCreate() {
   const invalid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
     console.log(data);
-    // setinvalidData(Object.keys(data));
-    // setTimeout(() => setinvalidData(null), 10000);
+    setinvalidData(Object.keys(data));
+  };
+
+  const closeValidationMessage = () => {
+    setinvalidData(null);
   };
 
   return (
@@ -105,7 +109,10 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
       </section>
 
       {/* 유효성 토스트 메세지 */}
-      {invalidData && <ValidationToast invalidData={invalidData} />}
+      <ValidationMessage
+        closeModal={closeValidationMessage}
+        invalidData={invalidData}
+      />
     </main>
   );
 }
