@@ -153,10 +153,25 @@ export const NON_STICKY_HEADER_PATHS = [
   '/class/creat',
 ];
 
-export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/creat/address'];
+export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];
 
 export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
 
 export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
 
 export const CATEGORY_DIFFICULTY_LEVEL = ['초급(입문)', '중급', '상급'];
+
+export const ADDRESS_DESCRIPTION = [
+  {
+    term: '도로명 + 건물번호',
+    description: '예) 판교역로 235, 제주 첨단로 242',
+  },
+  {
+    term: '지역명(동/리) + 번지',
+    description: '예) 삼평동 681, 제주 영평동 2181',
+  },
+  {
+    term: '지역명(동/리) + 건물명(아파트명)',
+    description: '예) 분당 주공, 연수동 주공3차',
+  },
+];

@@ -17,6 +17,7 @@ interface Juso {
   rn: string;
   emdNm: string;
   zipNo: string;
+  roadAddr: string;
   roadAddrPart2?: string;
   emdNo?: string;
   sggNm?: string;
