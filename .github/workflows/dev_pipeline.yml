@@ -26,7 +26,13 @@ jobs:
 
       - name: Run tests
         run: npm run test:ci
-
+      
+      - name: Setting .env
+        run: |
+          echo "NEXT_PUBLIC_API_END_POINT=${{ secrets.NEXT_PUBLIC_API_END_POINT }}" >> .env
+          echo "NEXT_PUBLIC_API_LOG_IN=${{ secrets.NEXT_PUBLIC_API_LOG_IN }}" >> .env
+          cat .env
+        
       - name: Build Next.js app
         run: npm run build
 
