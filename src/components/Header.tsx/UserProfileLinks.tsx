@@ -12,7 +12,7 @@ const UserProfileLinks = () => {
       </h2>
 
       <Link href="/search">
-        <SearchSVG className="h-[1.8rem] w-[1.8rem]" />
+        <SearchSVG className="h-[1.8rem] w-[1.8rem] fill-black" />
       </Link>
 
       <button className="relative">
