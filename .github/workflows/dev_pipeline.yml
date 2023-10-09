@@ -28,6 +28,9 @@ jobs:
         run: npm run test:ci
 
       - name: Build Next.js app
+        env:
+          NEXT_PUBLIC_API_END_POINT: ${{ secrets.NEXT_PUBLIC_API_END_POINT }}
+          NEXT_PUBLIC_API_LOG_IN: ${{ secrets.NEXT_PUBLIC_API_LOG_IN }}
         run: npm run build
 
   build-storybook:
