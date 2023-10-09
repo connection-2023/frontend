@@ -44,9 +44,12 @@ const RadioComponent = ({
             className="peer hidden"
             onChange={(e) => handleRadioChange(e, title)}
           />
-          <div className="relative h-[1.125rem] w-[1.125rem] cursor-pointer rounded-sm border border-solid border-gray-500 fill-none peer-checked:bg-sub-color1 peer-checked:fill-white">
+          <label
+            htmlFor={element}
+            className="relative h-[1.125rem] w-[1.125rem] cursor-pointer rounded-sm border border-solid border-gray-500 fill-none peer-checked:bg-sub-color1 peer-checked:fill-white"
+          >
             <CheckMarkSVG />
-          </div>
+          </label>
           <label
             htmlFor={element}
             className="flex cursor-pointer 

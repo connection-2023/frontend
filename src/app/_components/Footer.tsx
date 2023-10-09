@@ -1,8 +1,16 @@
+'use client';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ConnectionLogoSVG } from '@/../public/icons/svg';
+import { NO_HEADER_FOOTER_PATHS } from '@/constants/constants';
 
 const Footer = () => {
-  return (
+  const pathname = usePathname();
+  const shouldRenderFooter = NO_HEADER_FOOTER_PATHS.some((path: string) =>
+    pathname.startsWith(path),
+  );
+
+  return !shouldRenderFooter ? (
     <footer className="mx-auto max-w-[1440px] whitespace-pre-line break-keep border-t border-solid border-[#D9D9D9] px-[4.37rem] py-8 text-sm ">
       <div className="mb-8 flex flex-wrap items-center gap-x-12 gap-y-4">
         <Link href="/">
@@ -23,7 +31,7 @@ const Footer = () => {
       </p>
       <p>©Connection, Inc.</p>
     </footer>
-  );
+  ) : null;
 };
 
 export default Footer;

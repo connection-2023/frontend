@@ -41,8 +41,10 @@ import CommentSVG from './comment.svg';
 import TransFormSVG from './transform.svg';
 import CheckMarkSVG from './checkMark.svg';
 import PlusesSVG from './pluses.svg';
+import TooltipSVG from './tooltip.svg';
 
 export {
+  TooltipSVG,
   PlusesSVG,
   CheckMarkSVG,
   TransFormSVG,

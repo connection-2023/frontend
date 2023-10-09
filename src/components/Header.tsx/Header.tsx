@@ -4,7 +4,7 @@ import HeaderMenu from './HeaderMenu';
 import UserProfileLinks from './UserProfileLinks';
 import {
   NON_STICKY_HEADER_PATHS,
-  NO_HEADER_PATHS,
+  NO_HEADER_FOOTER_PATHS,
 } from '@/constants/constants';
 
 const Header = () => {
@@ -20,7 +20,7 @@ const Header = () => {
     pathList.some((path: string) => pathname.startsWith(path));
 
   const isStickyHeader = isPathInList(NON_STICKY_HEADER_PATHS);
-  const shouldRenderHeader = isPathInList(NO_HEADER_PATHS);
+  const shouldRenderHeader = isPathInList(NO_HEADER_FOOTER_PATHS);
 
   return !shouldRenderHeader ? (
     <header className={getHeaderStyle(isStickyHeader)}>
