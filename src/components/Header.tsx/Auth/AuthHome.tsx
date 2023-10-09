@@ -1,9 +1,9 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { getAuth } from '@/app/api/auth/route';
+// import { getAuth } from '@/app/api/auth/route';
 import KakaoAuth from './KakaoAuth';
 import GoogleAuth from './GoogleAuth';
 import { ConnectionLogoSVG } from '@/../public/icons/svg';
-import { LoginResponse, AuthResponse, SignInResponse } from '@/types/auth';
+import { LoginResponse, SignInResponse } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
@@ -13,11 +13,20 @@ interface IAuthHome {
 }
 
 const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
-  const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {
-    const idToken = resData.response.access_token;
+  const getAuth = async (
+    social: 'naver' | 'kakao' | 'google',
+    idToken: string,
+  ) => {
+    const URL = {
+      kakao: `api/auth?social=kakao&token=${encodeURIComponent(idToken)}`,
+      google: `api/auth?social=google&token=${encodeURIComponent(idToken)}`,
+      naver: `api/auth?social=naver&token=${encodeURIComponent(idToken)}`,
+    };
 
     try {
-      const { status, data }: AuthResponse = await getAuth('kakao', idToken);
+      const res = await fetch(URL[social]);
+      const { status, data } = await res.json();
+
       handleStatusCode(status);
 
       if (status === 201) handleUserInfo(data);
@@ -31,20 +40,13 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
     }
   };
 
-  const googleOnSuccess = async (idToken: string) => {
-    try {
-      const { status, data }: AuthResponse = await getAuth('google', idToken);
-      handleStatusCode(status);
+  const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {
+    const idToken = resData.response.access_token;
+    getAuth('kakao', idToken);
+  };
 
-      if (status === 201) handleUserInfo(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(
-          'There has been a problem with your fetch operation: ',
-          error.message,
-        );
-      }
-    }
+  const googleOnSuccess = async (idToken: string) => {
+    getAuth('google', idToken);
   };
 
   return (
