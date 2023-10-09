@@ -1,4 +1,6 @@
 import ConnectionLogoSVG from './connectionLogo.svg';
+import NaverSVG from './naverIcon.svg';
+import GoogleSVG from './googleIcon.svg';
 import AuthWelcomeSVG from './authWelcome.svg';
 import ImageSVG from './image.svg';
 import AddImageSVG from './addimage.svg';
@@ -45,6 +47,8 @@ import TransFormSVG from './transform.svg';
 
 export {
   AuthWelcomeSVG,
+  NaverSVG,
+  GoogleSVG,
   ImageSVG,
   AddImageSVG,
   TransFormSVG,
