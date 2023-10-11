@@ -1,19 +1,19 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { CITY_LIST, WARD_LIST } from '@/constants/administrativeDistrict';
 import { toggleSelection } from '@/utils/toggleSelection';
-import { CloseSVG } from '../../../../../../public/icons/svg';
+import LocationListItem from './LocationListItem';
 
 const selectList = ['온라인', ...CITY_LIST];
 
-interface PendingLocationProps {
+interface SelectLocationProps {
   selectLocationList: Record<string, string[]>;
-  onChangePendingLocation: (locationList: Record<string, string[]>) => void;
+  onChangeSelectLocation: (locationList: Record<string, string[]>) => void;
 }
 
-const PendingLocation = ({
+const SelectLocation = ({
   selectLocationList,
-  onChangePendingLocation,
-}: PendingLocationProps) => {
+  onChangeSelectLocation,
+}: SelectLocationProps) => {
   const [focusLocation, setFocusLocation] = useState<string | null>(null);
 
   const selectLocation = (
@@ -35,7 +35,7 @@ const PendingLocation = ({
       isValueChecked,
     };
 
-    onChangePendingLocation({
+    onChangeSelectLocation({
       ...selectLocationList,
       [targetLocation]: toggleSelection(toggleData),
     });
@@ -43,7 +43,7 @@ const PendingLocation = ({
 
   const focusLocationHandler = (city: string) => {
     if (city === '온라인') {
-      onChangePendingLocation({
+      onChangeSelectLocation({
         ...selectLocationList,
         온라인: ['온라인'],
       });
@@ -102,44 +102,16 @@ const PendingLocation = ({
 
       <ul className="shadow-border flex flex-wrap">
         {Object.entries(selectLocationList).map(([key, value]) => (
-          <Fragment key={key}>
-            {key === '온라인' ? (
-              value.length > 0 && (
-                <li
-                  className="flex cursor-pointer items-center p-2 text-sm"
-                  onClick={() => selectLocation('온라인', false, key)}
-                >
-                  <div>{key}</div>
-                  <CloseSVG className="ml-1 h-3 w-3 stroke-sub-color1" />
-                </li>
-              )
-            ) : value.length === WARD_LIST[key].length ? (
-              <li
-                className="flex cursor-pointer items-center p-2 text-sm"
-                onClick={() => selectLocation('전지역', false, key)}
-              >
-                <div>{key}</div>
-                <div>{'>전지역'}</div>
-                <CloseSVG className="ml-1 h-3 w-3 stroke-sub-color1" />
-              </li>
-            ) : (
-              value.map((item) => (
-                <li
-                  key={item}
-                  className="flex cursor-pointer items-center p-2 text-sm"
-                  onClick={() => selectLocation(item, false, key)}
-                >
-                  <div>{key}</div>
-                  <div>{`>${item}`}</div>
-                  <CloseSVG className="ml-1 h-3 w-3 stroke-sub-color1" />
-                </li>
-              ))
-            )}
-          </Fragment>
+          <LocationListItem
+            key={key}
+            value={value}
+            selectLocation={selectLocation}
+            locationKey={key}
+          />
         ))}
       </ul>
     </section>
   );
 };
 
-export default PendingLocation;
+export default SelectLocation;

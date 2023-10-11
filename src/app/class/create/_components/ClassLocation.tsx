@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
-import PendingLocation from './ClassLocation/PendingLocation';
+import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
 import { TooltipSVG } from '../../../../../public/icons/svg';
 import { Juso } from '@/types/address';
@@ -13,7 +13,7 @@ const ClassLocation = () => {
     Record<string, string[]>
   >({});
 
-  const onChangePendingLocation = (locationList: Record<string, string[]>) => {
+  const onChangeSelectLocation = (locationList: Record<string, string[]>) => {
     setSelectLocationList(locationList);
   };
 
@@ -78,7 +78,7 @@ const ClassLocation = () => {
       ) : (
         <PendingLocation
           selectLocationList={selectLocationList}
-          onChangePendingLocation={onChangePendingLocation}
+          onChangeSelectLocation={onChangeSelectLocation}
         />
       )}
 
