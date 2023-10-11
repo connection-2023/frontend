@@ -4,10 +4,15 @@ import { classCreateState } from '@/recoil/Create/atoms';
 import { useFormContext, useFormState } from 'react-hook-form';
 import GenreListAddition from './GenreListAddition';
 import { DANCE_GENRE } from '@/constants/constants';
-import GenreCheckboxs from './GenreCheckboxs';
+import { toggleSelection } from '@/utils/toggleSelection';
+import { CheckMarkSVG } from '../../../public/icons/svg';
 
 const GenreCheckboxGroup = () => {
   const classData = useRecoilValue(classCreateState);
+  const formMethods = useFormContext();
+  const { setValue, clearErrors, register } = formMethods;
+  const { errors } = useFormState({ control: formMethods.control });
+
   const [selectGenreList, setSelectGenreList] = useState<string[]>(
     classData['장르'],
   );
@@ -15,107 +20,69 @@ const GenreCheckboxGroup = () => {
   const [genreList, setGenreList] = useState<string[]>([
     ...new Set(combinedArray),
   ]);
-  const [numColumns, setNumColumns] = useState<number>(5);
-  const formMethods = useFormContext();
-  const { setValue, clearErrors } = formMethods;
-  const { errors } = useFormState({ control: formMethods.control });
 
   useEffect(() => {
-    const updateNumColumns = () => {
-      const width = window.innerWidth;
-      if (width < 600) setNumColumns(2);
-      else if (width < 900) setNumColumns(3);
-      else setNumColumns(5);
-    };
-
-    window.addEventListener('resize', updateNumColumns);
-    updateNumColumns();
-
-    return () => {
-      window.removeEventListener('resize', updateNumColumns);
-    };
-  }, []);
+    setValue('장르', selectGenreList);
+    clearErrors('장르');
+  }, [selectGenreList]);
 
   const changeSelectGenreList = (genre: string, isChecked: boolean) => {
-    setSelectGenreList((currentList) => {
-      let newList: string[];
-      const isAlreadyIncluded = currentList.includes(genre);
+    const toggleData = {
+      value: genre,
+      allList: genreList,
+      currentList: selectGenreList,
+      selectAllName: '전체',
+      isValueChecked: isChecked,
+    };
 
-      if (genre === '전체') {
-        if (isChecked) newList = [...genreList.filter((g) => g !== '전체')];
-        else newList = [];
-      } else if (isChecked && !isAlreadyIncluded) {
-        newList = [...currentList, genre];
-      } else if (!isChecked && isAlreadyIncluded) {
-        newList = currentList.filter((g) => g !== genre);
-      } else {
-        return currentList;
-      }
+    const newList = toggleSelection(toggleData);
 
-      setValue('장르', newList);
-      return newList;
-    });
-
-    clearErrors('장르');
+    setSelectGenreList(newList);
   };
 
   const addGenreList = (value: string) => {
-    setGenreList((currentList) => [...currentList, value]);
+    const newList = [...new Set([...genreList, value])];
+    setGenreList(newList);
     setSelectGenreList((currentList) => [...currentList, value]);
   };
 
   return (
-    <div className="grid grid-cols-6">
+    <div className="flex w-full">
       <h2
         id="장르"
-        className={`text-lg font-bold ${
+        className={`w-1/6 text-lg font-bold ${
           errors.장르 && 'animate-heartbeat text-main-color'
         }`}
       >
         장르
       </h2>
-      <div className="col-span-5">
-        <table className="w-full table-fixed border-collapse">
-          <colgroup>
-            {Array.from({ length: numColumns }).map((_, index) => (
-              <col key={index} className="w-1/5" />
-            ))}
-          </colgroup>
-          <tbody>
-            {genreList
-              .reduce((rows: JSX.Element[][], genre, index) => {
-                if (index % numColumns === 0) {
-                  rows.push([]);
-                }
-                const isSelected =
-                  genre !== '전체'
-                    ? selectGenreList.includes(genre)
-                    : genreList.length - 1 === selectGenreList.length;
+      <ul className="flex w-5/6 flex-wrap">
+        {genreList.map((genre, index) => {
+          const isSelected =
+            genre !== '전체'
+              ? selectGenreList.includes(genre)
+              : genreList.length - 1 === selectGenreList.length;
 
-                rows[rows.length - 1].push(
-                  <GenreCheckboxs
-                    key={genre + index}
-                    genre={genre}
-                    isSelected={isSelected}
-                    onChange={(e) =>
-                      changeSelectGenreList(genre, e.target.checked)
-                    }
-                  />,
-                );
-
-                return rows;
-              }, [])
-              .map((rowItems, rowIndex) => (
-                <tr key={`row-${rowIndex}`}>{rowItems}</tr>
-              ))}
-          </tbody>
-        </table>
-
-        <GenreListAddition
-          addGenreList={addGenreList}
-          numColumns={numColumns}
-        />
-      </div>
+          return (
+            <li
+              key={genre + index}
+              {...register('장르', {
+                validate: (value) => value && value.length > 0,
+              })}
+              className={`${
+                isSelected
+                  ? 'select-shadow-border bg-[#F5F5F5] fill-sub-color1 font-bold'
+                  : 'shadow-border fill-sub-color2 text-sub-color2'
+              } flex h-8 w-1/5 cursor-pointer items-center justify-center gap-1 text-sm`}
+              onClick={() => changeSelectGenreList(genre, !isSelected)}
+            >
+              <CheckMarkSVG />
+              <p className="max-w-[90%] truncate">{genre}</p>
+            </li>
+          );
+        })}
+        <GenreListAddition addGenreList={addGenreList} />
+      </ul>
     </div>
   );
 };

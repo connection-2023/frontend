@@ -2,30 +2,11 @@ import { FormEvent, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { PlusesSVG } from '../../../public/icons/svg';
 
-const getWidthClass = (numColumns: number) => {
-  switch (numColumns) {
-    case 2:
-      return 'w-1/2';
-    case 3:
-      return 'w-1/3';
-    case 4:
-      return 'w-1/4';
-    case 5:
-      return 'w-1/5';
-    default:
-      return '';
-  }
-};
-
-interface GenreListAdditionProps {
-  addGenreList: (value: string) => void;
-  numColumns: number;
-}
-
 const GenreListAddition = ({
   addGenreList,
-  numColumns,
-}: GenreListAdditionProps) => {
+}: {
+  addGenreList: (value: string) => void;
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const formRef = useRef(null);
   const [showAddButton, setShowAddButton] = useState(false);
@@ -46,7 +27,7 @@ const GenreListAddition = ({
 
   return (
     <form
-      className={`relative mt-3 ${getWidthClass(numColumns)}`}
+      className="relative mr-96 mt-3 w-1/5"
       onSubmit={(e) => addSubmit(e)}
       ref={formRef}
     >
