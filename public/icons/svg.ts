@@ -40,6 +40,7 @@ import AlarmSVG from './alarm.svg';
 import CommentSVG from './comment.svg';
 import TransFormSVG from './transform.svg';
 import EditSVG from './edit.svg';
+import BigArrowSVG from './bigArrow.svg';
 
 export {
   TransFormSVG,
@@ -83,5 +84,6 @@ export {
   MainTopSVG,
   MapSVG,
   AlarmSVG,
+  BigArrowSVG,
   EditSVG,
 };
