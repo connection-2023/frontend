@@ -47,7 +47,6 @@ export default function ClassCreate() {
       ...prevState,
       ...data,
     }));
-    console.log(data);
 
     nextStep();
   };

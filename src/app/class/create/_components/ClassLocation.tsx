@@ -1,17 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import Map from '@/components/Map/Map';
-import {
-  LocationSVG,
-  SearchSVG,
-  TooltipSVG,
-} from '../../../../../public/icons/svg';
-import { Juso } from '@/types/address';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
+import PendingLocation from './ClassLocation/PendingLocation';
+import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
+import { TooltipSVG } from '../../../../../public/icons/svg';
+import { Juso } from '@/types/address';
 
 const ClassLocation = () => {
   const [isLocationSet, setIsLocationSet] = useState(true);
   const [location, setLocation] = useState<Juso | null>(null);
   const newWindowRef = useRef<Window | null>(null);
+  const [selectLocationList, setSelectLocationList] = useState<
+    Record<string, string[]>
+  >({});
+
+  const onChangePendingLocation = (locationList: Record<string, string[]>) => {
+    setSelectLocationList(locationList);
+  };
 
   const openPopup = () => {
     newWindowRef.current = window.open(
@@ -32,7 +36,6 @@ const ClassLocation = () => {
         return;
       //추후 배포시 devtools 제거
       setLocation(event.data);
-      console.log(event.data);
     };
 
     window.addEventListener('message', receiveMessage);
@@ -47,10 +50,10 @@ const ClassLocation = () => {
   }, []);
 
   return (
-    <section className="mt-10">
+    <section className="mt-10 flex flex-col gap-6">
       <h2 className="text-lg font-bold">수업이 진행되는 위치를 알려주세요.</h2>
 
-      <div className="mt-6 flex items-center gap-1">
+      <div className="flex items-center gap-1">
         <input
           id="consultative"
           type="checkbox"
@@ -70,38 +73,20 @@ const ClassLocation = () => {
         </div>
       </div>
 
-      {isLocationSet && (
-        <>
-          <button
-            onClick={openPopup}
-            className="mt-4 flex h-8 w-80 items-center justify-center gap-1 rounded-md shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]"
-          >
-            <SearchSVG className="mb-1 h-5 w-5 fill-sub-color1" /> 주소 검색하기
-          </button>
-
-          {location && (
-            <>
-              <address className="mt-3 flex">
-                <LocationSVG />
-                {location.roadAddr}
-              </address>
-              <input
-                type="text"
-                className="my-3 w-full border border-solid border-sub-color2 px-2 py-1 focus:outline-none"
-                placeholder="상세주소를 입력해주세요."
-              />
-              <div className="mb-4 h-[18.25rem]">
-                <Map address={location.roadAddr} studioName={location.bdNm} />
-              </div>
-              <TextAreaSection
-                placeholder="수업장소까지 가는 방법, 추천 교통편, 주차시설 유무 등에 대한 정보를 입력해주세요."
-                maxLength={500}
-                dataName="유의사항"
-              />
-            </>
-          )}
-        </>
+      {isLocationSet ? (
+        <ConfirmedLocation location={location} openPopup={openPopup} />
+      ) : (
+        <PendingLocation
+          selectLocationList={selectLocationList}
+          onChangePendingLocation={onChangePendingLocation}
+        />
       )}
+
+      <TextAreaSection
+        placeholder="수업장소까지 가는 방법, 추천 교통편, 주차시설 유무 등에 대한 정보를 입력해주세요."
+        maxLength={500}
+        dataName="유의사항"
+      />
     </section>
   );
 };
