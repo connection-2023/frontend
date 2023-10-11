@@ -8,7 +8,7 @@ const ClassExplanation = () => {
   const classData = useRecoilValue(classCreateState);
 
   return (
-    <>
+    <section className="mt-9 flex flex-col gap-9">
       <TextAreaSection
         title="중요 공지사항을 입력해주세요."
         placeholder={ANNOUNCEMENT}
@@ -32,7 +32,7 @@ const ClassExplanation = () => {
         maxLength={3000}
         minLength={200}
       />
-    </>
+    </section>
   );
 };
 

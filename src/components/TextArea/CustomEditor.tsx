@@ -69,7 +69,7 @@ const CustomEditor = ({
   };
 
   return (
-    <section className="relative z-0 mt-9 flex flex-col">
+    <section className="relative z-0 flex flex-col">
       <h2 id={title} className="mb-3 text-lg font-bold">
         {title}
       </h2>

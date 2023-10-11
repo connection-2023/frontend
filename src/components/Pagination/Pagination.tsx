@@ -6,6 +6,8 @@ interface PaginationProps {
   pageCount: number;
   currentPage: number;
   onPageChange: (selectedItem: { selected: number }) => void;
+  marginPagesDisplayed?: number;
+  pageRangeDisplayed?: number;
 }
 
 const navButtonStyle =
@@ -15,6 +17,8 @@ const Pagination = ({
   pageCount,
   currentPage,
   onPageChange,
+  marginPagesDisplayed = 1,
+  pageRangeDisplayed = 3,
 }: PaginationProps) => {
   return (
     <ReactPaginate
@@ -32,8 +36,8 @@ const Pagination = ({
       }
       breakLabel="..."
       pageCount={pageCount}
-      marginPagesDisplayed={1}
-      pageRangeDisplayed={3}
+      marginPagesDisplayed={marginPagesDisplayed}
+      pageRangeDisplayed={pageRangeDisplayed}
       initialPage={currentPage}
       onPageChange={onPageChange}
       containerClassName="pagination"

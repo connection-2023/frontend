@@ -4,21 +4,23 @@ import { useSetRecoilState } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/Button/Button';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import ClassCategory from './_components/ClassCategory';
 import ClassExplanation from './_components/ClassExplanation';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import ClassSchedule from './_components/ClassSchedule';
+import ClassLocation from './_components/ClassLocation';
 import { ArrowRightSVG } from '@/../public/icons/svg';
 
 const steps = [
   { title: '사진, 카테고리 설정', component: <ClassCategory /> },
   { title: '클래스 상세 설명', component: <ClassExplanation /> },
-  { title: '일정 및 공지사항', component: null },
-  { title: '클래스 장소', component: null },
+  { title: '일정 및 공지사항', component: <ClassSchedule /> },
+  { title: '클래스 장소', component: <ClassLocation /> },
   { title: '가격 설정', component: null },
 ];
 
 export default function ClassCreate() {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(3);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const setClassCreate = useSetRecoilState(classCreateState);
 
@@ -45,6 +47,7 @@ export default function ClassCreate() {
       ...prevState,
       ...data,
     }));
+    console.log(data);
 
     nextStep();
   };
@@ -107,7 +110,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
         {/* 하단 버튼 */}
         <nav className="my-10 flex w-full justify-between text-lg font-bold">
           <button onClick={prevStep} className="flex items-center">
-            <ArrowRightSVG className="mr-2 origin-center rotate-180" />
+            <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
             이전
           </button>
           <div className="flex">
@@ -115,7 +118,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
             <form onSubmit={handleSubmit(onValid, invalid)}>
               <button className="ml-4 flex items-center">
                 다음
-                <ArrowRightSVG className="ml-3" />
+                <ArrowRightSVG className="ml-3 h-[15px] w-[9px] stroke-black" />
               </button>
             </form>
           </div>

@@ -1,14 +1,16 @@
 'use client';
-import { FormEvent, useEffect, useState } from 'react';
-import { searchAddress } from '@/app/apis/address/addressApi';
-import { AddressData } from '@/types/address';
+import { FormEvent, useRef, useState } from 'react';
+import Pagination from '@/components/Pagination/Pagination';
 import SearchForm from './_components/SearchForm';
 import SearchResults from './_components/SearchResults';
 import AddressDescription from './_components/AddressDescription';
-import Pagination from './_components/Pagination';
+import { searchAddress } from '@/app/apis/address/addressApi';
+import { AddressData } from '@/types/address';
 
 const Address = () => {
   const [addressData, setAddressData] = useState<AddressData | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const inputAddressRef = useRef('');
 
   const addressSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,13 +19,15 @@ const Address = () => {
     const value = formData.get('inputAddress') as string;
 
     if (value) {
-      setAddressData(await searchAddress(value, 1));
+      inputAddressRef.current = value;
+      setAddressData(await searchAddress(value, 0));
     }
   };
 
-  useEffect(() => {
-    console.log(addressData);
-  }, [addressData]);
+  const handlePageChange = async ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+    setAddressData(await searchAddress(inputAddressRef.current, selected));
+  };
 
   return (
     <>
@@ -35,11 +39,22 @@ const Address = () => {
       <section className="m-auto flex w-full max-w-2xl flex-col px-11">
         <SearchForm addressSearch={addressSearch} />
 
-        <SearchResults />
+        {addressData ? (
+          <SearchResults addressData={addressData} />
+        ) : (
+          <AddressDescription />
+        )}
 
-        <AddressDescription />
-
-        <Pagination />
+        {addressData && (
+          <Pagination
+            pageCount={Math.ceil(
+              parseInt(addressData.results.common.totalCount) /
+                parseInt(addressData.results.common.countPerPage),
+            )}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        )}
       </section>
     </>
   );

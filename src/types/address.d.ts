@@ -11,8 +11,9 @@ export interface AddressData {
   };
 }
 
-interface Juso {
+export interface Juso {
   detBdNmList: string;
+  bdNm: string;
   engAddr: string;
   rn: string;
   emdNm: string;

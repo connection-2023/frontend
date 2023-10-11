@@ -1,9 +1,14 @@
-import { AddressData } from '@/types/address';
 import { Fragment } from 'react';
+import { AddressData, Juso } from '@/types/address';
 
 const SearchResults = ({ addressData }: { addressData: AddressData }) => {
   const { common, juso } = addressData.results;
   const { totalCount } = common;
+
+  const postAddress = (juso: Juso) => {
+    window.opener.postMessage(juso, window.origin);
+    window.close();
+  };
 
   return (
     <>
@@ -11,7 +16,10 @@ const SearchResults = ({ addressData }: { addressData: AddressData }) => {
       {juso.map((juso) => {
         return (
           <Fragment key={juso.roadAddr}>
-            <address className="flex flex-col gap-1 text-sm font-semibold">
+            <address
+              className="flex cursor-pointer flex-col gap-1 text-sm font-semibold"
+              onClick={() => postAddress(juso)}
+            >
               <div className="text-sub-color1">{juso.zipNo}</div>
               <h3>{juso.roadAddr}</h3>
               <div className="text-[#969696]">[지번] {juso.jibunAddr}</div>

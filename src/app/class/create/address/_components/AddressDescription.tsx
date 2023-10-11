@@ -1,5 +1,5 @@
-import { ADDRESS_DESCRIPTION } from '@/constants/constants';
 import { Fragment } from 'react';
+import { ADDRESS_DESCRIPTION } from '@/constants/constants';
 
 const AddressDescription = () => {
   return (

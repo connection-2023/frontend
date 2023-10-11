@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { useTextInput } from '@/utils/useTextInput';
 
 interface TextAreaSectionProps {
-  title: string;
+  title?: string;
   placeholder: string;
   maxLength: number;
   dataName: string;
@@ -12,7 +12,7 @@ interface TextAreaSectionProps {
 }
 
 const TextAreaSection = ({
-  title,
+  title = '',
   placeholder,
   maxLength,
   dataName,
@@ -25,10 +25,12 @@ const TextAreaSection = ({
   const { register } = formMethods;
 
   return (
-    <section className="relative mt-9 flex flex-col">
-      <h2 id={dataName} className="mb-3 text-lg font-bold">
-        {title}
-      </h2>
+    <section className="relative flex flex-col">
+      {title && (
+        <h2 id={dataName} className="mb-3 text-lg font-bold">
+          {title}
+        </h2>
+      )}
       <textarea
         {...register(dataName, {
           ...(isRequired && { required: '필수 입력 사항' }),
