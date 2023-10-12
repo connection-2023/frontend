@@ -45,6 +45,7 @@ import AlarmSVG from './alarm.svg';
 import CommentSVG from './comment.svg';
 import TransFormSVG from './transform.svg';
 import EditSVG from './edit.svg';
+import NoteSVG from './note.svg';
 
 export {
   AuthWelcomeSVG,
@@ -94,4 +95,5 @@ export {
   MapSVG,
   AlarmSVG,
   EditSVG,
+  NoteSVG,
 };
