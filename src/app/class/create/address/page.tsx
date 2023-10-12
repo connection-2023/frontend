@@ -4,7 +4,7 @@ import Pagination from '@/components/Pagination/Pagination';
 import SearchForm from './_components/SearchForm';
 import SearchResults from './_components/SearchResults';
 import AddressDescription from './_components/AddressDescription';
-import { searchAddress } from '@/app/apis/address/addressApi';
+import { searchAddress } from '@/app/apis/address/searchAddress';
 import { AddressData } from '@/types/address';
 
 const Address = () => {
@@ -20,14 +20,14 @@ const Address = () => {
 
     if (value) {
       inputAddressRef.current = value;
-      setAddressData(await searchAddress(value, 1));
+      setAddressData(await searchAddress(value, 0));
+      setCurrentPage(0);
     }
   };
 
   const handlePageChange = async ({ selected }: { selected: number }) => {
-    const newSelected = selected + 1;
-    setCurrentPage(newSelected);
-    setAddressData(await searchAddress(inputAddressRef.current, newSelected));
+    setCurrentPage(selected);
+    setAddressData(await searchAddress(inputAddressRef.current, selected + 1));
   };
 
   return (
@@ -46,7 +46,7 @@ const Address = () => {
           <AddressDescription />
         )}
 
-        {addressData && !addressData.results.common.errorCode && (
+        {addressData && addressData.results.common.errorCode === '0' && (
           <Pagination
             pageCount={Math.ceil(
               parseInt(addressData.results.common.totalCount) /
