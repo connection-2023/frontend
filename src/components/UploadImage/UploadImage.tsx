@@ -126,7 +126,7 @@ const UploadImage = () => {
               className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
             ${
               errors.이미지
-                ? 'animate-heartbeat text-main-color'
+                ? 'animate-vibration text-main-color'
                 : 'text-sub-color2'
             }
             `}

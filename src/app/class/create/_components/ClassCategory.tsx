@@ -24,7 +24,7 @@ const ClassCategory = () => {
         id="클래스명"
         placeholder="클래스명"
         className={`mb-6 h-10 border-b border-solid border-sub-color1 pb-2 text-2xl font-bold outline-0
-        ${errors.클래스명 && 'animate-heartbeat placeholder:text-main-color'}`}
+        ${errors.클래스명 && 'animate-vibration placeholder:text-main-color'}`}
         {...register('클래스명', {
           required: '필수 입력 사항',
         })}

@@ -17,12 +17,12 @@ const config: Config = {
         'sub-color4': 'var(--sub-color4)',
       },
       animation: {
-        heartbeat: 'heartbeat 1s 3',
+        vibration: 'vibration 0.1s 20',
       },
       keyframes: {
-        heartbeat: {
-          '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.2)' },
+        vibration: {
+          '0%': { transform: 'rotate(1deg)' },
+          '100%': { transform: 'rotate(-1deg)' },
         },
       },
     },

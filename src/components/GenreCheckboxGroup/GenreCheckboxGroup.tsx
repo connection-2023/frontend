@@ -51,7 +51,7 @@ const GenreCheckboxGroup = () => {
       <h2
         id="장르"
         className={`w-1/6 text-lg font-bold ${
-          errors.장르 && 'animate-heartbeat text-main-color'
+          errors.장르 && 'animate-vibration text-main-color'
         }`}
       >
         장르

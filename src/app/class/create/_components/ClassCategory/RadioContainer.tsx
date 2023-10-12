@@ -14,7 +14,7 @@ const RadioContainer = ({ title, children }: RadioGroupProps) => {
       <h2
         id={title}
         className={`w-1/6 pt-1 text-lg font-bold
-       ${errors[title] && 'animate-heartbeat text-main-color'}`}
+       ${errors[title] && 'animate-vibration text-main-color'}`}
       >
         {title}
       </h2>

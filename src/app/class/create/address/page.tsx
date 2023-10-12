@@ -20,13 +20,14 @@ const Address = () => {
 
     if (value) {
       inputAddressRef.current = value;
-      setAddressData(await searchAddress(value, 0));
+      setAddressData(await searchAddress(value, 1));
     }
   };
 
   const handlePageChange = async ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
-    setAddressData(await searchAddress(inputAddressRef.current, selected));
+    const newSelected = selected + 1;
+    setCurrentPage(newSelected);
+    setAddressData(await searchAddress(inputAddressRef.current, newSelected));
   };
 
   return (
@@ -45,7 +46,7 @@ const Address = () => {
           <AddressDescription />
         )}
 
-        {addressData && (
+        {addressData && !addressData.results.common.errorCode && (
           <Pagination
             pageCount={Math.ceil(
               parseInt(addressData.results.common.totalCount) /
