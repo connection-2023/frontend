@@ -24,3 +24,12 @@ export interface IFullCalendarEvent {
   end: Date;
   title: string;
 }
+
+export interface ITableList {
+  id: number;
+  name: string;
+  purchase: string;
+  date: string;
+  price: string;
+  status: string;
+}
