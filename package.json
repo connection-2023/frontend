@@ -19,6 +19,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.10.6",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -31,6 +32,7 @@
     "react": "18.2.0",
     "react-big-calendar": "^1.8.4",
     "react-cropper": "^2.3.3",
+    "react-csv": "^2.2.2",
     "react-day-picker": "^8.8.2",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.46.1",
@@ -61,6 +63,7 @@
     "@types/jest": "^29.5.3",
     "@types/navermaps": "^3.6.6",
     "@types/react-big-calendar": "^1.6.5",
+    "@types/react-csv": "^1.1.6",
     "@types/react-datepicker": "^4.15.0",
     "@types/react-modal": "^3.16.0",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
