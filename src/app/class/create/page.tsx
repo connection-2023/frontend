@@ -9,6 +9,7 @@ import ClassCategory from './_components/ClassCategory';
 import ClassExplanation from './_components/ClassExplanation';
 import ClassSchedule from './_components/ClassSchedule';
 import ClassLocation from './_components/ClassLocation';
+import ClassPrice from './_components/ClassPrice';
 import { ArrowRightSVG } from '@/../public/icons/svg';
 
 const steps = [
@@ -16,11 +17,11 @@ const steps = [
   { title: '클래스 상세 설명', component: <ClassExplanation /> },
   { title: '일정 및 공지사항', component: <ClassSchedule /> },
   { title: '클래스 장소', component: <ClassLocation /> },
-  { title: '가격 설정', component: null },
+  { title: '가격 설정', component: <ClassPrice /> },
 ];
 
 export default function ClassCreate() {
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(4);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const setClassCreate = useSetRecoilState(classCreateState);
 

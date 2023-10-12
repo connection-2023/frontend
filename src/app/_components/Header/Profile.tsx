@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ProfileMenu from './ProfileMenu';
 import { dummyUserInfo } from '@/constants/dummy';
-import { ArrowDownSVG, ProfileSVG } from '../../../public/icons/svg';
+import { ArrowDownSVG, ProfileSVG } from '../../../../public/icons/svg';
 
 const Profile = () => {
   const { profileImg } = dummyUserInfo;

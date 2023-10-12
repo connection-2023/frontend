@@ -1,30 +1,8 @@
+import SelectComponent from '@/components/Select/Select';
 import { classCreateState } from '@/recoil/Create/atoms';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Select, {
-  components,
-  DropdownIndicatorProps,
-  GroupBase,
-  IndicatorSeparatorProps,
-  StylesConfig,
-} from 'react-select';
 import { useRecoilValue } from 'recoil';
-
-const { DropdownIndicator, IndicatorSeparator } = components;
-
-const CustomDropdownIndicator = (
-  props: DropdownIndicatorProps<{ value: number; label: string }, false>,
-) => {
-  return props.selectProps.menuIsOpen ? null : <DropdownIndicator {...props} />;
-};
-
-const CustomIndicatorSeparator = (
-  props: IndicatorSeparatorProps<{ value: number; label: string }, false>,
-) => {
-  return props.selectProps.menuIsOpen ? null : (
-    <IndicatorSeparator {...props} />
-  );
-};
 
 const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
   const classData = useRecoilValue(classCreateState);
@@ -108,7 +86,7 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
           }`}
         >
           <h3>{title}</h3>
-          <Select
+          <SelectComponent
             instanceId={`select-${title}`}
             defaultValue={state.select}
             onChange={(selected) =>
@@ -116,11 +94,6 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
             }
             isDisabled={isDisabled}
             options={state.option}
-            components={{
-              DropdownIndicator: CustomDropdownIndicator,
-              IndicatorSeparator: CustomIndicatorSeparator,
-            }}
-            styles={selectStyles}
           />
           명
         </div>
@@ -130,50 +103,3 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
 };
 
 export default ClassSizeSelect;
-
-const selectStyles:
-  | StylesConfig<
-      {
-        value: number;
-        label: string;
-      },
-      false,
-      GroupBase<{
-        value: number;
-        label: string;
-      }>
-    >
-  | undefined = {
-  menuList: (base) => ({ ...base, maxHeight: '200px' }),
-  control: (provided, state) => ({
-    ...provided,
-    borderRadius:
-      state.selectProps.menuIsOpen || state.menuIsOpen
-        ? '1.3rem 1.3rem 0 0'
-        : '1.875rem',
-    boxShadow: 'none',
-    borderColor: 'var(--sub-color4)',
-    '&:hover': { borderColor: 'var(--sub-color4)' },
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    width: state.selectProps.menuIsOpen ? '4.275rem' : provided.width,
-    justifyContent: 'center',
-    borderColor: 'none',
-  }),
-  menu: (provided) => ({
-    ...provided,
-    marginTop: '-10px',
-    boxShadow: 'none',
-    border: '1px solid var(--sub-color4)',
-    borderTop: 'none',
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected ? 'var(--sub-color4)' : 'white',
-    color: 'black',
-    '&:hover': {
-      backgroundColor: '#eceaea',
-    },
-  }),
-};
