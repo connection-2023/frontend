@@ -1,4 +1,9 @@
 import ConnectionLogoSVG from './connectionLogo.svg';
+import NaverSVG from './naverIcon.svg';
+import GoogleSVG from './googleIcon.svg';
+import AuthWelcomeSVG from './authWelcome.svg';
+import ImageSVG from './image.svg';
+import AddImageSVG from './addimage.svg';
 import CalendarDetailSVG from './calendarDetail.svg';
 import CalendarSVG from './calendar.svg';
 import HeartSVG from './heart.svg';
@@ -42,6 +47,11 @@ import TransFormSVG from './transform.svg';
 import EditSVG from './edit.svg';
 
 export {
+  AuthWelcomeSVG,
+  NaverSVG,
+  GoogleSVG,
+  ImageSVG,
+  AddImageSVG,
   TransFormSVG,
   CommentSVG,
   ConnectionLogoSVG,

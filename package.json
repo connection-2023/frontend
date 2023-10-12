@@ -19,6 +19,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.11.1",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -26,7 +27,7 @@
     "eslint-config-next": "13.4.19",
     "lodash": "^4.17.21",
     "nanoid": "^5.0.1",
-    "next": "13.4.19",
+    "next": "^13.5.4",
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-big-calendar": "^1.8.4",
