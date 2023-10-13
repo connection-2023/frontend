@@ -31,6 +31,8 @@ interface SelectComponentProps<T> {
   styleType?: 'normal' | 'number';
   placeholder?: string;
   noOptionsMessage?: string;
+  multiLimit?: number;
+  selectedOptionsLength?: number;
 }
 
 const ReactSelect = <T extends { value: any; label: string }>({
@@ -42,6 +44,8 @@ const ReactSelect = <T extends { value: any; label: string }>({
   styleType = 'normal',
   placeholder = '선택해주세요',
   noOptionsMessage = '사용 가능한 옵션이 없습니다',
+  multiLimit = 2,
+  selectedOptionsLength = 0,
 }: SelectComponentProps<T>) => {
   const customComponents =
     styleType === 'number'
@@ -64,7 +68,9 @@ const ReactSelect = <T extends { value: any; label: string }>({
       components={customComponents}
       styles={styles as StylesConfig<any>}
       noOptionsMessage={() => noOptionsMessage}
+      isOptionDisabled={() => selectedOptionsLength >= multiLimit}
       placeholder={placeholder}
+      isMulti={styleType === 'normal'}
     />
   );
 };
@@ -137,7 +143,6 @@ const selectStylesNormal:
     ...provided,
     boxShadow: 'none',
     borderColor: 'var(--sub-color2)',
-    height: '100%',
     width: '100%',
     '&:hover': { borderColor: 'var(--sub-color2)' },
   }),
@@ -145,6 +150,7 @@ const selectStylesNormal:
     ...provided,
     justifyContent: 'center',
     borderColor: 'none',
+    height: '100%',
   }),
   menu: (provided) => ({
     ...provided,
