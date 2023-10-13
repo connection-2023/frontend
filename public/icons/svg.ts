@@ -42,8 +42,10 @@ import TransFormSVG from './transform.svg';
 import CheckMarkSVG from './checkMark.svg';
 import PlusesSVG from './pluses.svg';
 import TooltipSVG from './tooltip.svg';
+import CouponSVG from './coupon.svg';
 
 export {
+  CouponSVG,
   TooltipSVG,
   PlusesSVG,
   CheckMarkSVG,

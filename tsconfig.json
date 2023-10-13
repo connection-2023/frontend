@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "public/icons/svg.js"
+    "public/icons/svg.js",
+    "src/app/_components/Header"
   ],
   "exclude": ["node_modules"]
 }

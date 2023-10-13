@@ -1,8 +1,8 @@
 import { ArrowDownSVG, CouponSVG } from '../../../../../public/icons/svg';
 import { useState } from 'react';
-import CouponOption from '@/components/Coupon/CouponOption';
+import CouponOption from '@/components/Coupon/CreateCoupon/CouponOption';
 import ReactSelect from '@/components/Select/ReactSelect';
-import Select from 'react-select';
+import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
 
 function createOptions(from: number, to: number) {
   return Array.from({ length: to - from + 1 }, (_, i) => ({
@@ -74,25 +74,39 @@ const ClassPrice = () => {
         </button>
         {isOpen && (
           <>
-            <div className="relative">
+            <section className="relative">
               <CouponOption />
               <button className="absolute bottom-0 right-5 h-7 w-[5.375rem] rounded-md bg-sub-color1 text-white">
                 생성하기
               </button>
-            </div>
+            </section>
 
             <hr className="border-sub-color2" />
 
-            <div className="flex items-center gap-4 font-semibold">
-              <h2 className="w-1/6">적용할 쿠폰</h2>
-              <div className="w-96">
-                <ReactSelect
-                  options={couponOptions}
-                  placeholder="적용할 쿠폰 선택"
-                  noOptionsMessage="적용 가능한 쿠폰이 없습니다"
-                />
+            <section className="flex gap-4">
+              <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
+              <div className="flex w-5/6 flex-wrap gap-5">
+                <div className="w-96">
+                  <ReactSelect
+                    options={couponOptions}
+                    placeholder="적용할 쿠폰 선택"
+                    noOptionsMessage="적용 가능한 쿠폰이 없습니다"
+                  />
+                </div>
+                <InstructorCoupon />
+                <InstructorCoupon />
               </div>
-            </div>
+            </section>
+
+            <section className="flex items-center">
+              <h2 className="mr-7 font-semibold">최대 할인된 클래스 금액</h2>
+              <input
+                type="number"
+                readOnly
+                className="mr-1 h-7 w-20 rounded-md border border-solid border-sub-color2"
+              />
+              원
+            </section>
           </>
         )}
       </section>
