@@ -1,5 +1,5 @@
 import { ClassCardType } from '@/types/class';
-
+import { IPaymentList } from '@/types/types';
 const dummyUserInputSuggestion = [
   '댄스',
   '댄스 영상',
@@ -716,6 +716,39 @@ const dummyIncomeList = [
   },
 ];
 
+const dummyPaymentList: IPaymentList[] = [
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '처리중',
+  },
+
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+];
 export {
   dummyUserInfo,
   dummyMain,
@@ -729,4 +762,5 @@ export {
   dummyClassRoster,
   dummyClassList,
   dummyIncomeList,
+  dummyPaymentList,
 };

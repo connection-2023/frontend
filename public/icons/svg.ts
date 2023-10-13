@@ -41,10 +41,16 @@ import CommentSVG from './comment.svg';
 import TransFormSVG from './transform.svg';
 import EditSVG from './edit.svg';
 import BigArrowSVG from './bigArrow.svg';
+import ExcelSVG from './excel.svg';
+import MoneySVG from './money.svg';
+import BillSVG from './bill.svg';
+import DoubleRightSVG from './doubleRight.svg';
 
 export {
   TransFormSVG,
   CommentSVG,
+  ExcelSVG,
+  MoneySVG,
   ConnectionLogoSVG,
   CalendarDetailSVG,
   SmallLogoSVG,
@@ -86,4 +92,6 @@ export {
   AlarmSVG,
   BigArrowSVG,
   EditSVG,
+  BillSVG,
+  DoubleRightSVG,
 };

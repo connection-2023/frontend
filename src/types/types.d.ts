@@ -33,3 +33,10 @@ export interface ITableList {
   price: string;
   status: string;
 }
+
+export interface IPaymentList {
+  date: string;
+  period: string;
+  amount: string;
+  status: '입금완료' | '처리중';
+}
