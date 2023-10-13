@@ -175,3 +175,5 @@ export const ADDRESS_DESCRIPTION = [
     description: '예) 분당 주공, 연수동 주공3차',
   },
 ];
+
+export const COUPON_UNIT_LIST = ['원', '%'];

@@ -3,6 +3,7 @@ import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
 import Tooltip from '@/components/Tooltip/Tooltip';
+import { LocationDiscussionTooltip } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
 import { Juso } from '@/types/address';
 
 const ClassLocation = () => {
@@ -64,11 +65,7 @@ const ClassLocation = () => {
           협의 후 결정
         </label>
         <Tooltip>
-          <div className="flex h-14 w-96 items-center justify-center text-sm">
-            수업장소가 특정하지 않을 경우(온라인, 방문수업 등)
-            <br />
-            가능한 지역을 선택 후 하단에 자세한 설명을 적어주세요.
-          </div>
+          <LocationDiscussionTooltip />
         </Tooltip>
       </div>
 
