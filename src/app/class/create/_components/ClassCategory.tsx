@@ -2,12 +2,12 @@ import { useFormContext, useFormState } from 'react-hook-form';
 import UploadImage from '@/components/UploadImage/UploadImage';
 import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
 import LessonTypeSelect from './ClassCategory/LessonTypeSelect';
-import RadioComponent from './ClassCategory/RadioComponent';
+import CategoryContainer from './ClassCategory/CategoryContainer';
 import {
   CATEGORY_DIFFICULTY_LEVEL,
   CATEGORY_PROGRESS_METHOD,
 } from '@/constants/constants';
-import RadioContainer from './ClassCategory/RadioContainer';
+import RadioComponent from './ClassCategory/RadioComponent';
 
 const ClassCategory = () => {
   const formMethods = useFormContext();
@@ -32,17 +32,17 @@ const ClassCategory = () => {
 
       <GenreCheckboxGroup />
 
-      <RadioContainer title="인원">
+      <CategoryContainer title="인원">
         <LessonTypeSelect />
-      </RadioContainer>
+      </CategoryContainer>
 
-      <RadioContainer title="진행방식">
+      <CategoryContainer title="진행방식">
         <RadioComponent title="진행방식" checkList={CATEGORY_PROGRESS_METHOD} />
-      </RadioContainer>
+      </CategoryContainer>
 
-      <RadioContainer title="난이도">
+      <CategoryContainer title="난이도">
         <RadioComponent title="난이도" checkList={CATEGORY_DIFFICULTY_LEVEL} />
-      </RadioContainer>
+      </CategoryContainer>
     </>
   );
 };

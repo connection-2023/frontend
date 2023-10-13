@@ -1,8 +1,8 @@
-import SelectComponent from '@/components/Select/Select';
-import { classCreateState } from '@/recoil/Create/atoms';
 import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
+import { useFormContext } from 'react-hook-form';
+import { classCreateState } from '@/recoil/Create/atoms';
+import ReactSelect from '@/components/Select/ReactSelect';
 
 const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
   const classData = useRecoilValue(classCreateState);
@@ -86,7 +86,7 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
           }`}
         >
           <h3>{title}</h3>
-          <SelectComponent
+          <ReactSelect
             instanceId={`select-${title}`}
             defaultValue={state.select}
             onChange={(selected) =>
@@ -94,6 +94,7 @@ const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
             }
             isDisabled={isDisabled}
             options={state.option}
+            styleType="number"
           />
           명
         </div>

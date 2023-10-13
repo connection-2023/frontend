@@ -2,8 +2,8 @@ import { ChangeEvent, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
 import { useFormContext } from 'react-hook-form';
-import RadioComponent from './RadioComponent';
 import ClassSizeSelect from './ClassSizeSelect';
+import RadioComponent from './RadioComponent';
 import { CATEGORY_LESSON_TYPE } from '@/constants/constants';
 
 const LessonTypeSelect = () => {

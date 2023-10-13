@@ -1,16 +1,16 @@
 import { useFormContext, useFormState } from 'react-hook-form';
 
-interface RadioGroupProps {
+interface CategoryProps {
   title: string;
   children: React.ReactNode;
 }
 
-const RadioContainer = ({ title, children }: RadioGroupProps) => {
+const CategoryContainer = ({ title, children }: CategoryProps) => {
   const formMethods = useFormContext();
   const { errors } = useFormState({ control: formMethods.control });
 
   return (
-    <div className="mt-5 flex w-full">
+    <section className="mt-5 flex w-full">
       <h2
         id={title}
         className={`w-1/6 pt-1 text-lg font-bold
@@ -19,8 +19,8 @@ const RadioContainer = ({ title, children }: RadioGroupProps) => {
         {title}
       </h2>
       <ul className="flex gap-4">{children}</ul>
-    </div>
+    </section>
   );
 };
 
-export default RadioContainer;
+export default CategoryContainer;
