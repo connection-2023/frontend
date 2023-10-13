@@ -8,7 +8,11 @@ interface SelectProps {
   onChange?: () => void;
 }
 
-const Select = ({ defaultValue, selectList, onChange }: SelectProps) => {
+const NoborderSelect = ({
+  defaultValue,
+  selectList,
+  onChange,
+}: SelectProps) => {
   const [selectedValue, setSelectedValue] = useState(defaultValue);
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
   const selectRef = useRef(null);
@@ -35,14 +39,14 @@ const Select = ({ defaultValue, selectList, onChange }: SelectProps) => {
       }`}
     >
       {selectedValue}
-      <ArrowDownSVG className="h-6 w-6 -translate-x-1.5 -translate-y-1.5 fill-sub-color2" />
+      <ArrowDownSVG className="h-7 w-[1.6rem] -translate-x-1.5 -translate-y-1 fill-sub-color2" />
       {isDropdownVisible && (
-        <ul className="absolute left-0 right-0 top-full rounded-b-md bg-white shadow-[1px_1px_4px_0px_rgba(0,0,0,0.25)]">
+        <ul className="absolute left-0 right-0 top-full rounded-b-md bg-white shadow-[1px_2px_4px_0px_rgba(0,0,0,0.25)]">
           {selectList.map((value) =>
             selectedValue === value ? null : (
               <li
                 key={value}
-                className="border-t border-solid border-sub-color2"
+                className="border-t border-solid border-sub-color2 hover:bg-[#eceaea]"
                 onClick={() => handleSelectionChange(value)}
               >
                 {value}
@@ -55,4 +59,4 @@ const Select = ({ defaultValue, selectList, onChange }: SelectProps) => {
   );
 };
 
-export default Select;
+export default NoborderSelect;
