@@ -40,3 +40,10 @@ export interface IPaymentList {
   amount: string;
   status: '입금완료' | '처리중';
 }
+export interface IReportList {
+  id: number;
+  target: string;
+  reason: string;
+  detail: string;
+  status: '처리중' | '처리완료';
+}

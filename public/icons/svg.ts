@@ -1,4 +1,9 @@
 import ConnectionLogoSVG from './connectionLogo.svg';
+import NaverSVG from './naverIcon.svg';
+import GoogleSVG from './googleIcon.svg';
+import AuthWelcomeSVG from './authWelcome.svg';
+import ImageSVG from './image.svg';
+import AddImageSVG from './addimage.svg';
 import CalendarDetailSVG from './calendarDetail.svg';
 import CalendarSVG from './calendar.svg';
 import HeartSVG from './heart.svg';
@@ -45,8 +50,14 @@ import ExcelSVG from './excel.svg';
 import MoneySVG from './money.svg';
 import BillSVG from './bill.svg';
 import DoubleRightSVG from './doubleRight.svg';
+import NoteSVG from './note.svg';
 
 export {
+  AuthWelcomeSVG,
+  NaverSVG,
+  GoogleSVG,
+  ImageSVG,
+  AddImageSVG,
   TransFormSVG,
   CommentSVG,
   ExcelSVG,
@@ -92,6 +103,7 @@ export {
   AlarmSVG,
   BigArrowSVG,
   EditSVG,
-  BillSVG,
   DoubleRightSVG,
+  BillSVG,
+  NoteSVG,
 };
