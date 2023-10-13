@@ -5,7 +5,7 @@ import { ArrowDownSVG } from '../../../public/icons/svg';
 interface SelectProps {
   defaultValue: string;
   selectList: string[];
-  onChange?: () => void;
+  onChange?: (value: string) => void;
 }
 
 const NoborderSelect = ({
@@ -23,6 +23,9 @@ const NoborderSelect = ({
 
   const handleSelectionChange = (value: string) => {
     setSelectedValue(value);
+    if (onChange) {
+      onChange(value);
+    }
   };
 
   const toggleDropdownVisibility = () => {
