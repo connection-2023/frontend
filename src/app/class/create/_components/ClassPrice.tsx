@@ -1,5 +1,5 @@
+'use client';
 import { useState } from 'react';
-
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
@@ -22,15 +22,11 @@ const ClassPrice = () => {
           toggleCouponSection={toggleCouponSection}
         />
 
-        {isCouponSectionOpen && (
-          <>
-            <CouponCreator />
+        <CouponCreator isCouponSectionOpen={isCouponSectionOpen} />
 
-            <hr className="border-sub-color2" />
+        {isCouponSectionOpen && <hr className="border-sub-color2" />}
 
-            <AppliedCouponDisplay />
-          </>
-        )}
+        <AppliedCouponDisplay isCouponSectionOpen={isCouponSectionOpen} />
       </section>
     </>
   );

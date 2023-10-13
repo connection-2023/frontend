@@ -1,7 +1,11 @@
 import { useForm } from 'react-hook-form';
 import CouponOption from '@/components/Coupon/CreateCoupon/CouponOption';
 
-const CouponCreator = () => {
+const CouponCreator = ({
+  isCouponSectionOpen,
+}: {
+  isCouponSectionOpen: boolean;
+}) => {
   const {
     register,
     handleSubmit,
@@ -21,7 +25,10 @@ const CouponCreator = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onValid, invalid)} className="relative">
+    <form
+      onSubmit={handleSubmit(onValid, invalid)}
+      className={`${!isCouponSectionOpen ? 'hidden' : ''} relative`}
+    >
       <CouponOption
         register={register}
         control={control}
