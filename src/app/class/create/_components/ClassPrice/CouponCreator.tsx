@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
-import CouponOption from '@/components/Coupon/CreateCoupon/CouponOption';
+import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
+import { CouponData } from '@/types/coupon';
 
 const CouponCreator = ({
   isCouponSectionOpen,
@@ -15,14 +16,15 @@ const CouponCreator = ({
     setValue,
     watch,
     trigger,
-  } = useForm();
+  } = useForm<CouponData>();
 
-  const onValid = (data: any) => {
+  const onValid = (data: CouponData) => {
     console.log(data);
   };
 
   const invalid = (data: any) => {
     console.log(data, '실패');
+    // 추후 토스트 메시지 추가 예정
   };
 
   return (

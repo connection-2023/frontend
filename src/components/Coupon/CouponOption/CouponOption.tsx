@@ -2,7 +2,6 @@ import {
   Control,
   Controller,
   FieldErrors,
-  FieldValues,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
@@ -19,18 +18,19 @@ import {
 import CouponOptionSection from './CouponOptionSection';
 import { COUPON_UNIT_LIST } from '@/constants/constants';
 import { useEffect } from 'react';
+import { CouponData } from '@/types/coupon';
 
 const CouponOptionInputStyles =
   'h-7 rounded-md border border-solid border-sub-color2 focus:outline-none';
 
 interface CouponOptionProps {
-  register: UseFormRegister<FieldValues>;
-  control: Control<FieldValues, any>;
-  getValues: UseFormGetValues<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
-  watch: UseFormWatch<FieldValues>;
-  errors: FieldErrors<FieldValues>;
-  trigger: UseFormTrigger<FieldValues>;
+  register: UseFormRegister<CouponData>;
+  control: Control<CouponData>;
+  getValues: UseFormGetValues<CouponData>;
+  setValue: UseFormSetValue<CouponData>;
+  watch: UseFormWatch<CouponData>;
+  errors: FieldErrors<CouponData>;
+  trigger: UseFormTrigger<CouponData>;
 }
 
 const CouponOption = ({
@@ -92,10 +92,10 @@ const CouponOption = ({
             type="number"
             className={`${CouponOptionInputStyles} mr-[0.25rem] w-[5rem]`}
             {...register('discountValue', {
-              required: '할인률은 필수 입력 사항입니다.',
+              required: '쿠폰 상세는 필수 입력 사항입니다.',
               pattern: {
                 value: /^[0-9]*$/,
-                message: '할인률은 숫자만 입력 가능합니다.',
+                message: '쿠폰 상세는 숫자만 입력 가능합니다.',
               },
               validate: (value) => {
                 if (getValues('couponQuantity') === '%' && value > 100) {
