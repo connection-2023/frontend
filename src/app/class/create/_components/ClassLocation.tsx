@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
-import { TooltipSVG } from '../../../../../public/icons/svg';
+import Tooltip from '@/components/Tooltip/Tooltip';
 import { Juso } from '@/types/address';
 
 const ClassLocation = () => {
@@ -63,14 +63,11 @@ const ClassLocation = () => {
         <label htmlFor="consultative" className="text-sm font-semibold">
           협의 후 결정
         </label>
-        <div className="group relative">
-          <TooltipSVG />
-          <div className="absolute left-6 top-0 z-10 hidden h-14 w-96 items-center justify-center border border-solid border-sub-color4 bg-white text-sm shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] group-hover:flex">
-            수업장소가 특정하지 않을 경우(온라인, 방문수업 등)
-            <br />
-            가능한 지역을 선택 후 하단에 자세한 설명을 적어주세요.
-          </div>
-        </div>
+        <Tooltip>
+          수업장소가 특정하지 않을 경우(온라인, 방문수업 등)
+          <br />
+          가능한 지역을 선택 후 하단에 자세한 설명을 적어주세요.
+        </Tooltip>
       </div>
 
       {isLocationSet ? (
