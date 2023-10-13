@@ -15,7 +15,7 @@ export const classCreateState = atom({
     장르: [],
     이미지: [],
     인원: '',
-    수강생제한: { min: 0, max: 100 },
+    수강생제한: { min: 1, max: 100 },
     커리큘럼: QUILL_DEFAULT_VALUE,
   },
 });

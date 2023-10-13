@@ -3,13 +3,13 @@ import { useRecoilValue } from 'recoil';
 import { useFormContext } from 'react-hook-form';
 import { classCreateState } from '@/recoil/Create/atoms';
 import ReactSelect from '@/components/Select/ReactSelect';
+import createOptions from '@/utils/generateStudentCountOptions';
 
 const ClassSizeSelect = ({ lessonType }: { lessonType: string }) => {
   const classData = useRecoilValue(classCreateState);
-  const allOptions = Array.from({ length: 101 }, (_, i) => ({
-    value: i,
-    label: String(i),
-  }));
+
+  const allOptions = createOptions(1, 100);
+
   const formMethods = useFormContext();
 
   const { setValue } = formMethods;
