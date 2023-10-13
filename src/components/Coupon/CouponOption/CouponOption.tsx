@@ -1,10 +1,12 @@
 import {
   Control,
   Controller,
+  FieldErrors,
   FieldValues,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
+  UseFormTrigger,
   UseFormWatch,
 } from 'react-hook-form';
 import NoborderSelect from '@/components/Select/NoborderSelect';
@@ -14,7 +16,9 @@ import {
   CouponDuplicationTooltip,
   MaxDiscountTooltip,
 } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
+import CouponOptionSection from './CouponOptionSection';
 import { COUPON_UNIT_LIST } from '@/constants/constants';
+import { useEffect } from 'react';
 
 const CouponOptionInputStyles =
   'h-7 rounded-md border border-solid border-sub-color2 focus:outline-none';
@@ -25,6 +29,8 @@ interface CouponOptionProps {
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
   watch: UseFormWatch<FieldValues>;
+  errors: FieldErrors<FieldValues>;
+  trigger: UseFormTrigger<FieldValues>;
 }
 
 const CouponOption = ({
@@ -33,12 +39,24 @@ const CouponOption = ({
   getValues,
   setValue,
   watch,
+  errors,
+  trigger,
 }: CouponOptionProps) => {
   const hasCouponLimit = watch('hasCouponLimit');
 
+  useEffect(() => {
+    if (hasCouponLimit === true) {
+      trigger('couponDistributionCount');
+    }
+  }, [hasCouponLimit]);
+
   return (
     <main className="flex flex-col gap-4 ">
-      <CouponOptionSection title="쿠폰명">
+      <CouponOptionSection
+        title="쿠폰명"
+        errors={errors}
+        registerId="couponName"
+      >
         <input
           type="text"
           className={`${CouponOptionInputStyles} w-96`}
@@ -48,7 +66,11 @@ const CouponOption = ({
         />
       </CouponOptionSection>
 
-      <CouponOptionSection title="사용기간">
+      <CouponOptionSection
+        title="사용기간"
+        errors={errors}
+        registerId="validityPeriod"
+      >
         <Controller
           name="validityPeriod"
           control={control}
@@ -60,7 +82,11 @@ const CouponOption = ({
         />
       </CouponOptionSection>
 
-      <CouponOptionSection title="쿠폰 상세">
+      <CouponOptionSection
+        title="쿠폰 상세"
+        errors={errors}
+        registerId="discountValue"
+      >
         <div className="flex items-center gap-1">
           <input
             type="number"
@@ -94,7 +120,11 @@ const CouponOption = ({
         </div>
       </CouponOptionSection>
 
-      <CouponOptionSection title="배부 개수">
+      <CouponOptionSection
+        title="배부 개수"
+        errors={errors}
+        registerId="couponDistributionCount"
+      >
         <div className="flex items-center">
           <p
             className={`mr-2 font-semibold ${
@@ -165,7 +195,13 @@ const CouponOption = ({
 
       <section className="flex items-center gap-10">
         <div className="flex w-1/6 items-center gap-1">
-          <h2 className="whitespace-nowrap font-semibold">최대할인 금액</h2>
+          <h2
+            className={`whitespace-nowrap font-semibold ${
+              errors.maxDiscountAmount && 'animate-vibration text-main-color'
+            }`}
+          >
+            최대할인 금액
+          </h2>
           <Tooltip>
             <MaxDiscountTooltip />
           </Tooltip>
@@ -191,16 +227,3 @@ const CouponOption = ({
 };
 
 export default CouponOption;
-
-const CouponOptionSection = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => (
-  <section className="flex items-center gap-10">
-    <h2 className="w-1/6 font-semibold">{title}</h2>
-    {children}
-  </section>
-);

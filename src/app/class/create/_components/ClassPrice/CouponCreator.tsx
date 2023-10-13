@@ -14,6 +14,7 @@ const CouponCreator = ({
     getValues,
     setValue,
     watch,
+    trigger,
   } = useForm();
 
   const onValid = (data: any) => {
@@ -35,6 +36,8 @@ const CouponCreator = ({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        errors={errors}
+        trigger={trigger}
       />
       <button className="absolute bottom-0 right-5 h-7 w-[5.375rem] rounded-md bg-sub-color1 text-white">
         생성하기
