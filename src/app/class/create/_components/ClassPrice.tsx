@@ -83,7 +83,7 @@ const ClassPrice = () => {
 
             <hr className="border-sub-color2" />
 
-            <section className="flex gap-4">
+            <section className="flex gap-10">
               <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
               <div className="flex w-5/6 flex-wrap gap-5">
                 <div className="w-96">
