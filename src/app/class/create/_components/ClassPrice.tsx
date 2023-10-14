@@ -1,10 +1,11 @@
 'use client';
 import { ChangeEvent, useState } from 'react';
+import { format } from 'date-fns';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
-import { couponGET } from '@/types/coupon';
+import { CouponData, couponGET } from '@/types/coupon';
 import { dummyCouponList } from '@/constants/dummy';
 
 const ClassPrice = () => {
@@ -27,6 +28,36 @@ const ClassPrice = () => {
     }
   };
 
+  const changeCouponList = (couponOption: CouponData) => {
+    const {
+      couponName,
+      discountValue,
+      allowDuplicateCoupons,
+      maxDiscountAmount,
+      couponQuantity,
+      validityPeriod,
+    } = couponOption;
+    const { from, to } = validityPeriod;
+
+    const startDate = new Date(from);
+    const endDate = new Date(to);
+
+    const startAt = format(startDate, 'yyyy-MM-dd');
+    const endAt = format(endDate, 'yyyy-MM-dd');
+
+    const newCoupon = {
+      title: couponName,
+      discount: discountValue,
+      isStackable: allowDuplicateCoupons,
+      maxDiscountAmount,
+      unit: couponQuantity,
+      startAt,
+      endAt,
+    };
+
+    setCouponList((couponList) => [...couponList, newCoupon]);
+  };
+
   return (
     <>
       <ClassInfo changeClassPrice={changeClassPrice} />
@@ -37,7 +68,10 @@ const ClassPrice = () => {
           toggleCouponSection={toggleCouponSection}
         />
 
-        <CouponCreator isCouponSectionOpen={isCouponSectionOpen} />
+        <CouponCreator
+          isCouponSectionOpen={isCouponSectionOpen}
+          changeCouponList={changeCouponList}
+        />
 
         {isCouponSectionOpen && <hr className="border-sub-color2" />}
 

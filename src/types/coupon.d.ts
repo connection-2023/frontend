@@ -4,8 +4,8 @@ interface ValidityPeriod {
 }
 
 interface BaseCouponData {
-  couponName: number;
-  allowDuplicateCoupons?: boolean;
+  couponName: string;
+  allowDuplicateCoupons: boolean;
   maxDiscountAmount?: number;
   validityPeriod: ValidityPeriod;
   couponQuantity: '원' | '%';
@@ -32,6 +32,7 @@ export interface couponGET {
   startAt: string;
   endAt: string;
   isStackable: boolean;
+  maxDiscountAmount?: number;
 }
 
 export interface SelectCoupon {

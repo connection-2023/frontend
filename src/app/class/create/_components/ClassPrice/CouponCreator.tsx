@@ -2,11 +2,15 @@ import { useForm } from 'react-hook-form';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import { CouponData } from '@/types/coupon';
 
+interface CouponCreatorProps {
+  changeCouponList: (couponOption: CouponData) => void;
+  isCouponSectionOpen: boolean;
+}
+
 const CouponCreator = ({
   isCouponSectionOpen,
-}: {
-  isCouponSectionOpen: boolean;
-}) => {
+  changeCouponList,
+}: CouponCreatorProps) => {
   const {
     register,
     handleSubmit,
@@ -20,6 +24,7 @@ const CouponCreator = ({
 
   const onValid = (data: CouponData) => {
     console.log(data);
+    changeCouponList(data);
   };
 
   const invalid = (data: any) => {
