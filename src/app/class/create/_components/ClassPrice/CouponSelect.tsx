@@ -1,4 +1,4 @@
-import { couponGET } from '@/types/coupon';
+import { couponGET, SelectCoupon } from '@/types/coupon';
 import Select, {
   ActionMeta,
   components,
@@ -9,16 +9,11 @@ import Select, {
   StylesConfig,
 } from 'react-select';
 
-type OptionData = {
-  label: string;
-  value: couponGET;
-};
-
 interface CouponSelectProps {
-  options: OptionData[];
+  options: SelectCoupon[];
   onChange: (
-    selectedOptions: MultiValue<OptionData> | SingleValue<OptionData>,
-    actionMeta: ActionMeta<OptionData>,
+    selectedOptions: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
+    actionMeta: ActionMeta<SelectCoupon>,
   ) => void;
   selectedOptionsLength: number;
 }
@@ -47,7 +42,7 @@ const CouponSelect = ({
 
 export default CouponSelect;
 
-const CustomOption = (props: OptionProps<OptionData>) => {
+const CustomOption = (props: OptionProps<SelectCoupon>) => {
   const { data, innerProps } = props;
 
   const label = data.value.isStackable ? '중복' : '일반';

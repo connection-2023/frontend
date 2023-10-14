@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
@@ -8,6 +8,7 @@ import { couponGET } from '@/types/coupon';
 import { dummyCouponList } from '@/constants/dummy';
 
 const ClassPrice = () => {
+  const [classPrice, setClassPrice] = useState(0);
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
   const [couponList, setCouponList] = useState<couponGET[] | []>(
     dummyCouponList,
@@ -17,9 +18,18 @@ const ClassPrice = () => {
     setIsCouponSectionOpen((prev) => !prev);
   };
 
+  const changeClassPrice = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (isNaN(value)) {
+      return;
+    } else {
+      setClassPrice(value);
+    }
+  };
+
   return (
     <>
-      <ClassInfo />
+      <ClassInfo changeClassPrice={changeClassPrice} />
 
       <section className="flex flex-col gap-7 border-y border-solid border-sub-color1 py-5">
         <CouponButton
@@ -34,6 +44,7 @@ const ClassPrice = () => {
         <AppliedCouponDisplay
           isCouponSectionOpen={isCouponSectionOpen}
           couponList={couponList}
+          classPrice={classPrice}
         />
       </section>
     </>

@@ -1,9 +1,14 @@
+import { ChangeEvent } from 'react';
 import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
 
-const ClassInfo = () => {
+const ClassInfo = ({
+  changeClassPrice,
+}: {
+  changeClassPrice: (e: ChangeEvent<HTMLInputElement>) => void;
+}) => {
   const classData = useRecoilValue(classCreateState);
 
   const isIndividualLesson = classData['인원'] === '개인(1:1)레슨';
@@ -49,6 +54,7 @@ const ClassInfo = () => {
         <input
           type="number"
           className="ml-7 mr-1 h-8 w-24 rounded-md border border-solid border-sub-color4 text-right focus:outline-none"
+          onChange={changeClassPrice}
         />
         원
       </div>

@@ -33,3 +33,10 @@ export interface couponGET {
   endAt: string;
   isStackable: boolean;
 }
+
+export interface SelectCoupon {
+  value: CouponGET;
+  label: string;
+}
+
+export type SelectCoupons = SelectCoupon[];
