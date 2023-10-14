@@ -17,11 +17,12 @@ import {
 } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
 import CouponOptionSection from './CouponOptionSection';
 import { COUPON_UNIT_LIST } from '@/constants/constants';
-import { useEffect } from 'react';
+
 import { CouponData } from '@/types/coupon';
+import DistributionCount from './DistributionCount';
 
 const CouponOptionInputStyles =
-  'h-7 rounded-md border border-solid border-sub-color2 focus:outline-none';
+  'h-7 px-3 rounded-md border border-solid border-sub-color2 focus:outline-none';
 
 interface CouponOptionProps {
   register: UseFormRegister<CouponData>;
@@ -37,19 +38,11 @@ const CouponOption = ({
   register,
   control,
   getValues,
+  errors,
   setValue,
   watch,
-  errors,
   trigger,
 }: CouponOptionProps) => {
-  const hasCouponLimit = watch('hasCouponLimit');
-
-  useEffect(() => {
-    if (hasCouponLimit === true) {
-      trigger('couponDistributionCount');
-    }
-  }, [hasCouponLimit]);
-
   return (
     <main className="flex flex-col gap-4 ">
       <CouponOptionSection
@@ -90,7 +83,7 @@ const CouponOption = ({
         <div className="flex items-center gap-1">
           <input
             type="number"
-            className={`${CouponOptionInputStyles} mr-[0.25rem] w-[5rem]`}
+            className={`${CouponOptionInputStyles} mr-[0.25rem] w-[5rem] text-right`}
             {...register('discountValue', {
               required: '쿠폰 상세는 필수 입력 사항입니다.',
               pattern: {
@@ -120,59 +113,18 @@ const CouponOption = ({
         </div>
       </CouponOptionSection>
 
-      <CouponOptionSection
-        title="배부 개수"
+      <DistributionCount
+        register={register}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
         errors={errors}
-        registerId="couponDistributionCount"
-      >
-        <div className="flex items-center">
-          <p
-            className={`mr-2 font-semibold ${
-              hasCouponLimit && 'text-sub-color2'
-            }`}
-          >
-            선착순
-          </p>
-          <input
-            type="number"
-            className={`${CouponOptionInputStyles} mr-1 w-12 `}
-            {...register('couponDistributionCount', {
-              validate: (value) => {
-                if (getValues('hasCouponLimit') || value) return true;
-                return '배부 개수는 필수 값 입니다.';
-              },
-              pattern: {
-                value: /^[0-9]*$/,
-                message: '배부 개수는 숫자만 입력 가능합니다.',
-              },
-            })}
-            onFocus={() => setValue('hasCouponLimit', false)}
-          />
-          <p
-            className={`mr-4 font-semibold ${
-              hasCouponLimit && 'text-sub-color2'
-            }`}
-          >
-            명
-          </p>
-          <input
-            id="hasCouponLimit"
-            type="checkbox"
-            className="peer peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
-            {...register('hasCouponLimit')}
-          />
-          <label
-            htmlFor="hasCouponLimit"
-            className="cursor-pointer select-none font-semibold text-sub-color2 peer-checked:text-black"
-          >
-            제한 없음
-          </label>
-        </div>
-      </CouponOptionSection>
+        trigger={trigger}
+      />
 
       <section className="flex items-center gap-10">
         <div className="flex w-1/6 items-center gap-1">
-          <h2 className="whitespace-nowrap font-semibold">중복 쿠폰</h2>
+          <h2 className="whitespace-nowrap font-semibold">중복할인 쿠폰</h2>
           <Tooltip>
             <CouponDuplicationTooltip />
           </Tooltip>
@@ -209,7 +161,7 @@ const CouponOption = ({
         <div className="flex items-center">
           <input
             type="number"
-            className={`${CouponOptionInputStyles} peer mr-1 w-20`}
+            className={`${CouponOptionInputStyles} peer mr-1 w-20 text-right`}
             {...register('maxDiscountAmount', {
               pattern: {
                 value: /^[0-9]*$/,
