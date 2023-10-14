@@ -1,4 +1,5 @@
 import { ClassCardType } from '@/types/class';
+import { couponGET } from '@/types/coupon';
 
 const dummyUserInputSuggestion = [
   '댄스',
@@ -500,7 +501,35 @@ const dummyUserInfo = {
   commentCount: 10,
 };
 
+const dummyCouponList: couponGET[] = [
+  {
+    discount: 1000,
+    unit: '원',
+    title: '초특가로 춤춰보자',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: true,
+  },
+  {
+    discount: 30,
+    unit: '%',
+    title: '지금까지 이런 쿠폰은 없었다.',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: false,
+  },
+  {
+    discount: 30,
+    unit: '%',
+    title: '지금까지 이런 쿠폰',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: false,
+  },
+];
+
 export {
+  dummyCouponList,
   dummyUserInfo,
   dummyMain,
   dummyClass,

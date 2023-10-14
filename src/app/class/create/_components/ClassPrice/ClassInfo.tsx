@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
 import createOptions from '@/utils/generateStudentCountOptions';
-import ReactSelect from '@/components/Select/ReactSelect';
+import NumberSelect from '../NumberSelect';
 
 const ClassInfo = () => {
   const classData = useRecoilValue(classCreateState);
@@ -34,12 +34,11 @@ const ClassInfo = () => {
 
       <div className="flex h-16 items-center border-b border-solid border-sub-color2">
         <h2 className="w-1/4">1회 최대 수강생</h2>
-        <ReactSelect
+        <NumberSelect
           instanceId="StudentCountSelect"
           defaultValue={defaultValue}
           options={options}
           onChange={handleChange}
-          styleType="number"
         />
         <p className="ml-1">명</p>
       </div>

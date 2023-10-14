@@ -1,16 +1,24 @@
-import ReactSelect from '@/components/Select/ReactSelect';
+import { useState } from 'react';
 import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
+import { couponGET } from '@/types/coupon';
+import CouponSelect from './CouponSelect';
+
+interface AppliedCouponDisplayProps {
+  isCouponSectionOpen: boolean;
+  couponList: couponGET[] | [];
+}
 
 const AppliedCouponDisplay = ({
   isCouponSectionOpen,
-}: {
-  isCouponSectionOpen: boolean;
-}) => {
-  const couponOptions = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ];
+  couponList,
+}: AppliedCouponDisplayProps) => {
+  const [selectCoupons, setSelectCoupons] = useState<
+    { value: couponGET; label: string }[]
+  >([]);
+
+  const couponOptions = couponList.map((option) => {
+    return { value: option, label: option.title };
+  });
 
   return (
     <>
@@ -20,15 +28,20 @@ const AppliedCouponDisplay = ({
         <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
         <div className="flex w-5/6 flex-wrap gap-5">
           <div className="w-96">
-            <ReactSelect
-              instanceId="select-coupon"
+            <CouponSelect
               options={couponOptions}
-              placeholder="적용할 쿠폰 선택"
-              noOptionsMessage="적용 가능한 쿠폰이 없습니다"
+              selectedOptionsLength={selectCoupons.length}
+              onChange={(selected) =>
+                // setSelectCoupons(
+                //   Array.isArray(selected) ? selected : [selected],
+                // )
+                setSelectCoupons(selected)
+              }
             />
           </div>
-          <InstructorCoupon />
-          <InstructorCoupon />
+          {selectCoupons.map(({ value }, index) => {
+            return <InstructorCoupon key={value.title + index} {...value} />;
+          })}
         </div>
       </section>
 

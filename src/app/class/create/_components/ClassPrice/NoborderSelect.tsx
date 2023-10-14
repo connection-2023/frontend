@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { ArrowDownSVG } from '../../../public/icons/svg';
+import { ArrowDownSVG } from '../../../../../../public/icons/svg';
 
 interface SelectProps {
   defaultValue: string;

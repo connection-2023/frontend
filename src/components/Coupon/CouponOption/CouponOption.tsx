@@ -8,7 +8,7 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from 'react-hook-form';
-import NoborderSelect from '@/components/Select/NoborderSelect';
+import NoborderSelect from '@/app/class/create/_components/ClassPrice/NoborderSelect';
 import ClassRange from '@/app/class/create/_components/ClassSchedule/ClassRange/ClassRange';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import {

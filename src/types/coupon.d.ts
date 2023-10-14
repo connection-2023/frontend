@@ -23,3 +23,13 @@ interface CouponDataWithLimit extends BaseCouponData {
 }
 
 export type CouponData = CouponDataWithDiscount | CouponDataWithLimit;
+
+export interface couponGET {
+  //추후 수정 예정
+  discount: number;
+  unit: string;
+  title: string;
+  startAt: string;
+  endAt: string;
+  isStackable: boolean;
+}

@@ -1,13 +1,23 @@
-const InstructorCoupon = () => {
+import { couponGET } from '@/types/coupon';
+
+const InstructorCoupon = ({
+  discount,
+  title,
+  startAt,
+  endAt,
+  unit,
+}: couponGET) => {
   return (
     <dl className="flex h-[5.625rem] w-60 flex-col justify-evenly gap-1 px-3 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]">
-      <dt className="text-xl font-bold text-main-color">3000원</dt>
+      <dt className="text-xl font-bold text-main-color">
+        {discount}
+        {unit}
+      </dt>
       <dd className="text-sm">
-        <div className="truncate">
-          이번 달만 제공하는 초특가 쿠폰 이번 달만 제공하는 초특가 쿠폰 초특가
-          쿠폰
-        </div>
-        <span>23.10.10-23.12.10</span>
+        <div className="truncate">{title}</div>
+        <span>
+          {startAt} - {endAt}
+        </span>
       </dd>
     </dl>
   );
