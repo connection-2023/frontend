@@ -526,6 +526,22 @@ const dummyCouponList: couponGET[] = [
     endAt: '2024-01-19',
     isStackable: false,
   },
+  {
+    discount: 1000,
+    unit: '원',
+    title: '초특가로 춤춰보자',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: true,
+  },
+  {
+    discount: 1000,
+    unit: '원',
+    title: '초특가로 춤춰보자',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: true,
+  },
 ];
 
 export {

@@ -4,11 +4,14 @@ import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
+import { couponGET } from '@/types/coupon';
 import { dummyCouponList } from '@/constants/dummy';
 
 const ClassPrice = () => {
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
-  const [couponList, setCouponList] = useState(dummyCouponList); //추후 적용 api로 받아올 예정
+  const [couponList, setCouponList] = useState<couponGET[] | []>(
+    dummyCouponList,
+  ); //추후 적용 api로 받아올 예정
 
   const toggleCouponSection = () => {
     setIsCouponSectionOpen((prev) => !prev);

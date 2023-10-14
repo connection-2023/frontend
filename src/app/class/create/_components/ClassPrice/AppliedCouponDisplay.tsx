@@ -13,7 +13,7 @@ const AppliedCouponDisplay = ({
   couponList,
 }: AppliedCouponDisplayProps) => {
   const [selectCoupons, setSelectCoupons] = useState<
-    { value: couponGET; label: string }[]
+    { value: couponGET; label: string }[] | []
   >([]);
 
   const couponOptions = couponList.map((option) => {
@@ -29,14 +29,19 @@ const AppliedCouponDisplay = ({
         <div className="flex w-5/6 flex-wrap gap-5">
           <div className="w-96">
             <CouponSelect
-              options={couponOptions}
+              options={couponOptions.filter(
+                ({ value }) =>
+                  value.isStackable !== selectCoupons[0]?.value.isStackable &&
+                  selectCoupons.length !== 2,
+              )}
               selectedOptionsLength={selectCoupons.length}
-              onChange={(selected) =>
-                // setSelectCoupons(
-                //   Array.isArray(selected) ? selected : [selected],
-                // )
-                setSelectCoupons(selected)
-              }
+              onChange={(selected) => {
+                if (Array.isArray(selected)) {
+                  setSelectCoupons(selected);
+                } else {
+                  setSelectCoupons([]);
+                }
+              }}
             />
           </div>
           {selectCoupons.map(({ value }, index) => {
