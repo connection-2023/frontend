@@ -11,7 +11,12 @@ const meta: Meta<typeof ValidationMessage> = {
     },
   },
   args: {
-    invalidData: ['사진', '제목', '장르', '인원', '진행방식', '난이도', '가격'],
+    invalidData: [
+      { key: 'photo', type: 'image', message: '사진', ref: null },
+      { key: 'title', type: 'text', message: '제목', ref: null },
+      { key: 'genre', type: 'text', message: '장르', ref: null },
+      { key: 'peopleCount', type: 'number', message: '인원수 ', ref: null },
+    ],
   },
 };
 
