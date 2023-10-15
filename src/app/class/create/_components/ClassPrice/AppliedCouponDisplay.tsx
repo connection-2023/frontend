@@ -98,7 +98,9 @@ const AppliedCouponDisplay = ({
         </div>
       </section>
 
-      <section className="flex items-center">
+      <section
+        className={`${!isCouponSectionOpen ? 'hidden' : ''} flex items-center`}
+      >
         <h2 className="mr-7 font-semibold">최대 할인된 클래스 금액</h2>
         <input
           type="number"

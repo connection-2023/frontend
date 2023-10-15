@@ -19,7 +19,10 @@ const ClassCategory = () => {
 
   return (
     <>
-      <section className="mb-5 border-b border-solid border-sub-color2 py-10">
+      <section
+        id="classImg"
+        className="mb-5 border-b border-solid border-sub-color2 py-10"
+      >
         <Controller
           name="classImg"
           control={control}
