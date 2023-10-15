@@ -9,7 +9,11 @@ import { BasicCalendarSVG } from '@/../public/icons/svg';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
 
-const ClassRange = ({ onChange }: { onChange?: (value: any) => void }) => {
+const ClassRange = ({
+  onChange,
+}: {
+  onChange?: (value: DateRange | undefined) => void;
+}) => {
   const [classRange, setClassRange] = useRecoilState(classRangeState);
   const [fromValue, setFromValue] = useState<string>('');
   const [toValue, setToValue] = useState<string>('');

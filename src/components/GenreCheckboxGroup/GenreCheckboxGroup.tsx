@@ -3,27 +3,31 @@ import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
 import { useFormContext, useFormState } from 'react-hook-form';
 import GenreListAddition from './GenreListAddition';
-import { DANCE_GENRE } from '@/constants/constants';
 import { toggleSelection } from '@/utils/toggleSelection';
+import { DANCE_GENRE } from '@/constants/constants';
 import { CheckMarkSVG } from '../../../public/icons/svg';
 
-const GenreCheckboxGroup = () => {
+const GenreCheckboxGroup = ({
+  onChange,
+}: {
+  onChange?: (data: string[]) => void;
+}) => {
   const classData = useRecoilValue(classCreateState);
   const formMethods = useFormContext();
-  const { setValue, clearErrors, register } = formMethods;
   const { errors } = useFormState({ control: formMethods.control });
 
   const [selectGenreList, setSelectGenreList] = useState<string[]>(
-    classData['장르'],
+    classData.classGenre,
   );
-  const combinedArray = ['전체', ...DANCE_GENRE, ...classData['장르']];
+  const combinedArray = ['전체', ...DANCE_GENRE, ...classData.classGenre];
   const [genreList, setGenreList] = useState<string[]>([
     ...new Set(combinedArray),
   ]);
 
   useEffect(() => {
-    setValue('장르', selectGenreList);
-    clearErrors('장르');
+    if (onChange) {
+      onChange(selectGenreList);
+    }
   }, [selectGenreList]);
 
   const changeSelectGenreList = (genre: string, isChecked: boolean) => {
@@ -49,9 +53,9 @@ const GenreCheckboxGroup = () => {
   return (
     <div className="flex w-full">
       <h2
-        id="장르"
+        id="classGenre"
         className={`w-1/6 text-lg font-bold ${
-          errors.장르 && 'animate-vibration text-main-color'
+          errors.classGenre && 'animate-vibration text-main-color'
         }`}
       >
         장르
@@ -66,9 +70,6 @@ const GenreCheckboxGroup = () => {
           return (
             <li
               key={genre + index}
-              {...register('장르', {
-                validate: (value) => value && value.length > 0,
-              })}
               className={`${
                 isSelected
                   ? 'select-shadow-border bg-[#F5F5F5] fill-sub-color1 font-bold'

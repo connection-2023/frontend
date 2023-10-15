@@ -4,30 +4,13 @@ import { CheckMarkSVG } from '../../../../../../public/icons/svg';
 
 interface RadioComponentProps {
   title: string;
+  message: string;
   checkList: string[];
-  changFunction?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RadioComponent = ({
-  title,
-  checkList,
-  changFunction,
-}: RadioComponentProps) => {
+const RadioComponent = ({ title, checkList, message }: RadioComponentProps) => {
   const formMethods = useFormContext();
-  const { register, setValue, clearErrors } = formMethods;
-
-  const handleRadioChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    title: string,
-  ) => {
-    if (changFunction) {
-      changFunction(e);
-    } else {
-      setValue(title, e.target.value);
-    }
-
-    clearErrors(title);
-  };
+  const { register } = formMethods;
 
   return (
     <>
@@ -35,14 +18,12 @@ const RadioComponent = ({
         <li key={element} className="flex items-center gap-1">
           <input
             {...register(title, {
-              validate: (value) => !!value,
+              required: message,
             })}
             id={element}
             type="radio"
-            name={`${title}Group`}
             value={element}
             className="peer hidden"
-            onChange={(e) => handleRadioChange(e, title)}
           />
           <label
             htmlFor={element}

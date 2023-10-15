@@ -21,7 +21,7 @@ const steps = [
 ];
 
 export default function ClassCreate() {
-  const [activeStep, setActiveStep] = useState(4);
+  const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const setClassCreate = useSetRecoilState(classCreateState);
 
@@ -43,7 +43,7 @@ export default function ClassCreate() {
 
   const onValid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
-
+    console.log(data);
     setClassCreate((prevState) => ({
       ...prevState,
       ...data,
@@ -54,6 +54,7 @@ export default function ClassCreate() {
 
   const invalid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
+    console.log(data);
     setinvalidData(Object.keys(data));
   };
 

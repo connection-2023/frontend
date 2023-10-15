@@ -1,28 +1,38 @@
 import Image from 'next/image';
 import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
-import { useEffect, useState } from 'react';
 import { useFormContext, useFormState } from 'react-hook-form';
-import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
+import { useEffect, useState } from 'react';
 import CropperModal from './CropperModal';
+import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 
-const UploadImage = () => {
+const UploadImage = ({
+  onChange,
+}: {
+  onChange?: (
+    data: {
+      file: File;
+      url: string;
+    }[],
+  ) => void;
+}) => {
   const classData = useRecoilValue(classCreateState);
 
   const [images, setImages] = useState<{ file: File; url: string }[]>(
-    classData['이미지'],
+    classData.classImg,
   );
   const [selectedImage, setSelectedImage] = useState<string | null>(
-    classData['이미지']?.[0]?.url || null,
+    classData.classImg?.[0]?.url || null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formMethods = useFormContext();
   const { errors } = useFormState({ control: formMethods.control });
-  const { register, setValue } = formMethods;
 
   useEffect(() => {
-    setValue('이미지', images);
+    if (onChange) {
+      onChange(images);
+    }
   }, [images]);
 
   const handleOpenModal = () => {
@@ -125,7 +135,7 @@ const UploadImage = () => {
             <p
               className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
             ${
-              errors.이미지
+              errors.classImg
                 ? 'animate-vibration text-main-color'
                 : 'text-sub-color2'
             }
@@ -138,9 +148,6 @@ const UploadImage = () => {
             </p>
           </label>
           <input
-            {...register('이미지', {
-              validate: (value) => value && value.length > 0,
-            })}
             id="image-upload"
             type="file"
             accept="image/*"
