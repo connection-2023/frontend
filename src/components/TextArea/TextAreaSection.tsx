@@ -1,44 +1,62 @@
 import { useFormContext } from 'react-hook-form';
-import { useTextInput } from '@/utils/useTextInput';
+import { useEffect, useState } from 'react';
 
 interface TextAreaSectionProps {
-  title?: string;
-  placeholder: string;
   maxLength: number;
   dataName: string;
+  title?: string;
+  placeholder?: string;
   height?: string;
   isRequired?: boolean;
   defaultValue?: string;
+  errorMessage?: string;
 }
 
 const TextAreaSection = ({
-  title = '',
-  placeholder,
   maxLength,
   dataName,
   height = 'h-24',
   isRequired = false,
+  title = '',
+  placeholder = '',
   defaultValue = '',
+  errorMessage = title || '',
 }: TextAreaSectionProps) => {
-  const { value, length, handleChange } = useTextInput(defaultValue, maxLength);
-  const formMethods = useFormContext();
-  const { register } = formMethods;
+  const [length, setLength] = useState(0);
+
+  const {
+    register,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useFormContext();
+
+  const textareaWatch = watch(dataName);
+
+  useEffect(() => {
+    setLength(getValues(dataName)?.length);
+  }, [textareaWatch]);
 
   return (
     <section className="relative flex flex-col">
       {title && (
-        <h2 id={dataName} className="mb-3 text-lg font-bold">
+        <h2
+          id={dataName}
+          className={`mb-3 text-lg font-bold ${
+            errors[dataName] && 'animate-vibration text-main-color'
+          }`}
+        >
           {title}
         </h2>
       )}
       <textarea
         {...register(dataName, {
-          ...(isRequired && { required: '필수 입력 사항' }),
+          ...(isRequired && { required: errorMessage }),
+          maxLength,
         })}
         className={`${height} resize-none rounded-md border border-sub-color2 p-3`}
         placeholder={placeholder}
-        onChange={handleChange}
-        value={value}
+        defaultValue={defaultValue}
         maxLength={maxLength}
       />
       <div className="absolute bottom-2 right-3 text-sub-color2">

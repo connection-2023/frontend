@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
-import { useFormContext, useFormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import GenreListAddition from './GenreListAddition';
 import { toggleSelection } from '@/utils/toggleSelection';
 import { DANCE_GENRE } from '@/constants/constants';
@@ -13,8 +13,9 @@ const GenreCheckboxGroup = ({
   onChange?: (data: string[]) => void;
 }) => {
   const classData = useRecoilValue(classCreateState);
-  const formMethods = useFormContext();
-  const { errors } = useFormState({ control: formMethods.control });
+  const {
+    formState: { errors },
+  } = useFormContext();
 
   const [selectGenreList, setSelectGenreList] = useState<string[]>(
     classData.classGenre,

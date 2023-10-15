@@ -1,4 +1,4 @@
-import { useFormContext, useFormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 interface CategoryProps {
   id: string;
@@ -7,8 +7,9 @@ interface CategoryProps {
 }
 
 const CategoryContainer = ({ title, children, id }: CategoryProps) => {
-  const formMethods = useFormContext();
-  const { errors } = useFormState({ control: formMethods.control });
+  const {
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <section className="mt-5 flex w-full">

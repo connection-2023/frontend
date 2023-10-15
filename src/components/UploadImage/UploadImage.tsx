@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
-import { useFormContext, useFormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import CropperModal from './CropperModal';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
@@ -26,8 +26,9 @@ const UploadImage = ({
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const formMethods = useFormContext();
-  const { errors } = useFormState({ control: formMethods.control });
+  const {
+    formState: { errors },
+  } = useFormContext();
 
   useEffect(() => {
     if (onChange) {

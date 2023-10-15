@@ -9,8 +9,7 @@ const ClassSizeSelect = () => {
   const classData = useRecoilValue(classCreateState);
   const allOptions = createOptions(1, 100);
 
-  const formMethods = useFormContext();
-  const { watch, control, getValues } = formMethods;
+  const { watch, control, getValues } = useFormContext();
   const isGroupType = watch('classLessonType');
 
   const [minStudent, setMinStudent] = useState({

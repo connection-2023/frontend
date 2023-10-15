@@ -6,7 +6,7 @@ interface ClassCreateState {
   classImg: { file: File; url: string }[];
   classLessonType: string;
   classSize: { min: number; max: number };
-  커리큘럼: string;
+  classCurriculum: string;
 }
 
 export const classCreateState = atom({
@@ -16,7 +16,7 @@ export const classCreateState = atom({
     classImg: [],
     classLessonType: '',
     classSize: { min: 1, max: 100 },
-    커리큘럼: QUILL_DEFAULT_VALUE,
+    classCurriculum: QUILL_DEFAULT_VALUE,
   },
 });
 
@@ -29,3 +29,8 @@ export const classCreateState = atom({
 //classSize
 //classProgressMethod
 //classDifficultyLevel
+
+//2
+//classAnnouncement
+//classOperationPlan
+//classCurriculum

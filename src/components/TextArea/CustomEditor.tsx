@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import SunEditor from 'suneditor-react';
 import {
   UploadBeforeHandler,
@@ -15,6 +15,7 @@ interface CustomEditorProps {
   maxLength: number;
   minLength: number;
   height: string;
+  dataName: string;
 }
 
 const CustomEditor = ({
@@ -23,17 +24,16 @@ const CustomEditor = ({
   maxLength,
   minLength,
   height,
+  dataName,
 }: CustomEditorProps) => {
   const editor = useRef<SunEditorCore>();
   const editorText = useRef<string>(defaultValue);
   const [textLength, setTextLenght] = useState(defaultValue.length);
 
-  const formMethods = useFormContext();
-  const { control } = formMethods;
-
-  useEffect(() => {
-    handleEditorChange();
-  }, []);
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   const handleImageUploadBefore = (
     files: Array<File>,
@@ -64,38 +64,43 @@ const CustomEditor = ({
   const validateMinLength = () => {
     if (editor.current) {
       const textLength = editor.current.getText().trim().length;
-      return textLength >= minLength || '최소 글자 수 미만';
+      return textLength >= minLength || title;
     }
   };
 
   return (
     <section className="relative z-0 flex flex-col">
-      <h2 id={title} className="mb-3 text-lg font-bold">
+      <h2
+        id={dataName}
+        className={`mb-3 text-lg font-bold ${
+          errors[dataName] && 'animate-vibration text-main-color'
+        }`}
+      >
         {title}
       </h2>
 
       <Controller
-        name={title}
+        name={dataName}
         control={control}
         defaultValue={defaultValue}
         rules={{
-          required: '필수 입력',
+          required: title,
           validate: validateMinLength,
         }}
         render={({ field }) => (
           <SunEditor
+            onChange={(content) => {
+              handleEditorChange();
+              field.onChange(content);
+            }}
             lang="ko"
             height={height}
             setContents={field.value}
             setOptions={{
               buttonList: TOOLBAR,
             }}
-            onImageUploadBefore={handleImageUploadBefore}
             getSunEditorInstance={getSunEditorInstance}
-            onChange={(content) => {
-              field.onChange(content);
-            }}
-            onKeyUp={handleEditorChange}
+            onImageUploadBefore={handleImageUploadBefore}
           />
         )}
       />

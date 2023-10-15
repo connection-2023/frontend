@@ -13,21 +13,23 @@ const ClassExplanation = () => {
         title="중요 공지사항을 입력해주세요."
         placeholder={ANNOUNCEMENT}
         maxLength={200}
-        dataName="공지사항"
+        dataName="classAnnouncement"
       />
 
       <TextAreaSection
         title="어떤 클래스를 운영할 계획인가요?"
+        errorMessage="운영 계획"
         placeholder={CLASS_OPERATION_PLAN}
         maxLength={500}
         height="h-40"
-        dataName="운영계획"
+        dataName="classOperationPlan"
         isRequired={true}
       />
 
       <CustomEditor
         title="커리큘럼"
-        defaultValue={classData['커리큘럼']}
+        dataName="classCurriculum"
+        defaultValue={classData.classCurriculum}
         height="652px"
         maxLength={3000}
         minLength={200}

@@ -1,4 +1,4 @@
-import { Controller, useFormContext, useFormState } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import UploadImage from '@/components/UploadImage/UploadImage';
 import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
 import CategoryContainer from './ClassCategory/CategoryContainer';
@@ -11,9 +11,11 @@ import {
 } from '@/constants/constants';
 
 const ClassCategory = () => {
-  const formMethods = useFormContext();
-  const { errors } = useFormState({ control: formMethods.control });
-  const { register, control } = formMethods;
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <>

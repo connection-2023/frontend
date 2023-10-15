@@ -9,8 +9,7 @@ interface RadioComponentProps {
 }
 
 const RadioComponent = ({ title, checkList, message }: RadioComponentProps) => {
-  const formMethods = useFormContext();
-  const { register } = formMethods;
+  const { register } = useFormContext();
 
   return (
     <>
