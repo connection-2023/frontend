@@ -5,6 +5,7 @@ import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import { LocationDiscussionTooltip } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
 import { Juso } from '@/types/address';
+import { Controller, useFormContext } from 'react-hook-form';
 
 const ClassLocation = () => {
   const [isLocationSet, setIsLocationSet] = useState(true);
@@ -13,6 +14,7 @@ const ClassLocation = () => {
   const [selectLocationList, setSelectLocationList] = useState<
     Record<string, string[]>
   >({});
+  const { register, control } = useFormContext();
 
   const onChangeSelectLocation = (locationList: Record<string, string[]>) => {
     setSelectLocationList(locationList);
@@ -59,6 +61,7 @@ const ClassLocation = () => {
           id="consultative"
           type="checkbox"
           className="h-[1.12rem] w-[1.12rem] accent-sub-color1"
+          {...register('classLocationConsultative')}
           onChange={() => setIsLocationSet((prev) => !prev)}
         />
         <label htmlFor="consultative" className="text-sm font-semibold">
@@ -70,18 +73,43 @@ const ClassLocation = () => {
       </div>
 
       {isLocationSet ? (
-        <ConfirmedLocation location={location} openPopup={openPopup} />
+        <Controller
+          name="classConfirmedLocation"
+          control={control}
+          defaultValue=""
+          rules={{
+            required: '주소',
+          }}
+          render={({ field }) => (
+            <ConfirmedLocation
+              location={location}
+              openPopup={openPopup}
+              onChange={field.onChange}
+            />
+          )}
+        />
       ) : (
-        <PendingLocation
-          selectLocationList={selectLocationList}
-          onChangeSelectLocation={onChangeSelectLocation}
+        <Controller
+          name="classPendingLocation"
+          control={control}
+          defaultValue={selectLocationList}
+          rules={{
+            required: '주소',
+          }}
+          render={({ field }) => (
+            <PendingLocation
+              selectLocationList={selectLocationList}
+              onChangeSelectLocation={onChangeSelectLocation}
+              onChange={field.onChange}
+            />
+          )}
         />
       )}
 
       <TextAreaSection
         placeholder="수업장소까지 가는 방법, 추천 교통편, 주차시설 유무 등에 대한 정보를 입력해주세요."
         maxLength={500}
-        dataName="유의사항"
+        dataName="classLocationCaution"
       />
     </section>
   );

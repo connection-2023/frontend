@@ -21,7 +21,7 @@ const steps = [
 ];
 
 export default function ClassCreate() {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(3);
   const [invalidData, setinvalidData] = useState<null | string[]>(null);
   const setClassCreate = useSetRecoilState(classCreateState);
 

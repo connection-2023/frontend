@@ -8,11 +8,13 @@ const selectList = ['온라인', ...CITY_LIST];
 interface SelectLocationProps {
   selectLocationList: Record<string, string[]>;
   onChangeSelectLocation: (locationList: Record<string, string[]>) => void;
+  onChange: (data: Record<string, string[]>) => void;
 }
 
 const SelectLocation = ({
   selectLocationList,
   onChangeSelectLocation,
+  onChange,
 }: SelectLocationProps) => {
   const [focusLocation, setFocusLocation] = useState<string | null>(null);
 
@@ -39,11 +41,21 @@ const SelectLocation = ({
       ...selectLocationList,
       [targetLocation]: toggleSelection(toggleData),
     });
+
+    onChange({
+      ...selectLocationList,
+      [targetLocation]: toggleSelection(toggleData),
+    });
   };
 
   const focusLocationHandler = (city: string) => {
     if (city === '온라인') {
       onChangeSelectLocation({
+        ...selectLocationList,
+        온라인: ['온라인'],
+      });
+
+      onChange({
         ...selectLocationList,
         온라인: ['온라인'],
       });

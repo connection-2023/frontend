@@ -34,3 +34,10 @@ export const classCreateState = atom({
 //classAnnouncement
 //classOperationPlan
 //classCurriculum
+
+//3
+//classLocationConsultative
+//classConfirmedLocation
+//classDetailAddress
+//classLocationCaution
+//classPendingLocation
