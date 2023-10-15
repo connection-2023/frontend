@@ -57,7 +57,7 @@ const FullCalendar = () => {
   };
 
   return (
-    <div className="relative mb-[0.88rem] mt-[1.47rem] max-w-[60.67rem]">
+    <div className="relative mx-auto mb-[0.88rem] mt-[1.47rem] w-full max-w-[60.67rem] pr-8">
       <Calendar
         localizer={localizer}
         formats={formats}

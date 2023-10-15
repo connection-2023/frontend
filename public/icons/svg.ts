@@ -1,4 +1,9 @@
 import ConnectionLogoSVG from './connectionLogo.svg';
+import NaverSVG from './naverIcon.svg';
+import GoogleSVG from './googleIcon.svg';
+import AuthWelcomeSVG from './authWelcome.svg';
+import ImageSVG from './image.svg';
+import AddImageSVG from './addimage.svg';
 import CalendarDetailSVG from './calendarDetail.svg';
 import CalendarSVG from './calendar.svg';
 import HeartSVG from './heart.svg';
@@ -43,12 +48,19 @@ import CheckMarkSVG from './checkMark.svg';
 import PlusesSVG from './pluses.svg';
 import TooltipSVG from './tooltip.svg';
 import CouponSVG from './coupon.svg';
+import EditSVG from './edit.svg';
+import NoteSVG from './note.svg';
 
 export {
   CouponSVG,
   TooltipSVG,
   PlusesSVG,
   CheckMarkSVG,
+  AuthWelcomeSVG,
+  NaverSVG,
+  GoogleSVG,
+  ImageSVG,
+  AddImageSVG,
   TransFormSVG,
   CommentSVG,
   ConnectionLogoSVG,
@@ -90,4 +102,6 @@ export {
   MainTopSVG,
   MapSVG,
   AlarmSVG,
+  EditSVG,
+  NoteSVG,
 };

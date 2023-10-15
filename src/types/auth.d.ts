@@ -1,0 +1,126 @@
+// 카카오 소셜 로그인
+interface KakaoError {
+  error: string;
+  error_description: string;
+}
+
+interface RequestParams {
+  url: string;
+  success: (profile: UserProfile) => void;
+  fail: (error: KakaoError) => void;
+}
+
+interface KakaoAPI {
+  request: (params: RequestParams) => void;
+}
+
+interface AuthSettings {
+  redirectUri?: string;
+  state?: string;
+  scope?: string;
+  prompt?: string;
+  loginHint?: string;
+  nonce?: string;
+}
+
+interface AuthError {
+  error: { code: number; msg: string };
+}
+
+interface StatusResponse {
+  statusInfo: StatusInfo;
+}
+
+export interface LoginResponse {
+  token_type: string;
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  refresh_token_expires_in: number;
+  scope: string;
+}
+
+interface Profile {
+  nickname: string;
+  profile_image: string;
+  thumbnail_image_url: string;
+  profile_needs_agreement?: boolean;
+}
+
+interface KakaoAccount {
+  profile: Profile;
+  email: string;
+  age_range: string;
+  birthday: string;
+  birthyear: string;
+  gender: 'female' | 'male';
+  phone_number: string;
+  ci: string;
+}
+
+interface LoginParams extends AuthSettings {
+  throughTalk?: boolean;
+  success: (response: LoginResponse) => void;
+  fail: (error: AuthError) => void;
+}
+
+interface StatusInfo {
+  status: string;
+  user: Object;
+}
+
+interface LogoutResponse {
+  userInfo: { id: number };
+}
+
+export interface SignInResponse {
+  authEmail: string;
+  signUpType: 'NAVER' | 'KAKAO' | 'GOOGLE';
+}
+
+export interface AuthResponse {
+  status: number;
+  data: SignInResponse;
+}
+
+interface UserProfile {
+  id: number;
+  kakao_account: KakaoAccount;
+  synched_at: string;
+  connected_at: string;
+  properties: Profile;
+}
+
+export interface KakaoAuthProps {
+  onSuccess: (response: {
+    response: LoginResponse;
+    profile?: UserProfile;
+  }) => void;
+  onFail: (error: AuthError | KakaoError) => void;
+  throughTalk?: boolean;
+  useLoginForm?: boolean;
+  needProfile?: boolean;
+}
+
+interface KakaoAuth {
+  authorize(settings: AuthSettings): void;
+  cleanup(): void;
+  getAccessToken(): string;
+  getAppKey(): string;
+  getStatusInfo(): Promise<StatusResponse | AuthError>;
+  login: (params: LoginParams) => void;
+  loginForm: (params: LoginParams) => void;
+  setAccessToken(token: string, persist: boolean): void;
+  logout(): Promise<LogoutResponse | AuthError>;
+}
+
+interface Kakao {
+  init: (...args: any[]) => void;
+  isInitialized: () => boolean;
+  Auth: KakaoAuth;
+  API: KakaoAPI;
+}
+
+export interface ExtendedWindow extends Window {
+  Kakao: Kakao;
+}

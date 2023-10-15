@@ -47,7 +47,7 @@ const FilterModal = ({ label, children, onReset, onApply }: IFilterModal) => {
       >
         {label}
         {isOpened ? (
-          <ArrowUpSVG />
+          <ArrowUpSVG className="fill-sub-color1" />
         ) : (
           <ArrowDownSVG className="fill-sub-color1" />
         )}

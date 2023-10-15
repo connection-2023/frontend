@@ -44,7 +44,6 @@ export default function ClassCreate() {
 
   const onValid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
-    console.log(data);
     setClassCreate((prevState) => ({
       ...prevState,
       ...data,
