@@ -70,6 +70,14 @@ const CouponOption = ({
           defaultValue={undefined}
           rules={{
             required: '사용기간은 필수 입력 사항입니다.',
+            validate: ({ from, to }) => {
+              const fromDate = new Date(from);
+              const toDate = new Date(to);
+
+              if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+                return '날짜 형태가 아닙니다.';
+              }
+            },
           }}
           render={({ field }) => <ClassRange onChange={field.onChange} />}
         />

@@ -1,7 +1,36 @@
 import { useEffect, useState } from 'react';
-import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
-import { SelectCoupons, couponGET } from '@/types/coupon';
 import CouponSelect from './CouponSelect';
+import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
+import { SelectCoupon, SelectCoupons, couponGET } from '@/types/coupon';
+
+const sortCoupons = (selected: SelectCoupons): SelectCoupons => {
+  return selected.sort(({ value: aValue }, { value: bValue }) => {
+    if (aValue.unit === '%' && bValue.unit !== '%') return -1;
+    if (aValue.unit !== '%' && bValue.unit === '%') return 1;
+    if (aValue.unit === '%' && bValue.unit === '%') {
+      return bValue.discount - aValue.discount;
+    }
+    return 0;
+  });
+};
+
+const calculateDiscountedPrice = (
+  acc: number,
+  { value }: SelectCoupon,
+): number => {
+  const { unit, discount, maxDiscountAmount } = value;
+
+  let price = unit === '%' ? acc * ((100 - discount) / 100) : acc - discount;
+
+  if (maxDiscountAmount) {
+    if (unit !== '%' && maxDiscountAmount < discount)
+      price = acc - maxDiscountAmount;
+
+    price = Math.min(acc - maxDiscountAmount, price);
+  }
+
+  return price;
+};
 
 interface AppliedCouponDisplayProps {
   isCouponSectionOpen: boolean;
@@ -14,35 +43,24 @@ const AppliedCouponDisplay = ({
   couponList,
   classPrice,
 }: AppliedCouponDisplayProps) => {
-  const [selectCoupons, setSelectCoupons] = useState<SelectCoupons | []>([]);
+  const [selectCoupons, setSelectCoupons] = useState<SelectCoupons>([]);
   const [discountedMinPrice, setDiscountedMinPrice] = useState(0);
 
   useEffect(() => {
     calculateMaxDiscount(selectCoupons);
   }, [classPrice]);
 
-  const calculateMaxDiscount = (selected: SelectCoupons) => {
-    if (classPrice) {
-      const sortedSelectCoupons = selected.sort(
-        ({ value: aValue }, { value: bValue }) => {
-          if (aValue.unit === '%' && bValue.unit !== '%') return -1;
-          if (aValue.unit !== '%' && bValue.unit === '%') return 1;
-          if (aValue.unit === '%' && bValue.unit === '%') {
-            return bValue.discount - aValue.discount;
-          }
-          return 0;
-        },
-      );
-      setDiscountedMinPrice(
-        sortedSelectCoupons.reduce((acc, { value }) => {
-          if (value.unit === '%') {
-            return acc * ((100 - value.discount) / 100);
-          } else {
-            return acc - value.discount;
-          }
-        }, classPrice),
-      );
-    }
+  const calculateMaxDiscount = (selected: SelectCoupons): void => {
+    if (!classPrice) return;
+
+    const sortedSelectCoupons = sortCoupons(selected);
+
+    const calculatedFinalPrice = sortedSelectCoupons.reduce(
+      calculateDiscountedPrice,
+      classPrice,
+    );
+
+    setDiscountedMinPrice(Math.max(0, calculatedFinalPrice));
   };
 
   const couponOptions = couponList.map((option) => {
