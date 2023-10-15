@@ -24,3 +24,10 @@ export interface IFullCalendarEvent {
   end: Date;
   title: string;
 }
+
+export interface ErrorMessage {
+  key: string;
+  type: string;
+  message: string;
+  ref: any;
+}

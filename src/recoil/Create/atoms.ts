@@ -20,7 +20,7 @@ export const classCreateState = atom({
   },
 });
 
-//추후 api 연결시 요소명 한글 -> 영어 변경 예정
+//추후 api 연결시 로컬?
 
 //className
 //classImg
@@ -35,9 +35,12 @@ export const classCreateState = atom({
 //classOperationPlan
 //classCurriculum
 
-//3
+//4
 //classLocationConsultative
 //classConfirmedLocation
 //classDetailAddress
 //classLocationCaution
 //classPendingLocation
+
+//5
+//classPrice

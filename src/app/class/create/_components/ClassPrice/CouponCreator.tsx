@@ -24,6 +24,7 @@ const CouponCreator = ({
 
   const onValid = (data: CouponData) => {
     console.log(data);
+    // 추후 토스트 메시지 추가 예정
     changeCouponList(data);
   };
 

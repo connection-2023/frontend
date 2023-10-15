@@ -11,6 +11,7 @@ import ClassSchedule from './_components/ClassSchedule';
 import ClassLocation from './_components/ClassLocation';
 import ClassPrice from './_components/ClassPrice';
 import { ArrowRightSVG } from '@/../public/icons/svg';
+import { ErrorMessage } from '@/types/types';
 
 const steps = [
   { title: '사진, 카테고리 설정', component: <ClassCategory /> },
@@ -21,8 +22,8 @@ const steps = [
 ];
 
 export default function ClassCreate() {
-  const [activeStep, setActiveStep] = useState(3);
-  const [invalidData, setinvalidData] = useState<null | string[]>(null);
+  const [activeStep, setActiveStep] = useState(4);
+  const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const setClassCreate = useSetRecoilState(classCreateState);
 
   const formMethods = useForm({ shouldFocusError: false });
@@ -52,14 +53,17 @@ export default function ClassCreate() {
     nextStep();
   };
 
-  const invalid = (data: any) => {
-    //Validation 작성 하면서 data 타입 변경 요망
-    console.log(data);
-    setinvalidData(Object.keys(data));
+  const invalid = (data: Record<string, any>) => {
+    const invalidList = Object.entries(data).map(([key, value]) => ({
+      key,
+      ...value,
+    }));
+
+    setInvalidData(invalidList);
   };
 
   const closeValidationMessage = () => {
-    setinvalidData(null);
+    setInvalidData(null);
   };
 
   return (

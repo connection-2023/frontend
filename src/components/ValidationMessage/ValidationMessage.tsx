@@ -1,9 +1,10 @@
 import React, { ReactNode, useEffect } from 'react';
 import Modal from 'react-modal';
 import ProgressBar from './ProgressBar';
+import { ErrorMessage } from '@/types/types';
 
 interface ValidationMessage {
-  invalidData: string[] | null;
+  invalidData: ErrorMessage[] | null;
   closeModal: () => void;
 }
 
@@ -20,15 +21,13 @@ const ValidationMessage = ({ invalidData, closeModal }: ValidationMessage) => {
 
   const reminderButtonHandler = () => {
     if (invalidData === null) return;
-    const element = document.getElementById(invalidData[0]);
+    const element = document.getElementById(invalidData[0].key);
 
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
     clearTimeout(timeID);
     closeModal();
-
-    //추후 api 연결시 invaludData명 변경하는 로직 제작 예정
   };
 
   return (
@@ -44,7 +43,9 @@ const ValidationMessage = ({ invalidData, closeModal }: ValidationMessage) => {
           <p className="text-sm font-semibold text-main-color">
             모두 작성하면 다음페이지로 넘어갈 수 있어요.
           </p>
-          <ReminderText>{invalidData?.join(', ')}</ReminderText>
+          <ReminderText>
+            {invalidData?.map(({ message }) => message).join(', ')}
+          </ReminderText>
         </div>
         <ReminderButton reminderButtonHandler={reminderButtonHandler} />
         <ProgressBar />
