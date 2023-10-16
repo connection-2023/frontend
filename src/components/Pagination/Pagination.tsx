@@ -23,16 +23,16 @@ const Pagination = ({
   return (
     <ReactPaginate
       previousLabel={
-        <div className={navButtonStyle}>
+        <p className={navButtonStyle}>
           <ArrowRightSVG className="mb-px h-[15px] w-[9px] rotate-180 " />
           이전
-        </div>
+        </p>
       }
       nextLabel={
-        <div className={navButtonStyle}>
+        <p className={navButtonStyle}>
           다음
           <ArrowRightSVG className="h-[15px] w-[9px]" />
-        </div>
+        </p>
       }
       breakLabel="..."
       pageCount={pageCount}

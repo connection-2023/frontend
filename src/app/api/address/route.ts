@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { AddressData } from '@/types/address';
 
-export async function GET(request: Request) {
+export const GET = async (request: NextRequest) => {
   const searchParams = new URL(request.url).searchParams;
   const keyword = searchParams.get('keyword');
   const page = searchParams.get('page');
@@ -13,4 +13,4 @@ export async function GET(request: Request) {
   const data: AddressData = await response.json();
 
   return NextResponse.json(data);
-}
+};

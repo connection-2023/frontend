@@ -20,21 +20,23 @@ const calculateDiscountedPrice = (
 ): number => {
   const { unit, discount, maxDiscountAmount } = value;
 
-  let price = unit === '%' ? acc * ((100 - discount) / 100) : acc - discount;
+  const initialPrice =
+    unit === '%' ? acc * ((100 - discount) / 100) : acc - discount;
 
   if (maxDiscountAmount) {
-    if (unit !== '%' && maxDiscountAmount < discount)
-      price = acc - maxDiscountAmount;
-
-    price = Math.min(acc - maxDiscountAmount, price);
+    if (unit !== '%' && maxDiscountAmount < discount) {
+      const priceWithMaxDiscount = acc - maxDiscountAmount;
+      return Math.min(acc - maxDiscountAmount, priceWithMaxDiscount);
+    }
+    return Math.min(acc - maxDiscountAmount, initialPrice);
   }
 
-  return price;
+  return initialPrice;
 };
 
 interface AppliedCouponDisplayProps {
   isCouponSectionOpen: boolean;
-  couponList: couponGET[] | [];
+  couponList: couponGET[];
   classPrice: number;
 }
 

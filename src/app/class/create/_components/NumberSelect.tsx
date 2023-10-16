@@ -32,8 +32,8 @@ const NumberSelect = ({
   options,
 }: SelectComponentProps) => {
   const customComponents = {
-    DropdownIndicator: NumberDropdownIndicator as any,
-    IndicatorSeparator: NumberIndicatorSeparator as any,
+    DropdownIndicator: NumberDropdownIndicator,
+    IndicatorSeparator: NumberIndicatorSeparator,
   };
 
   return (

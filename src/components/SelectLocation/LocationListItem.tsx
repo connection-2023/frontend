@@ -25,7 +25,7 @@ const LocationListItem = ({
             className="flex cursor-pointer items-center p-2 text-sm"
             onClick={() => selectLocation('온라인', false, locationKey)}
           >
-            <div>{locationKey}</div>
+            {locationKey}
             <CloseSVG className="ml-1 h-3 w-3 stroke-sub-color1" />
           </li>
         )
@@ -34,8 +34,8 @@ const LocationListItem = ({
           className="flex cursor-pointer items-center p-2 text-sm"
           onClick={() => selectLocation('전지역', false, locationKey)}
         >
-          <div>{locationKey}</div>
-          <div>{'>전지역'}</div>
+          {locationKey}
+          {'>전지역'}
           <CloseSVG className="ml-1 h-3 w-3 stroke-sub-color1" />
         </li>
       ) : (
@@ -45,8 +45,8 @@ const LocationListItem = ({
             className="flex cursor-pointer items-center p-2 text-sm"
             onClick={() => selectLocation(item, false, locationKey)}
           >
-            <div>{locationKey}</div>
-            <div>{`>${item}`}</div>
+            {locationKey}
+            {`>${item}`}
             <CloseSVG className="ml-1 h-3 w-3 stroke-sub-color1" />
           </li>
         ))

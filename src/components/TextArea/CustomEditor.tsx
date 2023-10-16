@@ -105,13 +105,13 @@ const CustomEditor = ({
         )}
       />
 
-      <div className="absolute -bottom-1 right-3 z-10 flex gap-1 text-sub-color2">
+      <p className="absolute -bottom-1 right-3 z-10 flex gap-1 text-sub-color2">
         (
-        <p className={`${textLength < minLength && 'text-main-color'}`}>
+        <span className={`${textLength < minLength && 'text-main-color'}`}>
           {textLength}
-        </p>
+        </span>
         / {maxLength})
-      </div>
+      </p>
     </section>
   );
 };

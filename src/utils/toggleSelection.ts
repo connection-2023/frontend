@@ -17,9 +17,9 @@ export const toggleSelection = ({
   const isAlreadyIncluded = currentList.includes(value);
 
   if (value === selectAllName) {
-    if (isValueChecked)
-      newList = [...allList.filter((g) => g !== selectAllName)];
-    else newList = [];
+    isValueChecked
+      ? (newList = [...allList.filter((g) => g !== selectAllName)])
+      : (newList = []);
   } else if (isValueChecked && !isAlreadyIncluded) {
     newList = [...currentList, value];
   } else if (!isValueChecked && isAlreadyIncluded) {

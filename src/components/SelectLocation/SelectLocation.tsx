@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { CITY_LIST, WARD_LIST } from '@/constants/administrativeDistrict';
-import { toggleSelection } from '@/utils/toggleSelection';
 import LocationListItem from './LocationListItem';
-
-const selectList = ['온라인', ...CITY_LIST];
+import CityList from './CityList';
+import WardList from './WardList';
+import { toggleSelection } from '@/utils/toggleSelection';
+import { WARD_LIST } from '@/constants/administrativeDistrict';
 
 interface SelectLocationProps {
   selectLocationList: Record<string, string[]>;
@@ -65,51 +65,18 @@ const SelectLocation = ({
 
   return (
     <section>
-      <ul className="flex flex-wrap">
-        {selectList.map((city) => (
-          <li
-            key={city}
-            className={`${
-              focusLocation === city ||
-              (selectLocationList[city] && selectLocationList[city].length > 0)
-                ? 'select-shadow-border bg-[#F5F5F5] font-bold'
-                : 'shadow-border text-sub-color2'
-            } flex h-[1.75rem] w-[11.11%] cursor-pointer items-center justify-center`}
-            onClick={() => focusLocationHandler(city)}
-          >
-            {city}
-          </li>
-        ))}
-      </ul>
+      <CityList
+        focusLocation={focusLocation}
+        selectLocationList={selectLocationList}
+        focusLocationHandler={focusLocationHandler}
+      />
 
       {focusLocation && focusLocation !== '온라인' && (
-        <ul className="shadow-border flex flex-wrap gap-3 px-4 py-6">
-          {['전지역', ...WARD_LIST[focusLocation]].map((ward) => {
-            const isChecked =
-              ward !== '전지역'
-                ? selectLocationList[focusLocation]?.includes(ward)
-                : selectLocationList[focusLocation]?.length ===
-                  WARD_LIST[focusLocation].length;
-
-            return (
-              <li key={ward} className="flex w-24 gap-1">
-                <input
-                  id={ward}
-                  type="checkbox"
-                  className="peer h-[1.12rem] w-[1.12rem] accent-sub-color1"
-                  checked={isChecked || false}
-                  onChange={(e) => selectLocation(ward, e.target.checked)}
-                />
-                <label
-                  htmlFor={ward}
-                  className="cursor-pointer select-none text-sm font-semibold text-sub-color2 peer-checked:text-black"
-                >
-                  {ward}
-                </label>
-              </li>
-            );
-          })}
-        </ul>
+        <WardList
+          focusLocation={focusLocation}
+          selectLocationList={selectLocationList}
+          selectLocation={selectLocation}
+        />
       )}
 
       <ul className="shadow-border flex flex-wrap">

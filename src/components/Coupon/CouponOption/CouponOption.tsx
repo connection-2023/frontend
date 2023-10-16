@@ -15,11 +15,10 @@ import {
   CouponDuplicationTooltip,
   MaxDiscountTooltip,
 } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
+import DistributionCount from './DistributionCount';
 import CouponOptionSection from './CouponOptionSection';
 import { COUPON_UNIT_LIST } from '@/constants/constants';
-
 import { CouponData } from '@/types/coupon';
-import DistributionCount from './DistributionCount';
 
 const CouponOptionInputStyles =
   'h-7 px-3 rounded-md border border-solid border-sub-color2 focus:outline-none';
@@ -74,9 +73,8 @@ const CouponOption = ({
               const fromDate = new Date(from);
               const toDate = new Date(to);
 
-              if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+              if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime()))
                 return '날짜 형태가 아닙니다.';
-              }
             },
           }}
           render={({ field }) => <ClassRange onChange={field.onChange} />}

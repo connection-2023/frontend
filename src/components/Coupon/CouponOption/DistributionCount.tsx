@@ -54,8 +54,9 @@ const DistributionCount = ({
           className="mr-1 h-7 w-12 rounded-md border border-solid border-sub-color2 text-center focus:outline-none"
           {...register('couponDistributionCount', {
             validate: (value) => {
-              if (getValues('hasCouponLimit') || value) return true;
-              return '배부 개수는 필수 값 입니다.';
+              return getValues('hasCouponLimit') || value
+                ? true
+                : '배부 개수는 필수 값 입니다.';
             },
             pattern: {
               value: /^[0-9]*$/,

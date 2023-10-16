@@ -60,11 +60,14 @@ const ClassSizeSelect = () => {
 
   const isDisabled = '그룹레슨' !== isGroupType;
 
-  type OptionType = { value: number; label: string };
-  type StateType = {
+  interface OptionType {
+    value: number;
+    label: string;
+  }
+  interface StateType {
     select: OptionType;
     option: OptionType[];
-  };
+  }
 
   const selectClassSize = (
     selected: OptionType | null,

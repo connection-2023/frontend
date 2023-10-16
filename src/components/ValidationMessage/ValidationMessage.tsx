@@ -3,12 +3,15 @@ import Modal from 'react-modal';
 import ProgressBar from './ProgressBar';
 import { ErrorMessage } from '@/types/types';
 
-interface ValidationMessage {
+interface ValidationMessageProps {
   invalidData: ErrorMessage[] | null;
   closeModal: () => void;
 }
 
-const ValidationMessage = ({ invalidData, closeModal }: ValidationMessage) => {
+const ValidationMessage = ({
+  invalidData,
+  closeModal,
+}: ValidationMessageProps) => {
   let timeID: NodeJS.Timeout;
 
   useEffect(() => {
