@@ -6,6 +6,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+
   theme: {
     extend: {
       colors: {
@@ -15,8 +16,18 @@ const config: Config = {
         'sub-color3': 'var(--sub-color3)',
         'sub-color4': 'var(--sub-color4)',
       },
+      animation: {
+        vibration: 'vibration 0.1s 20',
+      },
+      keyframes: {
+        vibration: {
+          '0%': { transform: 'rotate(1deg)' },
+          '100%': { transform: 'rotate(-1deg)' },
+        },
+      },
     },
   },
+
   plugins: [
     require('tailwind-scrollbar')({ nocompatible: true }),
     function ({

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import HookForm from '@/recoil/hookForm/HookForm';
 import RecoilProvider from '@/recoil/RecoilProvider';
 
 export const metadata: Metadata = {
@@ -12,9 +11,5 @@ export default function ClassCreateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <RecoilProvider>
-      <HookForm>{children}</HookForm>
-    </RecoilProvider>
-  );
+  return <RecoilProvider>{children}</RecoilProvider>;
 }

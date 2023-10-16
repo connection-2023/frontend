@@ -1,0 +1,43 @@
+.pagination {
+  display: flex;
+  gap: 1.37rem;
+  justify-content: center;
+  padding: 10px;
+}
+
+.page_a {
+  position: relative;
+  display: inline-block;
+}
+
+.page_a::after {
+  content: '';
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+  min-width: 1.375rem;
+  min-height: 1.375rem;
+  border-radius: 50%;
+  background-color: var(--sub-color4);
+
+  opacity: 0;
+  z-index: -1;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.page_a:hover::after {
+  opacity: 1;
+}
+
+.page_a.active_a::after {
+  opacity: 1;
+  background-color: var(--sub-color1);
+}
+
+.page_a.active_a {
+  color: white;
+}

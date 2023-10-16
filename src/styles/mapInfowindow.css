@@ -1,9 +1,9 @@
 .infowindow-container {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 15.625rem;
+  min-width: 15.625rem;
   height: 5.75rem;
   border-radius: 0.3125rem;
   background-color: white;
