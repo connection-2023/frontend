@@ -1,5 +1,6 @@
 import { ClassCardType } from '@/types/class';
 import { couponGET } from '@/types/coupon';
+import { IPaymentList } from '@/types/types';
 
 const dummyUserInputSuggestion = [
   '댄스',
@@ -709,6 +710,82 @@ const dummyClassList = [
   },
 ];
 
+const dummyIncomeList = [
+  {
+    id: 1,
+    name: '원밀리언의 리아킴과 함께하는 원밀리언의 리아킴과 함께하는 원밀리언의 리아킴과 함께하는',
+    purchase: '가최대일곱글자',
+    date: '23.10.29',
+    price: '10000',
+    status: '입금대기',
+  },
+  {
+    id: 2,
+    name: '가원밀리언의 리아킴과 함께하는',
+    purchase: '최대일곱글자최대일곱글자',
+    date: '23.10.19',
+    price: '1000',
+    status: '입금대기',
+  },
+  {
+    id: 3,
+    name: '나원밀리언의 리아킴과 함께하는',
+    purchase: '라최대일곱글자',
+    date: '23.10.09',
+    price: '200,000',
+    status: '입금대기',
+  },
+  {
+    id: 4,
+    name: '다원밀리언의 리아킴과 함께하는',
+    purchase: 'ㅋ최대일곱글자',
+    date: '23.10.29',
+    price: '120,000',
+    status: '입금대기',
+  },
+  {
+    id: 5,
+    name: '라원밀리언의 리아킴과 함께하는',
+    purchase: 'ㅂ최대일곱글자',
+    date: '23.10.29',
+    price: '110,000',
+    status: '결제완료',
+  },
+];
+
+const dummyPaymentList: IPaymentList[] = [
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '처리중',
+  },
+
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+];
 export {
   dummyCouponList,
   dummyUserInfo,
@@ -722,4 +799,6 @@ export {
   dummyEnrollmentPerson,
   dummyClassRoster,
   dummyClassList,
+  dummyIncomeList,
+  dummyPaymentList,
 };

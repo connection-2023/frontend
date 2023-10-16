@@ -31,6 +31,23 @@ export interface ErrorMessage {
   message: string;
   ref: any;
 }
+
+export interface ITableList {
+  id: number;
+  name: string;
+  purchase: string;
+  date: string;
+  price: string;
+  status: string;
+}
+
+export interface IPaymentList {
+  date: string;
+  period: string;
+  amount: string;
+  status: '입금완료' | '처리중';
+}
+
 export interface IReportList {
   id: number;
   target: string;

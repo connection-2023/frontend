@@ -49,6 +49,11 @@ import PlusesSVG from './pluses.svg';
 import TooltipSVG from './tooltip.svg';
 import CouponSVG from './coupon.svg';
 import EditSVG from './edit.svg';
+import BigArrowSVG from './bigArrow.svg';
+import ExcelSVG from './excel.svg';
+import MoneySVG from './money.svg';
+import BillSVG from './bill.svg';
+import DoubleRightSVG from './doubleRight.svg';
 import NoteSVG from './note.svg';
 
 export {
@@ -63,6 +68,8 @@ export {
   AddImageSVG,
   TransFormSVG,
   CommentSVG,
+  ExcelSVG,
+  MoneySVG,
   ConnectionLogoSVG,
   CalendarDetailSVG,
   SmallLogoSVG,
@@ -102,6 +109,9 @@ export {
   MainTopSVG,
   MapSVG,
   AlarmSVG,
+  BigArrowSVG,
   EditSVG,
+  DoubleRightSVG,
+  BillSVG,
   NoteSVG,
 };
