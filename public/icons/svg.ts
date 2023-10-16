@@ -44,6 +44,10 @@ import MapSVG from './map.svg';
 import AlarmSVG from './alarm.svg';
 import CommentSVG from './comment.svg';
 import TransFormSVG from './transform.svg';
+import CheckMarkSVG from './checkMark.svg';
+import PlusesSVG from './pluses.svg';
+import TooltipSVG from './tooltip.svg';
+import CouponSVG from './coupon.svg';
 import EditSVG from './edit.svg';
 import BigArrowSVG from './bigArrow.svg';
 import ExcelSVG from './excel.svg';
@@ -53,6 +57,10 @@ import DoubleRightSVG from './doubleRight.svg';
 import NoteSVG from './note.svg';
 
 export {
+  CouponSVG,
+  TooltipSVG,
+  PlusesSVG,
+  CheckMarkSVG,
   AuthWelcomeSVG,
   NaverSVG,
   GoogleSVG,

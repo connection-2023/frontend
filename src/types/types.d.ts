@@ -25,6 +25,13 @@ export interface IFullCalendarEvent {
   title: string;
 }
 
+export interface ErrorMessage {
+  key: string;
+  type: string;
+  message: string;
+  ref: any;
+}
+
 export interface ITableList {
   id: number;
   name: string;
@@ -40,6 +47,7 @@ export interface IPaymentList {
   amount: string;
   status: '입금완료' | '처리중';
 }
+
 export interface IReportList {
   id: number;
   target: string;

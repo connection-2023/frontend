@@ -19,8 +19,8 @@ interface MapProps {
 const Map = ({ ...props }: MapProps) => {
   return (
     <NavermapsProvider
-      submodules={['geocoder']}
       ncpClientId={process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID!}
+      submodules={['geocoder']}
     >
       <MapDiv
         style={{

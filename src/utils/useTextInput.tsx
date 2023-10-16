@@ -1,8 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 
-export const useTextInput = (initialState: string, maxLength: number) => {
+export const useTextInput = (
+  initialState: string,
+  maxLength: number,
+  currentlength?: number,
+) => {
   const [value, setValue] = useState(initialState);
-  const [length, setLength] = useState(0);
+  const [length, setLength] = useState(currentlength || 0);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value.length > maxLength) {

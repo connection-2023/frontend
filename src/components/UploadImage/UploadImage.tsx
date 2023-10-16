@@ -1,12 +1,40 @@
 import Image from 'next/image';
-import { useState } from 'react';
-import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
+import { useRecoilValue } from 'recoil';
+import { classCreateState } from '@/recoil/Create/atoms';
+import { useFormContext } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import CropperModal from './CropperModal';
+import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 
-const UploadImage = () => {
-  const [images, setImages] = useState<{ file: File; url: string }[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+const UploadImage = ({
+  onChange,
+}: {
+  onChange?: (
+    data: {
+      file: File;
+      url: string;
+    }[],
+  ) => void;
+}) => {
+  const classData = useRecoilValue(classCreateState);
+
+  const [images, setImages] = useState<{ file: File; url: string }[]>(
+    classData.classImg,
+  );
+  const [selectedImage, setSelectedImage] = useState<string | null>(
+    classData.classImg?.[0]?.url || null,
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {
+    formState: { errors },
+  } = useFormContext();
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(images);
+    }
+  }, [images]);
 
   const handleOpenModal = () => {
     if (!isModalOpen) setIsModalOpen(true);
@@ -105,7 +133,15 @@ const UploadImage = () => {
               height={107}
               className="fill-sub-color2"
             />
-            <p className="mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold text-sub-color2 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]">
+            <p
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
+            ${
+              errors.classImg
+                ? 'animate-vibration text-main-color'
+                : 'text-sub-color2'
+            }
+            `}
+            >
               클래스 사진 업로드
             </p>
             <p className="text-sm text-sub-color1">

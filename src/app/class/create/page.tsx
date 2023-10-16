@@ -1,27 +1,32 @@
 'use client';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { hookForm } from '@/recoil/hookForm/atom';
+import { useSetRecoilState } from 'recoil';
+import { classCreateState } from '@/recoil/Create/atoms';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Button } from '@/components/Button/Button';
-import ValidationToast from '@/components/ValidationToast/ValidationToast';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import ClassCategory from './_components/ClassCategory';
+import ClassExplanation from './_components/ClassExplanation';
+import ClassSchedule from './_components/ClassSchedule';
+import ClassLocation from './_components/ClassLocation';
+import ClassPrice from './_components/ClassPrice';
 import { ArrowRightSVG } from '@/../public/icons/svg';
+import { ErrorMessage } from '@/types/types';
 
 const steps = [
-  { title: '사진, 카테고리 설정', component: null },
-  { title: '클래스 상세 설명', component: null },
-  { title: '일정 및 공지사항', component: null },
-  { title: '클래스 장소', component: null },
-  { title: '가격 설정', component: null },
+  { title: '사진, 카테고리 설정', component: <ClassCategory /> },
+  { title: '클래스 상세 설명', component: <ClassExplanation /> },
+  { title: '일정 및 공지사항', component: <ClassSchedule /> },
+  { title: '클래스 장소', component: <ClassLocation /> },
+  { title: '가격 설정', component: <ClassPrice /> },
 ];
 
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
-  const [invalidData, setinvalidData] = useState<null | string[]>(null);
-  const formMethods = useRecoilValue(hookForm);
+  const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
+  const setClassCreate = useSetRecoilState(classCreateState);
 
-  if (!formMethods) {
-    return;
-  }
+  const formMethods = useForm({ shouldFocusError: false });
 
   const { handleSubmit } = formMethods;
 
@@ -31,15 +36,33 @@ export default function ClassCreate() {
     }
   };
 
+  const prevStep = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    }
+  };
+
   const onValid = (data: any) => {
     //Validation 작성 하면서 data 타입 변경 요망
+    setClassCreate((prevState) => ({
+      ...prevState,
+      ...data,
+    }));
+
     nextStep();
   };
 
-  const invalid = (data: any) => {
-    //Validation 작성 하면서 data 타입 변경 요망
-    setinvalidData(Object.keys(data));
-    setTimeout(() => setinvalidData(null), 10000);
+  const invalid = (data: Record<string, any>) => {
+    const invalidList = Object.entries(data).map(([key, value]) => ({
+      key,
+      ...value,
+    }));
+
+    setInvalidData(invalidList);
+  };
+
+  const closeValidationMessage = () => {
+    setInvalidData(null);
   };
 
   return (
@@ -84,12 +107,14 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
         </h2>
 
         {/* 해당 컴포넌트*/}
-        {steps[activeStep].component}
+        <FormProvider {...formMethods}>
+          {steps[activeStep].component}
+        </FormProvider>
 
         {/* 하단 버튼 */}
         <nav className="my-10 flex w-full justify-between text-lg font-bold">
-          <button className="flex items-center">
-            <ArrowRightSVG className="mr-2 origin-center rotate-180 stroke-black" />
+          <button onClick={prevStep} className="flex items-center">
+            <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
             이전
           </button>
           <div className="flex">
@@ -97,7 +122,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
             <form onSubmit={handleSubmit(onValid, invalid)}>
               <button className="ml-4 flex items-center">
                 다음
-                <ArrowRightSVG className="ml-3 stroke-black" />
+                <ArrowRightSVG className="ml-3 h-[15px] w-[9px] stroke-black" />
               </button>
             </form>
           </div>
@@ -105,7 +130,10 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
       </section>
 
       {/* 유효성 토스트 메세지 */}
-      {invalidData && <ValidationToast invalidData={invalidData} />}
+      <ValidationMessage
+        closeModal={closeValidationMessage}
+        invalidData={invalidData}
+      />
     </main>
   );
 }

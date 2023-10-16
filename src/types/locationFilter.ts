@@ -1,5 +1,6 @@
 export type CityList =
   | '서울'
+  | '경기'
   | '부산'
   | '대구'
   | '인천'

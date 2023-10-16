@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useClickAway } from 'react-use';
 import { useRecoilState } from 'recoil';
 import { classRangeState } from '@/recoil/ClassSchedule/atoms';
@@ -9,7 +9,11 @@ import { BasicCalendarSVG } from '@/../public/icons/svg';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
 
-const ClassRange = () => {
+const ClassRange = ({
+  onChange,
+}: {
+  onChange?: (value: DateRange | undefined) => void;
+}) => {
   const [classRange, setClassRange] = useRecoilState(classRangeState);
   const [fromValue, setFromValue] = useState<string>('');
   const [toValue, setToValue] = useState<string>('');
@@ -23,6 +27,12 @@ const ClassRange = () => {
   const openCalendar = () => {
     setIsCalendarVisible(true);
   };
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(classRange);
+    }
+  }, [classRange]);
 
   const updateSelectedRange = useCallback((date: Date) => {
     setClassRange((current) => {
