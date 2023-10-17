@@ -1,8 +1,10 @@
 'use client';
 import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
-import { FormProvider, useForm } from 'react-hook-form';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { ErrorMessage } from '@/types/types';
 
 const steps = [
   { title: '강사 인증', component: <InstructorAuth /> },
@@ -11,7 +13,7 @@ const steps = [
 
 const ApplyPage = () => {
   const [activeStep, setActiveStep] = useState(0);
-
+  const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm({ shouldFocusError: false });
 
   const { handleSubmit } = formMethods;
@@ -29,13 +31,17 @@ const ApplyPage = () => {
       ...value,
     }));
 
-    console.log(data);
+    setInvalidData(invalidList);
   };
 
   const nextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
     }
+  };
+
+  const closeValidationMessage = () => {
+    setInvalidData(null);
   };
 
   return (
@@ -75,6 +81,11 @@ const ApplyPage = () => {
           다음
         </button>
       </form>
+
+      <ValidationMessage
+        closeModal={closeValidationMessage}
+        invalidData={invalidData}
+      />
     </main>
   );
 };

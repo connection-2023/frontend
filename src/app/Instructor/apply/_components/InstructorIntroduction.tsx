@@ -18,6 +18,7 @@ const InstructorIntroduction = () => {
     register,
     control,
     formState: { errors },
+    setFocus,
   } = useFormContext();
 
   const applyData = useRecoilValue(InstructorApplyState);
