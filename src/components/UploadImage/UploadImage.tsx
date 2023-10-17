@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import CropperModal from './CropperModal';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
@@ -15,19 +15,16 @@ interface UploadImageProps {
     file: File;
     url: string;
   }[];
+  errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
 
-const UploadImage = ({ onChange, defaultImg }: UploadImageProps) => {
+const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
   const [images, setImages] =
     useState<{ file: File; url: string }[]>(defaultImg);
   const [selectedImage, setSelectedImage] = useState<string | null>(
     defaultImg?.[0]?.url || null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const {
-    formState: { errors },
-  } = useFormContext();
 
   useEffect(() => {
     if (onChange) {
@@ -134,11 +131,7 @@ const UploadImage = ({ onChange, defaultImg }: UploadImageProps) => {
             />
             <p
               className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
-            ${
-              errors.classImg
-                ? 'animate-vibration text-main-color'
-                : 'text-sub-color2'
-            }
+            ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
             `}
             >
               클래스 사진 업로드

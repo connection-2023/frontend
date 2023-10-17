@@ -38,6 +38,7 @@ const ClassCategory = () => {
             <UploadImage
               onChange={field.onChange}
               defaultImg={classData.classImg}
+              errors={errors.classImg}
             />
           )}
         />

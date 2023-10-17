@@ -1,4 +1,10 @@
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  useFormContext,
+} from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 import { InstructorApplyState } from '@/recoil/Create/atoms';
 import UploadImage from '@/components/UploadImage/UploadImage';
@@ -17,13 +23,13 @@ const InstructorIntroduction = () => {
   const applyData = useRecoilValue(InstructorApplyState);
 
   return (
-    <main className="my-10 flex flex-col gap-8">
+    <main className="my-10 flex flex-col gap-10">
       <section
-        id="applyImg"
+        id="instructorImg"
         className="flex w-full flex-col border-b border-solid border-sub-color2 pb-10"
       >
         <Controller
-          name="applyImg"
+          name="instructorImg"
           control={control}
           defaultValue={[]}
           rules={{
@@ -33,23 +39,34 @@ const InstructorIntroduction = () => {
             <UploadImage
               onChange={field.onChange}
               defaultImg={applyData.instructorImg}
+              errors={errors.instructorImg}
             />
           )}
         />
       </section>
 
-      <IntroductionSection title="지역" required={true}>
+      <IntroductionSection
+        dataName="instructorLocation"
+        title="지역"
+        required={true}
+        errors={errors.instructorLocation}
+      >
         <Controller
           name="instructorLocation"
           control={control}
           rules={{
-            required: '주소',
+            required: '지역',
           }}
           render={({ field }) => <SelectLocation onChange={field.onChange} />}
         />
       </IntroductionSection>
 
-      <IntroductionSection title="장르" required={true}>
+      <IntroductionSection
+        dataName="instructorGenre"
+        title="장르"
+        required={true}
+        errors={errors.instructorGenre}
+      >
         <Controller
           name="instructorGenre"
           control={control}
@@ -66,30 +83,31 @@ const InstructorIntroduction = () => {
         />
       </IntroductionSection>
 
-      <IntroductionSection title="소속" required={false}>
+      <IntroductionSection
+        labelId="affiliation"
+        dataName="instructorAffiliation"
+        title="소속"
+        required={false}
+      >
         <input
+          id="affiliation"
           type="text"
-          className="rounded-[0.31rem] px-4 py-2 outline outline-1 outline-sub-color2"
+          className="rounded-[0.31rem] px-4 py-2 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
           placeholder="현재 속하고 있는 크루, 학원명 등을 적어주세요."
+          {...register('instructorAffiliation')}
         />
       </IntroductionSection>
 
       <IntroductionSection title="SNS" required={false}>
         <ul className="flex flex-col gap-3">
           {SNS_ITEMS.map((item) => (
-            <SnsItem
-              key={item.title}
-              icon={item.icon}
-              title={item.title}
-              placeholder={item.placeholder}
-              dataName={item.dataName}
-            />
+            <SNSItem key={item.title} {...item} />
           ))}
         </ul>
       </IntroductionSection>
 
       <section className="flex w-full flex-col gap-3">
-        <label className="mb-1">
+        <label htmlFor="link0" className="mb-1">
           <h2 className="font-bold">
             프로필에서 보여질 강사 인스타그램 게시물의 링크를 설정해주세요.
           </h2>
@@ -99,9 +117,11 @@ const InstructorIntroduction = () => {
         {Array.from({ length: 3 }).map((_, index) => (
           <input
             key={index}
+            id={'link' + index}
             type="text"
-            className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
+            className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
             placeholder="게시물 주소 입력"
+            {...register('instructorInstagramLink' + index)}
           />
         ))}
       </section>
@@ -113,7 +133,7 @@ const InstructorIntroduction = () => {
         댄스 강사로서 소개를 자유롭게 작성해주세요."
         height="471px"
         maxLength={1000}
-        minLength={0}
+        minLength={150}
       />
 
       <CustomEditor
@@ -129,55 +149,75 @@ const InstructorIntroduction = () => {
 };
 
 interface IntroductionSection {
+  labelId?: string;
+  dataName?: string;
   title: string;
   required: boolean;
   children: JSX.Element;
+  errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
 
 const IntroductionSection = ({
+  labelId = undefined,
+  dataName = undefined,
   title,
   required,
   children,
+  errors,
 }: IntroductionSection) => (
-  <section className="flex w-full flex-col">
-    <div className="mb-2 flex font-bold">
+  <section className="flex w-full flex-col" id={dataName}>
+    <label
+      htmlFor={labelId}
+      className={`mb-2 flex font-bold ${
+        errors && 'animate-vibration text-main-color'
+      }`}
+    >
       <h2>{title}</h2>
       {required && <p className="text-sub-color2">(필수)</p>}
-    </div>
+    </label>
     {children}
   </section>
 );
 
-interface SnsItemProps {
+interface SNSItemProps {
   icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   title: string;
   placeholder: string;
   dataName: string;
 }
 
-const SnsItem = ({
+const SNSItem = ({
   icon: Icon,
   title,
   placeholder,
   dataName,
-}: SnsItemProps) => (
-  <li className="flex">
-    <label className="flex w-32 items-center gap-1 font-semibold text-sub-color1">
-      <Icon
-        className={
-          dataName === 'youtube'
-            ? 'stroke-sub-color1 [&>*:nth-child(1)]:fill-sub-color1'
-            : 'fill-sub-color1'
-        }
+}: SNSItemProps) => {
+  const { register } = useFormContext();
+
+  return (
+    <li className="flex">
+      <label
+        className="flex w-32 items-center gap-1 font-semibold text-sub-color1"
+        htmlFor={dataName}
+      >
+        <Icon
+          className={
+            title === '유튜브'
+              ? 'stroke-sub-color1 [&>*:nth-child(1)]:fill-sub-color1'
+              : 'fill-sub-color1'
+          }
+        />
+        {title}
+      </label>
+      <input
+        id={dataName}
+        type="text"
+        className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
+        placeholder={placeholder}
+        {...register(dataName)}
       />
-      {title}
-    </label>
-    <input
-      type="text"
-      className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
-      placeholder={placeholder}
-    />
-  </li>
-);
+    </li>
+  );
+};
 
 export default InstructorIntroduction;

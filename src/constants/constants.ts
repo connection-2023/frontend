@@ -185,18 +185,18 @@ export const SNS_ITEMS = [
     icon: InstagramSVG,
     title: '인스타그램',
     placeholder: '인스타그램 아이디',
-    dataName: 'instagram',
+    dataName: 'instructorInstagram',
   },
   {
     icon: YoutubeSVG,
     title: '유튜브',
     placeholder: '유튜브 링크',
-    dataName: 'youtube',
+    dataName: 'instructorYoutube',
   },
   {
     icon: LinkSVG,
     title: '홈페이지',
     placeholder: '관련 홈페이지 링크',
-    dataName: 'homePage',
+    dataName: 'instructorHomePage',
   },
 ];
