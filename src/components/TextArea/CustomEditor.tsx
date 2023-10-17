@@ -11,20 +11,22 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 interface CustomEditorProps {
   title: string;
-  defaultValue: string;
   maxLength: number;
   minLength: number;
   height: string;
   dataName: string;
+  defaultValue?: string;
+  placeholder?: string;
 }
 
 const CustomEditor = ({
   title,
-  defaultValue,
   maxLength,
   minLength,
   height,
   dataName,
+  defaultValue = '',
+  placeholder = '',
 }: CustomEditorProps) => {
   const editor = useRef<SunEditorCore>();
   const editorText = useRef<string>(defaultValue);
@@ -69,7 +71,7 @@ const CustomEditor = ({
   };
 
   return (
-    <section className="relative z-0 flex flex-col">
+    <section className="relative z-0 flex w-full flex-col">
       <h2
         id={dataName}
         className={`mb-3 text-lg font-bold ${
@@ -99,6 +101,7 @@ const CustomEditor = ({
             setOptions={{
               buttonList: TOOLBAR,
             }}
+            placeholder={placeholder}
             getSunEditorInstance={getSunEditorInstance}
             onImageUploadBefore={handleImageUploadBefore}
           />

@@ -1,28 +1,27 @@
 import Image from 'next/image';
-import { useRecoilValue } from 'recoil';
-import { classCreateState } from '@/recoil/Create/atoms';
 import { useFormContext } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import CropperModal from './CropperModal';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 
-const UploadImage = ({
-  onChange,
-}: {
+interface UploadImageProps {
   onChange?: (
     data: {
       file: File;
       url: string;
     }[],
   ) => void;
-}) => {
-  const classData = useRecoilValue(classCreateState);
+  defaultImg: {
+    file: File;
+    url: string;
+  }[];
+}
 
-  const [images, setImages] = useState<{ file: File; url: string }[]>(
-    classData.classImg,
-  );
+const UploadImage = ({ onChange, defaultImg }: UploadImageProps) => {
+  const [images, setImages] =
+    useState<{ file: File; url: string }[]>(defaultImg);
   const [selectedImage, setSelectedImage] = useState<string | null>(
-    classData.classImg?.[0]?.url || null,
+    defaultImg?.[0]?.url || null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 

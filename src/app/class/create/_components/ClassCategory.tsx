@@ -1,4 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
+import { classCreateState } from '@/recoil/Create/atoms';
 import UploadImage from '@/components/UploadImage/UploadImage';
 import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
 import CategoryContainer from './ClassCategory/CategoryContainer';
@@ -17,6 +19,8 @@ const ClassCategory = () => {
     formState: { errors },
   } = useFormContext();
 
+  const classData = useRecoilValue(classCreateState);
+
   return (
     <>
       <section
@@ -30,7 +34,12 @@ const ClassCategory = () => {
           rules={{
             required: '이미지',
           }}
-          render={({ field }) => <UploadImage onChange={field.onChange} />}
+          render={({ field }) => (
+            <UploadImage
+              onChange={field.onChange}
+              defaultImg={classData.classImg}
+            />
+          )}
         />
       </section>
 
@@ -44,15 +53,32 @@ const ClassCategory = () => {
         })}
       />
 
-      <Controller
-        name="classGenre"
-        control={control}
-        defaultValue={[]}
-        rules={{
-          required: '장르',
-        }}
-        render={({ field }) => <GenreCheckboxGroup onChange={field.onChange} />}
-      />
+      <section className="flex">
+        <h2
+          id="classGenre"
+          className={`w-1/6 text-lg font-bold ${
+            errors.classGenre && 'animate-vibration text-main-color'
+          }`}
+        >
+          장르
+        </h2>
+        <div className="w-5/6">
+          <Controller
+            name="classGenre"
+            control={control}
+            defaultValue={[]}
+            rules={{
+              required: '장르',
+            }}
+            render={({ field }) => (
+              <GenreCheckboxGroup
+                onChange={field.onChange}
+                defaultValue={classData.classGenre}
+              />
+            )}
+          />
+        </div>
+      </section>
 
       <CategoryContainer id="classLessonType" title="인원">
         <RadioComponent
