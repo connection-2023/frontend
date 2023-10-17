@@ -5,11 +5,7 @@ import UploadImage from '@/components/UploadImage/UploadImage';
 import SelectLocation from '@/components/SelectLocation/SelectLocation';
 import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
 import CustomEditor from '@/components/TextArea/CustomEditor';
-import {
-  InstagramSVG,
-  LinkSVG,
-  YoutubeSVG,
-} from '../../../../../public/icons/svg';
+import { SNS_ITEMS } from '@/constants/constants';
 
 const InstructorIntroduction = () => {
   const {
@@ -24,7 +20,7 @@ const InstructorIntroduction = () => {
     <main className="my-10 flex flex-col gap-8">
       <section
         id="applyImg"
-        className=" mb-10 flex w-full flex-col border-b border-solid border-sub-color2"
+        className="flex w-full flex-col border-b border-solid border-sub-color2 pb-10"
       >
         <Controller
           name="applyImg"
@@ -42,11 +38,7 @@ const InstructorIntroduction = () => {
         />
       </section>
 
-      <section className="flex w-full flex-col">
-        <div className="mb-2 flex font-bold">
-          <h2>지역</h2>
-          <p className="text-sub-color2">(필수)</p>
-        </div>
+      <IntroductionSection title="지역" required={true}>
         <Controller
           name="instructorLocation"
           control={control}
@@ -55,13 +47,9 @@ const InstructorIntroduction = () => {
           }}
           render={({ field }) => <SelectLocation onChange={field.onChange} />}
         />
-      </section>
+      </IntroductionSection>
 
-      <section className=" flex w-full flex-col">
-        <div className="mb-2 flex font-bold">
-          <h2>장르</h2>
-          <p className="text-sub-color2">(필수)</p>
-        </div>
+      <IntroductionSection title="장르" required={true}>
         <Controller
           name="instructorGenre"
           control={control}
@@ -76,55 +64,29 @@ const InstructorIntroduction = () => {
             />
           )}
         />
-      </section>
+      </IntroductionSection>
 
-      <section className="flex w-full flex-col gap-2">
-        <h2 className="font-bold">소속</h2>
+      <IntroductionSection title="소속" required={false}>
         <input
           type="text"
           className="rounded-[0.31rem] px-4 py-2 outline outline-1 outline-sub-color2"
           placeholder="현재 속하고 있는 크루, 학원명 등을 적어주세요."
         />
-      </section>
+      </IntroductionSection>
 
-      <section className="flex w-full flex-col gap-2">
-        <h2 className="font-bold">SNS</h2>
+      <IntroductionSection title="SNS" required={false}>
         <ul className="flex flex-col gap-3">
-          <li className="flex">
-            <label className="flex w-32 items-center gap-1 font-semibold text-sub-color1">
-              <InstagramSVG className="fill-sub-color1" />
-              인스타그램
-            </label>
-            <input
-              type="text"
-              className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
-              placeholder="인스타그램 아이디"
+          {SNS_ITEMS.map((item) => (
+            <SnsItem
+              key={item.title}
+              icon={item.icon}
+              title={item.title}
+              placeholder={item.placeholder}
+              dataName={item.dataName}
             />
-          </li>
-          <li className="flex">
-            <label className="flex w-32 items-center gap-1 font-semibold text-sub-color1">
-              <YoutubeSVG className="stroke-sub-color1 [&>*:nth-child(1)]:fill-sub-color1" />
-              유튜브
-            </label>
-            <input
-              type="text"
-              className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
-              placeholder="유튜브 링크"
-            />
-          </li>
-          <li className="flex">
-            <label className="flex w-32 items-center gap-1 font-semibold text-sub-color1">
-              <LinkSVG className="fill-sub-color1" />
-              홈페이지
-            </label>
-            <input
-              type="text"
-              className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 "
-              placeholder="관련 홈페이지 링크"
-            />
-          </li>
+          ))}
         </ul>
-      </section>
+      </IntroductionSection>
 
       <section className="flex w-full flex-col gap-3">
         <label className="mb-1">
@@ -134,30 +96,21 @@ const InstructorIntroduction = () => {
           <p className="text-sub-color2">*최대 3개까지 표시 가능합니다.</p>
         </label>
 
-        <input
-          type="text"
-          className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
-          placeholder="게시물 주소 입력"
-        />
-
-        <input
-          type="text"
-          className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
-          placeholder="게시물 주소 입력"
-        />
-
-        <input
-          type="text"
-          className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
-          placeholder="게시물 주소 입력"
-        />
+        {Array.from({ length: 3 }).map((_, index) => (
+          <input
+            key={index}
+            type="text"
+            className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
+            placeholder="게시물 주소 입력"
+          />
+        ))}
       </section>
 
       <CustomEditor
         title="강사소개"
-        dataName="classCurriculum"
-        placeholder={`어떤 목표를 두고 수업을 진행하는지, 개인적인 수업 방식, 본인의 특징, 이야기, 포부 등
-        댄스 강사로서 소개를 자유롭게 작성해주세요,`}
+        dataName="applyIntroduction"
+        placeholder="어떤 목표를 두고 수업을 진행하는지, 개인적인 수업 방식, 본인의 특징, 이야기, 포부 등
+        댄스 강사로서 소개를 자유롭게 작성해주세요."
         height="471px"
         maxLength={1000}
         minLength={0}
@@ -165,9 +118,8 @@ const InstructorIntroduction = () => {
 
       <CustomEditor
         title="강사경력"
-        dataName="classCurriculum"
-        placeholder={`어떤 목표를 두고 수업을 진행하는지, 개인적인 수업 방식, 본인의 특징, 이야기, 포부 등
-        댄스 강사로서 소개를 자유롭게 작성해주세요,`}
+        dataName="applyCareer"
+        placeholder="본인의 경력을 작성해주세요."
         height="303px"
         maxLength={500}
         minLength={0}
@@ -175,5 +127,57 @@ const InstructorIntroduction = () => {
     </main>
   );
 };
+
+interface IntroductionSection {
+  title: string;
+  required: boolean;
+  children: JSX.Element;
+}
+
+const IntroductionSection = ({
+  title,
+  required,
+  children,
+}: IntroductionSection) => (
+  <section className="flex w-full flex-col">
+    <div className="mb-2 flex font-bold">
+      <h2>{title}</h2>
+      {required && <p className="text-sub-color2">(필수)</p>}
+    </div>
+    {children}
+  </section>
+);
+
+interface SnsItemProps {
+  icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  title: string;
+  placeholder: string;
+  dataName: string;
+}
+
+const SnsItem = ({
+  icon: Icon,
+  title,
+  placeholder,
+  dataName,
+}: SnsItemProps) => (
+  <li className="flex">
+    <label className="flex w-32 items-center gap-1 font-semibold text-sub-color1">
+      <Icon
+        className={
+          dataName === 'youtube'
+            ? 'stroke-sub-color1 [&>*:nth-child(1)]:fill-sub-color1'
+            : 'fill-sub-color1'
+        }
+      />
+      {title}
+    </label>
+    <input
+      type="text"
+      className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2"
+      placeholder={placeholder}
+    />
+  </li>
+);
 
 export default InstructorIntroduction;
