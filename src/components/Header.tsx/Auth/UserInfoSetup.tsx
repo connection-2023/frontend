@@ -25,7 +25,7 @@ const UserInfoSetup = ({ userInfo }: { userInfo: SignInResponse }) => {
   return (
     //   --- 폼 유효성 검사 API 연결할 때 추가 에정---
     <section className="flex h-full w-full flex-col justify-between">
-      <div className="mb-7 flex h-20 flex-col items-center justify-center gap-2 border-b border-solid border-[#D9D9D9] text-sm text-sub-color3">
+      <div className="mb-7 flex h-20 flex-col items-center justify-center gap-2 border-b border-solid border-sub-color4 text-sm text-sub-color3">
         <h2>로그인 정보</h2>
         <div className="flex items-center gap-2">
           {SocialIcons(userInfo.signUpType)}

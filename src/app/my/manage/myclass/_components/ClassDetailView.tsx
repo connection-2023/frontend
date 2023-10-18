@@ -15,7 +15,7 @@ const ClassDetailView = ({ onGoBack }: { onGoBack: () => void }) => {
   return (
     <section className="flex max-w-[60rem] flex-col justify-between">
       {/* Top Section */}
-      <section className="flex whitespace-nowrap border-b border-solid border-[#D9D9D9] py-3">
+      <section className="flex whitespace-nowrap border-b border-solid border-sub-color4 py-3">
         <div className="flex w-full items-center">
           <button onClick={onGoBack} className="origin-center -rotate-90">
             <ArrowUpSVG fill="black" />
@@ -40,7 +40,7 @@ const ClassDetailView = ({ onGoBack }: { onGoBack: () => void }) => {
               <textarea
                 // --- 공통 컴포넌트로 변경 예정 ---
                 placeholder={`수강생이 클래스 신청시 예약 화면에서 보여지는 사항입니다.\n클래스를 시작하기 전 숙지해야 할 사항을 적어주세요`}
-                className="h-32 w-full resize-none whitespace-pre-wrap break-keep rounded-[0.31rem] border border-solid border-[#D9D9D9] px-[0.69rem] py-[0.62rem] text-xs"
+                className="h-32 w-full resize-none whitespace-pre-wrap break-keep rounded-[0.31rem] border border-solid border-sub-color4 px-[0.69rem] py-[0.62rem] text-xs"
               />
             }
           />
@@ -74,7 +74,7 @@ const AccordionSection = ({ title, component }: IAccordionSection) => {
     : 'origin-center rotate-90';
 
   return (
-    <section className="min-h-[2.37rem] border-b border-solid border-[#D9D9D9] pt-[0.87rem]">
+    <section className="min-h-[2.37rem] border-b border-solid border-sub-color4 pt-[0.87rem]">
       <h2
         onClick={() => setIsExpended(!isExpanded)}
         className="mb-2 flex cursor-pointer items-center text-sub-color3"

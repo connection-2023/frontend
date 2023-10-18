@@ -3,7 +3,7 @@ import { useState } from 'react';
 const InstructorAuth = () => {
   return (
     <section className="mt-2 flex w-full max-w-[40rem] flex-col text-base">
-      <ul className="flex flex-col gap-[1.69rem] border-b border-solid border-[#D9D9D9] py-7">
+      <ul className="flex flex-col gap-[1.69rem] border-b border-solid border-sub-color4 py-7">
         <li className="flex items-center">
           <Label htmlFor="instructor-nickname" isNormal={true}>
             강사 닉네임

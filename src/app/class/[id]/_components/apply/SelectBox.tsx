@@ -32,7 +32,7 @@ const SelectBox = ({
   };
 
   return (
-    <div className="text-sub-color3 w-full text-sm">
+    <div className="w-full text-sm text-sub-color3">
       <div
         onClick={openList}
         className={`flex h-8 w-full cursor-pointer items-center pl-2 ${selectBoxBorderStyle}`}
@@ -43,7 +43,7 @@ const SelectBox = ({
       <ul
         className={`${
           isListOpened ? 'flex flex-col' : 'hidden'
-        } ${selectBoxBorderStyle} divide-y divide-solid divide-[#D9D9D9] border-t-0 `}
+        } ${selectBoxBorderStyle} divide-y divide-solid divide-sub-color4 border-t-0 `}
       >
         {lists.map((list: string) => (
           <li

@@ -126,7 +126,7 @@ const TableList = ({
 }: ITableList) => {
   const [isOpened, setIsOpened] = useState(false);
   return (
-    <tr className="flex items-start gap-10 border-b border-solid border-[#D9D9D9] px-4 text-left font-medium">
+    <tr className="flex items-start gap-10 border-b border-solid border-sub-color4 px-4 text-left font-medium">
       <th className="h-full w-24 py-2">{target}</th>
       <th className="flex w-36 flex-1 flex-col items-center gap-[0.31rem] py-2">
         <p className="flex w-full items-center">

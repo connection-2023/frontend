@@ -30,7 +30,7 @@ const ClassList = ({ status, date, title, count, onItemClick }: IClassList) => {
       <h2 className="mb-3 px-[1.37rem] text-base font-bold text-black">
         {title}
       </h2>
-      <div className="mb-2 flex items-center border-t border-solid border-[#D9D9D9] px-[1.37rem] pt-[0.81rem] text-sm">
+      <div className="mb-2 flex items-center border-t border-solid border-sub-color4 px-[1.37rem] pt-[0.81rem] text-sm">
         <p className="mr-[0.81rem] text-sub-color1">
           진행<span className="font-bold"> {count.current}회</span>
         </p>
@@ -47,7 +47,7 @@ const ClassList = ({ status, date, title, count, onItemClick }: IClassList) => {
           <div
             className="h-full bg-sub-color1 text-right transition-all duration-1000 ease-in-out"
             style={{ width: `87%` }}
-          ></div>
+          />
         </div>
       </div>
     </li>

@@ -61,7 +61,7 @@ const ProfileSetup = ({ defaultProfile }: IProfileSetup) => {
       <label htmlFor="upload-button">
         <div
           className={`group mb-[2.37rem] mr-6 flex h-44 w-44 cursor-pointer items-center justify-center rounded-full ${
-            imgSrc ? `bg-none` : `bg-[#D9D9D9]`
+            imgSrc ? `bg-none` : `bg-sub-color4`
           }`}
           style={
             imgSrc

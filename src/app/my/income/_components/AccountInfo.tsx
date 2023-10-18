@@ -8,7 +8,7 @@ const data = {
 const AccountInfo = ({ view }: { view: 'main' | 'payment' }) => {
   return view === 'main' ? (
     <aside className="mt-14 flex h-fit w-full max-w-xs flex-col rounded-[0.31rem] shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
-      <h2 className="flex h-12 w-full items-center justify-between border-b border-solid border-[#D9D9D9] pl-[1.19rem] text-lg font-semibold text-sub-color3">
+      <h2 className="flex h-12 w-full items-center justify-between border-b border-solid border-sub-color4 pl-[1.19rem] text-lg font-semibold text-sub-color3">
         계좌 정보
         <BigArrowSVG width="34" height="34" className="fill-sub-color2" />
       </h2>

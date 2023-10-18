@@ -4,7 +4,7 @@ import { dummyClassRoster } from '@/constants/dummy';
 const ClassOverview = () => {
   return (
     <aside className="flex h-fit w-[19.5625rem] flex-col whitespace-nowrap shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
-      <div className="flex h-[5.13rem] divide-x  divide-solid divide-[#D9D9D9] border-b border-solid border-[#D9D9D9] py-[0.69rem] text-sm font-semibold text-sub-color3">
+      <div className="flex h-[5.13rem] divide-x  divide-solid divide-sub-color4 border-b border-solid border-sub-color4 py-[0.69rem] text-sm font-semibold text-sub-color3">
         <div className="flex w-1/2 flex-col items-center justify-center">
           진행한 클래스
           <span className="text-xl font-bold text-sub-color1">3회</span>

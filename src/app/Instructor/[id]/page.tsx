@@ -63,7 +63,7 @@ const InstructorDetailPage = () => {
           </div>
 
           {/* 강사 여러 정보 */}
-          <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-[#D9D9D9] py-5">
+          <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-sub-color4 py-5">
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">지역</dt>
               <dd>{location}</dd>
@@ -120,7 +120,7 @@ const InstructorDetailPage = () => {
         </div>
       </section>
 
-      <hr className="mb-2 h-[1px] w-screen bg-[#D9D9D9] shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]" />
+      <hr className="mb-2 h-[1px] w-screen bg-sub-color4 shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]" />
 
       <div className="sticky -top-[1px] z-20 flex w-full items-center justify-center bg-white">
         <div className="w-1/2 min-w-[23rem] max-w-5xl">

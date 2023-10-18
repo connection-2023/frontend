@@ -17,7 +17,7 @@ const EnrollmentModal = ({ isOpen, closeModal }: IEnrollmentModal) => {
       style={customModalStyles}
       ariaHideApp={false}
     >
-      <div className="relative w-full border-b border-solid border-[#D9D9D9] px-5">
+      <div className="relative w-full border-b border-solid border-sub-color4 px-5">
         <p className="mb-[0.81rem] text-base">
           <span className="mr-[0.81rem] text-lg font-bold">1회차</span> 5/6명
         </p>
