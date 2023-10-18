@@ -55,3 +55,5 @@ export interface IReportList {
   detail: string;
   status: '처리중' | '처리완료';
 }
+
+export type paymentType = 'card' | 'deposit' | null;

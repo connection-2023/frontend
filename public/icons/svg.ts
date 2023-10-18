@@ -55,6 +55,7 @@ import MoneySVG from './money.svg';
 import BillSVG from './bill.svg';
 import DoubleRightSVG from './doubleRight.svg';
 import NoteSVG from './note.svg';
+import MusicalNoteSVG from './musicalNote.svg';
 
 export {
   CouponSVG,
@@ -114,4 +115,5 @@ export {
   DoubleRightSVG,
   BillSVG,
   NoteSVG,
+  MusicalNoteSVG,
 };
