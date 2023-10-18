@@ -28,7 +28,7 @@ const ProfileMenu = () => {
         </button>
       </li>
 
-      <li className="bg-gray-200 text-[#B6B6B6]">
+      <li className="bg-gray-200 text-sub-color2">
         <button className="h-full w-full py-2 pl-4 text-left">로그아웃</button>
       </li>
     </ul>

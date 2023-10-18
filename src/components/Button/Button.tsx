@@ -34,7 +34,10 @@ export const Button = ({
 }: ButtonProps) => {
   const styleType = primary ? 'primary' : 'secondary';
   return mode === 'reset' ? (
-    <button onClick={props.onClick} className={`${commonStyle} text-[#B6B6B6]`}>
+    <button
+      onClick={props.onClick}
+      className={`${commonStyle} text-sub-color2`}
+    >
       {children}
       <ResetSVG className="ml-1" />
     </button>

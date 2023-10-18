@@ -25,10 +25,10 @@ const ReviewComment = ({
           <Profile size={35} nickname={nickname} src={src} label={false} />
         </div>
         <p>{nickname}</p>
-        <span className="justify-self-end text-[#B6B6B6]">{date}</span>
+        <span className="justify-self-end text-sub-color2">{date}</span>
         <Review average={average} />
       </div>
-      <p className="mb-[0.38rem] text-[#B6B6B6]">{title}</p>
+      <p className="mb-[0.38rem] text-sub-color2">{title}</p>
       <p className="mb-6">{content}</p>
     </div>
   );
