@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckMarkSVG } from '../../../public/icons/svg';
+import { CheckMarkSVG } from '@/icons/svg';
 import GenreListAddition from './GenreListAddition';
 
 interface GenreListProps {

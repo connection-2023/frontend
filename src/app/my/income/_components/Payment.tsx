@@ -11,11 +11,7 @@ import {
   flexRender,
 } from '@tanstack/react-table';
 import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
-import {
-  BasicCalendarSVG,
-  MoneySVG,
-  DoubleRightSVG,
-} from '../../../../../public/icons/svg';
+import { BasicCalendarSVG, MoneySVG, DoubleRightSVG } from '@/icons/svg';
 import { IPaymentList } from '@/types/types';
 import { dummyPaymentList } from '@/constants/dummy';
 

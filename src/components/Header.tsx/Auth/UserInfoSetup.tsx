@@ -1,9 +1,5 @@
 import { useState, ChangeEvent } from 'react';
-import {
-  KaKaoTalkSVG,
-  NaverSVG,
-  GoogleSVG,
-} from '../../../../public/icons/svg';
+import { KaKaoTalkSVG, NaverSVG, GoogleSVG } from '@/icons/svg';
 import { SignInResponse } from '@/types/auth';
 
 const inputStyle =

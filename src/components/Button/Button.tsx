@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { ResetSVG } from '../../../public/icons/svg';
+import { ResetSVG } from '@/icons/svg';
 
 interface ButtonProps {
   primary?: boolean;

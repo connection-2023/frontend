@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ConnectionLogoSVG, MapSVG } from '../../../../public/icons/svg';
+import { ConnectionLogoSVG, MapSVG } from '@/icons/svg';
 
 const HeaderMenu = () => {
   return (

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpSVG, ProfileSVG } from '../../../../public/icons/svg';
+import { ArrowUpSVG, ProfileSVG } from '@/icons/svg';
 
 interface ISidebar {
   profileImg?: string;

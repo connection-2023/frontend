@@ -1,4 +1,4 @@
-import { CommentSVG } from '../../../../../../../public/icons/svg';
+import { CommentSVG } from '@/icons/svg';
 import { dummyClassRoster } from '@/constants/dummy';
 
 const ClassOverview = () => {

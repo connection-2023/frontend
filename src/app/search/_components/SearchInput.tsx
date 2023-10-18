@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { SearchSVG, ClearSVG } from '@/../public/icons/svg';
+import { SearchSVG, ClearSVG } from '@/icons/svg';
 import { dummyUserInputSuggestion } from '@/constants/dummy';
 
 const SearchInput = () => {

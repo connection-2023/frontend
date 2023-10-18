@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ExtendedWindow, KakaoAuthProps } from '@/types/auth';
-import { KaKaoTalkSVG } from '@/../public/icons/svg';
+import { KaKaoTalkSVG } from '@/icons/svg';
 
 declare const window: ExtendedWindow;
 

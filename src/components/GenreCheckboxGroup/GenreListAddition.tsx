@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { PlusesSVG } from '../../../public/icons/svg';
+import { PlusesSVG } from '@/icons/svg';
 
 const GenreListAddition = ({
   addGenreList,

@@ -8,7 +8,7 @@ import PriceFilter from './PriceFilter';
 import ProgressMethodFilter from './ProgressMethodFilter';
 import ReviewFilter from './ReviewFilter';
 import { Button } from '../Button/Button';
-import { CloseSVG } from '../../../public/icons/svg';
+import { CloseSVG } from '@/icons/svg';
 import { IFilterOptions } from '@/types/types';
 import { LocationFilterList } from '@/types/locationFilter';
 import { WARD_LIST } from '../../constants/administrativeDistrict';

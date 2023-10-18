@@ -3,7 +3,7 @@ import { useClickAway } from 'react-use';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { format, subMonths, isValid, parse } from 'date-fns';
 import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
-import { BasicCalendarSVG } from '../../../../../public/icons/svg';
+import { BasicCalendarSVG } from '@/icons/svg';
 
 const IncomeRange = () => {
   const [fromValue, setFromValue] = useState<string | undefined>(undefined);

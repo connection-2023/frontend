@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
-import { CloseSVG, CommentSVG } from '../../../../../../../public/icons/svg';
+import { CloseSVG, CommentSVG } from '@/icons/svg';
 import { dummyEnrollmentPerson } from '@/constants/dummy';
 
 // 회차정보, 정원, 수업일자, 마감일을 서버에서 요청할지 table에서 가져올지 고민...

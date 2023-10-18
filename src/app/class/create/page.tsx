@@ -10,7 +10,7 @@ import ClassExplanation from './_components/ClassExplanation';
 import ClassSchedule from './_components/ClassSchedule';
 import ClassLocation from './_components/ClassLocation';
 import ClassPrice from './_components/ClassPrice';
-import { ArrowRightSVG } from '@/../public/icons/svg';
+import { ArrowRightSVG } from '@/icons/svg';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [

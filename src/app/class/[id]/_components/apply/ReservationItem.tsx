@@ -1,4 +1,4 @@
-import { ClearSVG } from '@/../public/icons/svg';
+import { ClearSVG } from '@/icons/svg';
 import { DateTime } from '@/types/class';
 
 interface ReservationItemProps extends DateTime {
@@ -39,14 +39,14 @@ const ReservationItem = ({
         />
       </div>
       <div className="my-3 flex items-baseline justify-between text-base font-medium">
-        <div className="text-sub-color3 flex items-center text-sm">
+        <div className="flex items-center text-sm text-sub-color3">
           <CountButton onClick={onClickDown}>-</CountButton>
-          <span className="border-sub-color2 flex h-[31px] w-[34px] items-center justify-center border-y border-solid">
+          <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-sub-color2">
             {count}
           </span>
           <CountButton onClick={onClickUp}>+</CountButton>명
         </div>
-        <p className="text-sub-color2 text-sm">잔여자리: {remainSpace}명</p>
+        <p className="text-sm text-sub-color2">잔여자리: {remainSpace}명</p>
       </div>
     </div>
   );
@@ -60,7 +60,7 @@ const CountButton = ({
   children: React.ReactNode;
 }) => (
   <button
-    className="border-sub-color2 text-sub-color2 h-[31px] w-[35px] border border-solid bg-[#F5F5F5F5]"
+    className="h-[31px] w-[35px] border border-solid border-sub-color2 bg-[#F5F5F5F5] text-sub-color2"
     onClick={onClick}
   >
     {children}

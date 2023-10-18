@@ -6,11 +6,7 @@ import InstructorPreview from '@/components/Preview/InstructorPreview';
 import ClassCard from '@/components/ClassCard/ClassCard';
 import SuggestionPreview from '@/components/Preview/SuggestionPreview';
 import { dummyInstructor, dummyMain } from '@/constants/dummy';
-import {
-  SmallLogoSVG,
-  MainPopularSVG,
-  MainTopSVG,
-} from '../../public/icons/svg';
+import { SmallLogoSVG, MainPopularSVG, MainTopSVG } from '@/icons/svg';
 
 export default function Home() {
   const { classList } = dummyInstructor;

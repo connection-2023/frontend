@@ -1,5 +1,5 @@
 import { Juso } from '@/types/address';
-import { LocationSVG, SearchSVG } from '../../../../../../public/icons/svg';
+import { LocationSVG, SearchSVG } from '@/icons/svg';
 import Map from '@/components/Map/Map';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';

@@ -9,12 +9,7 @@ import ManagementButton from './_components/ManagementButton';
 import ClassList from './_components/ClassList';
 import { dummyInstructor } from '@/constants/dummy';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import {
-  OptionSVG,
-  InstagramSVG,
-  YoutubeSVG,
-  LinkSVG,
-} from '@/../public/icons/svg';
+import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 
 const h2Style = 'mb-2 text-lg font-bold';
 

@@ -8,7 +8,7 @@ import {
   ColumnDef,
   flexRender,
 } from '@tanstack/react-table';
-import { ExcelSVG, BillSVG } from '../../../../../public/icons/svg';
+import { ExcelSVG, BillSVG } from '@/icons/svg';
 import { ITableList } from '@/types/types';
 import { dummyIncomeList } from '@/constants/dummy';
 

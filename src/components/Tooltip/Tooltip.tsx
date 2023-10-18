@@ -1,4 +1,4 @@
-import { TooltipSVG } from '../../../public/icons/svg';
+import { TooltipSVG } from '@/icons/svg';
 
 const Tooltip = ({ children }: { children: React.ReactNode }) => {
   return (

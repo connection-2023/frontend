@@ -14,7 +14,7 @@ import {
   FacebookSVG,
   TwitterSVG,
   LinkSVG,
-} from '../../../public/icons/svg';
+} from '@/icons/svg';
 
 interface ShareItem {
   label: string;

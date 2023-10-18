@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import CropperModal from './CropperModal';
-import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
+import { ClearSVG, CropSVG, UploadImageSVG } from '@/icons/svg';
 
 interface UploadImageProps {
   onChange?: (

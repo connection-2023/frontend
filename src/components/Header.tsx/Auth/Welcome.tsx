@@ -1,4 +1,4 @@
-import { AuthWelcomeSVG } from '@/../public/icons/svg';
+import { AuthWelcomeSVG } from '@/icons/svg';
 import Link from 'next/link';
 
 interface IWelcome {

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { ImageSVG, AddImageSVG } from '@/../public/icons/svg';
+import { ImageSVG, AddImageSVG } from '@/icons/svg';
 
 const svgStyle =
   'opacity-0 transition-opacity duration-200 group-hover:opacity-100';

@@ -7,7 +7,7 @@ import {
   DAY_MODIFIERS,
   DAY_MODIFIERS_CLASSNAMES,
 } from '../../constants/constants';
-import { ArrowRightSVG } from '../../../public/icons/svg';
+import { ArrowRightSVG } from '@/icons/svg';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 

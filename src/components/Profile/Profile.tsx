@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ProfileSVG } from '../../../public/icons/svg';
+import { ProfileSVG } from '@/icons/svg';
 
 interface ProfileProps {
   src: string | null;

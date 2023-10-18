@@ -4,7 +4,7 @@ import AccountInfo from './_components/AccountInfo';
 import IncomeOverview from './_components/IncomeOverview';
 import IncomeTable from './_components/IncomeDataViewer';
 import Payment from './_components/Payment';
-import { ArrowUpSVG } from '../../../../public/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 
 const IncomePage = () => {
   const [view, setView] = useState<'main' | 'payment'>('main');

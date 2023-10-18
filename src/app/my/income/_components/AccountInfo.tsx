@@ -1,4 +1,4 @@
-import { BigArrowSVG } from '../../../../../public/icons/svg';
+import { BigArrowSVG } from '@/icons/svg';
 
 const data = {
   bank: '우리은행',

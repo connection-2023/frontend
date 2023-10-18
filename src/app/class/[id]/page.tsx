@@ -16,7 +16,7 @@ import {
   GroupSVG,
   LevelSVG,
   BasicCalendarSVG,
-} from '@/../public/icons/svg';
+} from '@/icons/svg';
 import Carousel from '@/components/Carousel/Carousel';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Map from '@/components/Map/Map';

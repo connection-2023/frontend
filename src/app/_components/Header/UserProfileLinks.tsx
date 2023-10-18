@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Profile from './Profile';
 import { dummyUserInfo } from '@/constants/dummy';
-import { AlarmSVG, CommentSVG, SearchSVG } from '../../../../public/icons/svg';
+import { AlarmSVG, CommentSVG, SearchSVG } from '@/icons/svg';
 import AuthModal from '@/components/Header.tsx/Auth/AuthModal';
 
 const UserProfileLinks = () => {

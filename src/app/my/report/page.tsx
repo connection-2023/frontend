@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import ReportModal from './ReportModal';
 import { IReportList } from '@/types/types';
-import { NoteSVG } from '../../../../public/icons/svg';
+import { NoteSVG } from '@/icons/svg';
 
 const data: IReportList[] = [
   {

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { ArrowDownSVG } from '@/../public/icons/svg';
+import { ArrowDownSVG } from '@/icons/svg';
 import { Space } from '@/types/class';
 
 interface SelectBoxProps {

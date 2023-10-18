@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { StarSVG } from '../../../public/icons/svg';
+import { StarSVG } from '@/icons/svg';
 
 interface ISuggestionProps {
   title: string;

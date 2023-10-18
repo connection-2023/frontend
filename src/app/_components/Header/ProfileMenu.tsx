@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { dummyUserInfo } from '@/constants/dummy';
-import { TransFormSVG } from '../../../../public/icons/svg';
+import { TransFormSVG } from '@/icons/svg';
 
 const ProfileMenu = () => {
   const { name } = dummyUserInfo;

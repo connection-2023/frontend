@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import AuthHome from './AuthHome';
 import SignUp from './SignUp';
-import { CloseSVG } from '@/../public/icons/svg';
+import { CloseSVG } from '@/icons/svg';
 import { SignInResponse } from '@/types/auth';
 
 interface IAuthModal {

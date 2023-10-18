@@ -7,7 +7,7 @@ import {
 } from '@/recoil/ClassSchedule/atoms';
 import DayByDay from './DayByDay';
 import SpecificDate from './SpecificDate';
-import { CheckSVG } from '@/../public/icons/svg';
+import { CheckSVG } from '@/icons/svg';
 
 interface DayTypeComponents {
   [key: string]: JSX.Element;

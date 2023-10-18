@@ -12,7 +12,7 @@ import {
   Filler,
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
-import { MoneySVG } from '../../../../../public/icons/svg';
+import { MoneySVG } from '@/icons/svg';
 import {
   options,
   dataByMonth,

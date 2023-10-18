@@ -1,5 +1,5 @@
 import { useClickAway } from 'react-use';
-import { CloseSVG, CalendarDetailSVG } from '@/../public/icons/svg';
+import { CloseSVG, CalendarDetailSVG } from '@/icons/svg';
 import { IFullCalendarEvent } from '@/types/types';
 import { useRef } from 'react';
 

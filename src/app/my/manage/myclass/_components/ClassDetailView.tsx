@@ -3,11 +3,7 @@ import Notice from '@/components/ClassNotice/Notice';
 import ClassTable from './detail/ClassTable';
 import ClassOverview from './detail/ClassOverview';
 import EditDayOff from './detail/EditDayOff';
-import {
-  ArrowUpSVG,
-  EditSVG,
-  ArrowRightSVG,
-} from '../../../../../../public/icons/svg';
+import { ArrowUpSVG, EditSVG, ArrowRightSVG } from '@/icons/svg';
 
 const ClassDetailView = ({ onGoBack }: { onGoBack: () => void }) => {
   // --- ClassListView에서 제목과 같은 데이터를 넘겨 받을지 서버에서 받을지 고민 ---
