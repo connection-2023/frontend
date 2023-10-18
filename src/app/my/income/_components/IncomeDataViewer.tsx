@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import IncomeTable from './IncomeTable';
 import IncomeRange from './IncomeRange';
+import IncomeTable from './IncomeTable';
 
 enum filterOptions {
   All = '전체',

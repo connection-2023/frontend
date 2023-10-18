@@ -1,9 +1,9 @@
 import { ChangeEvent } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
-import { Controller, useFormContext } from 'react-hook-form';
 
 const ClassInfo = ({
   changeClassPrice,

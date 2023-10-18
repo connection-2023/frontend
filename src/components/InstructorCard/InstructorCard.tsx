@@ -1,9 +1,9 @@
 'use client';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import ImagesViewer from './ImagesViewer';
-import Review from '../Review/Review';
 import Like from '../Like/Like';
-import Link from 'next/link';
+import Review from '../Review/Review';
 
 interface InstructorCardProps {
   name: string;

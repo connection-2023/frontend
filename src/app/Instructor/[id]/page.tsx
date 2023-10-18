@@ -1,15 +1,15 @@
 import Link from 'next/link';
-import Review from '@/components/Review/Review';
-import Like from '@/components/Like/Like';
-import Nav from '@/components/Nav/Nav';
-import ReviewComment from '@/components/Review/ReviewComment';
-import Sharing from '@/components/Sharing/Sharing';
+import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
+import { dummyInstructor } from '@/constants/dummy';
+import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
+import ClassList from './_components/ClassList';
 import InstructorCarousel from './_components/InstructorCarousel';
 import ManagementButton from './_components/ManagementButton';
-import ClassList from './_components/ClassList';
-import { dummyInstructor } from '@/constants/dummy';
-import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
+import Like from '@/components/Like/Like';
+import Nav from '@/components/Nav/Nav';
+import Review from '@/components/Review/Review';
+import ReviewComment from '@/components/Review/ReviewComment';
+import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
 

@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import React, {
   useCallback,
   useEffect,
@@ -6,7 +7,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import Image from 'next/image';
 import { Arrow } from '@/icons/svg';
 
 /**
@@ -142,6 +142,7 @@ const Carousel = ({
         if (priority === 1) {
           timeoutIdRef.current = setTimeout(() => updateImageIndex(), 100);
         }
+
         intervalIdRef.current = setInterval(
           updateImageIndex,
           carouselMoveIntervalTime,
@@ -171,6 +172,7 @@ const Carousel = ({
     event.nativeEvent.preventDefault();
 
     setIsAnimating(false);
+
     setCurrentIndex((prev) => {
       if (direction === 'FORWARD') {
         return prev >= carouselLength - priority ? 0 : prev + 1;
@@ -181,6 +183,7 @@ const Carousel = ({
 
     timeoutIdRef.current = setTimeout(() => {
       setIsAnimating(true);
+
       intervalIdRef.current = setInterval(
         updateImageIndex,
         carouselMoveIntervalTime,

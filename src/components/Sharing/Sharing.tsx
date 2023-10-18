@@ -2,11 +2,6 @@
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
-import {
-  shareToKakaoTalk,
-  shareToFacebook,
-  shareToTwitter,
-} from '@/utils/socialShare';
 import { DOMAIN } from '@/constants/constants';
 import {
   KaKaoTalkSVG,
@@ -15,6 +10,11 @@ import {
   TwitterSVG,
   LinkSVG,
 } from '@/icons/svg';
+import {
+  shareToKakaoTalk,
+  shareToFacebook,
+  shareToTwitter,
+} from '@/utils/socialShare';
 
 interface ShareItem {
   label: string;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import GenreList from './GenreList';
-import { toggleSelection } from '@/utils/toggleSelection';
 import { DANCE_GENRE } from '@/constants/constants';
+import { toggleSelection } from '@/utils/toggleSelection';
+import GenreList from './GenreList';
 
 interface GenreCheckboxGroupProps {
   onChange?: (data: string[]) => void;

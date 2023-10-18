@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
-import { CloseSVG } from '@/icons/svg';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
+import { CloseSVG } from '@/icons/svg';
 
 interface LocationListItemProps {
   locationKey: string;

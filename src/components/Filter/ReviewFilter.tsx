@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Rating from '../Review/Rating';
 import FilterModal from './FilterModal';
+import Rating from '../Review/Rating';
 
 interface IReviewFilterProps {
   updateFilterOption: (label: string, option: number) => void;

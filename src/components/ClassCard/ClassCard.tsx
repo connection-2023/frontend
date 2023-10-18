@@ -1,12 +1,12 @@
 'use client';
+import Image from 'next/image';
+import { useState } from 'react';
 import Date from './Date';
 import { ClassCardType } from '../../types/class';
+import Carousel from '../Carousel/Carousel';
 import Like from '../Like/Like';
 import Profile from '../Profile/Profile';
 import Review from '../Review/Review';
-import Carousel from '../Carousel/Carousel';
-import { useState } from 'react';
-import Image from 'next/image';
 
 const ClassCard = (props: ClassCardType) => {
   const {

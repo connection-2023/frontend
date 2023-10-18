@@ -1,8 +1,8 @@
-import { dateFnsLocalizer, EventPropGetter } from 'react-big-calendar';
 import format from 'date-fns/format';
+import getDay from 'date-fns/getDay';
 import koLocale from 'date-fns/locale/ko';
 import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
+import { dateFnsLocalizer, EventPropGetter } from 'react-big-calendar';
 import { IFullCalendarEvent } from '@/types/types';
 
 export const localizer = dateFnsLocalizer({

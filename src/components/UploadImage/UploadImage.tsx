@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import CropperModal from './CropperModal';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/icons/svg';
+import CropperModal from './CropperModal';
 
 interface UploadImageProps {
   onChange?: (
@@ -50,6 +50,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
       if (images.length + filesArray.length > 5) {
         alert('최대 5개까지만 업로드 가능합니다.');
         const remainingSpace = 5 - images.length;
+
         setImages((prevImages) => [
           ...prevImages,
           ...filesArray.slice(0, remainingSpace),
@@ -97,6 +98,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
     const selectedIdxStr = event.dataTransfer.getData('selectedIdx');
     if (selectedIdxStr !== null) {
       const selectedIdx = Number(selectedIdxStr);
+
       setImages((prevImages) => {
         const newImages = [...prevImages];
         const [removed] = newImages.splice(selectedIdx, 1);
@@ -243,4 +245,5 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
     </div>
   );
 };
+
 export default UploadImage;

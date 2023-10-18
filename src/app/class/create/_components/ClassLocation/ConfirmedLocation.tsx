@@ -1,8 +1,8 @@
-import { Juso } from '@/types/address';
-import { LocationSVG, SearchSVG } from '@/icons/svg';
-import Map from '@/components/Map/Map';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { LocationSVG, SearchSVG } from '@/icons/svg';
+import Map from '@/components/Map/Map';
+import { Juso } from '@/types/address';
 
 interface ConfirmedLocationProps {
   location: Juso | null;

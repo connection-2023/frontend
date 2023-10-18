@@ -1,5 +1,5 @@
-import Profile from '../Profile/Profile';
 import Review from './Review';
+import Profile from '../Profile/Profile';
 
 interface ReviewCommentProps {
   src: string | null;

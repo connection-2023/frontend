@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import BasicCalendar from '../Calendar/BasicCalendar';
 import { CalendarSVG } from '@/icons/svg';
+import BasicCalendar from '../Calendar/BasicCalendar';
 
 const Date = ({ selectedDates }: { selectedDates: Date[] }) => {
   const [isHovered, setIsHovered] = useState(false);

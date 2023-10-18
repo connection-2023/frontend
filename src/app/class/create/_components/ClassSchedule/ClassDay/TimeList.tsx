@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { classTimeState } from '@/recoil/ClassSchedule/atoms';
 import { ClearSVG } from '@/icons/svg';
+import { classTimeState } from '@/recoil/ClassSchedule/atoms';
 
 interface ITimeListProps {
   startTime: string;

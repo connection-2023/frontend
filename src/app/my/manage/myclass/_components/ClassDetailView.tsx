@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import Notice from '@/components/ClassNotice/Notice';
-import ClassTable from './detail/ClassTable';
-import ClassOverview from './detail/ClassOverview';
-import EditDayOff from './detail/EditDayOff';
 import { ArrowUpSVG, EditSVG, ArrowRightSVG } from '@/icons/svg';
+import ClassOverview from './detail/ClassOverview';
+import ClassTable from './detail/ClassTable';
+import EditDayOff from './detail/EditDayOff';
+import Notice from '@/components/ClassNotice/Notice';
 
 const ClassDetailView = ({ onGoBack }: { onGoBack: () => void }) => {
   // --- ClassListView에서 제목과 같은 데이터를 넘겨 받을지 서버에서 받을지 고민 ---

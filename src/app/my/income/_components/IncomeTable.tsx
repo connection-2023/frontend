@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { CSVLink } from 'react-csv';
 import {
   useReactTable,
   getCoreRowModel,
@@ -8,9 +6,11 @@ import {
   ColumnDef,
   flexRender,
 } from '@tanstack/react-table';
+import { useState } from 'react';
+import { CSVLink } from 'react-csv';
+import { dummyIncomeList } from '@/constants/dummy';
 import { ExcelSVG, BillSVG } from '@/icons/svg';
 import { ITableList } from '@/types/types';
-import { dummyIncomeList } from '@/constants/dummy';
 
 const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
   const columns: ColumnDef<ITableList, any>[] = [
@@ -250,6 +250,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
     </>
   );
 };
+
 export default IncomeTable;
 
 const getCellWidth = (index: number) => {

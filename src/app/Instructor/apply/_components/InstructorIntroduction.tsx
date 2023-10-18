@@ -6,12 +6,12 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
-import { InstructorApplyState } from '@/recoil/Create/atoms';
-import UploadImage from '@/components/UploadImage/UploadImage';
-import SelectLocation from '@/components/SelectLocation/SelectLocation';
-import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
-import CustomEditor from '@/components/TextArea/CustomEditor';
 import { SNS_ITEMS } from '@/constants/constants';
+import { InstructorApplyState } from '@/recoil/Create/atoms';
+import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
+import SelectLocation from '@/components/SelectLocation/SelectLocation';
+import CustomEditor from '@/components/TextArea/CustomEditor';
+import UploadImage from '@/components/UploadImage/UploadImage';
 
 const InstructorIntroduction = () => {
   const {

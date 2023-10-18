@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
+import { NoteSVG } from '@/icons/svg';
 import ReportModal from './ReportModal';
 import { IReportList } from '@/types/types';
-import { NoteSVG } from '@/icons/svg';
 
 const data: IReportList[] = [
   {

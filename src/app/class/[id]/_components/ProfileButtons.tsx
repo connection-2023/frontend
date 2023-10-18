@@ -1,6 +1,6 @@
 'use client';
-import { Button } from '@/components/Button/Button';
 import { ChatSVG } from '@/icons/svg';
+import { Button } from '@/components/Button/Button';
 
 const ProfileButtons = ({ id }: { id: number }) => {
   return (

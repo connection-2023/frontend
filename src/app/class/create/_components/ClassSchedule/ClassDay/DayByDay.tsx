@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
 import { eachDayOfInterval, getDay } from 'date-fns';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { FILTER_WEEK } from '@/constants/constants';
 import {
   classRangeState,
   classDatesState,
@@ -8,7 +9,6 @@ import {
 } from '@/recoil/ClassSchedule/atoms';
 import TimeList from './TimeList';
 import { DayTimeList } from '@/types/class';
-import { FILTER_WEEK } from '@/constants/constants';
 
 const DayByDay = () => {
   const [dayTimeLists, setDayTimeLists] = useState<DayTimeList[]>([

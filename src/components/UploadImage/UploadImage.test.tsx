@@ -1,8 +1,8 @@
-import { RecoilRoot } from 'recoil';
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import UploadImage from './UploadImage';
 import { ImgHTMLAttributes } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { RecoilRoot } from 'recoil';
+import UploadImage from './UploadImage';
 
 jest.mock('next/image', () => ({
   __esModule: true,
@@ -50,6 +50,7 @@ describe('UploadImage', () => {
     const { getByLabelText } = render(<Wrapper />);
 
     const inputElement = getByLabelText(/클래스 사진 업로드/i);
+
     Object.defineProperty(inputElement, 'files', {
       value: [file],
     });

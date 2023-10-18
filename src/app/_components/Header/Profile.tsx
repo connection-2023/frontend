@@ -1,11 +1,11 @@
 'use client';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import Link from 'next/link';
-import Image from 'next/image';
-import ProfileMenu from './ProfileMenu';
 import { dummyUserInfo } from '@/constants/dummy';
 import { ArrowDownSVG, ProfileSVG } from '@/icons/svg';
+import ProfileMenu from './ProfileMenu';
 
 const Profile = () => {
   const { profileImg } = dummyUserInfo;

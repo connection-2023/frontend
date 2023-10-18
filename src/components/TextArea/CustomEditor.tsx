@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
-import SunEditor from 'suneditor-react';
 import { Controller, useFormContext } from 'react-hook-form';
+import SunEditorCore from 'suneditor/src/lib/core';
+import SunEditor from 'suneditor-react';
 import {
   UploadBeforeHandler,
   UploadBeforeReturn,
 } from 'suneditor-react/dist/types/upload';
-import SunEditorCore from 'suneditor/src/lib/core';
 import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
 

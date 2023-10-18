@@ -1,9 +1,9 @@
-import { useState, useRef } from 'react';
-import { useClickAway } from 'react-use';
-import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { format, subMonths, isValid, parse } from 'date-fns';
-import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
+import { useState, useRef } from 'react';
+import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
+import { useClickAway } from 'react-use';
 import { BasicCalendarSVG } from '@/icons/svg';
+import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
 
 const IncomeRange = () => {
   const [fromValue, setFromValue] = useState<string | undefined>(undefined);

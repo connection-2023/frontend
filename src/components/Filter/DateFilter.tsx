@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import BasicCalendar from '../Calendar/BasicCalendar';
+import { useState, useEffect } from 'react';
 import FilterModal from './FilterModal';
+import BasicCalendar from '../Calendar/BasicCalendar';
 import { IFilterOptions } from '@/types/types';
 
 interface IDateFilterProps {

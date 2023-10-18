@@ -1,14 +1,13 @@
-import { ReactNode } from 'react';
 import Link from 'next/link';
-import CarouselTemplate from './_components/CarouselTemplate';
-import Banner from './_components/Banner';
-import InstructorPreview from '@/components/Preview/InstructorPreview';
-import ClassCard from '@/components/ClassCard/ClassCard';
-import SuggestionPreview from '@/components/Preview/SuggestionPreview';
 import { dummyInstructor, dummyMain } from '@/constants/dummy';
 import { SmallLogoSVG, MainPopularSVG, MainTopSVG } from '@/icons/svg';
+import Banner from './_components/Banner';
+import CarouselTemplate from './_components/CarouselTemplate';
+import ClassCard from '@/components/ClassCard/ClassCard';
+import InstructorPreview from '@/components/Preview/InstructorPreview';
+import SuggestionPreview from '@/components/Preview/SuggestionPreview';
 
-export default function Home() {
+const Home = () => {
   const { classList } = dummyInstructor;
   const { recentClass, suggestionClass, topInstructorList } = dummyMain;
   return (
@@ -83,10 +82,11 @@ export default function Home() {
       </section>
     </main>
   );
-}
+};
 
+export default Home;
 interface ISectionHeader {
-  icon: ReactNode;
+  icon: React.ReactNode;
   title: string;
   link: string;
 }

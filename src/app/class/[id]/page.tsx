@@ -1,13 +1,5 @@
-import Image from 'next/image';
 import { parse } from 'date-fns';
-import Profile from '@/components/Profile/Profile';
-import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
-import Nav from '@/components/Nav/Nav';
-import Like from '@/components/Like/Like';
-import Notice from '@/components/ClassNotice/Notice';
-import Apply from './_components/Apply';
-import ProfileButtons from './_components/ProfileButtons';
+import Image from 'next/image';
 import { CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass, dummyImgURL } from '@/constants/dummy';
 import {
@@ -17,9 +9,17 @@ import {
   LevelSVG,
   BasicCalendarSVG,
 } from '@/icons/svg';
+import Apply from './_components/Apply';
+import ProfileButtons from './_components/ProfileButtons';
 import Carousel from '@/components/Carousel/Carousel';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import Notice from '@/components/ClassNotice/Notice';
+import Like from '@/components/Like/Like';
 import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import Profile from '@/components/Profile/Profile';
+import Review from '@/components/Review/Review';
+import ReviewComment from '@/components/Review/ReviewComment';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';

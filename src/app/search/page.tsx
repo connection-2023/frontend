@@ -1,8 +1,8 @@
+import { dummySearchData } from '@/constants/dummy';
 import Close from './_components/Close';
+import ListItem from './_components/ListItem';
 import MyKeyword from './_components/MyKeyword';
 import SearchInput from './_components/SearchInput';
-import ListItem from './_components/ListItem';
-import { dummySearchData } from '@/constants/dummy';
 
 const SearchPage = async () => {
   return (

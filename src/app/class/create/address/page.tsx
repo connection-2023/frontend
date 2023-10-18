@@ -1,10 +1,10 @@
 'use client';
 import { FormEvent, useRef, useState } from 'react';
-import Pagination from '@/components/Pagination/Pagination';
+import { searchAddress } from '@/app/apis/address/searchAddress';
+import AddressDescription from './_components/AddressDescription';
 import SearchForm from './_components/SearchForm';
 import SearchResults from './_components/SearchResults';
-import AddressDescription from './_components/AddressDescription';
-import { searchAddress } from '@/app/apis/address/searchAddress';
+import Pagination from '@/components/Pagination/Pagination';
 import { AddressData } from '@/types/address';
 
 const Address = () => {

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +10,7 @@ import {
   LineElement,
   Filler,
 } from 'chart.js';
+import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { MoneySVG } from '@/icons/svg';
 import {

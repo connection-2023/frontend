@@ -1,7 +1,3 @@
-import { useState, useRef } from 'react';
-import { useClickAway } from 'react-use';
-import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
-import { format, isValid, parse } from 'date-fns';
 import {
   useReactTable,
   getCoreRowModel,
@@ -10,10 +6,14 @@ import {
   ColumnDef,
   flexRender,
 } from '@tanstack/react-table';
-import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
-import { BasicCalendarSVG, MoneySVG, DoubleRightSVG } from '@/icons/svg';
-import { IPaymentList } from '@/types/types';
+import { format, isValid, parse } from 'date-fns';
+import { useState, useRef } from 'react';
+import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
+import { useClickAway } from 'react-use';
 import { dummyPaymentList } from '@/constants/dummy';
+import { BasicCalendarSVG, MoneySVG, DoubleRightSVG } from '@/icons/svg';
+import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
+import { IPaymentList } from '@/types/types';
 
 const columns: ColumnDef<IPaymentList, any>[] = [
   {
@@ -55,6 +55,7 @@ const Payment = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
   useClickAway(ref, () => {
     setIsCalendarVisible(false);
   });

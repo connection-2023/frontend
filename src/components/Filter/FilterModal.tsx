@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Button } from '../Button/Button';
 import { ArrowUpSVG, ArrowDownSVG } from '@/icons/svg';
+import { Button } from '../Button/Button';
 
 interface IFilterModal {
   label: string;

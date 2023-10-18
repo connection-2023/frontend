@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { SearchSVG, ClearSVG } from '@/icons/svg';
 import { dummyUserInputSuggestion } from '@/constants/dummy';
+import { SearchSVG, ClearSVG } from '@/icons/svg';
 
 const SearchInput = () => {
   const [keyword, setKeyword] = useState('');

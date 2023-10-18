@@ -1,8 +1,8 @@
 'use client';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { ConnectionLogoSVG } from '@/icons/svg';
+import { usePathname } from 'next/navigation';
 import { NO_HEADER_FOOTER_PATHS } from '@/constants/constants';
+import { ConnectionLogoSVG } from '@/icons/svg';
 
 const Footer = () => {
   const pathname = usePathname();

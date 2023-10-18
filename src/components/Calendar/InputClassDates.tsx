@@ -1,11 +1,11 @@
+import { isSameDay } from 'date-fns';
+import { ko } from 'date-fns/esm/locale';
 import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
-import { ko } from 'date-fns/esm/locale';
-import { isSameDay } from 'date-fns';
 import { useRecoilState } from 'recoil';
+import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
 import { classDatesState } from '@/recoil/ClassSchedule/atoms';
 import { FormattedCaption } from './BasicCalendar';
-import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 
