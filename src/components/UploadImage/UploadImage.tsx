@@ -132,7 +132,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
               className="fill-sub-color2"
             />
             <p
-              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
+              className={`shadow-float mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg  font-bold
             ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
             `}
             >

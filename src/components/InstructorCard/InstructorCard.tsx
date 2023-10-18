@@ -38,7 +38,7 @@ const InstructorCard = ({
     <div
       onMouseOver={onFocus}
       onMouseLeave={offFocus}
-      className="relative ml-4 mt-4 h-60 w-[19.5rem] overflow-hidden rounded-md shadow-[1px_1px_4px_1px_rgba(0,0,0,0.25)]"
+      className="shadow-horizontal relative ml-4 mt-4 h-60 w-[19.5rem] overflow-hidden rounded-md"
     >
       <figcaption
         className={`pointer-events-none absolute z-10 flex h-10 w-full items-center justify-center ${

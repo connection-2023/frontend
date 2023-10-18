@@ -84,7 +84,7 @@ const Payment = () => {
 
   return (
     <div className="flex w-full max-w-[40rem] flex-col gap-7 text-sub-color3 ">
-      <section className="rounded-[0.31rem] shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
+      <section className="shadow-float rounded-[0.31rem]">
         <h1 className="flex h-11 items-center border-b border-solid border-sub-color2 px-4 text-base font-semibold">
           정산 기간 설정
         </h1>

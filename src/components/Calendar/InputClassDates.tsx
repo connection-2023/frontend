@@ -83,7 +83,7 @@ const InputClassDates = ({
       disabled={disabledDays}
       modifiers={scheduleModifiers}
       modifiersClassNames={inputModifiersClassNames}
-      className="flex w-fit rounded-[0.625rem] px-4 py-6 shadow-[1px_1px_3px_1px_rgba(0,0,0,0.25)]"
+      className="shadow-horizontal flex w-fit rounded-[0.625rem] px-4 py-6"
       classNames={{
         day_selected: 'specific-selected-day',
       }}

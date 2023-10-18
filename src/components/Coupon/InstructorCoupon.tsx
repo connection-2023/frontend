@@ -8,7 +8,7 @@ const InstructorCoupon = ({
   unit,
 }: couponGET) => {
   return (
-    <dl className="flex h-[5.625rem] w-60 flex-col justify-evenly gap-1 px-3 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]">
+    <dl className="shadow-float flex h-[5.625rem] w-60 flex-col justify-evenly gap-1 px-3">
       <dt className="text-xl font-bold text-main-color">
         {discount}
         {unit}

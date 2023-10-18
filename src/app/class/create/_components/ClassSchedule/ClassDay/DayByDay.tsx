@@ -209,7 +209,7 @@ const getButtonClass = (
   allSelectedDays: string[],
 ) => {
   const baseClass =
-    'mt-[0.88rem] flex h-10 w-full items-center justify-center rounded-[0.3125rem] text-lg font-semibold shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]';
+    'mt-[0.88rem] flex h-10 w-full items-center justify-center rounded-[0.3125rem] text-lg font-semibold shadow-float';
 
   const isDisabled =
     !isEveryListHasDay || FILTER_WEEK.length === allSelectedDays.length;

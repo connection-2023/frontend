@@ -19,7 +19,7 @@ const ManagementButton = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
       {isOpen && (
-        <div className="absolute -left-[4.5rem] top-[1.4rem] inline-flex w-24 flex-col rounded-md bg-white shadow-[0_1px_3px_1px_rgba(0,0,0,0.25)]">
+        <div className="shadow-float absolute -left-[4.5rem] top-[1.4rem] inline-flex w-24 flex-col rounded-md bg-white">
           <Link
             href="/"
             className="border-b border-solid border-sub-color4  px-3 py-2 text-center hover:bg-[#D8D8D8]"
