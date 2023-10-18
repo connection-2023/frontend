@@ -44,3 +44,16 @@ export const classCreateState = atom({
 
 //5
 //classPrice
+
+interface InstructorApplyState {
+  instructorGenre: string[];
+  instructorImg: { file: File; url: string }[];
+}
+
+export const InstructorApplyState = atom({
+  key: 'instructorApplyState',
+  default: <InstructorApplyState>{
+    instructorGenre: [],
+    instructorImg: [],
+  },
+});

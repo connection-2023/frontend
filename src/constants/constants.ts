@@ -1,3 +1,5 @@
+import { InstagramSVG, LinkSVG, YoutubeSVG } from '../../public/icons/svg';
+
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
 export const DAY_MODIFIERS = {
@@ -177,3 +179,24 @@ export const ADDRESS_DESCRIPTION = [
 ];
 
 export const COUPON_UNIT_LIST = ['원', '%'];
+
+export const SNS_ITEMS = [
+  {
+    icon: InstagramSVG,
+    title: '인스타그램',
+    placeholder: '인스타그램 아이디',
+    dataName: 'instructorInstagram',
+  },
+  {
+    icon: YoutubeSVG,
+    title: '유튜브',
+    placeholder: '유튜브 링크',
+    dataName: 'instructorYoutube',
+  },
+  {
+    icon: LinkSVG,
+    title: '홈페이지',
+    placeholder: '관련 홈페이지 링크',
+    dataName: 'instructorHomePage',
+  },
+];
