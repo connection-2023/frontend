@@ -1,9 +1,10 @@
 import '../styles/globals.css';
 import type { Metadata } from 'next';
+import { ToastContainer } from 'react-toastify';
 import { Inter } from 'next/font/google';
 import Footer from '@/app/_components/Footer';
 import Header from '@/components/Header.tsx/Header';
-
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -20,6 +21,18 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         {children}
         <Footer />
       </body>
