@@ -25,3 +25,19 @@ export const GET = async (request: NextRequest) => {
     },
   );
 };
+
+export const POST = async (request: Request) => {
+  const requestData = await request.json();
+
+  const serverResponse = await fetch(END_POINT + '/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData),
+  });
+
+  const responseData = await serverResponse.json();
+
+  return NextResponse.json(responseData);
+};
