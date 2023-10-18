@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { ImageSVG, AddImageSVG } from '@/../public/icons/svg';
 import { ISignUp } from '@/types/auth';
 
@@ -23,16 +24,14 @@ const ProfileSetup = ({
     const file = event.target.files && event.target.files[0];
 
     if (!file || !file.type.startsWith('image/')) {
-      // --- 에러 처리 : 토스트 메세지 추가 예정 ---
-      console.log('Please select an image file.');
+      toast.error('이미지를 선택해주세요!');
       return;
     }
     // 이미지 최대 크기 설정
     const fileSizeInMB = file.size / (1024 * 1024);
 
     if (fileSizeInMB > 3) {
-      // --- 에러 처리 : 토스트 메세지 추가 예정 ---
-      console.log('프로필 이미지 크기는 3MB를 넘을 수 없습니다!');
+      toast.error('프로필 이미지 크기는 3MB를 넘을 수 없습니다!');
       return;
     }
 
@@ -44,8 +43,8 @@ const ProfileSetup = ({
     };
 
     reader.onerror = (error) => {
-      // --- 에러 처리 : 토스트 메세지 추가 예정 ---
       console.log('FileReader error: ', error);
+      toast.error('프로필 이미지를 읽어올 수 없습니다 다시 시도해주세요!');
 
       if (inputRef.current) {
         inputRef.current.value = '';
@@ -56,7 +55,7 @@ const ProfileSetup = ({
   };
 
   return (
-    <section className="mt-6 flex flex-col items-center">
+    <section className="mt-2 flex flex-col items-center">
       <h1 className="mb-[0.31rem] text-2xl font-semibold">프로필 설정</h1>
       <p className="mb-6 text-sm">
         프로필 변경은 마이페이지에서 언제든지 가능합니다.

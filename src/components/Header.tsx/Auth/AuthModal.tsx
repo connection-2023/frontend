@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
+import { toast } from 'react-toastify';
 import AuthHome from './AuthHome';
 import SignUp from './SignUp';
 import { CloseSVG } from '@/../public/icons/svg';
@@ -16,6 +17,15 @@ const AuthModal = ({ isOpened, isClosed }: IAuthModal) => {
 
   const handleStatusCode = (code: number) => {
     setStatusCode(code);
+    if (code === 200) {
+      isClosed();
+    } else if (code === 400) {
+      toast.error('다른 방식으로 가입된 이메일 입니다');
+      // 모달을 닫을까...? 걍 둘까..
+    } else if (code !== 201) {
+      toast.error('오류가 발생했습니다. 잠시 후 다시 시도해주세요');
+      isClosed();
+    }
   };
 
   const handleUserInfo = (info: SignInResponse) => {
@@ -28,7 +38,6 @@ const AuthModal = ({ isOpened, isClosed }: IAuthModal) => {
   };
 
   return (
-    // --- 배경 누르면 자동으로 닫히게 해야하나..? ---
     <Modal isOpen={isOpened} ariaHideApp={false} style={authModalStyles}>
       <button>
         <CloseSVG
@@ -62,7 +71,7 @@ const authModalStyles: ReactModal.Styles = {
     maxWidth: '450px',
     zIndex: '10',
     boxSizing: 'border-box',
-    padding: '0 1.12rem',
+    padding: '1rem 1.12rem',
     borderRadius: '0.3125rem',
     position: 'absolute',
     top: '50%',
