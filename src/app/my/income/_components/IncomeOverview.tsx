@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,8 +10,9 @@ import {
   LineElement,
   Filler,
 } from 'chart.js';
+import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import { MoneySVG } from '../../../../../public/icons/svg';
+import { MoneySVG } from '@/icons/svg';
 import {
   options,
   dataByMonth,
@@ -41,8 +41,8 @@ const IncomeOverview = ({
 }) => {
   const [chartView, setChartView] = useState('month');
   return (
-    <section className="w-full max-w-[40rem] rounded-[0.31rem] shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
-      <div className="flex h-12 items-center justify-between border-b border-solid border-[#D9D9D9] p-4">
+    <section className="w-full max-w-[40rem] rounded-[0.31rem] shadow-float">
+      <div className="flex h-12 items-center justify-between border-b border-solid border-sub-color4 p-4">
         <div className="flex gap-[1.69rem] text-sm font-semibold text-sub-color3">
           <p>
             총

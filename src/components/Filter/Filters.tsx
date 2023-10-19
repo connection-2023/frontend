@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { CloseSVG } from '@/icons/svg';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
 import GenreFilter from './GenreFilter';
@@ -7,11 +8,10 @@ import LocationFilter from './LocationFilter';
 import PriceFilter from './PriceFilter';
 import ProgressMethodFilter from './ProgressMethodFilter';
 import ReviewFilter from './ReviewFilter';
-import { Button } from '../Button/Button';
-import { CloseSVG } from '../../../public/icons/svg';
-import { IFilterOptions } from '@/types/types';
-import { LocationFilterList } from '@/types/locationFilter';
 import { WARD_LIST } from '../../constants/administrativeDistrict';
+import { Button } from '../Button/Button';
+import { LocationFilterList } from '@/types/locationFilter';
+import { IFilterOptions } from '@/types/types';
 
 const INIT_FILTER_OPTIONS: IFilterOptions = {
   location: {},
@@ -97,6 +97,7 @@ const Filters = ({ type }: { type: string }) => {
         break;
       case '장르':
         updateFunction('genre', option);
+
         setOptions((prev) => [
           ...prev,
           ...(Array.isArray(option)

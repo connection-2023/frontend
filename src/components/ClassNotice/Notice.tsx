@@ -1,4 +1,4 @@
-import { NoticeSVG } from '@/../public/icons/svg';
+import { NoticeSVG } from '@/icons/svg';
 
 interface INoticeProps {
   content: React.ReactNode;

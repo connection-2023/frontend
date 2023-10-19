@@ -1,12 +1,12 @@
 'use client';
-import { ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
+import { ChangeEvent, useState } from 'react';
+import { dummyCouponList } from '@/constants/dummy';
+import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
-import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import { CouponData, couponGET } from '@/types/coupon';
-import { dummyCouponList } from '@/constants/dummy';
 
 const ClassPrice = () => {
   const [classPrice, setClassPrice] = useState(0);

@@ -1,19 +1,19 @@
 'use client';
-import { useState, useCallback } from 'react';
 import 'moment/locale/ko';
-import { Calendar, View, Views, SlotInfo } from 'react-big-calendar';
 import { isSameDay } from 'date-fns';
 import format from 'date-fns/format';
 import koLocale from 'date-fns/locale/ko';
-import ToolBar from './ToolBar';
-import eventList from './Event';
-import CalendarDetail from './CalendarDetail';
+import { useState, useCallback } from 'react';
+import { Calendar, View, Views, SlotInfo } from 'react-big-calendar';
 import {
   localizer,
   formats,
   eventStyleGetter,
   messages,
 } from '@/utils/fullCalendarUtils';
+import CalendarDetail from './CalendarDetail';
+import eventList from './Event';
+import ToolBar from './ToolBar';
 import { IFullCalendarEvent } from '@/types/types';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/fullCalendar.css';

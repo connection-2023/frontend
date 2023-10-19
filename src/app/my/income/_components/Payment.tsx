@@ -1,7 +1,3 @@
-import { useState, useRef } from 'react';
-import { useClickAway } from 'react-use';
-import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
-import { format, isValid, parse } from 'date-fns';
 import {
   useReactTable,
   getCoreRowModel,
@@ -10,14 +6,14 @@ import {
   ColumnDef,
   flexRender,
 } from '@tanstack/react-table';
-import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
-import {
-  BasicCalendarSVG,
-  MoneySVG,
-  DoubleRightSVG,
-} from '../../../../../public/icons/svg';
-import { IPaymentList } from '@/types/types';
+import { format, isValid, parse } from 'date-fns';
+import { useState, useRef } from 'react';
+import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
+import { useClickAway } from 'react-use';
 import { dummyPaymentList } from '@/constants/dummy';
+import { BasicCalendarSVG, MoneySVG, DoubleRightSVG } from '@/icons/svg';
+import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
+import { IPaymentList } from '@/types/types';
 
 const columns: ColumnDef<IPaymentList, any>[] = [
   {
@@ -59,6 +55,7 @@ const Payment = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
   useClickAway(ref, () => {
     setIsCalendarVisible(false);
   });
@@ -87,7 +84,7 @@ const Payment = () => {
 
   return (
     <div className="flex w-full max-w-[40rem] flex-col gap-7 text-sub-color3 ">
-      <section className="rounded-[0.31rem] shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
+      <section className="rounded-[0.31rem] shadow-float">
         <h1 className="flex h-11 items-center border-b border-solid border-sub-color2 px-4 text-base font-semibold">
           정산 기간 설정
         </h1>

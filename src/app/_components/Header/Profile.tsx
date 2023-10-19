@@ -1,11 +1,11 @@
 'use client';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import Link from 'next/link';
-import Image from 'next/image';
-import ProfileMenu from './ProfileMenu';
 import { dummyUserInfo } from '@/constants/dummy';
-import { ArrowDownSVG, ProfileSVG } from '../../../../public/icons/svg';
+import { ArrowDownSVG, ProfileSVG } from '@/icons/svg';
+import ProfileMenu from './ProfileMenu';
 
 const Profile = () => {
   const { profileImg } = dummyUserInfo;
@@ -25,7 +25,7 @@ const Profile = () => {
     <div className="relative w-[4.8125rem]" ref={menuRef}>
       <div
         onClick={userMenuHandler}
-        className="absolute -top-10 flex h-12 w-full cursor-pointer items-center justify-center rounded-[3.125rem] bg-white shadow-[1px_1px_4px_1px_rgba(0,0,0,0.25)]"
+        className="absolute -top-10 flex h-12 w-full cursor-pointer items-center justify-center rounded-[3.125rem] bg-white shadow-horizontal"
       >
         <div className="relative ml-1.5 h-[2.45rem] w-[2.45rem] overflow-hidden rounded-full">
           {profileImg ? (

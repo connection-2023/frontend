@@ -1,8 +1,7 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
-// import { getAuth } from '@/app/api/auth/route';
-import KakaoAuth from './KakaoAuth';
+import { ConnectionLogoSVG } from '@/icons/svg';
 import GoogleAuth from './GoogleAuth';
-import { ConnectionLogoSVG } from '@/../public/icons/svg';
+import KakaoAuth from './KakaoAuth';
 import { LoginResponse, SignInResponse } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;

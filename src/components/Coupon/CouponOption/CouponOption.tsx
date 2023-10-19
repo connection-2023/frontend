@@ -10,14 +10,14 @@ import {
 } from 'react-hook-form';
 import NoborderSelect from '@/app/class/create/_components/ClassPrice/NoborderSelect';
 import ClassRange from '@/app/class/create/_components/ClassSchedule/ClassRange/ClassRange';
+import { COUPON_UNIT_LIST } from '@/constants/constants';
+import CouponOptionSection from './CouponOptionSection';
+import DistributionCount from './DistributionCount';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import {
   CouponDuplicationTooltip,
   MaxDiscountTooltip,
 } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
-import DistributionCount from './DistributionCount';
-import CouponOptionSection from './CouponOptionSection';
-import { COUPON_UNIT_LIST } from '@/constants/constants';
 import { CouponData } from '@/types/coupon';
 
 const CouponOptionInputStyles =

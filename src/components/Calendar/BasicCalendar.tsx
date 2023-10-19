@@ -1,13 +1,13 @@
 'use client';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/esm/locale';
 import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps, useNavigation } from 'react-day-picker';
-import { ko } from 'date-fns/esm/locale';
-import { format } from 'date-fns';
+import { ArrowRightSVG } from '@/icons/svg';
 import {
   DAY_MODIFIERS,
   DAY_MODIFIERS_CLASSNAMES,
 } from '../../constants/constants';
-import { ArrowRightSVG } from '../../../public/icons/svg';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 

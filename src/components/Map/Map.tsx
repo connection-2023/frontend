@@ -1,6 +1,5 @@
 'use client';
 import '../../styles/mapInfowindow.css';
-import { DEFAULT_ADDRESS } from '../../constants/constants';
 import React, { useEffect, useState } from 'react';
 import {
   InfoWindow,
@@ -10,6 +9,7 @@ import {
   useNavermaps,
   Container as MapDiv,
 } from 'react-naver-maps';
+import { DEFAULT_ADDRESS } from '../../constants/constants';
 
 interface MapProps {
   address: string;

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { ImageSVG, AddImageSVG } from '@/../public/icons/svg';
+import { ImageSVG, AddImageSVG } from '@/icons/svg';
 
 const svgStyle =
   'opacity-0 transition-opacity duration-200 group-hover:opacity-100';
@@ -61,7 +61,7 @@ const ProfileSetup = ({ defaultProfile }: IProfileSetup) => {
       <label htmlFor="upload-button">
         <div
           className={`group mb-[2.37rem] mr-6 flex h-44 w-44 cursor-pointer items-center justify-center rounded-full ${
-            imgSrc ? `bg-none` : `bg-[#D9D9D9]`
+            imgSrc ? `bg-none` : `bg-sub-color4`
           }`}
           style={
             imgSrc

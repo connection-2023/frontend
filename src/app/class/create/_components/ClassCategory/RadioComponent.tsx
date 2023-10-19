@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { CheckMarkSVG } from '../../../../../../public/icons/svg';
+import { CheckMarkSVG } from '@/icons/svg';
 
 interface RadioComponentProps {
   title: string;

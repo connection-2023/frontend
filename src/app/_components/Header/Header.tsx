@@ -1,11 +1,11 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import HeaderMenu from './HeaderMenu';
-import UserProfileLinks from './UserProfileLinks';
 import {
   NON_STICKY_HEADER_PATHS,
   NO_HEADER_FOOTER_PATHS,
 } from '@/constants/constants';
+import HeaderMenu from './HeaderMenu';
+import UserProfileLinks from './UserProfileLinks';
 
 const Header = () => {
   const pathname = usePathname();

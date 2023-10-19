@@ -1,16 +1,16 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
-import { classCreateState } from '@/recoil/Create/atoms';
-import UploadImage from '@/components/UploadImage/UploadImage';
-import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
-import CategoryContainer from './ClassCategory/CategoryContainer';
-import RadioComponent from './ClassCategory/RadioComponent';
-import ClassSizeSelect from './ClassCategory/ClassSizeSelect';
 import {
   CATEGORY_DIFFICULTY_LEVEL,
   CATEGORY_LESSON_TYPE,
   CATEGORY_PROGRESS_METHOD,
 } from '@/constants/constants';
+import { classCreateState } from '@/recoil/Create/atoms';
+import CategoryContainer from './ClassCategory/CategoryContainer';
+import ClassSizeSelect from './ClassCategory/ClassSizeSelect';
+import RadioComponent from './ClassCategory/RadioComponent';
+import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
+import UploadImage from '@/components/UploadImage/UploadImage';
 
 const ClassCategory = () => {
   const {

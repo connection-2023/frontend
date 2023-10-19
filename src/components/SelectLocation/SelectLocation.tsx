@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import LocationListItem from './LocationListItem';
-import CityList from './CityList';
-import WardList from './WardList';
-import { toggleSelection } from '@/utils/toggleSelection';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
+import { toggleSelection } from '@/utils/toggleSelection';
+import CityList from './CityList';
+import LocationListItem from './LocationListItem';
+import WardList from './WardList';
 
 interface SelectLocationProps {
   onChange: (data: Record<string, string[]>) => void;

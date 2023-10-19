@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
+import { useState } from 'react';
 import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
 
 const EditDayOff = () => {
@@ -15,7 +15,7 @@ const EditDayOff = () => {
 
   return (
     <div className="mb-[1.38rem] flex w-full">
-      <div className="rounded-[0.63rem] px-3 py-2 shadow-[1px_1px_3px_1px_rgba(0,0,0,0.25)]">
+      <div className="rounded-[0.63rem] px-3 py-2 shadow-horizontal">
         <DayOffCalendar
           selectedDates={selectableDate}
           handleSelected={handleUnselected}

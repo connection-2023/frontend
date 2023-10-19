@@ -1,16 +1,16 @@
 'use client';
 import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { classCreateState } from '@/recoil/Create/atoms';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Button } from '@/components/Button/Button';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { useSetRecoilState } from 'recoil';
+import { ArrowRightSVG } from '@/icons/svg';
+import { classCreateState } from '@/recoil/Create/atoms';
 import ClassCategory from './_components/ClassCategory';
 import ClassExplanation from './_components/ClassExplanation';
-import ClassSchedule from './_components/ClassSchedule';
 import ClassLocation from './_components/ClassLocation';
 import ClassPrice from './_components/ClassPrice';
-import { ArrowRightSVG } from '@/../public/icons/svg';
+import ClassSchedule from './_components/ClassSchedule';
+import { Button } from '@/components/Button/Button';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [

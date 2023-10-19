@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import CropperModal from './CropperModal';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
+import CropperModal from './CropperModal';
 
 interface UploadImageProps {
   onChange?: (
@@ -50,6 +50,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
       if (images.length + filesArray.length > 5) {
         alert('최대 5개까지만 업로드 가능합니다.');
         const remainingSpace = 5 - images.length;
+
         setImages((prevImages) => [
           ...prevImages,
           ...filesArray.slice(0, remainingSpace),
@@ -97,6 +98,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
     const selectedIdxStr = event.dataTransfer.getData('selectedIdx');
     if (selectedIdxStr !== null) {
       const selectedIdx = Number(selectedIdxStr);
+
       setImages((prevImages) => {
         const newImages = [...prevImages];
         const [removed] = newImages.splice(selectedIdx, 1);
@@ -130,7 +132,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
               className="fill-sub-color2"
             />
             <p
-              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-float
             ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
             `}
             >
@@ -243,4 +245,5 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
     </div>
   );
 };
+
 export default UploadImage;

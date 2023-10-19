@@ -1,4 +1,4 @@
-import { InstagramSVG, LinkSVG, YoutubeSVG } from '../../public/icons/svg';
+import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 

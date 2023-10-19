@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { StarSVG } from '../../../public/icons/svg';
+import { StarSVG } from '@/icons/svg';
 
 interface IRatingProps {
   rate: number;

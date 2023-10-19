@@ -1,8 +1,8 @@
 import { useRecoilValue } from 'recoil';
+import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
 import { classCreateState } from '@/recoil/Create/atoms';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
-import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
 
 const ClassExplanation = () => {
   const classData = useRecoilValue(classCreateState);

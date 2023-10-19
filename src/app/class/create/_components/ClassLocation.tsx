@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import TextAreaSection from '@/components/TextArea/TextAreaSection';
-import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
+import { Controller, useFormContext } from 'react-hook-form';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
+import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
+import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import { LocationDiscussionTooltip } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
 import { Juso } from '@/types/address';
-import { Controller, useFormContext } from 'react-hook-form';
 
 const ClassLocation = () => {
   const [isLocationSet, setIsLocationSet] = useState(true);

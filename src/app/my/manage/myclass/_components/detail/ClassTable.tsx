@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { parse, isPast, isFuture } from 'date-fns';
+import { useState } from 'react';
 import { dummyClasstableData } from '@/constants/dummy';
 import EnrollmentModal from './EnrollmentModal';
 
-const TableCellStyle = 'border border-solid border-[#D9D9D9] py-2';
+const TableCellStyle = 'border border-solid border-sub-color4 py-2';
 
 const ClassTable = () => {
   const [showPastClasses, setShowPastClasses] = useState(false);

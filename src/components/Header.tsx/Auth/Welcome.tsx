@@ -1,5 +1,5 @@
-import { AuthWelcomeSVG } from '@/../public/icons/svg';
 import Link from 'next/link';
+import { AuthWelcomeSVG } from '@/icons/svg';
 
 interface IWelcome {
   nickname: string;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import UserInfoSetup from './UserInfoSetup';
 import ProfileSetup from './ProfileSetup';
+import UserInfoSetup from './UserInfoSetup';
 import Welcome from './Welcome';
 import { SignInResponse } from '@/types/auth';
 

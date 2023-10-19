@@ -1,8 +1,8 @@
-import { Juso } from '@/types/address';
-import { LocationSVG, SearchSVG } from '../../../../../../public/icons/svg';
-import Map from '@/components/Map/Map';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { LocationSVG, SearchSVG } from '@/icons/svg';
+import Map from '@/components/Map/Map';
+import { Juso } from '@/types/address';
 
 interface ConfirmedLocationProps {
   location: Juso | null;
@@ -30,7 +30,7 @@ const ConfirmedLocation = ({
     <>
       <button
         onClick={openPopup}
-        className={`flex h-8 w-80 items-center justify-center gap-1 rounded-md shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)] ${
+        className={`flex h-8 w-80 items-center justify-center gap-1 rounded-md shadow-float ${
           errors.classConfirmedLocation && 'animate-vibration text-main-color'
         }`}
       >

@@ -1,5 +1,5 @@
-import { QUILL_DEFAULT_VALUE } from '@/constants/constants';
 import { atom } from 'recoil';
+import { QUILL_DEFAULT_VALUE } from '@/constants/constants';
 
 interface ClassCreateState {
   classGenre: string[];

@@ -1,4 +1,4 @@
-import { BigArrowSVG } from '../../../../../public/icons/svg';
+import { BigArrowSVG } from '@/icons/svg';
 
 const data = {
   bank: '우리은행',
@@ -7,8 +7,8 @@ const data = {
 
 const AccountInfo = ({ view }: { view: 'main' | 'payment' }) => {
   return view === 'main' ? (
-    <aside className="mt-14 flex h-fit w-full max-w-xs flex-col rounded-[0.31rem] shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
-      <h2 className="flex h-12 w-full items-center justify-between border-b border-solid border-[#D9D9D9] pl-[1.19rem] text-lg font-semibold text-sub-color3">
+    <aside className="mt-14 flex h-fit w-full max-w-xs flex-col rounded-[0.31rem] shadow-float">
+      <h2 className="flex h-12 w-full items-center justify-between border-b border-solid border-sub-color4 pl-[1.19rem] text-lg font-semibold text-sub-color3">
         계좌 정보
         <BigArrowSVG width="34" height="34" className="fill-sub-color2" />
       </h2>
@@ -23,7 +23,7 @@ const AccountInfo = ({ view }: { view: 'main' | 'payment' }) => {
       </ul>
     </aside>
   ) : (
-    <aside className="mt-14 flex h-fit w-full max-w-xs flex-col rounded-[0.31rem] p-4 shadow-[0_1px_4px_0_rgba(0,0,0,0.25)]">
+    <aside className="mt-14 flex h-fit w-full max-w-xs flex-col rounded-[0.31rem] p-4 shadow-float">
       <h2 className="mb-2 text-sm font-semibold text-main-color">
         *정산금 지급 기준
       </h2>

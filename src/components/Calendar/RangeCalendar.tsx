@@ -1,12 +1,12 @@
+import { ko } from 'date-fns/esm/locale';
 import {
   DateRange,
   DayPicker,
   SelectRangeEventHandler,
   CaptionProps,
 } from 'react-day-picker';
-import { ko } from 'date-fns/esm/locale';
-import { FormattedCaption } from './BasicCalendar';
 import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
+import { FormattedCaption } from './BasicCalendar';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 

@@ -786,6 +786,7 @@ const dummyPaymentList: IPaymentList[] = [
     status: '입금완료',
   },
 ];
+
 export {
   dummyCouponList,
   dummyUserInfo,

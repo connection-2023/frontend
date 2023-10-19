@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDownSVG, CouponSVG } from '../../../../../../public/icons/svg';
+import { ArrowDownSVG, CouponSVG } from '@/icons/svg';
 
 interface CouponButtonProps {
   toggleCouponSection: () => void;

@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { dummyUserInfo } from '@/constants/dummy';
-import { TransFormSVG } from '../../../../public/icons/svg';
+import { TransFormSVG } from '@/icons/svg';
 
 const ProfileMenu = () => {
   const { name } = dummyUserInfo;
 
   return (
-    <ul className="absolute right-0 top-3 inline-flex w-[9.4375rem] select-none flex-col bg-white shadow-[0_1px_4px_1px_rgba(0,0,0,0.25)]">
+    <ul className="absolute right-0 top-3 inline-flex w-[9.4375rem] select-none flex-col bg-white shadow-vertical">
       <li className="my-4 ml-4 flex overflow-hidden whitespace-nowrap font-bold">
         <p className="max-w-[7rem] truncate">{name}</p>님
       </li>
@@ -28,7 +28,7 @@ const ProfileMenu = () => {
         </button>
       </li>
 
-      <li className="bg-gray-200 text-[#B6B6B6]">
+      <li className="bg-gray-200 text-sub-color2">
         <button className="h-full w-full py-2 pl-4 text-left">로그아웃</button>
       </li>
     </ul>

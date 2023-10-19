@@ -25,7 +25,7 @@ const ReportModal = ({ isOpen, closeModal }: ReportModalProps) => {
       ariaHideApp={false}
       shouldCloseOnOverlayClick={true}
     >
-      <ul className="flex w-full flex-col border-b border-solid border-[#D9D9D9] px-[1.13rem] py-4 text-sm font-semibold text-[#969696]">
+      <ul className="flex w-full flex-col border-b border-solid border-sub-color4 px-[1.13rem] py-4 text-sm font-semibold text-[#969696]">
         <li className="flex gap-3">
           <p className="w-20">신고한 회원</p>
           <span className="font-medium">{reportedUser}</span>
@@ -37,7 +37,7 @@ const ReportModal = ({ isOpen, closeModal }: ReportModalProps) => {
         <li className="mt-3 flex">{detail}</li>
       </ul>
 
-      <div className="mb-3 w-full border-b border-solid border-[#D9D9D9] px-[1.13rem] py-4 text-sm">
+      <div className="mb-3 w-full border-b border-solid border-sub-color4 px-[1.13rem] py-4 text-sm">
         <p className="mb-2 font-semibold text-sub-color3">관리자 답변</p>
         <p>{response}</p>
       </div>
