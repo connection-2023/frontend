@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { ToastContainer } from 'react-toastify';
 import { Inter } from 'next/font/google';
 import Footer from '@/app/_components/Footer';
-import Header from '@/components/Header.tsx/Header';
+import Header from '@/components/Header/Header';
 import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ['latin'] });
 

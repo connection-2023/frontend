@@ -63,7 +63,7 @@ const EventList = ({ event }: { event: IFullCalendarEvent }) => {
         background: color + transparency,
       }}
     >
-      <span className={`w-full max-w-[20rem]`} style={{ color: color }}>
+      <span className="w-full max-w-[20rem]" style={{ color: color }}>
         09:00-10:00 (2/6) <br /> 리아킴과 함께하는 댄스클래스
         {/* {event.title} */}
       </span>

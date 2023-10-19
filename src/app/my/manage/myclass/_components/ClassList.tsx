@@ -47,7 +47,7 @@ const ClassList = ({ status, date, title, count, onItemClick }: IClassList) => {
           <div
             className="h-full bg-sub-color1 text-right transition-all duration-1000 ease-in-out"
             style={{ width: `87%` }}
-          ></div>
+           />
         </div>
       </div>
     </li>
