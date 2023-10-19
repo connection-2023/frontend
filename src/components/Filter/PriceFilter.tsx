@@ -19,6 +19,7 @@ const PriceFilter = ({
     null,
   );
   const label = '가격';
+
   useEffect(() => {
     if (filterOption.length === 2) {
       setValues(filterOption);
@@ -88,7 +89,7 @@ const PriceFilter = ({
           />
         </div>
         <div className="mb-[0.5rem] flex items-center gap-[0.5rem]">
-          <div className="flexflex-col border-sub-color4 box-border rounded-md border border-solid px-[0.44rem] py-[0.31rem] text-sm font-bold text-sub-color3">
+          <div className="flexflex-col box-border rounded-md border border-solid border-sub-color4 px-[0.44rem] py-[0.31rem] text-sm font-bold text-sub-color3">
             <span className="text-[0.625rem]">최저</span>
             <div className="flex">
               <label>₩</label>
@@ -103,7 +104,7 @@ const PriceFilter = ({
             </div>
           </div>
           -
-          <div className="border-sub-color4 box-border flex flex-col rounded-md border border-solid px-[0.44rem] py-[0.31rem] text-sm font-bold text-sub-color3">
+          <div className="box-border flex flex-col rounded-md border border-solid border-sub-color4 px-[0.44rem] py-[0.31rem] text-sm font-bold text-sub-color3">
             <span className="text-[0.625rem]">최고</span>
             <div className="flex">
               <label>₩</label>

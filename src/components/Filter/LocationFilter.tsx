@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import FilterModal from './FilterModal';
-import { CityList, LocationFilterList } from '@/types/locationFilter';
 import { CITY_LIST, WARD_LIST } from '../../constants/administrativeDistrict';
+import { CityList, LocationFilterList } from '@/types/locationFilter';
+
 interface ILocationFilterProps {
   filterOption: {};
   updateFilterOption: (label: string, option: LocationFilterList) => void;

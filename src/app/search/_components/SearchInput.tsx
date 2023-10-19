@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { SearchSVG, ClearSVG } from '@/../public/icons/svg';
 import { dummyUserInputSuggestion } from '@/constants/dummy';
+import { SearchSVG, ClearSVG } from '@/icons/svg';
 
 const SearchInput = () => {
   const [keyword, setKeyword] = useState('');
@@ -16,7 +16,11 @@ const SearchInput = () => {
 
   return (
     <div className="border-box flex h-full w-full items-center">
-      <SearchSVG width={22} height={22} className="h-[22px] w-[22px]" />
+      <SearchSVG
+        width={22}
+        height={22}
+        className="h-[22px] w-[22px] fill-black"
+      />
       <input
         className="border-box relative mx-2 flex-1 text-lg font-bold focus:outline-none"
         value={keyword}

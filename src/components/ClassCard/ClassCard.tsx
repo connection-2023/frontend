@@ -1,12 +1,12 @@
 'use client';
+import Image from 'next/image';
+import { useState } from 'react';
 import Date from './Date';
 import { ClassCardType } from '../../types/class';
+import Carousel from '../Carousel/Carousel';
 import Like from '../Like/Like';
 import Profile from '../Profile/Profile';
 import Review from '../Review/Review';
-import Carousel from '../Carousel/Carousel';
-import { useState } from 'react';
-import Image from 'next/image';
 
 const ClassCard = (props: ClassCardType) => {
   const {
@@ -28,11 +28,11 @@ const ClassCard = (props: ClassCardType) => {
   const getStatusStyles = (status: string) => {
     switch (status) {
       case '모집중':
-        return 'border-[#B6B6B6] text-inherit';
+        return 'border-sub-color2 text-inherit';
       case '마감임박':
         return 'border-main-color text-main-color';
       case '마감':
-        return 'border-[#B6B6B6] text-[#B6B6B6]';
+        return 'border-sub-color2 text-sub-color2';
       default:
         return '';
     }
@@ -60,7 +60,7 @@ const ClassCard = (props: ClassCardType) => {
           />
         )}
       </div>
-      <div className="flex w-full flex-col text-[#414141]">
+      <div className="flex w-full flex-col text-sub-color3">
         <div className="mb-3 flex w-full items-center">
           <div
             className={`flex border-2 border-solid px-1.5 py-1.5 text-sm font-bold ${getStatusStyles(
@@ -102,7 +102,7 @@ const ClassCard = (props: ClassCardType) => {
           {review && <Review average={review.average} count={review.count} />}
         </div>
         <div className=" mt-auto flex w-full items-center justify-between">
-          <p className="text-lg font-bold text-[#414141] text-black">
+          <p className="text-lg font-bold text-black text-sub-color3">
             {price}원
           </p>
           <div className="text-sm">

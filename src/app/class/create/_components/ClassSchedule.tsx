@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { dummyClass } from '@/constants/dummy';
 import { classTimeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
-import { dummyClass } from '@/constants/dummy';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
 
 const ClassSchedule = () => {
   const [deadline, setDeadline] = useState<number | null>(null);

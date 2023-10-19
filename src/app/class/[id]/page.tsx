@@ -1,13 +1,5 @@
-import Image from 'next/image';
 import { parse } from 'date-fns';
-import Profile from '@/components/Profile/Profile';
-import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
-import Nav from '@/components/Nav/Nav';
-import Like from '@/components/Like/Like';
-import Notice from '@/components/ClassNotice/Notice';
-import Apply from './_components/Apply';
-import ProfileButtons from './_components/ProfileButtons';
+import Image from 'next/image';
 import { CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass, dummyImgURL } from '@/constants/dummy';
 import {
@@ -16,10 +8,18 @@ import {
   GroupSVG,
   LevelSVG,
   BasicCalendarSVG,
-} from '@/../public/icons/svg';
+} from '@/icons/svg';
+import Apply from './_components/Apply';
+import ProfileButtons from './_components/ProfileButtons';
 import Carousel from '@/components/Carousel/Carousel';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import Notice from '@/components/ClassNotice/Notice';
+import Like from '@/components/Like/Like';
 import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import Profile from '@/components/Profile/Profile';
+import Review from '@/components/Review/Review';
+import ReviewComment from '@/components/Review/ReviewComment';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
@@ -46,8 +46,8 @@ const ClassDetailPage = () => {
     studioName,
   } = dummyClass;
   return (
-    <main className="grid-auto-rows-2 border-box mt-[1.38rem]  grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
-      <section className="col-span-3 mb-4 flex flex-col items-center shadow-[0_1px_3px_0_rgba(0,0,0,0.25)]">
+    <main className="grid-auto-rows-2 border-box mx-auto  mt-[1.38rem] grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
+      <section className="col-span-3 mb-4 flex w-full flex-col items-center shadow-float">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
           {dummyImgURL.length > 2 ? (

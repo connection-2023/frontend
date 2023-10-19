@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import Sidebar from './_components/Sidebar';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Connection | 회원페이지',

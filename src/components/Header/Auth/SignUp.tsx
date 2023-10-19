@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
-import UserInfoSetup from './UserInfoSetup';
 import ProfileSetup from './ProfileSetup';
+import UserInfoSetup from './UserInfoSetup';
 import Welcome from './Welcome';
 import { SignInResponse, ISignUp } from '@/types/auth';
 
@@ -40,7 +40,7 @@ const SignUp = ({ userInfo, onClickPrev }: SignUpProps) => {
     <ProfileSetup
       key="profile"
       defaultProfile={null}
-      handleUserInfo={handleUserInput}
+      //handleUserInfo={handleUserInput}
     />,
   ];
 

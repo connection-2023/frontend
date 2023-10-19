@@ -18,4 +18,5 @@ const InstructorPreview = ({ image, nickname }: IPreviewProps) => {
     </div>
   );
 };
+
 export default InstructorPreview;

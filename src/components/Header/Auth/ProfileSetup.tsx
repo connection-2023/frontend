@@ -5,19 +5,16 @@ import { ISignUp } from '@/types/auth';
 
 interface ProfileSetupProps {
   defaultProfile: string | null;
-  handleUserInfo: (key: keyof ISignUp, value: string | File) => void;
+  //handleUserInfo: (key: keyof ISignUp, value: string | File) => void;
 }
 
-const ProfileSetup = ({
-  defaultProfile,
-  handleUserInfo,
-}: ProfileSetupProps) => {
+const ProfileSetup = ({ defaultProfile }: ProfileSetupProps) => {
   const [imgSrc, setImgSrc] = useState<string | null>(defaultProfile);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (imgFile) handleUserInfo('image', imgFile);
+    // if (imgFile) handleUserInfo('image', imgFile);
   }, [imgFile]);
 
   const handleImgUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,8 +69,8 @@ const ProfileSetup = ({
 
       <label htmlFor="upload-button">
         <div
-          className={`group mx-auto mb-[2.37rem] flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-full ${
-            imgSrc ? `bg-none` : `bg-[#D9D9D9]`
+          className={`group mb-[2.37rem] mr-6 flex h-44 w-44 cursor-pointer items-center justify-center rounded-full ${
+            imgSrc ? `bg-none` : `bg-sub-color4`
           }`}
           style={
             imgSrc

@@ -1,5 +1,5 @@
-import { atom } from 'recoil';
 import { DateRange } from 'react-day-picker';
+import { atom } from 'recoil';
 
 export const classRangeState = atom<DateRange | undefined>({
   key: 'classRanges',

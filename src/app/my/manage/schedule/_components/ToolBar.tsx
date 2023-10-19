@@ -1,5 +1,5 @@
 import { ToolbarProps, View } from 'react-big-calendar';
-import { ArrowRightSVG } from '@/../public/icons/svg';
+import { ArrowRightSVG } from '@/icons/svg';
 
 interface IToolbarProps extends Partial<ToolbarProps> {
   label: string;
@@ -20,7 +20,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
         onClick={() => onNavigate('PREV')}
         className={`origin-center rotate-180 ${NavButtonStyle}`}
       >
-        <ArrowRightSVG stroke="black" />
+        <ArrowRightSVG className="h-[5px] w-[9px] stroke-black" />
       </button>
       <button
         onClick={() => onNavigate('TODAY')}
@@ -32,7 +32,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
         onClick={() => onNavigate('NEXT')}
         className={`${NavButtonStyle}`}
       >
-        <ArrowRightSVG stroke="black" />
+        <ArrowRightSVG className="h-[5px] w-[9px] stroke-black" />
       </button>
     </div>
     <h2 className="text-lg font-bold text-sub-color3">{label}</h2>

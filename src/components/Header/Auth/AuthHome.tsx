@@ -1,9 +1,9 @@
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { cookies } from 'next/headers';
 import { toast } from 'react-toastify';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import KakaoAuth from './KakaoAuth';
+import { ConnectionLogoSVG } from '@/icons/svg';
 import GoogleAuth from './GoogleAuth';
-import { ConnectionLogoSVG } from '@/../public/icons/svg';
+import KakaoAuth from './KakaoAuth';
 import { LoginResponse, SignInResponse } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
@@ -85,6 +85,7 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
               onSuccess={googleOnSuccess}
               onError={(error) => {
                 console.error('구글 로그인 실패:', error);
+
                 toast.error(
                   'Google 로그인에 실패했습니다. 다시 시도해 주세요.',
                 );

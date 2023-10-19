@@ -1,12 +1,36 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 import CropperModal from './CropperModal';
 
-const UploadImage = () => {
-  const [images, setImages] = useState<{ file: File; url: string }[]>([]);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+interface UploadImageProps {
+  onChange?: (
+    data: {
+      file: File;
+      url: string;
+    }[],
+  ) => void;
+  defaultImg: {
+    file: File;
+    url: string;
+  }[];
+  errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+}
+
+const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
+  const [images, setImages] =
+    useState<{ file: File; url: string }[]>(defaultImg);
+  const [selectedImage, setSelectedImage] = useState<string | null>(
+    defaultImg?.[0]?.url || null,
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(images);
+    }
+  }, [images]);
 
   const handleOpenModal = () => {
     if (!isModalOpen) setIsModalOpen(true);
@@ -26,6 +50,7 @@ const UploadImage = () => {
       if (images.length + filesArray.length > 5) {
         alert('최대 5개까지만 업로드 가능합니다.');
         const remainingSpace = 5 - images.length;
+
         setImages((prevImages) => [
           ...prevImages,
           ...filesArray.slice(0, remainingSpace),
@@ -73,6 +98,7 @@ const UploadImage = () => {
     const selectedIdxStr = event.dataTransfer.getData('selectedIdx');
     if (selectedIdxStr !== null) {
       const selectedIdx = Number(selectedIdxStr);
+
       setImages((prevImages) => {
         const newImages = [...prevImages];
         const [removed] = newImages.splice(selectedIdx, 1);
@@ -105,7 +131,11 @@ const UploadImage = () => {
               height={107}
               className="fill-sub-color2"
             />
-            <p className="mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold text-sub-color2 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]">
+            <p
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-float
+            ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
+            `}
+            >
               클래스 사진 업로드
             </p>
             <p className="text-sm text-sub-color1">
@@ -215,4 +245,5 @@ const UploadImage = () => {
     </div>
   );
 };
+
 export default UploadImage;

@@ -1,13 +1,13 @@
 'use client';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/esm/locale';
 import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps, useNavigation } from 'react-day-picker';
-import { ko } from 'date-fns/esm/locale';
-import { format } from 'date-fns';
+import { ArrowRightSVG } from '@/icons/svg';
 import {
   DAY_MODIFIERS,
   DAY_MODIFIERS_CLASSNAMES,
 } from '../../constants/constants';
-import { ArrowRightSVG } from '../../../public/icons/svg';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 
@@ -71,7 +71,7 @@ export const FormattedCaption = ({ displayMonth }: CaptionProps) => {
         disabled={!previousMonth}
         onClick={() => previousMonth && goToMonth(previousMonth)}
       >
-        <ArrowRightSVG className="origin-center rotate-180 stroke-black" />
+        <ArrowRightSVG className="h-[5px] w-[9px] origin-center rotate-180 stroke-black" />
       </button>
       <p className="text-base font-bold">
         {format(displayMonth, 'yy년 MM월', { locale: ko })}
@@ -80,7 +80,7 @@ export const FormattedCaption = ({ displayMonth }: CaptionProps) => {
         disabled={!nextMonth}
         onClick={() => nextMonth && goToMonth(nextMonth)}
       >
-        <ArrowRightSVG stroke="black" />
+        <ArrowRightSVG className="h-[5px] w-[9px] stroke-black" />
       </button>
     </div>
   );

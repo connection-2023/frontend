@@ -6,6 +6,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+
   theme: {
     extend: {
       colors: {
@@ -15,8 +16,23 @@ const config: Config = {
         'sub-color3': 'var(--sub-color3)',
         'sub-color4': 'var(--sub-color4)',
       },
+      boxShadow: {
+        vertical: '0px 1px 4px 1px rgba(0, 0, 0, 0.25)',
+        horizontal: '1px 1px 4px 1px rgba(0, 0, 0, 0.25)',
+        float: '0px 1px 4px 0 rgba(0, 0, 0, 0.25)',
+      },
+      animation: {
+        vibration: 'vibration 0.1s 20',
+      },
+      keyframes: {
+        vibration: {
+          '0%': { transform: 'rotate(1deg)' },
+          '100%': { transform: 'rotate(-1deg)' },
+        },
+      },
     },
   },
+
   plugins: [
     require('tailwind-scrollbar')({ nocompatible: true }),
     function ({
@@ -39,4 +55,5 @@ const config: Config = {
     },
   ],
 };
+
 export default config;

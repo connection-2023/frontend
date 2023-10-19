@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/Button/Button';
 import ReservationItem from './apply/ReservationItem';
 import SelectBox from './apply/SelectBox';
+import { Button } from '@/components/Button/Button';
 import { DateTime } from '@/types/class';
 
 /* Mock data */
@@ -115,7 +115,7 @@ const Apply = ({ coupon, price }: IApplyProps) => {
       <div className="mb-4 mt-7 flex w-full justify-between">
         <span className="text-xl font-bold">1회</span>
         <span>
-          <s className="text-sub-color2 mr-[0.88rem] text-base font-bold">
+          <s className="mr-[0.88rem] text-base font-bold text-sub-color2">
             {price.origin}원
           </s>
           <span className="text-xl font-bold">{price.discount}원</span>

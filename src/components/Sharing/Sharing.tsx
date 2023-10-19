@@ -2,11 +2,6 @@
 import { usePathname } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
-import {
-  shareToKakaoTalk,
-  shareToFacebook,
-  shareToTwitter,
-} from '@/utils/socialShare';
 import { DOMAIN } from '@/constants/constants';
 import {
   KaKaoTalkSVG,
@@ -14,7 +9,12 @@ import {
   FacebookSVG,
   TwitterSVG,
   LinkSVG,
-} from '../../../public/icons/svg';
+} from '@/icons/svg';
+import {
+  shareToKakaoTalk,
+  shareToFacebook,
+  shareToTwitter,
+} from '@/utils/socialShare';
 
 interface ShareItem {
   label: string;
@@ -75,8 +75,8 @@ const Sharing = ({ mode, header }: ISharingProps) => {
       />
 
       {isOpened && (
-        <div className="absolute right-0 top-8 z-10 flex h-28 flex-col items-center rounded-[0.31rem] bg-white shadow-[0_1px_3px_1px_rgba(0,0,0,0.25)] ">
-          <p className="flex h-[35px] w-full items-center justify-center border-b border-solid border-[#D9D9D9] text-sm font-semibold ">
+        <div className="absolute right-0 top-8 z-10 flex h-28 flex-col items-center rounded-[0.31rem] bg-white shadow-float">
+          <p className="flex h-[35px] w-full items-center justify-center border-b border-solid border-sub-color4 text-sm font-semibold ">
             공유하기
           </p>
           <div className="border-box flex items-center gap-[1.41rem] px-4 py-[0.69rem]">

@@ -1,5 +1,5 @@
-import Carousel from '@/components/Carousel/Carousel';
 import Image from 'next/image';
+import Carousel from '@/components/Carousel/Carousel';
 
 const InstructorCarousel = ({ imgURL }: { imgURL: string[] }) => {
   return (

@@ -1,3 +1,5 @@
+import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
+
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
 export const DAY_MODIFIERS = {
@@ -78,7 +80,7 @@ export const FILTER_TIME = [
 export const ANNOUNCEMENT = `클래스 소개 페이지 가장 상단에 보여집니다.
 수업별 최소 시작 인원 등 수강생이 꼭 숙지해야할 사항을 입력해주세요.`;
 
-export const CLASS_OPERATION_PLAN = `수업 목표(무엇을 배울 수 있나요, 무엇을 얻을 수 있나요),
+export const CLASS_OPERATION_PLAN = `1. 수업 목표(무엇을 배울 수 있나요, 무엇을 얻을 수 있나요),
 2. 해당 클래스의 차별점(다른 댄스 수업과의 다른 점)
 3. 추천 대상(이런 능력을 갖추고 싶은 분이 들으면 좋아요, 어느 정도의 수준을 갖춘 사람에게 추천해요)
 
@@ -144,7 +146,7 @@ export const TOOLBAR = [
 ];
 
 export const QUILL_DEFAULT_VALUE = `
-<p><strong>클래스가 어떤 방식으로 진행되는지 알려주세요.</strong></p><p><span style="color: rgb(136, 136, 136);">상단 문구는 지우고 원하는 방식으로 커리큘럼을 작성해보세요 :) </span></p><p><br></p><p>일정</p><p><br></p><p>수업시간 </p><p><br></p><p>장소 </p><p><br></p><p>회차 별 수강계획 </p><p>ex) 어느 곡/파트를 진행할 예정인지 </p><p><br></p><p>1회차 </p><p><br></p><p>2회차 </p><p><br></p><p>3회차 </p><p><br></p><p>4회차 </p><p><br></p><p>5회차 </p>
+<p><strong>클래스가 어떤 방식으로 진행되는지 알려주세요.</strong></p><p><span style="color: rgb(136, 136, 136);">상단 문구는 지우고 원하는 방식으로 커리큘럼을 작성해보세요 :) </span></p><p><br></p><p>일정</p><p><br></p><p>수업시간 </p><p><br></p><p>장소 </p><p><br></p><p>회차 별 수강계획 </p><p>ex) 어느 곡/파트를 진행할 예정인지 </p><p><br></p><p>1회차 </p><p><br></p><p>2회차 </p><p><br></p><p>3회차
 `;
 
 export const NON_STICKY_HEADER_PATHS = [
@@ -153,4 +155,48 @@ export const NON_STICKY_HEADER_PATHS = [
   '/class/creat',
 ];
 
-export const NO_HEADER_PATHS = ['/search'];
+export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];
+
+export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
+
+export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
+
+export const CATEGORY_DIFFICULTY_LEVEL = ['초급(입문)', '중급', '상급'];
+
+export const ADDRESS_DESCRIPTION = [
+  {
+    term: '도로명 + 건물번호',
+    description: '예) 판교역로 235, 제주 첨단로 242',
+  },
+  {
+    term: '지역명(동/리) + 번지',
+    description: '예) 삼평동 681, 제주 영평동 2181',
+  },
+  {
+    term: '지역명(동/리) + 건물명(아파트명)',
+    description: '예) 분당 주공, 연수동 주공3차',
+  },
+];
+
+export const COUPON_UNIT_LIST = ['원', '%'];
+
+export const SNS_ITEMS = [
+  {
+    icon: InstagramSVG,
+    title: '인스타그램',
+    placeholder: '인스타그램 아이디',
+    dataName: 'instructorInstagram',
+  },
+  {
+    icon: YoutubeSVG,
+    title: '유튜브',
+    placeholder: '유튜브 링크',
+    dataName: 'instructorYoutube',
+  },
+  {
+    icon: LinkSVG,
+    title: '홈페이지',
+    placeholder: '관련 홈페이지 링크',
+    dataName: 'instructorHomePage',
+  },
+];

@@ -1,4 +1,6 @@
 import { ClassCardType } from '@/types/class';
+import { couponGET } from '@/types/coupon';
+import { IPaymentList } from '@/types/types';
 
 const dummyUserInputSuggestion = [
   '댄스',
@@ -500,6 +502,41 @@ const dummyUserInfo = {
   commentCount: 10,
 };
 
+const dummyCouponList: couponGET[] = [
+  {
+    discount: 1000,
+    unit: '원',
+    title: '초특가로 춤춰보자',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: true,
+  },
+  {
+    discount: 30,
+    unit: '%',
+    title: '지금까지',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: false,
+  },
+  {
+    discount: 30,
+    unit: '원',
+    title: '지금까지 이런 쿠폰원',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: false,
+  },
+  {
+    discount: 1000,
+    unit: '원',
+    title: '초특가로 춤춰보자',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    isStackable: true,
+  },
+];
+
 const dummyClasstableData = [
   {
     classInfo: '1회차',
@@ -673,7 +710,194 @@ const dummyClassList = [
   },
 ];
 
+const dummyIncomeList = [
+  {
+    id: 1,
+    name: '원밀리언의 리아킴과 함께하는 원밀리언의 리아킴과 함께하는 원밀리언의 리아킴과 함께하는',
+    purchase: '가최대일곱글자',
+    date: '23.10.29',
+    price: '10000',
+    status: '입금대기',
+  },
+  {
+    id: 2,
+    name: '가원밀리언의 리아킴과 함께하는',
+    purchase: '최대일곱글자최대일곱글자',
+    date: '23.10.19',
+    price: '1000',
+    status: '입금대기',
+  },
+  {
+    id: 3,
+    name: '나원밀리언의 리아킴과 함께하는',
+    purchase: '라최대일곱글자',
+    date: '23.10.09',
+    price: '200,000',
+    status: '입금대기',
+  },
+  {
+    id: 4,
+    name: '다원밀리언의 리아킴과 함께하는',
+    purchase: 'ㅋ최대일곱글자',
+    date: '23.10.29',
+    price: '120,000',
+    status: '입금대기',
+  },
+  {
+    id: 5,
+    name: '라원밀리언의 리아킴과 함께하는',
+    purchase: 'ㅂ최대일곱글자',
+    date: '23.10.29',
+    price: '110,000',
+    status: '결제완료',
+  },
+];
+
+const dummyPaymentList: IPaymentList[] = [
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '처리중',
+  },
+
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+  {
+    date: '23.10.13',
+    period: '23.08.10-23.09.10',
+    amount: '250,000',
+    status: '입금완료',
+  },
+];
+
+const dummyInterestedInstructor = [
+  {
+    name: '이바다',
+    address: '서울 마포구',
+    teamAffiliation: '원밀리언즈',
+    genres: ['방송댄스', '힙합', '방송댄스'],
+    imgURL: [
+      'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/dance-time-stylish-men-and-woman-dancing-hip-hop-in-bright-clothes-on-green-background-at-dance-hall-in-neon-light_155003-16406.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    ],
+    average: 3,
+    href: '/',
+  },
+  {
+    name: '이수근',
+    address: '서울 마포구',
+    teamAffiliation: '원밀리언즈',
+    genres: ['방송댄스', '힙합', '방송댄스'],
+    imgURL: [
+      'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/dance-time-stylish-men-and-woman-dancing-hip-hop-in-bright-clothes-on-green-background-at-dance-hall-in-neon-light_155003-16406.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    ],
+    average: 3,
+    href: '/',
+  },
+  {
+    name: '강호동',
+    address: '서울 마포구',
+    teamAffiliation: '원밀리언즈',
+    genres: ['방송댄스', '힙합', '방송댄스'],
+    imgURL: [
+      'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/dance-time-stylish-men-and-woman-dancing-hip-hop-in-bright-clothes-on-green-background-at-dance-hall-in-neon-light_155003-16406.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    ],
+    average: 3,
+    href: '/',
+  },
+  {
+    name: '강남',
+    address: '서울 마포구',
+    teamAffiliation: '원밀리언즈',
+    genres: ['방송댄스', '힙합', '방송댄스'],
+    imgURL: [
+      'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/dance-time-stylish-men-and-woman-dancing-hip-hop-in-bright-clothes-on-green-background-at-dance-hall-in-neon-light_155003-16406.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    ],
+    average: 3,
+    href: '/',
+  },
+  {
+    name: '이다',
+    address: '서울 마포구',
+    teamAffiliation: '원밀리언즈',
+    genres: ['방송댄스', '힙합', '방송댄스'],
+    imgURL: [
+      'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/dance-time-stylish-men-and-woman-dancing-hip-hop-in-bright-clothes-on-green-background-at-dance-hall-in-neon-light_155003-16406.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    ],
+    average: 3,
+    href: '/',
+  },
+  {
+    name: '바다',
+    address: '서울 마포구',
+    teamAffiliation: '원밀리언즈',
+    genres: ['방송댄스', '힙합', '방송댄스'],
+    imgURL: [
+      'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/dance-time-stylish-men-and-woman-dancing-hip-hop-in-bright-clothes-on-green-background-at-dance-hall-in-neon-light_155003-16406.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    ],
+    average: 3,
+    href: '/',
+  },
+  {
+    name: '면바다',
+    address: '서울 마포구',
+    teamAffiliation: '원밀리언즈',
+    genres: ['방송댄스', '힙합', '방송댄스'],
+    imgURL: [
+      'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/dance-time-stylish-men-and-woman-dancing-hip-hop-in-bright-clothes-on-green-background-at-dance-hall-in-neon-light_155003-16406.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/two-beautiful-slender-girls-doing-dancing-and-gymnastics-in-the-dance-hall_1157-13817.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+    ],
+    average: 3,
+    href: '/',
+  },
+];
+
 export {
+  dummyInterestedInstructor,
+  dummyCouponList,
   dummyUserInfo,
   dummyMain,
   dummyClass,
@@ -685,4 +909,6 @@ export {
   dummyEnrollmentPerson,
   dummyClassRoster,
   dummyClassList,
+  dummyIncomeList,
+  dummyPaymentList,
 };

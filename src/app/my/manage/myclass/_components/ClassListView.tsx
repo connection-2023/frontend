@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import ClassList from './ClassList';
 import { dummyClassList } from '@/constants/dummy';
+import ClassList from './ClassList';
 
 const ClassListView = ({ onItemClick }: { onItemClick: () => void }) => {
   const [activeTab, setActiveTab] = useState('progress');

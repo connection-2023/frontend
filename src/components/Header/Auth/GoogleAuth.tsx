@@ -1,5 +1,5 @@
 import { useGoogleLogin } from '@react-oauth/google';
-import { GoogleSVG } from '@/../public/icons/svg';
+import { GoogleSVG } from '@/icons/svg';
 
 interface GoogleAuthProps {
   onSuccess: (token: string) => void;

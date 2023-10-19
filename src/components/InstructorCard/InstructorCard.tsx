@@ -1,19 +1,10 @@
 'use client';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import ImagesViewer from './ImagesViewer';
-import Review from '../Review/Review';
 import Like from '../Like/Like';
-import Link from 'next/link';
-
-interface InstructorCardProps {
-  name: string;
-  address: string;
-  teamAffiliation: string;
-  genres: string[];
-  imgURL: string[];
-  average: number;
-  href: string;
-}
+import Review from '../Review/Review';
+import { Instructors } from '@/types/types';
 
 const InstructorCard = ({
   name,
@@ -23,7 +14,7 @@ const InstructorCard = ({
   average,
   teamAffiliation,
   href,
-}: InstructorCardProps) => {
+}: Instructors) => {
   const [focus, setFocus] = useState(false);
 
   const onFocus = () => {
@@ -38,7 +29,7 @@ const InstructorCard = ({
     <div
       onMouseOver={onFocus}
       onMouseLeave={offFocus}
-      className="relative ml-4 mt-4 h-60 w-[19.5rem] overflow-hidden rounded-md shadow-[1px_1px_4px_1px_rgba(0,0,0,0.25)]"
+      className="relative h-60 w-[19.5rem] overflow-hidden rounded-md shadow-horizontal"
     >
       <figcaption
         className={`pointer-events-none absolute z-10 flex h-10 w-full items-center justify-center ${

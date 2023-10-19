@@ -25,10 +25,45 @@ export interface IFullCalendarEvent {
   title: string;
 }
 
+export interface ErrorMessage {
+  key: string;
+  type: string;
+  message: string;
+  ref: any;
+}
+
+export interface ITableList {
+  id: number;
+  name: string;
+  purchase: string;
+  date: string;
+  price: string;
+  status: string;
+}
+
+export interface IPaymentList {
+  date: string;
+  period: string;
+  amount: string;
+  status: '입금완료' | '처리중';
+}
+
 export interface IReportList {
   id: number;
   target: string;
   reason: string;
   detail: string;
   status: '처리중' | '처리완료';
+}
+
+export type paymentType = 'card' | 'deposit' | null;
+
+export interface Instructors {
+  name: string;
+  address: string;
+  teamAffiliation: string;
+  genres: string[];
+  imgURL: string[];
+  average: number;
+  href: string;
 }
