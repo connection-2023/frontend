@@ -14,6 +14,11 @@ type FormValues = {
 
 const ClassApplyPage = () => {
   const [payment, setPayment] = useState<paymentType>(null);
+  const [contactValidation, setContactValidation] = useState(false);
+
+  const handleContactValidation = () => {
+    setContactValidation(true);
+  };
 
   const handlePayment = (type: paymentType) => {
     setPayment((prev) => (prev === type ? null : type));
@@ -78,9 +83,25 @@ const ClassApplyPage = () => {
                     {...register('contact', { required: true })}
                     className="h-7 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1"
                   />
-                  {/* --- 번호 변경하기 누르면 모달이 나오나..? --- */}
-                  <button className="cursor-pointer">인증하기</button>
+                  <button
+                    onClick={handleContactValidation}
+                    className="h-7 w-24 cursor-pointer whitespace-nowrap rounded-md border border-solid border-black bg-black font-medium text-white"
+                  >
+                    인증번호 발송
+                  </button>
                 </li>
+                {contactValidation && (
+                  <li className="flex items-center gap-4 px-[0.62rem] py-[0.31rem]">
+                    <span className="w-[64.03px]" />
+                    <input
+                      //  {...register('verification', { required: true })}
+                      className="h-7 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1"
+                    />
+                    <button className="h-7 w-24 cursor-pointer whitespace-nowrap rounded-md bg-sub-color2 font-medium text-white">
+                      인증하기
+                    </button>
+                  </li>
+                )}
               </ul>
             </section>
 
