@@ -30,7 +30,7 @@ const ConfirmedLocation = ({
     <>
       <button
         onClick={openPopup}
-        className={`shadow-float flex h-8 w-80 items-center justify-center gap-1 rounded-md ${
+        className={`flex h-8 w-80 items-center justify-center gap-1 rounded-md shadow-float ${
           errors.classConfirmedLocation && 'animate-vibration text-main-color'
         }`}
       >

@@ -115,7 +115,7 @@ const InstructorDetailPage = () => {
         </div>
       </section>
 
-      <hr className="shadow-float mb-2 h-[1px] w-screen bg-sub-color4" />
+      <hr className="mb-2 h-[1px] w-screen bg-sub-color4 shadow-float" />
 
       <div className="sticky -top-[1px] z-20 flex w-full items-center justify-center bg-white">
         <div className="w-1/2 min-w-[23rem] max-w-5xl">

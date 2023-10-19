@@ -20,7 +20,7 @@ const IncomeDataViewer = () => {
   };
 
   return (
-    <section className="shadow-float w-full max-w-[40rem] rounded-[0.31rem]">
+    <section className="w-full max-w-[40rem] rounded-[0.31rem] shadow-float">
       <div className="flex flex-col gap-[0.69rem] whitespace-nowrap border-b border-solid border-sub-color4 px-4 py-5">
         {/* 조회 기간 선택 */}
         <IncomeRange />

@@ -6,7 +6,7 @@ const ProfileMenu = () => {
   const { name } = dummyUserInfo;
 
   return (
-    <ul className="shadow-vertical absolute right-0 top-3 inline-flex w-[9.4375rem] select-none flex-col bg-white">
+    <ul className="absolute right-0 top-3 inline-flex w-[9.4375rem] select-none flex-col bg-white shadow-vertical">
       <li className="my-4 ml-4 flex overflow-hidden whitespace-nowrap font-bold">
         <p className="max-w-[7rem] truncate">{name}</p>님
       </li>

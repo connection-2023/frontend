@@ -47,7 +47,7 @@ const ClassDetailPage = () => {
   } = dummyClass;
   return (
     <main className="grid-auto-rows-2 border-box mx-auto  mt-[1.38rem] grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
-      <section className="shadow-float col-span-3 mb-4 flex w-full flex-col items-center">
+      <section className="col-span-3 mb-4 flex w-full flex-col items-center shadow-float">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
           {dummyImgURL.length > 2 ? (

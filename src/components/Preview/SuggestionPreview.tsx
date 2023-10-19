@@ -15,7 +15,7 @@ const SuggestionPreview = ({
   image,
 }: ISuggestionProps) => {
   return (
-    <div className="shadow-horizontal flex h-[105.91px] w-[19.5rem] gap-[0.69rem] rounded-[0.3125rem] bg-white p-[0.56rem]">
+    <div className="flex h-[105.91px] w-[19.5rem] gap-[0.69rem] rounded-[0.3125rem] bg-white p-[0.56rem] shadow-horizontal">
       <Image
         width={132}
         height={97}

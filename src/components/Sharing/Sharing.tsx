@@ -75,7 +75,7 @@ const Sharing = ({ mode, header }: ISharingProps) => {
       />
 
       {isOpened && (
-        <div className="shadow-float absolute right-0 top-8 z-10 flex h-28 flex-col items-center rounded-[0.31rem] bg-white">
+        <div className="absolute right-0 top-8 z-10 flex h-28 flex-col items-center rounded-[0.31rem] bg-white shadow-float">
           <p className="flex h-[35px] w-full items-center justify-center border-b border-solid border-sub-color4 text-sm font-semibold ">
             공유하기
           </p>

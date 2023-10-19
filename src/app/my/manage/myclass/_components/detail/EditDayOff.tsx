@@ -15,7 +15,7 @@ const EditDayOff = () => {
 
   return (
     <div className="mb-[1.38rem] flex w-full">
-      <div className="shadow-horizontal rounded-[0.63rem] px-3 py-2">
+      <div className="rounded-[0.63rem] px-3 py-2 shadow-horizontal">
         <DayOffCalendar
           selectedDates={selectableDate}
           handleSelected={handleUnselected}

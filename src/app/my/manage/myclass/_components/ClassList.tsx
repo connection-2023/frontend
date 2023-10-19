@@ -13,7 +13,7 @@ const ClassList = ({ status, date, title, count, onItemClick }: IClassList) => {
   return (
     <li
       onClick={onItemClick}
-      className="shadow-vertical flex w-full max-w-[40.0625rem] cursor-pointer flex-col whitespace-nowrap rounded-[0.3125rem] py-[0.88rem]"
+      className="flex w-full max-w-[40.0625rem] cursor-pointer flex-col whitespace-nowrap rounded-[0.3125rem] py-[0.88rem] shadow-vertical"
     >
       <div className="mb-[0.81rem] flex items-center px-[1.37rem]">
         <p className="mr-2 flex h-[1.5625rem] w-[3.5625rem] items-center justify-center border-2 border-solid border-sub-color2 text-sm font-bold text-sub-color3">

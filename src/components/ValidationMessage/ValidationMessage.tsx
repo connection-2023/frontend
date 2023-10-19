@@ -41,7 +41,7 @@ const ValidationMessage = ({
       shouldCloseOnOverlayClick={true}
       onRequestClose={closeModal}
     >
-      <div className="shadow-float relative flex h-36 w-full max-w-[31rem] flex-col justify-evenly rounded-md border border-solid border-black bg-white">
+      <div className="relative flex h-36 w-full max-w-[31rem] flex-col justify-evenly rounded-md border border-solid border-black bg-white shadow-float">
         <div className="flex flex-col items-center gap-2">
           <p className="text-sm font-semibold text-main-color">
             모두 작성하면 다음페이지로 넘어갈 수 있어요.
