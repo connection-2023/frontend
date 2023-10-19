@@ -57,6 +57,7 @@ export interface IReportList {
 }
 
 export type paymentType = 'card' | 'deposit' | null;
+
 export interface Instructors {
   name: string;
   address: string;

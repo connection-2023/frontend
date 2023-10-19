@@ -4,19 +4,16 @@ import { ISignUp } from '@/types/auth';
 
 interface ProfileSetupProps {
   defaultProfile: string | null;
-  handleUserInfo: (key: keyof ISignUp, value: string | File) => void;
+  //handleUserInfo: (key: keyof ISignUp, value: string | File) => void;
 }
 
-const ProfileSetup = ({
-  defaultProfile,
-  handleUserInfo,
-}: ProfileSetupProps) => {
+const ProfileSetup = ({ defaultProfile }: ProfileSetupProps) => {
   const [imgSrc, setImgSrc] = useState<string | null>(defaultProfile);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (imgFile) handleUserInfo('image', imgFile);
+    // if (imgFile) handleUserInfo('image', imgFile);
   }, [imgFile]);
 
   const handleImgUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

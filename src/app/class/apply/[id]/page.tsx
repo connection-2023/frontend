@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
-import TextAreaSection from '@/components/TextArea/TextAreaSection';
+import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
 import ApplyClassList from './_components/ApplyClassList';
 import ApplySidebar from './_components/ApplySidebar';
-import { MusicalNoteSVG, NoticeSVG } from '../../../../../public/icons/svg';
+import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import { paymentType } from '@/types/types';
 
 type FormValues = {
