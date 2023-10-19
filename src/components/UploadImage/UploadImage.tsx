@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
-import { ClearSVG, CropSVG, UploadImageSVG } from '@/icons/svg';
+import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 import CropperModal from './CropperModal';
 
 interface UploadImageProps {
@@ -132,7 +132,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
               className="fill-sub-color2"
             />
             <p
-              className={`shadow-float mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg  font-bold
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-float
             ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
             `}
             >

@@ -1,5 +1,5 @@
 'use client';
-import { HeartSVG } from '@/icons/svg';
+import { HeartSVG } from '@/../public/icons/svg';
 
 const Like = () => {
   return (

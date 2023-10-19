@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Arrow } from '@/icons/svg';
+import { Arrow } from '@/../public/icons/svg';
 
 /**
  * CarouselProps Interface
