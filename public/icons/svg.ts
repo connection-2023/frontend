@@ -36,6 +36,7 @@ import MainPopularSVG from './mainPopular.svg';
 import MainTopSVG from './mainTop.svg';
 import MapSVG from './map.svg';
 import MoneySVG from './money.svg';
+import MusicalNoteSVG from './musicalNote.svg';
 import NaverSVG from './naverIcon.svg';
 import NoteSVG from './note.svg';
 import NoticeSVG from './notice.svg';
@@ -114,4 +115,5 @@ export {
   DoubleRightSVG,
   BillSVG,
   NoteSVG,
+  MusicalNoteSVG,
 };

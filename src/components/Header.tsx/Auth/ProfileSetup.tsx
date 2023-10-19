@@ -1,33 +1,43 @@
-import { useState, useRef } from 'react';
-import { ImageSVG, AddImageSVG } from '@/icons/svg';
+import { useState, useRef, useEffect } from 'react';
+import { ImageSVG, AddImageSVG } from '@/../public/icons/svg';
+import { ISignUp } from '@/types/auth';
 
-const svgStyle =
-  'opacity-0 transition-opacity duration-200 group-hover:opacity-100';
-
-interface IProfileSetup {
+interface ProfileSetupProps {
   defaultProfile: string | null;
+  //handleUserInfo: (key: keyof ISignUp, value: string | File) => void;
 }
 
-const ProfileSetup = ({ defaultProfile }: IProfileSetup) => {
+const ProfileSetup = ({ defaultProfile }: ProfileSetupProps) => {
   const [imgSrc, setImgSrc] = useState<string | null>(defaultProfile);
+  const [imgFile, setImgFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // if (imgFile) handleUserInfo('image', imgFile);
+  }, [imgFile]);
 
   const handleImgUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
 
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
+    if (!file || !file.type.startsWith('image/')) {
       // --- 에러 처리 : 토스트 메세지 추가 예정 ---
       console.log('Please select an image file.');
       return;
     }
-    // --- 이미지 최대 크기 설정..? ---
+    // 이미지 최대 크기 설정
+    const fileSizeInMB = file.size / (1024 * 1024);
+
+    if (fileSizeInMB > 3) {
+      // --- 에러 처리 : 토스트 메세지 추가 예정 ---
+      console.log('프로필 이미지 크기는 3MB를 넘을 수 없습니다!');
+      return;
+    }
 
     const reader = new FileReader();
 
     reader.onloadend = () => {
       setImgSrc(reader.result as string);
+      setImgFile(file);
     };
 
     reader.onerror = (error) => {
@@ -70,20 +80,21 @@ const ProfileSetup = ({ defaultProfile }: IProfileSetup) => {
           }
         >
           {imgSrc ? (
-            <ImageSVG
-              width="70"
-              height="70"
-              role="img"
-              aria-label="프로필 이미지 업로드"
-              className={svgStyle}
-            />
+            <div className="flex h-full w-full items-center justify-center group-hover:bg-slate-600  group-hover:opacity-50">
+              <ImageSVG
+                width="70"
+                height="70"
+                role="img"
+                aria-label="프로필 이미지 업로드"
+                className="opacity-0 group-hover:opacity-100"
+              />
+            </div>
           ) : (
             <AddImageSVG
               width="59"
               height="59"
               role="img"
               aria-label="프로필 이미지 업로드"
-              className={svgStyle}
             />
           )}
         </div>
