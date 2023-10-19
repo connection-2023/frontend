@@ -1,8 +1,8 @@
 'use client';
-import Image from 'next/image';
 import { useState } from 'react';
 import { dummyInterestedInstructor } from '@/constants/dummy';
-import InstructorCard from '@/components/InstructorCard/InstructorCard';
+import BlockedInstructors from './_components/BlockedInstructors';
+import InterestedInstructors from './_components/InterestedInstructors';
 
 const InstructorPage = () => {
   const [isInterested, setIsInterested] = useState(true);
@@ -28,45 +28,17 @@ const InstructorPage = () => {
 
       {isInterested ? (
         <section className="flex flex-wrap gap-4">
-          {dummyInterestedInstructor.map((info, i) => (
-            <InstructorCard {...info} key={info.name + i} />
-          ))}
+          <InterestedInstructors instructors={dummyInterestedInstructor} />
         </section>
       ) : (
         <section className="flex flex-col gap-4">
           <h3 className="font-semibold">
             차단한 강사 ({dummyInterestedInstructor.length})명
           </h3>
-
           <div className="flex gap-4">
-            <ul className="flex w-5/12 min-w-[18.75rem] flex-col">
-              {dummyInterestedInstructor.map(({ name, imgURL }, index) => {
-                return (
-                  <li
-                    key={name + index}
-                    className="flex justify-between border-y border-solid border-sub-color4 py-4"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="relative h-[34px] w-[34px] rounded-full">
-                        <Image
-                          src={imgURL[0]}
-                          fill
-                          alt="사용자 프로필 이미지"
-                          style={{ objectFit: 'cover' }}
-                          className="rounded-full"
-                        />
-                      </div>
-                      {name}
-                    </div>
-                    <div className="flex gap-16 text-[#414141]">
-                      <button>차단취소</button>
-                      <button>신고</button>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="h-32 border border-solid border-sub-color4 bg-white shadow-float">
+            <BlockedInstructors instructors={dummyInterestedInstructor} />
+
+            <article className="h-32 border border-solid border-sub-color4 bg-white shadow-float">
               <dl className="m-4 flex flex-col gap-1 whitespace-nowrap text-sm">
                 <dt className="font-semibold text-main-color">
                   Q.강사를 차단하면 어떻게 되나요?
@@ -80,9 +52,8 @@ const InstructorPage = () => {
                   <br />할 수 없고 회원님께 채팅을 보낼 수 없습니다.
                 </dd>
               </dl>
-            </div>
+            </article>
           </div>
-          {/* Profile */}
         </section>
       )}
     </section>

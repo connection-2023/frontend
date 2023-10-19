@@ -4,16 +4,7 @@ import React, { useState } from 'react';
 import ImagesViewer from './ImagesViewer';
 import Like from '../Like/Like';
 import Review from '../Review/Review';
-
-interface InstructorCardProps {
-  name: string;
-  address: string;
-  teamAffiliation: string;
-  genres: string[];
-  imgURL: string[];
-  average: number;
-  href: string;
-}
+import { Instructors } from '@/types/types';
 
 const InstructorCard = ({
   name,
@@ -23,7 +14,7 @@ const InstructorCard = ({
   average,
   teamAffiliation,
   href,
-}: InstructorCardProps) => {
+}: Instructors) => {
   const [focus, setFocus] = useState(false);
 
   const onFocus = () => {
