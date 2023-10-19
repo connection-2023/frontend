@@ -85,7 +85,7 @@ const Sidebar = ({
       </div>
 
       <ul className="flex flex-col gap-6 text-lg font-semibold">
-        {links.map((link) => (
+        {userLinks.map((link) => (
           <li key={link.path} className={getTextColorClass(link.path)}>
             <Link href={link.path} className="flex items-center">
               {link.text}

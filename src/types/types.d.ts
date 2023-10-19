@@ -55,3 +55,13 @@ export interface IReportList {
   detail: string;
   status: '처리중' | '처리완료';
 }
+
+export interface Instructors {
+  name: string;
+  address: string;
+  teamAffiliation: string;
+  genres: string[];
+  imgURL: string[];
+  average: number;
+  href: string;
+}
