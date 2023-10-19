@@ -1,19 +1,47 @@
 'use client';
 import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import InstructorAuth from './_components/InstructorAuth';
+import InstructorIntroduction from './_components/InstructorIntroduction';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { ErrorMessage } from '@/types/types';
 
 const steps = [
   { title: '강사 인증', component: <InstructorAuth /> },
-  { title: '강사 소개', component: null },
+  { title: '강사 소개', component: <InstructorIntroduction /> },
 ];
 
 const ApplyPage = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
+  const formMethods = useForm({ shouldFocusError: false });
+
+  const { handleSubmit } = formMethods;
+
+  const onValid = (data: any) => {
+    //Validation 작성 하면서 data 타입 변경 요망
+
+    console.log(data);
+    nextStep();
+  };
+
+  const invalid = (data: Record<string, any>) => {
+    const invalidList = Object.entries(data).map(([key, value]) => ({
+      key,
+      ...value,
+    }));
+
+    setInvalidData(invalidList);
+  };
 
   const nextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
     }
+  };
+
+  const closeValidationMessage = () => {
+    setInvalidData(null);
   };
 
   return (
@@ -43,14 +71,21 @@ const ApplyPage = () => {
           </li>
         ))}
       </ul>
-      {steps[activeStep].component}
 
-      <button
-        onClick={nextStep}
-        className="h-9 w-full cursor-pointer rounded-[0.31rem] bg-sub-color2 text-white"
-      >
-        다음
-      </button>
+      <FormProvider {...formMethods}>
+        {steps[activeStep].component}
+      </FormProvider>
+
+      <form onSubmit={handleSubmit(onValid, invalid)} className="w-full">
+        <button className="h-9 w-full cursor-pointer rounded-[0.31rem] bg-sub-color2 text-white">
+          다음
+        </button>
+      </form>
+
+      <ValidationMessage
+        closeModal={closeValidationMessage}
+        invalidData={invalidData}
+      />
     </main>
   );
 };

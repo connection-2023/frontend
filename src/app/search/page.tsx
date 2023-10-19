@@ -1,8 +1,8 @@
+import { dummySearchData } from '@/constants/dummy';
 import Close from './_components/Close';
+import ListItem from './_components/ListItem';
 import MyKeyword from './_components/MyKeyword';
 import SearchInput from './_components/SearchInput';
-import ListItem from './_components/ListItem';
-import { dummySearchData } from '@/constants/dummy';
 
 const SearchPage = async () => {
   return (
@@ -29,7 +29,7 @@ const SearchPage = async () => {
         </Section>
 
         <Section title="인기 검색어">
-          <ul className="flex flex-col divide-y divide-solid divide-[#D9D9D9]">
+          <ul className="flex flex-col divide-y divide-solid divide-sub-color4">
             {dummySearchData.popular.map((keyword, i) => (
               <li
                 key={i}

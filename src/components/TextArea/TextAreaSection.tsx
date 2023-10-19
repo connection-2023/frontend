@@ -1,5 +1,5 @@
-import { useFormContext } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 interface TextAreaSectionProps {
   maxLength: number;

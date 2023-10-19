@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckMarkSVG } from '../../../public/icons/svg';
+import { CheckMarkSVG } from '@/icons/svg';
 import GenreListAddition from './GenreListAddition';
 
 interface GenreListProps {
@@ -16,7 +16,7 @@ const GenreList = ({
   addGenreList,
 }: GenreListProps) => {
   return (
-    <ul className="flex w-5/6 flex-wrap">
+    <ul className="flex w-full flex-wrap">
       {genreList.map((genre, index) => {
         const isSelected =
           genre !== '전체'

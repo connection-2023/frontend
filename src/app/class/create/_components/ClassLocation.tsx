@@ -1,24 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import TextAreaSection from '@/components/TextArea/TextAreaSection';
-import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
+import { Controller, useFormContext } from 'react-hook-form';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
+import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
+import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import { LocationDiscussionTooltip } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
 import { Juso } from '@/types/address';
-import { Controller, useFormContext } from 'react-hook-form';
 
 const ClassLocation = () => {
   const [isLocationSet, setIsLocationSet] = useState(true);
   const [location, setLocation] = useState<Juso | null>(null);
   const newWindowRef = useRef<Window | null>(null);
-  const [selectLocationList, setSelectLocationList] = useState<
-    Record<string, string[]>
-  >({});
   const { register, control } = useFormContext();
-
-  const onChangeSelectLocation = (locationList: Record<string, string[]>) => {
-    setSelectLocationList(locationList);
-  };
 
   const openPopup = () => {
     newWindowRef.current = window.open(
@@ -92,17 +85,10 @@ const ClassLocation = () => {
         <Controller
           name="classPendingLocation"
           control={control}
-          defaultValue={selectLocationList}
           rules={{
             required: '주소',
           }}
-          render={({ field }) => (
-            <PendingLocation
-              selectLocationList={selectLocationList}
-              onChangeSelectLocation={onChangeSelectLocation}
-              onChange={field.onChange}
-            />
-          )}
+          render={({ field }) => <PendingLocation onChange={field.onChange} />}
         />
       )}
 

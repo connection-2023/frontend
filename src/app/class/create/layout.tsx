@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import RecoilProvider from '@/recoil/RecoilProvider';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Connection | 클래스 작성',

@@ -1,9 +1,9 @@
 'use client';
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpSVG, ProfileSVG } from '../../../../public/icons/svg';
+import { useState } from 'react';
+import { ArrowUpSVG, ProfileSVG } from '@/icons/svg';
 
 interface ISidebar {
   profileImg?: string;
@@ -85,7 +85,7 @@ const Sidebar = ({
       </div>
 
       <ul className="flex flex-col gap-6 text-lg font-semibold">
-        {links.map((link) => (
+        {userLinks.map((link) => (
           <li key={link.path} className={getTextColorClass(link.path)}>
             <Link href={link.path} className="flex items-center">
               {link.text}

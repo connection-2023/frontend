@@ -73,8 +73,8 @@ const ProfileSetup = ({
 
       <label htmlFor="upload-button">
         <div
-          className={`group mx-auto mb-[2.37rem] flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-full ${
-            imgSrc ? `bg-none` : `bg-[#D9D9D9]`
+          className={`group mb-[2.37rem] mr-6 flex h-44 w-44 cursor-pointer items-center justify-center rounded-full ${
+            imgSrc ? `bg-none` : `bg-sub-color4`
           }`}
           style={
             imgSrc

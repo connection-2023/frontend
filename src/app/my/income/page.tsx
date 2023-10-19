@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
+import { ArrowUpSVG } from '@/icons/svg';
 import AccountInfo from './_components/AccountInfo';
-import IncomeOverview from './_components/IncomeOverview';
 import IncomeTable from './_components/IncomeDataViewer';
+import IncomeOverview from './_components/IncomeOverview';
 import Payment from './_components/Payment';
-import { ArrowUpSVG } from '../../../../public/icons/svg';
 
 const IncomePage = () => {
   const [view, setView] = useState<'main' | 'payment'>('main');

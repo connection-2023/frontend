@@ -1,34 +1,30 @@
 import Image from 'next/image';
-import { useRecoilValue } from 'recoil';
-import { classCreateState } from '@/recoil/Create/atoms';
-import { useFormContext } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import CropperModal from './CropperModal';
+import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
+import CropperModal from './CropperModal';
 
-const UploadImage = ({
-  onChange,
-}: {
+interface UploadImageProps {
   onChange?: (
     data: {
       file: File;
       url: string;
     }[],
   ) => void;
-}) => {
-  const classData = useRecoilValue(classCreateState);
+  defaultImg: {
+    file: File;
+    url: string;
+  }[];
+  errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+}
 
-  const [images, setImages] = useState<{ file: File; url: string }[]>(
-    classData.classImg,
-  );
+const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
+  const [images, setImages] =
+    useState<{ file: File; url: string }[]>(defaultImg);
   const [selectedImage, setSelectedImage] = useState<string | null>(
-    classData.classImg?.[0]?.url || null,
+    defaultImg?.[0]?.url || null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const {
-    formState: { errors },
-  } = useFormContext();
 
   useEffect(() => {
     if (onChange) {
@@ -54,6 +50,7 @@ const UploadImage = ({
       if (images.length + filesArray.length > 5) {
         alert('최대 5개까지만 업로드 가능합니다.');
         const remainingSpace = 5 - images.length;
+
         setImages((prevImages) => [
           ...prevImages,
           ...filesArray.slice(0, remainingSpace),
@@ -101,6 +98,7 @@ const UploadImage = ({
     const selectedIdxStr = event.dataTransfer.getData('selectedIdx');
     if (selectedIdxStr !== null) {
       const selectedIdx = Number(selectedIdxStr);
+
       setImages((prevImages) => {
         const newImages = [...prevImages];
         const [removed] = newImages.splice(selectedIdx, 1);
@@ -134,12 +132,8 @@ const UploadImage = ({
               className="fill-sub-color2"
             />
             <p
-              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]
-            ${
-              errors.classImg
-                ? 'animate-vibration text-main-color'
-                : 'text-sub-color2'
-            }
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-float
+            ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
             `}
             >
               클래스 사진 업로드
@@ -251,4 +245,5 @@ const UploadImage = ({
     </div>
   );
 };
+
 export default UploadImage;

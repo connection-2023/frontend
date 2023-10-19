@@ -22,7 +22,7 @@ const SchedulePage = () => {
   return (
     <section className="flex w-full flex-col">
       <FullCalendar />
-      <div className="mx-auto flex h-[6.88rem] w-full max-w-[60.67rem] flex-col border-b border-t border-solid border-[#D9D9D9] text-sub-color3">
+      <div className="mx-auto flex h-[6.88rem] w-full max-w-[60.67rem] flex-col border-b border-t border-solid border-sub-color4 text-sub-color3">
         <h1 className="my-[1.31rem] text-lg font-bold">이번달 진행 현황</h1>
         <ul className="flex w-full list-inside list-disc justify-between pr-[13.5rem] text-base font-semibold">
           {progrss.map((item, i) => (

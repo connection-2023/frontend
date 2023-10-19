@@ -1,5 +1,5 @@
 import ReactPaginate from 'react-paginate';
-import { ArrowRightSVG } from '../../../public/icons/svg';
+import { ArrowRightSVG } from '@/icons/svg';
 import '@/styles/pagination.css';
 
 interface PaginationProps {

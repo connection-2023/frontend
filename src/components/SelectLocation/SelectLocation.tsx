@@ -1,22 +1,19 @@
 import { useState } from 'react';
-import LocationListItem from './LocationListItem';
-import CityList from './CityList';
-import WardList from './WardList';
-import { toggleSelection } from '@/utils/toggleSelection';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
+import { toggleSelection } from '@/utils/toggleSelection';
+import CityList from './CityList';
+import LocationListItem from './LocationListItem';
+import WardList from './WardList';
 
 interface SelectLocationProps {
-  selectLocationList: Record<string, string[]>;
-  onChangeSelectLocation: (locationList: Record<string, string[]>) => void;
   onChange: (data: Record<string, string[]>) => void;
 }
 
-const SelectLocation = ({
-  selectLocationList,
-  onChangeSelectLocation,
-  onChange,
-}: SelectLocationProps) => {
+const SelectLocation = ({ onChange }: SelectLocationProps) => {
   const [focusLocation, setFocusLocation] = useState<string | null>(null);
+  const [selectLocationList, setSelectLocationList] = useState<
+    Record<string, string[]>
+  >({});
 
   const selectLocation = (
     ward: string,
@@ -37,7 +34,7 @@ const SelectLocation = ({
       isValueChecked,
     };
 
-    onChangeSelectLocation({
+    setSelectLocationList({
       ...selectLocationList,
       [targetLocation]: toggleSelection(toggleData),
     });
@@ -50,7 +47,7 @@ const SelectLocation = ({
 
   const focusLocationHandler = (city: string) => {
     if (city === '온라인') {
-      onChangeSelectLocation({
+      setSelectLocationList({
         ...selectLocationList,
         온라인: ['온라인'],
       });

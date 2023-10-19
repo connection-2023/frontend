@@ -1,14 +1,16 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import UploadImage from '@/components/UploadImage/UploadImage';
-import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
-import CategoryContainer from './ClassCategory/CategoryContainer';
-import RadioComponent from './ClassCategory/RadioComponent';
-import ClassSizeSelect from './ClassCategory/ClassSizeSelect';
+import { useRecoilValue } from 'recoil';
 import {
   CATEGORY_DIFFICULTY_LEVEL,
   CATEGORY_LESSON_TYPE,
   CATEGORY_PROGRESS_METHOD,
 } from '@/constants/constants';
+import { classCreateState } from '@/recoil/Create/atoms';
+import CategoryContainer from './ClassCategory/CategoryContainer';
+import ClassSizeSelect from './ClassCategory/ClassSizeSelect';
+import RadioComponent from './ClassCategory/RadioComponent';
+import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
+import UploadImage from '@/components/UploadImage/UploadImage';
 
 const ClassCategory = () => {
   const {
@@ -16,6 +18,8 @@ const ClassCategory = () => {
     control,
     formState: { errors },
   } = useFormContext();
+
+  const classData = useRecoilValue(classCreateState);
 
   return (
     <>
@@ -30,7 +34,13 @@ const ClassCategory = () => {
           rules={{
             required: '이미지',
           }}
-          render={({ field }) => <UploadImage onChange={field.onChange} />}
+          render={({ field }) => (
+            <UploadImage
+              onChange={field.onChange}
+              defaultImg={classData.classImg}
+              errors={errors.classImg}
+            />
+          )}
         />
       </section>
 
@@ -44,15 +54,32 @@ const ClassCategory = () => {
         })}
       />
 
-      <Controller
-        name="classGenre"
-        control={control}
-        defaultValue={[]}
-        rules={{
-          required: '장르',
-        }}
-        render={({ field }) => <GenreCheckboxGroup onChange={field.onChange} />}
-      />
+      <section className="flex">
+        <h2
+          id="classGenre"
+          className={`w-1/6 text-lg font-bold ${
+            errors.classGenre && 'animate-vibration text-main-color'
+          }`}
+        >
+          장르
+        </h2>
+        <div className="w-5/6">
+          <Controller
+            name="classGenre"
+            control={control}
+            defaultValue={[]}
+            rules={{
+              required: '장르',
+            }}
+            render={({ field }) => (
+              <GenreCheckboxGroup
+                onChange={field.onChange}
+                defaultValue={classData.classGenre}
+              />
+            )}
+          />
+        </div>
+      </section>
 
       <CategoryContainer id="classLessonType" title="인원">
         <RadioComponent

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 import { classCreateState } from '@/recoil/Create/atoms';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
@@ -103,6 +103,7 @@ const ClassSizeSelect = () => {
                 defaultValue={state.select}
                 onChange={(selected) => {
                   selectClassSize(selected, title, setState, state.option);
+
                   field.onChange({
                     ...getValues('classSize'),
                     [rangeType]: selected?.value,

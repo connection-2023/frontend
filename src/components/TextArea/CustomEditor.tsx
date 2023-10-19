@@ -1,30 +1,32 @@
 import { useRef, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import SunEditorCore from 'suneditor/src/lib/core';
 import SunEditor from 'suneditor-react';
 import {
   UploadBeforeHandler,
   UploadBeforeReturn,
 } from 'suneditor-react/dist/types/upload';
-import SunEditorCore from 'suneditor/src/lib/core';
 import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
-import { Controller, useFormContext } from 'react-hook-form';
 
 interface CustomEditorProps {
   title: string;
-  defaultValue: string;
   maxLength: number;
   minLength: number;
   height: string;
   dataName: string;
+  defaultValue?: string;
+  placeholder?: string;
 }
 
 const CustomEditor = ({
   title,
-  defaultValue,
   maxLength,
   minLength,
   height,
   dataName,
+  defaultValue = '',
+  placeholder = '',
 }: CustomEditorProps) => {
   const editor = useRef<SunEditorCore>();
   const editorText = useRef<string>(defaultValue);
@@ -69,22 +71,25 @@ const CustomEditor = ({
   };
 
   return (
-    <section className="relative z-0 flex flex-col">
-      <h2
-        id={dataName}
-        className={`mb-3 text-lg font-bold ${
-          errors[dataName] && 'animate-vibration text-main-color'
-        }`}
-      >
-        {title}
-      </h2>
+    <section className="relative z-0 flex w-full flex-col">
+      <label className="flex text-lg font-bold">
+        <h2
+          id={dataName}
+          className={`mb-3 ${
+            errors[dataName] && 'animate-vibration text-main-color'
+          }`}
+        >
+          {title}
+        </h2>
+        {minLength !== 0 && <p className="text-sub-color2">(필수)</p>}
+      </label>
 
       <Controller
         name={dataName}
         control={control}
         defaultValue={defaultValue}
         rules={{
-          required: title,
+          required: minLength !== 0 ? title : false,
           validate: validateMinLength,
         }}
         render={({ field }) => (
@@ -99,6 +104,7 @@ const CustomEditor = ({
             setOptions={{
               buttonList: TOOLBAR,
             }}
+            placeholder={placeholder}
             getSunEditorInstance={getSunEditorInstance}
             onImageUploadBefore={handleImageUploadBefore}
           />

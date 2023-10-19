@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
-import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import {
   classDatesState,
   classRangeState,
@@ -10,6 +9,7 @@ import {
   classDaysDatesState,
   classDayTypeState,
 } from '@/recoil/ClassSchedule/atoms';
+import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 

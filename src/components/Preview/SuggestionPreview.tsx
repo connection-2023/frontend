@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { StarSVG } from '../../../public/icons/svg';
+import { StarSVG } from '@/icons/svg';
 
 interface ISuggestionProps {
   title: string;
@@ -15,7 +15,7 @@ const SuggestionPreview = ({
   image,
 }: ISuggestionProps) => {
   return (
-    <div className="flex h-[105.91px] w-[19.5rem] gap-[0.69rem] rounded-[0.3125rem] bg-white p-[0.56rem] shadow-[1px_1px_4px_1px_rgba(0,0,0,0.25)]">
+    <div className="flex h-[105.91px] w-[19.5rem] gap-[0.69rem] rounded-[0.3125rem] bg-white p-[0.56rem] shadow-horizontal">
       <Image
         width={132}
         height={97}

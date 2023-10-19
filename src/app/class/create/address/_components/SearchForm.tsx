@@ -1,5 +1,5 @@
 import { FormEvent } from 'react';
-import { SearchSVG } from '../../../../../../public/icons/svg';
+import { SearchSVG } from '@/icons/svg';
 
 const SearchForm = ({
   addressSearch,

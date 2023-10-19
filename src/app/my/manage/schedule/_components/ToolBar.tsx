@@ -1,5 +1,5 @@
 import { ToolbarProps, View } from 'react-big-calendar';
-import { ArrowRightSVG } from '@/../public/icons/svg';
+import { ArrowRightSVG } from '@/icons/svg';
 
 interface IToolbarProps extends Partial<ToolbarProps> {
   label: string;

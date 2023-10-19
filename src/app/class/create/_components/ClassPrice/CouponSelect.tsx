@@ -1,4 +1,3 @@
-import { couponGET, SelectCoupon } from '@/types/coupon';
 import Select, {
   ActionMeta,
   components,
@@ -8,6 +7,7 @@ import Select, {
   SingleValue,
   StylesConfig,
 } from 'react-select';
+import { couponGET, SelectCoupon } from '@/types/coupon';
 
 interface CouponSelectProps {
   options: SelectCoupon[];

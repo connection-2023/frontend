@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import { CheckSVG } from '@/icons/svg';
 import {
   classRangeState,
   classTimeState,
@@ -7,7 +8,6 @@ import {
 } from '@/recoil/ClassSchedule/atoms';
 import DayByDay from './DayByDay';
 import SpecificDate from './SpecificDate';
-import { CheckSVG } from '@/../public/icons/svg';
 
 interface DayTypeComponents {
   [key: string]: JSX.Element;

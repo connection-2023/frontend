@@ -1,7 +1,16 @@
-import { RecoilRoot } from 'recoil';
-import { FormProvider, useForm } from 'react-hook-form';
 import { render, fireEvent, waitFor } from '@testing-library/react';
+import { ImgHTMLAttributes } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { RecoilRoot } from 'recoil';
 import UploadImage from './UploadImage';
+
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: (props: ImgHTMLAttributes<HTMLImageElement>) => {
+    // eslint-disable-next-line jsx-a11y/alt-text
+    return <img {...props} />;
+  },
+}));
 
 describe('UploadImage', () => {
   it('should render without crashing', () => {
@@ -10,7 +19,7 @@ describe('UploadImage', () => {
       return (
         <RecoilRoot>
           <FormProvider {...methods}>
-            <UploadImage />
+            <UploadImage defaultImg={[]} />
           </FormProvider>
         </RecoilRoot>
       );
@@ -25,14 +34,14 @@ describe('UploadImage', () => {
       type: 'image/png',
     });
 
-    global.URL.createObjectURL = jest.fn();
+    global.URL.createObjectURL = jest.fn(() => 'dummy url');
 
     const Wrapper = () => {
       const methods = useForm();
       return (
         <RecoilRoot>
           <FormProvider {...methods}>
-            <UploadImage />
+            <UploadImage defaultImg={[]} />
           </FormProvider>
         </RecoilRoot>
       );
@@ -41,6 +50,7 @@ describe('UploadImage', () => {
     const { getByLabelText } = render(<Wrapper />);
 
     const inputElement = getByLabelText(/클래스 사진 업로드/i);
+
     Object.defineProperty(inputElement, 'files', {
       value: [file],
     });

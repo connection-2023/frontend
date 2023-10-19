@@ -1,6 +1,6 @@
 'use client';
-import { CloseSVG } from '@/../public/icons/svg';
 import { useRouter } from 'next/navigation';
+import { CloseSVG } from '@/icons/svg';
 
 const Close = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const Close = () => {
       width={24}
       height={24}
       onClick={onClickClose}
-      className="stroke-sub-color2 cursor-pointer stroke-2"
+      className="cursor-pointer stroke-sub-color2 stroke-2"
     />
   );
 };

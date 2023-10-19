@@ -124,3 +124,15 @@ interface Kakao {
 export interface ExtendedWindow extends Window {
   Kakao: Kakao;
 }
+
+export interface ISignUp {
+  name: string;
+  nickname: string;
+  isProfileOpen?: boolean;
+  phoneNumber?: string;
+  gender?: number;
+  email: string;
+  provider: SignInResponse[signUpType];
+  authEmail: string;
+  image?: File | null;
+}

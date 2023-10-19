@@ -1,11 +1,11 @@
+import { isSameDay } from 'date-fns';
+import { ko } from 'date-fns/esm/locale';
 import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
-import { ko } from 'date-fns/esm/locale';
-import { isSameDay } from 'date-fns';
 import { useRecoilState } from 'recoil';
+import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
 import { classDatesState } from '@/recoil/ClassSchedule/atoms';
 import { FormattedCaption } from './BasicCalendar';
-import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 
@@ -83,7 +83,7 @@ const InputClassDates = ({
       disabled={disabledDays}
       modifiers={scheduleModifiers}
       modifiersClassNames={inputModifiersClassNames}
-      className="flex w-fit rounded-[0.625rem] px-4 py-6 shadow-[1px_1px_3px_1px_rgba(0,0,0,0.25)]"
+      className="flex w-fit rounded-[0.625rem] px-4 py-6 shadow-horizontal"
       classNames={{
         day_selected: 'specific-selected-day',
       }}

@@ -1,5 +1,5 @@
-import { QUILL_DEFAULT_VALUE } from '@/constants/constants';
 import { atom } from 'recoil';
+import { QUILL_DEFAULT_VALUE } from '@/constants/constants';
 
 interface ClassCreateState {
   classGenre: string[];
@@ -44,3 +44,16 @@ export const classCreateState = atom({
 
 //5
 //classPrice
+
+interface InstructorApplyState {
+  instructorGenre: string[];
+  instructorImg: { file: File; url: string }[];
+}
+
+export const InstructorApplyState = atom({
+  key: 'instructorApplyState',
+  default: <InstructorApplyState>{
+    instructorGenre: [],
+    instructorImg: [],
+  },
+});
