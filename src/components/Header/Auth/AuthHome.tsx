@@ -1,4 +1,6 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { cookies } from 'next/headers';
+import { toast } from 'react-toastify';
 import { ConnectionLogoSVG } from '@/icons/svg';
 import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
@@ -28,13 +30,16 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
 
       handleStatusCode(status);
 
-      if (status === 201) handleUserInfo(data);
+      if (status === 200) {
+        // 유저 로그인
+        // accessToken 저장하기
+        toast.success('로그인 성공!');
+      } else if (status === 201) {
+        handleUserInfo(data);
+      }
     } catch (error) {
       if (error instanceof Error) {
-        console.error(
-          'There has been a problem with your fetch operation: ',
-          error.message,
-        );
+        console.error('로그인 fetch 요청 오류: ', error.message);
       }
     }
   };
@@ -69,8 +74,8 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
         <KakaoAuth
           onSuccess={kakaoOnSuccess}
           onFail={(error) => {
-            console.error('로그인 실패:', error);
-            // --- 오류 토스트 메시지 표시 예정 ---
+            console.error('카카오 로그인 실패:', error);
+            toast.error('Kakao 로그인에 실패했습니다. 다시 시도해 주세요.');
           }}
           useLoginForm
         />
@@ -79,8 +84,11 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
             <GoogleAuth
               onSuccess={googleOnSuccess}
               onError={(error) => {
-                console.error('로그인 실패:', error);
-                // --- 오류 토스트 메시지 표시 예정 ---
+                console.error('구글 로그인 실패:', error);
+
+                toast.error(
+                  'Google 로그인에 실패했습니다. 다시 시도해 주세요.',
+                );
               }}
             />
           </GoogleOAuthProvider>
