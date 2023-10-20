@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Connection 회원페이지',
 };
 
-export default function InstructorLayout({
+export default async function MyPageLayout({
   children,
 }: {
   children: React.ReactNode;
