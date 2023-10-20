@@ -1,5 +1,5 @@
 import { ClassCardType } from '@/types/class';
-import { couponGET } from '@/types/coupon';
+import { couponGET, studentCouponGET } from '@/types/coupon';
 import { IPaymentList } from '@/types/types';
 
 const dummyUserInputSuggestion = [
@@ -908,7 +908,57 @@ const dummyCouponClassList = [
   '#-Kpop,Choreo-같이 춤 재밌고 쉽게,디테일까지',
 ];
 
+const dummyStudentCouponList: studentCouponGET[] = [
+  {
+    discount: 1000,
+    unit: '원',
+    title: '초특가로 춤춰보자',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    classList: [
+      {
+        className:
+          '팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅',
+        classLink: '/',
+      },
+      { className: '팅팅팅팅', classLink: '/' },
+      { className: '팅팅팅팅', classLink: '/' },
+    ],
+  },
+  {
+    discount: 30,
+    unit: '%',
+    title: '지금까지',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    classList: [{ className: '팅팅팅팅', classLink: '/' }],
+  },
+  {
+    discount: 30,
+    unit: '원',
+    title: '지금까지 이런 쿠폰원',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    classList: [
+      {
+        className:
+          '팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅팅',
+        classLink: '/',
+      },
+    ],
+  },
+  {
+    discount: 1000,
+    unit: '원',
+    title: '초특가로 춤춰보자',
+    startAt: '2023-01-19',
+    endAt: '2024-01-19',
+    classList: [{ className: '팅팅팅팅', classLink: '/' }],
+  },
+];
+
 export {
+  dummyStudentCouponList,
   dummyCouponClassList,
   dummyInterestedInstructor,
   dummyCouponList,

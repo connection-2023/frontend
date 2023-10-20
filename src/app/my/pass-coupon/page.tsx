@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { dummyStudentCouponList } from '@/constants/dummy';
 import useCouponStore from '@/store/my-coupon';
 import CoponNav from './_components/CoponNav';
+import StudentCoupon from '@/components/Coupon/StudentCoupon';
 
 const PassCouponPage = () => {
   const [isInterested, setIsInterested] = useState(true);
@@ -16,7 +18,7 @@ const PassCouponPage = () => {
   }, [selectedOption, sortOption, selectClassFilter]);
 
   return (
-    <section className="mx-auto flex w-full flex-col p-4 text-sm">
+    <main className="mx-auto flex w-full flex-col p-4 text-sm">
       <nav className="mb-2 flex gap-6">
         <button
           className={`flex text-2xl font-bold hover:text-black ${
@@ -37,7 +39,13 @@ const PassCouponPage = () => {
       </nav>
 
       <CoponNav />
-    </section>
+
+      <section className="flex flex-wrap gap-4">
+        {dummyStudentCouponList.map((coupon, index) => (
+          <StudentCoupon key={coupon.title + index} {...coupon} />
+        ))}
+      </section>
+    </main>
   );
 };
 

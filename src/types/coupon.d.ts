@@ -35,6 +35,20 @@ export interface couponGET {
   maxDiscountAmount?: number;
 }
 
+interface classOption {
+  className: string;
+  classLink: string;
+}
+
+export interface studentCouponGET {
+  discount: number;
+  unit: string;
+  title: string;
+  startAt: string;
+  endAt: string;
+  classList: classOption[];
+}
+
 export interface SelectCoupon {
   value: CouponGET;
   label: string;
