@@ -39,7 +39,7 @@ export const Button = ({
       className={`${commonStyle} text-sub-color2`}
     >
       {children}
-      <ResetSVG className="ml-1" />
+      <ResetSVG className="ml-1 fill-sub-color2" />
     </button>
   ) : (
     <button

@@ -206,3 +206,5 @@ export const MY_COUPON_FILTER_OPTIONS = [
   '사용한 쿠폰',
   '만료 쿠폰',
 ];
+
+export const MY_COUPON_CLASS_LIST_LENGTH = 10;
