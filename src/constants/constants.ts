@@ -200,3 +200,9 @@ export const SNS_ITEMS = [
     dataName: 'instructorHomePage',
   },
 ];
+
+export const MY_COUPON_FILTER_OPTIONS = [
+  '사용가능 쿠폰',
+  '사용한 쿠폰',
+  '만료 쿠폰',
+];

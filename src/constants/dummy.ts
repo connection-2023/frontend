@@ -895,7 +895,21 @@ const dummyInterestedInstructor = [
   },
 ];
 
+const dummyCouponClassList = [
+  '#원밀리언의 리아킴과 함께하는 댄스클래스',
+  '#초보자를 위한 K-pop입문',
+  '#스우파2 나띠 화사신곡 무조건 최애 안무 마스터',
+  '#유캔스튜디오 KPOP댄스 원데이클래스 1시간',
+  '#원데이,개인,그룹댄스 ++ 신나게 춤출 준비 되셨나요',
+  '#서울, 친절하고 쉽게 알려주는 라니쌤과 영상 남기기',
+  '#힙합 댄스, 스트릿 댄스 재밌게 알려드려요.',
+  '#1대1 kpop댄스 몸치 탈출하고 인생 춤 영상 GET',
+  '#댄서가 되고 싶은 왕초보는 여기로',
+  '#-Kpop,Choreo-같이 춤 재밌고 쉽게,디테일까지',
+];
+
 export {
+  dummyCouponClassList,
   dummyInterestedInstructor,
   dummyCouponList,
   dummyUserInfo,
