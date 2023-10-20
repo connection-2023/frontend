@@ -14,7 +14,9 @@ export const GET = async (request: NextRequest) => {
   if (!nickname) return;
 
   try {
-    const response = await fetch(END_POINT + '/users/' + encodeURI(nickname));
+    const response = await fetch(
+      END_POINT + '/nicknames/' + encodeURI(nickname),
+    );
 
     if (!response.ok && response.status !== 403) {
       // 서버에서 오류 상태 코드(403 제외)를 반환한 경우
