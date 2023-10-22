@@ -9,6 +9,6 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ['img.freepik.com'],
+    domains: ['img.freepik.com', 'connection-bucket.s3.amazonaws.com'],
   },
 };
