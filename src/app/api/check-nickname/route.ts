@@ -15,21 +15,21 @@ export const GET = async (request: NextRequest) => {
 
   try {
     const response = await fetch(
-      END_POINT + '/nicknames/' + encodeURI(nickname),
+      END_POINT + '/users/nicknames/' + encodeURI(nickname),
     );
 
     if (!response.ok && response.status !== 403) {
       // 서버에서 오류 상태 코드(403 제외)를 반환한 경우
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP 에러! status: ${response.status}`);
     }
 
     // HTTP 상태 코드만 포함하는 응답 객체
     return new NextResponse(null, { status: response.status });
   } catch (error) {
     // 네트워크 요청이 실패하거나 서버에서 오류 상태 코드(403 제외)를 반환한 경우
-    console.error('A network error has occurred.', error);
+    console.error('네트워크 요청 에러: ', error);
 
     // 에러 메시지와 오류 상태 코드 반환
-    return new NextResponse('A network error has occurred.', { status: 500 });
+    return new NextResponse('네트워크 요청 에러: ', { status: 500 });
   }
 };
