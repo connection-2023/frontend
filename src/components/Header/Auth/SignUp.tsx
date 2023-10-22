@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { getAuth, getMyProfile, postProfileImage } from '@/lib/apis/userApi';
+import useStore from '@/store';
 import ProfileSetup from './ProfileSetup';
 import UserInfoSetup from './UserInfoSetup';
 import Welcome from './Welcome';
@@ -9,9 +11,11 @@ import { SignInResponse, ISignUp } from '@/types/auth';
 interface SignUpProps {
   userInfo: SignInResponse;
   onClickPrev: () => void;
+  isClosed: () => void;
 }
 
-const SignUp = ({ userInfo, onClickPrev }: SignUpProps) => {
+const SignUp = ({ userInfo, onClickPrev, isClosed }: SignUpProps) => {
+  const store = useStore();
   const [userSignUp, setUserSignUp] = useState({
     name: '',
     nickname: '',
@@ -21,6 +25,11 @@ const SignUp = ({ userInfo, onClickPrev }: SignUpProps) => {
   });
   const [step, setStep] = useState(0);
   const [userNickname, setUserNickname] = useState('');
+  const [userImage, setUserImage] = useState<File | null>(null);
+
+  const handleUserImage = (uploadImage: File) => {
+    setUserImage(uploadImage);
+  };
 
   const handleUserInput = (key: keyof ISignUp, value: string | File) => {
     // 예외 처리 필요
@@ -40,15 +49,13 @@ const SignUp = ({ userInfo, onClickPrev }: SignUpProps) => {
     <ProfileSetup
       key="profile"
       defaultProfile={null}
-      //handleUserInfo={handleUserInput}
+      handleUserImage={handleUserImage}
     />,
   ];
 
   const handleNextStep = async () => {
     if (step === 0) {
-      console.log(userSignUp);
-
-      const res = await fetch('api/auth', {
+      const res = await fetch('api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,18 +65,44 @@ const SignUp = ({ userInfo, onClickPrev }: SignUpProps) => {
 
       const { statusCode, data } = await res.json();
 
-      if (statusCode === 201) {
+      if (statusCode === 201 && userInfo.idToken) {
         setUserNickname(data.createUser.nickname);
         setStep((prev) => prev + 1);
-        // 로그인 처리하기
+
+        const response = await getAuth(
+          userInfo.signUpType,
+          userInfo.idToken,
+        ).then((res) => getMyProfile(res.data.userAccessToken));
+        // 회원가입 후 로그인 처리
+        store.setAuthUser(response.data.myProfile);
       } else if (statusCode === 400) {
         toast.error('사용 중인 이메일입니다.');
       }
     } else if (step === 1) {
-      // 프로필 사진 등록하기로 가기
+      // 프로필 사진 등록하러 가기
       setStep((prev) => prev + 1);
     } else if (step === 2) {
       // 프로필 사진 전송
+      if (userImage) {
+        const response = await postProfileImage(userImage);
+
+        if (response.statusCode === 201) {
+          // 스토어에 이미지 사진 변경 후 모달 닫기
+          store.setAuthUserImage(response.data.newUserImage.imageUrl);
+          toast.success('이미지 사진이 성공적으로 변경되었습니다!');
+          isClosed();
+        } else if (response.statusCode === 400) {
+          toast.error(
+            <p>
+              기존에 설정된 프로필 사진이 있습니다.
+              <br /> 수정할 경우 마이페이지에서 진행해주세요!
+            </p>,
+          );
+          isClosed();
+        }
+      }
+    } else {
+      toast.error('사진을 업로드 해주세요!');
     }
   };
 
