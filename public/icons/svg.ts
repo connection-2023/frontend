@@ -8,6 +8,7 @@ import AuthWelcomeSVG from './authWelcome.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import BigArrowSVG from './bigArrow.svg';
 import BillSVG from './bill.svg';
+import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
 import CalendarDetailSVG from './calendarDetail.svg';
 import ChatSVG from './chat.svg';
@@ -19,6 +20,7 @@ import CommentSVG from './comment.svg';
 import ConnectionLogoSVG from './connectionLogo.svg';
 import CouponSVG from './coupon.svg';
 import CropSVG from './crop.svg';
+import DashboardSVG from './dashboard.svg';
 import DoubleRightSVG from './doubleRight.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
@@ -39,10 +41,12 @@ import MoneySVG from './money.svg';
 import MusicalNoteSVG from './musicalNote.svg';
 import NaverSVG from './naverIcon.svg';
 import NoteSVG from './note.svg';
+import NotFoundSVG from './notFound.svg';
 import NoticeSVG from './notice.svg';
 import OptionSVG from './option.svg';
 import PlusesSVG from './pluses.svg';
 import ProfileSVG from './profile_default.svg';
+import ReportSVG from './report.svg';
 import ResetSVG from './reset.svg';
 import SearchSVG from './search.svg';
 import ShareSVG from './share.svg';
@@ -58,6 +62,10 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  DashboardSVG,
+  NotFoundSVG,
+  ReportSVG,
+  BookmarkSVG,
   CouponSVG,
   TooltipSVG,
   PlusesSVG,
