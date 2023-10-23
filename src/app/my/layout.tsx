@@ -12,7 +12,7 @@ export default function InstructorLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="bg-admin-bg-color mx-auto grid w-full max-w-[1440px] grid-cols-[1fr,2fr,1fr] justify-between gap-x-4 px-16 pb-20">
+    <main className="mx-auto grid w-full max-w-[1440px] grid-cols-[1fr,2fr,1fr] justify-between gap-x-4 bg-admin-bg-color px-16 pb-20">
       <Sidebar />
       {children}
     </main>
