@@ -15,13 +15,13 @@ const MyClassPage = () => {
   };
 
   return (
-    <main className="mx-auto flex w-full flex-col p-4">
+    <>
       {activeView === 'list' ? (
         <ClassListView onItemClick={handleItemClick} />
       ) : (
         <ClassDetailView onGoBack={handleGoBack} />
       )}
-    </main>
+    </>
   );
 };
 
