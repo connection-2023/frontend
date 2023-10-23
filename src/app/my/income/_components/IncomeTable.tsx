@@ -90,7 +90,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
 
   return (
     <>
-      <div className="flex w-full items-center justify-between px-4 py-5 text-sm font-semibold">
+      <div className="flex w-full items-center justify-between py-5 text-sm font-semibold">
         <div className="flex gap-5 text-sub-color3">
           <p>총 {table.getPrePaginationRowModel().rows.length}건</p>
           <p>
