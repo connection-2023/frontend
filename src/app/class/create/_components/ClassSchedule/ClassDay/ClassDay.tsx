@@ -3,7 +3,7 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { CheckSVG } from '@/icons/svg';
 import {
   classRangeState,
-  classTimeState,
+  classDurationState,
   classDayTypeState,
 } from '@/recoil/ClassSchedule/atoms';
 import DayByDay from './DayByDay';
@@ -21,7 +21,7 @@ const dayTypeComponents: DayTypeComponents = {
 const ClassDay = () => {
   const [selectedType, setSelectedType] = useState('요일별로 달라요');
   const classRange = useRecoilValue(classRangeState);
-  const classTime = useRecoilValue(classTimeState);
+  const classTime = useRecoilValue(classDurationState);
   const [classType, setClassType] = useRecoilState(classDayTypeState);
   const isDisabled = !(classRange && classTime);
 

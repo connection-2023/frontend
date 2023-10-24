@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
 import { useRecoilState } from 'recoil';
 import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
-import { classDatesState } from '@/recoil/ClassSchedule/atoms';
+import { allClassDates } from '@/recoil/ClassSchedule/atoms';
 import { FormattedCaption } from './BasicCalendar';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
@@ -17,7 +17,7 @@ const InputClassDates = ({
   clickableDates,
   handleSelectedDate,
 }: IRangeCalendarProps) => {
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
+  const [classDates, setClassDates] = useRecoilState(allClassDates);
   const [selected, setSelected] = useState<Date | undefined>();
 
   useEffect(() => {
