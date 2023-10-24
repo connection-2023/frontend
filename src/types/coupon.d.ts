@@ -46,6 +46,7 @@ export interface studentCouponGET {
   title: string;
   startAt: string;
   endAt: string;
+  used?: boolean;
   classList: classOption[];
 }
 

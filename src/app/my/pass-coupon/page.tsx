@@ -38,13 +38,18 @@ const PassCouponPage = () => {
         </button>
       </nav>
 
-      <CoponNav />
-
-      <section className="flex flex-wrap gap-4">
-        {dummyStudentCouponList.map((coupon, index) => (
-          <StudentCoupon key={coupon.title + index} {...coupon} />
-        ))}
-      </section>
+      {isInterested ? (
+        <>
+          <CoponNav />
+          <section className="flex flex-wrap gap-4">
+            {dummyStudentCouponList.map((coupon, index) => (
+              <StudentCoupon key={coupon.title + index} {...coupon} />
+            ))}
+          </section>
+        </>
+      ) : (
+        <div>ss</div>
+      )}
     </main>
   );
 };
