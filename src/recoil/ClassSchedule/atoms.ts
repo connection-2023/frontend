@@ -6,14 +6,14 @@ export const classRangeState = atom<DateRange | undefined>({
   default: undefined,
 });
 
-export const classTimeState = atom<number | null>({
-  key: 'classTime',
+export const classDurationState = atom<number | null>({
+  key: 'classDuration',
   default: null,
 });
 
-export const classDatesState = atom<Date[] | null>({
-  key: 'classDates',
-  default: null,
+export const allClassDates = atom<Date[]>({
+  key: 'allClassDates',
+  default: [],
 });
 
 export const classDayTypeState = atom<string>({
@@ -21,7 +21,12 @@ export const classDayTypeState = atom<string>({
   default: '',
 });
 
-export const classDaysDatesState = atom<Date[] | null>({
-  key: 'classDaysDates',
+export const classScheduleState = atom<Date[]>({
+  key: 'classSchedule',
+  default: [],
+});
+
+export const classHolidayState = atom<Date[] | null>({
+  key: 'classHoilday',
   default: null,
 });
