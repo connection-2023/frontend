@@ -1,11 +1,11 @@
-import { eachDayOfInterval, getDay } from 'date-fns';
+import { eachDayOfInterval, getDay, compareAsc } from 'date-fns';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { FILTER_WEEK } from '@/constants/constants';
 import {
   classRangeState,
-  classDatesState,
-  classDaysDatesState,
+  allClassDates,
+  classScheduleState,
 } from '@/recoil/ClassSchedule/atoms';
 import TimeList from './TimeList';
 import { DayTimeList } from '@/types/class';
@@ -14,8 +14,8 @@ const DayByDay = () => {
   const [dayTimeLists, setDayTimeLists] = useState<DayTimeList[]>([
     { day: [], timeSlots: [''] },
   ]);
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const [selectedDates, setSelectedDates] = useRecoilState(classDaysDatesState);
+  const [totalDates, setTotalDates] = useRecoilState(allClassDates);
+  const [scheduleDates, setScheduleDates] = useRecoilState(classScheduleState);
   const classRange = useRecoilValue(classRangeState);
   const isEveryListHasDay = dayTimeLists.every((list) => list.day.length > 0);
   const allSelectedDays = useMemo(
@@ -24,23 +24,56 @@ const DayByDay = () => {
   );
 
   useEffect(() => {
-    if (!classRange || !classRange.from || !classRange.to) return;
+    if (
+      !classRange ||
+      !classRange.from ||
+      !classRange.to ||
+      dayTimeLists.some((list) => list.timeSlots.length === 0)
+    )
+      return;
+
     // 선택한 요일에 맞는 날짜만 필터링
     const allDatesInRange = eachDayOfInterval({
       start: classRange.from,
       end: classRange.to,
     });
 
-    const selectedDays = allDatesInRange.filter((date) => {
-      // 월요일=0, 화요일=1, ..., 일요일=7
-      const dayIndex = (getDay(date) + 6) % 7;
+    const selectedDays = allDatesInRange
+      .flatMap((date) => {
+        const dayIndex = (getDay(date) + 6) % 7;
+        const dayOfWeek = FILTER_WEEK[dayIndex];
 
-      return allSelectedDays.includes(FILTER_WEEK[dayIndex]);
-    });
+        if (!allSelectedDays.includes(dayOfWeek)) {
+          return [];
+        }
 
-    setClassDates(selectedDays);
-    setSelectedDates(selectedDays);
-  }, [allSelectedDays, classRange, setClassDates]);
+        const timeSlotsForDay = dayTimeLists.find((list) =>
+          list.day.includes(dayOfWeek),
+        )?.timeSlots;
+
+        if (!timeSlotsForDay) {
+          return [];
+        }
+
+        return timeSlotsForDay
+          .flatMap((timeSlot) => {
+            const [hours, minutes] = timeSlot.split(':').map(Number);
+            if (!hours || !minutes) {
+              return [];
+            }
+
+            const dateWithTime = new Date(date.getTime());
+            dateWithTime.setHours(hours, minutes);
+
+            return [dateWithTime];
+          })
+          .filter(Boolean);
+      })
+      .sort(compareAsc);
+
+    setTotalDates(selectedDays);
+    setScheduleDates(selectedDays);
+  }, [allSelectedDays, classRange, setTotalDates]);
 
   const toggleDaySelection = (day: string, listIndex: number) => {
     setDayTimeLists(
