@@ -1,20 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { ImageSVG, AddImageSVG } from '@/../public/icons/svg';
-import { ISignUp } from '@/types/auth';
 
 interface ProfileSetupProps {
   defaultProfile: string | null;
-  //handleUserInfo: (key: keyof ISignUp, value: string | File) => void;
+  handleUserImage: (image: File) => void;
 }
 
-const ProfileSetup = ({ defaultProfile }: ProfileSetupProps) => {
+const ProfileSetup = ({
+  defaultProfile,
+  handleUserImage,
+}: ProfileSetupProps) => {
   const [imgSrc, setImgSrc] = useState<string | null>(defaultProfile);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // if (imgFile) handleUserInfo('image', imgFile);
+    if (imgFile) handleUserImage(imgFile);
   }, [imgFile]);
 
   const handleImgUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +42,6 @@ const ProfileSetup = ({ defaultProfile }: ProfileSetupProps) => {
     };
 
     reader.onerror = (error) => {
-      console.log('FileReader error: ', error);
       toast.error('프로필 이미지를 읽어올 수 없습니다 다시 시도해주세요!');
 
       if (inputRef.current) {
@@ -60,7 +61,7 @@ const ProfileSetup = ({ defaultProfile }: ProfileSetupProps) => {
 
       <input
         type="file"
-        accept="img/*"
+        accept="image/*"
         onChange={handleImgUpload}
         className="hidden"
         id="upload-button"

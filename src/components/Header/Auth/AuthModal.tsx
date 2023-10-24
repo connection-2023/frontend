@@ -56,7 +56,11 @@ const AuthModal = ({ isOpened, isClosed }: IAuthModal) => {
       )}
 
       {statusCode === 201 && userInfo && (
-        <SignUp userInfo={userInfo} onClickPrev={onClickPrev} />
+        <SignUp
+          userInfo={userInfo}
+          onClickPrev={onClickPrev}
+          isClosed={isClosed}
+        />
       )}
     </Modal>
   );

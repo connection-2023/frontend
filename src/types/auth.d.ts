@@ -76,6 +76,7 @@ interface LogoutResponse {
 export interface SignInResponse {
   authEmail: string;
   signUpType: 'NAVER' | 'KAKAO' | 'GOOGLE';
+  idToken?: string;
 }
 
 export interface AuthResponse {
@@ -135,4 +136,14 @@ export interface ISignUp {
   provider: SignInResponse[signUpType];
   authEmail: string;
   image?: File | null;
+}
+
+export interface userProfile {
+  id: string;
+  nickname: string;
+  email: string;
+  userProfileImage: { imageUrl: string | null };
+  verified: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
