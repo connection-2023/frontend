@@ -1,15 +1,14 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { dummyUserInfo } from '@/constants/dummy';
 import { ArrowDownSVG, ProfileSVG } from '@/icons/svg';
+import useSession from '@/lib/useSession';
 import ProfileMenu from './ProfileMenu';
 
-const Profile = () => {
-  const { profileImg } = dummyUserInfo;
-
+const Profile = ({ handleLogout }: { handleLogout: () => void }) => {
+  const user = useSession();
+  const profileImg = user?.userProfileImage?.imageUrl || null;
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -30,7 +29,7 @@ const Profile = () => {
         <div className="relative ml-1.5 h-[2.45rem] w-[2.45rem] overflow-hidden rounded-full">
           {profileImg ? (
             <Image
-              src="https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg"
+              src={profileImg}
               fill
               alt="사용자 프로필 이미지"
               style={{ objectFit: 'cover' }}
@@ -46,14 +45,9 @@ const Profile = () => {
         />
       </div>
 
-      {isProfileMenu && <ProfileMenu />}
+      {isProfileMenu && <ProfileMenu handleLogout={handleLogout} />}
     </div>
   );
 };
 
 export default Profile;
-{
-  /* <div className="text-lg">
-  <Link href="signin">로그인</Link>/<Link href="signup">회원가입</Link>
-</div> */
-} // 로그인 비활성화

@@ -1,7 +1,8 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { cookies } from 'next/headers';
 import { toast } from 'react-toastify';
 import { ConnectionLogoSVG } from '@/icons/svg';
+import { getAuth, getMyProfile } from '@/lib/apis/userApi';
+import useStore from '@/store';
 import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
 import { LoginResponse, SignInResponse } from '@/types/auth';
@@ -14,43 +15,40 @@ interface IAuthHome {
 }
 
 const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
-  const getAuth = async (
-    social: 'naver' | 'kakao' | 'google',
-    idToken: string,
-  ) => {
-    const URL = {
-      kakao: `api/auth?social=kakao&token=${encodeURIComponent(idToken)}`,
-      google: `api/auth?social=google&token=${encodeURIComponent(idToken)}`,
-      naver: `api/auth?social=naver&token=${encodeURIComponent(idToken)}`,
-    };
+  const store = useStore();
 
-    try {
-      const res = await fetch(URL[social]);
-      const { status, data } = await res.json();
+  // --- 로그인 로직 하나로 합치기 ---
+  const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {
+    const idToken = resData.response.access_token;
+    const response = await getAuth('KAKAO', idToken);
+    const { status, data } = response;
 
-      handleStatusCode(status);
+    handleStatusCode(status);
 
-      if (status === 200) {
-        // 유저 로그인
-        // accessToken 저장하기
-        toast.success('로그인 성공!');
-      } else if (status === 201) {
-        handleUserInfo(data);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('로그인 fetch 요청 오류: ', error.message);
-      }
+    if (status === 200) {
+      const profileRes = await getMyProfile(data.userAccessToken);
+
+      store.setAuthUser(profileRes.data.myProfile);
+      toast.success('로그인 성공!');
+    } else if (status === 201) {
+      handleUserInfo({ ...data, idToken });
     }
   };
 
-  const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {
-    const idToken = resData.response.access_token;
-    getAuth('kakao', idToken);
-  };
-
   const googleOnSuccess = async (idToken: string) => {
-    getAuth('google', idToken);
+    const response = await getAuth('GOOGLE', idToken);
+    const { status, data } = response;
+
+    handleStatusCode(status);
+
+    if (status === 200) {
+      const profileRes = await getMyProfile(data.userAccessToken);
+
+      store.setAuthUser(profileRes.data.myProfile);
+      toast.success('로그인 성공!');
+    } else if (status === 201) {
+      handleUserInfo({ ...data, idToken });
+    }
   };
 
   return (
