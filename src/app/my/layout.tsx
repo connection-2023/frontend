@@ -12,7 +12,7 @@ export default async function MyPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="mx-auto mb-[11.5rem] flex w-full max-w-[1440px] justify-between">
+    <main className="mx-auto grid w-full max-w-[1440px] grid-cols-[1fr,2fr,1fr] justify-between gap-x-4 bg-admin-bg-color px-16 pb-20">
       <Sidebar />
       {children}
     </main>

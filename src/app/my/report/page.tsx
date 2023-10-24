@@ -60,8 +60,8 @@ const ReportHistoryPage = () => {
   };
 
   return (
-    <section className="flex w-full flex-col text-sm text-sub-color3">
-      <h1 className="mb-[1.81rem] mt-7 text-2xl font-bold">신고내역</h1>
+    <section className="col-span-2 flex w-full flex-col rounded-admin bg-white p-5 text-sm text-sub-color3 shadow-float">
+      <h1 className="mb-[1.81rem] text-2xl font-bold">신고내역</h1>
 
       <ul className="mb-4 flex gap-4 font-medium">
         {Object.values(filterOptions).map((option) => (
@@ -78,7 +78,7 @@ const ReportHistoryPage = () => {
         ))}
       </ul>
 
-      <table className="w-full max-w-[40rem] border-collapse px-4 py-2">
+      <table className="w-full border-collapse px-4 py-2">
         <thead>
           <tr className="flex items-center gap-10 border-y border-solid border-black px-4 py-2 text-left font-semibold">
             <th className="w-24">신고대상</th>

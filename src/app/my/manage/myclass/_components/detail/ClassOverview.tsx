@@ -3,7 +3,7 @@ import { CommentSVG } from '@/icons/svg';
 
 const ClassOverview = () => {
   return (
-    <aside className="flex h-fit w-[19.5625rem] flex-col whitespace-nowrap shadow-float">
+    <aside className="flex h-fit w-[19.5625rem] flex-col whitespace-nowrap rounded-admin bg-white shadow-float shadow-float">
       <div className="flex h-[5.13rem] divide-x  divide-solid divide-sub-color4 border-b border-solid border-sub-color4 py-[0.69rem] text-sm font-semibold text-sub-color3">
         <div className="flex w-1/2 flex-col items-center justify-center">
           진행한 클래스

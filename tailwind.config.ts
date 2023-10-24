@@ -15,6 +15,10 @@ const config: Config = {
         'sub-color2': 'var(--sub-color2)',
         'sub-color3': 'var(--sub-color3)',
         'sub-color4': 'var(--sub-color4)',
+        'admin-bg-color': '#8338EC1A',
+      },
+      borderRadius: {
+        admin: '0.63rem',
       },
       boxShadow: {
         vertical: '0px 1px 4px 1px rgba(0, 0, 0, 0.25)',

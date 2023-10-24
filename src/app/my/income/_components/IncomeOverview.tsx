@@ -12,13 +12,14 @@ import {
 } from 'chart.js';
 import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import { MoneySVG } from '@/icons/svg';
+import { MoneySVG, ArrowUpSVG } from '@/icons/svg';
 import {
   options,
   dataByMonth,
   dataByDay,
   chartPlugins,
 } from '@/utils/chartUtils';
+import PaymentRange from './PaymentRange';
 
 ChartJS.register(
   CategoryScale,
@@ -32,44 +33,30 @@ ChartJS.register(
   Legend,
 );
 
-const IncomeOverview = ({
-  view,
-  handleApply,
-}: {
+interface IncomeOverviewProps {
   view: 'main' | 'payment';
-  handleApply: () => void;
-}) => {
+  handlePrev: () => void;
+}
+
+const IncomeOverview = ({ view, handlePrev }: IncomeOverviewProps) => {
   const [chartView, setChartView] = useState('month');
   return (
-    <section className="w-full max-w-[40rem] rounded-[0.31rem] shadow-float">
-      <div className="flex h-12 items-center justify-between border-b border-solid border-sub-color4 p-4">
-        <div className="flex gap-[1.69rem] text-sm font-semibold text-sub-color3">
-          <p>
-            총
-            <span className="ml-[0.37rem] text-lg font-bold text-black">
-              1,230,800원
-            </span>
-          </p>
-          <p>
-            이번달
-            <span className="ml-[0.37rem] text-lg font-bold text-sub-color1">
-              1,230,800원
-            </span>
-          </p>
-        </div>
-
-        {view === 'main' && (
-          <button
-            onClick={handleApply}
-            className="flex h-7 w-24 items-center justify-center rounded-[0.31rem] bg-main-color text-sm font-semibold text-white"
-          >
-            <MoneySVG width="18" height="18" fill="white" stroke="white" />
-            정산신청
+    <section className="max-h-[16.5rem] w-full rounded-admin rounded-t-[0.31rem] shadow-float">
+      <h1
+        className={`flex items-center bg-white px-1 py-3 text-2xl font-bold text-sub-color3 ${
+          view === 'main' && 'mb-1 px-4'
+        }`}
+      >
+        {view === 'payment' && (
+          <button onClick={handlePrev} className="origin-center -rotate-90">
+            <ArrowUpSVG width="34" height="34" fill="black" />
           </button>
         )}
-      </div>
-      {view === 'main' && (
-        <div className="border-box mb-4 h-48 w-full px-9 py-4">
+        수익관리
+      </h1>
+
+      {view === 'main' ? (
+        <div className="border-box flex w-full flex-col rounded-b-[0.31rem] bg-white px-9 py-4 shadow-float">
           <div className="mb-2 flex gap-3 text-sm text-sub-color2">
             <button
               onClick={() => setChartView('month')}
@@ -85,11 +72,38 @@ const IncomeOverview = ({
             </button>
           </div>
           {chartView === 'month' ? (
-            <Bar options={options} data={dataByMonth} />
+            <div>
+              <Bar options={options} data={dataByMonth} />
+            </div>
           ) : (
-            <Line options={options} data={dataByDay} plugins={chartPlugins} />
+            <div>
+              <Line options={options} data={dataByDay} plugins={chartPlugins} />
+            </div>
           )}
         </div>
+      ) : (
+        <section className="rounded-b-admin bg-white pt-5">
+          <ul className="mb-3 flex w-full gap-6 whitespace-nowrap border-b border-solid border-sub-color2 px-4 pb-4 text-sm text-sub-color3">
+            <li className="flex items-center">
+              <p className="w-10 font-semibold">총 수익</p>
+              <span className="ml-[0.69rem] text-lg font-bold text-black">
+                1,230,800원
+              </span>
+            </li>
+            <li className="flex items-center ">
+              <p className="w-10 font-semibold">이번 달</p>
+              <span className="ml-[0.69rem] text-lg font-bold text-sub-color1">
+                1,230,800원
+              </span>
+            </li>
+          </ul>
+          <div className="flex flex-col px-4">
+            <h1 className="mb-3 mt-1 flex text-base font-semibold">
+              정산 기간 설정
+            </h1>
+            <PaymentRange />
+          </div>
+        </section>
       )}
     </section>
   );

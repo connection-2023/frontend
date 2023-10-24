@@ -14,7 +14,7 @@ const EditDayOff = () => {
   };
 
   return (
-    <div className="mb-[1.38rem] flex w-full">
+    <div className="mb-[1.38rem] flex w-full gap-7">
       <div className="rounded-[0.63rem] px-3 py-2 shadow-horizontal">
         <DayOffCalendar
           selectedDates={selectableDate}
@@ -22,7 +22,7 @@ const EditDayOff = () => {
         />
       </div>
 
-      <div className="ml-[3.75rem] flex w-full flex-col justify-between">
+      <div className="flex w-full flex-col justify-between">
         <p className="mb-[0.87rem] text-sm font-semibold">선택한 휴무일</p>
 
         <ul className="flex h-40 w-fit flex-wrap gap-x-2 gap-y-3 overflow-x-auto text-sm font-medium text-sub-color3">
@@ -37,10 +37,10 @@ const EditDayOff = () => {
         </ul>
 
         <div className="flex w-full gap-2 whitespace-nowrap text-base font-semibold">
-          <button className="flex h-8 w-full items-center justify-center rounded-[0.31rem] bg-sub-color2 text-white">
+          <button className="flex h-8 w-1/2 items-center justify-center rounded-[0.31rem] bg-sub-color2 text-white">
             변경 취소
           </button>
-          <button className="flex h-8 w-full items-center justify-center rounded-[0.31rem] bg-sub-color1 text-white">
+          <button className="flex h-8 w-1/2 items-center justify-center rounded-[0.31rem] bg-sub-color1 text-white">
             수정하기
           </button>
         </div>
