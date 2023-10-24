@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dummyClass } from '@/constants/dummy';
-import { classTimeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
+import {
+  classDurationState,
+  allClassDates,
+} from '@/recoil/ClassSchedule/atoms';
 import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
@@ -10,10 +12,9 @@ import ScheduleView from '@/components/ScheduleView/ScheduleView';
 const ClassSchedule = () => {
   const [deadline, setDeadline] = useState<number | null>(null);
   const [classNotification, setClassNotification] = useState('');
-  const [classTime, setClassTime] = useRecoilState(classTimeState);
-  const classDates = useRecoilValue(classDatesState);
+  const [classTime, setClassTime] = useRecoilState(classDurationState);
+  const classDates = useRecoilValue(allClassDates);
   const classNum = classDates?.length;
-  const { lectureSchedule } = dummyClass;
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
@@ -72,15 +73,7 @@ const ClassSchedule = () => {
         IsAddedClass={true}
         classNum={classNum}
       >
-        <div className="max-w-[37.4rem]">
-          {/* 추가된 클래스  lectureSchedule 데이터 가공 구현 예정 */}
-          {classDates && (
-            <ScheduleView
-              clickableDates={classDates}
-              lectureSchedule={lectureSchedule}
-            />
-          )}
-        </div>
+        <div className="max-w-[37.4rem]">{classDates && <ScheduleView />}</div>
       </Section>
 
       <Section title="예약시 유의사항">

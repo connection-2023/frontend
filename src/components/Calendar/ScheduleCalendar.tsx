@@ -1,20 +1,32 @@
 'use client';
 import { ko } from 'date-fns/esm/locale';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
-import { FormattedCaption } from './BasicCalendar';
 import {
   DAY_MODIFIERS,
   SCHEDULE_MODIFIERS_CLASSNAMES,
-} from '../../constants/constants';
+} from '@/constants/constants';
+import { FormattedCaption } from './BasicCalendar';
 import 'react-day-picker/dist/style.css';
-import '../../styles/calendar.css';
+import '@/styles/calendar.css';
 
-const ScheduleCalendar = ({ clickableDates }: { clickableDates: Date[] }) => {
+interface ScheduleCalendarProps {
+  clickableDates: Date[];
+  handleClickDate: (date: Date) => void;
+}
+
+const ScheduleCalendar = ({
+  clickableDates,
+  handleClickDate,
+}: ScheduleCalendarProps) => {
   const [selected, setSelected] = useState<Date | undefined>(undefined);
 
+  useEffect(() => {
+    if (selected) handleClickDate(selected);
+  }, [selected]);
+
   if (!clickableDates.length) {
-    return null;
+    return <></>;
   }
 
   const scheduleModifiers = {
@@ -30,12 +42,16 @@ const ScheduleCalendar = ({ clickableDates }: { clickableDates: Date[] }) => {
   };
 
   const isDateSelectable = (date: Date) => {
-    return clickableDates.some(
-      (clickableDate) =>
-        date.getDate() === clickableDate.getDate() &&
-        date.getMonth() === clickableDate.getMonth() &&
-        date.getFullYear() === clickableDate.getFullYear(),
-    );
+    return clickableDates.some((clickableDate) => {
+      if (date && clickableDate) {
+        return (
+          date.getDate() === clickableDate.getDate() &&
+          date.getMonth() === clickableDate.getMonth() &&
+          date.getFullYear() === clickableDate.getFullYear()
+        );
+      }
+      return false;
+    });
   };
 
   const handleSelect = (date: Date | undefined) => {
