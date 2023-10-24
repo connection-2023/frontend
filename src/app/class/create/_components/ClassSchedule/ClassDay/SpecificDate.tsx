@@ -1,8 +1,8 @@
-import { eachDayOfInterval, format, isSameDay } from 'date-fns';
+import { eachDayOfInterval, format, isSameDay, compareAsc } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import { useEffect, useId, useReducer, useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { classRangeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
+import { classRangeState, allClassDates } from '@/recoil/ClassSchedule/atoms';
 import { specificDateReducer } from '@/utils/specificDateReducer';
 import TimeList from './TimeList';
 import InputClassDates from '@/components/Calendar/InputClassDates';
@@ -15,7 +15,7 @@ const initialState = {
 };
 
 const SpecificDate = () => {
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
+  const [classDates, setClassDates] = useRecoilState(allClassDates);
   const classRange = useRecoilValue(classRangeState);
   const [state, dispatch] = useReducer(specificDateReducer, initialState);
 
@@ -30,7 +30,19 @@ const SpecificDate = () => {
   }, [classRange]);
 
   useEffect(() => {
-    const dates = state.selected.map((item) => item.date);
+    const dates = state.selected
+      .flatMap((item) => {
+        const datePart = new Date(item.date);
+
+        return item.time.map((time) => {
+          const [hours, minutes] = time.split(':').map(Number);
+          const newDate = new Date(datePart);
+          newDate.setHours(hours, minutes);
+          return newDate;
+        });
+      })
+      .sort(compareAsc);
+
     setClassDates(dates);
   }, [state.selected]);
 
@@ -45,7 +57,7 @@ const SpecificDate = () => {
   };
 
   const updateOrAddTimeSlot = (index: number, newStartTime?: string) => {
-    if (!state.selectedDate) return;
+    if (!state.selectedDate || !newStartTime || newStartTime === '') return;
     const selectedIndex = findIndexBySelectedDate(state.selectedDate);
 
     if (selectedIndex !== -1) {
@@ -70,8 +82,6 @@ const SpecificDate = () => {
   };
 
   const handleStartTimeChange = (index: number, newStartTime: string) => {
-    if (!state.selectedDate || !newStartTime) return;
-
     updateOrAddTimeSlot(index, newStartTime);
   };
 
