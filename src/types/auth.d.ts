@@ -147,3 +147,5 @@ export interface userProfile {
   createdAt: string;
   updatedAt: string;
 }
+
+export type userType = 'user' | 'lecturer';
