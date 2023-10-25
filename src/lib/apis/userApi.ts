@@ -70,3 +70,14 @@ export const postProfileImage = async (image: File) => {
 
   return response;
 };
+
+export const getSwitchUserRole = async () => {
+  const response = await fetch(`${DOMAIN}/api/auth/switch-user`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((data) => data.json());
+
+  return response;
+};

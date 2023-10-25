@@ -11,6 +11,18 @@ const ProfileMenu = () => {
   const user = useSession();
   const router = useRouter();
 
+  const handleSwitchUser = async () => {
+    const res = await getSwitchUserRole();
+
+    if (store.userType === 'user' && res.status === 200) {
+      toast.success('강사로 전환되었습니다!');
+      store.setUserType('lecturer');
+    } else if (store.userType === 'lecturer' && res.status === 200) {
+      toast.success('일반 유저로 전환되었습니다!');
+      store.setUserType('user');
+    } else toast.error('잘못된 요청입니다!');
+  };
+
   const handleLogout = async () => {
     store.setRequestLoading(true);
     try {
@@ -43,7 +55,10 @@ const ProfileMenu = () => {
       </li>
 
       <li className="border-t border-solid border-sub-color2 text-main-color">
-        <button className="flex h-full w-full cursor-pointer gap-1 py-4 pl-4">
+        <button
+          onClick={handleSwitchUser}
+          className="flex h-full w-full cursor-pointer gap-1 py-4 pl-4"
+        >
           <TransFormSVG />
           {store.userType === 'user' ? '강사 전환' : '유저 전환'}
         </button>
