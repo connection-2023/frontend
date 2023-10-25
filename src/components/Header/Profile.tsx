@@ -6,7 +6,7 @@ import { ArrowDownSVG, ProfileSVG } from '@/icons/svg';
 import useSession from '@/lib/useSession';
 import ProfileMenu from './ProfileMenu';
 
-const Profile = ({ handleLogout }: { handleLogout: () => void }) => {
+const Profile = () => {
   const user = useSession();
   const profileImg = user?.userProfileImage?.imageUrl || null;
   const [isProfileMenu, setIsProfileMenu] = useState(false);
@@ -45,7 +45,7 @@ const Profile = ({ handleLogout }: { handleLogout: () => void }) => {
         />
       </div>
 
-      {isProfileMenu && <ProfileMenu handleLogout={handleLogout} />}
+      {isProfileMenu && <ProfileMenu />}
     </div>
   );
 };
