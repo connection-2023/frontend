@@ -28,11 +28,12 @@ export const GET = async (request: NextRequest) => {
         headers: { 'Content-Type': 'application/json' },
       },
     );
+
     if (response.status === 200) {
       await Promise.all([
         res.cookies.set({
-          name: 'token',
-          value: 'Bearer ' + data.userAccessToken,
+          name: Object.keys(data)[0],
+          value: data.userAccessToken,
           httpOnly: true,
           path: '/',
           secure: process.env.NODE_ENV !== 'development',

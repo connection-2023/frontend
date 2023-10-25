@@ -14,7 +14,7 @@ export const POST = async (req: NextRequest) => {
   userToken = req.headers.get('Authorization');
 
   if (!userToken) {
-    userToken = cookieStore.get('token')?.value;
+    userToken = cookieStore.get('userAccessToken')?.value;
   }
 
   if (!userToken) {
