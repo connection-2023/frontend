@@ -3,38 +3,57 @@ import { isSameDay } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
-import { FormattedCaption } from './BasicCalendar';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
 import {
-  DAY_MODIFIERS,
-  DAY_MODIFIERS_CLASSNAMES,
-} from '../../constants/constants';
+  classScheduleState,
+  classHolidayState,
+} from '@/recoil/ClassSchedule/atoms';
+import { FormattedCaption } from './BasicCalendar';
 import 'react-day-picker/dist/style.css';
-import '../../styles/calendar.css';
+import '@/styles/calendar.css';
 
 interface ICalendarProps {
-  selectedDates?: Date[];
-  handleSelected?: (value: Date[]) => void;
+  handleSelected: (value: Date[]) => void;
 }
 
-const DayOffCalendar = ({
-  selectedDates = [],
-  handleSelected,
-}: ICalendarProps) => {
-  const [selected, setSelected] = useState<Date[] | undefined>(selectedDates);
-  const initialSelectedDates = selectedDates;
+const DayOffCalendar = ({ handleSelected }: ICalendarProps) => {
+  const ScheduleDates = useRecoilValue(classScheduleState);
+  const [holidays, setHolidays] = useRecoilState(classHolidayState);
+  const [uniqueDates, setUniqueDates] = useState<Date[]>();
+  const [selected, setSelected] = useState<Date[] | undefined>(undefined);
 
   useEffect(() => {
-    if (handleSelected !== undefined && selected) {
-      const unselectedDates = initialSelectedDates.filter(
-        (date) => !selected.some((selDate) => isSameDay(selDate, date)),
+    const uniqueDatesArray = [
+      ...new Set(
+        ScheduleDates.map((date) => new Date(date).setHours(0, 0, 0, 0)),
+      ),
+    ].map((dateNum) => new Date(dateNum));
+    setUniqueDates(uniqueDatesArray);
+    setSelected(uniqueDatesArray);
+  }, [ScheduleDates]);
+
+  useEffect(() => {
+    if (selected && uniqueDates) {
+      const unselectedDates = uniqueDates.filter(
+        (initDate) =>
+          !selected.some((selDate) =>
+            isSameDay(new Date(selDate), new Date(initDate)),
+          ),
       );
 
       handleSelected(unselectedDates);
+      const unselectedDatesWithOriginalTime = ScheduleDates.filter(
+        (selectedDate) =>
+          !selected.some((selDate) => isSameDay(selectedDate, selDate)),
+      );
+
+      setHolidays(unselectedDatesWithOriginalTime);
     }
   }, [selected]);
 
   const disabledDays = (date: Date) =>
-    !selectedDates.some((clickableDate) => isSameDay(clickableDate, date));
+    !ScheduleDates.some((clickableDate) => isSameDay(clickableDate, date));
 
   const scheduleModifiers = {
     ...DAY_MODIFIERS,
@@ -49,7 +68,7 @@ const DayOffCalendar = ({
   };
 
   const isDateSelectable = (date: Date) => {
-    return selectedDates.some(
+    return ScheduleDates.some(
       (clickableDate) =>
         date.getDate() === clickableDate.getDate() &&
         date.getMonth() === clickableDate.getMonth() &&
@@ -68,7 +87,7 @@ const DayOffCalendar = ({
       showOutsideDays
       mode="multiple"
       selected={selected}
-      defaultMonth={selectedDates[0]}
+      defaultMonth={ScheduleDates[0]}
       onSelect={setSelected}
       disabled={disabledDays}
       modifiers={scheduleModifiers}

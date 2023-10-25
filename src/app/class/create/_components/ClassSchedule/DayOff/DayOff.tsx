@@ -3,10 +3,10 @@ import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import {
-  classDatesState,
+  allClassDates,
   classRangeState,
-  classTimeState,
-  classDaysDatesState,
+  classDurationState,
+  classScheduleState,
   classDayTypeState,
 } from '@/recoil/ClassSchedule/atoms';
 import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
@@ -18,11 +18,12 @@ const DayOff = () => {
     null,
   );
   const [unselectedDates, setUnselectedDates] = useState<Date[]>([]);
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
+  const [classDates, setClassDates] = useRecoilState(allClassDates);
   const classType = useRecoilValue(classDayTypeState);
-  const initDates = useRecoilValue(classDaysDatesState);
+  const initDates = useRecoilValue(classScheduleState);
   const classRange = useRecoilValue(classRangeState);
-  const classTime = useRecoilValue(classTimeState);
+  const classTime = useRecoilValue(classDurationState);
+
   const isDisabled =
     !(classRange && classTime && initDates) || classType === '특정 날짜';
 
@@ -42,6 +43,10 @@ const DayOff = () => {
       setClassDates(newClassDates);
     }
   }, [unselectedDates]);
+
+  useEffect(() => {
+    if (classType === '특정 날짜') setSelectedOptionIndex(null);
+  }, [classType]);
 
   return (
     <>
@@ -65,30 +70,37 @@ const DayOff = () => {
           <div className="mt-5 flex w-full px-5">
             {!isDisabled && (
               <>
-                <DayOffCalendar
-                  selectedDates={initDates}
-                  handleSelected={handleUnselected}
-                />
+                <DayOffCalendar handleSelected={handleUnselected} />
 
                 <div className="ml-[3.75rem] flex flex-col">
                   <p className="mb-[0.87rem] text-sm font-semibold">
                     선택한 휴무일
                   </p>
                   <div className="flex h-fit w-fit flex-wrap gap-x-2 gap-y-3 text-sm font-medium text-sub-color3">
-                    {unselectedDates.map((date) => (
-                      <p
-                        key={date.toLocaleDateString()}
-                        className="h-fit rounded-[0.3125rem] border border-solid border-sub-color2 px-[0.69rem] py-[0.31rem]"
-                      >
-                        {format(date, 'yy.MM.dd (E)', { locale: ko })}
-                      </p>
-                    ))}
+                    {[
+                      ...new Set(
+                        unselectedDates.map((date) => {
+                          const newDate = new Date(date.getTime());
+                          newDate.setHours(0, 0, 0, 0);
+                          return newDate.getTime();
+                        }),
+                      ),
+                    ].map((time) => {
+                      const date = new Date(time);
+                      return (
+                        <p
+                          key={date.toLocaleDateString()}
+                          className="h-fit rounded-[0.3125rem] border border-solid border-sub-color2 px-[0.69rem] py-[0.31rem]"
+                        >
+                          {format(date, 'yy.MM.dd (E)', { locale: ko })}
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
               </>
             )}
           </div>
-          <p />
         </>
       )}
     </>
