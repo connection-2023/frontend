@@ -18,9 +18,11 @@ const ProfileImg = ({
   marginLeft = 1.5,
 }: ProfileProps) => {
   const imageSize = ProfileImgSize[size];
+  const height = `h-[${imageSize}px]`;
   const ml = `ml-${marginLeft}`;
+
   return (
-    <div className="color-inherit flex items-center">
+    <div className={`color-inherit flex ${height} items-center`}>
       {src ? (
         <Image
           src={src}
@@ -29,7 +31,7 @@ const ProfileImg = ({
           alt="프로필 사진"
           sizes="1x"
           priority={true}
-          className="rounded-full"
+          className="h-full rounded-full"
         />
       ) : (
         <ProfileSVG
