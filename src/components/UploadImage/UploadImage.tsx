@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 import CropperModal from './CropperModal';
@@ -29,8 +29,14 @@ const UploadImage = ({
     defaultImg?.[0]?.url || null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     if (onChange) {
       onChange(images);
     }
