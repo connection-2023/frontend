@@ -2,6 +2,14 @@ import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
+export const ProfileImgSize = {
+  xsmall: 22,
+  small: 34,
+  medium: 59,
+  large: 101,
+  xlarge: 176,
+};
+
 export const DAY_MODIFIERS = {
   saturday: (date: Date) => date.getDay() === 6,
   sunday: (date: Date) => date.getDay() === 0,
