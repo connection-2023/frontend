@@ -67,3 +67,20 @@ export interface Instructors {
   average: number;
   href: string;
 }
+
+export interface InstructorRegister {
+  profileImageUrls?: string[];
+  nickname?: string;
+  email?: string;
+  phoneNumber?: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
+  homepageUrl?: string;
+  affiliation?: string;
+  introduction?: string;
+  experience?: string;
+  regions?: string[];
+  genres?: string[];
+  websiteUrls?: string[];
+  etcGenres?: string[];
+}

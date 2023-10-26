@@ -11,14 +11,18 @@ interface UploadImageProps {
       url: string;
     }[],
   ) => void;
-  defaultImg: {
+  defaultImg?: {
     file: File;
     url: string;
   }[];
   errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
 
-const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
+const UploadImage = ({
+  onChange,
+  defaultImg = [],
+  errors,
+}: UploadImageProps) => {
   const [images, setImages] =
     useState<{ file: File; url: string }[]>(defaultImg);
   const [selectedImage, setSelectedImage] = useState<string | null>(

@@ -14,17 +14,16 @@ interface SelectBank {
 }
 
 interface BankSelectProps {
-  instanceId: string;
   onChange: (
     selectedOptions: MultiValue<SelectBank> | SingleValue<SelectBank>,
     actionMeta: ActionMeta<SelectBank>,
   ) => void;
 }
 
-const BankSelect = ({ onChange, instanceId }: BankSelectProps) => {
+const BankSelect = ({ onChange }: BankSelectProps) => {
   return (
     <Select
-      instanceId={instanceId + 'select'}
+      instanceId="bankSelect"
       placeholder="은행 선택"
       noOptionsMessage={() => '해당 은행은 존재하지 않습니다.'}
       options={BANK_LIST}

@@ -37,7 +37,6 @@ const InstructorIntroduction = () => {
           render={({ field }) => (
             <UploadImage
               onChange={field.onChange}
-              defaultImg={applyData.instructorImg}
               errors={errors.instructorImg}
             />
           )}
@@ -73,10 +72,7 @@ const InstructorIntroduction = () => {
             required: '장르',
           }}
           render={({ field }) => (
-            <GenreCheckboxGroup
-              onChange={field.onChange}
-              defaultValue={applyData.instructorGenre}
-            />
+            <GenreCheckboxGroup onChange={field.onChange} />
           )}
         />
       </IntroductionSection>

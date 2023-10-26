@@ -1,10 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { ErrorMessage } from '@/types/types';
+import { ErrorMessage, InstructorRegister } from '@/types/types';
 
 const steps = [
   { title: '강사 인증', component: <InstructorAuth /> },
@@ -14,14 +14,33 @@ const steps = [
 const ApplyPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
+  const instructorRegisterState = useRef<InstructorRegister>({});
   const formMethods = useForm({ shouldFocusError: false });
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []); //새로고침 저장 안됨 안내 메시지
 
   const { handleSubmit } = formMethods;
 
   const onValid = (data: any) => {
-    //Validation 작성 하면서 data 타입 변경 요망
+    instructorRegisterState.current = {
+      ...instructorRegisterState.current,
+      ...data,
+    };
 
     console.log(data);
+    console.log(instructorRegisterState.current);
+
     nextStep();
   };
 

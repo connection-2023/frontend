@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { getCheckNickname } from '@/lib/apis/lecturersApi';
-import BankSelect from './bankSelect';
+import BankSelect from './BankSelect';
 
 const InstructorAuth = () => {
-  const { register, watch, getValues, setFocus } = useFormContext();
+  const { register, watch, getValues, setFocus, control } = useFormContext();
 
   const [verification, setVerification] = useState({
     nickname: false,
@@ -164,6 +164,7 @@ const InstructorAuth = () => {
             예금주
           </Label>
           <input
+            type="text"
             {...register('bankholder', { required: '예금주' })}
             id="bankholder"
             className={`h-7 w-full max-w-[10rem] rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2
@@ -176,6 +177,7 @@ const InstructorAuth = () => {
             생년월일
           </Label>
           <input
+            type="number"
             {...register('birth', { required: '생년월일' })}
             id="birth"
             className={`h-7 w-full max-w-[10rem] rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2
@@ -187,9 +189,17 @@ const InstructorAuth = () => {
           <Label htmlFor="bank" isNormal={false}>
             은행
           </Label>
-          {/* --- react-select 사용 예정 --- */}
           <div className="w-full max-w-[10rem]">
-            <BankSelect instanceId="bank" onClick={() => console.log('asda')} />
+            <Controller
+              name="bank"
+              control={control}
+              rules={{
+                required: '은행',
+              }}
+              render={({ field: { onChange } }) => (
+                <BankSelect onChange={onChange} />
+              )}
+            />
           </div>
         </li>
 
@@ -198,6 +208,7 @@ const InstructorAuth = () => {
             계좌번호
           </Label>
           <input
+            type="number"
             {...register('accountNumber', {
               required: '계좌번호',
               validate: {
@@ -250,32 +261,3 @@ const Label = ({ htmlFor, isNormal, children }: LabelProps) => {
 };
 
 const RequiredMark = () => <span className="text-sub-color1">*</span>;
-
-interface SelectProps {
-  options: string[];
-}
-const Select = ({ options }: SelectProps) => {
-  const [selectedOption, setSelectedOption] = useState('');
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-  };
-
-  return (
-    <select
-      id="bank"
-      value={selectedOption}
-      onChange={handleChange}
-      className="h-7 w-full max-w-[10rem] rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
-    >
-      <option value="" disabled>
-        은행 선택
-      </option>
-      {options.map((option, index) => (
-        <option key={index} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  );
-};
