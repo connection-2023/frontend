@@ -5,7 +5,8 @@ import { getCheckNickname } from '@/lib/apis/lecturersApi';
 import BankSelect from './BankSelect';
 
 const InstructorAuth = () => {
-  const { register, watch, getValues, setFocus, control } = useFormContext();
+  const { register, watch, getValues, setFocus, control, clearErrors } =
+    useFormContext();
 
   const [verification, setVerification] = useState({
     nickname: false,
@@ -37,6 +38,7 @@ const InstructorAuth = () => {
     if (await getCheckNickname(nickname)) {
       toast.success('사용가능한 닉네임 입니다.');
       setVerification((prev) => ({ ...prev, nickname: true }));
+      clearErrors('nickname');
     } else {
       toast.error('중복된 닉네임 입니다.');
     }
