@@ -7,32 +7,32 @@ export const GET = async (req: NextRequest) => {
   if (!END_POINT) {
     throw new Error('environment variables are missing');
   }
+
   const cookieStore = cookies();
-
-  let userToken;
-  userToken = req.headers.get('Authorization')
-    ? req.headers.get('Authorization')
-    : cookieStore.get('token')?.value;
-
-  if (!userToken) {
-    return new NextResponse('로그인된 유저가 아닙니다', { status: 401 });
-  }
+  let userToken =
+    req.headers.get('Authorization') || cookieStore.get('token')?.value;
 
   if (userToken) {
     userToken = userToken.startsWith('Bearer ')
       ? userToken.slice(7)
       : userToken;
+  } else {
+    return new NextResponse('로그인된 유저가 아닙니다', { status: 401 });
   }
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${userToken}`,
   };
 
-  const response = await fetch(END_POINT + '/users/my-pages', {
-    credentials: 'include',
-    headers,
-  });
+  try {
+    const serverResponse = await fetch(END_POINT + '/users/my-pages', {
+      credentials: 'include',
+      headers,
+    }).then((data) => data.json());
 
-  const data = await response.json();
-  return NextResponse.json(data);
+    return NextResponse.json(serverResponse);
+  } catch (error) {
+    return new NextResponse('네트워크 요청 에러: ', { status: 500 });
+  }
 };

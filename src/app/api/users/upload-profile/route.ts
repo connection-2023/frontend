@@ -10,12 +10,9 @@ export const POST = async (req: NextRequest) => {
   const cookieStore = cookies();
   const formData = await req.formData();
 
-  let userToken;
-  userToken = req.headers.get('Authorization');
-
-  if (!userToken) {
-    userToken = cookieStore.get('userAccessToken')?.value;
-  }
+  const userToken =
+    req.headers.get('Authorization') ||
+    cookieStore.get('userAccessToken')?.value;
 
   if (!userToken) {
     return new NextResponse('로그인된 유저가 아닙니다', { status: 401 });
@@ -29,14 +26,16 @@ export const POST = async (req: NextRequest) => {
     Authorization: `Bearer ${userToken}`,
   };
 
-  const response = await fetch(END_POINT + '/users/images', {
-    method: 'POST',
-    credentials: 'include',
-    headers,
-    body: formData,
-  });
+  try {
+    const serverResponse = await fetch(END_POINT + '/users/images', {
+      method: 'POST',
+      credentials: 'include',
+      headers,
+      body: formData,
+    }).then((data) => data.json());
 
-  const data = await response.json();
-
-  return NextResponse.json(data);
+    return NextResponse.json(serverResponse);
+  } catch (error) {
+    return new NextResponse('네트워크 요청 에러: ', { status: 500 });
+  }
 };

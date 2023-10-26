@@ -45,44 +45,43 @@ export const GET = async (req: NextRequest) => {
     Authorization: `Bearer ${tokenValue}`,
   };
 
-  const response = await fetch(END_POINT + requestUrl, {
-    credentials: 'include',
-    headers,
-  }).then((res) => res.json());
+  try {
+    const serverResponse = await fetch(END_POINT + requestUrl, {
+      credentials: 'include',
+      headers,
+    }).then((res) => res.json());
 
-  const res = new NextResponse(
-    JSON.stringify({ status: response.statusCode }),
-    {
-      status: response.status,
-      headers: { 'Content-Type': 'application/json' },
-    },
-  );
+    const clientResponse = new NextResponse(
+      JSON.stringify({ status: serverResponse.statusCode }),
+    );
 
-  if (res.status === 200) {
-    if (tokenName === 'userAccessToken') {
-      await Promise.all([
-        res.cookies.set({
-          name: 'lecturerAccessToken',
-          value: response.data.lecturerAccessToken,
-          httpOnly: true,
-          path: '/',
-          secure: process.env.NODE_ENV !== 'development',
-        }),
-        res.cookies.delete('userAccessToken'),
-      ]);
-    } else if (tokenName === 'lecturerAccessToken') {
-      await Promise.all([
-        res.cookies.set({
-          name: 'userAccessToken',
-          value: response.data.lecturerAccessToken,
-          httpOnly: true,
-          path: '/',
-          secure: process.env.NODE_ENV !== 'development',
-        }),
-        res.cookies.delete('lecturerAccessToken'),
-      ]);
+    if (serverResponse.statusCode === 200) {
+      if (tokenName === 'userAccessToken') {
+        await Promise.all([
+          clientResponse.cookies.set({
+            name: 'lecturerAccessToken',
+            value: serverResponse.data.lecturerAccessToken,
+            httpOnly: true,
+            path: '/',
+            secure: process.env.NODE_ENV !== 'development',
+          }),
+          clientResponse.cookies.delete('userAccessToken'),
+        ]);
+      } else if (tokenName === 'lecturerAccessToken') {
+        await Promise.all([
+          clientResponse.cookies.set({
+            name: 'userAccessToken',
+            value: serverResponse.data.lecturerAccessToken,
+            httpOnly: true,
+            path: '/',
+            secure: process.env.NODE_ENV !== 'development',
+          }),
+          clientResponse.cookies.delete('lecturerAccessToken'),
+        ]);
+      }
     }
+    return clientResponse;
+  } catch (error) {
+    return new NextResponse('네트워크 요청 에러: ', { status: 500 });
   }
-
-  return res;
 };
