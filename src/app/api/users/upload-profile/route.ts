@@ -26,7 +26,7 @@ export const POST = async (req: NextRequest) => {
   }
 
   const headers: Record<string, string> = {
-    Authorization: `${userToken}`,
+    Authorization: `Bearer ${userToken}`,
   };
 
   const response = await fetch(END_POINT + '/users/images', {

@@ -10,19 +10,22 @@ export const GET = async (req: NextRequest) => {
   const cookieStore = cookies();
 
   let userToken;
-  userToken = req.headers.get('Authorization');
-
-  if (!userToken) {
-    userToken = cookieStore.get('token')?.value;
-  }
+  userToken = req.headers.get('Authorization')
+    ? req.headers.get('Authorization')
+    : cookieStore.get('token')?.value;
 
   if (!userToken) {
     return new NextResponse('로그인된 유저가 아닙니다', { status: 401 });
   }
 
+  if (userToken) {
+    userToken = userToken.startsWith('Bearer ')
+      ? userToken.slice(7)
+      : userToken;
+  }
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    Authorization: `${userToken}`,
+    Authorization: `Bearer ${userToken}`,
   };
 
   const response = await fetch(END_POINT + '/users/my-pages', {
@@ -31,6 +34,5 @@ export const GET = async (req: NextRequest) => {
   });
 
   const data = await response.json();
-
   return NextResponse.json(data);
 };
