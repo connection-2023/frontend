@@ -18,7 +18,6 @@ const InstructorIntroduction = () => {
     register,
     control,
     formState: { errors },
-    setFocus,
   } = useFormContext();
 
   const applyData = useRecoilValue(InstructorApplyState);
@@ -32,7 +31,6 @@ const InstructorIntroduction = () => {
         <Controller
           name="instructorImg"
           control={control}
-          defaultValue={[]}
           rules={{
             required: '이미지',
           }}
@@ -71,7 +69,6 @@ const InstructorIntroduction = () => {
         <Controller
           name="instructorGenre"
           control={control}
-          defaultValue={[]}
           rules={{
             required: '장르',
           }}

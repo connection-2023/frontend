@@ -30,6 +30,7 @@ const ApplyPage = () => {
       key,
       ...value,
     }));
+    console.log(invalidList);
 
     setInvalidData(invalidList);
   };

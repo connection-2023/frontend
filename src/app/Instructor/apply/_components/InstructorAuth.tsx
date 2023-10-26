@@ -1,36 +1,95 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 const InstructorAuth = () => {
+  const { watch } = useFormContext();
+
+  const [verification, setVerification] = useState({
+    nickname: false,
+    email: true,
+    phoneNumber: false,
+    accountNumber: false,
+  });
+
+  useEffect(() => {
+    const subscription = watch((_, { name }) => {
+      const key = name?.split('-')[0];
+      if (key && key in verification) {
+        setVerification((prev) => ({ ...prev, [key]: false }));
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   return (
     <section className="mt-2 flex w-full max-w-[40rem] flex-col text-base">
       <ul className="flex flex-col gap-[1.69rem] border-b border-solid border-sub-color4 py-7">
         <li className="flex items-center">
-          <Label htmlFor="instructor-nickname" isNormal={true}>
+          <Label htmlFor="nickname" isNormal={true}>
             강사 닉네임
             <RequiredMark />
           </Label>
-          <Input id="instructor-nickname" widthClass="max-w-[32.5rem]" />
+          <Input
+            id="nickname"
+            widthClass="max-w-[24.75rem]"
+            labelName="강사 닉네임"
+            verification={verification.nickname}
+          />
+          <button
+            className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-[0.31rem] px-2 py-1 text-white ${
+              verification.nickname ? 'bg-sub-color2' : 'bg-black'
+            }`}
+          >
+            중복 확인
+          </button>
         </li>
+        {/* error 있으면서 false때 에러 표시*/}
 
-        <li className="flex items-center">
-          <Label htmlFor="instructor-phoneNumber" isNormal={true}>
+        <li className="flex items-center ">
+          <Label htmlFor="phoneNumber" isNormal={true}>
             휴대폰 번호
             <RequiredMark />
           </Label>
-          <Input id="instructor-phoneNumber" widthClass="max-w-[24.75rem]" />
-          <button className="ml-4 flex h-7 items-center rounded-[0.31rem] bg-black px-2 py-1 text-white">
+          <Input
+            id="phoneNumber"
+            widthClass="max-w-[24.75rem]"
+            labelName="휴대폰 번호"
+            verification={verification.phoneNumber}
+          />
+          <button
+            className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-[0.31rem] px-2 py-1 text-white ${
+              verification.nickname ? 'bg-sub-color2' : 'bg-black'
+            }`}
+          >
             인증번호 전송
           </button>
         </li>
 
         <li className="flex items-center">
-          <Label htmlFor="instructor-email" isNormal={true}>
+          <Label htmlFor="email-front" isNormal={true}>
             이메일
             <RequiredMark />
           </Label>
-          <Input id="instructor-email" widthClass="max-w-[10rem]" />
+          <Input
+            id="email-front"
+            widthClass="max-w-[11.4rem]"
+            labelName="이메일"
+            verification={verification.email}
+          />
           <span className="mx-2">@</span>
-          <Input widthClass="max-w-[10rem]" />
+          <Input
+            id="email-back"
+            widthClass="max-w-[11.4rem]"
+            labelName="이메일"
+            verification={verification.email}
+          />
+          <button
+            className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-[0.31rem] px-2 py-1 text-white ${
+              verification.email ? 'bg-sub-color2' : 'bg-black'
+            }`}
+          >
+            이메일 변경
+          </button>
         </li>
       </ul>
 
@@ -46,7 +105,11 @@ const InstructorAuth = () => {
           <Label htmlFor="bankholder" isNormal={false}>
             예금주
           </Label>
-          <Input id="bankholder" widthClass="max-w-[10rem]" />
+          <Input
+            id="bankholder"
+            labelName="예금주"
+            widthClass="max-w-[10rem]"
+          />
         </li>
 
         <li className="flex items-center">
@@ -56,6 +119,7 @@ const InstructorAuth = () => {
           <Input
             id="birth"
             widthClass="max-w-[10rem]"
+            labelName="생년월일"
             placeholder="주민번호 앞 6자리"
           />
         </li>
@@ -74,10 +138,16 @@ const InstructorAuth = () => {
           </Label>
           <Input
             id="account-number"
+            labelName="계좌번호"
             widthClass="max-w-[24.75rem]"
             placeholder="계좌번호를 - 없이 입력해주세요"
+            verification={verification.accountNumber}
           />
-          <button className="ml-4 flex h-7 items-center whitespace-nowrap rounded-[0.31rem] bg-black px-2 py-1 text-white">
+          <button
+            className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-[0.31rem] bg-black px-2 py-1 text-white ${
+              verification.accountNumber ? 'bg-sub-color2' : 'bg-black'
+            }`}
+          >
             인증하기
           </button>
         </li>
@@ -94,31 +164,62 @@ interface LabelProps {
   children: React.ReactNode;
 }
 
-const Label = ({ htmlFor, isNormal, children }: LabelProps) => (
-  <label
-    htmlFor={htmlFor}
-    className={`mr-10 whitespace-nowrap ${
-      isNormal ? 'w-20 font-semibold' : 'w-14 font-normal'
-    }`}
-  >
-    {children}
-  </label>
-);
+const Label = ({ htmlFor, isNormal, children }: LabelProps) => {
+  const {
+    formState: { errors },
+  } = useFormContext();
+
+  return (
+    <label
+      htmlFor={htmlFor}
+      className={`mr-10 whitespace-nowrap ${
+        isNormal ? 'w-20 font-semibold' : 'w-14 font-normal'
+      }`}
+    >
+      {children}
+    </label>
+  );
+};
 
 interface InputProps {
-  id?: string;
+  id: string;
+  labelName: string;
   widthClass: string;
   placeholder?: string;
+  verification?: boolean;
 }
 
-const Input = ({ id, widthClass, placeholder = '' }: InputProps) => (
-  <input
-    id={id}
-    placeholder={placeholder}
-    className={`h-7 w-full ${widthClass} rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2
+const Input = ({
+  id,
+  widthClass,
+  placeholder = '',
+  labelName,
+  verification,
+}: InputProps) => {
+  const { register } = useFormContext();
+
+  const validationRules =
+    verification !== undefined
+      ? {
+          required: labelName,
+          validate: {
+            isVerified: () => {
+              if (!verification) return labelName;
+            },
+          },
+        }
+      : { required: labelName };
+
+  return (
+    <input
+      {...register(id, validationRules)}
+      id={id}
+      placeholder={placeholder}
+      className={`h-7 w-full ${widthClass} rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2
     focus:outline-sub-color1`}
-  />
-);
+    />
+  );
+};
 
 const RequiredMark = () => <span className="text-sub-color1">*</span>;
 
