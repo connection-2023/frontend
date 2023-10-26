@@ -6,6 +6,7 @@ import {
   GoogleSVG,
 } from '../../../../public/icons/svg';
 import { SignInResponse, ISignUp } from '@/types/auth';
+import { checkUserNickname } from '@/lib/apis/userApi';
 
 const inputStyle =
   'w-36 h-8 rounded-[0.31rem] px-3 py-2 outline outline-1 outline-sub-color2';
@@ -44,25 +45,16 @@ const UserInfoSetup = ({ userInfo, handleUserInfo }: Props) => {
 
   const validateNickname = async () => {
     if (!userInfo.nickname) return;
-    try {
-      const res = await fetch(
-        `api/check-nickname?nickname=${encodeURIComponent(userInfo.nickname)}`,
-      );
+    const response = await checkUserNickname(userInfo.nickname);
 
-      if (res.status === 200) {
-        toast.success('사용 가능한 닉네임 입니다!');
-        handleUserInfo('nickname', userInfo.nickname);
-        setValidatedNickname(userInfo.nickname);
-      } else if (res.status === 403) {
-        toast.error('중복된 닉네임입니다!');
-      } else {
-        toast.error('잠시후 다시 시도해주세요!');
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('닉네임 중복 확인 요청 에러: ', error.message);
-        toast.error(`닉네임 중복 확인 요청 오류 \n 잠시후 다시 시도해주세요!`);
-      }
+    if (response.status === 200) {
+      toast.success('사용 가능한 닉네임 입니다!');
+      handleUserInfo('nickname', userInfo.nickname);
+      setValidatedNickname(userInfo.nickname);
+    } else if (response.status === 403) {
+      toast.error('중복된 닉네임입니다!');
+    } else {
+      toast.error('잠시후 다시 시도해주세요!');
     }
   };
 

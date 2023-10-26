@@ -1,5 +1,17 @@
 import { DOMAIN } from '@/constants/constants';
 
+export const checkUserNickname = async (nickname: string) => {
+  try {
+    const res = await fetch(
+      `api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+    );
+
+    return res;
+  } catch (error) {
+    throw new Error('유저 닉네임 중복 확인 fetch 요청 오류');
+  }
+};
+
 export const getAuth = async (
   social: 'NAVER' | 'KAKAO' | 'GOOGLE',
   idToken: string,
