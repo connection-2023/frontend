@@ -200,3 +200,24 @@ export const SNS_ITEMS = [
     dataName: 'instructorHomePage',
   },
 ];
+
+export const BANK_LIST = [
+  { value: 'KEB하나은행', label: 'KEB하나은행' },
+  { value: 'SC제일은행', label: 'SC제일은행' },
+  { value: '국민은행', label: '국민은행' },
+  { value: '신한은행', label: '신한은행' },
+  { value: '외환은행', label: '외환은행' },
+  { value: '우리은행', label: '우리은행' },
+  { value: '한국시티은행', label: '한국시티은행' },
+  { value: '경남은행', label: '경남은행' },
+  { value: '광주은행', label: '광주은행' },
+  { value: '대구은행', label: '대구은행' },
+  { value: '부산은행', label: '부산은행' },
+  { value: '전북은행', label: '전북은행' },
+  { value: '제주은행', label: '제주은행' },
+  { value: '기업은행', label: '기업은행' },
+  { value: '농협', label: '농협' },
+  { value: '수협', label: '수협' },
+  { value: '한국산업은행', label: '한국산업은행' },
+  { value: '한국수출입은행', label: '한국수출입은행' },
+];

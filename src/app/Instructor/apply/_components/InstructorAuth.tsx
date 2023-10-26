@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { getCheckNickname } from '@/lib/apis/lecturersApi';
+import BankSelect from './bankSelect';
 
 const InstructorAuth = () => {
   const { register, watch, getValues, setFocus } = useFormContext();
@@ -14,15 +15,16 @@ const InstructorAuth = () => {
   });
   // phoneNumber, accountNumber 추후 api 생기면 false 로 변경 및 인증 로직 추가 예정
 
-  useEffect(() => {
-    const subscription = watch((_, { name }) => {
-      const key = name?.split('-')[0];
-      if (key && key in verification) {
-        setVerification((prev) => ({ ...prev, [key]: false }));
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   const subscription = watch((_, { name }) => {
+  //     const key = name?.split('-')[0];
+  //     if (key && key in verification) {
+  //       setVerification((prev) => ({ ...prev, [key]: false }));
+  //     }
+  //   });
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
+  // 잠시 테스트 용으로 주석
 
   const nickNameOverlapping = async () => {
     const pattern = /^[가-힣a-zA-Z0-9]{2,12}$/;
@@ -73,11 +75,6 @@ const InstructorAuth = () => {
             중복 확인
           </button>
         </li>
-        {/* error 있으면서 false때 에러 표시 ${
-              errors.nickname && !verification.nickname
-                ? 'text-main-color'
-                : 'text-white'
-            }*/}
 
         <li className="flex items-center ">
           <Label htmlFor="phoneNumber" isNormal={true}>
@@ -191,7 +188,9 @@ const InstructorAuth = () => {
             은행
           </Label>
           {/* --- react-select 사용 예정 --- */}
-          <Select options={['국민은행', '신한은행', '우리은행']} />
+          <div className="w-full max-w-[10rem]">
+            <BankSelect instanceId="bank" onClick={() => console.log('asda')} />
+          </div>
         </li>
 
         <li className="flex items-center">
@@ -240,7 +239,7 @@ const Label = ({ htmlFor, isNormal, children }: LabelProps) => {
 
   return (
     <label
-      htmlFor={htmlFor}
+      htmlFor={htmlFor !== 'bank' ? htmlFor : undefined}
       className={`mr-10 whitespace-nowrap ${
         isNormal ? 'w-20 font-semibold' : 'w-14 font-normal'
       } ${errors[htmlFor] && 'animate-vibration text-main-color'}`}
