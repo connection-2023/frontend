@@ -15,6 +15,7 @@ interface UploadImageProps {
     file: File;
     url: string;
   }[];
+  situation?: string;
   errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
 
@@ -22,6 +23,7 @@ const UploadImage = ({
   onChange,
   defaultImg = [],
   errors,
+  situation = '클래스',
 }: UploadImageProps) => {
   const [images, setImages] =
     useState<{ file: File; url: string }[]>(defaultImg);
@@ -146,7 +148,7 @@ const UploadImage = ({
             ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
             `}
             >
-              클래스 사진 업로드
+              {`${situation} 사진 업로드`}
             </p>
             <p className="text-sm text-sub-color1">
               *최대 5개까지 업로드 가능합니다
@@ -169,7 +171,7 @@ const UploadImage = ({
               <div className="relative h-full w-full overflow-hidden">
                 <Image
                   src={selectedImage}
-                  alt="선택된 클래스 업로드 이미지"
+                  alt={`선택된 ${situation} 업로드 이미지`}
                   fill
                   style={{ objectFit: 'contain' }}
                 />
@@ -203,7 +205,7 @@ const UploadImage = ({
                 <div className="relative h-full w-full cursor-grab overflow-hidden">
                   <Image
                     src={image.url}
-                    alt={`클래스 업로드 이미지 ${index + 1}`}
+                    alt={`${situation} 업로드 이미지 ${index + 1}`}
                     fill
                     style={{ objectFit: 'cover' }}
                     onClick={() => setSelectedImage(image.url)}

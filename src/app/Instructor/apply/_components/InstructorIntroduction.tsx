@@ -38,6 +38,7 @@ const InstructorIntroduction = () => {
             <UploadImage
               onChange={field.onChange}
               errors={errors.instructorImg}
+              situation="강사"
             />
           )}
         />
