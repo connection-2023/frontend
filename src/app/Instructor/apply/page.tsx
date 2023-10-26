@@ -30,18 +30,16 @@ const ApplyPage = () => {
     };
   }, []); //새로고침 저장 안됨 안내 메시지
 
-  const { handleSubmit } = formMethods;
+  const {
+    handleSubmit,
+    formState: { isValid },
+  } = formMethods;
 
   const onValid = (data: any) => {
     instructorRegisterState.current = {
       ...instructorRegisterState.current,
       ...data,
     };
-
-    console.log(data);
-    console.log(instructorRegisterState.current);
-
-    nextStep();
   };
 
   const invalid = (data: Record<string, any>) => {
@@ -97,7 +95,12 @@ const ApplyPage = () => {
       </FormProvider>
 
       <form onSubmit={handleSubmit(onValid, invalid)} className="w-full">
-        <button className="h-9 w-full cursor-pointer rounded-[0.31rem] bg-sub-color2 text-white">
+        <button
+          className={`h-9 w-full cursor-pointer rounded-[0.31rem] text-white ${
+            isValid ? 'bg-sub-color1' : 'bg-sub-color2'
+          }`}
+          disabled={isValid}
+        >
           다음
         </button>
       </form>
