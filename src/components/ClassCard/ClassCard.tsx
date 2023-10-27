@@ -1,12 +1,13 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Date from './Date';
-import { ClassCardType } from '../../types/class';
+import ResponsiveClassPreview from './ResponsiveClassPreview';
 import Carousel from '../Carousel/Carousel';
 import Like from '../Like/Like';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import Review from '../Review/Review';
+import { ClassCardType } from '@/types/class';
 
 const ClassCard = (props: ClassCardType) => {
   const {
@@ -24,6 +25,20 @@ const ClassCard = (props: ClassCardType) => {
     imgURL,
   } = props;
   const [focus, setFocus] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    // 윈도우 크기 설정
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const getStatusStyles = (status: string) => {
     switch (status) {
@@ -37,11 +52,11 @@ const ClassCard = (props: ClassCardType) => {
         return '';
     }
   };
-  return (
+  return windowWidth >= 768 ? (
     <div
-      className="flex max-h-[13.5rem] w-full max-w-[40rem] cursor-pointer whitespace-nowrap p-3.5 shadow-[1px_1px_4px_-1px_rgba(0,0,0,0.25)] hover:scale-[1.02]"
       onMouseLeave={() => setFocus(false)}
       onMouseOver={() => setFocus(true)}
+      className="flex max-h-[13.5rem] w-full min-w-[20.5rem] max-w-[40rem] cursor-pointer whitespace-nowrap rounded-[0.63rem] p-3.5 shadow-[1px_1px_4px_-1px_rgba(0,0,0,0.25)] hover:scale-[1.02]"
     >
       <div className="relative mr-4 h-[188px] w-full overflow-hidden">
         {imgURL.length > 1 ? (
@@ -60,6 +75,7 @@ const ClassCard = (props: ClassCardType) => {
           />
         )}
       </div>
+
       <div className="flex w-full flex-col text-sub-color3">
         <div className="mb-3 flex w-full items-center">
           <div
@@ -77,30 +93,20 @@ const ClassCard = (props: ClassCardType) => {
             <Like />
           </div>
         </div>
+
         <p className="mb-2 w-full text-ellipsis text-lg font-bold text-black">
           {title.length < 20 ? title : title.slice(0, 19) + '...'}
         </p>
+
         <div className="mb-2 flex w-full flex-wrap justify-between text-sm">
-          <span>
-            {location.length > 1
-              ? location[0] + ' 외 ' + (location.length - 1)
-              : location[0]}
-          </span>
-          <span>
-            {genre.length > 1
-              ? genre[0] + ' 외 ' + (genre.length - 1)
-              : genre[0]}
-          </span>
-          <span>
-            {type.length > 1 ? type[0] + ' 외 ' + (type.length - 1) : type[0]}
-          </span>
-          <span>
-            {time.length > 1 ? time[0] + ' 외 ' + (time.length - 1) : time[0]}
-          </span>
+          <span>{displayFirstElement(location)}</span>
+          <span>{displayFirstElement(genre)}</span>
+          <span>{displayFirstElement(type)}</span>
+          <span>{displayFirstElement(time)}</span>
         </div>
-        <div>
-          {review && <Review average={review.average} count={review.count} />}
-        </div>
+
+        {review && <Review average={review.average} count={review.count} />}
+
         <div className="mt-auto flex w-full items-center justify-between text-sm">
           <p className="text-lg font-bold text-black text-sub-color3">
             {price}원
@@ -114,7 +120,17 @@ const ClassCard = (props: ClassCardType) => {
         </div>
       </div>
     </div>
+  ) : (
+    <ResponsiveClassPreview {...props} />
   );
 };
 
 export default ClassCard;
+
+const displayFirstElement = <T extends { toString(): string }>(
+  arr: T[],
+): string => {
+  return arr.length > 1
+    ? `${arr[0].toString()} 외 ${arr.length - 1}`
+    : arr[0].toString();
+};
