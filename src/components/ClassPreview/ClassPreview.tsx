@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import Date from './Date';
+import ClassDates from './ClassDates';
 import ResponsiveClassPreview from './ResponsiveClassPreview';
 import Carousel from '../Carousel/Carousel';
 import Like from '../Like/Like';
@@ -9,7 +9,7 @@ import ProfileImage from '../ProfileImage/ProfileImage';
 import Review from '../Review/Review';
 import { ClassCardType } from '@/types/class';
 
-const ClassCard = (props: ClassCardType) => {
+const ClassPreview = (props: ClassCardType) => {
   const {
     status,
     date,
@@ -86,7 +86,7 @@ const ClassCard = (props: ClassCardType) => {
             {status}
           </div>
 
-          <Date selectedDates={selectedDates} />
+          <ClassDates selectedDates={selectedDates} />
 
           <span className="text-sm">{date}</span>
           <div className="ml-auto">
@@ -125,7 +125,7 @@ const ClassCard = (props: ClassCardType) => {
   );
 };
 
-export default ClassCard;
+export default ClassPreview;
 
 const displayFirstElement = <T extends { toString(): string }>(
   arr: T[],

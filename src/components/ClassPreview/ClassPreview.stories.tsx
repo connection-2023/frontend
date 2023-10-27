@@ -1,9 +1,9 @@
 import { StoryObj, Meta } from '@storybook/react';
-import ClassCard from './ClassCard';
+import ClassPreview from './ClassPreview';
 
-const meta: Meta<typeof ClassCard> = {
-  title: 'Components/ClassCard',
-  component: ClassCard,
+const meta: Meta<typeof ClassPreview> = {
+  title: 'Components/ClassPreview',
+  component: ClassPreview,
   tags: ['autodocs'],
   argTypes: {},
   args: {
@@ -33,10 +33,10 @@ const meta: Meta<typeof ClassCard> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ClassCard>;
+type Story = StoryObj<typeof ClassPreview>;
 
 export const 모집중: Story = {
-  render: (args) => <ClassCard {...args} />,
+  render: (args) => <ClassPreview {...args} />,
 };
 
 export const 마감임박: Story = {
