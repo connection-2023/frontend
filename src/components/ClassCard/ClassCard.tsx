@@ -5,7 +5,7 @@ import Date from './Date';
 import { ClassCardType } from '../../types/class';
 import Carousel from '../Carousel/Carousel';
 import Like from '../Like/Like';
-import Profile from '../Profile/Profile';
+import ProfileImage from '../ProfileImage/ProfileImage';
 import Review from '../Review/Review';
 
 const ClassCard = (props: ClassCardType) => {
@@ -101,17 +101,16 @@ const ClassCard = (props: ClassCardType) => {
         <div>
           {review && <Review average={review.average} count={review.count} />}
         </div>
-        <div className=" mt-auto flex w-full items-center justify-between">
+        <div className="mt-auto flex w-full items-center justify-between text-sm">
           <p className="text-lg font-bold text-black text-sub-color3">
             {price}원
           </p>
-          <div className="text-sm">
-            <Profile
-              src={profile?.src || null}
-              nickname={profile.nickname}
-              size={34}
-            />
-          </div>
+
+          <ProfileImage
+            src={profile?.src || null}
+            nickname={profile.nickname}
+            size="small"
+          />
         </div>
       </div>
     </div>

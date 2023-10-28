@@ -5,6 +5,7 @@ import { useClickAway } from 'react-use';
 import { ArrowDownSVG, ProfileSVG } from '@/icons/svg';
 import useSession from '@/lib/useSession';
 import ProfileMenu from './ProfileMenu';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
 const Profile = () => {
   const user = useSession();
@@ -26,17 +27,8 @@ const Profile = () => {
         onClick={userMenuHandler}
         className="absolute -top-10 flex h-12 w-full cursor-pointer items-center justify-center rounded-[3.125rem] bg-white shadow-horizontal"
       >
-        <div className="relative ml-1.5 h-[2.45rem] w-[2.45rem] overflow-hidden rounded-full">
-          {profileImg ? (
-            <Image
-              src={profileImg}
-              fill
-              alt="사용자 프로필 이미지"
-              style={{ objectFit: 'cover' }}
-            />
-          ) : (
-            <ProfileSVG />
-          )}
+        <div className="relative ml-1.5 overflow-hidden rounded-full">
+          <ProfileImage size="small" src={profileImg} label={false} />
         </div>
         <ArrowDownSVG
           className={` fill-black ${
