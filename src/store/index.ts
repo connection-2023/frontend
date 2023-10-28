@@ -1,13 +1,13 @@
 'use client';
 import { create } from 'zustand';
-import { userProfile, userType } from '@/types/auth';
+import { userProfile, userType, instructorProfile } from '@/types/auth';
 
 type Store = {
-  authUser: userProfile | null;
+  authUser: userProfile | instructorProfile | null;
   userType: userType | null;
   requestLoading: boolean;
   setUserType: (type: userType | null) => void;
-  setAuthUser: (user: userProfile | null) => void;
+  setAuthUser: (user: userProfile | instructorProfile | null) => void;
   setAuthUserImage: (imageUrl: string) => void;
   setRequestLoading: (isLoading: boolean) => void;
   reset: () => void;

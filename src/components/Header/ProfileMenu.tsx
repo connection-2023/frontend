@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TransFormSVG } from '@/icons/svg';
 import { getSwitchUserRole, getLogout } from '@/lib/apis/userApi';
+import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import useSession from '@/lib/useSession';
 import useStore from '@/store';
 
@@ -14,13 +15,30 @@ const ProfileMenu = () => {
   const handleSwitchUser = async () => {
     const res = await getSwitchUserRole();
 
-    if (store.userType === 'user' && res.status === 200) {
-      toast.success('강사로 전환되었습니다!');
+    if (res.status !== 200) {
+      toast.error(
+        res.status === 401
+          ? '잘못된 토큰으로 요청하였습니다!'
+          : '잘못된 요청입니다!',
+      );
+      return;
+    }
+
+    if (store.userType === 'user') {
+      const instructorProfile = await getInstructorProfile();
+
+      if (!instructorProfile) {
+        toast.error('강사 프로필을 불러오는데 실패하였습니다');
+        return;
+      }
+
+      store.setAuthUser(instructorProfile);
       store.setUserType('lecturer');
-    } else if (store.userType === 'lecturer' && res.status === 200) {
-      toast.success('일반 유저로 전환되었습니다!');
+      toast.success('강사로 전환되었습니다!');
+    } else {
       store.setUserType('user');
-    } else toast.error('잘못된 요청입니다!');
+      toast.success('일반 유저로 전환되었습니다!');
+    }
   };
 
   const handleLogout = async () => {
