@@ -71,7 +71,7 @@ export const GET = async (req: NextRequest) => {
         await Promise.all([
           clientResponse.cookies.set({
             name: 'userAccessToken',
-            value: serverResponse.data.lecturerAccessToken,
+            value: serverResponse.data.userAccessToken,
             httpOnly: true,
             path: '/',
             secure: process.env.NODE_ENV !== 'development',
