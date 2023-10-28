@@ -18,7 +18,6 @@ export const GET = async (request: NextRequest) => {
       tokenValue = cookieValue.trim();
     }
   }
-  console.log('tokenValue: ', tokenValue);
 
   const headers: Record<string, string> = {
     Authorization: `Bearer ${tokenValue}`,
