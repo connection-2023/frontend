@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TransFormSVG } from '@/icons/svg';
-import { getSwitchUserRole, getLogout } from '@/lib/apis/userApi';
+import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import useSession from '@/lib/useSession';
 import useStore from '@/store';
@@ -36,6 +36,14 @@ const ProfileMenu = () => {
       store.setUserType('lecturer');
       toast.success('강사로 전환되었습니다!');
     } else {
+      const response = await getMyProfile();
+      const userProfile = response.data.myProfile;
+
+      if (!userProfile) {
+        toast.error('유저 프로필을 불러오는데 실패하였습니다');
+        return;
+      }
+      store.setAuthUser(userProfile);
       store.setUserType('user');
       toast.success('일반 유저로 전환되었습니다!');
     }

@@ -3,14 +3,16 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const GET = async (req: NextRequest) => {
-  if (!END_POINT) {
-    throw new Error('environment variables are missing');
-  }
+if (!END_POINT) {
+  throw new Error('environment variables are missing');
+}
 
+export const GET = async (req: NextRequest) => {
   const cookieStore = cookies();
+
   let userToken =
-    req.headers.get('Authorization') || cookieStore.get('token')?.value;
+    req.headers.get('Authorization') ||
+    cookieStore.get('userAccessToken')?.value;
 
   if (userToken) {
     userToken = userToken.startsWith('Bearer ')
