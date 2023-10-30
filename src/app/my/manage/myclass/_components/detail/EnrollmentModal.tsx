@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import { dummyEnrollmentPerson } from '@/constants/dummy';
 import { CloseSVG, CommentSVG } from '@/icons/svg';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
 // 회차정보, 정원, 수업일자, 마감일을 서버에서 요청할지 table에서 가져올지 고민...
 interface IEnrollmentModal {
@@ -113,9 +114,8 @@ const Person = ({ userId, src, nickname, memo, request }: IPerson) => {
     <li className="flex flex-col">
       <div className="flex w-full items-center justify-between whitespace-nowrap text-sm font-medium">
         <div className="flex cursor-pointer items-center">
-          {/* 프로필 사진 -- 공용 컴포넌트 사용 예정 */}
-          <span className="mr-[0.69rem] h-[38px] w-[38px] rounded-full bg-sub-color2" />
-          <p className="w-[4.5rem] truncate">{nickname}</p>
+          <ProfileImage src={src} label={false} size="small" />
+          <p className=" ml-[0.69rem] w-[4.5rem] truncate">{nickname}</p>
         </div>
         <textarea
           value={classStudentMemo}

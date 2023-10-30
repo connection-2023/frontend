@@ -1,5 +1,6 @@
 import { dummyClassRoster } from '@/constants/dummy';
 import { CommentSVG } from '@/icons/svg';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
 const ClassOverview = () => {
   return (
@@ -54,9 +55,8 @@ const ClassRoster = ({ id, src, nickname, applyCount }: IClassRoster) => {
   return (
     <li className="flex w-full items-center justify-between text-sm font-medium">
       <div className="flex cursor-pointer items-center">
-        {/* 이미지 사진 -- 공통 프로필 컴포넌트로 대체 예정 */}
-        <span className="mr-[0.69rem] h-[38px] w-[38px] rounded-full bg-sub-color2" />
-        <span className="w-25 truncate">{nickname}</span>
+        <ProfileImage src={src} label={false} size="small" />
+        <span className="w-25 ml-[0.69rem] truncate">{nickname}</span>
       </div>
       <div className="flex items-center gap-4 text-sub-color1">
         <span>{applyCount}회 신청</span>
