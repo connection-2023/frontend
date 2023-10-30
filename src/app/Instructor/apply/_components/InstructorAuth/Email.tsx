@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Label from './Label';
 import { Verification } from '@/types/types';
@@ -13,8 +14,15 @@ const Email = ({
   verification,
   defaultValue,
 }: EmailProps) => {
-  const { register } = useFormContext();
+  const { register, setValue } = useFormContext();
   const [emailFront, emailBack] = defaultValue.split('@');
+
+  useEffect(() => {
+    if (defaultValue) {
+      setValue('email-front', emailFront);
+      setValue('email-back', emailBack);
+    }
+  }, [defaultValue, setValue]);
 
   return (
     <li className="flex items-center">
@@ -59,6 +67,7 @@ focus:outline-sub-color1`}
           verification ? 'bg-sub-color2' : 'bg-black'
         }`}
         disabled={verification}
+        onClick={() => changeVerification('email', true)} //추후 수정 예정
       >
         이메일 변경
       </button>

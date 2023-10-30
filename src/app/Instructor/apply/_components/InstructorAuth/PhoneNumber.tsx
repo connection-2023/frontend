@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Label from './Label';
 import { Verification } from '@/types/types';
@@ -13,7 +14,13 @@ const PhoneNumber = ({
   verification,
   defaultValue,
 }: PhoneNumberProps) => {
-  const { register } = useFormContext();
+  const { register, setValue } = useFormContext();
+
+  useEffect(() => {
+    if (defaultValue) {
+      setValue('phoneNumber', defaultValue);
+    }
+  }, [defaultValue, setValue]);
 
   return (
     <li className="flex items-center ">
@@ -23,7 +30,6 @@ const PhoneNumber = ({
       </Label>
       <input
         type="number"
-        defaultValue={defaultValue}
         {...register('phoneNumber', {
           required: '휴대폰 번호',
           validate: {

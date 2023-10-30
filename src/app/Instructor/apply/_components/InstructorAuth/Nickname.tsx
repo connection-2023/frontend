@@ -10,7 +10,7 @@ interface NicknameProps {
 }
 
 const Nickname = ({ changeVerification, verification }: NicknameProps) => {
-  const { register, getValues, setFocus } = useFormContext();
+  const { register, getValues, setFocus, clearErrors } = useFormContext();
 
   const nickNameOverlapping = async () => {
     const nickname = getValues('nickname');
@@ -29,6 +29,7 @@ const Nickname = ({ changeVerification, verification }: NicknameProps) => {
     if (await getCheckNickname(nickname)) {
       toast.success('사용가능한 닉네임 입니다.');
       changeVerification('nickname', true);
+      clearErrors('nickname');
     } else {
       toast.error('중복된 닉네임 입니다.');
     }

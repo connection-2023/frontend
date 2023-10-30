@@ -8,7 +8,7 @@ import PhoneNumber from './InstructorAuth/PhoneNumber';
 import { Verification } from '@/types/types';
 
 const InstructorAuth = () => {
-  const { watch } = useFormContext();
+  const { watch, trigger } = useFormContext();
 
   const authUser = useStore((state) => state.authUser);
   const { email, phoneNumber } = authUser || {};
@@ -20,6 +20,17 @@ const InstructorAuth = () => {
     accountNumber: false,
   });
   // phoneNumber, accountNumber 추후 api 생기면 false 로 변경 및 인증 로직 추가 예정
+
+  useEffect(() => {
+    if (
+      verification.nickname &&
+      verification.email &&
+      verification.phoneNumber &&
+      verification.accountNumber
+    ) {
+      trigger();
+    }
+  }, [verification]);
 
   useEffect(() => {
     setVerification((prev) => ({

@@ -83,6 +83,7 @@ const AccountList = ({
             verification ? 'bg-sub-color2' : 'bg-black'
           }`}
           disabled={verification}
+          onClick={() => changeVerification('accountNumber', true)} //추후 수정 예정
         >
           인증하기
         </button>
