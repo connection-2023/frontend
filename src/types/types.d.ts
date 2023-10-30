@@ -84,3 +84,10 @@ export interface InstructorRegister {
   websiteUrls?: string[];
   etcGenres?: string[];
 }
+
+export interface Verification {
+  nickname: boolean;
+  email: boolean;
+  phoneNumber: boolean;
+  accountNumber: boolean;
+}

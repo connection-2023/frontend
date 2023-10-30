@@ -40,6 +40,8 @@ const ApplyPage = () => {
       ...instructorRegisterState.current,
       ...data,
     };
+
+    activeStep === 1 ? console.log('마지막') : nextStep();
   };
 
   const invalid = (data: Record<string, any>) => {
@@ -47,7 +49,6 @@ const ApplyPage = () => {
       key,
       ...value,
     }));
-    console.log(invalidList);
 
     setInvalidData(invalidList);
   };
@@ -96,10 +97,10 @@ const ApplyPage = () => {
 
       <form onSubmit={handleSubmit(onValid, invalid)} className="w-full">
         <button
-          className={`h-9 w-full cursor-pointer rounded-[0.31rem] text-white ${
+          className={`h-9 w-full rounded-[0.31rem] text-white ${
             isValid ? 'bg-sub-color1' : 'bg-sub-color2'
           }`}
-          disabled={isValid}
+          disabled={!isValid}
         >
           다음
         </button>

@@ -5,9 +5,7 @@ import {
   Merge,
   useFormContext,
 } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
 import { SNS_ITEMS } from '@/constants/constants';
-import { InstructorApplyState } from '@/recoil/Create/atoms';
 import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
 import SelectLocation from '@/components/SelectLocation/SelectLocation';
 import CustomEditor from '@/components/TextArea/CustomEditor';
@@ -20,16 +18,14 @@ const InstructorIntroduction = () => {
     formState: { errors },
   } = useFormContext();
 
-  const applyData = useRecoilValue(InstructorApplyState);
-
   return (
     <main className="my-10 flex flex-col gap-10">
       <section
-        id="instructorImg"
+        id="profileImageUrls"
         className="flex w-full flex-col border-b border-solid border-sub-color2 pb-10"
       >
         <Controller
-          name="instructorImg"
+          name="profileImageUrls"
           control={control}
           rules={{
             required: '이미지',
@@ -37,7 +33,7 @@ const InstructorIntroduction = () => {
           render={({ field }) => (
             <UploadImage
               onChange={field.onChange}
-              errors={errors.instructorImg}
+              errors={errors.profileImageUrls}
               situation="강사"
             />
           )}
@@ -45,13 +41,13 @@ const InstructorIntroduction = () => {
       </section>
 
       <IntroductionSection
-        dataName="instructorLocation"
+        dataName="regions"
         title="지역"
         required={true}
-        errors={errors.instructorLocation}
+        errors={errors.regions}
       >
         <Controller
-          name="instructorLocation"
+          name="regions"
           control={control}
           rules={{
             required: '지역',
@@ -61,13 +57,13 @@ const InstructorIntroduction = () => {
       </IntroductionSection>
 
       <IntroductionSection
-        dataName="instructorGenre"
+        dataName="genres"
         title="장르"
         required={true}
-        errors={errors.instructorGenre}
+        errors={errors.genres}
       >
         <Controller
-          name="instructorGenre"
+          name="genres"
           control={control}
           rules={{
             required: '장르',
