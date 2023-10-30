@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TransFormSVG } from '@/icons/svg';
-import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
+import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import useSession from '@/lib/useSession';
 import useStore from '@/store';
 

@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import {
-  KaKaoTalkSVG,
-  NaverSVG,
-  GoogleSVG,
-} from '../../../../public/icons/svg';
-import { SignInResponse, ISignUp } from '@/types/auth';
+import { KaKaoTalkSVG, NaverSVG, GoogleSVG } from '@/icons/svg';
 import { checkUserNickname } from '@/lib/apis/userApi';
+import { SignInResponse, ISignUp } from '@/types/auth';
 
 const inputStyle =
   'w-36 h-8 rounded-[0.31rem] px-3 py-2 outline outline-1 outline-sub-color2';

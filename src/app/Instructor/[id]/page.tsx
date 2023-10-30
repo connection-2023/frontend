@@ -1,4 +1,13 @@
 import Link from 'next/link';
+import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
+import { dummyInstructor } from '@/constants/dummy';
+import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
+import { getInstructorPost } from '@/lib/apis/instructorPostApis';
+import {
+  formatLocationToString,
+  formatGenreToString,
+} from '@/utils/parseUtils';
+import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import ClassList from './_components/ClassList';
 import InstructorCarousel from './_components/InstructorCarousel';
 import ManagementButton from './_components/ManagementButton';
@@ -7,15 +16,6 @@ import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
 import ReviewComment from '@/components/Review/ReviewComment';
 import Sharing from '@/components/Sharing/Sharing';
-import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import { dummyInstructor } from '@/constants/dummy';
-import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
-import { getInstructorPost } from '@/lib/apis/instructorPostApis';
-import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
-import {
-  formatLocationToString,
-  formatGenreToString,
-} from '@/utils/parseUtils';
 
 const h2Style = 'mb-2 text-lg font-bold';
 

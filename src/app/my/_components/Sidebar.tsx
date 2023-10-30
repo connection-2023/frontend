@@ -38,7 +38,7 @@ const Sidebar = ({
       : 'text-sub-color2 hover:text-sub-color3';
 
   return (
-    <aside className="rounded-admin flex max-w-[19.5rem] flex-col items-start whitespace-nowrap bg-white px-4 py-10 shadow-float">
+    <aside className="flex max-w-[19.5rem] flex-col items-start whitespace-nowrap rounded-admin bg-white px-4 py-10 shadow-float">
       <div className="mb-4 flex items-start gap-2">
         <div className="relative mb-4 h-[35px] w-[35px] rounded-full">
           {profileImg ? (
