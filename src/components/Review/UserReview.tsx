@@ -1,7 +1,7 @@
 import Review from './Review';
 import Profile from '../ProfileImage/ProfileImage';
 
-interface ReviewCommentProps {
+interface UserReviewProps {
   src: string | null;
   nickname: string;
   average: number;
@@ -10,14 +10,14 @@ interface ReviewCommentProps {
   date: string;
 }
 
-const ReviewComment = ({
+const UserReview = ({
   src,
   nickname,
   average,
   content,
   date,
   title,
-}: ReviewCommentProps) => {
+}: UserReviewProps) => {
   return (
     <div className="w-full border-b border-solid border-[#D8D8D8] text-sm">
       <div className="mb-3 grid w-full auto-cols-min grid-cols-3 grid-cols-[min-content_auto_auto] grid-rows-2 items-center">
@@ -34,4 +34,4 @@ const ReviewComment = ({
   );
 };
 
-export default ReviewComment;
+export default UserReview;

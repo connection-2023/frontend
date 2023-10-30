@@ -5,7 +5,7 @@ import ManagementButton from './_components/ManagementButton';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
+import UserReview from '@/components/Review/UserReview';
 import Sharing from '@/components/Sharing/Sharing';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { dummyInstructor } from '@/constants/dummy';
@@ -201,7 +201,7 @@ const InstructorDetailPage = async ({
         </h2>
         <div className="flex flex-col gap-6">
           {review.reviewer.map((review) => (
-            <ReviewComment
+            <UserReview
               key={review.nickname}
               src={review.src}
               nickname={review.nickname}
