@@ -49,8 +49,13 @@ const InstructorIntroduction = () => {
         <Controller
           name="regions"
           control={control}
+          defaultValue={{}}
           rules={{
-            required: '지역',
+            validate: (value) => {
+              if (Object.keys(value).length === 0) {
+                return '지역';
+              }
+            },
           }}
           render={({ field }) => <SelectLocation onChange={field.onChange} />}
         />

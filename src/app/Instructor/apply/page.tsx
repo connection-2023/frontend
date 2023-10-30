@@ -12,7 +12,7 @@ const steps = [
 ];
 
 const ApplyPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const instructorRegisterState = useRef<InstructorRegister>({});
   const formMethods = useForm({ shouldFocusError: false });
@@ -40,6 +40,7 @@ const ApplyPage = () => {
       ...instructorRegisterState.current,
       ...data,
     };
+    console.log(data);
 
     activeStep === 1 ? console.log('마지막') : nextStep();
   };
@@ -100,9 +101,8 @@ const ApplyPage = () => {
           className={`h-9 w-full rounded-[0.31rem] text-white ${
             isValid ? 'bg-sub-color1' : 'bg-sub-color2'
           }`}
-          disabled={!isValid}
         >
-          다음
+          {activeStep === 1 ? '등록' : '다음'}
         </button>
       </form>
 
