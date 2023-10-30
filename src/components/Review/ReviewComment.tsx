@@ -1,5 +1,5 @@
 import Review from './Review';
-import Profile from '../Profile/Profile';
+import Profile from '../ProfileImage/ProfileImage';
 
 interface ReviewCommentProps {
   src: string | null;
@@ -21,8 +21,8 @@ const ReviewComment = ({
   return (
     <div className="w-full border-b border-solid border-[#D8D8D8] text-sm">
       <div className="mb-3 grid w-full auto-cols-min grid-cols-3 grid-cols-[min-content_auto_auto] grid-rows-2 items-center">
-        <div className="row-span-2 mr-1 flex">
-          <Profile size={35} nickname={nickname} src={src} label={false} />
+        <div className="row-span-2 mr-1 flex w-[34px]">
+          <Profile size="small" nickname={nickname} src={src} label={false} />
         </div>
         <p>{nickname}</p>
         <span className="justify-self-end text-sub-color2">{date}</span>
