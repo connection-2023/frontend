@@ -150,7 +150,9 @@ const InstructorDetailPage = async ({
 
       {/* 인스타그램 섹션 */}
       <section className="flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
-        {lecturerInstagramPostUrl.map((insta) => InstagramIframe(insta.url))}
+        {lecturerInstagramPostUrl.map((insta, index) => (
+          <InstagramIframe key={index} link={insta.url} />
+        ))}
       </section>
 
       {/* 강사소개 섹션 */}
@@ -213,7 +215,7 @@ const InstructorDetailPage = async ({
 
 export default InstructorDetailPage;
 
-const InstagramIframe = (link: string) => {
+const InstagramIframe = ({ link }: { link: string }) => {
   const urlObj = new URL(link);
   urlObj.search = '';
   urlObj.hash = '';
