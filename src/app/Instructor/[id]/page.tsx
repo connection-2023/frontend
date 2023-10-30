@@ -116,7 +116,9 @@ const InstructorDetailPage = async ({
                   }`}
                 />
               </dt>
-              <dd>{youtubeUrl}</dd>
+              <dd className={`${youtubeUrl && 'underline'}`}>
+                {youtubeUrl.replace('https://', '')}
+              </dd>
             </Link>
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">소속</dt>
@@ -134,7 +136,9 @@ const InstructorDetailPage = async ({
                   }`}
                 />
               </dt>
-              <dd>{homepageUrl}</dd>
+              <dd className={`${homepageUrl && 'underline'}`}>
+                {homepageUrl.replace('https://', '')}
+              </dd>
             </Link>
           </dl>
         </div>
