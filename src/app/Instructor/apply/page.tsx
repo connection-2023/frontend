@@ -12,7 +12,7 @@ const steps = [
 ];
 
 const ApplyPage = () => {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const instructorRegisterState = useRef<InstructorRegister>({});
   const formMethods = useForm({ shouldFocusError: false });
@@ -99,8 +99,9 @@ const ApplyPage = () => {
       <form onSubmit={handleSubmit(onValid, invalid)} className="w-full">
         <button
           className={`h-9 w-full rounded-[0.31rem] text-white ${
-            isValid ? 'bg-sub-color1' : 'bg-sub-color2'
+            activeStep === 1 || isValid ? 'bg-sub-color1' : 'bg-sub-color2'
           }`}
+          disabled={activeStep !== 1 && !isValid}
         >
           {activeStep === 1 ? '등록' : '다음'}
         </button>
