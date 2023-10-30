@@ -12,6 +12,10 @@ import { dummyInstructor } from '@/constants/dummy';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import {
+  formatLocationToString,
+  formatGenreToString,
+} from '@/utils/parseUtils';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -41,9 +45,8 @@ const InstructorDetailPage = async ({
     affiliation,
   } = data;
 
-  //lecturerDanceGenre.map((genre) => genre.danceCategory.genre)
+  const { review, classList } = dummyInstructor;
 
-  const { genre, review, classList } = dummyInstructor;
   return (
     <main className="flex w-screen flex-col items-center">
       {/* 강의 상세 헤더 섹션 */}
@@ -81,12 +84,7 @@ const InstructorDetailPage = async ({
               <dt className="font-bold text-sub-color1">지역</dt>
               <dd>
                 {/* 추후 데이터 반환 타입 변경 시 변경 예정 */}
-                {lecturerRegion
-                  .map((item: any) => {
-                    const { administrativeDistrict, district } = item.region;
-                    return `${administrativeDistrict} ${district || ''}`;
-                  })
-                  .join(', ')}
+                {formatLocationToString(lecturerRegion)}
               </dd>
             </div>
             <div className="flex gap-3">
@@ -101,7 +99,8 @@ const InstructorDetailPage = async ({
             </div>
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">장르</dt>
-              <dd>{genre.join(', ')}</dd>
+              {/* 추후 데이터 반환 타입 변경 시 변경 예정 */}
+              <dd>{formatGenreToString(lecturerDanceGenre)}</dd>
             </div>
             <Link
               href={youtubeUrl || ''}
