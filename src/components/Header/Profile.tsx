@@ -8,7 +8,11 @@ import ProfileMenu from './ProfileMenu';
 
 const Profile = () => {
   const user = useSession();
-  const profileImg = user?.userProfileImage?.imageUrl || null;
+  const profileImg = user
+    ? 'userProfileImage' in user
+      ? user.userProfileImage?.imageUrl
+      : user.profileCardImageUrl
+    : null;
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
 
