@@ -5,11 +5,13 @@ import { Verification } from '@/types/types';
 interface PhoneNumberProps {
   changeVerification: (key: keyof Verification, value: boolean) => void;
   verification: boolean;
+  defaultValue?: string;
 }
 
 const PhoneNumber = ({
   changeVerification,
   verification,
+  defaultValue,
 }: PhoneNumberProps) => {
   const { register } = useFormContext();
 
@@ -21,6 +23,7 @@ const PhoneNumber = ({
       </Label>
       <input
         type="number"
+        defaultValue={defaultValue}
         {...register('phoneNumber', {
           required: '휴대폰 번호',
           validate: {
@@ -38,6 +41,7 @@ focus:outline-sub-color1`}
           verification ? 'bg-sub-color2' : 'bg-black'
         }`}
         disabled={verification}
+        onClick={() => changeVerification('phoneNumber', true)} //추후 수정 예정
       >
         인증번호 전송
       </button>

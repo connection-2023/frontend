@@ -1,21 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import useStore from '@/store';
 import AccountList from './InstructorAuth/AccountList';
 import Email from './InstructorAuth/Email';
 import Nickname from './InstructorAuth/Nickname';
-import PhoneNumber from './InstructorAuth/phoneNumber';
+import PhoneNumber from './InstructorAuth/PhoneNumber';
 import { Verification } from '@/types/types';
 
 const InstructorAuth = () => {
   const { watch } = useFormContext();
 
+  const authUser = useStore((state) => state.authUser);
+  const { email, phoneNumber } = authUser || {};
+
   const [verification, setVerification] = useState({
     nickname: false,
-    email: true,
-    phoneNumber: true,
-    accountNumber: true,
+    email: false,
+    phoneNumber: false,
+    accountNumber: false,
   });
   // phoneNumber, accountNumber 추후 api 생기면 false 로 변경 및 인증 로직 추가 예정
+
+  useEffect(() => {
+    setVerification((prev) => ({
+      ...prev,
+      email: !!email,
+      phoneNumber: !!phoneNumber,
+    }));
+  }, [email, phoneNumber]);
 
   useEffect(() => {
     const subscription = watch((_, { name }) => {
@@ -42,12 +54,14 @@ const InstructorAuth = () => {
         <PhoneNumber
           changeVerification={changeVerification}
           verification={verification.phoneNumber}
+          defaultValue={phoneNumber}
         />
         {/* 추후 인증번호 로직 추가 예정 */}
 
         <Email
           changeVerification={changeVerification}
           verification={verification.email}
+          defaultValue={email || ''}
         />
         {/* 추후 이메일 인증 로직 추가 예정 */}
       </ul>

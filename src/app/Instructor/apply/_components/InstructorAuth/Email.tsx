@@ -5,10 +5,16 @@ import { Verification } from '@/types/types';
 interface EmailProps {
   changeVerification: (key: keyof Verification, value: boolean) => void;
   verification: boolean;
+  defaultValue: string;
 }
 
-const Email = ({ changeVerification, verification }: EmailProps) => {
+const Email = ({
+  changeVerification,
+  verification,
+  defaultValue,
+}: EmailProps) => {
   const { register } = useFormContext();
+  const [emailFront, emailBack] = defaultValue.split('@');
 
   return (
     <li className="flex items-center">
@@ -18,6 +24,7 @@ const Email = ({ changeVerification, verification }: EmailProps) => {
       </Label>
       <input
         type="email"
+        defaultValue={emailFront}
         {...register('email-front', {
           required: '이메일',
           validate: {
@@ -33,6 +40,7 @@ focus:outline-sub-color1`}
       <span className="mx-2">@</span>
       <input
         type="email"
+        defaultValue={emailBack}
         {...register('email-back', {
           required: '이메일',
           validate: {
