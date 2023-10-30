@@ -1,15 +1,7 @@
 import { parse } from 'date-fns';
 import Image from 'next/image';
-import { CLASS_SECTIONS } from '@/constants/constants';
-import { dummyClass, dummyImgURL } from '@/constants/dummy';
-import {
-  LocationSVG,
-  TimeSVG,
-  GroupSVG,
-  LevelSVG,
-  BasicCalendarSVG,
-} from '@/icons/svg';
 import Apply from './_components/Apply';
+import DiscountCouponBanner from './_components/DiscountCouponBanner';
 import ProfileButtons from './_components/ProfileButtons';
 import Carousel from '@/components/Carousel/Carousel';
 import Notice from '@/components/ClassNotice/Notice';
@@ -21,6 +13,15 @@ import Review from '@/components/Review/Review';
 import ReviewComment from '@/components/Review/ReviewComment';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Sharing from '@/components/Sharing/Sharing';
+import { CLASS_SECTIONS } from '@/constants/constants';
+import { dummyClass, dummyImgURL } from '@/constants/dummy';
+import {
+  LocationSVG,
+  TimeSVG,
+  GroupSVG,
+  LevelSVG,
+  BasicCalendarSVG,
+} from '@/icons/svg';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -46,7 +47,7 @@ const ClassDetailPage = () => {
     studioName,
   } = dummyClass;
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto  mt-[1.38rem] grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
+    <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
       <section className="col-span-3 mb-4 flex w-full flex-col items-center shadow-float">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
@@ -83,11 +84,15 @@ const ClassDetailPage = () => {
           </div>
         </h1>
         {/* Review */}
-        <div className="mb-4 mt-2 flex gap-1">
+        <div className="mb-6 mt-2 flex gap-1">
           <Review average={review.average} />
           <span className="text-sm font-bold text-sub-color2">
             ({review.average})
           </span>
+        </div>
+        {/* 쿠폰 배너 */}
+        <div className="w-full max-w-[40rem] border-b border-solid border-[#D9D9D9] pb-3">
+          <DiscountCouponBanner discountPrice="10,000" />
         </div>
 
         <hr className="mb-6 h-1 w-full max-w-[40rem]" />

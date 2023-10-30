@@ -22,6 +22,7 @@ import CouponSVG from './coupon.svg';
 import CropSVG from './crop.svg';
 import DashboardSVG from './dashboard.svg';
 import DoubleRightSVG from './doubleRight.svg';
+import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
@@ -63,6 +64,7 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   DashboardSVG,
+  DownloadSVG,
   NotFoundSVG,
   ReportSVG,
   BookmarkSVG,
