@@ -1,9 +1,11 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { CITY_FULL_NAME, WARD_LIST } from '@/constants/administrativeDistrict';
 import { DANCE_GENRE } from '@/constants/constants';
-import { postMultipleImage, postSingleImage } from '@/lib/apis/imageApi';
+import { postMultipleImage } from '@/lib/apis/imageApi';
+import { instructorRegister } from '@/lib/apis/instructorApi';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
@@ -96,7 +98,7 @@ const ApplyPage = () => {
       email,
       nickname,
       etcGenres,
-      newGenres,
+      genres: newGenres,
       regions: newRegions,
       phoneNumber,
       profileCardImageUrl: uploadImgList[0], //추후 강사 프로필 이미지 넣는 곳 생기면 수정
@@ -112,8 +114,16 @@ const ApplyPage = () => {
         instagramPostUrls2,
       ],
     };
-
-    console.log(instructorData);
+    try {
+      const response = await instructorRegister(instructorData);
+      if (response.status !== 201) {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
   };
 
   const onValid = (data: any) => {

@@ -27,3 +27,48 @@ export const getCheckNickname = async (nickname: string) => {
     throw error;
   }
 };
+
+interface InstructorRegister {
+  profileImageUrls: string[];
+  nickname: string;
+  email: string;
+  phoneNumber: string;
+  profileCardImageUrl?: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
+  homepageUrl?: string;
+  affiliation?: string;
+  introduction: string;
+  experience?: string;
+  regions: string[];
+  genres: string[];
+  instagramPostUrls?: string[];
+  etcGenres?: string[];
+}
+
+export const instructorRegister = async (data: InstructorRegister) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/instructors/register`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `강사 등록 오류: ${errorData.message || ''}, status: ${
+          response.status
+        }`,
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('강사 등록 오류', error);
+    throw error;
+  }
+};

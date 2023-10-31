@@ -12,7 +12,7 @@ interface NicknameProps {
 const Nickname = ({ changeVerification, verification }: NicknameProps) => {
   const { register, getValues, setFocus, clearErrors } = useFormContext();
 
-  const nickNameOverlapping = async () => {
+  const checkNicknameAvailability = async () => {
     const nickname = getValues('nickname');
 
     if (nickname.length < 2 || nickname.length > 12) {
@@ -26,12 +26,20 @@ const Nickname = ({ changeVerification, verification }: NicknameProps) => {
       return toast.error('올바른 닉네임을 작성 해주세요.');
     }
 
-    if (await getCheckNickname(nickname)) {
-      toast.success('사용가능한 닉네임 입니다.');
-      changeVerification('nickname', true);
-      clearErrors('nickname');
-    } else {
-      toast.error('중복된 닉네임 입니다.');
+    try {
+      if (await getCheckNickname(nickname)) {
+        toast.success('사용가능한 닉네임 입니다.');
+        changeVerification('nickname', true);
+        clearErrors('nickname');
+      } else {
+        toast.error('중복된 닉네임 입니다.');
+      }
+    } catch (error) {
+      console.error('닉네임 중복 검사 중 에러 발생', error);
+
+      toast.error(
+        '닉네임 중복 검사 중 에러가 발생했습니다. 다시 시도해 주세요.',
+      );
     }
   };
 
@@ -59,7 +67,7 @@ const Nickname = ({ changeVerification, verification }: NicknameProps) => {
         className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-[0.31rem] px-2 py-1 text-white  ${
           verification ? 'bg-sub-color2' : 'bg-black'
         } `}
-        onClick={nickNameOverlapping}
+        onClick={checkNicknameAvailability}
         disabled={verification}
       >
         중복 확인
