@@ -29,6 +29,7 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
       const profileRes = await getMyProfile(data.userAccessToken);
 
       store.setAuthUser(profileRes.data.myProfile);
+      store.setUserType('user');
       toast.success('로그인 성공!');
     } else if (status === 201) {
       handleUserInfo({ ...data, idToken });
@@ -45,6 +46,7 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
       const profileRes = await getMyProfile(data.userAccessToken);
 
       store.setAuthUser(profileRes.data.myProfile);
+      store.setUserType('user');
       toast.success('로그인 성공!');
     } else if (status === 201) {
       handleUserInfo({ ...data, idToken });

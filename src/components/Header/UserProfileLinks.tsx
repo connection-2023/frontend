@@ -1,12 +1,8 @@
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, CommentSVG, SearchSVG } from '@/icons/svg';
-import { getLogout } from '@/lib/apis/userApi';
 import useSession from '@/lib/useSession';
-import useStore from '@/store';
 import Profile from './Profile';
 import AuthModal from '@/components/Header/Auth/AuthModal';
 
@@ -14,22 +10,7 @@ const UserProfileLinks = () => {
   const { alarmCount, commentCount } = dummyUserInfo;
   const [isOpened, setIsOpened] = useState(false);
 
-  const store = useStore();
   const user = useSession();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    store.setRequestLoading(true);
-    try {
-      const { status } = await getLogout();
-      if (status === 200) toast.success('로그아웃 되었습니다!');
-    } catch (error) {
-      toast.error('로그아웃에 실패하였습니다!');
-    } finally {
-      store.reset();
-      router.push('/');
-    }
-  };
 
   const handleOpened = () => {
     setIsOpened(true);
@@ -71,7 +52,7 @@ const UserProfileLinks = () => {
             </span>
           </button>
 
-          <Profile handleLogout={handleLogout} />
+          <Profile />
         </>
       )}
 

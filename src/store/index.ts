@@ -1,11 +1,13 @@
 'use client';
 import { create } from 'zustand';
-import { userProfile } from '@/types/auth';
+import { userProfile, userType, instructorProfile } from '@/types/auth';
 
 type Store = {
-  authUser: userProfile | null;
+  authUser: userProfile | instructorProfile | null;
+  userType: userType | null;
   requestLoading: boolean;
-  setAuthUser: (user: userProfile | null) => void;
+  setUserType: (type: userType | null) => void;
+  setAuthUser: (user: userProfile | instructorProfile | null) => void;
   setAuthUserImage: (imageUrl: string) => void;
   setRequestLoading: (isLoading: boolean) => void;
   reset: () => void;
@@ -13,7 +15,9 @@ type Store = {
 
 const useStore = create<Store>((set, get) => ({
   authUser: null,
+  userType: null,
   requestLoading: false,
+  setUserType: (type) => set((state) => ({ ...state, userType: type })),
   setAuthUser: (user) => set((state) => ({ ...state, authUser: user })),
   setAuthUserImage(imageUrl) {
     const currentUser = get().authUser;

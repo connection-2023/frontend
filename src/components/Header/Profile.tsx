@@ -7,9 +7,13 @@ import useSession from '@/lib/useSession';
 import ProfileMenu from './ProfileMenu';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
-const Profile = ({ handleLogout }: { handleLogout: () => void }) => {
+const Profile = () => {
   const user = useSession();
-  const profileImg = user?.userProfileImage?.imageUrl || null;
+  const profileImg = user
+    ? 'userProfileImage' in user
+      ? user.userProfileImage?.imageUrl
+      : user.profileCardImageUrl
+    : null;
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -37,7 +41,7 @@ const Profile = ({ handleLogout }: { handleLogout: () => void }) => {
         />
       </div>
 
-      {isProfileMenu && <ProfileMenu handleLogout={handleLogout} />}
+      {isProfileMenu && <ProfileMenu />}
     </div>
   );
 };

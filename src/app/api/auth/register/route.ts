@@ -15,9 +15,7 @@ export const POST = async (request: Request) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(requestData),
-  });
+  }).then((data) => data.json());
 
-  const responseData = await serverResponse.json();
-
-  return NextResponse.json(responseData);
+  return NextResponse.json(serverResponse);
 };

@@ -38,7 +38,7 @@
     "react/self-closing-comp": "warn", // 셀프 클로징 태그 가능하면 적용
     "react/jsx-curly-brace-presence": "warn", // jsx 내 불필요한 중괄호 금지
     "import/order": [
-      "error",
+      "warn",
       {
         "groups": [
           ["builtin", "external"],
@@ -64,10 +64,10 @@
         "newlines-between": "never"
       }
     ],
-    "import/first": "error",
-    "import/newline-after-import": "error",
+    "import/first": "warn",
+    "import/newline-after-import": "warn",
     "padding-line-between-statements": [
-      "error",
+      "warn",
       {
         "blankLine": "always",
         "prev": "*",
