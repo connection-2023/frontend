@@ -10,7 +10,6 @@ export const POST = async (request: NextRequest) => {
   const folder = searchParams.get('folder');
 
   const formData = await request.formData();
-  console.log(formData);
 
   const response = await fetch(END_POINT + '/uploads/' + folder + '/image', {
     method: 'POST',

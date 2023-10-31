@@ -81,7 +81,7 @@ const InstructorIntroduction = () => {
 
       <IntroductionSection
         labelId="affiliation"
-        dataName="instructorAffiliation"
+        dataName="affiliation"
         title="소속"
         required={false}
       >
@@ -90,7 +90,7 @@ const InstructorIntroduction = () => {
           type="text"
           className="rounded-[0.31rem] px-4 py-2 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
           placeholder="현재 속하고 있는 크루, 학원명 등을 적어주세요."
-          {...register('instructorAffiliation')}
+          {...register('affiliation')}
         />
       </IntroductionSection>
 
@@ -117,14 +117,14 @@ const InstructorIntroduction = () => {
             type="text"
             className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
             placeholder="게시물 주소 입력"
-            {...register('instructorInstagramLink' + index)}
+            {...register('instagramPostUrls' + index)}
           />
         ))}
       </section>
 
       <CustomEditor
         title="강사소개"
-        dataName="applyIntroduction"
+        dataName="introduction"
         placeholder="어떤 목표를 두고 수업을 진행하는지, 개인적인 수업 방식, 본인의 특징, 이야기, 포부 등
         댄스 강사로서 소개를 자유롭게 작성해주세요."
         height="471px"
@@ -134,7 +134,7 @@ const InstructorIntroduction = () => {
 
       <CustomEditor
         title="강사경력"
-        dataName="applyCareer"
+        dataName="experience"
         placeholder="본인의 경력을 작성해주세요."
         height="303px"
         maxLength={500}

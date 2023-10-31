@@ -19,21 +19,21 @@ const Email = ({
 
   useEffect(() => {
     if (defaultValue) {
-      setValue('email-front', emailFront);
-      setValue('email-back', emailBack);
+      setValue('emailFront', emailFront);
+      setValue('emailBack', emailBack);
     }
   }, [defaultValue, setValue]);
 
   return (
     <li className="flex items-center">
-      <Label htmlFor="email-front" isNormal={true}>
+      <Label htmlFor="emailFront" isNormal={true}>
         이메일
         <span className="text-sub-color1">*</span>
       </Label>
       <input
         type="email"
         defaultValue={emailFront}
-        {...register('email-front', {
+        {...register('emailFront', {
           required: '이메일',
           validate: {
             isVerified: () => {
@@ -41,7 +41,7 @@ const Email = ({
             },
           },
         })}
-        id="email-front"
+        id="emailFront"
         className={`h-7 w-full max-w-[11.4rem] rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2
 focus:outline-sub-color1`}
       />
@@ -49,7 +49,7 @@ focus:outline-sub-color1`}
       <input
         type="email"
         defaultValue={emailBack}
-        {...register('email-back', {
+        {...register('emailBack', {
           required: '이메일',
           validate: {
             isVerified: () => {
@@ -57,7 +57,7 @@ focus:outline-sub-color1`}
             },
           },
         })}
-        id="email-back"
+        id="emailBack"
         className={`h-7 w-full max-w-[11.4rem] rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2
 focus:outline-sub-color1`}
       />

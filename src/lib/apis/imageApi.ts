@@ -1,36 +1,56 @@
 import { DOMAIN } from '@/constants/constants';
 
 export const postSingleImage = async (image: File, folder: string) => {
-  const formData = new FormData();
-  formData.append('image', image);
+  try {
+    const formData = new FormData();
+    formData.append('image', image);
 
-  const response = await fetch(
-    `${DOMAIN}/api/image/single?folder=${encodeURIComponent(folder)}`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      body: formData,
-    },
-  ).then((data) => data.json());
+    const response = await fetch(
+      `${DOMAIN}/api/image/single?folder=${encodeURIComponent(folder)}`,
+      {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
+      },
+    );
 
-  return response;
+    if (!response.ok) {
+      throw new Error('단일 이미지 업로드 실패');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const postMultipleImage = async (images: File[], folder: string) => {
-  const formData = new FormData();
+  try {
+    const formData = new FormData();
 
-  images.forEach((image) => {
-    formData.append('images', image);
-  });
+    images.forEach((image) => {
+      formData.append('images', image);
+    });
 
-  const response = await fetch(
-    `${DOMAIN}/api/image/multiple?folder=${encodeURIComponent(folder)}`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      body: formData,
-    },
-  ).then((data) => data.json());
+    const response = await fetch(
+      `${DOMAIN}/api/image/multiple?folder=${encodeURIComponent(folder)}`,
+      {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
+      },
+    );
 
-  return response;
+    if (!response.ok) {
+      throw new Error('다중 이미지 업로드 실패');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };

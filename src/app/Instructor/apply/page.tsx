@@ -1,10 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { CITY_FULL_NAME, WARD_LIST } from '@/constants/administrativeDistrict';
+import { DANCE_GENRE } from '@/constants/constants';
 import { postMultipleImage, postSingleImage } from '@/lib/apis/imageApi';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { InstructorApplyData } from '@/types/instructor';
 import { ErrorMessage, InstructorRegister } from '@/types/types';
 
 const steps = [
@@ -13,7 +16,7 @@ const steps = [
 ];
 
 const ApplyPage = () => {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const instructorRegisterState = useRef<InstructorRegister>({});
   const formMethods = useForm({ shouldFocusError: false });
@@ -36,19 +39,92 @@ const ApplyPage = () => {
     formState: { isValid },
   } = formMethods;
 
-  const submit = (data: any) => {
-    const { profileImageUrls } = data;
+  const submit = async (data: InstructorApplyData) => {
+    const {
+      profileImageUrls,
+      emailFront,
+      emailBack,
+      genres,
+      regions,
+      nickname,
+      phoneNumber,
+      youtubeUrl,
+      instagramUrl,
+      homepageUrl,
+      affiliation,
+      introduction,
+      experience,
+      instagramPostUrls0,
+      instagramPostUrls1,
+      instagramPostUrls2,
+    } = data;
 
+    // 이미지 데이터 처리 부분
     const imgFileList = profileImageUrls.map(({ file }) => file);
-    postMultipleImage(imgFileList, 'instructor');
+    const uploadImgList = await postMultipleImage(imgFileList, 'instructor');
+
+    // 이메일 합치는 부분
+    const email = emailFront + '@' + emailBack;
+
+    // 장르 분할 시키는 부분
+    const { newGenres, etcGenres } = genres.reduce(
+      (acc, genre) => {
+        if (DANCE_GENRE.includes(genre)) {
+          acc.newGenres.push(genre);
+        } else {
+          acc.etcGenres.push(genre);
+        }
+        return acc;
+      },
+      { newGenres: [] as string[], etcGenres: [] as string[] },
+    );
+
+    // 지역 분할 시키는 부분
+
+    const newRegions = [];
+
+    for (const [key, value] of Object.entries(regions)) {
+      if (key === '온라인') {
+        newRegions.push('온라인');
+      } else if (key === '세종') {
+        newRegions.push('세종특별자치시');
+      } else if (value.length === WARD_LIST[key].length) {
+        newRegions.push(CITY_FULL_NAME[key] + ' 전 지역');
+      } else {
+        value.forEach((value) => {
+          newRegions.push(CITY_FULL_NAME[key] + ' ' + value);
+        });
+      }
+    }
+
+    const instructorData = {
+      profileImageUrls: uploadImgList,
+      email,
+      nickname,
+      etcGenres,
+      newGenres,
+      regions: newRegions,
+      phoneNumber,
+      profileCardImageUrl: uploadImgList[0], //추후 강사 프로필 이미지 넣는 곳 생기면 수정
+      youtubeUrl,
+      instagramUrl,
+      homepageUrl,
+      affiliation,
+      introduction,
+      experience,
+      instagramPostUrls: [
+        instagramPostUrls0,
+        instagramPostUrls1,
+        instagramPostUrls2,
+      ],
+    };
   };
 
   const onValid = (data: any) => {
     instructorRegisterState.current = {
       ...instructorRegisterState.current,
       ...data,
-    };
-    console.log(data);
+    }; // 추후 삭제해도 괜찮을 듯?
 
     activeStep === 1 ? submit(data) : nextStep();
   };
