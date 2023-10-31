@@ -10,7 +10,6 @@ import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Sharing from '@/components/Sharing/Sharing';
 import { CLASS_SECTIONS } from '@/constants/constants';
@@ -21,9 +20,9 @@ import {
   GroupSVG,
   LevelSVG,
   BasicCalendarSVG,
-  StarSVG,
 } from '@/icons/svg';
 import ResponsiveApply from './_components/ResponsiveApply';
+import ClassReviewSection from './_components/ClassReviewSection';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -234,33 +233,7 @@ const ClassDetailPage = () => {
         </section>
 
         {/* 클래스 후기 */}
-        <section id="review-section" className="mb-20 scroll-mt-16">
-          <h2 className={`mb-6 flex items-center scroll-smooth ${h2Style}`}>
-            클래스 후기 {review.count}건
-            <div className="ml-3 hidden md:block">
-              <Review average={review.average} />
-            </div>
-            <StarSVG
-              width="15"
-              height="14"
-              className="ml-3 fill-sub-color1 sm:block md:hidden"
-            />
-            <span className="ml-1 text-sub-color2">({review.average})</span>
-          </h2>
-          <div className="flex flex-col gap-6">
-            {review.reviewer.map((review) => (
-              <ReviewComment
-                key={review.nickname}
-                src={review.src}
-                nickname={review.nickname}
-                average={review.average}
-                content={review.content}
-                date={review.date}
-                title={review.title}
-              />
-            ))}
-          </div>
-        </section>
+        <ClassReviewSection />
       </section>
 
       <section className="hidden max-w-[17rem] md:block">
