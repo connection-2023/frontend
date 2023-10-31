@@ -1,9 +1,9 @@
 import { StoryObj, Meta } from '@storybook/react';
-import ReviewComment from './ReviewComment';
+import UserReview from './UserReview';
 
-const meta: Meta<typeof ReviewComment> = {
-  title: 'Components/ReviewComment',
-  component: ReviewComment,
+const meta: Meta<typeof UserReview> = {
+  title: 'Components/UserReview',
+  component: UserReview,
   tags: ['autodocs'],
   argTypes: {},
   args: {
@@ -17,8 +17,8 @@ const meta: Meta<typeof ReviewComment> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ReviewComment>;
+type Story = StoryObj<typeof UserReview>;
 
 export const Default: Story = {
-  render: (args) => <ReviewComment {...args} />,
+  render: (args) => <UserReview {...args} />,
 };

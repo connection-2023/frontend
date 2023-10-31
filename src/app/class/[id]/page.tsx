@@ -18,7 +18,7 @@ import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
+import UserReview from '@/components/Review/UserReview';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Sharing from '@/components/Sharing/Sharing';
 
@@ -235,7 +235,7 @@ const ClassDetailPage = () => {
           </h2>
           <div className="flex flex-col gap-6">
             {review.reviewer.map((review) => (
-              <ReviewComment
+              <UserReview
                 key={review.nickname}
                 src={review.src}
                 nickname={review.nickname}

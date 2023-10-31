@@ -4,51 +4,40 @@ import { StarSVG } from '@/../public/icons/svg';
 interface ReviewProps {
   average: number;
   count?: number;
+  size?: 'regular' | 'small';
 }
 
-export const calculateStarArray = (average: number) =>
-  Array.from({ length: 5 }, (_, i) => {
-    if (i < Math.floor(average)) return 1;
-    if (i === Math.floor(average)) return +(average % 1).toFixed(2);
-    return 0;
-  });
-
-const Star = ({
-  fill,
-  className = '',
-}: {
-  fill: string;
-  className?: string;
-}) => (
-  <StarSVG width={15} height={14} className={`fill-${fill} ${className}`} />
-);
-
-const Review = ({ average, count }: ReviewProps) => {
+const Review = ({ average, count, size = 'regular' }: ReviewProps) => {
   const starArray = calculateStarArray(average);
   const key = nanoid();
+  const sizeStyles = {
+    small: 'w-[11px] h-[10px]',
+    regular: 'w-[15px] h-[14px]',
+  };
+
   return (
     <div className="flex items-center">
-      <div className="flex gap-1">
+      <div className="flex gap-0.5">
         {starArray.map((star, i) =>
           star === 1 ? (
-            <Star key={key + i} fill="sub-color1" />
+            <Star key={key + i} fill="sub-color1" size={size} />
           ) : star > 0 ? (
             <div
               key={key + i}
-              className="relative h-[14px] w-[15px] overflow-hidden"
+              className={`relative ${sizeStyles[size]} overflow-hidden`}
             >
-              <Star fill="[#D8D8D8]" className="absolute" />
+              <Star fill="[#D8D8D8]" className="absolute" size={size} />
               <div
                 className="absolute overflow-hidden"
                 style={{
-                  width: `${star * 15}px`,
+                  width: `${star * (size === 'small' ? 11 : 15)}px`,
                 }}
               >
-                <Star fill="sub-color1" />
+                <Star fill="sub-color1" size={size} />
               </div>
             </div>
           ) : (
-            <Star key={key + i} fill="[#D8D8D8]" />
+            <Star key={key + i} fill="[#D8D8D8]" size={size} />
           ),
         )}
       </div>
@@ -60,3 +49,26 @@ const Review = ({ average, count }: ReviewProps) => {
 };
 
 export default Review;
+
+const Star = ({
+  fill,
+  className = '',
+  size = 'regular',
+}: {
+  fill: string;
+  className?: string;
+  size: 'regular' | 'small';
+}) => (
+  <StarSVG
+    width={size === 'small' ? 11 : 15}
+    height={size === 'small' ? 10 : 14}
+    className={`fill-${fill} ${className}`}
+  />
+);
+
+export const calculateStarArray = (average: number) =>
+  Array.from({ length: 5 }, (_, i) => {
+    if (i < Math.floor(average)) return 1;
+    if (i === Math.floor(average)) return +(average % 1).toFixed(2);
+    return 0;
+  });
