@@ -176,9 +176,10 @@ const ApplyPage = () => {
           }`}
           disabled={activeStep !== 1 && !isValid}
         >
-          {activeStep === 1 ? '등록' : '다음'}
+          {activeStep === 1 ? '프로필 등록' : '다음'}
         </button>
       </form>
+      {/* 추후 이전 버튼 구현 */}
 
       <ValidationMessage
         closeModal={closeValidationMessage}

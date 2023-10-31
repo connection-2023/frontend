@@ -17,7 +17,6 @@ export const GET = async (request: NextRequest) => {
     const serverResponse = await fetch(
       END_POINT + '/users/nicknames/' + encodeURI(nickname),
     );
-    console.log(serverResponse.status);
 
     // HTTP 상태 코드만 포함하는 응답 객체
     return new NextResponse('', { status: serverResponse.status });

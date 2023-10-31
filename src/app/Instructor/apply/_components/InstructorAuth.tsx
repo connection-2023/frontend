@@ -25,7 +25,7 @@ const InstructorAuth = () => {
     phoneNumber: false,
     accountNumber: false,
   });
-  // phoneNumber, accountNumber 추후 api 생기면 false 로 변경 및 인증 로직 추가 예정
+  // phoneNumber, accountNumber, email 추후 api 생기면  로직 추가 예정
 
   useEffect(() => {
     if (
@@ -48,13 +48,14 @@ const InstructorAuth = () => {
 
   useEffect(() => {
     const subscription = watch((_, { name }) => {
-      const key = name?.split('-')[0];
+      const key = name?.includes('email') ? 'email' : name;
       if (key && key in verification) {
         setVerification((prev) => ({ ...prev, [key]: false }));
       }
     });
+
     return () => subscription.unsubscribe();
-  }, [watch]); // 추후 계좌 등록 로직 변경 예정
+  }, [watch]);
 
   const changeVerification = (key: keyof Verification, value: boolean) => {
     setVerification((prev) => ({ ...prev, [key]: value }));
