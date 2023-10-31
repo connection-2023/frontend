@@ -9,7 +9,7 @@ import Like from '@/components/Like/Like';
 import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import Review from '@/components/Review/Review';
+import UserReview from '@/components/Review/UserReview';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Sharing from '@/components/Sharing/Sharing';
 import { CLASS_SECTIONS } from '@/constants/constants';

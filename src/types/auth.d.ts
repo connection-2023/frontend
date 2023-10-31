@@ -147,3 +147,11 @@ export interface userProfile {
   createdAt: string;
   updatedAt: string;
 }
+
+export type userType = 'user' | 'lecturer';
+
+export interface instructorProfile {
+  id: string;
+  profileCardImageUrl: string | null;
+  nickname: string;
+}

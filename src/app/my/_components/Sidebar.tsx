@@ -42,6 +42,7 @@ const Sidebar = ({
     <aside className="flex max-w-[19.5rem] flex-col items-start whitespace-nowrap rounded-admin bg-white px-4 py-10 shadow-float">
       <div className="mb-6 flex items-center gap-2">
         <ProfileImage size="small" src={profileImg} label={false} />
+
         <p className="text-lg font-bold text-sub-color3">{nickname}님</p>
       </div>
 

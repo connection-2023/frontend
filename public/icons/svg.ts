@@ -33,6 +33,7 @@ import ImageSVG from './image.svg';
 import InstagramSVG from './instagram.svg';
 import KaKaoTalkSVG from './kakaoTalk.svg';
 import LevelSVG from './level.svg';
+import LikeSVG from './like.svg';
 import LinkSVG from './link.svg';
 import LocationSVG from './location.svg';
 import MainPopularSVG from './mainPopular.svg';
@@ -68,6 +69,7 @@ export {
   NotFoundSVG,
   ReportSVG,
   BookmarkSVG,
+  LikeSVG,
   CouponSVG,
   TooltipSVG,
   PlusesSVG,
