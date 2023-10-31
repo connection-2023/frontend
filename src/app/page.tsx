@@ -3,7 +3,7 @@ import { dummyInstructor, dummyMain } from '@/constants/dummy';
 import { SmallLogoSVG, MainPopularSVG, MainTopSVG } from '@/icons/svg';
 import Banner from './_components/Banner';
 import CarouselTemplate from './_components/CarouselTemplate';
-import ClassCard from '@/components/ClassCard/ClassCard';
+import ClassCard from '@/components/ClassPreview/ClassPreview';
 import InstructorPreview from '@/components/Preview/InstructorPreview';
 import SuggestionPreview from '@/components/Preview/SuggestionPreview';
 

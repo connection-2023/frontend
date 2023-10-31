@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { CalendarSVG } from '@/icons/svg';
 import BasicCalendar from '../Calendar/BasicCalendar';
 
-const Date = ({ selectedDates }: { selectedDates: Date[] }) => {
+const ClassDates = ({ selectedDates }: { selectedDates: Date[] }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -30,4 +30,4 @@ const Date = ({ selectedDates }: { selectedDates: Date[] }) => {
   );
 };
 
-export default Date;
+export default ClassDates;
