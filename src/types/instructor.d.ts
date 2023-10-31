@@ -18,3 +18,35 @@ export interface instructorPostResponse {
 interface Url {
   url: string; // 추후 변경 예정
 }
+
+interface Bank {
+  value: string;
+  label: string;
+}
+
+interface Regions {
+  [key: string]: string[];
+}
+
+export interface InstructorApplyData {
+  nickname: string;
+  phoneNumber: string;
+  emailFront: string;
+  emailBack: string;
+  bankholder: string;
+  birth: string;
+  accountNumber: string;
+  bank: Bank;
+  affiliation: string;
+  instagramPostUrls0: string;
+  instagramPostUrls1: string;
+  instagramPostUrls2: string;
+  profileImageUrls: { file: File; url: string }[];
+  regions: Regions;
+  genres: string[];
+  instagramUrl: string;
+  youtubeUrl: string;
+  homepageUrl: string;
+  introduction: string;
+  experience: string;
+}
