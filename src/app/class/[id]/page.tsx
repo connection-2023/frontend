@@ -16,9 +16,9 @@ import Notice from '@/components/ClassNotice/Notice';
 import Like from '@/components/Like/Like';
 import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
-import Profile from '@/components/Profile/Profile';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
+import UserReview from '@/components/Review/UserReview';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import Sharing from '@/components/Sharing/Sharing';
 
@@ -117,7 +117,11 @@ const ClassDetailPage = () => {
         {/* 프로필 */}
         <div className="mb-10 mt-[1.81rem] flex w-full items-center justify-between">
           <div className="text-lg font-bold">
-            <Profile src={profile.src} nickname={profile.nickname} size={59} />
+            <ProfileImage
+              src={profile.src}
+              nickname={profile.nickname}
+              size="medium"
+            />
           </div>
           <div className="flex gap-[0.81rem] text-sm font-normal">
             <ProfileButtons id={profile.id} />
@@ -231,7 +235,7 @@ const ClassDetailPage = () => {
           </h2>
           <div className="flex flex-col gap-6">
             {review.reviewer.map((review) => (
-              <ReviewComment
+              <UserReview
                 key={review.nickname}
                 src={review.src}
                 nickname={review.nickname}

@@ -91,3 +91,13 @@ export interface Verification {
   phoneNumber: boolean;
   accountNumber: boolean;
 }
+
+export interface IRegion {
+  administrativeDistrict: string;
+  district: string;
+}
+
+export interface IGenre {
+  name: string | null;
+  danceCategory: { genre: string };
+}
