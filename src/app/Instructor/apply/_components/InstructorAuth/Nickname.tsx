@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { getCheckNickname } from '@/lib/apis/lecturersApi';
+import { getCheckNickname } from '@/lib/apis/instructorApi';
 import Label from './Label';
 import { Verification } from '@/types/types';
 

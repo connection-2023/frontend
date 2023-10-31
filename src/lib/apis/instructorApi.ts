@@ -12,3 +12,18 @@ export const getInstructorProfile = async () => {
 
   return response.data.lecturerBasicProfile;
 };
+
+export const getCheckNickname = async (nickname: string) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/instructors/check-nickname?nickname=${encodeURIComponent(
+        nickname,
+      )}`,
+    ).then((data) => data.json());
+
+    return response.data.isAvailable;
+  } catch (error) {
+    console.error('닉네임 중복 검사 오류', error);
+    throw error;
+  }
+};

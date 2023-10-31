@@ -19,7 +19,7 @@ export const postSingleImage = async (image: File, folder: string) => {
     }
 
     const data = await response.json();
-    return data;
+    return data.data.imageUrls;
   } catch (error) {
     console.error(error);
     throw error;
@@ -48,7 +48,7 @@ export const postMultipleImage = async (images: File[], folder: string) => {
     }
 
     const data = await response.json();
-    return data;
+    return data.data.imageUrls;
   } catch (error) {
     console.error(error);
     throw error;

@@ -81,21 +81,15 @@ const ApplyPage = () => {
 
     // 지역 분할 시키는 부분
 
-    const newRegions = [];
-
-    for (const [key, value] of Object.entries(regions)) {
-      if (key === '온라인') {
-        newRegions.push('온라인');
-      } else if (key === '세종') {
-        newRegions.push('세종특별자치시');
+    const newRegions = Object.entries(regions).flatMap(([key, value]) => {
+      if (key === '온라인' || key === '세종') {
+        return [key === '세종' ? '세종특별자치시' : '온라인'];
       } else if (value.length === WARD_LIST[key].length) {
-        newRegions.push(CITY_FULL_NAME[key] + ' 전 지역');
+        return [`${CITY_FULL_NAME[key]} 전 지역`];
       } else {
-        value.forEach((value) => {
-          newRegions.push(CITY_FULL_NAME[key] + ' ' + value);
-        });
+        return value.map((val) => `${CITY_FULL_NAME[key]} ${val}`);
       }
-    }
+    });
 
     const instructorData = {
       profileImageUrls: uploadImgList,
@@ -118,6 +112,8 @@ const ApplyPage = () => {
         instagramPostUrls2,
       ],
     };
+
+    console.log(instructorData);
   };
 
   const onValid = (data: any) => {

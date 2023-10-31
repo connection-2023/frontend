@@ -11,7 +11,13 @@ const InstructorAuth = () => {
   const { watch, trigger } = useFormContext();
 
   const authUser = useStore((state) => state.authUser);
-  const { email, phoneNumber } = authUser || {};
+  let email = '';
+  let phoneNumber = '';
+
+  if (authUser && 'email' in authUser) {
+    email = authUser.email;
+    phoneNumber = authUser.phoneNumber || '';
+  }
 
   const [verification, setVerification] = useState({
     nickname: false,

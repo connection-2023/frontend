@@ -11,8 +11,6 @@ export const POST = async (request: NextRequest) => {
 
   const formData = await request.formData();
 
-  console.log(formData);
-
   const response = await fetch(END_POINT + '/uploads/' + folder + '/images', {
     method: 'POST',
     credentials: 'include',
