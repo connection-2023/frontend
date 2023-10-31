@@ -27,7 +27,7 @@ export const categorizeGenres = (genres: string[]) => {
 
 export const formatRegions = (regions: { [key: string]: string[] }) => {
   return Object.entries(regions).flatMap(([key, value]) => {
-    const valArray = value as string[]; // 타입 단언 사용
+    const valArray = value as string[];
     if (key === '온라인' || key === '세종') {
       return [key === '세종' ? '세종특별자치시' : '온라인'];
     } else if (valArray.length === WARD_LIST[key].length) {

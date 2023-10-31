@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { instructorRegister } from '@/lib/apis/instructorApi';
+import useStore from '@/store';
 import {
   categorizeGenres,
   constructEmail,
   formatRegions,
   handleImageUpload,
 } from '@/utils/apiDataPreparers';
+import { switchToInstructor } from '@/utils/switchUserUtil';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
@@ -27,6 +29,7 @@ const ApplyPage = () => {
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm({ shouldFocusError: false });
   const router = useRouter();
+  const store = useStore();
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -97,12 +100,12 @@ const ApplyPage = () => {
         ],
       };
 
-      const response = await instructorRegister(instructorData);
-      if (response.status !== 201) {
-        throw new Error(response.message);
-      }
+      await instructorRegister(instructorData);
 
       toast.success('강사 등록 완료!');
+
+      await switchToInstructor(store);
+
       router.push('/');
     } catch (error) {
       if (error instanceof Error) {

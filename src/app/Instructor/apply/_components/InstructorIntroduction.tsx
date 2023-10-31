@@ -104,7 +104,15 @@ const InstructorIntroduction = () => {
 
       <section className="flex w-full flex-col gap-3">
         <label htmlFor="link0" className="mb-1">
-          <h2 className="font-bold">
+          <h2
+            id="instagramPostUrls0"
+            className={`font-bold ${
+              (errors.instagramPostUrls0 ||
+                errors.instagramPostUrls1 ||
+                errors.instagramPostUrls2) &&
+              'animate-vibration text-main-color'
+            }`}
+          >
             프로필에서 보여질 강사 인스타그램 게시물의 링크를 설정해주세요.
           </h2>
           <p className="text-sub-color2">*최대 3개까지 표시 가능합니다.</p>
@@ -117,7 +125,12 @@ const InstructorIntroduction = () => {
             type="text"
             className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
             placeholder="게시물 주소 입력"
-            {...register('instagramPostUrls' + index)}
+            {...register('instagramPostUrls' + index, {
+              pattern: {
+                value: /^(ftp|http|https):\/\/[^ "]+$/,
+                message: '올바른 인스타 주소',
+              },
+            })}
           />
         ))}
       </section>

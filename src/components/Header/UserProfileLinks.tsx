@@ -12,6 +12,7 @@ const UserProfileLinks = () => {
 
   const user = useSession();
 
+  console.log(user);
   const handleOpened = () => {
     setIsOpened(true);
   };

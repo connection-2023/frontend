@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { userProfile, userType, instructorProfile } from '@/types/auth';
 
-type Store = {
+export type Store = {
   authUser: userProfile | instructorProfile | null;
   userType: userType | null;
   requestLoading: boolean;
