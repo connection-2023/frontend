@@ -1,16 +1,21 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { CITY_FULL_NAME, WARD_LIST } from '@/constants/administrativeDistrict';
-import { DANCE_GENRE } from '@/constants/constants';
-import { postMultipleImage } from '@/lib/apis/imageApi';
 import { instructorRegister } from '@/lib/apis/instructorApi';
+import {
+  categorizeGenres,
+  constructEmail,
+  formatRegions,
+  handleImageUpload,
+} from '@/utils/apiDataPreparers';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { InstructorApplyData } from '@/types/instructor';
-import { ErrorMessage, InstructorRegister } from '@/types/types';
+import { ErrorMessage } from '@/types/types';
 
 const steps = [
   { title: '강사 인증', component: <InstructorAuth /> },
@@ -20,8 +25,8 @@ const steps = [
 const ApplyPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
-  const instructorRegisterState = useRef<InstructorRegister>({});
   const formMethods = useForm({ shouldFocusError: false });
+  const router = useRouter();
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -42,96 +47,71 @@ const ApplyPage = () => {
   } = formMethods;
 
   const submit = async (data: InstructorApplyData) => {
-    const {
-      profileImageUrls,
-      emailFront,
-      emailBack,
-      genres,
-      regions,
-      nickname,
-      phoneNumber,
-      youtubeUrl,
-      instagramUrl,
-      homepageUrl,
-      affiliation,
-      introduction,
-      experience,
-      instagramPostUrls0,
-      instagramPostUrls1,
-      instagramPostUrls2,
-    } = data;
-
-    // 이미지 데이터 처리 부분
-    const imgFileList = profileImageUrls.map(({ file }) => file);
-    const uploadImgList = await postMultipleImage(imgFileList, 'instructor');
-
-    // 이메일 합치는 부분
-    const email = emailFront + '@' + emailBack;
-
-    // 장르 분할 시키는 부분
-    const { newGenres, etcGenres } = genres.reduce(
-      (acc, genre) => {
-        if (DANCE_GENRE.includes(genre)) {
-          acc.newGenres.push(genre);
-        } else {
-          acc.etcGenres.push(genre);
-        }
-        return acc;
-      },
-      { newGenres: [] as string[], etcGenres: [] as string[] },
-    );
-
-    // 지역 분할 시키는 부분
-
-    const newRegions = Object.entries(regions).flatMap(([key, value]) => {
-      if (key === '온라인' || key === '세종') {
-        return [key === '세종' ? '세종특별자치시' : '온라인'];
-      } else if (value.length === WARD_LIST[key].length) {
-        return [`${CITY_FULL_NAME[key]} 전 지역`];
-      } else {
-        return value.map((val) => `${CITY_FULL_NAME[key]} ${val}`);
-      }
-    });
-
-    const instructorData = {
-      profileImageUrls: uploadImgList,
-      email,
-      nickname,
-      etcGenres,
-      genres: newGenres,
-      regions: newRegions,
-      phoneNumber,
-      profileCardImageUrl: uploadImgList[0], //추후 강사 프로필 이미지 넣는 곳 생기면 수정
-      youtubeUrl,
-      instagramUrl,
-      homepageUrl,
-      affiliation,
-      introduction,
-      experience,
-      instagramPostUrls: [
+    try {
+      const {
+        profileImageUrls,
+        emailFront,
+        emailBack,
+        genres,
+        regions,
+        nickname,
+        phoneNumber,
+        youtubeUrl,
+        instagramUrl,
+        homepageUrl,
+        affiliation,
+        introduction,
+        experience,
         instagramPostUrls0,
         instagramPostUrls1,
         instagramPostUrls2,
-      ],
-    };
-    try {
+      } = data;
+
+      const uploadImgList = await handleImageUpload(profileImageUrls);
+
+      const email = constructEmail(emailFront, emailBack);
+
+      const { newGenres, etcGenres } = categorizeGenres(genres);
+
+      const newRegions = formatRegions(regions);
+
+      const instructorData = {
+        profileImageUrls: uploadImgList,
+        email,
+        nickname,
+        etcGenres,
+        genres: newGenres,
+        regions: newRegions,
+        phoneNumber,
+        profileCardImageUrl: uploadImgList[0], //추후 강사 프로필 이미지 넣는 곳 생기면 수정
+        youtubeUrl,
+        instagramUrl,
+        homepageUrl,
+        affiliation,
+        introduction,
+        experience,
+        instagramPostUrls: [
+          instagramPostUrls0,
+          instagramPostUrls1,
+          instagramPostUrls2,
+        ],
+      };
+
       const response = await instructorRegister(instructorData);
       if (response.status !== 201) {
         throw new Error(response.message);
       }
+
+      toast.success('강사 등록 완료!');
+      router.push('/');
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message);
+        toast.error('잠시 후 다시 시도해 주세요');
       }
     }
   };
 
   const onValid = (data: any) => {
-    instructorRegisterState.current = {
-      ...instructorRegisterState.current,
-      ...data,
-    }; // 추후 삭제해도 괜찮을 듯?
-
     activeStep === 1 ? submit(data) : nextStep();
   };
 
