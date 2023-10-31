@@ -63,7 +63,7 @@ const ScheduleCalendar = ({ clickableDates }: { clickableDates: Date[] }) => {
             displayMonth,
           }),
       }}
-      className="rounded-[0.625rem] px-5 py-4 shadow-[1px_1px_6px_1px_rgba(0,0,0,0.25)]"
+      className="w-fit rounded-[0.625rem] px-5 py-4 md:shadow-[1px_1px_6px_1px_rgba(0,0,0,0.25)]"
     />
   );
 };

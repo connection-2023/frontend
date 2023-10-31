@@ -10,7 +10,7 @@ const DiscountCouponBanner = ({ discountPrice }: { discountPrice: string }) => {
     <>
       <div
         onClick={() => setIsOpened(true)}
-        className="flex h-[2.2rem] w-full cursor-pointer items-center justify-center gap-0.5 rounded-[0.31rem] border border-solid border-sub-color1 text-sm font-medium text-sub-color1"
+        className="flex h-[2.2rem] w-full cursor-pointer items-center gap-0.5 rounded-[0.31rem] border border-solid border-sub-color1 px-2.5 text-sm font-medium text-sub-color1 md:justify-center"
       >
         <DownloadSVG width="21" height="21" className="fill-sub-color1" /> 최대
         {discountPrice}원 할인쿠폰 받기

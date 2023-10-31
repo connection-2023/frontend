@@ -14,10 +14,12 @@ interface IScheduleProps {
 const ScheduleView = ({ clickableDates, lectureSchedule }: IScheduleProps) => {
   if (!clickableDates.length) return null;
   return (
-    <div className="flex w-full justify-between whitespace-nowrap">
-      <ScheduleCalendar clickableDates={clickableDates} />
+    <div className="flex w-full flex-col whitespace-nowrap md:flex-row md:justify-between">
+      <div className="flex w-full justify-center">
+        <ScheduleCalendar clickableDates={clickableDates} />
+      </div>
 
-      <ul className="flex flex-col gap-[0.37rem] pl-3">
+      <ul className="flex flex-col items-center gap-[0.37rem] pl-3">
         {lectureSchedule.map((s) => (
           <ScheduleList key={s.date} date={s.date} space={s.space} />
         ))}
@@ -41,8 +43,8 @@ const ScheduleList = ({ date, space }: IScheduleListProps) => {
 
   return (
     <li
-      className={`border-box flex h-[2.8125rem] w-full max-w-[16.8125rem] items-center justify-between rounded-[0.31rem] border
-    border-solid border-[#D8D8D8] px-[1.62rem] ${textStyle[mode]} text-sm font-medium`}
+      className={`border-box flex h-[2.8125rem] w-full items-center justify-between rounded-[0.31rem] border border-solid
+    border-[#D8D8D8] px-[1.62rem] md:max-w-[16.8125rem] ${textStyle[mode]} text-sm font-medium`}
     >
       <p>{date}</p>
       <p>
