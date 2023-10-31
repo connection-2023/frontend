@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { postMultipleImage, postSingleImage } from '@/lib/apis/imageApi';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
@@ -12,7 +13,7 @@ const steps = [
 ];
 
 const ApplyPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const instructorRegisterState = useRef<InstructorRegister>({});
   const formMethods = useForm({ shouldFocusError: false });
@@ -35,6 +36,13 @@ const ApplyPage = () => {
     formState: { isValid },
   } = formMethods;
 
+  const submit = (data: any) => {
+    const { profileImageUrls } = data;
+
+    const imgFileList = profileImageUrls.map(({ file }) => file);
+    postMultipleImage(imgFileList, 'instructor');
+  };
+
   const onValid = (data: any) => {
     instructorRegisterState.current = {
       ...instructorRegisterState.current,
@@ -42,7 +50,7 @@ const ApplyPage = () => {
     };
     console.log(data);
 
-    activeStep === 1 ? console.log('마지막') : nextStep();
+    activeStep === 1 ? submit(data) : nextStep();
   };
 
   const invalid = (data: Record<string, any>) => {
