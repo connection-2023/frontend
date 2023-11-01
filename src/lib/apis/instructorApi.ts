@@ -73,19 +73,48 @@ export const instructorRegister = async (data: InstructorRegister) => {
 };
 
 export const getClassDraft = async (lectureId: number) => {
-  const response = await fetch(
-    `${DOMAIN}/api/class/drafts/getDraft?lectureId=${encodeURIComponent(
-      lectureId,
-    )}`,
-    {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/class/drafts/getDraft?lectureId=${encodeURIComponent(
+        lectureId,
+      )}`,
+      {
+        method: 'GET',
+        credentials: 'include',
       },
-    },
-  ).then((data) => data.json());
+    ).then((data) => data.json());
 
-  if (!response.ok) new Error('강사 기본 프로필 조회 API 오류!');
+    if (!response.ok) {
+      throw new Error(
+        `임시 저장 조회 오류: ${response.message || ''}, status: ${
+          response.status
+        }`,
+      );
+    }
+  } catch (error) {
+    console.error('임시 저장 조회 오류', error);
+    throw error;
+  }
+};
 
-  console.log(response);
+export const createDraft = async () => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/drafts/createDraft`, {
+      method: 'POST',
+      credentials: 'include',
+    }).then((data) => data.json());
+
+    if (!response.ok) {
+      throw new Error(
+        `임시 저장 생성 오류: ${response.message || ''}, status: ${
+          response.status
+        }`,
+      );
+    }
+
+    return response;
+  } catch (error) {
+    console.error('임시 저장 생성 오류', error);
+    throw error;
+  }
 };
