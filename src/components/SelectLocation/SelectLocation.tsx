@@ -43,6 +43,18 @@ const SelectLocation = ({ onChange }: SelectLocationProps) => {
       ...selectLocationList,
       [targetLocation]: toggleSelection(toggleData),
     });
+
+    const updatedList = toggleSelection(toggleData);
+
+    if (updatedList.length === 0) {
+      const updatedSelectLocationList = { ...selectLocationList };
+      delete updatedSelectLocationList[targetLocation];
+      setSelectLocationList(updatedSelectLocationList);
+
+      const updatedData = { ...selectLocationList };
+      delete updatedData[targetLocation];
+      onChange(updatedData);
+    }
   };
 
   const focusLocationHandler = (city: string) => {
