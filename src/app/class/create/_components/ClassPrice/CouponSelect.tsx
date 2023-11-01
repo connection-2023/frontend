@@ -1,13 +1,12 @@
 import Select, {
   ActionMeta,
   components,
-  GroupBase,
   MultiValue,
   OptionProps,
   SingleValue,
   StylesConfig,
 } from 'react-select';
-import { couponGET, SelectCoupon } from '@/types/coupon';
+import { SelectCoupon } from '@/types/coupon';
 
 interface CouponSelectProps {
   options: SelectCoupon[];
@@ -61,19 +60,7 @@ const CustomOption = (props: OptionProps<SelectCoupon>) => {
   );
 };
 
-const couponSelectStyle:
-  | StylesConfig<
-      {
-        value: any;
-        label: string;
-      },
-      false,
-      GroupBase<{
-        value: any;
-        label: string;
-      }>
-    >
-  | undefined = {
+const couponSelectStyle: StylesConfig<SelectCoupon, true> = {
   control: (provided) => ({
     ...provided,
     boxShadow: 'none',

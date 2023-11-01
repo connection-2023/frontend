@@ -68,6 +68,13 @@ export interface Instructors {
   href: string;
 }
 
+export interface Verification {
+  nickname: boolean;
+  email: boolean;
+  phoneNumber: boolean;
+  accountNumber: boolean;
+}
+
 export interface IRegion {
   administrativeDistrict: string;
   district: string;

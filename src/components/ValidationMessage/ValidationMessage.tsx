@@ -47,7 +47,9 @@ const ValidationMessage = ({
             모두 작성하면 다음페이지로 넘어갈 수 있어요.
           </p>
           <ReminderText>
-            {invalidData?.map(({ message }) => message).join(', ')}
+            {[...new Set(invalidData?.map(({ message }) => message))].join(
+              ', ',
+            )}
           </ReminderText>
         </div>
         <ReminderButton reminderButtonHandler={reminderButtonHandler} />

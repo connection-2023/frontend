@@ -14,17 +14,14 @@ export const GET = async (request: NextRequest) => {
   if (!nickname) return;
 
   try {
-    const serverResponse = await fetch(
-      END_POINT + '/users/nicknames/' + encodeURI(nickname),
-    );
+    const response = await fetch(
+      END_POINT + '/lecturers/nickname/' + encodeURI(nickname),
+    ).then((data) => data.json());
 
-    // HTTP 상태 코드만 포함하는 응답 객체
-    return new NextResponse('', { status: serverResponse.status });
+    return NextResponse.json(response);
   } catch (error) {
-    // 네트워크 요청이 실패하거나 서버에서 오류 상태 코드(403 제외)를 반환한 경우
     console.error('네트워크 요청 에러: ', error);
 
-    // 에러 메시지와 오류 상태 코드 반환
-    return new NextResponse('네트워크 요청 에러', { status: 500 });
+    return new NextResponse('네트워크 요청 에러: ', { status: 500 });
   }
 };
