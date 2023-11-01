@@ -4,6 +4,7 @@
   --rdp-accent-color: var(--sub-color1);
   --rdp-background-color: #d9d9d9;
   margin: 0em;
+  width: 100%;
 }
 
 .rdp-table {
@@ -99,4 +100,21 @@
 .specific-selected-day:hover {
   background-color: var(--main-color) !important;
   color: white !important;
+}
+
+.schedule-day::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--sub-color1);
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+}
+
+.rbc-current-time-indicator {
+  height: 2px !important;
+  background-color: var(--main-color) !important;
 }
