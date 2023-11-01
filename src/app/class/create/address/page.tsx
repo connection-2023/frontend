@@ -1,6 +1,6 @@
 'use client';
 import { FormEvent, useRef, useState } from 'react';
-import { searchAddress } from '@/app/apis/address/searchAddress';
+import { searchAddress } from '@/lib/apis/searchAddress';
 import AddressDescription from './_components/AddressDescription';
 import SearchForm from './_components/SearchForm';
 import SearchResults from './_components/SearchResults';
