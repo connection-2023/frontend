@@ -82,39 +82,71 @@ export const getClassDraft = async (lectureId: number) => {
         method: 'GET',
         credentials: 'include',
       },
-    ).then((data) => data.json());
+    );
 
     if (!response.ok) {
+      const errorData = await response.json();
       throw new Error(
-        `임시 저장 조회 오류: ${response.message || ''}, status: ${
+        `임시저장 목록 조회 오류: ${errorData.message || ''}, status: ${
           response.status
         }`,
       );
     }
+
+    const data = await response.json();
+
+    return data;
   } catch (error) {
-    console.error('임시 저장 조회 오류', error);
+    console.error('임시저장 목록 조회 오류', error);
     throw error;
   }
 };
 
-export const createDraft = async () => {
+export const createClassDraft = async () => {
   try {
     const response = await fetch(`${DOMAIN}/api/class/drafts/createDraft`, {
       method: 'POST',
       credentials: 'include',
-    }).then((data) => data.json());
+    });
 
     if (!response.ok) {
+      const errorData = await response.json();
       throw new Error(
-        `임시 저장 생성 오류: ${response.message || ''}, status: ${
+        `임시저장 생성 오류: ${errorData.message || ''}, status: ${
           response.status
         }`,
       );
     }
 
-    return response;
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error('임시 저장 생성 오류', error);
+    console.error('임시저장 생성 오류', error);
+    throw error;
+  }
+};
+
+export const getClassDrafts = async () => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/drafts/getDragts`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `임시저장 목록 조회 오류: ${errorData.message || ''}, status: ${
+          response.status
+        }`,
+      );
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('임시저장 목록 조회 오류', error);
     throw error;
   }
 };
