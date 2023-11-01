@@ -1,8 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 import { ArrowRightSVG } from '@/icons/svg';
+import { getClassDraft } from '@/lib/apis/instructorApi';
 import { classCreateState } from '@/recoil/Create/atoms';
 import ClassCategory from './_components/ClassCategory';
 import ClassExplanation from './_components/ClassExplanation';
@@ -25,20 +27,33 @@ export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const setClassCreate = useSetRecoilState(classCreateState);
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const formMethods = useForm({ shouldFocusError: false });
 
   const { handleSubmit } = formMethods;
 
+  useEffect(() => {
+    (async () => {
+      await getClassDraft(2);
+    })();
+    const lectureId = searchParams.get('id');
+
+    if (lectureId) {
+    }
+  }, []);
+
   const nextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
+      router.push(`/class/create?step=${activeStep + 1}`);
     }
   };
 
   const prevStep = () => {
     if (activeStep > 0) {
       setActiveStep(activeStep - 1);
+      router.push(`/class/create?step=${activeStep - 1}`);
     }
   };
 
