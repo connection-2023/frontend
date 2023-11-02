@@ -18,7 +18,7 @@ import ClassSchedule from './_components/ClassSchedule';
 import DraftListModal from './_components/DraftListModal';
 import { Button } from '@/components/Button/Button';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { IGetClassDrafts } from '@/types/class';
+import { IGetClassDraft } from '@/types/class';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [
@@ -33,9 +33,9 @@ export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [classDraftList, setClassDraftList] = useState<
-    null | IGetClassDrafts[]
-  >(null);
+  const [classDraftList, setClassDraftList] = useState<null | IGetClassDraft[]>(
+    null,
+  );
   const setClassCreate = useSetRecoilState(classCreateState);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -55,17 +55,20 @@ export default function ClassCreate() {
         if (classDrafts.length > 0) {
           // 임시 저장 목록이 존재 할때
           // 모달 리스트 출력
-          console.log(classDrafts);
           setClassDraftList(classDrafts);
           setIsModalOpen(true);
         } else {
           // 임시 저장 목록이 없을 때
-          const { id } = await createClassDraft();
-          router.push(`/class/create?step=0&id=${id}`);
+          await createDraft();
         }
       }
     })();
   }, []);
+
+  const createDraft = async () => {
+    const { id } = await createClassDraft();
+    router.push(`/class/create?step=0&id=${id}`);
+  };
 
   const nextStep = () => {
     if (activeStep < steps.length - 1) {
@@ -183,6 +186,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           isOpen={isModalOpen}
           closeModal={closeDraftsModal}
           classDraftList={classDraftList}
+          createDraft={createDraft}
         />
       )}
     </main>

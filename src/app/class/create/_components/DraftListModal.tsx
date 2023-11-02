@@ -1,28 +1,53 @@
 import { useRouter } from 'next/navigation';
 import Modal from 'react-modal';
-import { TrashcanSVG } from '@/icons/svg';
-import { IGetClassDrafts } from '@/types/class';
+import { toast } from 'react-toastify';
+import { CloseSVG, TrashcanSVG } from '@/icons/svg';
+import { deleteClassDrafts } from '@/lib/apis/instructorApi';
+import { IGetClassDraft } from '@/types/class';
 
 interface IDraftListModal {
   isOpen: boolean;
   closeModal: () => void;
-  classDraftList: IGetClassDrafts[];
+  classDraftList: IGetClassDraft[];
+  createDraft: () => Promise<void>;
 }
 
 const DraftListModal = ({
   isOpen,
   closeModal,
   classDraftList,
+  createDraft,
 }: IDraftListModal) => {
+  const closeWithoutSelection = async () => {
+    if (classDraftList.length >= 5) {
+      toast.error(
+        <>
+          임시저장은 최대 5개까지 가능합니다.
+          <br />
+          기존 목록을 삭제 혹은 불러와주세요.
+        </>,
+      );
+    } else {
+      await createDraft();
+      closeModal();
+    }
+  };
+
   return (
     <Modal
-      onRequestClose={closeModal}
+      onRequestClose={closeWithoutSelection}
       isOpen={isOpen}
       style={customModalStyles}
       ariaHideApp={false}
     >
-      <h1 className="flex justify-center border-b border-solid border-sub-color2 py-3 text-lg">
+      <h1 className="relative flex justify-center border-b border-solid border-sub-color2 py-3 text-lg">
         임시저장 불러오기(5)
+        <button
+          className="absolute right-5 top-3.5"
+          onClick={closeWithoutSelection}
+        >
+          <CloseSVG className="h-6 w-6 stroke-sub-color2" />
+        </button>
       </h1>
 
       <DraftList classDraftList={classDraftList} closeModal={closeModal} />
@@ -33,7 +58,7 @@ const DraftListModal = ({
 export default DraftListModal;
 
 interface DraftListProps {
-  classDraftList: IGetClassDrafts[];
+  classDraftList: IGetClassDraft[];
   closeModal: () => void;
 }
 
@@ -43,6 +68,10 @@ const DraftList = ({ classDraftList, closeModal }: DraftListProps) => {
   const selectDraft = (id: string, step: string | null) => {
     router.push(`/class/create?step=${step === null ? 0 : step}&id=${id}`);
     closeModal();
+  };
+
+  const deleteDraft = async (id: string) => {
+    await deleteClassDrafts(id);
   };
 
   return (
@@ -56,16 +85,17 @@ const DraftList = ({ classDraftList, closeModal }: DraftListProps) => {
         return (
           <li key={id} className="flex justify-between gap-2">
             <h2
-              className="w-2/3 cursor-pointer truncate"
+              className=" w-2/3 cursor-pointer truncate"
               onClick={() => selectDraft(id, step)}
             >
               {title === null ? '제목 없음' : title}
             </h2>
+
             <div className="flex gap-3">
               <data className="whitespace-nowrap text-sub-color2">
                 {formattedDate}
               </data>
-              <button>
+              <button onClick={() => deleteDraft(id)}>
                 <TrashcanSVG className="h-6 w-6 stroke-sub-color2" />
               </button>
             </div>

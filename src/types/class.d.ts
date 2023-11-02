@@ -29,7 +29,7 @@ export interface DayTimeList {
   timeSlots: string[];
 }
 
-export interface IGetClassDrafts {
+export interface IGetClassDraft {
   id: string;
   updatedAt: string;
   title: null | string;

@@ -1,5 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import { IGetClassDrafts } from '@/types/class';
+import { IGetClassDraft } from '@/types/class';
 
 export const getInstructorProfile = async () => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
@@ -127,12 +127,44 @@ export const createClassDraft = async () => {
   }
 };
 
-export const getClassDrafts = async (): Promise<IGetClassDrafts[]> => {
+export const getClassDrafts = async (): Promise<IGetClassDraft[]> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/drafts/getDragts`, {
+    const response = await fetch(`${DOMAIN}/api/class/drafts/getDrafts`, {
       method: 'GET',
       credentials: 'include',
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `임시저장 목록 조회 오류: ${errorData.message || ''}, status: ${
+          response.status
+        }`,
+      );
+    }
+
+    const data = await response.json();
+
+    return data.data.temporaryLectures;
+  } catch (error) {
+    console.error('임시저장 목록 조회 오류', error);
+    throw error;
+  }
+};
+
+export const deleteClassDrafts = async (
+  lectureId: string | number,
+): Promise<IGetClassDraft> => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/class/drafts/deleteDraft?lectureId=${encodeURIComponent(
+        lectureId,
+      )}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+      },
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
