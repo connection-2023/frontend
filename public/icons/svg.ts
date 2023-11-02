@@ -65,9 +65,13 @@ import UploadImageSVG from './UploadImg.svg';
 import YoutubeSVG from './youtube.svg';
 import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
+import WavyLineSVG from './wavyLine.svg';
+import ApplySuccessSVG from './applySuccess.svg';
 
 export {
+  ApplySuccessSVG,
   DeleteSVG,
+  WavyLineSVG,
   UnreadMessageSVG,
   ReadMessageSVG,
   DashboardSVG,
