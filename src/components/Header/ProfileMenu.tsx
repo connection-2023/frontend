@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TransFormSVG } from '@/icons/svg';
-import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
+import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import useSession from '@/lib/useSession';
 import useStore from '@/store';
 
@@ -16,11 +16,15 @@ const ProfileMenu = () => {
     const res = await getSwitchUserRole();
 
     if (res.status !== 200) {
-      toast.error(
-        res.status === 401
-          ? '잘못된 토큰으로 요청하였습니다!'
-          : '잘못된 요청입니다!',
-      );
+      if (store.userType === 'user' && res.status === 400) {
+        router.push('/instructor/apply');
+      } else {
+        toast.error(
+          res.status === 401
+            ? '잘못된 토큰으로 요청하였습니다!'
+            : '잘못된 요청입니다!',
+        );
+      }
       return;
     }
 

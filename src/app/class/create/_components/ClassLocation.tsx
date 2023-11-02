@@ -85,8 +85,13 @@ const ClassLocation = () => {
         <Controller
           name="classPendingLocation"
           control={control}
+          defaultValue={{}}
           rules={{
-            required: '주소',
+            validate: (value) => {
+              if (Object.keys(value).length === 0) {
+                return '주소';
+              }
+            },
           }}
           render={({ field }) => <PendingLocation onChange={field.onChange} />}
         />

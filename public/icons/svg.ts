@@ -23,6 +23,7 @@ import CropSVG from './crop.svg';
 import DashboardSVG from './dashboard.svg';
 import DeleteSVG from './delete.svg';
 import DoubleRightSVG from './doubleRight.svg';
+import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
@@ -33,6 +34,7 @@ import ImageSVG from './image.svg';
 import InstagramSVG from './instagram.svg';
 import KaKaoTalkSVG from './kakaoTalk.svg';
 import LevelSVG from './level.svg';
+import LikeSVG from './like.svg';
 import LinkSVG from './link.svg';
 import LocationSVG from './location.svg';
 import MainPopularSVG from './mainPopular.svg';
@@ -69,9 +71,11 @@ export {
   UnreadMessageSVG,
   ReadMessageSVG,
   DashboardSVG,
+  DownloadSVG,
   NotFoundSVG,
   ReportSVG,
   BookmarkSVG,
+  LikeSVG,
   CouponSVG,
   TooltipSVG,
   PlusesSVG,

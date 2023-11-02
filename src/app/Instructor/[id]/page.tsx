@@ -5,12 +5,16 @@ import ManagementButton from './_components/ManagementButton';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
+import UserReview from '@/components/Review/UserReview';
 import Sharing from '@/components/Sharing/Sharing';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { dummyInstructor } from '@/constants/dummy';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
+import {
+  formatLocationToString,
+  formatGenreToString,
+} from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 
 const h2Style = 'mb-2 text-lg font-bold';
@@ -41,9 +45,8 @@ const InstructorDetailPage = async ({
     affiliation,
   } = data;
 
-  //lecturerDanceGenre.map((genre) => genre.danceCategory.genre)
+  const { review, classList } = dummyInstructor;
 
-  const { genre, review, classList } = dummyInstructor;
   return (
     <main className="flex w-screen flex-col items-center">
       {/* 강의 상세 헤더 섹션 */}
@@ -81,12 +84,7 @@ const InstructorDetailPage = async ({
               <dt className="font-bold text-sub-color1">지역</dt>
               <dd>
                 {/* 추후 데이터 반환 타입 변경 시 변경 예정 */}
-                {lecturerRegion
-                  .map((item: any) => {
-                    const { administrativeDistrict, district } = item.region;
-                    return `${administrativeDistrict} ${district || ''}`;
-                  })
-                  .join(', ')}
+                {formatLocationToString(lecturerRegion)}
               </dd>
             </div>
             <div className="flex gap-3">
@@ -101,7 +99,8 @@ const InstructorDetailPage = async ({
             </div>
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">장르</dt>
-              <dd>{genre.join(', ')}</dd>
+              {/* 추후 데이터 반환 타입 변경 시 변경 예정 */}
+              <dd>{formatGenreToString(lecturerDanceGenre)}</dd>
             </div>
             <Link
               href={youtubeUrl || ''}
@@ -117,7 +116,9 @@ const InstructorDetailPage = async ({
                   }`}
                 />
               </dt>
-              <dd>{youtubeUrl}</dd>
+              <dd className={`${youtubeUrl && 'underline'}`}>
+                {youtubeUrl.replace('https://', '')}
+              </dd>
             </Link>
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">소속</dt>
@@ -135,7 +136,9 @@ const InstructorDetailPage = async ({
                   }`}
                 />
               </dt>
-              <dd>{homepageUrl}</dd>
+              <dd className={`${homepageUrl && 'underline'}`}>
+                {homepageUrl.replace('https://', '')}
+              </dd>
             </Link>
           </dl>
         </div>
@@ -151,7 +154,9 @@ const InstructorDetailPage = async ({
 
       {/* 인스타그램 섹션 */}
       <section className="flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
-        {lecturerInstagramPostUrl.map((insta) => InstagramIframe(insta.url))}
+        {lecturerInstagramPostUrl.map((insta, index) => (
+          <InstagramIframe key={index} link={insta.url} />
+        ))}
       </section>
 
       {/* 강사소개 섹션 */}
@@ -196,7 +201,7 @@ const InstructorDetailPage = async ({
         </h2>
         <div className="flex flex-col gap-6">
           {review.reviewer.map((review) => (
-            <ReviewComment
+            <UserReview
               key={review.nickname}
               src={review.src}
               nickname={review.nickname}
@@ -214,7 +219,7 @@ const InstructorDetailPage = async ({
 
 export default InstructorDetailPage;
 
-const InstagramIframe = (link: string) => {
+const InstagramIframe = ({ link }: { link: string }) => {
   const urlObj = new URL(link);
   urlObj.search = '';
   urlObj.hash = '';

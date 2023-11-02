@@ -141,6 +141,7 @@ export interface ISignUp {
 export interface userProfile {
   id: string;
   nickname: string;
+  phoneNumber?: string;
   email: string;
   userProfileImage: { imageUrl: string | null };
   verified: boolean;

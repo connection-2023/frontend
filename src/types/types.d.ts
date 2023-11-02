@@ -82,3 +82,19 @@ export interface INotice {
   title: string;
   contents: INoticeMessage[];
 }
+export interface Verification {
+  nickname: boolean;
+  email: boolean;
+  phoneNumber: boolean;
+  accountNumber: boolean;
+}
+
+export interface IRegion {
+  administrativeDistrict: string;
+  district: string;
+}
+
+export interface IGenre {
+  name: string | null;
+  danceCategory: { genre: string };
+}

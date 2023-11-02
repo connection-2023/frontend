@@ -1,5 +1,17 @@
 import { parse } from 'date-fns';
 import Image from 'next/image';
+import Apply from './_components/Apply';
+import DiscountCouponBanner from './_components/DiscountCouponBanner';
+import ProfileButtons from './_components/ProfileButtons';
+import Carousel from '@/components/Carousel/Carousel';
+import Notice from '@/components/ClassNotice/Notice';
+import Like from '@/components/Like/Like';
+import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import UserReview from '@/components/Review/UserReview';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import Sharing from '@/components/Sharing/Sharing';
 import { CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass, dummyImgURL } from '@/constants/dummy';
 import {
@@ -9,18 +21,8 @@ import {
   LevelSVG,
   BasicCalendarSVG,
 } from '@/icons/svg';
-import Apply from './_components/Apply';
-import ProfileButtons from './_components/ProfileButtons';
-import Carousel from '@/components/Carousel/Carousel';
-import Notice from '@/components/ClassNotice/Notice';
-import Like from '@/components/Like/Like';
-import Map from '@/components/Map/Map';
-import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import Review from '@/components/Review/Review';
-import ReviewComment from '@/components/Review/ReviewComment';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import Sharing from '@/components/Sharing/Sharing';
+import ResponsiveApply from './_components/ResponsiveApply';
+import ClassReviewSection from './_components/ClassReviewSection';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -46,8 +48,8 @@ const ClassDetailPage = () => {
     studioName,
   } = dummyClass;
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto  mt-[1.38rem] grid max-w-[1440px] grid-cols-[1fr_1.37fr_1fr] gap-x-12">
-      <section className="col-span-3 mb-4 flex w-full flex-col items-center shadow-float">
+    <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] box-border grid max-w-[1440px] grid-cols-1 gap-x-12 md:grid-cols-[1fr_1.37fr_1fr]">
+      <section className="mb-4 flex w-full flex-col items-center shadow-float md:col-span-3">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
           {dummyImgURL.length > 2 ? (
@@ -75,24 +77,28 @@ const ClassDetailPage = () => {
           )}
         </div>
 
-        <h1 className="relative flex w-full max-w-[40rem] justify-center text-lg font-bold">
-          {title}
-          <div className="absolute right-0 flex items-center gap-2">
+        <h1 className="relative flex w-full max-w-[40rem] px-4 text-lg font-bold md:justify-center">
+          <p className="w-11/12 md:text-center">{title}</p>
+          <div className="absolute right-4 flex flex-col-reverse items-center gap-2 md:right-0 md:flex-row">
             <Sharing mode="class" header={title} />
             <Like />
           </div>
         </h1>
         {/* Review */}
-        <div className="mb-4 mt-2 flex gap-1">
+        <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:mb-6 md:justify-center">
           <Review average={review.average} />
           <span className="text-sm font-bold text-sub-color2">
             ({review.average})
           </span>
         </div>
+        {/* 쿠폰 배너 */}
+        <div className="w-full max-w-[40rem] border-b border-solid border-[#D9D9D9] px-4 pb-3">
+          <DiscountCouponBanner discountPrice="10,000" />
+        </div>
 
-        <hr className="mb-6 h-1 w-full max-w-[40rem]" />
+        <hr className="mb-4 h-1 w-full max-w-[40rem] md:mb-6" />
         {/* Class Info */}
-        <div className="mb-7 flex w-full max-w-[464px] items-center justify-between">
+        <div className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 px-4 md:mb-7 md:grid-cols-4 md:justify-items-center">
           <h3 className={`${h3Style}`}>
             <LocationSVG /> {location}
           </h3>
@@ -110,7 +116,7 @@ const ClassDetailPage = () => {
       {/* 임시 빈 공간 */}
       <div className="" />
 
-      <section className="flex flex-col">
+      <section className="flex flex-col px-4">
         <Nav sections={CLASS_SECTIONS} />
 
         <Notice content={notice.content} updateDate={notice.lastDate} />
@@ -208,7 +214,7 @@ const ClassDetailPage = () => {
           </div>
 
           <p className="mb-2 text-sm font-medium text-main-color">
-            *궁금한 날짜를 클릭해주세요
+            *{'24'}시간 전까지 예약이 가능합니다
           </p>
           <ScheduleView
             clickableDates={Object.keys(dateTimeData).map(createDate)}
@@ -227,30 +233,15 @@ const ClassDetailPage = () => {
         </section>
 
         {/* 클래스 후기 */}
-        <section id="review-section" className="mb-20 scroll-mt-16">
-          <h2 className={`mb-6 flex items-center scroll-smooth ${h2Style}`}>
-            클래스 후기 {review.count}건 <span className="ml-3" />
-            <Review average={review.average} />
-            <span className="ml-1 text-sub-color2">({review.average})</span>
-          </h2>
-          <div className="flex flex-col gap-6">
-            {review.reviewer.map((review) => (
-              <ReviewComment
-                key={review.nickname}
-                src={review.src}
-                nickname={review.nickname}
-                average={review.average}
-                content={review.content}
-                date={review.date}
-                title={review.title}
-              />
-            ))}
-          </div>
-        </section>
+        <ClassReviewSection />
       </section>
 
-      <section className="max-w-[17rem] ">
+      <section className="hidden max-w-[17rem] md:block">
         <Apply coupon={coupon} price={price} />
+      </section>
+
+      <section className="fixed bottom-0 w-full sm:block md:hidden">
+        <ResponsiveApply />
       </section>
     </main>
   );
