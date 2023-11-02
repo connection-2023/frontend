@@ -8,24 +8,29 @@ import DashboardCalendar from '@/components/Calendar/DashboardCalendar';
 const Home = () => {
   return (
     <>
-      <div className="row-span-2 flex w-full flex-col rounded-[0.63rem] bg-white py-4 shadow-float">
-        <div className="mx-4 mb-4 flex rounded-[0.28rem] shadow-[0px_0.90294px_3.61175px_0px_rgba(0,0,0,0.25)]">
+      <div className="mb-4 flex w-full flex-col bg-white py-4 md:col-span-2 md:row-span-3 md:shadow-float lg:col-span-1 lg:row-span-2 lg:mb-0 lg:rounded-[0.63rem]">
+        <div className="mx-4 mb-4 flex md:hidden lg:block lg:rounded-[0.28rem] lg:shadow-float">
           <DashboardCalendar />
         </div>
-        <Sidebar view="dashboard" />
+        <div className="hidden md:order-1 md:block">
+          <Sidebar view="dashboard" />
+        </div>
       </div>
-
-      <div className="col-span-3 h-[13.5rem] overflow-hidden rounded-[0.31rem]">
+      {/* 태블릿 뷰에서만 */}
+      <div className="col-span-3 flex hidden rounded-[0.31rem] bg-white px-4 shadow-float md:order-3 md:block lg:hidden">
+        <DashboardCalendar />
+      </div>
+      <div className="order-first h-[13.5rem] overflow-hidden rounded-[0.31rem] md:order-2 md:col-span-6  lg:order-none lg:col-span-3 lg:rounded-[0.31rem]">
         <Banner />
       </div>
 
-      <div className="flex w-full">
+      <div className="mb-4 flex w-full px-4 md:order-4 md:col-span-3 md:mb-0 md:px-0 lg:col-span-1 lg:mb-0 lg:px-0">
         <DayCalendar />
       </div>
-      <div className="w-full">
+      <div className="mb-4 w-full px-4 md:order-5 md:col-span-3 md:px-0 lg:col-span-1 lg:mb-0 lg:px-0">
         <RecentApply />
       </div>
-      <div>
+      <div className="w-full px-4 pr-4 md:order-6 md:col-span-3 md:px-0 lg:col-span-1 lg:px-0">
         <RecentReview />
       </div>
     </>

@@ -11,7 +11,7 @@ export default async function MyPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="bg-admin-bg-color mx-auto mb-20 grid w-full max-w-[1440px] grid-cols-4 gap-4 px-[4.37rem] pb-12">
+    <main className="mx-auto mb-20 grid w-full max-w-[1440px] grid-cols-1 bg-admin-bg-color pb-12 md:grid-cols-8 md:gap-4 md:px-[2.25rem] lg:grid-cols-4 lg:px-[4.37rem]">
       {children}
     </main>
   );

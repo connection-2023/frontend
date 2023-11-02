@@ -4,15 +4,13 @@ import ProfileImg from '@/components/ProfileImage/ProfileImage';
 const RecentApply = () => {
   return (
     <section className="flex h-[39.25rem] flex-col divide-y divide-solid divide-sub-color4 rounded-[0.31rem] bg-white shadow-float">
-      <h1 className="flex h-[3.2rem] w-full items-center justify-between px-3.5 text-base font-bold text-sub-color3">
+      <h1 className="flex h-12 w-full items-center justify-between px-3.5 text-base font-bold text-sub-color3">
         <span className="flex items-center gap-[0.38rem]">
           <RecentSVG width="24" height="24" className="fill-sub-color1" />
           최근 신청한 수강생
         </span>
 
-        <span className="text-sm font-medium text-sub-color2">
-          09:00AM 업데이트
-        </span>
+        <span className="text-sm font-medium text-sub-color2">09:00AM</span>
       </h1>
       <ClassList />
       <ClassList />
