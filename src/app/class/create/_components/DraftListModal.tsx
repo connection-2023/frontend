@@ -10,6 +10,7 @@ interface IDraftListModal {
   closeModal: () => void;
   classDraftList: IGetClassDraft[];
   createDraft: () => Promise<void>;
+  deleteClassDraftList: (deleteId: string) => Promise<void>;
 }
 
 const DraftListModal = ({
@@ -17,6 +18,7 @@ const DraftListModal = ({
   closeModal,
   classDraftList,
   createDraft,
+  deleteClassDraftList,
 }: IDraftListModal) => {
   const closeWithoutSelection = async () => {
     if (classDraftList.length >= 5) {
@@ -50,7 +52,11 @@ const DraftListModal = ({
         </button>
       </h1>
 
-      <DraftList classDraftList={classDraftList} closeModal={closeModal} />
+      <DraftList
+        classDraftList={classDraftList}
+        closeModal={closeModal}
+        deleteClassDraftList={deleteClassDraftList}
+      />
     </Modal>
   );
 };
@@ -60,18 +66,19 @@ export default DraftListModal;
 interface DraftListProps {
   classDraftList: IGetClassDraft[];
   closeModal: () => void;
+  deleteClassDraftList: (deleteId: string) => Promise<void>;
 }
 
-const DraftList = ({ classDraftList, closeModal }: DraftListProps) => {
+const DraftList = ({
+  classDraftList,
+  closeModal,
+  deleteClassDraftList,
+}: DraftListProps) => {
   const router = useRouter();
 
   const selectDraft = (id: string, step: string | null) => {
     router.push(`/class/create?step=${step === null ? 0 : step}&id=${id}`);
     closeModal();
-  };
-
-  const deleteDraft = async (id: string) => {
-    await deleteClassDrafts(id);
   };
 
   return (
@@ -95,7 +102,7 @@ const DraftList = ({ classDraftList, closeModal }: DraftListProps) => {
               <data className="whitespace-nowrap text-sub-color2">
                 {formattedDate}
               </data>
-              <button onClick={() => deleteDraft(id)}>
+              <button onClick={() => deleteClassDraftList(id)}>
                 <TrashcanSVG className="h-6 w-6 stroke-sub-color2" />
               </button>
             </div>

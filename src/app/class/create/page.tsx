@@ -6,6 +6,7 @@ import { useSetRecoilState } from 'recoil';
 import { ArrowRightSVG } from '@/icons/svg';
 import {
   createClassDraft,
+  deleteClassDrafts,
   getClassDraft,
   getClassDrafts,
 } from '@/lib/apis/instructorApi';
@@ -65,11 +66,6 @@ export default function ClassCreate() {
     })();
   }, []);
 
-  const createDraft = async () => {
-    const { id } = await createClassDraft();
-    router.push(`/class/create?step=0&id=${id}`);
-  };
-
   const nextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
@@ -109,6 +105,24 @@ export default function ClassCreate() {
 
   const closeDraftsModal = () => {
     setIsModalOpen(false);
+  };
+
+  const createDraft = async () => {
+    const { id } = await createClassDraft();
+    router.push(`/class/create?step=0&id=${id}`);
+  };
+
+  const deleteClassDraftList = async (deleteId: string) => {
+    await deleteClassDrafts(deleteId);
+
+    setClassDraftList((prev) => {
+      if (prev && prev.length - 1 === 0) {
+        createDraft();
+        closeDraftsModal();
+      }
+
+      return prev ? prev.filter(({ id }) => deleteId !== id) : null;
+    });
   };
 
   return (
@@ -187,6 +201,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           closeModal={closeDraftsModal}
           classDraftList={classDraftList}
           createDraft={createDraft}
+          deleteClassDraftList={deleteClassDraftList}
         />
       )}
     </main>

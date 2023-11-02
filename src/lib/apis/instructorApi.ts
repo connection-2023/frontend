@@ -169,7 +169,7 @@ export const deleteClassDrafts = async (
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(
-        `임시저장 목록 조회 오류: ${errorData.message || ''}, status: ${
+        `임시저장 삭제 오류: ${errorData.message || ''}, status: ${
           response.status
         }`,
       );
@@ -179,7 +179,7 @@ export const deleteClassDrafts = async (
 
     return data.data.temporaryLectures;
   } catch (error) {
-    console.error('임시저장 목록 조회 오류', error);
+    console.error('임시저장 삭제 오류', error);
     throw error;
   }
 };
