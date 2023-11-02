@@ -1,4 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
+import { IGetClassDrafts } from '@/types/class';
 
 export const getInstructorProfile = async () => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
@@ -119,14 +120,14 @@ export const createClassDraft = async () => {
     }
 
     const data = await response.json();
-    return data;
+    return data.data;
   } catch (error) {
     console.error('임시저장 생성 오류', error);
     throw error;
   }
 };
 
-export const getClassDrafts = async () => {
+export const getClassDrafts = async (): Promise<IGetClassDrafts[]> => {
   try {
     const response = await fetch(`${DOMAIN}/api/class/drafts/getDragts`, {
       method: 'GET',
@@ -144,7 +145,7 @@ export const getClassDrafts = async () => {
 
     const data = await response.json();
 
-    return data;
+    return data.data.temporaryLectures;
   } catch (error) {
     console.error('임시저장 목록 조회 오류', error);
     throw error;

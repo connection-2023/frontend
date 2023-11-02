@@ -28,3 +28,10 @@ export interface DayTimeList {
   day: string[];
   timeSlots: string[];
 }
+
+export interface IGetClassDrafts {
+  id: string;
+  updatedAt: string;
+  title: null | string;
+  step: null | string;
+}

@@ -4,15 +4,21 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 import { ArrowRightSVG } from '@/icons/svg';
-import { getClassDraft } from '@/lib/apis/instructorApi';
+import {
+  createClassDraft,
+  getClassDraft,
+  getClassDrafts,
+} from '@/lib/apis/instructorApi';
 import { classCreateState } from '@/recoil/Create/atoms';
 import ClassCategory from './_components/ClassCategory';
 import ClassExplanation from './_components/ClassExplanation';
 import ClassLocation from './_components/ClassLocation';
 import ClassPrice from './_components/ClassPrice';
 import ClassSchedule from './_components/ClassSchedule';
+import DraftListModal from './_components/DraftListModal';
 import { Button } from '@/components/Button/Button';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { IGetClassDrafts } from '@/types/class';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [
@@ -26,6 +32,10 @@ const steps = [
 export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [classDraftList, setClassDraftList] = useState<
+    null | IGetClassDrafts[]
+  >(null);
   const setClassCreate = useSetRecoilState(classCreateState);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,12 +45,26 @@ export default function ClassCreate() {
 
   useEffect(() => {
     (async () => {
-      await getClassDraft(2);
-    })();
-    const lectureId = searchParams.get('id');
+      const lectureId = searchParams.get('id');
 
-    if (lectureId) {
-    }
+      if (lectureId) {
+        //현재 lectureId를 가지고 있을 때
+      } else {
+        // lectureId 없을 떄
+        const classDrafts = await getClassDrafts();
+        if (classDrafts.length > 0) {
+          // 임시 저장 목록이 존재 할때
+          // 모달 리스트 출력
+          console.log(classDrafts);
+          setClassDraftList(classDrafts);
+          setIsModalOpen(true);
+        } else {
+          // 임시 저장 목록이 없을 때
+          const { id } = await createClassDraft();
+          router.push(`/class/create?step=0&id=${id}`);
+        }
+      }
+    })();
   }, []);
 
   const nextStep = () => {
@@ -78,6 +102,10 @@ export default function ClassCreate() {
 
   const closeValidationMessage = () => {
     setInvalidData(null);
+  };
+
+  const closeDraftsModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -149,6 +177,14 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
         closeModal={closeValidationMessage}
         invalidData={invalidData}
       />
+
+      {classDraftList && (
+        <DraftListModal
+          isOpen={isModalOpen}
+          closeModal={closeDraftsModal}
+          classDraftList={classDraftList}
+        />
+      )}
     </main>
   );
 }
