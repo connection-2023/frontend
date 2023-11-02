@@ -68,6 +68,20 @@ export interface Instructors {
   href: string;
 }
 
+export interface INoticeMessage {
+  message: string;
+  date: string;
+  isRead: boolean;
+}
+
+export interface INotice {
+  type: string;
+  id: string;
+  date: string;
+  isRead: boolean;
+  title: string;
+  contents: INoticeMessage[];
+}
 export interface Verification {
   nickname: boolean;
   email: boolean;
