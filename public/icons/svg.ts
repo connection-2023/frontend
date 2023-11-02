@@ -56,6 +56,7 @@ import StarSVG from './star.svg';
 import TimeSVG from './time.svg';
 import TooltipSVG from './tooltip.svg';
 import TransFormSVG from './transform.svg';
+import TrashcanSVG from './trashcan.svg';
 import TwitterSVG from './twitter.svg';
 import UploadImageSVG from './UploadImg.svg';
 import YoutubeSVG from './youtube.svg';
@@ -63,6 +64,7 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  TrashcanSVG,
   DashboardSVG,
   NotFoundSVG,
   ReportSVG,
