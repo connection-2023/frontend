@@ -1,6 +1,6 @@
 'use client';
 import 'moment/locale/ko';
-import { isSameDay } from 'date-fns';
+import { isSameDay, setHours, setMinutes } from 'date-fns';
 import format from 'date-fns/format';
 import koLocale from 'date-fns/locale/ko';
 import { useState, useCallback, useEffect } from 'react';
@@ -11,6 +11,7 @@ import {
   SlotInfo,
   ToolbarProps,
 } from 'react-big-calendar';
+import ResponsiveScheduleView from '@/app/dashboard/_components/ResponsiveScheduleView';
 import CalendarDetail from '@/app/my/manage/schedule/_components/CalendarDetail';
 import eventList from '@/app/my/manage/schedule/_components/Event';
 import { ArrowRightSVG } from '@/icons/svg';
@@ -71,7 +72,7 @@ const DayCalendar = () => {
   };
 
   return (
-    <div className="relative box-border h-[39.25rem] w-full rounded-[0.31rem] bg-white p-4 shadow-float">
+    <div className="relative box-border h-[39.25rem] h-fit w-full rounded-[0.31rem] bg-white p-4 shadow-float lg:h-auto">
       <Calendar
         localizer={localizer}
         formats={formats}
@@ -82,9 +83,8 @@ const DayCalendar = () => {
         defaultView={Views.DAY}
         date={date}
         onNavigate={onNavigate}
-        startAccessor="start"
-        endAccessor="end"
         messages={messages}
+        min={setHours(setMinutes(new Date(), 0), 8)}
         drilldownView={null}
         showMultiDayTimes
         popup
@@ -103,6 +103,10 @@ const DayCalendar = () => {
           })}
         />
       )}
+
+      <div className="lg:hidden">
+        <ResponsiveScheduleView />
+      </div>
     </div>
   );
 };
@@ -116,7 +120,7 @@ interface IToolbarProps extends Partial<ToolbarProps> {
 }
 
 const DayToolBar = ({ label, onNavigate }: IToolbarProps) => (
-  <div className="mb-[0.69rem] flex items-center justify-between gap-4">
+  <div className="mb-[0.69rem] flex items-center justify-between gap-4 whitespace-nowrap">
     <h2 className="text-lg font-semibold text-sub-color3">{label}</h2>
     <div className="flex h-[1.875rem] w-32 divide-x divide-solid overflow-hidden rounded-[0.4rem] border border-solid border-sub-color2">
       <button

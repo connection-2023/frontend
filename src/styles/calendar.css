@@ -118,3 +118,34 @@
   height: 2px !important;
   background-color: var(--main-color) !important;
 }
+
+.rbc-time-view {
+  border-radius: 0.31rem;
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.rbc-label {
+  color: var(--sub-color3);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  padding: 0 5px;
+}
+
+.rbc-time-header {
+  display: none !important;
+}
+
+.rbc-time-content {
+  border: none !important;
+}
+
+.rbc-timeslot-group {
+  min-height: 2rem !important;
+}
+
+.rbc-timeslot-group {
+  min-height: 2rem !important;
+}
