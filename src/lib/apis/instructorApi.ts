@@ -1,5 +1,9 @@
 import { DOMAIN } from '@/constants/constants';
-import { IGetClassDrafts, IGetClassDraft } from '@/types/class';
+import {
+  IGetClassDrafts,
+  IGetClassDraft,
+  IUpdateClassDraft,
+} from '@/types/class';
 
 export const getInstructorProfile = async () => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
@@ -178,6 +182,32 @@ export const deleteClassDrafts = async (
     return data.data.temporaryLectures;
   } catch (error) {
     console.error('임시저장 삭제 오류', error);
+    throw error;
+  }
+};
+
+export const updateClassDraft = async (data: IUpdateClassDraft) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/drafts/updateDraft`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `임시저장 오류: ${errorData.message || ''}, status: ${response.status}`,
+      );
+    }
+
+    const res = await response.json();
+    console.log(res);
+  } catch (error) {
+    console.error('임시저장 오류', error);
     throw error;
   }
 };
