@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CheckMarkSVG } from '@/icons/svg';
 
@@ -6,10 +6,17 @@ interface RadioComponentProps {
   title: string;
   message: string;
   checkList: string[];
+  select?: string;
 }
 
-const RadioComponent = ({ title, checkList, message }: RadioComponentProps) => {
+const RadioComponent = ({
+  title,
+  checkList,
+  message,
+  select = '',
+}: RadioComponentProps) => {
   const { register } = useFormContext();
+  const [selectOption, setSelectOption] = useState(select);
 
   return (
     <>
@@ -23,6 +30,8 @@ const RadioComponent = ({ title, checkList, message }: RadioComponentProps) => {
             type="radio"
             value={element}
             className="peer hidden"
+            checked={selectOption === element}
+            onClick={() => setSelectOption(element)}
           />
           <label
             htmlFor={element}
