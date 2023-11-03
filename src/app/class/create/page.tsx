@@ -2,6 +2,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { ArrowRightSVG } from '@/icons/svg';
 import {
@@ -19,7 +20,7 @@ import ClassSchedule from './_components/ClassSchedule';
 import DraftListModal from './_components/DraftListModal';
 import { Button } from '@/components/Button/Button';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { IGetClassDraft } from '@/types/class';
+import { IGetClassDrafts } from '@/types/class';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [
@@ -34,37 +35,50 @@ export default function ClassCreate() {
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [classDraftList, setClassDraftList] = useState<null | IGetClassDraft[]>(
-    null,
-  );
+  const [classDraftList, setClassDraftList] = useState<
+    null | IGetClassDrafts[]
+  >(null);
+
   const setClassCreate = useSetRecoilState(classCreateState);
+  const formMethods = useForm({ shouldFocusError: false });
+  const { handleSubmit } = formMethods;
+
   const router = useRouter();
   const searchParams = useSearchParams();
-  const formMethods = useForm({ shouldFocusError: false });
+  const [lectureId, setLectureId] = useState(searchParams.get('id'));
 
-  const { handleSubmit } = formMethods;
+  useEffect(() => {
+    if (lectureId !== searchParams.get('id')) {
+      setLectureId(searchParams.get('id'));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     (async () => {
-      const lectureId = searchParams.get('id');
-
-      if (lectureId) {
-        //현재 lectureId를 가지고 있을 때
-      } else {
+      if (!lectureId) {
         // lectureId 없을 떄
         const classDrafts = await getClassDrafts();
         if (classDrafts.length > 0) {
           // 임시 저장 목록이 존재 할때
-          // 모달 리스트 출력
           setClassDraftList(classDrafts);
           setIsModalOpen(true);
         } else {
           // 임시 저장 목록이 없을 때
           await createDraft();
         }
+      } else {
+        // lectureId 존재 시
+        try {
+          console.log(await getClassDraft(lectureId));
+        } catch (error) {
+          if (error instanceof Error) {
+            toast.error(error.message);
+            router.push('/class/create');
+          }
+        }
       }
     })();
-  }, []);
+  }, [lectureId]);
 
   const nextStep = () => {
     if (activeStep < steps.length - 1) {

@@ -3,12 +3,12 @@ import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { CloseSVG, TrashcanSVG } from '@/icons/svg';
 import { deleteClassDrafts } from '@/lib/apis/instructorApi';
-import { IGetClassDraft } from '@/types/class';
+import { IGetClassDrafts } from '@/types/class';
 
 interface IDraftListModal {
   isOpen: boolean;
   closeModal: () => void;
-  classDraftList: IGetClassDraft[];
+  classDraftList: IGetClassDrafts[];
   createDraft: () => Promise<void>;
   deleteClassDraftList: (deleteId: string) => Promise<void>;
 }
@@ -43,7 +43,7 @@ const DraftListModal = ({
       ariaHideApp={false}
     >
       <h1 className="relative flex justify-center border-b border-solid border-sub-color2 py-3 text-lg">
-        임시저장 불러오기(5)
+        임시저장 불러오기({classDraftList.length})
         <button
           className="absolute right-5 top-3.5"
           onClick={closeWithoutSelection}
@@ -64,7 +64,7 @@ const DraftListModal = ({
 export default DraftListModal;
 
 interface DraftListProps {
-  classDraftList: IGetClassDraft[];
+  classDraftList: IGetClassDrafts[];
   closeModal: () => void;
   deleteClassDraftList: (deleteId: string) => Promise<void>;
 }

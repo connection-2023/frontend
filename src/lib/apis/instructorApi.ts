@@ -1,5 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import { IGetClassDraft } from '@/types/class';
+import { IGetClassDrafts, IGetClassDraft } from '@/types/class';
 
 export const getInstructorProfile = async () => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
@@ -73,7 +73,9 @@ export const instructorRegister = async (data: InstructorRegister) => {
   }
 };
 
-export const getClassDraft = async (lectureId: number) => {
+export const getClassDraft = async (
+  lectureId: number | string,
+): Promise<IGetClassDraft> => {
   try {
     const response = await fetch(
       `${DOMAIN}/api/class/drafts/getDraft?lectureId=${encodeURIComponent(
@@ -87,16 +89,12 @@ export const getClassDraft = async (lectureId: number) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        `임시저장 목록 조회 오류: ${errorData.message || ''}, status: ${
-          response.status
-        }`,
-      );
+      throw new Error(errorData.message || '');
     }
 
     const data = await response.json();
 
-    return data;
+    return data.data.temporaryLecture;
   } catch (error) {
     console.error('임시저장 목록 조회 오류', error);
     throw error;
@@ -127,7 +125,7 @@ export const createClassDraft = async () => {
   }
 };
 
-export const getClassDrafts = async (): Promise<IGetClassDraft[]> => {
+export const getClassDrafts = async (): Promise<IGetClassDrafts[]> => {
   try {
     const response = await fetch(`${DOMAIN}/api/class/drafts/getDrafts`, {
       method: 'GET',
@@ -154,7 +152,7 @@ export const getClassDrafts = async (): Promise<IGetClassDraft[]> => {
 
 export const deleteClassDrafts = async (
   lectureId: string | number,
-): Promise<IGetClassDraft> => {
+): Promise<IGetClassDrafts> => {
   try {
     const response = await fetch(
       `${DOMAIN}/api/class/drafts/deleteDraft?lectureId=${encodeURIComponent(
