@@ -1,11 +1,10 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
 import {
   CATEGORY_DIFFICULTY_LEVEL,
   CATEGORY_LESSON_TYPE,
   CATEGORY_PROGRESS_METHOD,
 } from '@/constants/constants';
-import { classCreateState } from '@/recoil/Create/atoms';
+import { useClassCreateStore } from '@/store/classCreate';
 import CategoryContainer from './ClassCategory/CategoryContainer';
 import ClassSizeSelect from './ClassCategory/ClassSizeSelect';
 import RadioComponent from './ClassCategory/RadioComponent';
@@ -19,44 +18,44 @@ const ClassCategory = () => {
     formState: { errors },
   } = useFormContext();
 
-  const classData = useRecoilValue(classCreateState);
+  const classData = useClassCreateStore((state) => state.lectureData);
 
   return (
     <>
       <section
-        id="classImg"
+        id="images"
         className="mb-5 border-b border-solid border-sub-color2 py-10"
       >
         <Controller
-          name="classImg"
+          name="images"
           control={control}
-          defaultValue={[]}
+          defaultValue={classData?.temporaryLectureImage}
           rules={{
             required: '이미지',
           }}
           render={({ field }) => (
             <UploadImage
               onChange={field.onChange}
-              defaultImg={classData.classImg}
-              errors={errors.classImg}
+              defaultImg={classData?.temporaryLectureImage}
+              errors={errors.images}
             />
           )}
         />
       </section>
 
       <input
-        id="className"
+        id="title"
         placeholder="클래스명"
         className={`mb-6 h-10 border-b border-solid border-sub-color1 pb-2 text-2xl font-bold outline-0
-        ${errors.className && 'animate-vibration placeholder:text-main-color'}`}
-        {...register('className', {
+        ${errors.title && 'animate-vibration placeholder:text-main-color'}`}
+        {...register('title', {
           required: '클래스명',
         })}
       />
 
       <section className="flex">
         <h2
-          id="classGenre"
+          id="genres"
           className={`w-1/6 text-lg font-bold ${
             errors.classGenre && 'animate-vibration text-main-color'
           }`}
@@ -65,7 +64,7 @@ const ClassCategory = () => {
         </h2>
         <div className="w-5/6">
           <Controller
-            name="classGenre"
+            name="genres"
             control={control}
             defaultValue={[]}
             rules={{
@@ -74,34 +73,34 @@ const ClassCategory = () => {
             render={({ field }) => (
               <GenreCheckboxGroup
                 onChange={field.onChange}
-                defaultValue={classData.classGenre}
+                defaultValue={classData?.temporaryLectureToDanceGenre}
               />
             )}
           />
         </div>
       </section>
 
-      <CategoryContainer id="classLessonType" title="인원">
+      <CategoryContainer id="lessonType" title="인원">
         <RadioComponent
           message="인원"
-          title="classLessonType"
+          title="lessonType"
           checkList={CATEGORY_LESSON_TYPE}
         />
         <ClassSizeSelect />
       </CategoryContainer>
 
-      <CategoryContainer id="classProgressMethod" title="진행방식">
+      <CategoryContainer id="lectureMethod" title="진행방식">
         <RadioComponent
           message="진행방식"
-          title="classProgressMethod"
+          title="lectureMethod"
           checkList={CATEGORY_PROGRESS_METHOD}
         />
       </CategoryContainer>
 
-      <CategoryContainer id="classDifficultyLevel" title="난이도">
+      <CategoryContainer id="difficultyLevel" title="난이도">
         <RadioComponent
           message="난이도"
-          title="classDifficultyLevel"
+          title="difficultyLevel"
           checkList={CATEGORY_DIFFICULTY_LEVEL}
         />
       </CategoryContainer>

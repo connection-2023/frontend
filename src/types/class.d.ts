@@ -39,7 +39,7 @@ export interface IGetClassDrafts {
 export interface IGetClassDraft {
   id: number;
   lecturerId: number;
-  step?: number;
+  step: number | null;
   lectureTypeId?: number;
   lectureMethodId?: number;
   title?: string;
@@ -83,4 +83,94 @@ export interface IGetClassDraft {
   temporaryLectureHoliday: {
     holiday: string;
   }[];
+}
+
+export interface IUpdateClassDraft {
+  lectureId: number | string;
+  step: number;
+  regions?: string[];
+  lectureType?: string;
+  lectureMethod?: string;
+  notification?: string;
+  genres?: string[];
+  etcGenres?: string[];
+  images?: string[];
+  title?: string;
+  introduction?: string;
+  curriculum?: string;
+  detailAddress?: string;
+  duration?: number;
+  difficultyLevel?: string;
+  minCapacity?: number;
+  maxCapacity?: number;
+  reservationDeadline?: string;
+  reservationComment?: string;
+  price?: number;
+  noShowDeposit?: number;
+  schedules?: string[];
+  regularSchedules?: {
+    [key: string]: string[];
+  };
+  holidays?: string[];
+  coupons?: number[];
+}
+
+export interface IprocessedDraft {
+  id: number;
+  lecturerId: number;
+  step: number | null;
+  lectureTypeId?: number;
+  lectureMethodId?: number;
+  title?: string;
+  introduction?: string;
+  curriculum?: string;
+  detailAddress?: string;
+  duration?: number;
+  difficultyLevel?: string | null;
+  minCapacity?: number;
+  maxCapacity?: number;
+  reservationDeadline?: string;
+  reservationComment?: string;
+  price?: number;
+  noShowDeposit?: number;
+  reviewCount: number;
+  stars: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: null | string;
+  temporaryLecturenotification: { notification: string }[];
+  temporaryLectureImage: { imageUrl: string }[];
+  temporaryLectureCouponTarget: any[];
+  temporaryLectureSchedule: {
+    startDateTime: string;
+    team: null;
+    numberOfParticipants: number;
+  }[];
+  temporaryLectureToRegion: {
+    region: {
+      administrativeDistrict: string;
+      district: string;
+    };
+  }[];
+  temporaryLectureToDanceGenre: string[];
+  temporaryLectureHoliday: {
+    holiday: string;
+  }[];
+}
+
+export interface classCreateData {
+  title: string;
+  images: {
+    file: File;
+    imageUrl: string;
+  }[];
+  genres: string[];
+  classSize: {
+    min: number;
+    max: number;
+  };
+  lectureMethod: string;
+  lessonType: string;
+  difficultyLevel: string;
 }

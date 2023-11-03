@@ -10,7 +10,7 @@ const ClassSizeSelect = () => {
   const allOptions = createOptions(1, 100);
 
   const { watch, control, getValues } = useFormContext();
-  const isGroupType = watch('classLessonType');
+  const isGroupType = watch('lessonType');
 
   const [minStudent, setMinStudent] = useState({
     select: {

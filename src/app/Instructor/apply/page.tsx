@@ -11,7 +11,7 @@ import {
   constructEmail,
   formatRegions,
   handleImageUpload,
-} from '@/utils/apiDataPreparers';
+} from '@/utils/apiDataProcessor';
 import { switchToInstructor } from '@/utils/switchUserUtil';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
@@ -70,7 +70,10 @@ const ApplyPage = () => {
         instagramPostUrls2,
       } = data;
 
-      const uploadImgList = await handleImageUpload(profileImageUrls);
+      const uploadImgList = await handleImageUpload(
+        profileImageUrls,
+        'lecturers',
+      );
 
       const email = constructEmail(emailFront, emailBack);
 

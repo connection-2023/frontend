@@ -9,17 +9,22 @@ import {
   deleteClassDrafts,
   getClassDraft,
   getClassDrafts,
+  updateClassDraft,
 } from '@/lib/apis/instructorApi';
 import { useClassCreateStore } from '@/store/classCreate';
+import { classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './_components/ClassCategory';
 import ClassExplanation from './_components/ClassExplanation';
 import ClassLocation from './_components/ClassLocation';
 import ClassPrice from './_components/ClassPrice';
 import ClassSchedule from './_components/ClassSchedule';
 import DraftListModal from './_components/DraftListModal';
-import { Button } from '@/components/Button/Button';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { IGetClassDrafts } from '@/types/class';
+import {
+  IGetClassDraft,
+  IGetClassDrafts,
+  classCreateData,
+} from '@/types/class';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [
@@ -41,7 +46,7 @@ export default function ClassCreate() {
     null | IGetClassDrafts[]
   >(null);
 
-  const formMethods = useForm({ shouldFocusError: false });
+  const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit } = formMethods;
 
   const [lectureId, setLectureId] = useState(searchParams.get('id'));
@@ -65,7 +70,8 @@ export default function ClassCreate() {
         // lectureId 존재 시
         try {
           const data = await getClassDraft(lectureId);
-          setLectureData(data);
+          const processedData = inputDataProcess(data);
+          setLectureData(processedData);
         } catch (error) {
           if (error instanceof Error) {
             toast.error('올바른 접근이 아닙니다.');
@@ -168,6 +174,30 @@ export default function ClassCreate() {
     });
   };
 
+  const updateDraft = async (data: classCreateData) => {
+    if (lectureId) {
+      const processData = await classOutputDataProcess(data, activeStep);
+      await updateClassDraft({ lectureId, step: activeStep, ...processData });
+    }
+  };
+
+  const inputDataProcess = (data: IGetClassDraft) => {
+    const genres = data.temporaryLectureToDanceGenre.map(
+      (item) => item.danceCategory.genre,
+    );
+
+    const difficultyLevel =
+      data.difficultyLevel === '상'
+        ? '상급'
+        : data.difficultyLevel === '중'
+        ? '중급'
+        : data.difficultyLevel === '하'
+        ? '초급(입문)'
+        : null;
+
+    return { ...data, temporaryLectureToDanceGenre: genres, difficultyLevel };
+  };
+
   return (
     <main className="mx-auto max-w-[1440px] px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
@@ -221,7 +251,11 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
             이전
           </button>
           <div className="flex">
-            <Button>임시저장</Button>
+            <form onSubmit={handleSubmit(updateDraft, invalid)}>
+              <button className="flex items-center whitespace-nowrap rounded-md bg-black px-[0.87rem] py-[0.31rem] text-sm font-bold text-white">
+                임시저장
+              </button>
+            </form>
             <form onSubmit={handleSubmit(onValid, invalid)}>
               <button className="ml-4 flex items-center">
                 다음
