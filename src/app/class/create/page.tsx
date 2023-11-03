@@ -3,7 +3,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useSetRecoilState } from 'recoil';
 import { ArrowRightSVG } from '@/icons/svg';
 import {
   createClassDraft,
@@ -11,7 +10,7 @@ import {
   getClassDraft,
   getClassDrafts,
 } from '@/lib/apis/instructorApi';
-import { classCreateState } from '@/recoil/Create/atoms';
+import { useClassCreateStore } from '@/store/classCreate';
 import ClassCategory from './_components/ClassCategory';
 import ClassExplanation from './_components/ClassExplanation';
 import ClassLocation from './_components/ClassLocation';
@@ -32,6 +31,9 @@ const steps = [
 ];
 
 export default function ClassCreate() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [activeStep, setActiveStep] = useState(0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,19 +41,12 @@ export default function ClassCreate() {
     null | IGetClassDrafts[]
   >(null);
 
-  const setClassCreate = useSetRecoilState(classCreateState);
   const formMethods = useForm({ shouldFocusError: false });
   const { handleSubmit } = formMethods;
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const [lectureId, setLectureId] = useState(searchParams.get('id'));
-
-  useEffect(() => {
-    if (lectureId !== searchParams.get('id')) {
-      setLectureId(searchParams.get('id'));
-    }
-  }, [searchParams]);
+  const { setLectureData } = useClassCreateStore();
+  const classData = useClassCreateStore((state) => state.lectureData);
 
   useEffect(() => {
     (async () => {
@@ -69,10 +64,12 @@ export default function ClassCreate() {
       } else {
         // lectureId 존재 시
         try {
-          console.log(await getClassDraft(lectureId));
+          const data = await getClassDraft(lectureId);
+          setLectureData(data);
         } catch (error) {
           if (error instanceof Error) {
-            toast.error(error.message);
+            toast.error('올바른 접근이 아닙니다.');
+            console.error(error.message);
             router.push('/class/create');
           }
         }
@@ -80,26 +77,58 @@ export default function ClassCreate() {
     })();
   }, [lectureId]);
 
+  useEffect(() => {
+    const searchId = searchParams.get('id');
+    if (lectureId !== searchId) {
+      setLectureId(searchId);
+    }
+
+    const step = Number(searchParams.get('step'));
+    if (classData && activeStep !== step) {
+      const isStepValidNumber = !isNaN(step);
+      const isInvalidStepNull = classData.step === null && step !== 0;
+      const isInvalidStep = classData.step !== null && classData.step >= step;
+
+      const isInvalidAccess =
+        !isStepValidNumber || isInvalidStepNull || isInvalidStep;
+
+      if (isInvalidAccess) {
+        toast.error('올바른 접근이 아닙니다.');
+
+        router.push(
+          `/class/create?step=${
+            classData.step ? classData.step : 0
+          }&id=${lectureId}`,
+        ); // 추후 확인
+      } else {
+        setActiveStep(step);
+      }
+    }
+  }, [classData, searchParams]);
+
   const nextStep = () => {
     if (activeStep < steps.length - 1) {
       setActiveStep(activeStep + 1);
-      router.push(`/class/create?step=${activeStep + 1}`);
+      router.push(`/class/create?step=${activeStep + 1}&id=${lectureId}`);
     }
   };
 
   const prevStep = () => {
     if (activeStep > 0) {
       setActiveStep(activeStep - 1);
-      router.push(`/class/create?step=${activeStep - 1}`);
+      router.push(`/class/create?step=${activeStep - 1}&id=${lectureId}`);
     }
   };
 
   const onValid = (data: any) => {
-    //Validation 작성 하면서 data 타입 변경 요망
-    setClassCreate((prevState) => ({
-      ...prevState,
-      ...data,
-    }));
+    // setLectureData((prevState) => ({
+    //   ...prevState,
+    //   ...data,
+    // }));
+
+    // const uploadImgList = await handleImageUpload(profileImageUrls);
+
+    console.log(data);
 
     nextStep();
   };
