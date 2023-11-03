@@ -45,10 +45,13 @@ export const DELETE = async (request: NextRequest) => {
 
   if (!response.ok) {
     const errorData = await response.json();
-    return NextResponse.json({
-      status: response.status,
-      message: errorData.message || '서버 요청 오류',
-    });
+    return NextResponse.json(
+      {
+        status: response.status,
+        message: errorData.message || '서버 요청 오류',
+      },
+      { status: response.status },
+    );
   }
 
   const result = await response.json();
