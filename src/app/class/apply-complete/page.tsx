@@ -35,7 +35,7 @@ const applicationDetails = [
     type: '영수증',
     content: (
       <Link
-        href="/class/apply-complete/bill"
+        href="/class/apply-complete/receipt"
         className="underline underline-offset-2"
       >
         영수증 보기
