@@ -1,9 +1,15 @@
 import { IGenre, IRegion } from '@/types/types';
 
-export const formatLocationToString = (regions: { region: IRegion }[]) =>
+export const formatLocationToString = (
+  regions: { region: IRegion }[] | IRegion[],
+) =>
   regions
     .map((region) => {
-      const { administrativeDistrict, district } = region.region;
+      const isIRegion = 'administrativeDistrict' in region;
+
+      const targetRegion = isIRegion ? region : region.region;
+      const { administrativeDistrict, district } = targetRegion;
+
       return `${administrativeDistrict} ${district || ''}`;
     })
     .join(', ');
