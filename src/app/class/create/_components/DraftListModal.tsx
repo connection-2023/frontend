@@ -2,7 +2,8 @@ import { useRouter } from 'next/navigation';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { CloseSVG, TrashcanSVG } from '@/icons/svg';
-import { deleteClassDrafts } from '@/lib/apis/instructorApi';
+import { getClassDraft } from '@/lib/apis/classApi';
+import { useClassCreateStore } from '@/store/classCreate';
 import { IGetClassDrafts } from '@/types/class';
 
 interface IDraftListModal {
@@ -75,8 +76,15 @@ const DraftList = ({
   deleteClassDraftList,
 }: DraftListProps) => {
   const router = useRouter();
+  const setClassData = useClassCreateStore((state) => state.setClassData);
 
-  const selectDraft = (id: string, step: string | null) => {
+  const selectDraft = async (id: string, step: string | null) => {
+    try {
+      const data = await getClassDraft(id);
+      setClassData(data);
+    } catch (error) {
+      toast.error('잠시 후 다시 시도해 주세요');
+    }
     router.push(`/class/create?step=${step === null ? 0 : step}&id=${id}`);
     closeModal();
   };
