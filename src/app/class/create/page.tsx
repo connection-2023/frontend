@@ -4,9 +4,24 @@ import {
   createClassDraft,
   getClassDraft,
 } from '@/lib/apis/serverApis/classApi';
+import ClassCreate from './_components/ClassCreate';
 import ClassStoreInitializer from './_components/ClassStoreInitializer';
 import DraftListModalContainer from './_components/DraftListModalContainer';
-import ClassCreate from './ClassCreate';
+
+const validateSearchParams = (searchParams: {
+  [key: string]: string | undefined;
+}) => {
+  if (isNaN(Number(searchParams.id)) || isNaN(Number(searchParams.step))) {
+    throw new Error('id 혹은 step 숫자가 아닙니다.');
+  }
+};
+
+const handleServerError = (error: unknown, redirectPath: string): void => {
+  if (error instanceof Error) {
+    console.error(error.message);
+    redirect(redirectPath);
+  }
+};
 
 const ClassCreateServerPage = async ({
   searchParams,
@@ -17,22 +32,21 @@ const ClassCreateServerPage = async ({
 
   if (searchParams && searchParams.id && searchParams.step) {
     try {
-      if (isNaN(Number(searchParams.id)) || isNaN(Number(searchParams.step))) {
-        throw new Error('id 혹은 step 숫자가 아닙니다.');
-      }
-
+      validateSearchParams(searchParams);
       data = await getClassDraft(searchParams.id);
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-        redirect('/class/create');
-      }
+      handleServerError(error, '/class/create');
     }
   } else {
-    classDrafts = await getClassDrafts();
-    if (classDrafts.length === 0) {
-      const { id } = await createClassDraft();
-      redirect(`/class/create?step=0&id=${id}`);
+    try {
+      classDrafts = await getClassDrafts();
+      if (classDrafts.length === 0) {
+        const { id } = await createClassDraft();
+        redirect(`/class/create?step=0&id=${id}`);
+      }
+    } catch (error) {
+      handleServerError(error, '/');
+      // 추후 401이면 로그인으로 이동
     }
   }
 

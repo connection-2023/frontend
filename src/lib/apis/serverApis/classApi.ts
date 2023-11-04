@@ -14,9 +14,15 @@ export const getClassDrafts = async () => {
     method: 'GET',
     credentials: 'include',
     headers,
-  }).then((data) => data.json());
+  });
 
-  return response.data.temporaryLectures;
+  if (!response.ok) {
+    throw new Error(`Server error: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  return data.data.temporaryLectures;
 };
 
 export const getClassDraft = async (lectureId: string | number) => {
@@ -34,9 +40,15 @@ export const getClassDraft = async (lectureId: string | number) => {
       credentials: 'include',
       headers,
     },
-  ).then((data) => data.json());
+  );
 
-  return response.data.temporaryLecture;
+  if (!response.ok) {
+    throw new Error(`Server error: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  return data.data.temporaryLecture;
 };
 
 export const createClassDraft = async () => {
@@ -52,7 +64,13 @@ export const createClassDraft = async () => {
     method: 'POST',
     credentials: 'include',
     headers,
-  }).then((data) => data.json());
+  });
 
-  return response;
+  if (!response.ok) {
+    throw new Error(`Server error: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  return data;
 };
