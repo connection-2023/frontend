@@ -98,7 +98,7 @@ interface IImage {
   imageUrl: string;
 }
 
-interface IUserReview {
+export interface IUserReview {
   id: number;
   userId: number;
   users: {

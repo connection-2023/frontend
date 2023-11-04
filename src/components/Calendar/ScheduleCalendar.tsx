@@ -1,6 +1,6 @@
 'use client';
 import { ko } from 'date-fns/esm/locale';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
 import { FormattedCaption } from './BasicCalendar';
 import {
@@ -10,8 +10,22 @@ import {
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 
-const ScheduleCalendar = ({ clickableDates }: { clickableDates: Date[] }) => {
+interface ScheduleCalendarProps {
+  clickableDates: Date[];
+  handleClickDate: (newDate: Date) => void;
+}
+
+const ScheduleCalendar = ({
+  clickableDates,
+  handleClickDate,
+}: ScheduleCalendarProps) => {
   const [selected, setSelected] = useState<Date | undefined>(undefined);
+
+  useEffect(() => {
+    if (selected) {
+      handleClickDate(selected);
+    }
+  }, [selected]);
 
   if (!clickableDates.length) {
     return null;
