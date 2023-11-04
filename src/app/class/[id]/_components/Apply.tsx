@@ -179,7 +179,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
               selected={selectedDateTime}
             />
           </div>
-          <div className="mb-11 flex w-full flex-col gap-2">
+          <div className="mb-11 flex w-full flex-col gap-2 md:hidden">
             {selectedSchedules.map((dateTime) => (
               <ReservationItem
                 key={dateTime.lectureScheduleId}
