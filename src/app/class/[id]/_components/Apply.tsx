@@ -116,7 +116,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
     }
 
     const queryString = selectedSchedules
-      .map((item) => `count-${item.lectureScheduleId}=${item.count}`)
+      .map((item) => `count=${item.lectureScheduleId}-${item.count}`)
       .join('&');
 
     router.push(`/class/apply/${id}?${queryString}`);
