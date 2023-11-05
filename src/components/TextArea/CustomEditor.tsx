@@ -8,6 +8,8 @@ import {
 } from 'suneditor-react/dist/types/upload';
 import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
+import { postSingleImage } from '@/lib/apis/imageApi';
+import { toast } from 'react-toastify';
 
 interface CustomEditorProps {
   title: string;
@@ -42,9 +44,24 @@ const CustomEditor = ({
     info: object,
     uploadHandler: UploadBeforeHandler,
   ): UploadBeforeReturn => {
-    uploadHandler(files);
-    return true;
-  }; // 추후 S3로 변경 예정
+    postSingleImage(files[0], 'lectures')
+      .then((data) => {
+        uploadHandler({
+          result: [
+            {
+              url: data,
+              name: files[0].name,
+              size: files[0].size,
+            },
+          ],
+        });
+      })
+      .catch((error) => {
+        toast.error('이미지 업로드 실패');
+      });
+
+    return undefined;
+  };
 
   const getSunEditorInstance = (sunEditor: SunEditorCore) => {
     editor.current = sunEditor;
@@ -84,7 +101,7 @@ const CustomEditor = ({
         {minLength !== 0 && <p className="text-sub-color2">(필수)</p>}
       </label>
 
-      <div className="max-w-[640px]">
+      <div className="w-full">
         <Controller
           name={dataName}
           control={control}

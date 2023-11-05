@@ -19,7 +19,8 @@ export const postSingleImage = async (image: File, folder: string) => {
     }
 
     const data = await response.json();
-    return data.data.imageUrls;
+
+    return data.data.imageUrl;
   } catch (error) {
     console.error(error);
     throw error;

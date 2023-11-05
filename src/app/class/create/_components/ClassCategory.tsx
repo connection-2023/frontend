@@ -63,7 +63,7 @@ const ClassCategory = () => {
       <section className="flex">
         <h2
           id="genres"
-          className={`w-1/6 text-lg font-bold ${
+          className={`w-1/6 font-bold ${
             errors.classGenre && 'animate-vibration text-main-color'
           }`}
         >

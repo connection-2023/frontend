@@ -49,13 +49,15 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   }, [id]); //추후 리펙토링...
 
   useEffect(() => {
-    const step = Number(searchParams.get('step'));
-    const isValidStep = !isNaN(step) && step - 1 <= (classData?.step || 0);
+    if (classData) {
+      const step = Number(searchParams.get('step'));
+      const isValidStep = !isNaN(step) && step - 1 <= (classData?.step || 0);
 
-    if (isValidStep) {
-      setActiveStep(step);
-    } else {
-      router.back();
+      if (isValidStep) {
+        setActiveStep(step);
+      } else {
+        router.back();
+      }
     }
   }, [searchParams]);
 
