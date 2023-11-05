@@ -140,6 +140,7 @@ export interface ISignUp {
 
 export interface userProfile {
   id: string;
+  name: string;
   nickname: string;
   phoneNumber?: string;
   email: string;
