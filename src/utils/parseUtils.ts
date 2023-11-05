@@ -1,3 +1,5 @@
+import { format, addMinutes } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { IGenre, IRegion } from '@/types/types';
 
 export const formatLocationToString = (
@@ -23,3 +25,12 @@ export const formatGenreToString = (genres: IGenre[]) =>
       }
     })
     .join(', ');
+
+export const formatDateTime = (datetime: Date, duration: number) => {
+  const endDatetime = addMinutes(datetime, duration);
+  const formattedStartDatetime = format(datetime, 'M월 d일 (eee) HH:mm', {
+    locale: ko,
+  });
+  const formattedEndDatetime = format(endDatetime, 'HH:mm');
+  return `${formattedStartDatetime}-${formattedEndDatetime}`;
+};
