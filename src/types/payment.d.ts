@@ -3,7 +3,7 @@ export interface IReservationInfo {
   participants: number;
 }
 
-export interface IPaymentInfo {
+export interface IPaymentInfo extends IApplicantInfo {
   lectureId: string;
   orderName: string;
   orderId: string;
@@ -11,7 +11,9 @@ export interface IPaymentInfo {
   price: number;
   couponId?: number;
   stackableCouponId?: number;
+}
 
+export interface IApplicantInfo {
   representative: string;
   phoneNumber: string;
   requests?: string;
