@@ -1,12 +1,13 @@
-import create from 'zustand';
-import { IprocessedDraft } from '@/types/class';
+import { createContext } from 'react';
+import { create } from 'zustand';
+import { IGetClassDraft, IprocessedDraft } from '@/types/class';
 
 interface IUseClassCreateStore {
   classData: IprocessedDraft | null;
-  setClassData: (data: IprocessedDraft) => void;
+  setClassData: (data: IGetClassDraft) => void;
 }
 
-export const useClassCreateStore = create<IUseClassCreateStore>((set) => ({
+export const useClassCreateStore = create<IUseClassCreateStore>()((set) => ({
   classData: null,
   setClassData: (data) => set({ classData: data }),
 }));

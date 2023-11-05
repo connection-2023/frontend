@@ -1,9 +1,10 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
-import { updateClassDraft } from '@/lib/apis/classApi';
+import { getClassDraft, updateClassDraft } from '@/lib/apis/classApi';
 import { useClassCreateStore } from '@/store/classCreate';
 import { classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
@@ -26,6 +27,7 @@ const steps = [
 export default function ClassCreate() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const { setClassData } = useClassCreateStore();
   const classData = useClassCreateStore((state) => state.classData);
@@ -35,17 +37,43 @@ export default function ClassCreate() {
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit } = formMethods;
 
+  const id = searchParams.get('id');
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (id && !classData) {
+          location.reload();
+        }
+      } catch (error) {
+        toast.error('잠시 후 시도해주세요');
+        router.push(pathname);
+      }
+    })();
+  }, [id]); //추후 리펙토링...
+
+  // useEffect(() => {
+  //   const step = Number(searchParams.get('step'));
+  //   const isValidStep = !isNaN(step) && step <= (classData?.step || 0);
+
+  //   if (isValidStep) {
+  //     setActiveStep(step);
+  //   } else {
+  //     router.back();
+  //   }
+  // }, [searchParams]);
+
   const nextStep = () => {
     if (activeStep < steps.length - 1 && classData) {
       setActiveStep(activeStep + 1);
-      router.push(`/class/create?step=${activeStep + 1}&id=${classData.id}`);
+      router.push(`${pathname}?step=${activeStep + 1}&id=${classData.id}`);
     }
   };
 
   const prevStep = () => {
     if (activeStep > 0 && classData) {
       setActiveStep(activeStep - 1);
-      router.push(`/class/create?step=${activeStep - 1}&id=${classData.id}`);
+      router.push(`${pathname}?step=${activeStep - 1}&id=${classData.id}`);
     }
   };
 

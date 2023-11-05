@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import {
   CATEGORY_DIFFICULTY_LEVEL,
@@ -16,9 +17,11 @@ const ClassCategory = () => {
     register,
     control,
     formState: { errors },
+    setValue,
   } = useFormContext();
 
-  const classData = useClassCreateStore((state) => state.lectureData);
+  const store = useClassCreateStore();
+  const classData = store.classData;
 
   return (
     <>
@@ -36,23 +39,30 @@ const ClassCategory = () => {
           render={({ field }) => (
             <UploadImage
               onChange={field.onChange}
-              defaultImg={classData?.temporaryLectureImage}
+              defaultImg={field.value}
               errors={errors.images}
             />
           )}
         />
       </section>
 
-      <input
-        id="title"
-        placeholder="클래스명"
-        className={`mb-6 h-10 border-b border-solid border-sub-color1 pb-2 text-2xl font-bold outline-0
-        ${errors.title && 'animate-vibration placeholder:text-main-color'}`}
-        {...register('title', {
-          required: '클래스명',
-        })}
+      <Controller
+        name="title"
+        control={control}
+        rules={{ required: '클래스명' }}
+        defaultValue={classData?.title}
+        render={({ field }) => (
+          <input
+            {...field}
+            id="title"
+            placeholder="클래스명"
+            className={`mb-6 h-10 border-b border-solid border-sub-color1 pb-2 text-2xl font-bold outline-0 ${
+              errors.title && 'animate-vibration placeholder:text-main-color'
+            }`}
+          />
+        )}
       />
-
+      {/* 
       <section className="flex">
         <h2
           id="genres"
@@ -66,14 +76,12 @@ const ClassCategory = () => {
           <Controller
             name="genres"
             control={control}
-            defaultValue={[]}
             rules={{
               required: '장르',
             }}
             render={({ field }) => (
               <GenreCheckboxGroup
                 onChange={field.onChange}
-                defaultValue={classData?.temporaryLectureToDanceGenre}
               />
             )}
           />
@@ -103,7 +111,7 @@ const ClassCategory = () => {
           title="difficultyLevel"
           checkList={CATEGORY_DIFFICULTY_LEVEL}
         />
-      </CategoryContainer>
+      </CategoryContainer> */}
     </>
   );
 };

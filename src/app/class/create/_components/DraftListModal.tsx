@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
@@ -75,20 +76,6 @@ const DraftList = ({
   closeModal,
   deleteClassDraftList,
 }: DraftListProps) => {
-  const router = useRouter();
-  const setClassData = useClassCreateStore((state) => state.setClassData);
-
-  const selectDraft = async (id: string, step: string | null) => {
-    try {
-      const data = await getClassDraft(id);
-      setClassData(data);
-    } catch (error) {
-      toast.error('잠시 후 다시 시도해 주세요');
-    }
-    router.push(`/class/create?step=${step === null ? 0 : step}&id=${id}`);
-    closeModal();
-  };
-
   return (
     <ul className="flex flex-col gap-4 px-4 py-6">
       {classDraftList.map(({ id, updatedAt, title, step }) => {
@@ -99,12 +86,12 @@ const DraftList = ({
 
         return (
           <li key={id} className="flex justify-between gap-2">
-            <h2
+            <Link
               className=" w-2/3 cursor-pointer truncate"
-              onClick={() => selectDraft(id, step)}
+              href={`/class/create?step=${step === null ? 0 : step}&id=${id}`}
             >
               {title === null ? '제목 없음' : title}
-            </h2>
+            </Link>
 
             <div className="flex gap-3">
               <data className="whitespace-nowrap text-sub-color2">

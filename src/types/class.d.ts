@@ -133,28 +133,28 @@ export interface IprocessedDraft {
   reservationComment?: string;
   price?: number;
   noShowDeposit?: number;
-  reviewCount: number;
-  stars: number;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: null | string;
-  temporaryLecturenotification: { notification: string }[];
-  temporaryLectureImage: { imageUrl: string }[];
-  temporaryLectureCouponTarget: any[];
-  temporaryLectureSchedule: {
+  reviewCount?: number;
+  stars?: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: null | string;
+  temporaryLecturenotification?: { notification: string }[];
+  temporaryLectureImage?: { imageUrl: string }[];
+  temporaryLectureCouponTarget?: any[];
+  temporaryLectureSchedule?: {
     startDateTime: string;
     team: null;
     numberOfParticipants: number;
   }[];
-  temporaryLectureToRegion: {
+  temporaryLectureToRegion?: {
     region: {
       administrativeDistrict: string;
       district: string;
     };
   }[];
-  temporaryLectureToDanceGenre: string[];
-  temporaryLectureHoliday: {
+  temporaryLectureToDanceGenre?: string[];
+  temporaryLectureHoliday?: {
     holiday: string;
   }[];
 }
