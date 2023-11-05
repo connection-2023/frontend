@@ -1,4 +1,3 @@
-import { useContext, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import {
   CATEGORY_DIFFICULTY_LEVEL,

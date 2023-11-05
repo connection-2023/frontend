@@ -99,13 +99,19 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
 
   const updateDraft = async (data: classCreateData) => {
     if (classData) {
-      const processData = await classOutputDataProcess(data, activeStep);
+      try {
+        const processData = await classOutputDataProcess(data, activeStep);
+        console.log(processData);
 
-      await updateClassDraft({
-        lectureId: classData.id,
-        step: activeStep,
-        ...processData,
-      });
+        await updateClassDraft({
+          lectureId: classData.id,
+          step: activeStep,
+          ...processData,
+        });
+      } catch (error) {
+        toast.error('임시저장 실패');
+      }
+      toast.success('임시저장 완료');
     }
   };
   return (

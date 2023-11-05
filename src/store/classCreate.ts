@@ -1,4 +1,3 @@
-import { createContext } from 'react';
 import { create } from 'zustand';
 import { IGetClassDraft, IprocessedDraft } from '@/types/class';
 
@@ -32,11 +31,14 @@ const dataProcess = (data: IGetClassDraft) => {
 
   const lessonType = data.isGroup ? '그룹레슨' : '개인(1:1)레슨';
 
+  const notification = data.temporaryLecturenotification.notification;
+
   return {
     ...data,
     temporaryLectureToDanceGenre: genres,
     difficultyLevel,
     lectureMethod,
     lessonType,
+    notification,
   };
 };

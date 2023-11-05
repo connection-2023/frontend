@@ -1,11 +1,11 @@
-import { useRecoilValue } from 'recoil';
 import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
-import { classCreateState } from '@/recoil/Create/atoms';
+import { useClassCreateStore } from '@/store/classCreate';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
 
 const ClassExplanation = () => {
-  const classData = useRecoilValue(classCreateState);
+  const store = useClassCreateStore();
+  const classData = store.classData;
 
   return (
     <section className="mt-9 flex flex-col gap-9">
@@ -13,7 +13,8 @@ const ClassExplanation = () => {
         title="중요 공지사항을 입력해주세요."
         placeholder={ANNOUNCEMENT}
         maxLength={200}
-        dataName="classAnnouncement"
+        dataName="notification"
+        defaultValue={classData?.notification}
       />
 
       <TextAreaSection
@@ -22,14 +23,15 @@ const ClassExplanation = () => {
         placeholder={CLASS_OPERATION_PLAN}
         maxLength={500}
         height="h-40"
-        dataName="classOperationPlan"
+        dataName="introduction"
+        defaultValue={classData?.introduction}
         isRequired={true}
       />
 
       <CustomEditor
         title="커리큘럼"
-        dataName="classCurriculum"
-        defaultValue={classData.classCurriculum}
+        dataName="curriculum"
+        defaultValue={classData?.curriculum}
         height="652px"
         maxLength={3000}
         minLength={200}

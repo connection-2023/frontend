@@ -15,7 +15,7 @@ const validateSearchParams = (searchParams: {
     throw new Error('id 혹은 step 숫자가 아닙니다.');
   }
 
-  if (Number(searchParams.step) > 4) {
+  if (Number(searchParams.step) > 4 || Number(searchParams.step) < 0) {
     throw new Error('step이 비 정상적입니다.');
   }
 };

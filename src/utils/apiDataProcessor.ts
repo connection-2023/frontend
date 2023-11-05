@@ -89,7 +89,13 @@ export const classOutputDataProcess = async (
       };
 
     case 1:
-      break;
+      const { notification, introduction, curriculum } = data;
+
+      return {
+        notification,
+        introduction,
+        curriculum,
+      };
     case 2:
       break;
     case 3:

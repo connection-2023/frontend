@@ -62,7 +62,7 @@ export interface IGetClassDraft {
   createdAt: string;
   updatedAt: string;
   deletedAt: null | string;
-  temporaryLecturenotification: { notification: string }[];
+  temporaryLecturenotification: { notification: string };
   temporaryLectureImage: { imageUrl: string }[];
   temporaryLectureCouponTarget: any[];
   temporaryLectureSchedule: {
@@ -143,7 +143,7 @@ export interface IprocessedDraft {
   createdAt?: string;
   updatedAt?: string;
   deletedAt?: null | string;
-  temporaryLecturenotification?: { notification: string }[];
+  notification?: string;
   temporaryLectureImage?: { imageUrl: string }[];
   temporaryLectureCouponTarget?: any[];
   temporaryLectureSchedule?: {
@@ -177,4 +177,8 @@ export interface classCreateData {
   lectureMethod: string;
   lessonType: string;
   difficultyLevel: string;
+
+  notification: string;
+  introduction: string;
+  curriculum: string;
 }
