@@ -6,7 +6,7 @@ interface RadioComponentProps {
   title: string;
   message: string;
   checkList: string[];
-  select?: string;
+  select?: string | null;
 }
 
 const RadioComponent = ({

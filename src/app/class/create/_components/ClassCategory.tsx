@@ -14,10 +14,8 @@ import UploadImage from '@/components/UploadImage/UploadImage';
 
 const ClassCategory = () => {
   const {
-    register,
     control,
     formState: { errors },
-    setValue,
   } = useFormContext();
 
   const store = useClassCreateStore();
@@ -32,7 +30,7 @@ const ClassCategory = () => {
         <Controller
           name="images"
           control={control}
-          defaultValue={classData?.temporaryLectureImage}
+          defaultValue={classData?.temporaryLectureImage || []}
           rules={{
             required: '이미지',
           }}
@@ -50,7 +48,7 @@ const ClassCategory = () => {
         name="title"
         control={control}
         rules={{ required: '클래스명' }}
-        defaultValue={classData?.title}
+        defaultValue={classData?.title || ''}
         render={({ field }) => (
           <input
             {...field}
@@ -62,7 +60,7 @@ const ClassCategory = () => {
           />
         )}
       />
-      {/* 
+
       <section className="flex">
         <h2
           id="genres"
@@ -76,12 +74,14 @@ const ClassCategory = () => {
           <Controller
             name="genres"
             control={control}
+            defaultValue={classData?.temporaryLectureToDanceGenre}
             rules={{
               required: '장르',
             }}
             render={({ field }) => (
               <GenreCheckboxGroup
                 onChange={field.onChange}
+                defaultValue={field.value}
               />
             )}
           />
@@ -93,6 +93,7 @@ const ClassCategory = () => {
           message="인원"
           title="lessonType"
           checkList={CATEGORY_LESSON_TYPE}
+          select={classData?.lessonType}
         />
         <ClassSizeSelect />
       </CategoryContainer>
@@ -102,6 +103,7 @@ const ClassCategory = () => {
           message="진행방식"
           title="lectureMethod"
           checkList={CATEGORY_PROGRESS_METHOD}
+          select={classData?.lectureMethod}
         />
       </CategoryContainer>
 
@@ -110,8 +112,9 @@ const ClassCategory = () => {
           message="난이도"
           title="difficultyLevel"
           checkList={CATEGORY_DIFFICULTY_LEVEL}
+          select={classData?.difficultyLevel}
         />
-      </CategoryContainer> */}
+      </CategoryContainer>
     </>
   );
 };

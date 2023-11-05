@@ -40,16 +40,12 @@ export default function ClassCreate() {
   const id = searchParams.get('id');
 
   useEffect(() => {
-    (async () => {
-      try {
-        if (id && !classData) {
-          location.reload();
-        }
-      } catch (error) {
-        toast.error('잠시 후 시도해주세요');
-        router.push(pathname);
-      }
-    })();
+    if (id === null && classData) {
+      setClassData(null);
+    }
+    if (id && !classData) {
+      location.reload();
+    }
   }, [id]); //추후 리펙토링...
 
   // useEffect(() => {
@@ -85,8 +81,6 @@ export default function ClassCreate() {
 
     // const uploadImgList = await handleImageUpload(profileImageUrls);
 
-    console.log(data);
-
     nextStep();
   };
 
@@ -114,24 +108,6 @@ export default function ClassCreate() {
       });
     }
   };
-
-  const inputDataProcess = (data: IGetClassDraft) => {
-    const genres = data.temporaryLectureToDanceGenre.map(
-      (item) => item.danceCategory.genre,
-    );
-
-    const difficultyLevel =
-      data.difficultyLevel === '상'
-        ? '상급'
-        : data.difficultyLevel === '중'
-        ? '중급'
-        : data.difficultyLevel === '하'
-        ? '초급(입문)'
-        : null;
-
-    return { ...data, temporaryLectureToDanceGenre: genres, difficultyLevel };
-  };
-
   return (
     <main className="mx-auto max-w-[1440px] px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">

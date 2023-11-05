@@ -58,6 +58,7 @@ export const classOutputDataProcess = async (
       } = data;
       const images = await handleImageUpload(data.images, 'lectures');
 
+      console.log(images);
       const classLevel =
         difficultyLevel === '상급'
           ? '상'

@@ -40,6 +40,7 @@ export interface IGetClassDraft {
   id: number;
   lecturerId: number;
   step: number | null;
+  isGroup?: boolean;
   lectureTypeId?: number;
   lectureMethodId?: number;
   title?: string;
@@ -50,6 +51,7 @@ export interface IGetClassDraft {
   difficultyLevel?: string;
   minCapacity?: number;
   maxCapacity?: number;
+  lectureMethod?: string;
   reservationDeadline?: string;
   reservationComment?: string;
   price?: number;
@@ -119,7 +121,9 @@ export interface IprocessedDraft {
   id: number;
   lecturerId: number;
   step: number | null;
+  lessonType?: string;
   lectureTypeId?: number;
+  lectureMethod?: string;
   lectureMethodId?: number;
   title?: string;
   introduction?: string;

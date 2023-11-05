@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { CloseSVG, TrashcanSVG } from '@/icons/svg';
