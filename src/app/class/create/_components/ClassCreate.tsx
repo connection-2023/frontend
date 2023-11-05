@@ -24,7 +24,7 @@ const steps = [
   { title: '가격 설정', component: <ClassPrice /> },
 ];
 
-export default function ClassCreate() {
+export default function ClassCreate({ step }: { step: string | undefined }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export default function ClassCreate() {
   const { setClassData } = useClassCreateStore();
   const classData = useClassCreateStore((state) => state.classData);
 
-  const [activeStep, setActiveStep] = useState(classData?.step ?? 0);
+  const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit } = formMethods;
@@ -48,16 +48,16 @@ export default function ClassCreate() {
     }
   }, [id]); //추후 리펙토링...
 
-  // useEffect(() => {
-  //   const step = Number(searchParams.get('step'));
-  //   const isValidStep = !isNaN(step) && step <= (classData?.step || 0);
+  useEffect(() => {
+    const step = Number(searchParams.get('step'));
+    const isValidStep = !isNaN(step) && step - 1 <= (classData?.step || 0);
 
-  //   if (isValidStep) {
-  //     setActiveStep(step);
-  //   } else {
-  //     router.back();
-  //   }
-  // }, [searchParams]);
+    if (isValidStep) {
+      setActiveStep(step);
+    } else {
+      router.back();
+    }
+  }, [searchParams]);
 
   const nextStep = () => {
     if (activeStep < steps.length - 1 && classData) {

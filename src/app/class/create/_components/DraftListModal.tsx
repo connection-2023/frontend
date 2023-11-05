@@ -1,11 +1,7 @@
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { CloseSVG, TrashcanSVG } from '@/icons/svg';
-import { getClassDraft } from '@/lib/apis/classApi';
-import { useClassCreateStore } from '@/store/classCreate';
 import { IGetClassDrafts } from '@/types/class';
 
 interface IDraftListModal {
@@ -74,7 +70,6 @@ interface DraftListProps {
 
 const DraftList = ({
   classDraftList,
-  closeModal,
   deleteClassDraftList,
 }: DraftListProps) => {
   return (
@@ -89,7 +84,9 @@ const DraftList = ({
           <li key={id} className="flex justify-between gap-2">
             <Link
               className=" w-2/3 cursor-pointer truncate"
-              href={`/class/create?step=${step === null ? 0 : step}&id=${id}`}
+              href={`/class/create?step=${
+                step === null ? 0 : step + 1
+              }&id=${id}`}
             >
               {title === null ? '제목 없음' : title}
             </Link>

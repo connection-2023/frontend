@@ -14,6 +14,10 @@ const validateSearchParams = (searchParams: {
   if (isNaN(Number(searchParams.id)) || isNaN(Number(searchParams.step))) {
     throw new Error('id 혹은 step 숫자가 아닙니다.');
   }
+
+  if (Number(searchParams.step) > 4) {
+    throw new Error('step이 비 정상적입니다.');
+  }
 };
 
 const handleServerError = (error: unknown, redirectPath: string): void => {
@@ -57,7 +61,7 @@ const ClassCreateServerPage = async ({
         ((!searchParams.id || !searchParams.step) && classDrafts.length > 0 && (
           <DraftListModalContainer classDrafts={classDrafts} />
         ))}
-      <ClassCreate />
+      <ClassCreate step={searchParams?.step} />
     </>
   );
 };
