@@ -4,7 +4,7 @@ import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, CommentSVG, SearchSVG } from '@/icons/svg';
 import useSession from '@/lib/useSession';
 import Profile from './Profile';
-import AuthModal from '@/components/Header/Auth/AuthModal';
+import AuthModal from '@/app/_components/Header/Auth/AuthModal';
 
 const UserProfileLinks = () => {
   const { alarmCount, commentCount } = dummyUserInfo;
