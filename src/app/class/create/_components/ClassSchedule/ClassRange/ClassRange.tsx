@@ -11,8 +11,10 @@ import '@/styles/calendar.css';
 
 const ClassRange = ({
   onChange,
+  defaultValue = '',
 }: {
   onChange?: (value: DateRange | undefined) => void;
+  defaultValue?: string;
 }) => {
   const [classRange, setClassRange] = useRecoilState(classRangeState);
   const [fromValue, setFromValue] = useState<string>('');
@@ -27,6 +29,10 @@ const ClassRange = ({
   const openCalendar = () => {
     setIsCalendarVisible(true);
   };
+
+  useEffect(() => {
+    console.log(fromValue, toValue);
+  }, [fromValue, toValue]);
 
   useEffect(() => {
     if (onChange) {

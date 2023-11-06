@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { dummyClass } from '@/constants/dummy';
 import { classTimeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
@@ -20,11 +21,26 @@ const ClassSchedule = () => {
     setClassNotification(event.target.value);
   };
 
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <>
-      <Section title="전체 클래스 기간을 설정해주세요">
-        <ClassRange />
-      </Section>
+      <Controller
+        name="classRange"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: '전체 클래스 기간',
+        }}
+        render={({ field }) => (
+          <Section title="전체 클래스 기간을 설정해주세요">
+            <ClassRange />
+          </Section>
+        )}
+      />
 
       {/* 진행시간 */}
       <Section

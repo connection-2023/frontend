@@ -42,6 +42,15 @@ export const formatRegions = (regions: { [key: string]: string[] }) => {
   });
 };
 
+export const formatDate = (dateString: string | undefined) => {
+  if (!dateString) {
+    return null;
+  }
+
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0];
+};
+
 export const classOutputDataProcess = async (
   data: classCreateData,
   step: number,

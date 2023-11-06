@@ -64,7 +64,7 @@ const ClassCategory = () => {
         <h2
           id="genres"
           className={`w-1/6 font-bold ${
-            errors.classGenre && 'animate-vibration text-main-color'
+            errors.genres && 'animate-vibration text-main-color'
           }`}
         >
           장르

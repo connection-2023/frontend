@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { formatDate } from '@/utils/apiDataProcessor';
 import { IGetClassDraft, IprocessedDraft } from '@/types/class';
 
 interface IUseClassCreateStore {
@@ -27,11 +28,21 @@ const dataProcess = (data: IGetClassDraft) => {
       : null;
 
   const lectureMethod =
-    data.lectureMethod === '원데이' ? '원데이 레슨' : '정기클래스';
+    data.lectureMethod === '원데이'
+      ? '원데이 레슨'
+      : data.lectureMethod === '정기'
+      ? '정기클래스'
+      : null;
 
-  const lessonType = data.isGroup ? '그룹레슨' : '개인(1:1)레슨';
+  const lessonType =
+    data.isGroup === null ? null : data.isGroup ? '그룹레슨' : '개인(1:1)레슨';
 
-  const notification = data.temporaryLecturenotification.notification;
+  const notification = data.temporaryLecturenotification?.notification;
+
+  const newStartDate =
+    data.startDate === null ? null : formatDate(data.startDate);
+
+  const newEndDatee = data.endDate === null ? null : formatDate(data.endDate);
 
   return {
     ...data,
@@ -40,5 +51,7 @@ const dataProcess = (data: IGetClassDraft) => {
     lectureMethod,
     lessonType,
     notification,
+    endDate: newEndDatee,
+    startDate: newStartDate,
   };
 };
