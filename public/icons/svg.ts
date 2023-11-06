@@ -22,7 +22,9 @@ import ConnectionLogoSVG from './connectionLogo.svg';
 import CouponSVG from './coupon.svg';
 import CropSVG from './crop.svg';
 import DashboardSVG from './dashboard.svg';
+import DeleteSVG from './delete.svg';
 import DoubleRightSVG from './doubleRight.svg';
+import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
@@ -49,6 +51,7 @@ import OptionSVG from './option.svg';
 import PlusesSVG from './pluses.svg';
 import ProfileSVG from './profile_default.svg';
 import RecentSVG from './recent.svg';
+import ReadMessageSVG from './readMessage.svg';
 import ReportSVG from './report.svg';
 import ResetSVG from './reset.svg';
 import ReviewSVG from './review.svg';
@@ -60,6 +63,7 @@ import TimeSVG from './time.svg';
 import TooltipSVG from './tooltip.svg';
 import TransFormSVG from './transform.svg';
 import TwitterSVG from './twitter.svg';
+import UnreadMessageSVG from './unreadMessage.svg';
 import UploadImageSVG from './UploadImg.svg';
 import YoutubeSVG from './youtube.svg';
 import ZoomInSVG from './zoomIn.svg';
@@ -69,7 +73,11 @@ export {
   ClassStatusSVG,
   ReviewSVG,
   RecentSVG,
+  DeleteSVG,
+  UnreadMessageSVG,
+  ReadMessageSVG,
   DashboardSVG,
+  DownloadSVG,
   NotFoundSVG,
   ReportSVG,
   BookmarkSVG,

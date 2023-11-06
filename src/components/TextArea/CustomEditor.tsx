@@ -84,32 +84,35 @@ const CustomEditor = ({
         {minLength !== 0 && <p className="text-sub-color2">(필수)</p>}
       </label>
 
-      <Controller
-        name={dataName}
-        control={control}
-        defaultValue={defaultValue}
-        rules={{
-          required: minLength !== 0 ? title : false,
-          validate: validateMinLength,
-        }}
-        render={({ field }) => (
-          <SunEditor
-            onChange={(content) => {
-              handleEditorChange();
-              field.onChange(content);
-            }}
-            lang="ko"
-            height={height}
-            setContents={field.value}
-            setOptions={{
-              buttonList: TOOLBAR,
-            }}
-            placeholder={placeholder}
-            getSunEditorInstance={getSunEditorInstance}
-            onImageUploadBefore={handleImageUploadBefore}
-          />
-        )}
-      />
+      <div className="max-w-[640px]">
+        <Controller
+          name={dataName}
+          control={control}
+          defaultValue={defaultValue}
+          rules={{
+            required: minLength !== 0 ? title : false,
+            validate: validateMinLength,
+          }}
+          render={({ field }) => (
+            <SunEditor
+              onChange={(content) => {
+                handleEditorChange();
+                field.onChange(content);
+              }}
+              lang="ko"
+              width="100%"
+              height={height}
+              setContents={field.value}
+              setOptions={{
+                buttonList: TOOLBAR,
+              }}
+              placeholder={placeholder}
+              getSunEditorInstance={getSunEditorInstance}
+              onImageUploadBefore={handleImageUploadBefore}
+            />
+          )}
+        />
+      </div>
 
       <p className="absolute -bottom-1 right-3 z-10 flex gap-1 text-sub-color2">
         (
