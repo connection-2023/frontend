@@ -14,6 +14,7 @@ import CalendarDetailSVG from './calendarDetail.svg';
 import ChatSVG from './chat.svg';
 import CheckSVG from './check.svg';
 import CheckMarkSVG from './checkMark.svg';
+import ClassStatusSVG from './classStatus.svg';
 import ClearSVG from './clear.svg';
 import CloseSVG from './close.svg';
 import CommentSVG from './comment.svg';
@@ -49,9 +50,11 @@ import NoticeSVG from './notice.svg';
 import OptionSVG from './option.svg';
 import PlusesSVG from './pluses.svg';
 import ProfileSVG from './profile_default.svg';
+import RecentSVG from './recent.svg';
 import ReadMessageSVG from './readMessage.svg';
 import ReportSVG from './report.svg';
 import ResetSVG from './reset.svg';
+import ReviewSVG from './review.svg';
 import SearchSVG from './search.svg';
 import ShareSVG from './share.svg';
 import SmallLogoSVG from './smallLogo.svg';
@@ -67,6 +70,9 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  ClassStatusSVG,
+  ReviewSVG,
+  RecentSVG,
   DeleteSVG,
   UnreadMessageSVG,
   ReadMessageSVG,
