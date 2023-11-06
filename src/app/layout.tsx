@@ -5,6 +5,7 @@ import Footer from '@/app/_components/Footer';
 import Header from '@/app/_components/Header/Header';
 import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/toastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
