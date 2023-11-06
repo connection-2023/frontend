@@ -4,7 +4,7 @@ import { useClickAway } from 'react-use';
 import Review from '@/components/Review/Review';
 import { StarSVG, ArrowUpSVG } from '@/icons/svg';
 import { dummyClass } from '@/constants/dummy';
-import ReviewComment from '@/components/Review/ReviewComment';
+import UserReview from '@/components/Review/UserReview';
 
 const filterOption = ['최신순', '좋아요순', '평점 높은순', '평점 낮은순'];
 
@@ -78,7 +78,7 @@ const ClassReviewSection = () => {
       </div>
       <div className="flex flex-col gap-6">
         {review.reviewer.map((review) => (
-          <ReviewComment
+          <UserReview
             key={review.nickname}
             src={review.src}
             nickname={review.nickname}
