@@ -25,7 +25,7 @@ const shareOptions = [
   {
     label: '카카오톡',
     button: (
-      <button className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-[#FFEC3F]">
+      <button className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-kakao">
         <KaKaoTalkSVG />
       </button>
     ),
@@ -70,13 +70,13 @@ const Sharing = ({ mode, header }: ISharingProps) => {
       <ShareSVG
         onClick={handleOpenModal}
         className={`cursor-pointer ${
-          isOpened ? 'fill-sub-color3' : 'fill-sub-color2'
-        }  hover:fill-sub-color3`}
+          isOpened ? 'fill-gray-100' : 'fill-gray-500'
+        }  hover:fill-gray-100`}
       />
 
       {isOpened && (
-        <div className="absolute right-0 top-8 z-10 flex h-28 flex-col items-center rounded-[0.31rem] bg-white shadow-float">
-          <p className="flex h-[35px] w-full items-center justify-center border-b border-solid border-sub-color4 text-sm font-semibold ">
+        <div className="absolute right-0 top-8 z-10 flex h-28 flex-col items-center rounded-md bg-white shadow-float">
+          <p className="flex h-[35px] w-full items-center justify-center border-b border-solid border-gray-700 text-sm font-semibold ">
             공유하기
           </p>
           <div className="border-box flex items-center gap-[1.41rem] px-4 py-[0.69rem]">

@@ -11,7 +11,7 @@ const Footer = () => {
   );
 
   return !shouldRenderFooter ? (
-    <footer className="mx-auto max-w-[1440px] whitespace-pre-line break-keep border-t border-solid border-sub-color4 px-[4.37rem] py-8 text-sm ">
+    <footer className="mx-auto max-w-[1440px] whitespace-pre-line break-keep border-t border-solid border-gray-700 px-[4.37rem] py-8 text-sm ">
       <div className="mb-8 flex flex-wrap items-center gap-x-12 gap-y-4">
         <Link href="/">
           <ConnectionLogoSVG className="h-[0.875rem] w-[8.1875rem]" />

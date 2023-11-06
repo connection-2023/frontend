@@ -72,7 +72,7 @@ const DayCalendar = () => {
   };
 
   return (
-    <div className="relative box-border h-[39.25rem] h-fit w-full rounded-[0.31rem] bg-white p-4 shadow-float lg:h-auto">
+    <div className="relative box-border h-[39.25rem] h-fit w-full rounded-md bg-white p-4 shadow-float lg:h-auto">
       <Calendar
         localizer={localizer}
         formats={formats}
@@ -121,8 +121,8 @@ interface IToolbarProps extends Partial<ToolbarProps> {
 
 const DayToolBar = ({ label, onNavigate }: IToolbarProps) => (
   <div className="mb-[0.69rem] flex items-center justify-between gap-4 whitespace-nowrap">
-    <h2 className="text-lg font-semibold text-sub-color3">{label}</h2>
-    <div className="flex h-[1.875rem] w-32 divide-x divide-solid overflow-hidden rounded-[0.4rem] border border-solid border-sub-color2">
+    <h2 className="text-lg font-semibold text-gray-100">{label}</h2>
+    <div className="flex h-[1.875rem] w-32 divide-x divide-solid overflow-hidden rounded-[0.4rem] border border-solid border-gray-500">
       <button
         onClick={() => onNavigate('PREV')}
         className={`h-7 origin-center rotate-180 ${NavButtonStyle}`}
@@ -131,7 +131,7 @@ const DayToolBar = ({ label, onNavigate }: IToolbarProps) => (
       </button>
       <button
         onClick={() => onNavigate('TODAY')}
-        className="flex-1 hover:bg-[#E8E8E8] "
+        className="flex-1 hover:bg-gray-700 "
       >
         Today
       </button>
@@ -146,4 +146,4 @@ const DayToolBar = ({ label, onNavigate }: IToolbarProps) => (
 );
 
 const NavButtonStyle =
-  'flex w-[1.875rem] items-center justify-center hover:bg-[#E8E8E8]';
+  'flex w-[1.875rem] items-center justify-center hover:bg-gray-700';

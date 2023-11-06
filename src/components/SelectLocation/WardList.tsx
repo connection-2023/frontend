@@ -35,7 +35,7 @@ const WardList = ({
             />
             <label
               htmlFor={ward}
-              className="cursor-pointer select-none text-sm font-semibold text-sub-color2 peer-checked:text-black"
+              className="cursor-pointer select-none text-sm font-semibold text-gray-500 peer-checked:text-black"
             >
               {ward}
             </label>

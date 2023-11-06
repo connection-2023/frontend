@@ -1,10 +1,10 @@
 'use client';
 import { useState, useRef } from 'react';
 import { useClickAway } from 'react-use';
+import { StarSVG, ArrowUpSVG } from '@/icons/svg';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
 import { IUserReview } from '@/types/class';
-import { StarSVG, ArrowUpSVG } from '@/icons/svg';
 
 const filterOption = ['최신순', '좋아요순', '평점 높은순', '평점 낮은순'];
 
@@ -55,7 +55,7 @@ const ClassReviewSection = ({
             height="14"
             className="ml-3 fill-sub-color1 sm:block md:hidden"
           />
-          <span className="ml-1 text-sub-color2">({stars})</span>
+          <span className="ml-1 text-gray-500">({stars})</span>
         </h2>
 
         <button
@@ -72,12 +72,12 @@ const ClassReviewSection = ({
         <ul
           className={`${
             isListOpened ? 'flex flex-col' : 'hidden'
-          } absolute right-0 top-8 cursor-pointer divide-y divide-solid divide-sub-color4 border border-solid border-black bg-white text-sm font-medium text-[#969696]`}
+          } absolute right-0 top-8 cursor-pointer divide-y divide-solid divide-gray-700 border border-solid border-black bg-white text-sm font-medium text-gray-300`}
         >
           {filterOption.map((list: string) => (
             <li
               key={list}
-              className={`flex h-7 items-center gap-2 px-2 hover:bg-[#F5F5F5] ${
+              className={`flex h-7 items-center gap-2 px-2 hover:bg-gray-900 ${
                 selectedOption === list && 'text-black'
               }`}
               onClick={() => onClickList(list)}

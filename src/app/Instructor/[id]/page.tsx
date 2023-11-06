@@ -1,12 +1,4 @@
 import Link from 'next/link';
-import ClassList from './_components/ClassList';
-import InstructorCarousel from './_components/InstructorCarousel';
-import ManagementButton from './_components/ManagementButton';
-import Like from '@/components/Like/Like';
-import Nav from '@/components/Nav/Nav';
-import Review from '@/components/Review/Review';
-import UserReview from '@/components/Review/UserReview';
-import Sharing from '@/components/Sharing/Sharing';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { dummyInstructor } from '@/constants/dummy';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
@@ -16,6 +8,14 @@ import {
   formatGenreToString,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import ClassList from './_components/ClassList';
+import InstructorCarousel from './_components/InstructorCarousel';
+import ManagementButton from './_components/ManagementButton';
+import Like from '@/components/Like/Like';
+import Nav from '@/components/Nav/Nav';
+import Review from '@/components/Review/Review';
+import UserReview from '@/components/Review/UserReview';
+import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -73,25 +73,22 @@ const InstructorDetailPage = async ({
           {/* 리뷰 */}
           <div className="mb-4 mt-2 box-border flex h-4 gap-1 pl-4">
             <Review average={review.average} />
-            <span className="text-sm font-bold text-sub-color2">
+            <span className="text-sm font-bold text-gray-500">
               ({review.average})
             </span>
           </div>
 
           {/* 강사 여러 정보 */}
-          <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-sub-color4 py-5">
+          <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-gray-700 py-5">
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">지역</dt>
-              <dd>
-                {/* 추후 데이터 반환 타입 변경 시 변경 예정 */}
-                {formatLocationToString(lecturerRegion)}
-              </dd>
+              <dd>{formatLocationToString(lecturerRegion)}</dd>
             </div>
             <div className="flex gap-3">
               <dt className="text-sub-color1">
                 <InstagramSVG
                   className={`${
-                    instagramUrl ? 'fill-sub-color1' : 'fill-sub-color2'
+                    instagramUrl ? 'fill-sub-color1' : 'fill-gray-500'
                   }`}
                 />
               </dt>
@@ -112,7 +109,7 @@ const InstructorDetailPage = async ({
                   className={`${
                     youtubeUrl
                       ? 'stroke-sub-color1 [&>*:nth-child(1)]:fill-sub-color1'
-                      : 'stroke-sub-color2 [&>*:nth-child(1)]:fill-sub-color2'
+                      : 'stroke-gray-500 [&>*:nth-child(1)]:fill-gray-500'
                   }`}
                 />
               </dt>
@@ -132,7 +129,7 @@ const InstructorDetailPage = async ({
               <dt className="text-sub-color1">
                 <LinkSVG
                   className={`${
-                    homepageUrl ? 'fill-sub-color1' : 'fill-sub-color2'
+                    homepageUrl ? 'fill-sub-color1' : 'fill-gray-500'
                   }`}
                 />
               </dt>
@@ -144,7 +141,7 @@ const InstructorDetailPage = async ({
         </div>
       </section>
 
-      <hr className="mb-2 h-[1px] w-screen bg-sub-color4 shadow-float" />
+      <hr className="mb-2 h-[1px] w-screen bg-gray-700 shadow-float" />
 
       <div className="sticky -top-[1px] z-20 flex w-full items-center justify-center bg-white">
         <div className="w-1/2 min-w-[23rem] max-w-5xl">
@@ -197,7 +194,7 @@ const InstructorDetailPage = async ({
         <h2 className={`flex items-center ${h2Style}`}>
           강사 후기 {review.count}건 <span className="ml-3" />
           <Review average={review.average} />
-          <span className="ml-1 text-sub-color2">({review.average})</span>
+          <span className="ml-1 text-gray-500">({review.average})</span>
         </h2>
         <div className="flex flex-col gap-6">
           {review.reviewer.map((review) => (

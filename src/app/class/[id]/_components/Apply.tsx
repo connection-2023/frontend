@@ -125,7 +125,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
   return (
     <div
       ref={modalRef}
-      className="flex min-h-[5.5rem] w-full flex-col items-center rounded-t-[0.63rem] bg-white px-4 py-3.5 shadow-[0px_-1px_4px_0px_rgba(0,0,0,0.25)] md:min-h-0 md:items-stretch md:p-0 md:shadow-none"
+      className="flex min-h-[5.5rem] w-full flex-col items-center rounded-t-lg bg-white px-4 py-3.5 shadow-vertical md:min-h-0 md:items-stretch md:p-0 md:shadow-none"
     >
       <div className="sticky top-20 mt-5 hidden w-full flex-col whitespace-nowrap border pr-2 md:flex">
         <div className="mb-3 flex w-full flex-col gap-2">
@@ -199,7 +199,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
 
       <div className="flex w-full items-center justify-between gap-12 font-semibold md:hidden">
         <p className="flex max-w-[6rem] gap-x-[0.69rem] whitespace-nowrap">
-          <span className="text-lg text-sub-color2">
+          <span className="text-lg text-gray-500">
             {totalCount > 1 ? `총 ${totalCount}회` : '1회'}
           </span>
           <span className="text-xl">
@@ -209,7 +209,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
         </p>
         <button
           onClick={handleApply}
-          className="flex h-10 w-full items-center justify-center rounded-[0.31rem] bg-main-color text-white"
+          className="flex h-10 w-full items-center justify-center rounded-md bg-main-color text-white"
         >
           신청하기
         </button>

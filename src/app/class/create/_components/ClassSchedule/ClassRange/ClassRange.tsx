@@ -80,7 +80,7 @@ const ClassRange = ({
 
   return (
     <div ref={ref}>
-      <div className="relative flex h-7 w-full max-w-[312px] items-center rounded-[0.31rem] border border-solid border-sub-color2 pl-[0.69rem] text-base text-sub-color3">
+      <div className="relative flex h-7 w-full max-w-[312px] items-center rounded-md border border-solid border-gray-500 pl-[0.69rem] text-base text-gray-100">
         <DateInput
           placeholder="시작 날짜"
           value={fromValue}

@@ -1,5 +1,5 @@
-import { IDateTime } from '@/types/class';
 import { ClearSVG } from '@/icons/svg';
+import { IDateTime } from '@/types/class';
 
 interface ReservationItemProps extends IDateTime {
   lectureScheduleId: number;
@@ -35,17 +35,17 @@ const ReservationItem = ({
         <p>{dateTime}</p>
         <ClearSVG
           onClick={onRemove}
-          className="cursor-pointer fill-sub-color2"
+          className="cursor-pointer fill-gray-500"
           width={18}
           height={18}
         />
       </div>
       <div className="my-3 flex items-baseline justify-between text-base font-medium">
-        <div className="flex items-center text-sm text-sub-color3">
+        <div className="flex items-center text-sm text-gray-100">
           <CountButton onClick={onClickDown} aria-label="인원 감소">
             -
           </CountButton>
-          <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-sub-color2">
+          <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-gray-500">
             {count}
           </span>
           <CountButton onClick={onClickUp} aria-label="인원 증가">
@@ -53,7 +53,7 @@ const ReservationItem = ({
           </CountButton>
           <span className="ml-1.5">명</span>
         </div>
-        <p className="text-sm text-sub-color2">잔여자리: {remainSpace}명</p>
+        <p className="text-sm text-gray-500">잔여자리: {remainSpace}명</p>
       </div>
     </div>
   );
@@ -67,7 +67,7 @@ const CountButton = ({
   children: React.ReactNode;
 }) => (
   <button
-    className="h-[31px] w-[35px] border border-solid border-sub-color2 bg-[#F5F5F5F5] text-sub-color2 hover:text-black"
+    className="h-[31px] w-[35px] border border-solid border-gray-500 bg-gray-900 text-gray-500"
     onClick={onClick}
   >
     {children}

@@ -45,16 +45,16 @@ const PaymentRange = () => {
       <div className="flex w-full whitespace-nowrap">
         <div
           ref={ref}
-          className="relative flex h-7 w-full max-w-[312px] items-center text-base text-sub-color3"
+          className="relative flex h-7 w-full max-w-[312px] items-center text-base text-gray-100"
         >
           <input
             disabled
             value={fromValue || ''}
-            className="max-w-[7.5rem] rounded-[0.31rem] border border-solid border-sub-color2 px-1 text-sub-color2"
+            className="max-w-[7.5rem] rounded-md border border-solid border-gray-500 px-1 text-gray-500"
           />
 
           <span className="mx-1"> – </span>
-          <div className="flex w-fit items-center overflow-hidden rounded-[0.31rem] border border-solid border-sub-color2">
+          <div className="flex w-fit items-center overflow-hidden rounded-md border border-solid border-gray-500">
             <input
               placeholder="마지막 날짜"
               value={toValue || ''}
@@ -82,16 +82,16 @@ const PaymentRange = () => {
             <DoubleRightSVG />
           </button>
 
-          <p className="flex items-center gap-3 text-sm font-semibold text-sub-color2">
+          <p className="flex items-center gap-3 text-sm font-semibold text-gray-500">
             정산 받을 금액
-            <span className="text-lg text-sub-color3">450,000원</span>
+            <span className="text-lg text-gray-100">450,000원</span>
           </p>
         </div>
       </div>
 
       <button
         // --- 버튼 클릭 시 로직 추가 ---
-        className="flex h-7 w-24 shrink-0 items-center justify-center whitespace-nowrap rounded-[0.31rem] bg-main-color text-sm font-semibold text-white"
+        className="flex h-7 w-24 shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-main-color text-sm font-semibold text-white"
       >
         <MoneySVG width="18" height="18" fill="white" stroke="white" />
         정산신청

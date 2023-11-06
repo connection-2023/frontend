@@ -1,7 +1,9 @@
 'use client';
 import { create } from 'zustand';
 import { userProfile, userType, instructorProfile } from '@/types/auth';
+
 export { usePaymentStore } from './paymentStore';
+
 export { dashboardStore } from './dashboardStore';
 
 export type Store = {

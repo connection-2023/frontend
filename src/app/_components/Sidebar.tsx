@@ -37,23 +37,23 @@ const Sidebar = ({
 
   const getTextColorClass = (path: string) =>
     pathname.includes(path)
-      ? 'text-sub-color3'
-      : 'text-sub-color2 hover:text-sub-color3';
+      ? 'text-gray-100'
+      : 'text-gray-500 hover:text-gray-100';
 
   return (
     <aside
-      className={`rounded-admin flex flex-col items-start whitespace-nowrap bg-white ${
+      className={`flex flex-col items-start whitespace-nowrap rounded-lg bg-white ${
         view === 'my' ? 'max-w-[19.5rem] px-4 py-10 shadow-float' : 'w-full'
       }`}
     >
       <div
         className={`mb-6 flex items-center gap-2 ${
-          view === 'dashboard' && 'h-[3.3rem] w-full bg-[#F5F5F5] px-4'
+          view === 'dashboard' && 'h-[3.3rem] w-full bg-gray-900 px-4'
         }`}
       >
         <ProfileImage size="small" src={profileImg} label={false} />
 
-        <p className="text-lg font-bold text-sub-color3">{nickname}님</p>
+        <p className="text-lg font-bold text-gray-100">{nickname}님</p>
       </div>
 
       <ul
@@ -83,7 +83,7 @@ const Sidebar = ({
                     width="34"
                     height="34"
                     onClick={() => setIsOpen(!isOpen)}
-                    className="origin-center rotate-180 fill-sub-color2"
+                    className="origin-center rotate-180 fill-gray-500"
                   />
                 ))}
             </Link>
@@ -111,7 +111,7 @@ const Sidebar = ({
 export default Sidebar;
 
 const iconStyle =
-  'fill-stroke-sub-color2 stroke-sub-color2 group-hover:fill-stroke-sub-color1 group-hover:stroke-sub-color1 group-focus:fill-stroke-sub-color1 group-focus:stroke-sub-color1';
+  'fill-stroke-gray-500 stroke-gray-500 group-hover:fill-stroke-sub-color1 group-hover:stroke-sub-color1 group-focus:fill-stroke-sub-color1 group-focus:stroke-sub-color1';
 
 const instructorLinks = [
   {

@@ -37,9 +37,9 @@ const ClassSchedule = () => {
             min={30}
             value={classTime || ''}
             onChange={(e) => setClassTime(Number(e.target.value))}
-            className="h-7 w-12 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.81rem] py-1"
+            className="h-7 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1"
           />
-          <span className="ml-[0.38rem] text-sm font-bold text-sub-color3">
+          <span className="ml-[0.38rem] text-sm font-bold text-gray-100">
             분
           </span>
         </div>
@@ -55,13 +55,13 @@ const ClassSchedule = () => {
       </Section>
 
       <Section title="신청 마감 시간을 설정해주세요">
-        <div className="ml-[0.38rem] text-sm font-medium text-sub-color3">
+        <div className="ml-[0.38rem] text-sm font-medium text-gray-100">
           <span>수업 시작</span>
           <input
             type="number"
             value={deadline || ''}
             onChange={(e) => setDeadline(Number(e.target.value))}
-            className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.81rem] py-1"
+            className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1"
           />
           <span>시간 전</span>
         </div>
@@ -76,7 +76,8 @@ const ClassSchedule = () => {
           {/* 추가된 클래스  lectureSchedule 데이터 가공 구현 예정 */}
           {classDates && (
             <ScheduleView
-              clickableDates={classDates}
+              maxCapacity={12}
+              duration={120}
               lectureSchedule={lectureSchedule}
             />
           )}
@@ -88,7 +89,7 @@ const ClassSchedule = () => {
           value={classNotification}
           onChange={handleTextareaChange}
           placeholder={`수강생이 클래스 신청시 예약 화면에서 보여지는 사항입니다. \n클래스를 시작하기 전 숙지해야 할 사항을 적어주세요`}
-          className="h-32 w-full resize-none whitespace-pre-wrap break-keep rounded-[0.31rem] border border-solid border-sub-color4 p-[0.62rem]"
+          className="h-32 w-full resize-none whitespace-pre-wrap break-keep rounded-md border border-solid border-gray-700 p-[0.62rem]"
         />
       </Section>
     </>
@@ -113,7 +114,7 @@ const Section = ({
   children,
 }: ISection) => {
   return (
-    <section className="max-w-[675px] border-b border-solid border-sub-color4 py-6">
+    <section className="max-w-[675px] border-b border-solid border-gray-700 py-6">
       <h2 className="mb-4 flex items-center text-lg font-bold">
         {title}
         {IsAddedClass && classNum && classNum > 0 ? ` (${classNum}개)` : null}

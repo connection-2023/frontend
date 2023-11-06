@@ -11,23 +11,43 @@ const config: Config = {
     extend: {
       colors: {
         'main-color': 'var(--main-color)',
+        'main-color-transparent': 'var(--main-color-transparent)',
         'sub-color1': 'var(--sub-color1)',
+        'sub-color1-transparent': 'var(--sub-color1-transparent)',
         'sub-color2': 'var(--sub-color2)',
+        'sub-color2-transparent': 'var(--sub-color2-transparent)',
         'sub-color3': 'var(--sub-color3)',
+        'sub-color3-transparent': 'var(--sub-color3-transparent)',
         'sub-color4': 'var(--sub-color4)',
-        'admin-bg-color': '#8338EC1A',
+        'sub-color4-transparent': 'var(--sub-color4-transparent)',
+        naver: '#03C75A',
+        kakao: '#FEE500',
+        gray: {
+          100: 'var(--gray1)',
+          300: 'var(--gray2)',
+          500: 'var(--gray3)',
+          700: 'var(--gray4)',
+          900: 'var(--gray5)',
+        },
       },
       backgroundImage: {
         'checkout-receipt': "url('/images/receipt-background.svg')",
       },
       borderRadius: {
-        admin: '0.63rem',
+        md: '0.31rem',
+        lg: '0.63rem',
       },
       boxShadow: {
         vertical: '0px 1px 4px 1px rgba(0, 0, 0, 0.25)',
         horizontal: '1px 1px 4px 1px rgba(0, 0, 0, 0.25)',
         float: '0px 1px 4px 0 rgba(0, 0, 0, 0.25)',
       },
+
+      zIndex: {
+        header: '30',
+        modal: '50',
+      },
+
       animation: {
         vibration: 'vibration 0.1s 20',
       },

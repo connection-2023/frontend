@@ -26,7 +26,7 @@ const Review = ({ average, count, size = 'regular' }: ReviewProps) => {
               key={key + i}
               className={`relative ${sizeStyles[size]} overflow-hidden`}
             >
-              <Star fill="[#D8D8D8]" className="absolute" size={size} />
+              <Star fill="gray-700" className="absolute" size={size} />
               <div
                 className="absolute overflow-hidden"
                 style={{
@@ -37,7 +37,7 @@ const Review = ({ average, count, size = 'regular' }: ReviewProps) => {
               </div>
             </div>
           ) : (
-            <Star key={key + i} fill="[#D8D8D8]" size={size} />
+            <Star key={key + i} fill="gray-700" size={size} />
           ),
         )}
       </div>

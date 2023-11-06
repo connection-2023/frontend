@@ -141,11 +141,11 @@ const UploadImage = ({
             <UploadImageSVG
               width={117}
               height={107}
-              className="fill-sub-color2"
+              className="fill-gray-500"
             />
             <p
-              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-float
-            ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-md text-lg font-bold  shadow-float
+            ${errors ? 'animate-vibration text-main-color' : 'text-gray-500'}
             `}
             >
               {`${situation} 사진 업로드`}
@@ -175,7 +175,7 @@ const UploadImage = ({
                   fill
                   style={{ objectFit: 'contain' }}
                 />
-                <div className="absolute right-0 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-sub-color3">
+                <div className="absolute right-0 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gray-100">
                   <CropSVG
                     width={19}
                     height={19}
@@ -216,7 +216,7 @@ const UploadImage = ({
                   width={19}
                   aria-label="이미지 삭제"
                   onClick={() => handleRemoveImage(index)}
-                  className="absolute right-0 top-0 cursor-pointer fill-sub-color3"
+                  className="absolute right-0 top-0 cursor-pointer fill-gray-100"
                 />
                 {index === 0 && (
                   <div className="absolute bottom-0 right-0 flex h-6 w-9 translate-y-[1px] items-center justify-center bg-sub-color1 text-white">
@@ -229,7 +229,7 @@ const UploadImage = ({
             {images.length < 5 && (
               <>
                 <label htmlFor="addintional-image-upload">
-                  <div className="flex h-[4rem] w-[6.3rem] cursor-pointer items-center justify-center bg-sub-color4">
+                  <div className="flex h-[4rem] w-[6.3rem] cursor-pointer items-center justify-center bg-gray-700">
                     <UploadImageSVG width={52} height={47} fill="white" />
                   </div>
                 </label>

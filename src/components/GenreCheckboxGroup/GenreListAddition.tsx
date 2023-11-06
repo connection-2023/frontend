@@ -34,7 +34,7 @@ const GenreListAddition = ({
       >
         <input
           ref={inputRef}
-          className="peer h-8 w-full cursor-pointer rounded-md border border-solid border-sub-color2 pl-2 pr-6 text-sm focus:outline-none"
+          className="peer h-8 w-full cursor-pointer rounded-md border border-solid border-gray-500 pl-2 pr-6 text-sm focus:outline-none"
           placeholder="+ 직접입력"
           required
           onFocus={() => {

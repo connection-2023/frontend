@@ -36,7 +36,7 @@ const RangeCalendar = ({
       classNames={{
         cell: 'range-cell',
       }}
-      className="absolute left-4 top-3 z-10 flex w-fit -translate-x-4 translate-y-5 rounded-[0.31rem] border border-solid border-sub-color2 bg-white px-3 py-4"
+      className="absolute left-4 top-3 z-10 flex w-fit -translate-x-4 translate-y-5 rounded-md border border-solid border-gray-500 bg-white px-3 py-4"
       components={{
         Caption: ({ displayMonth }: CaptionProps) =>
           FormattedCaption({

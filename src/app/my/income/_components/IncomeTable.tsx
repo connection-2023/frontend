@@ -51,7 +51,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
           <BillSVG
             width="21"
             height="21"
-            className="stroke-sub-color3 hover:stroke-black"
+            className="stroke-gray-100 hover:stroke-black"
           />
         </button>
       ),
@@ -91,7 +91,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
   return (
     <>
       <div className="flex w-full items-center justify-between py-5 text-sm font-semibold">
-        <div className="flex gap-5 text-sub-color3">
+        <div className="flex gap-5 text-gray-100">
           <p>총 {table.getPrePaginationRowModel().rows.length}건</p>
           <p>
             정산금 <span className="font-bold">450,800원</span>
@@ -105,7 +105,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
             onChange={(e) => {
               table.setPageSize(Number(e.target.value));
             }}
-            className="h-7 w-[5.75rem] border border-solid border-sub-color2"
+            className="h-7 w-[5.75rem] border border-solid border-gray-500"
           >
             {[10, 20, 30, 40, 50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
@@ -118,7 +118,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
             filename="connection_수입관리.csv"
             className="flex"
           >
-            <button className="flex h-7 w-[7.625rem] items-center justify-center whitespace-nowrap rounded-[0.31rem] bg-sub-color3 text-white">
+            <button className="flex h-7 w-[7.625rem] items-center justify-center whitespace-nowrap rounded-md bg-gray-100 text-white">
               <ExcelSVG width="20" height="20" />
               엑셀 다운로드
             </button>
@@ -126,7 +126,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
         </div>
       </div>
 
-      <table className="mx-auto mb-5 box-border w-full max-w-[38rem] border-collapse border border-solid border-sub-color2">
+      <table className="mx-auto mb-5 box-border w-full max-w-[38rem] border-collapse border border-solid border-gray-500">
         <thead className="flex w-full border-collapse  text-left text-sm font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
@@ -137,7 +137,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
                 return (
                   <th
                     key={header.id}
-                    className={`flex items-center justify-start border-l border-solid border-sub-color2 px-2 py-[0.81rem] ${getCellWidth(
+                    className={`flex items-center justify-start border-l border-solid border-gray-500 px-2 py-[0.81rem] ${getCellWidth(
                       index,
                     )}`}
                   >
@@ -171,13 +171,13 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
             return (
               <tr
                 key={row.id}
-                className="flex w-full flex-nowrap whitespace-nowrap border-t border-solid border-sub-color2"
+                className="flex w-full flex-nowrap whitespace-nowrap border-t border-solid border-gray-500"
               >
                 {row.getVisibleCells().map((cell, index) => {
                   return (
                     <td
                       key={cell.id}
-                      className={`border-l border-solid border-sub-color2 px-2 py-[0.81rem] ${getCellWidth(
+                      className={`border-l border-solid border-gray-500 px-2 py-[0.81rem] ${getCellWidth(
                         index,
                       )}`}
                     >

@@ -23,22 +23,22 @@ const NotifyPage = () => {
   return (
     <section className="border-box mx-auto min-h-full w-full max-w-[40rem] max-w-[50rem] overflow-hidden px-[30px] font-semibold">
       <h1 className="mb-2 text-2xl">알림</h1>
-      <ul className="flex gap-3 border-y border-solid border-sub-color4 py-2 text-sm">
+      <ul className="flex gap-3 border-y border-solid border-gray-700 py-2 text-sm">
         {filterOptions.map((option) => (
           <li
             key={option}
             onClick={() => handleActiveTab(option)}
-            className={`cursor-pointer rounded-[0.31rem] border border-solid border-sub-color1 px-[0.61rem] py-[0.31rem] ${
+            className={`cursor-pointer rounded-md border border-solid border-sub-color1 px-[0.61rem] py-[0.31rem] ${
               activeTab === option
                 ? 'bg-sub-color1 text-white'
-                : 'text-sub-color1 hover:bg-admin-bg-color'
+                : 'text-sub-color1 hover:bg-sub-color1-transparent'
             }`}
           >
             {option}
           </li>
         ))}
       </ul>
-      <ul className="flex w-full flex-col gap-[0.87rem] bg-admin-bg-color px-3 py-2">
+      <ul className="flex w-full flex-col gap-[0.87rem] bg-sub-color1-transparent px-3 py-2">
         {dummyNotify.map((notify) => (
           <NotifyList
             key={notify.title}
@@ -85,41 +85,36 @@ const NotifyList = ({
   };
 
   return (
-    <li className="flex h-full w-full flex-col rounded-admin bg-white px-4 py-3 text-sm font-medium shadow-float">
+    <li className="flex h-full w-full flex-col rounded-lg bg-white px-4 py-3 text-sm font-medium shadow-float">
       <div className="mb-2 flex w-full items-center justify-between whitespace-nowrap">
         <div className="flex w-5/6 items-center gap-[0.88rem] font-semibold">
           {type === 'instructor' ? (
             <ProfileImg size="xsmall" src={null} nickname="강사 닉네임" />
           ) : (
-            <Link
-              href={id}
-              className={`truncate ${isRead && 'text-sub-color2'}`}
-            >
+            <Link href={id} className={`truncate ${isRead && 'text-gray-500'}`}>
               {title}
             </Link>
           )}
-          <span className="flex items-center font-medium text-sub-color2">
+          <span className="flex items-center font-medium text-gray-500">
             {date}
             {contents.length > 1 && isOpened && (
               <ArrowUpSVG
                 width="26"
                 height="26"
                 onClick={handleOpened}
-                className="cursor-pointer fill-sub-color3"
+                className="cursor-pointer fill-gray-100"
               />
             )}
           </span>
         </div>
 
-        <button className="flex h-6 w-[3.75rem] cursor-pointer items-center justify-center whitespace-nowrap rounded-[0.31rem] bg-[#E8E8E8] text-[#969696] hover:text-black">
+        <button className="flex h-6 w-[3.75rem] cursor-pointer items-center justify-center whitespace-nowrap rounded-md bg-gray-700 text-gray-300 hover:text-black">
           전체삭제
         </button>
       </div>
 
       {!isOpened && (
-        <p className={`${isRead && 'text-sub-color2'}`}>
-          {contents[0].message}
-        </p>
+        <p className={`${isRead && 'text-gray-500'}`}>{contents[0].message}</p>
       )}
 
       {!isOpened && contents.length > 1 && (
@@ -141,14 +136,14 @@ const NotifyList = ({
             >
               <p
                 className={`flex items-center gap-2 ${
-                  content.isRead ? 'text-sub-color2' : 'text-black'
+                  content.isRead ? 'text-gray-500' : 'text-black'
                 }`}
               >
                 {content.isRead ? (
                   <ReadMessageSVG
                     width="22"
                     height="22"
-                    className="stroke-sub-color2"
+                    className="stroke-gray-500"
                   />
                 ) : (
                   <UnreadMessageSVG
@@ -161,12 +156,12 @@ const NotifyList = ({
                 {content.message}
               </p>
 
-              <span className="flex items-center gap-2 text-sub-color2">
+              <span className="flex items-center gap-2 text-gray-500">
                 {content.date}
                 <DeleteSVG
                   width="22"
                   height="22"
-                  className="cursor-pointer stroke-sub-color2"
+                  className="cursor-pointer stroke-gray-500"
                 />
               </span>
             </li>

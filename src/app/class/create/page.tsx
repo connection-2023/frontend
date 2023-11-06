@@ -72,21 +72,21 @@ export default function ClassCreate() {
       </h1>
 
       {/* 상태 바  */}
-      <ul className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
+      <ul className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-float">
         {steps.map((step, index) => (
           <li
             key={index}
             className={`flex h-full flex-grow items-center justify-center gap-2 rounded-[3.13rem] px-1 ${
               activeStep === index
                 ? 'bg-sub-color1 text-white'
-                : 'text-sub-color2'
+                : 'text-gray-500'
             }`}
           >
             <span
               className={`flex h-6 w-6 items-center justify-center rounded-full ${
                 activeStep === index
                   ? 'bg-white text-sub-color1'
-                  : 'bg-sub-color2 text-white'
+                  : 'bg-gray-500 text-white'
               }`}
             >
               {index + 1}

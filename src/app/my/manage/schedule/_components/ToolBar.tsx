@@ -15,7 +15,7 @@ const views: { label: string; value: View }[] = [
 
 const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
   <div className="mb-[0.69rem] flex items-center justify-between">
-    <div className="flex h-[1.875rem] w-[8.7rem] divide-x divide-solid overflow-hidden rounded-[0.4rem] border border-solid border-sub-color2">
+    <div className="flex h-[1.875rem] w-[8.7rem] divide-x divide-solid overflow-hidden rounded-[0.4rem] border border-solid border-gray-500">
       <button
         onClick={() => onNavigate('PREV')}
         className={`origin-center rotate-180 ${NavButtonStyle}`}
@@ -24,7 +24,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
       </button>
       <button
         onClick={() => onNavigate('TODAY')}
-        className="flex-1 hover:bg-[#E8E8E8] "
+        className="flex-1 hover:bg-gray-700 "
       >
         Today
       </button>
@@ -35,7 +35,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
         <ArrowRightSVG className="h-[5px] w-[9px] stroke-black" />
       </button>
     </div>
-    <h2 className="text-lg font-bold text-sub-color3">{label}</h2>
+    <h2 className="text-lg font-bold text-gray-100">{label}</h2>
     <div className="flex gap-[0.38rem] text-base font-normal">
       {views.map((item, index) => (
         <button
@@ -53,11 +53,11 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
 export default ToolBar;
 
 const NavButtonStyle =
-  'flex w-[1.875rem] items-center justify-center hover:bg-[#E8E8E8]';
+  'flex w-[1.875rem] items-center justify-center hover:bg-gray-700';
 
 const getButtonClass = (isActive: boolean) =>
-  `flex h-7 w-[4.25rem] items-center justify-center rounded-[0.31rem] border border-solid ${
+  `flex h-7 w-[4.25rem] items-center justify-center rounded-md border border-solid ${
     isActive
       ? 'border-black'
-      : 'border-sub-color2 text-sub-color2 hover:border-sub-color2 hover:bg-[#E8E8E8] hover:text-sub-color2'
+      : 'border-gray-500 text-gray-500 hover:border-gray-500 hover:bg-gray-700 hover:text-gray-500'
   }`;

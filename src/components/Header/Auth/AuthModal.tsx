@@ -44,7 +44,7 @@ const AuthModal = ({ isOpened, isClosed }: IAuthModal) => {
           width={16}
           height={16}
           onClick={isClosed}
-          className="absolute right-[1rem] top-[0.81rem] cursor-pointer stroke-sub-color2 stroke-2"
+          className="absolute right-[1rem] top-[0.81rem] cursor-pointer stroke-gray-500 stroke-2"
         />
       </button>
 

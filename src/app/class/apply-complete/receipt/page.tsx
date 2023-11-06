@@ -43,20 +43,20 @@ const applicationDetails = [
 
 const BillPage = () => {
   return (
-    <div className="bg-checkout-receipt relative mx-auto box-border flex h-[669px] w-[388px] flex-col items-center px-[2.13rem] py-[3.5rem] leading-normal">
+    <div className="relative mx-auto box-border flex h-[669px] w-[388px] flex-col items-center bg-checkout-receipt px-[2.13rem] py-[3.5rem] leading-normal">
       <h1 className="mb-1 text-lg font-semibold">Connection</h1>
-      <p className="text-sm font-semibold text-[#969696]">02298798789</p>
+      <p className="text-sm font-semibold text-gray-300">02298798789</p>
       <hr className="my-4 w-full border-main-color" />
 
       <ul className="mt-4 grid w-full grid-cols-[min-content_minmax(auto,_1fr)] items-baseline  gap-y-2 text-sm font-normal">
         {applicationDetails.map((detail, index) => (
           <React.Fragment key={index}>
-            <li className="flex w-fit whitespace-nowrap text-[#969696]">
+            <li className="flex w-fit whitespace-nowrap text-gray-300">
               {detail.type}
             </li>
             <li className="break-words text-right">{detail.content}</li>
             {index === 0 || index === 4 ? (
-              <hr className="col-span-2 my-2 border-dashed border-sub-color2" />
+              <hr className="col-span-2 my-2 border-dashed border-gray-500" />
             ) : null}
           </React.Fragment>
         ))}
@@ -69,10 +69,10 @@ const BillPage = () => {
       </div>
 
       <div className="flex w-full flex-col gap-2 text-sm font-medium">
-        <button className="h-[1.875rem] cursor-pointer rounded-[0.31rem] border border-solid border-sub-color4">
+        <button className="h-[1.875rem] cursor-pointer rounded-md border border-solid border-gray-700">
           영수증 저장
         </button>
-        <button className="h-[1.875rem] cursor-pointer rounded-[0.31rem] border border-solid border-sub-color4">
+        <button className="h-[1.875rem] cursor-pointer rounded-md border border-solid border-gray-700">
           결제취소
         </button>
       </div>

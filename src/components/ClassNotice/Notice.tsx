@@ -6,7 +6,7 @@ interface INoticeProps {
 }
 const Notice = ({ content, updateDate }: INoticeProps) => {
   return (
-    <div className="w-full rounded-[0.63rem] border border-solid border-sub-color1 p-[0.96rem] text-sm md:whitespace-nowrap">
+    <div className="w-full rounded-lg border border-solid border-sub-color1 p-[0.96rem] text-sm md:whitespace-nowrap">
       <h2 className="mb-2 flex items-center whitespace-nowrap font-bold text-sub-color1">
         <NoticeSVG
           width="20"

@@ -43,11 +43,11 @@ const ClassPreview = (props: ClassCardType) => {
   const getStatusStyles = (status: string) => {
     switch (status) {
       case '모집중':
-        return 'border-sub-color2 text-inherit';
+        return 'border-gray-500 text-inherit';
       case '마감임박':
         return 'border-main-color text-main-color';
       case '마감':
-        return 'border-sub-color2 text-sub-color2';
+        return 'border-gray-500 text-gray-500';
       default:
         return '';
     }
@@ -56,7 +56,7 @@ const ClassPreview = (props: ClassCardType) => {
     <div
       onMouseLeave={() => setFocus(false)}
       onMouseOver={() => setFocus(true)}
-      className="flex max-h-[13.5rem] w-full min-w-[20.5rem] max-w-[40rem] cursor-pointer whitespace-nowrap rounded-[0.63rem] p-3.5 shadow-[1px_1px_4px_-1px_rgba(0,0,0,0.25)] hover:scale-[1.02]"
+      className="flex max-h-[13.5rem] w-full min-w-[20.5rem] max-w-[40rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:scale-[1.02]"
     >
       <div className="relative mr-4 h-[188px] w-full overflow-hidden">
         {imgURL.length > 1 ? (
@@ -76,7 +76,7 @@ const ClassPreview = (props: ClassCardType) => {
         )}
       </div>
 
-      <div className="flex w-full flex-col text-sub-color3">
+      <div className="flex w-full flex-col text-gray-100">
         <div className="mb-3 flex w-full items-center">
           <div
             className={`flex border-2 border-solid px-1.5 py-1.5 text-sm font-bold ${getStatusStyles(
@@ -108,7 +108,7 @@ const ClassPreview = (props: ClassCardType) => {
         {review && <Review average={review.average} count={review.count} />}
 
         <div className="mt-auto flex w-full items-center justify-between text-sm">
-          <p className="text-lg font-bold text-black text-sub-color3">
+          <p className="text-lg font-bold text-black text-gray-100">
             {price}원
           </p>
 

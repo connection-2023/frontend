@@ -28,8 +28,8 @@ const GenreList = ({
             key={genre + index}
             className={`${
               isSelected
-                ? 'select-shadow-border bg-[#F5F5F5] fill-sub-color1 font-bold'
-                : 'shadow-border fill-sub-color2 text-sub-color2'
+                ? 'select-shadow-border bg-gray-900 fill-sub-color1 font-bold'
+                : 'shadow-border fill-gray-500 text-gray-500'
             } flex h-8 w-1/5 cursor-pointer items-center justify-center gap-1 text-sm`}
             onClick={() => changeSelectGenreList(genre, !isSelected)}
           >

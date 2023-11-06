@@ -63,11 +63,11 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
       </div>
 
       <div className="mb-6 mt-12 flex w-full items-center ">
-        <div className="flex h-[1px] w-full flex-1 border-t border-solid border-sub-color2" />
-        <span className="mx-3 whitespace-nowrap text-sm text-sub-color2">
+        <div className="flex h-[1px] w-full flex-1 border-t border-solid border-gray-500" />
+        <span className="mx-3 whitespace-nowrap text-sm text-gray-500">
           소셜로그인으로 간편하게 시작하기
         </span>
-        <div className="flex h-[1px] w-full flex-1  border-t border-solid border-sub-color2" />
+        <div className="flex h-[1px] w-full flex-1  border-t border-solid border-gray-500" />
       </div>
 
       <div className="mb-[2.13rem] flex items-center justify-center gap-6">

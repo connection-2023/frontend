@@ -141,21 +141,21 @@ const ApplyPage = () => {
     <main className="mx-auto mb-28 flex w-full max-w-[40rem] flex-col items-center">
       <h1 className="my-3 text-2xl font-bold">강사등록</h1>
       {/* 상태 바 */}
-      <ul className="flex h-[45px] w-full items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
+      <ul className="flex h-[45px] w-full items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-float">
         {steps.map((step, index) => (
           <li
             key={index}
             className={`flex h-full flex-grow items-center justify-center gap-2 rounded-[3.13rem] px-1 ${
               activeStep === index
                 ? 'bg-sub-color1 text-white'
-                : 'text-sub-color2'
+                : 'text-gray-500'
             }`}
           >
             <span
               className={`flex h-6 w-6 items-center justify-center rounded-full ${
                 activeStep === index
                   ? 'bg-white text-sub-color1'
-                  : 'bg-sub-color2 text-white'
+                  : 'bg-gray-500 text-white'
               }`}
             >
               {index + 1}
@@ -171,8 +171,8 @@ const ApplyPage = () => {
 
       <form onSubmit={handleSubmit(onValid, invalid)} className="w-full">
         <button
-          className={`h-9 w-full rounded-[0.31rem] text-white ${
-            activeStep === 1 || isValid ? 'bg-sub-color1' : 'bg-sub-color2'
+          className={`h-9 w-full rounded-md text-white ${
+            activeStep === 1 || isValid ? 'bg-sub-color1' : 'bg-gray-500'
           }`}
           disabled={activeStep !== 1 && !isValid}
         >

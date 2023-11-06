@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { dummyClasstableData } from '@/constants/dummy';
 import EnrollmentModal from './EnrollmentModal';
 
-const TableCellStyle = 'border border-solid border-sub-color4 py-2';
+const TableCellStyle = 'border border-solid border-gray-700 py-2';
 
 const ClassTable = () => {
   const [showPastClasses, setShowPastClasses] = useState(false);
@@ -40,7 +40,7 @@ const ClassTable = () => {
 
   return (
     <>
-      <label className="mb-[0.88rem] flex items-center gap-[0.38rem] text-sm font-semibold text-sub-color3">
+      <label className="mb-[0.88rem] flex items-center gap-[0.38rem] text-sm font-semibold text-gray-100">
         <input
           type="checkbox"
           checked={showPastClasses}
@@ -51,7 +51,7 @@ const ClassTable = () => {
       </label>
       <table className={`w-full border-collapse ${TableCellStyle} text-base`}>
         <thead>
-          <tr className="font-bold text-sub-color3 ">
+          <tr className="font-bold text-gray-100 ">
             <th className={`${TableCellStyle}`}>클래스</th>
             <th className={`${TableCellStyle}`}>날짜 및 시간</th>
             <th className={`${TableCellStyle}`}>신청한 수강생</th>
@@ -113,7 +113,7 @@ const TableList = ({
   const textColor = isFirstClass
     ? 'text-sub-color1'
     : isPastClass
-    ? 'text-sub-color2'
+    ? 'text-gray-500'
     : 'text-black';
   const textBold = isPastClass ? '' : 'font-bold';
 

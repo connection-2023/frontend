@@ -44,7 +44,7 @@ const ConfirmedLocation = ({
           </address>
           <input
             type="text"
-            className={`w-full border border-solid border-sub-color2 px-2 py-1 focus:outline-none  ${
+            className={`w-full border border-solid border-gray-500 px-2 py-1 focus:outline-none  ${
               errors.classDetailAddress &&
               'animate-vibration placeholder:text-main-color'
             }`}

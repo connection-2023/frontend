@@ -108,7 +108,7 @@ const AppliedCouponDisplay = ({
           type="number"
           value={selectCoupons.length > 0 ? discountedMinPrice : ''}
           readOnly
-          className="mr-1 h-7 w-20 rounded-md border border-solid border-sub-color2 text-right focus:outline-none"
+          className="mr-1 h-7 w-20 rounded-md border border-solid border-gray-500 text-right focus:outline-none"
         />
         원
       </section>

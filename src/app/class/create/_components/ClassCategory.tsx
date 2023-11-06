@@ -25,7 +25,7 @@ const ClassCategory = () => {
     <>
       <section
         id="classImg"
-        className="mb-5 border-b border-solid border-sub-color2 py-10"
+        className="mb-5 border-b border-solid border-gray-500 py-10"
       >
         <Controller
           name="classImg"

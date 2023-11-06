@@ -35,7 +35,7 @@ const Address = () => {
       <header className="m-auto h-20 w-full max-w-2xl px-11 ">
         <h1 className="pt-8 text-2xl font-semibold">주소 검색</h1>
       </header>
-      <hr className="border-t-1 mb-7 w-full border-solid border-sub-color2" />
+      <hr className="border-t-1 mb-7 w-full border-solid border-gray-500" />
 
       <section className="m-auto flex w-full max-w-2xl flex-col px-11">
         <SearchForm addressSearch={addressSearch} />

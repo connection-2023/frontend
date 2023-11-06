@@ -12,7 +12,7 @@ const BlockedInstructors = ({ instructors }: BlockedInstructorsProps) => (
       return (
         <li
           key={name + index}
-          className="flex justify-between border-y border-solid border-sub-color4 py-4"
+          className="flex justify-between border-y border-solid border-gray-700 py-4"
         >
           <ProfileImage
             size="small"
@@ -21,7 +21,7 @@ const BlockedInstructors = ({ instructors }: BlockedInstructorsProps) => (
             marginLeft={2}
           />
 
-          <div className="flex gap-16 text-sub-color3">
+          <div className="flex gap-16 text-gray-100">
             <button>차단취소</button>
             <button>신고</button>
           </div>

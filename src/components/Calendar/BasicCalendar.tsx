@@ -37,9 +37,7 @@ const BasicCalendar = ({
   return (
     <div
       className={
-        mode === 'preview'
-          ? 'rounded-[0.625rem] py-1 shadow-[1px_1px_6px_1px_rgba(0,0,0,0.25)]'
-          : ''
+        mode === 'preview' ? 'rounded-[0.625rem] py-1 shadow-horizontal' : ''
       }
     >
       <DayPicker

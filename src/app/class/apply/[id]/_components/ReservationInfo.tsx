@@ -3,11 +3,11 @@
 import { parseISO } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect, ChangeEvent } from 'react';
+import useStore, { usePaymentStore } from '@/store';
+import { formatDateTime } from '@/utils/parseUtils';
 import ApplyClassList from './ApplyClassList';
 import { IClassSchedule } from '@/types/class';
 import { IReservationInfo } from '@/types/payment';
-import useStore, { usePaymentStore } from '@/store';
-import { formatDateTime } from '@/utils/parseUtils';
 
 interface ReservationInfoProps {
   schedule: IClassSchedule[];
@@ -123,7 +123,7 @@ const ReservationInfo = ({
 
   return (
     <>
-      <section className="mt-4 px-4 py-[1.31rem] shadow-[0px_1px_4px_1px_rgba(0,0,0,0.25)]">
+      <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
         <h3 className="text-lg font-semibold">신청한 클래스</h3>
         <ul className="mt-4 divide-y divide-solid divide-sub-color1">
           {processedSchedules.map((schedule) => (
@@ -137,16 +137,16 @@ const ReservationInfo = ({
         </ul>
       </section>
 
-      <div className="mt-4 px-4 py-[1.31rem] shadow-[0px_1px_4px_1px_rgba(0,0,0,0.25)]">
-        <section className="whitespace-nowrap border-b border-solid border-sub-color2 pb-5">
+      <div className="mt-4 px-4 py-[1.31rem] shadow-vertical">
+        <section className="whitespace-nowrap border-b border-solid border-gray-500 pb-5">
           <h3 className="text-lg font-semibold">예약자 정보</h3>
-          <ul className="mt-4 flex flex-col gap-2 text-sm font-semibold text-sub-color3 ">
+          <ul className="mt-4 flex flex-col gap-2 text-sm font-semibold text-gray-100 ">
             <li className="flex  items-center gap-4 px-[0.62rem] py-[0.31rem]">
               <span>대표자 이름</span>
               <input
                 value={applicantInfo.representative}
                 onChange={handleChange('representative')}
-                className="h-7 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1"
+                className="h-7 rounded-md border border-solid border-gray-500 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1"
               />
             </li>
             <li className="flex  items-center gap-4 px-[0.62rem] py-[0.31rem]">
@@ -154,7 +154,7 @@ const ReservationInfo = ({
               <input
                 value={applicantInfo.phoneNumber}
                 onChange={handleChange('phoneNumber')}
-                className="h-7 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1"
+                className="h-7 rounded-md border border-solid border-gray-500 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1"
               />
               <button
                 onClick={handleContactValidation}
@@ -166,8 +166,8 @@ const ReservationInfo = ({
             {contactValidation && (
               <li className="flex items-center gap-4 px-[0.62rem] py-[0.31rem]">
                 <span className="w-[64.03px]" />
-                <input className="h-7 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1" />
-                <button className="h-7 w-24 cursor-pointer whitespace-nowrap rounded-md bg-sub-color2 font-medium text-white">
+                <input className="h-7 rounded-md border border-solid border-gray-500 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1" />
+                <button className="h-7 w-24 cursor-pointer whitespace-nowrap rounded-md bg-gray-500 font-medium text-white">
                   인증하기
                 </button>
               </li>
@@ -185,7 +185,7 @@ const ReservationInfo = ({
           <textarea
             value={applicantInfo.requests}
             onChange={handleChange('requests')}
-            className="h-20 w-full resize-none rounded-md border border-sub-color2 p-3 text-sm font-normal focus:outline-sub-color1"
+            className="h-20 w-full resize-none rounded-md border border-gray-500 p-3 text-sm font-normal focus:outline-sub-color1"
             placeholder="강사에게 전달해야하는 요청사항을 적어주세요."
             maxLength={200}
           />

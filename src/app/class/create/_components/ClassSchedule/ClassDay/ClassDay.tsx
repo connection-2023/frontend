@@ -37,7 +37,7 @@ const ClassDay = () => {
           <li key={index}>
             <label
               className={`flex cursor-pointer items-center whitespace-nowrap ${
-                isDisabled ? 'text-sub-color2' : ''
+                isDisabled ? 'text-gray-500' : ''
               }`}
             >
               <input
@@ -52,7 +52,7 @@ const ClassDay = () => {
               <div
                 className={`mr-2 h-[18px] w-[18px] rounded-[0.09rem] ${
                   selectedType !== label &&
-                  'border border border-solid border-sub-color2'
+                  'border border border-solid border-gray-500'
                 }`}
               >
                 {selectedType === label && (

@@ -88,10 +88,10 @@ const numberSelectStyles:
         ? '1.3rem 1.3rem 0 0'
         : '1.875rem',
     boxShadow: 'none',
-    borderColor: 'var(--sub-color4)',
+    borderColor: 'var(--gray-700)',
     height: '100%',
     width: '100%',
-    '&:hover': { borderColor: 'var(--sub-color4)' },
+    '&:hover': { borderColor: 'var(--gray-700)' },
   }),
   valueContainer: (provided, state) => ({
     ...provided,
@@ -103,15 +103,15 @@ const numberSelectStyles:
     ...provided,
     marginTop: '-10px',
     boxShadow: 'none',
-    border: '1px solid var(--sub-color4)',
+    border: '1px solid var(--gray-700)',
     borderTop: 'none',
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isSelected ? 'var(--sub-color4)' : 'white',
+    backgroundColor: state.isSelected ? 'var(--gray-700)' : 'white',
     color: 'black',
     '&:hover': {
-      backgroundColor: '#eceaea',
+      backgroundColor: 'var(----gray4)',
     },
   }),
 };

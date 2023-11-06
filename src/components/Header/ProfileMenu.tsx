@@ -84,7 +84,7 @@ const ProfileMenu = () => {
         <Link href="/">예약 현황</Link>
       </li>
 
-      <li className="border-t border-solid border-sub-color2 text-main-color">
+      <li className="border-t border-solid border-gray-500 text-main-color">
         <button
           onClick={handleSwitchUser}
           className="flex h-full w-full cursor-pointer gap-1 py-4 pl-4"
@@ -94,7 +94,7 @@ const ProfileMenu = () => {
         </button>
       </li>
 
-      <li className="bg-gray-200 text-sub-color2">
+      <li className="bg-gray-200 text-gray-500">
         <button
           onClick={handleLogout}
           className="h-full w-full py-2 pl-4 text-left hover:text-black"
