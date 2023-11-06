@@ -3,7 +3,7 @@ import { DOMAIN } from '@/constants/constants';
 export const checkUserNickname = async (nickname: string) => {
   try {
     const res = await fetch(
-      `api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+      `api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
     );
 
     return res;
