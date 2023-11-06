@@ -9,7 +9,7 @@ import {
 } from 'suneditor-react/dist/types/upload';
 import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
-import { postSingleImage } from '@/lib/apis/imageApi';
+import { deleteImage, postSingleImage } from '@/lib/apis/imageApi';
 import { toast } from 'react-toastify';
 
 interface fileInfo {
@@ -81,11 +81,9 @@ const CustomEditor = ({
     info: UploadInfo<HTMLImageElement>,
     remainingFilesCount: number,
   ) => {
-    console.log(editor.current?.getImagesInfo(), '현재 이미지');
-
     if (state === 'create' && editor.current) {
       imagesRef.current = [...editor.current.getImagesInfo()];
-      console.log(imagesRef.current, '상태에 있는 이미지');
+      console.log(imagesRef.current, '현재 이미지');
     } else if (state === 'delete' && editor.current) {
       const previousImages = [...imagesRef.current];
       const currentImages = editor.current.getImagesInfo();
@@ -93,13 +91,15 @@ const CustomEditor = ({
         (image) =>
           !currentImages.some((currentImage) => currentImage.src === image.src),
       );
-      console.log('삭제된 이미지:', deletedImages);
+
+      console.log(deletedImages, '삭제 진행한 이미지');
+
+      // await deleteImage()
 
       imagesRef.current = previousImages.filter(
         (image) =>
           !deletedImages.some((deletedImage) => deletedImage.src === image.src),
       );
-      console.log(imagesRef.current, '상태에 있는 이미지');
     }
   };
 
