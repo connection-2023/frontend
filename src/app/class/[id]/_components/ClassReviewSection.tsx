@@ -2,14 +2,25 @@
 import { useState, useRef } from 'react';
 import { useClickAway } from 'react-use';
 import Review from '@/components/Review/Review';
-import { StarSVG, ArrowUpSVG } from '@/icons/svg';
-import { dummyClass } from '@/constants/dummy';
 import UserReview from '@/components/Review/UserReview';
+import { IUserReview } from '@/types/class';
+import { StarSVG, ArrowUpSVG } from '@/icons/svg';
 
 const filterOption = ['최신순', '좋아요순', '평점 높은순', '평점 낮은순'];
 
-const ClassReviewSection = () => {
-  const { review } = dummyClass;
+interface ClassReviewSectionProps {
+  classTitle: string;
+  reviewCount: number;
+  stars: number;
+  userReviews: IUserReview[];
+}
+
+const ClassReviewSection = ({
+  classTitle,
+  reviewCount,
+  stars,
+  userReviews,
+}: ClassReviewSectionProps) => {
   const [isListOpened, setIsListOpened] = useState(false);
   const [selectedOption, setSelectedOption] = useState('최신순');
   const modalRef = useRef(null);
@@ -34,17 +45,17 @@ const ClassReviewSection = () => {
       className="relative mb-20 scroll-mt-16"
     >
       <div className="mb-4 flex w-full items-center justify-between">
-        <h2 className={`flex items-center scroll-smooth text-lg font-bold`}>
-          클래스 후기 {review.count}건
+        <h2 className="flex items-center scroll-smooth text-lg font-bold">
+          클래스 후기 {reviewCount}건
           <div className="ml-3 hidden md:block">
-            <Review average={review.average} />
+            <Review average={stars} />
           </div>
           <StarSVG
             width="15"
             height="14"
             className="ml-3 fill-sub-color1 sm:block md:hidden"
           />
-          <span className="ml-1 text-sub-color2">({review.average})</span>
+          <span className="ml-1 text-sub-color2">({stars})</span>
         </h2>
 
         <button
@@ -77,15 +88,15 @@ const ClassReviewSection = () => {
         </ul>
       </div>
       <div className="flex flex-col gap-6">
-        {review.reviewer.map((review) => (
+        {userReviews.map((review) => (
           <UserReview
-            key={review.nickname}
-            src={review.src}
-            nickname={review.nickname}
-            average={review.average}
-            content={review.content}
-            date={review.date}
-            title={review.title}
+            key={review.id}
+            src={review.users.userProfileImage}
+            nickname={review.users.nickname}
+            average={review.stars}
+            content={review.description}
+            date="23.07.11"
+            title={classTitle}
           />
         ))}
       </div>

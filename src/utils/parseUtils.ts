@@ -1,9 +1,17 @@
+import { format, addMinutes } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { IGenre, IRegion } from '@/types/types';
 
-export const formatLocationToString = (regions: { region: IRegion }[]) =>
+export const formatLocationToString = (
+  regions: { region: IRegion }[] | IRegion[],
+) =>
   regions
     .map((region) => {
-      const { administrativeDistrict, district } = region.region;
+      const isIRegion = 'administrativeDistrict' in region;
+
+      const targetRegion = isIRegion ? region : region.region;
+      const { administrativeDistrict, district } = targetRegion;
+
       return `${administrativeDistrict} ${district || ''}`;
     })
     .join(', ');
@@ -17,3 +25,12 @@ export const formatGenreToString = (genres: IGenre[]) =>
       }
     })
     .join(', ');
+
+export const formatDateTime = (datetime: Date, duration: number) => {
+  const endDatetime = addMinutes(datetime, duration);
+  const formattedStartDatetime = format(datetime, 'M월 d일 (eee) HH:mm', {
+    locale: ko,
+  });
+  const formattedEndDatetime = format(endDatetime, 'HH:mm');
+  return `${formattedStartDatetime}-${formattedEndDatetime}`;
+};

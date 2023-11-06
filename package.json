@@ -21,6 +21,7 @@
   "dependencies": {
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-table": "^8.10.6",
+    "@tosspayments/payment-widget-sdk": "^0.10.0",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
