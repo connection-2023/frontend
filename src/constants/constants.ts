@@ -10,6 +10,21 @@ export const ProfileImgSize = {
   xlarge: 176,
 };
 
+export const ButtonSizes = {
+  small: 28,
+  medium: 35,
+  large: 45,
+};
+
+export const ButtonStyles = {
+  primary:
+    'hover:bg-main-color-transparent group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-white text-main-color active:bg-main-color active:text-white',
+  default:
+    'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 active:bg-sub-color1 active:text-white',
+  secondary:
+    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/[.1] active:bg-black active:text-white',
+};
+
 export const DAY_MODIFIERS = {
   saturday: (date: Date) => date.getDay() === 6,
   sunday: (date: Date) => date.getDay() === 0,
