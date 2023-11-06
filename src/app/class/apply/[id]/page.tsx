@@ -26,7 +26,7 @@ const ClassApplyPage = async ({
   } = classData;
 
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto mb-20 flex grid w-full max-w-[1440px] grid-cols-[1fr_2fr_1fr] gap-x-12 px-[4.5rem]">
+    <main className="grid-auto-rows-2 border-box mx-auto mb-20 flex grid w-full grid-cols-[1fr_2fr_1fr] gap-x-12 px-[4.5rem]">
       {/* 임시 빈 공간 */}
       <div className="" />
 

@@ -66,7 +66,7 @@ export default function ClassCreate() {
   };
 
   return (
-    <main className="mx-auto max-w-[1440px] px-[2.38rem]">
+    <main className="mx-auto px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
         클래스 작성
       </h1>

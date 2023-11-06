@@ -37,12 +37,15 @@ const config: Config = {
         md: '0.31rem',
         lg: '0.63rem',
       },
+      maxWidth: {
+        tablet: 'var(--max-tablet)',
+        desktop: 'var(--max-desktop)',
+      },
       boxShadow: {
         vertical: '0px 1px 4px 1px rgba(0, 0, 0, 0.25)',
         horizontal: '1px 1px 4px 1px rgba(0, 0, 0, 0.25)',
         float: '0px 1px 4px 0 rgba(0, 0, 0, 0.25)',
       },
-
       zIndex: {
         header: '30',
         modal: '50',

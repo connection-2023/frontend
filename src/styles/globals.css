@@ -12,6 +12,7 @@
 
 :root {
   --max-tablet: 1300px;
+  --max-desktop: 1440px;
   --main-color: #ff3e9a;
   --main-color-transparent: #ff3e9a1a;
   --sub-color1: #8338ec;

@@ -50,7 +50,7 @@ const InstructorDetailPage = async ({
   return (
     <main className="flex w-screen flex-col items-center">
       {/* 강의 상세 헤더 섹션 */}
-      <section className="flex w-full max-w-[1440px] flex-col items-center ">
+      <section className="flex w-full flex-col items-center ">
         <InstructorCarousel
           imgURL={lecturerProfileImageUrl.map((img) => img.url)}
         />

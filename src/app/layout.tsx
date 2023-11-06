@@ -23,7 +23,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex min-h-screen flex-col`}>
+      <body
+        className={`${inter.className} max-w-desktop flex min-h-screen flex-col`}
+      >
         <Header />
         <ToastContainer
           position="top-center"

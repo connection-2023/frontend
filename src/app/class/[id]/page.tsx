@@ -75,7 +75,7 @@ const ClassDetailPage = async ({
   });
 
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] box-border grid max-w-[1440px] grid-cols-1 gap-x-12 md:grid-cols-[1fr_1.37fr_1fr]">
+    <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 md:grid-cols-[1fr_1.37fr_1fr]">
       <section className="mb-4 flex w-full flex-col items-center shadow-float md:col-span-3">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">

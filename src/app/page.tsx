@@ -11,7 +11,7 @@ const Home = () => {
   const { classList } = dummyInstructor;
   const { recentClass, suggestionClass, topInstructorList } = dummyMain;
   return (
-    <main className="relative mx-auto mb-20 max-w-[1440px]">
+    <main className="relative mx-auto mb-20">
       <Banner />
       {/* 유저 로그인시에만 보여지는 맞춤 클래스 */}
       <section className="absolute top-[23rem] mt-3 w-full">
