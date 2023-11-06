@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './reset.css';
-
 @layer base {
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
@@ -13,14 +11,22 @@
 }
 
 :root {
-  --max-width: 1440px;
+  --max-tablet: 1300px;
+  --max-desktop: 1440px;
   --main-color: #ff3e9a;
+  --main-color-transparent: #ff3e9a1a;
   --sub-color1: #8338ec;
-  --sub-color2: #b6b6b6;
-  --sub-color3: #414141;
-  --sub-color4: #d9d9d9;
-  --font-regular: 400;
-  --font-bold: 700;
+  --sub-color1-transparent: #8338ec1a;
+  --sub-color2: #ff9e2d;
+  --sub-color2-transparent: #ff961b1a;
+  --sub-color3: #e92c2c;
+  --sub-color3-transparent: #e92c2c1a;
+
+  --gray1: #414141;
+  --gray2: #969696;
+  --gray3: #b6b6b6;
+  --gray4: #d9d9d9;
+  --gray5: #f5f5f5;
 }
 
 body {
@@ -43,7 +49,7 @@ html {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--sub-color2) #f5f5f5;
+  scrollbar-color: var(--gray3) #f5f5f5;
 }
 
 *::-webkit-scrollbar {
@@ -55,17 +61,17 @@ html {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--sub-color2);
+  background-color: var(--gray3);
   border-radius: 0.5rem;
 }
 
 .shadow-border {
   box-shadow:
-    1px 0 0 0 var(--sub-color4),
-    0 1px 0 0 var(--sub-color4),
-    1px 1px 0 0 var(--sub-color4),
-    1px 0 0 0 var(--sub-color4) inset,
-    0 1px 0 0 var(--sub-color4) inset;
+    1px 0 0 0 var(--gray4),
+    0 1px 0 0 var(--gray4),
+    1px 1px 0 0 var(--gray4),
+    1px 0 0 0 var(--gray4) inset,
+    0 1px 0 0 var(--gray4) inset;
 }
 
 .select-shadow-border {

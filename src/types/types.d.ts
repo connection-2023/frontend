@@ -82,6 +82,7 @@ export interface INotice {
   title: string;
   contents: INoticeMessage[];
 }
+
 export interface Verification {
   nickname: boolean;
   email: boolean;

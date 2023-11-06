@@ -45,22 +45,20 @@ const ApplyClassList = ({
   };
 
   return (
-    <li className="flex w-full items-center justify-between whitespace-nowrap py-2 text-sm font-semibold text-sub-color3">
+    <li className="flex w-full items-center justify-between whitespace-nowrap py-2 text-sm font-semibold text-gray-100">
       <span>{dateTime}</span>
       <div className="flex items-center">
-        <span className="mr-[1.31rem] text-sub-color2">
-          잔여자리: {remain}명
-        </span>
-        <div className="flex items-center text-sm text-sub-color3">
+        <span className="mr-[1.31rem] text-gray-500">잔여자리: {remain}명</span>
+        <div className="flex items-center text-sm text-gray-100">
           <CountButton onClick={onClickDown}>-</CountButton>
-          <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-sub-color2">
+          <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-gray-500">
             {reservationCount}
           </span>
           <CountButton onClick={onClickUp}>+</CountButton>
         </div>
         <span className="ml-[0.31rem]">명</span>
         <button onClick={handleClear} className="ml-4 cursor-pointer">
-          <ClearSVG width={18} height={18} className="fill-sub-color4" />
+          <ClearSVG width={18} height={18} className="fill-gray-700" />
         </button>
       </div>
     </li>
@@ -77,7 +75,7 @@ const CountButton = ({
   children: React.ReactNode;
 }) => (
   <button
-    className="h-[31px] w-[35px] border border-solid border-sub-color2 bg-[#F5F5F5F5] text-sub-color2"
+    className="h-[31px] w-[35px] border border-solid border-gray-500 bg-gray-900 text-gray-500"
     onClick={onClick}
   >
     {children}

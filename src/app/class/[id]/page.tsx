@@ -1,17 +1,4 @@
 import Image from 'next/image';
-import Apply from './_components/Apply';
-import ClassReviewSection from './_components/ClassReviewSection';
-import DiscountCouponBanner from './_components/DiscountCouponBanner';
-import ProfileButtons from './_components/ProfileButtons';
-import Carousel from '@/components/Carousel/Carousel';
-import Notice from '@/components/ClassNotice/Notice';
-import Like from '@/components/Like/Like';
-import Map from '@/components/Map/Map';
-import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import Review from '@/components/Review/Review';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import Sharing from '@/components/Sharing/Sharing';
 import { CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass } from '@/constants/dummy';
 import {
@@ -27,6 +14,19 @@ import {
   formatGenreToString,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import Apply from './_components/Apply';
+import ClassReviewSection from './_components/ClassReviewSection';
+import DiscountCouponBanner from './_components/DiscountCouponBanner';
+import ProfileButtons from './_components/ProfileButtons';
+import Carousel from '@/components/Carousel/Carousel';
+import Notice from '@/components/ClassNotice/Notice';
+import Like from '@/components/Like/Like';
+import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import Review from '@/components/Review/Review';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -75,7 +75,7 @@ const ClassDetailPage = async ({
   });
 
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] box-border grid max-w-[1440px] grid-cols-1 gap-x-12 md:grid-cols-[1fr_1.37fr_1fr]">
+    <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 md:grid-cols-[1fr_1.37fr_1fr]">
       <section className="mb-4 flex w-full flex-col items-center shadow-float md:col-span-3">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
@@ -114,10 +114,10 @@ const ClassDetailPage = async ({
         {/* Review */}
         <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:mb-6 md:justify-center">
           <Review average={stars} />
-          <span className="text-sm font-bold text-sub-color2">({stars})</span>
+          <span className="text-sm font-bold text-gray-500">({stars})</span>
         </div>
         {/* 쿠폰 배너 */}
-        <div className="w-full max-w-[40rem] border-b border-solid border-[#D9D9D9] px-4 pb-3">
+        <div className="w-full max-w-[40rem] border-b border-solid border-gray-700 px-4 pb-3">
           <DiscountCouponBanner discountPrice="10,000" />
         </div>
 

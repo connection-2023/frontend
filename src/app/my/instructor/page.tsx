@@ -12,14 +12,14 @@ const InstructorPage = () => {
       <nav className="mb-8 flex gap-6">
         <button
           className={`flex text-2xl font-bold ${
-            !isInterested && 'text-sub-color2'
+            !isInterested && 'text-gray-500'
           }`}
           onClick={() => setIsInterested(true)}
         >
           관심 강사<p>({dummyInterestedInstructor.length})</p>
         </button>
         <button
-          className={`text-2xl font-bold ${isInterested && 'text-sub-color2'}`}
+          className={`text-2xl font-bold ${isInterested && 'text-gray-500'}`}
           onClick={() => setIsInterested(false)}
         >
           차단 강사
@@ -38,7 +38,7 @@ const InstructorPage = () => {
           <div className="flex gap-4">
             <BlockedInstructors instructors={dummyInterestedInstructor} />
 
-            <article className="h-32 border border-solid border-sub-color4 bg-white shadow-float">
+            <article className="h-32 border border-solid border-gray-700 bg-white shadow-float">
               <dl className="m-4 flex flex-col gap-1 whitespace-nowrap text-sm">
                 <dt className="font-semibold text-main-color">
                   Q.강사를 차단하면 어떻게 되나요?

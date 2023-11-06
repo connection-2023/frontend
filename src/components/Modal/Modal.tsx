@@ -1,6 +1,6 @@
 'use client';
-import React from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import { CloseSVG } from '@/icons/svg';
 
 const Modal = ({ children }: { children: React.ReactNode }) => {
@@ -22,7 +22,7 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       ref={overlayRef}
-      className="fixed bottom-0 left-0 right-0 top-0 z-10 mx-auto bg-black/60"
+      className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto bg-black/60"
       onClick={(e) => {
         if (overlayRef.current !== e.target) return;
 
@@ -35,7 +35,7 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
             <CloseSVG
               width={24}
               height={24}
-              className="stroke-sub-color2 stroke-2"
+              className="stroke-gray-500 stroke-2"
             />
           </button>
         </div>

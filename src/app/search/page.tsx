@@ -29,7 +29,7 @@ const SearchPage = async () => {
         </Section>
 
         <Section title="인기 검색어">
-          <ul className="flex flex-col divide-y divide-solid divide-sub-color4">
+          <ul className="flex flex-col divide-y divide-solid divide-gray-700">
             {dummySearchData.popular.map((keyword, i) => (
               <li
                 key={i}

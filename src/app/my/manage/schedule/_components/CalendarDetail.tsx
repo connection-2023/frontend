@@ -23,9 +23,9 @@ const CalendarDetail = ({
   return (
     <div
       ref={modalRef}
-      className="absolute left-1/4 top-20 z-10 flex h-[20.3125rem] w-[26rem] flex-col overflow-y-auto rounded-[0.3125rem]  bg-white px-4 py-[1.19rem] shadow-[0px_2px_5px_1px_rgba(0,0,0,0.25)]"
+      className="absolute left-1/4 top-20 z-10 flex h-[20.3125rem] w-[26rem] flex-col overflow-y-auto rounded-[0.3125rem] bg-white px-4 py-[1.19rem] shadow-float"
     >
-      <h1 className="mb-3 flex w-full items-center justify-center border-b border-solid border-sub-color4 bg-white pb-[0.69rem]">
+      <h1 className="mb-3 flex w-full items-center justify-center border-b border-solid border-gray-700 bg-white pb-[0.69rem]">
         {selectedDate}
       </h1>
 
@@ -33,7 +33,7 @@ const CalendarDetail = ({
         width={18}
         height={18}
         onClick={closeModal}
-        className="absolute right-4 top-5 cursor-pointer stroke-sub-color2 stroke-2"
+        className="absolute right-4 top-5 cursor-pointer stroke-gray-500 stroke-2"
       />
 
       <ul className="flex w-full flex-col gap-3">

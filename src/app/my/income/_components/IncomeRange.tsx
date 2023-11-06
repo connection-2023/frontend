@@ -66,7 +66,7 @@ const IncomeRange = () => {
   return (
     <div className="flex gap-[0.88rem]">
       <div ref={ref}>
-        <div className="relative flex h-7 w-full max-w-[312px] items-center rounded-[0.31rem] border border-solid border-sub-color2 pl-[0.69rem] text-base text-sub-color3">
+        <div className="relative flex h-7 w-full max-w-[312px] items-center rounded-md border border-solid border-gray-500 pl-[0.69rem] text-base text-gray-100">
           <DateInput
             placeholder="시작 날짜"
             value={fromValue || ''}
@@ -102,10 +102,10 @@ const IncomeRange = () => {
           <button
             key={duration}
             onClick={() => handleDuration(duration)}
-            className={`flex h-7 w-[3.25rem] items-center justify-center rounded-[0.31rem] font-semibold ${
+            className={`flex h-7 w-[3.25rem] items-center justify-center rounded-md font-semibold ${
               activeButton === duration
                 ? 'bg-sub-color1 text-white'
-                : 'border border-solid border-sub-color2 text-sub-color2 hover:bg-sub-color1 hover:opacity-50'
+                : 'border border-solid border-gray-500 text-gray-500 hover:bg-sub-color1 hover:opacity-50'
             }`}
           >
             {duration}개월

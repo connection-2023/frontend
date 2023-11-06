@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import React from 'react';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
-import Link from 'next/link';
 
 const applicationDetails = [
   {
@@ -60,7 +60,7 @@ const ApplyCompletePage = ({
             <li className="flex w-fit font-semibold">{detail.type}</li>
             <li>{detail.content}</li>
             {index === 2 || index === 4 ? (
-              <hr className="col-span-2 my-2 border-dashed border-sub-color2" />
+              <hr className="col-span-2 my-2 border-dashed border-gray-500" />
             ) : null}
           </React.Fragment>
         ))}
@@ -70,13 +70,13 @@ const ApplyCompletePage = ({
       <div className="mt-6 flex h-10 w-full gap-4 text-lg font-semibold">
         <Link
           href="" // 마이페이지 결제 내역으로 가기
-          className="flex w-full cursor-pointer items-center justify-center rounded-[0.31rem] bg-sub-color2 text-white"
+          className="flex w-full cursor-pointer items-center justify-center rounded-md bg-gray-500 text-white"
         >
           결제내역 보기
         </Link>
         <Link
           href={`/class/${searchParams.id}`}
-          className="flex w-full cursor-pointer items-center justify-center rounded-[0.31rem] bg-black text-white"
+          className="flex w-full cursor-pointer items-center justify-center rounded-md bg-black text-white"
         >
           확인
         </Link>

@@ -1,8 +1,8 @@
+import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import { getClassPost } from '@/lib/apis/classApis';
 import ApplySidebar from './_components/ApplySidebar';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
-import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getClassPost } from '@/lib/apis/classApis';
 
 const ClassApplyPage = async ({
   params: { id },
@@ -26,7 +26,7 @@ const ClassApplyPage = async ({
   } = classData;
 
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto mb-20 flex grid w-full max-w-[1440px] grid-cols-[1fr_2fr_1fr] gap-x-12 px-[4.5rem]">
+    <main className="grid-auto-rows-2 border-box mx-auto mb-20 flex grid w-full grid-cols-[1fr_2fr_1fr] gap-x-12 px-[4.5rem]">
       {/* 임시 빈 공간 */}
       <div className="" />
 
@@ -58,12 +58,12 @@ const ClassApplyPage = async ({
           duration={duration}
           maxCapacity={maxCapacity}
         />
-        <section className="mt-4 px-4 py-[1.31rem] shadow-[0px_1px_4px_1px_rgba(0,0,0,0.25)]">
+        <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
           <h3 className="text-lg font-semibold">쿠폰/패스권 적용</h3>
           {/* 쿠폰 선택 */}
         </section>
 
-        <section className="mt-4 shadow-[0px_1px_4px_1px_rgba(0,0,0,0.25)]">
+        <section className="mt-4 shadow-vertical">
           {/* <h3 className="text-lg font-semibold">결제 방법 선택</h3> */}
           {/* 페이 버튼 */}
           <PaymentType price={price} />

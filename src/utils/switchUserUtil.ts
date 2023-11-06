@@ -1,8 +1,8 @@
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import { getSwitchUserRole } from '@/lib/apis/userApi';
-import { Store } from '@/store';
+import { IUserStore } from '@/store/userStore';
 
-export const switchToInstructor = async (store: Store) => {
+export const switchToInstructor = async (store: IUserStore) => {
   try {
     await getSwitchUserRole();
 

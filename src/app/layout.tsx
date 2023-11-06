@@ -2,9 +2,10 @@ import '../styles/globals.css';
 import { Inter } from 'next/font/google';
 import { ToastContainer } from 'react-toastify';
 import Footer from '@/app/_components/Footer';
-import Header from '@/components/Header/Header';
+import Header from '@/app/_components/Header/Header';
 import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
+import '@/styles/toastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +23,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex min-h-screen flex-col`}>
+      <body
+        className={`${inter.className} max-w-desktop flex min-h-screen flex-col`}
+      >
         <Header />
         <ToastContainer
           position="top-center"

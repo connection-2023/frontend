@@ -49,7 +49,7 @@ const KakaoAuth = ({
   return (
     <button
       type="button"
-      className="flex h-[3.5625rem] w-[3.5625rem] items-center justify-center rounded-full bg-[#FEE500]"
+      className="flex h-[3.5625rem] w-[3.5625rem] items-center justify-center rounded-full bg-kakao"
       onClick={handleKakaoLogIn}
     >
       <KaKaoTalkSVG width="27" height="24" />

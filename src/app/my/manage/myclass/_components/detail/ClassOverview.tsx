@@ -4,15 +4,15 @@ import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
 const ClassOverview = () => {
   return (
-    <aside className="flex h-fit w-[19.5625rem] flex-col whitespace-nowrap rounded-admin bg-white shadow-float shadow-float">
-      <div className="flex h-[5.13rem] divide-x  divide-solid divide-sub-color4 border-b border-solid border-sub-color4 py-[0.69rem] text-sm font-semibold text-sub-color3">
+    <aside className="flex h-fit w-[19.5625rem] flex-col whitespace-nowrap rounded-lg bg-white shadow-float shadow-float">
+      <div className="flex h-[5.13rem] divide-x  divide-solid divide-gray-700 border-b border-solid border-gray-700 py-[0.69rem] text-sm font-semibold text-gray-100">
         <div className="flex w-1/2 flex-col items-center justify-center">
           진행한 클래스
           <span className="text-xl font-bold text-sub-color1">3회</span>
         </div>
         <div className="flex w-1/2 flex-col items-center justify-center">
           총 클래스
-          <span className="text-xl font-bold text-sub-color3">20회</span>
+          <span className="text-xl font-bold text-gray-100">20회</span>
         </div>
       </div>
       <div className="flex flex-col px-[1.31rem] py-[0.81rem]">

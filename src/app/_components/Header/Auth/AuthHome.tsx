@@ -2,7 +2,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { toast } from 'react-toastify';
 import { ConnectionLogoSVG } from '@/icons/svg';
 import { getAuth, getMyProfile } from '@/lib/apis/userApi';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
 import { LoginResponse, SignInResponse } from '@/types/auth';
@@ -15,7 +15,7 @@ interface IAuthHome {
 }
 
 const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
-  const store = useStore();
+  const store = useUserStore();
 
   // --- 로그인 로직 하나로 합치기 ---
   const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {
@@ -63,11 +63,11 @@ const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
       </div>
 
       <div className="mb-6 mt-12 flex w-full items-center ">
-        <div className="flex h-[1px] w-full flex-1 border-t border-solid border-sub-color2" />
-        <span className="mx-3 whitespace-nowrap text-sm text-sub-color2">
+        <div className="flex h-[1px] w-full flex-1 border-t border-solid border-gray-500" />
+        <span className="mx-3 whitespace-nowrap text-sm text-gray-500">
           소셜로그인으로 간편하게 시작하기
         </span>
-        <div className="flex h-[1px] w-full flex-1  border-t border-solid border-sub-color2" />
+        <div className="flex h-[1px] w-full flex-1  border-t border-solid border-gray-500" />
       </div>
 
       <div className="mb-[2.13rem] flex items-center justify-center gap-6">

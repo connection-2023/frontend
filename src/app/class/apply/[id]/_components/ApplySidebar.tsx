@@ -2,10 +2,10 @@
 import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { Button } from '@/components/Button/Button';
 import { ArrowDownSVG } from '@/icons/svg';
 import { postPaymentInfo } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
+import ApplyButton from '@/components/Button/ApplyButton';
 
 interface ApplySidebarProps {
   postId: string;
@@ -102,14 +102,13 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   };
 
   return (
-    <section className="sticky top-20 mt-14 flex flex-col whitespace-pre-line break-keep text-sm text-sub-color3">
+    <section className="sticky top-20 mt-14 flex flex-col whitespace-pre-line break-keep text-sm text-gray-100">
       <h4 className="text-lg font-bold">결제 금액</h4>
-      <ul className="mb-5 mt-6 flex flex-col gap-3 border-b border-solid border-sub-color2 pb-[0.81rem]">
+      <ul className="mb-5 mt-6 flex flex-col gap-3 border-b border-solid border-gray-500 pb-[0.81rem]">
         <li className="flex items-center justify-between">
           주문 금액 <span>{totalPrice.toLocaleString()}원</span>
         </li>
-        {/* 쿠폰 API 연결 필요 */}
-        <li className="flex items-center justify-between pl-4 text-[#969696]">
+        <li className="flex items-center justify-between pl-4 text-gray-300">
           ㄴ 쿠폰사용 <span>30,000원</span>
         </li>
       </ul>
@@ -128,14 +127,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       <p className="mb-4 mt-[1.31rem] font-bold">
         상기 필수약관을 확인하였으며 결제에 동의합니다.
       </p>
-      <Button
-        primary={true}
-        mode="default"
-        size="large"
-        onClick={handlePayment}
-      >
-        결제하기
-      </Button>
+      <ApplyButton label="결제하기" onClick={handlePayment} />
     </section>
   );
 };
@@ -156,7 +148,7 @@ const Agreement = ({ title, detail }: AgreementProps) => {
         <p>{title}</p>
         <button onClick={() => setIsOpen(!isOpen)}>
           <ArrowDownSVG
-            className={`fill-sub-color2 ${isOpen ? 'rotate-180' : ''}`}
+            className={`fill-gray-500 ${isOpen ? 'rotate-180' : ''}`}
           />
         </button>
       </li>

@@ -1,4 +1,5 @@
 import { IRegion, IGenre } from './types';
+
 export interface ClassCardType {
   status: '모집중' | '마감임박' | '마감';
   date: string;

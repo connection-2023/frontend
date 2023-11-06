@@ -2,7 +2,7 @@
   --rdp-cell-size: 30px;
   --rdp-caption-font-size: 14px;
   --rdp-accent-color: var(--sub-color1);
-  --rdp-background-color: #d9d9d9;
+  --rdp-background-color: var(--gray4);
   margin: 0em;
   width: 100%;
 }
@@ -86,7 +86,7 @@
 /* input class date */
 .specific-selectable,
 .class-input-selectable {
-  background-color: var(--sub-color4);
+  background-color: var(--gray4);
   color: white;
 }
 
@@ -127,7 +127,7 @@
 }
 
 .rbc-label {
-  color: var(--sub-color3);
+  color: var(--gray1);
   font-size: 0.875rem;
   font-style: normal;
   font-weight: 500;

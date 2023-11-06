@@ -24,7 +24,7 @@ const SuggestionPreview = ({
         src={image}
       />
 
-      <div className="flex  w-1/2 flex-col whitespace-pre-line break-keep text-sm text-sub-color3">
+      <div className="flex  w-1/2 flex-col whitespace-pre-line break-keep text-sm text-gray-100">
         <p className="flex flex-1 items-start">{title}</p>
         <div className="flex items-end justify-between">
           <span>{range}</span>

@@ -11,7 +11,7 @@ interface PaginationProps {
 }
 
 const navButtonStyle =
-  'flex items-center gap-1 stroke-sub-color2 text-sub-color2 hover:stroke-sub-color1 hover:font-bold hover:text-sub-color1';
+  'flex items-center gap-1 stroke-gray-500 text-gray-500 hover:stroke-sub-color1 hover:font-bold hover:text-sub-color1';
 
 const Pagination = ({
   pageCount,

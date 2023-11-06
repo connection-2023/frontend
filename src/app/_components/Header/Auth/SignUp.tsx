@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { getAuth, getMyProfile, postProfileImage } from '@/lib/apis/userApi';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 import ProfileSetup from './ProfileSetup';
 import UserInfoSetup from './UserInfoSetup';
 import Welcome from './Welcome';
@@ -15,7 +15,7 @@ interface SignUpProps {
 }
 
 const SignUp = ({ userInfo, onClickPrev, isClosed }: SignUpProps) => {
-  const store = useStore();
+  const store = useUserStore();
   const [userSignUp, setUserSignUp] = useState({
     name: '',
     nickname: '',
@@ -120,7 +120,7 @@ const SignUp = ({ userInfo, onClickPrev, isClosed }: SignUpProps) => {
       <div className="mb-4 flex h-8 w-full justify-between gap-4 px-[1.31rem] text-base font-semibold">
         <button
           onClick={handlePrevStep}
-          className="max-w-48 h-12 w-full rounded-[0.31rem] border border-solid border-sub-color2 text-sub-color1"
+          className="max-w-48 h-12 w-full rounded-md border border-solid border-gray-500 text-sub-color1"
         >
           {step === 0 && '이전'}
           {step === 1 && <Link href="/class">클래스 보러가기</Link>}
@@ -129,7 +129,7 @@ const SignUp = ({ userInfo, onClickPrev, isClosed }: SignUpProps) => {
 
         <button
           onClick={handleNextStep}
-          className="max-w-48 h-12 w-full rounded-[0.31rem] bg-sub-color1 text-white"
+          className="max-w-48 h-12 w-full rounded-md bg-sub-color1 text-white"
         >
           {step === 0 && '가입완료'}
           {step === 1 && '프로필사진 등록'}

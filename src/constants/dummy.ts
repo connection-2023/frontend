@@ -103,9 +103,20 @@ const dummyClass = {
     },
   },
   lectureSchedule: [
-    { date: '09.06(수) 13:00-15:00', space: { current: 0, total: 8 } },
-    { date: '09.06(수) 16:00-17:00', space: { current: 2, total: 8 } },
-    { date: '09.06(수) 17:00-18:00', space: { current: 8, total: 8 } },
+    {
+      id: 48,
+      lectureId: 18,
+      startDateTime: '2023-10-05T11:00:00.000Z',
+      numberOfParticipants: 12,
+      team: null,
+    },
+    {
+      id: 45,
+      lectureId: 18,
+      startDateTime: '2023-10-03T03:00:00.000Z',
+      numberOfParticipants: 9,
+      team: null,
+    },
   ],
   coupon: 2,
   price: {

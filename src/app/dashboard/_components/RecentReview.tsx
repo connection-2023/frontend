@@ -5,8 +5,8 @@ import Review from '@/components/Review/Review';
 
 const RecentReview = () => {
   return (
-    <section className="flex h-[39.25rem] flex-col divide-y divide-solid divide-sub-color4 rounded-[0.31rem] bg-white shadow-float">
-      <h1 className="flex h-12 w-full items-center justify-between px-3.5 text-base font-bold text-sub-color3">
+    <section className="flex h-[39.25rem] flex-col divide-y divide-solid divide-gray-700 rounded-md bg-white shadow-float">
+      <h1 className="flex h-12 w-full items-center justify-between px-3.5 text-base font-bold text-gray-100">
         <span className="flex items-center gap-[0.38rem]">
           <ReviewSVG width="22" height="22" className="fill-sub-color1" />
           클래스 리뷰
@@ -14,17 +14,17 @@ const RecentReview = () => {
         {/* 링크 연결하기  */}
         <Link
           href=""
-          className="flex cursor-pointer items-center text-sm font-medium text-sub-color2"
+          className="flex cursor-pointer items-center text-sm font-medium text-gray-500"
         >
           더 보러가기
           <ArrowUpSVG
             width="24"
             height="24"
-            className="rotate-90 fill-sub-color2"
+            className="rotate-90 fill-gray-500"
           />
         </Link>
       </h1>
-      <ul className="divide-y divide-solid divide-sub-color4">
+      <ul className="divide-y divide-solid divide-gray-700">
         <ReviewList />
         <ReviewList />
         <ReviewList />
@@ -45,7 +45,7 @@ const ReviewList = () => {
         <div className="flex flex-col gap-1">
           <p className="flex gap-[0.31rem] whitespace-nowrap text-sm">
             닉네임
-            <span className="line-clamp-1 text-sub-color2">
+            <span className="line-clamp-1 text-gray-500">
               가비쌤과 함께하는 왁킹 클래스
             </span>
           </p>

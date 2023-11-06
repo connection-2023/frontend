@@ -8,7 +8,7 @@ import DashboardCalendar from '@/components/Calendar/DashboardCalendar';
 const Home = () => {
   return (
     <>
-      <div className="mb-4 flex w-full flex-col bg-white py-4 md:col-span-2 md:row-span-3 md:shadow-float lg:col-span-1 lg:row-span-2 lg:mb-0 lg:rounded-[0.63rem]">
+      <div className="mb-4 flex w-full flex-col bg-white py-4 md:col-span-2 md:row-span-3 md:shadow-float lg:col-span-1 lg:row-span-2 lg:mb-0 lg:rounded-lg">
         <div className="mx-4 mb-4 flex md:hidden lg:block lg:rounded-[0.28rem] lg:shadow-float">
           <DashboardCalendar />
         </div>
@@ -17,10 +17,10 @@ const Home = () => {
         </div>
       </div>
       {/* 태블릿 뷰에서만 */}
-      <div className="col-span-3 flex hidden rounded-[0.31rem] bg-white px-4 shadow-float md:order-3 md:block lg:hidden">
+      <div className="col-span-3 flex hidden rounded-md bg-white px-4 shadow-float md:order-3 md:block lg:hidden">
         <DashboardCalendar />
       </div>
-      <div className="order-first h-[13.5rem] overflow-hidden rounded-[0.31rem] md:order-2 md:col-span-6  lg:order-none lg:col-span-3 lg:rounded-[0.31rem]">
+      <div className="order-first h-[13.5rem] overflow-hidden rounded-md md:order-2 md:col-span-6  lg:order-none lg:col-span-3 lg:rounded-md">
         <Banner />
       </div>
 

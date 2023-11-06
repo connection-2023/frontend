@@ -88,9 +88,7 @@ const ClassSizeSelect = () => {
       {studentCounts.map(({ title, state, setState, rangeType }) => (
         <div
           key={title}
-          className={`flex items-center gap-1 ${
-            isDisabled && 'text-sub-color4'
-          }`}
+          className={`flex items-center gap-1 ${isDisabled && 'text-gray-700'}`}
         >
           <h3>{title}</h3>
           <Controller

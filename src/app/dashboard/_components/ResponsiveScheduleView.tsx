@@ -33,7 +33,7 @@ const ScheduleList = ({ status, time, title }: ScheduleListProps) => {
   const statusColor = {
     private: 'fill-sub-color1',
     group: 'fill-main-color',
-    full: 'fill-[#FFA15B]',
+    full: 'fill-sub-color2',
   };
 
   return (

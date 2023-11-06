@@ -1,5 +1,5 @@
-import { create } from 'zustand';
 import { PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk';
+import { create } from 'zustand';
 import { IReservationInfo, IApplicantInfo } from '@/types/payment';
 
 interface IPaymentStore {

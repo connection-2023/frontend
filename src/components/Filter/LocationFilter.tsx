@@ -76,12 +76,12 @@ const LocationFilter = ({
   return (
     <FilterModal label={label} onReset={onReset} onApply={onApply}>
       <div className="flex max-h-[17rem] w-[16.8rem] select-none text-sm">
-        <ul className="flex w-4/12 flex-col overflow-y-auto pt-1 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-sub-color2 scrollbar-thumb-rounded-lg scrollbar-w-1">
+        <ul className="flex w-4/12 flex-col overflow-y-auto pt-1 scrollbar scrollbar-track-gray-900 scrollbar-thumb-gray-500 scrollbar-thumb-rounded-lg scrollbar-w-1">
           {CITY_LIST.map((city) => (
             <li
               key={city}
               className={`flex w-full cursor-pointer items-center  gap-2 whitespace-nowrap px-2 py-2  ${
-                city === selectedCity && 'bg-sub-color4'
+                city === selectedCity && 'bg-gray-700'
               } ${filterList[city] && 'font font-bold text-sub-color1'}`}
               onClick={() => setSelectedCity(city)}
             >
@@ -97,7 +97,7 @@ const LocationFilter = ({
             </li>
           ))}
         </ul>
-        <ul className="flex w-8/12 flex-wrap content-start overflow-y-auto px-3 pt-3 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-sub-color2 scrollbar-thumb-rounded-lg scrollbar-w-1">
+        <ul className="flex w-8/12 flex-wrap content-start overflow-y-auto px-3 pt-3 scrollbar scrollbar-track-gray-900 scrollbar-thumb-gray-500 scrollbar-thumb-rounded-lg scrollbar-w-1">
           {WARD_LIST[selectedCity].map((ward) => (
             <li
               key={ward}

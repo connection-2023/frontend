@@ -31,13 +31,13 @@ const ClassInfo = ({
 
   return (
     <section className="mt-3 flex flex-col text-lg font-semibold">
-      <div className="flex h-16 items-center border-b border-solid border-sub-color2">
+      <div className="flex h-16 items-center border-b border-solid border-gray-500">
         <h2 className="w-1/4">총 클래스 횟수</h2>
         <div>20회</div>
       </div>
       {/* recoil에서 값 가져오기 */}
 
-      <div className="flex h-16 items-center border-b border-solid border-sub-color2">
+      <div className="flex h-16 items-center border-b border-solid border-gray-500">
         <h2 className="w-1/4">1회 최대 수강생</h2>
         <Controller
           name="classSize"
@@ -73,7 +73,7 @@ const ClassInfo = ({
         <div>1회당</div>
         <input
           type="number"
-          className="ml-7 mr-1 h-8 w-24 rounded-md border border-solid border-sub-color4 text-right focus:outline-none"
+          className="ml-7 mr-1 h-8 w-24 rounded-md border border-solid border-gray-700 text-right focus:outline-none"
           {...register('classPrice', {
             required: '가격',
           })}

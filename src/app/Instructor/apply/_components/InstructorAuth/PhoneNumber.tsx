@@ -39,12 +39,12 @@ const PhoneNumber = ({
           },
         })}
         id="phoneNumber"
-        className={`h-7 w-full max-w-[24.75rem] rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2
+        className={`h-7 w-full max-w-[24.75rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
 focus:outline-sub-color1`}
       />
       <button
-        className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-[0.31rem] px-2 py-1 text-white ${
-          verification ? 'bg-sub-color2' : 'bg-black'
+        className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-white ${
+          verification ? 'bg-gray-500' : 'bg-black'
         }`}
         disabled={verification}
         onClick={() => changeVerification('phoneNumber', true)} //추후 수정 예정
