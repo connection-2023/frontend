@@ -1,16 +1,26 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import SunEditorCore from 'suneditor/src/lib/core';
 import SunEditor from 'suneditor-react';
 import {
   UploadBeforeHandler,
   UploadBeforeReturn,
+  UploadInfo,
 } from 'suneditor-react/dist/types/upload';
 import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
 import { postSingleImage } from '@/lib/apis/imageApi';
 import { toast } from 'react-toastify';
 
+interface fileInfo {
+  index: number;
+  name: string;
+  size: string | number;
+  select: Function;
+  delete: Function;
+  element: Element;
+  src: string;
+}
 interface CustomEditorProps {
   title: string;
   maxLength: number;
@@ -33,6 +43,7 @@ const CustomEditor = ({
   const editor = useRef<SunEditorCore>();
   const editorText = useRef<string>(defaultValue);
   const [textLength, setTextLenght] = useState(defaultValue.length);
+  const imagesRef = useRef<fileInfo[]>([]);
 
   const {
     control,
@@ -61,6 +72,35 @@ const CustomEditor = ({
       });
 
     return undefined;
+  };
+
+  const handleImageUpload = async (
+    targetElement: HTMLImageElement,
+    index: number,
+    state: 'create' | 'delete' | 'update',
+    info: UploadInfo<HTMLImageElement>,
+    remainingFilesCount: number,
+  ) => {
+    console.log(editor.current?.getImagesInfo(), '현재 이미지');
+
+    if (state === 'create' && editor.current) {
+      imagesRef.current = [...editor.current.getImagesInfo()];
+      console.log(imagesRef.current, '상태에 있는 이미지');
+    } else if (state === 'delete' && editor.current) {
+      const previousImages = [...imagesRef.current];
+      const currentImages = editor.current.getImagesInfo();
+      const deletedImages = previousImages.filter(
+        (image) =>
+          !currentImages.some((currentImage) => currentImage.src === image.src),
+      );
+      console.log('삭제된 이미지:', deletedImages);
+
+      imagesRef.current = previousImages.filter(
+        (image) =>
+          !deletedImages.some((deletedImage) => deletedImage.src === image.src),
+      );
+      console.log(imagesRef.current, '상태에 있는 이미지');
+    }
   };
 
   const getSunEditorInstance = (sunEditor: SunEditorCore) => {
@@ -126,6 +166,7 @@ const CustomEditor = ({
               placeholder={placeholder}
               getSunEditorInstance={getSunEditorInstance}
               onImageUploadBefore={handleImageUploadBefore}
+              onImageUpload={handleImageUpload}
             />
           )}
         />
