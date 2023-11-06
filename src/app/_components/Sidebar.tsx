@@ -15,11 +15,13 @@ import {
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
 interface SidebarProps {
+  view?: 'my' | 'dashboard';
   profileImg?: string;
   nickname?: string;
 }
 
 const Sidebar = ({
+  view = 'my',
   nickname = '리아킴',
   profileImg = 'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
 }: SidebarProps) => {
@@ -39,14 +41,26 @@ const Sidebar = ({
       : 'text-sub-color2 hover:text-sub-color3';
 
   return (
-    <aside className="flex max-w-[19.5rem] flex-col items-start whitespace-nowrap rounded-admin bg-white px-4 py-10 shadow-float">
-      <div className="mb-6 flex items-center gap-2">
+    <aside
+      className={`rounded-admin flex flex-col items-start whitespace-nowrap bg-white ${
+        view === 'my' ? 'max-w-[19.5rem] px-4 py-10 shadow-float' : 'w-full'
+      }`}
+    >
+      <div
+        className={`mb-6 flex items-center gap-2 ${
+          view === 'dashboard' && 'h-[3.3rem] w-full bg-[#F5F5F5] px-4'
+        }`}
+      >
         <ProfileImage size="small" src={profileImg} label={false} />
 
         <p className="text-lg font-bold text-sub-color3">{nickname}님</p>
       </div>
 
-      <ul className="flex flex-col gap-5 text-lg font-semibold">
+      <ul
+        className={`flex flex-col gap-5 text-lg font-semibold ${
+          view === 'dashboard' && 'px-4'
+        }`}
+      >
         {instructorLinks.map((link) => (
           <li key={link.path} className={getTextColorClass(link.path)}>
             <Link

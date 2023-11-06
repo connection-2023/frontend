@@ -17,6 +17,9 @@ const config: Config = {
         'sub-color4': 'var(--sub-color4)',
         'admin-bg-color': '#8338EC1A',
       },
+      backgroundImage: {
+        'checkout-receipt': "url('/images/receipt-background.svg')",
+      },
       borderRadius: {
         admin: '0.63rem',
       },

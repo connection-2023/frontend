@@ -15,16 +15,18 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} flex min-h-screen flex-col`}>
         <Header />
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -34,7 +36,10 @@ export default async function RootLayout({
           pauseOnHover
           theme="light"
         />
-        {children}
+        <main className="flex-1">
+          {children}
+          {modal}
+        </main>
         <Footer />
       </body>
     </html>
