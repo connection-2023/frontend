@@ -1,6 +1,6 @@
 import { CITY_FULL_NAME, WARD_LIST } from '@/constants/administrativeDistrict';
 import { DANCE_GENRE } from '@/constants/constants';
-import { postMultipleImage } from '@/lib/apis/imageApi';
+import { deleteImage, postMultipleImage } from '@/lib/apis/imageApi';
 import { classCreateData } from '@/types/class';
 
 export const handleImageUpload = async (
@@ -91,10 +91,14 @@ export const classOutputDataProcess = async (
     case 1:
       const { notification, introduction, curriculum } = data;
 
+      curriculum.deletedImages.forEach(
+        async ({ src }) => await deleteImage({ imageUrl: src }),
+      );
+
       return {
         notification,
         introduction,
-        curriculum,
+        curriculum: curriculum.content,
       };
     case 2:
       break;

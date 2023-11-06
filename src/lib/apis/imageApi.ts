@@ -56,19 +56,22 @@ export const postMultipleImage = async (images: File[], folder: string) => {
   }
 };
 
-export const deleteImage = async (data: { imageUrl: string }[]) => {
+export const deleteImage = async (data: { imageUrl: string }) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/image/uploads`, {
+    const response = await fetch(`${DOMAIN}/api/image/delete`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(data),
     });
 
     if (!response.ok) {
-      throw new Error('다중 이미지 업로드 실패');
+      throw new Error('이미지 삭제 실패');
     }
 
     const responseData = await response.json();
-    return responseData.data.imageUrls;
+    return responseData;
   } catch (error) {
     console.error(error);
     throw error;

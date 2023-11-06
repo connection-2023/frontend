@@ -1,3 +1,5 @@
+import { fileInfo } from 'suneditor/src/lib/core';
+
 export interface ClassCardType {
   status: '모집중' | '마감임박' | '마감';
   date: string;
@@ -180,5 +182,8 @@ export interface classCreateData {
 
   notification: string;
   introduction: string;
-  curriculum: string;
+  curriculum: {
+    content: string;
+    deletedImages: fileInfo[];
+  };
 }

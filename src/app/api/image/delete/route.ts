@@ -10,15 +10,14 @@ export const DELETE = async (request: NextRequest) => {
     });
   }
 
-  const data = await request.formData();
+  const data = await request.json();
 
   const response = await fetch(END_POINT + '/uploads', {
     method: 'DELETE',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: data,
+    body: JSON.stringify(data),
   });
 
   if (!response.ok) {

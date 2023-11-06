@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import SunEditorCore from 'suneditor/src/lib/core';
+import SunEditorCore, { fileInfo } from 'suneditor/src/lib/core';
 import SunEditor from 'suneditor-react';
 import {
   UploadBeforeHandler,
@@ -9,18 +9,9 @@ import {
 } from 'suneditor-react/dist/types/upload';
 import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
-import { deleteImage, postSingleImage } from '@/lib/apis/imageApi';
+import { postSingleImage } from '@/lib/apis/imageApi';
 import { toast } from 'react-toastify';
 
-interface fileInfo {
-  index: number;
-  name: string;
-  size: string | number;
-  select: Function;
-  delete: Function;
-  element: Element;
-  src: string;
-}
 interface CustomEditorProps {
   title: string;
   maxLength: number;
@@ -44,10 +35,12 @@ const CustomEditor = ({
   const editorText = useRef<string>(defaultValue);
   const [textLength, setTextLenght] = useState(defaultValue.length);
   const imagesRef = useRef<fileInfo[]>([]);
+  const deletedImagesRef = useRef<fileInfo[]>([]);
 
   const {
     control,
     formState: { errors },
+    setValue,
   } = useFormContext();
 
   const handleImageUploadBefore = (
@@ -83,7 +76,6 @@ const CustomEditor = ({
   ) => {
     if (state === 'create' && editor.current) {
       imagesRef.current = [...editor.current.getImagesInfo()];
-      console.log(imagesRef.current, '현재 이미지');
     } else if (state === 'delete' && editor.current) {
       const previousImages = [...imagesRef.current];
       const currentImages = editor.current.getImagesInfo();
@@ -92,9 +84,10 @@ const CustomEditor = ({
           !currentImages.some((currentImage) => currentImage.src === image.src),
       );
 
-      console.log(deletedImages, '삭제 진행한 이미지');
-
-      // await deleteImage()
+      deletedImagesRef.current = [
+        ...deletedImagesRef.current,
+        ...deletedImages,
+      ];
 
       imagesRef.current = previousImages.filter(
         (image) =>
@@ -154,7 +147,11 @@ const CustomEditor = ({
             <SunEditor
               onChange={(content) => {
                 handleEditorChange();
-                field.onChange(content);
+
+                field.onChange({
+                  content,
+                  deletedImages: deletedImagesRef.current,
+                });
               }}
               lang="ko"
               width="100%"
