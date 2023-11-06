@@ -95,6 +95,10 @@ export const classOutputDataProcess = async (
         async ({ src }) => await deleteImage({ imageUrl: src }),
       );
 
+      if (curriculum.clear && curriculum.deletedImages.length > 0) {
+        curriculum.clear();
+      }
+
       return {
         notification,
         introduction,

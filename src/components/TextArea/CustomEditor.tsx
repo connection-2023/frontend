@@ -138,7 +138,10 @@ const CustomEditor = ({
         <Controller
           name={dataName}
           control={control}
-          defaultValue={defaultValue}
+          defaultValue={{
+            content: defaultValue,
+            deletedImages: deletedImagesRef.current,
+          }}
           rules={{
             required: minLength !== 0 ? title : false,
             validate: validateMinLength,
@@ -151,12 +154,19 @@ const CustomEditor = ({
                 field.onChange({
                   content,
                   deletedImages: deletedImagesRef.current,
+                  clear: () => {
+                    setValue('curriculum', {
+                      content,
+                      deletedImages: [],
+                    });
+                    deletedImagesRef.current = [];
+                  },
                 });
               }}
               lang="ko"
               width="100%"
               height={height}
-              setContents={field.value}
+              setContents={field.value.content}
               setOptions={{
                 buttonList: TOOLBAR,
               }}

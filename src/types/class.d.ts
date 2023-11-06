@@ -185,5 +185,6 @@ export interface classCreateData {
   curriculum: {
     content: string;
     deletedImages: fileInfo[];
+    clear?: () => void;
   };
 }
