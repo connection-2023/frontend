@@ -3,7 +3,7 @@
 import { parseISO } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect, ChangeEvent } from 'react';
-import useStore, { usePaymentStore } from '@/store';
+import { useUserStore, usePaymentStore } from '@/store';
 import { formatDateTime } from '@/utils/parseUtils';
 import ApplyClassList from './ApplyClassList';
 import { IClassSchedule } from '@/types/class';
@@ -25,7 +25,7 @@ const ReservationInfo = ({
   const [selectedSchedule, setSelectedSchedule] = useState<IReservationInfo[]>(
     [],
   );
-  const userInfo = useStore((state) => state.authUser);
+  const userInfo = useUserStore((state) => state.authUser);
 
   const [applicantInfo, setApplicantInfo] = useState({
     representative: '',

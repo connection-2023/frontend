@@ -2,7 +2,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { toast } from 'react-toastify';
 import { ConnectionLogoSVG } from '@/icons/svg';
 import { getAuth, getMyProfile } from '@/lib/apis/userApi';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
 import { LoginResponse, SignInResponse } from '@/types/auth';
@@ -15,7 +15,7 @@ interface IAuthHome {
 }
 
 const AuthHome = ({ handleStatusCode, handleUserInfo }: IAuthHome) => {
-  const store = useStore();
+  const store = useUserStore();
 
   // --- 로그인 로직 하나로 합치기 ---
   const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {

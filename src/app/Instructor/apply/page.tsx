@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { instructorRegister } from '@/lib/apis/instructorApi';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 import {
   categorizeGenres,
   constructEmail,
@@ -29,7 +29,7 @@ const ApplyPage = () => {
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm({ shouldFocusError: false });
   const router = useRouter();
-  const store = useStore();
+  const store = useUserStore();
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {

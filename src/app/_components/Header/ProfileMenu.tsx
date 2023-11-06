@@ -5,10 +5,10 @@ import { TransFormSVG } from '@/icons/svg';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import useSession from '@/lib/useSession';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 
 const ProfileMenu = () => {
-  const store = useStore();
+  const store = useUserStore();
   const user = useSession();
   const router = useRouter();
 

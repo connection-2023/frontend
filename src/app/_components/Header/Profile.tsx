@@ -1,8 +1,7 @@
 'use client';
-import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { ArrowDownSVG, ProfileSVG } from '@/icons/svg';
+import { ArrowDownSVG } from '@/icons/svg';
 import useSession from '@/lib/useSession';
 import ProfileMenu from './ProfileMenu';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';

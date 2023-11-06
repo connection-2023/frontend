@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 import AccountList from './InstructorAuth/AccountList';
 import Email from './InstructorAuth/Email';
 import Nickname from './InstructorAuth/Nickname';
@@ -10,7 +10,7 @@ import { Verification } from '@/types/types';
 const InstructorAuth = () => {
   const { watch, trigger } = useFormContext();
 
-  const authUser = useStore((state) => state.authUser);
+  const authUser = useUserStore((state) => state.authUser);
   let email = '';
   let phoneNumber = '';
 

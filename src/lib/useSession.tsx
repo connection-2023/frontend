@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 import { getMyProfile } from './apis/userApi';
 
 const useSession = () => {
-  const store = useStore();
+  const store = useUserStore();
 
   const fetchUser = async () => {
     try {

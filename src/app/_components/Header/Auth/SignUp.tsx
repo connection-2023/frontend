@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { getAuth, getMyProfile, postProfileImage } from '@/lib/apis/userApi';
-import useStore from '@/store';
+import { useUserStore } from '@/store';
 import ProfileSetup from './ProfileSetup';
 import UserInfoSetup from './UserInfoSetup';
 import Welcome from './Welcome';
@@ -15,7 +15,7 @@ interface SignUpProps {
 }
 
 const SignUp = ({ userInfo, onClickPrev, isClosed }: SignUpProps) => {
-  const store = useStore();
+  const store = useUserStore();
   const [userSignUp, setUserSignUp] = useState({
     name: '',
     nickname: '',
