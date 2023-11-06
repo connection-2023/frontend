@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { ArrowDownSVG } from '@/icons/svg';
 import { postPaymentInfo } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
-import { Button } from '@/components/Button/Button';
+import ApplyButton from '@/components/Button/ApplyButton';
 
 interface ApplySidebarProps {
   postId: string;
@@ -127,14 +127,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       <p className="mb-4 mt-[1.31rem] font-bold">
         상기 필수약관을 확인하였으며 결제에 동의합니다.
       </p>
-      <Button
-        primary={true}
-        mode="default"
-        size="large"
-        onClick={handlePayment}
-      >
-        결제하기
-      </Button>
+      <ApplyButton label="결제하기" onClick={handlePayment} />
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowUpSVG, ArrowDownSVG } from '@/icons/svg';
-import { Button } from '../Button/Button';
+import Button from '../Button/Button';
+import ResetButton from '../Button/ResetButton';
 
 interface IFilterModal {
   label: string;
@@ -56,10 +57,8 @@ const FilterModal = ({ label, children, onReset, onApply }: IFilterModal) => {
         <div className="absolute z-10 mt-[0.19rem] flex w-max flex-col rounded-[5px] border border-solid border-gray-500 bg-white">
           {children}
           <div className="box-border flex justify-between border-t border-solid border-gray-500 px-[0.94rem] py-[0.69rem] font-bold">
-            <Button mode="reset" onClick={onReset}>
-              초기화
-            </Button>
-            <Button primary={true} size="small" onClick={onClickApply}>
+            <ResetButton onClick={onReset}>초기화</ResetButton>
+            <Button color="primary" size="small" onClick={onClickApply}>
               적용
             </Button>
           </div>

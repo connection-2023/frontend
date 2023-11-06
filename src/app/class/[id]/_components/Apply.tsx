@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import ReservationItem from './apply/ReservationItem';
 import SelectBox from './apply/SelectBox';
-import { Button } from '@/components/Button/Button';
+import ApplyButton from '@/components/Button/ApplyButton';
 import { IClassSchedule, IDateTime } from '@/types/class';
 
 interface ApplyProps {
@@ -159,15 +159,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
           </span>
         </div>
 
-        {/* 신청하기 버튼 */}
-        <Button
-          primary={true}
-          mode="default"
-          size="large"
-          onClick={handleApply}
-        >
-          신청하기
-        </Button>
+        <ApplyButton label="신청하기" onClick={handleApply} />
       </div>
 
       {isOpened && (

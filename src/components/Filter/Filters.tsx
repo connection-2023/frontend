@@ -9,7 +9,7 @@ import PriceFilter from './PriceFilter';
 import ProgressMethodFilter from './ProgressMethodFilter';
 import ReviewFilter from './ReviewFilter';
 import { WARD_LIST } from '../../constants/administrativeDistrict';
-import { Button } from '../Button/Button';
+import ResetButton from '../Button/ResetButton';
 import { LocationFilterList } from '@/types/locationFilter';
 import { IFilterOptions } from '@/types/types';
 
@@ -232,9 +232,9 @@ const Filters = ({ type }: { type: string }) => {
     <>
       <div className="mb-3 flex w-full flex-wrap items-center gap-2">
         {filterComponents.map((filter) => filter)}
-        <Button mode="reset" onClick={onClickReset}>
+        <ResetButton onClick={onClickReset}>
           <span className="text-sm font-bold">초기화</span>
-        </Button>
+        </ResetButton>
       </div>
       <ul className="flex w-full flex-wrap gap-x-5 gap-y-1">
         {options.map(

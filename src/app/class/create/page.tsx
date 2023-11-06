@@ -9,7 +9,7 @@ import ClassExplanation from './_components/ClassExplanation';
 import ClassLocation from './_components/ClassLocation';
 import ClassPrice from './_components/ClassPrice';
 import ClassSchedule from './_components/ClassSchedule';
-import { Button } from '@/components/Button/Button';
+import Button from '@/components/Button/Button';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { ErrorMessage } from '@/types/types';
 
@@ -117,8 +117,10 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
             <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
             이전
           </button>
-          <div className="flex">
-            <Button>임시저장</Button>
+          <div className="flex w-[4.5rem]">
+            <Button size="small" color="secondary">
+              임시저장
+            </Button>
             <form onSubmit={handleSubmit(onValid, invalid)}>
               <button className="ml-4 flex items-center">
                 다음

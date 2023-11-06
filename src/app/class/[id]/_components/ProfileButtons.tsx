@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { ChatSVG } from '@/icons/svg';
-import { Button } from '@/components/Button/Button';
+import Button from '@/components/Button/Button';
 
 const ProfileButtons = ({ id }: { id: number }) => {
   const router = useRouter();
@@ -9,8 +9,7 @@ const ProfileButtons = ({ id }: { id: number }) => {
   return (
     <>
       <Button
-        mode="default"
-        size="medium"
+        size="small"
         onClick={() => {
           router.push(`/Instructor/${id}`);
         }}
@@ -18,7 +17,7 @@ const ProfileButtons = ({ id }: { id: number }) => {
         강사 프로필
       </Button>
       {/* 채팅으로 링크 연결하기 */}
-      <Button mode="default" size="medium" onClick={() => {}}>
+      <Button size="small" onClick={() => {}}>
         <ChatSVG className="mr-[3px]" />
         문의하기
       </Button>
