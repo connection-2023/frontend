@@ -1,10 +1,10 @@
 'use client';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { ReportFormData, reportTypes } from '../../../../../types/form.d';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
 import RouterModal from '@/components/Modal/RouterModal';
-import { ReportFormData, reportTypes } from '../../../../../types/form.d';
 
 const ReportModalPage = () => {
   const { register, handleSubmit } = useForm<ReportFormData>();
