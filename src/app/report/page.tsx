@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
-import { ReportFormData, reportTypes } from '@/types/form';
+import { ReportFormData, reportTypes } from '../../types/form.d';
 
 const ReportPage = () => {
   const { register, handleSubmit } = useForm<ReportFormData>();
