@@ -1,29 +1,14 @@
 'use client';
-import { UseFormRegister, useForm, FieldValues } from 'react-hook-form';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
-const reportTypes: Array<keyof FormData> = [
-  '허위 정보 기재',
-  '저작권 불법 도용',
-  '부적절한 사진 게시',
-  '부적절한 내용',
-  '기타',
-];
-
-interface FormData {
-  '허위 정보 기재': boolean;
-  '저작권 불법 도용': boolean;
-  '부적절한 사진 게시': boolean;
-  '부적절한 내용': boolean;
-  기타: boolean;
-  reportDetail?: string;
-}
+import UniqueButton from '@/components/Button/UniqueButton';
+import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
+import { ReportFormData, reportTypes } from '@/types/form';
 
 const ReportPage = () => {
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit } = useForm<ReportFormData>();
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: ReportFormData) => {
     const checkedItems: string[] = [];
 
     for (const [key, value] of Object.entries(data)) {
@@ -55,7 +40,9 @@ const ReportPage = () => {
         신고하기
       </h1>
       <ul className="mb-7 mt-6 grid w-full grid-cols-2 gap-y-3 px-6">
-        {reportTypes.map((reason) => ReportCheckbox(reason, register))}
+        {reportTypes.map((reason) => (
+          <ReportCheckBox label={reason} register={register} />
+        ))}
       </ul>
 
       <section className="px-6">
@@ -76,22 +63,3 @@ const ReportPage = () => {
 };
 
 export default ReportPage;
-
-const ReportCheckbox = (
-  label: string,
-  register: UseFormRegister<FieldValues>,
-) => {
-  return (
-    <li key={label} className="flex items-center gap-1.5">
-      <input
-        {...register(label)}
-        type="checkbox"
-        id={label}
-        className="h-[1.125rem] w-[1.125rem] checked:accent-sub-color1"
-      />
-      <label htmlFor={label} className="text-base font-semibold text-gray-100">
-        {label}
-      </label>
-    </li>
-  );
-};
