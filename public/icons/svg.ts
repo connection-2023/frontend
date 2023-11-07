@@ -29,6 +29,7 @@ import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
+import GenreSVG from './genre.svg';
 import GoogleSVG from './googleIcon.svg';
 import GroupSVG from './group.svg';
 import HeartSVG from './heart.svg';
@@ -73,6 +74,7 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   ApplySuccessSVG,
+  GenreSVG,
   ClassStatusSVG,
   ReviewSVG,
   RecentSVG,
