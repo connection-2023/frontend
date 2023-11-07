@@ -1,8 +1,9 @@
-import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
+import { ReportFormData } from '@/types/form';
 
 interface ReportCheckBoxProps {
-  label: string;
-  register: UseFormRegister<FieldValues>;
+  label: keyof ReportFormData;
+  register: UseFormRegister<ReportFormData>;
 }
 
 const ReportCheckBox = ({ label, register }: ReportCheckBoxProps) => {
