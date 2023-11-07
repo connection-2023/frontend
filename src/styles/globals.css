@@ -116,3 +116,7 @@ html {
   border-right: calc(8px - 1px) solid transparent;
   border-bottom: calc(18px - 2px) solid white;
 }
+
+.curriculum:has(+ .more-btn:checked) {
+  -webkit-line-clamp: unset;
+}
