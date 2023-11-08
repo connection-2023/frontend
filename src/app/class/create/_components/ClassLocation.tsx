@@ -11,30 +11,42 @@ const ClassLocation = () => {
   const store = useClassCreateStore();
   const classData = store.classData;
 
-  const [isLocationSet, setIsLocationSet] = useState(true);
-  const { register, control } = useFormContext();
+  const [isLocationSet, setIsLocationSet] = useState(
+    classData?.detailAddress ? false : true,
+  );
+  const { control } = useFormContext();
 
   return (
     <section className="mt-10 flex flex-col gap-6">
       <h2 className="text-lg font-bold">수업이 진행되는 위치를 알려주세요.</h2>
 
-      <div className="flex items-center gap-1">
-        <input
-          id="consultative"
-          type="checkbox"
-          className="h-[1.12rem] w-[1.12rem] accent-sub-color1"
-          {...register('locationConsultative')}
-          onChange={() => setIsLocationSet((prev) => !prev)}
-        />
-        <label htmlFor="consultative" className="text-sm font-semibold">
-          협의 후 결정
-        </label>
-        <Tooltip>
-          <LocationDiscussionTooltip />
-        </Tooltip>
-      </div>
+      <Controller
+        name="locationConsultative"
+        control={control}
+        defaultValue={isLocationSet}
+        render={({ field }) => (
+          <div className="flex items-center gap-1">
+            <input
+              id="consultative"
+              type="checkbox"
+              className="h-[1.12rem] w-[1.12rem] accent-sub-color1"
+              checked={field.value}
+              onChange={() => {
+                setIsLocationSet((prev) => !prev);
+                field.onChange(!field.value);
+              }}
+            />
+            <label htmlFor="consultative" className="text-sm font-semibold">
+              협의 후 결정
+            </label>
+            <Tooltip>
+              <LocationDiscussionTooltip />
+            </Tooltip>
+          </div>
+        )}
+      />
 
-      {isLocationSet ? (
+      {!isLocationSet ? (
         <Controller
           name="address"
           control={control}
@@ -53,7 +65,7 @@ const ClassLocation = () => {
         <Controller
           name="regions"
           control={control}
-          defaultValue={{}}
+          defaultValue={classData?.regions}
           rules={{
             validate: (value) => {
               if (Object.keys(value).length === 0) {
@@ -61,7 +73,12 @@ const ClassLocation = () => {
               }
             },
           }}
-          render={({ field }) => <PendingLocation onChange={field.onChange} />}
+          render={({ field }) => (
+            <PendingLocation
+              defaultValue={field.value}
+              onChange={field.onChange}
+            />
+          )}
         />
       )}
 
@@ -69,6 +86,7 @@ const ClassLocation = () => {
         placeholder="수업장소까지 가는 방법, 추천 교통편, 주차시설 유무 등에 대한 정보를 입력해주세요."
         maxLength={500}
         dataName="locationDescription"
+        defaultValue={classData?.locationDescription}
       />
     </section>
   );

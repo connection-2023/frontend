@@ -51,7 +51,7 @@ export interface IGetClassDraft {
   title?: string;
   introduction?: string;
   curriculum?: string;
-  detailAddress?: string;
+  detailAddress?: string | null;
   duration?: number;
   difficultyLevel?: string;
   minCapacity?: number;
@@ -105,7 +105,7 @@ export interface IUpdateClassDraft {
   title?: string;
   introduction?: string;
   curriculum?: string;
-  detailAddress?: string;
+  detailAddress?: string | null;
   duration?: number;
   difficultyLevel?: string;
   minCapacity?: number;
@@ -137,7 +137,7 @@ export interface IprocessedDraft {
   title?: string;
   introduction?: string;
   curriculum?: string;
-  detailAddress?: string;
+  detailAddress?: string | null;
   duration?: number;
   difficultyLevel?: string | null;
   minCapacity?: number;
@@ -153,6 +153,7 @@ export interface IprocessedDraft {
   updatedAt?: string;
   deletedAt?: null | string;
   notification?: string;
+  locationDescription?: string;
   temporaryLectureImage?: { imageUrl: string }[];
   temporaryLectureCouponTarget?: any[];
   temporaryLectureSchedule?: {
@@ -160,12 +161,9 @@ export interface IprocessedDraft {
     team: null;
     numberOfParticipants: number;
   }[];
-  temporaryLectureToRegion?: {
-    region: {
-      administrativeDistrict: string;
-      district: string;
-    };
-  }[];
+  regions?: {
+    [key: string]: string[];
+  };
   temporaryLectureToDanceGenre?: string[];
   holidays?: Data[];
 }

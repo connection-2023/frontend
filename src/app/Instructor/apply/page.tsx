@@ -9,7 +9,7 @@ import useStore from '@/store';
 import {
   categorizeGenres,
   constructEmail,
-  formatRegions,
+  reqRegions,
   handleImageUpload,
 } from '@/utils/apiDataProcessor';
 import { switchToInstructor } from '@/utils/switchUserUtil';
@@ -79,7 +79,7 @@ const ApplyPage = () => {
 
       const { newGenres, etcGenres } = categorizeGenres(genres);
 
-      const newRegions = formatRegions(regions);
+      const newRegions = reqRegions(regions);
 
       const instructorData = {
         profileImageUrls: uploadImgList,

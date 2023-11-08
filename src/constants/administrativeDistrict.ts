@@ -312,4 +312,5 @@ export const CITY_ABBREVIATION_NAME: { [key: string]: string } = {
   경상북도: '경북',
   경상남도: '경남',
   제주특별자치도: '제주',
+  온라인: '온라인',
 };

@@ -182,8 +182,6 @@ export const classOutputDataProcess = async (
         bdNm: address?.bdNm,
       };
 
-      console.log(reqRegions(regions));
-
       if (locationConsultative) {
         return {
           regions: reqRegions(regions),

@@ -59,7 +59,7 @@ const ConfirmedLocation = ({
       <button
         onClick={openPopup}
         className={`flex h-8 w-80 items-center justify-center gap-1 rounded-md shadow-float ${
-          errors.classConfirmedLocation && 'animate-vibration text-main-color'
+          errors.address && 'animate-vibration text-main-color'
         }`}
       >
         <SearchSVG className="mb-1 h-5 w-5 fill-sub-color1 " /> 주소 검색하기

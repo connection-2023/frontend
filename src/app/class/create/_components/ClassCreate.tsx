@@ -100,7 +100,6 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   };
 
   const updateDraft = async (data: classCreateData) => {
-    console.log(data);
     if (classData) {
       try {
         const processData = await classOutputDataProcess(data, activeStep);

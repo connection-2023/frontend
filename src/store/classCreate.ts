@@ -53,13 +53,6 @@ const dataProcess = (data: IGetClassDraft) => {
     data.temporaryLectureToRegion.map(({ region }) => region),
   );
 
-  // temporaryLectureToRegion?: {
-  //   region: {
-  //     administrativeDistrict: string;
-  //     district: string;
-  //   };
-  // }[];
-
   return {
     ...data,
     temporaryLectureToDanceGenre: genres,
