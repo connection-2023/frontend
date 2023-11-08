@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassCreateStore } from '@/store/classCreate';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
@@ -14,40 +14,32 @@ const ClassLocation = () => {
   const [isLocationSet, setIsLocationSet] = useState(
     classData?.detailAddress ? false : true,
   );
-  const { control } = useFormContext();
+  const { control, register } = useFormContext();
 
   return (
     <section className="mt-10 flex flex-col gap-6">
       <h2 className="text-lg font-bold">수업이 진행되는 위치를 알려주세요.</h2>
 
-      <Controller
-        name="locationConsultative"
-        control={control}
-        defaultValue={isLocationSet}
-        render={({ field }) => (
-          <div className="flex items-center gap-1">
-            <input
-              id="consultative"
-              type="checkbox"
-              className="h-[1.12rem] w-[1.12rem] accent-sub-color1"
-              checked={field.value}
-              onChange={() => {
-                setIsLocationSet((prev) => !prev);
-                field.onChange(!field.value);
-              }}
-            />
-            <label htmlFor="consultative" className="text-sm font-semibold">
-              협의 후 결정
-            </label>
-            <Tooltip>
-              <LocationDiscussionTooltip />
-            </Tooltip>
-          </div>
-        )}
-      />
+      <div className="flex items-center gap-1">
+        <input
+          id="consultative"
+          type="checkbox"
+          className="h-[1.12rem] w-[1.12rem] accent-sub-color1"
+          checked={isLocationSet}
+          {...register('locationConsultative')}
+          onChange={() => setIsLocationSet((prev) => !prev)}
+        />
+        <label htmlFor="consultative" className="text-sm font-semibold">
+          협의 후 결정
+        </label>
+        <Tooltip>
+          <LocationDiscussionTooltip />
+        </Tooltip>
+      </div>
 
       {!isLocationSet ? (
         <Controller
+          key="address"
           name="address"
           control={control}
           defaultValue={classData?.detailAddress}
@@ -63,6 +55,7 @@ const ClassLocation = () => {
         />
       ) : (
         <Controller
+          key="regions"
           name="regions"
           control={control}
           defaultValue={classData?.regions}
