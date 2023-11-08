@@ -27,7 +27,7 @@ const handleServerError = (error: unknown, redirectPath: string): void => {
   }
 };
 
-const ClassCreateServerPage = async ({
+const ClassCreatePage = async ({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | undefined };
@@ -66,4 +66,4 @@ const ClassCreateServerPage = async ({
   );
 };
 
-export default ClassCreateServerPage;
+export default ClassCreatePage;
