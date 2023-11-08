@@ -1,6 +1,11 @@
 import { parse, format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  FieldErrors,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { dummyClass } from '@/constants/dummy';
 import { classTimeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
@@ -74,7 +79,11 @@ const ClassSchedule = () => {
           },
         }}
         render={({ field }) => (
-          <Section title="전체 클래스 기간을 설정해주세요">
+          <Section
+            title="전체 클래스 기간을 설정해주세요"
+            error={!!errors.classRange?.message}
+            id={field.name}
+          >
             <ClassRange defaultValue={field.value} onChange={field.onChange} />
           </Section>
         )}
@@ -86,12 +95,16 @@ const ClassSchedule = () => {
         control={control}
         defaultValue={classData?.duration}
         rules={{
-          required: '전체 클래스 기간',
+          required: '진행시간',
+          max: { value: 999, message: '올바른 진행시간' },
+          min: { value: 10, message: '올바른 진행시간' },
         }}
         render={({ field }) => (
           <Section
             Isfixed={true}
             title=" 하나의 클래스당 진행시간이 어떻게 되나요?"
+            error={!!errors.duration?.message}
+            id={field.name}
           >
             <div className="flex items-center">
               <input
@@ -124,7 +137,13 @@ const ClassSchedule = () => {
         render={({ field }) => (
           // field.onChang로 보낼 데이터 바뀌는 곳 넣기
           // field.value로 임시저장 불러와지는 곳에 넣기
-          <Section Isfixed={true} title="클래스 운영 요일을 알려주세요">
+          <Section
+            Isfixed={true}
+            title="클래스 운영 요일을 알려주세요"
+            error={false}
+            id={field.name}
+            // !!errors.임시 저장될 데이터이름?.message 넣기
+          >
             <ClassDay />
           </Section>
         )}
@@ -138,7 +157,11 @@ const ClassSchedule = () => {
           required: '휴무일',
         }}
         render={({ field }) => (
-          <Section title="휴무일이 있나요?">
+          <Section
+            title="휴무일이 있나요?"
+            id={field.name}
+            error={!!errors.holidays?.message}
+          >
             <DayOff onChange={field.onChange} defaultValue={field.value} />
           </Section>
         )}
@@ -150,9 +173,14 @@ const ClassSchedule = () => {
         defaultValue={classData?.reservationDeadline}
         rules={{
           required: '신청 마감 시간',
+          min: { value: 0, message: '올바른 마감 시간' },
         }}
         render={({ field }) => (
-          <Section title="신청 마감 시간을 설정해주세요">
+          <Section
+            title="신청 마감 시간을 설정해주세요"
+            error={!!errors.reservationDeadline?.message}
+            id={field.name}
+          >
             <div className="ml-[0.38rem] text-sm font-medium text-sub-color3">
               <span>수업 시작</span>
               <input
@@ -206,6 +234,8 @@ interface ISection {
   classNum?: number;
   title: string;
   children: React.ReactNode;
+  error?: boolean;
+  id?: string;
 }
 
 const Section = ({
@@ -214,11 +244,18 @@ const Section = ({
   classNum,
   title,
   children,
+  error,
+  id,
 }: ISection) => {
   return (
-    <section className="max-w-[675px] border-b border-solid border-sub-color4 py-6">
+    <section
+      id={id}
+      className="max-w-[675px] border-b border-solid border-sub-color4 py-6"
+    >
       <h2 className="mb-4 flex items-center text-lg font-bold">
-        {title}
+        <p className={`${error && 'animate-vibration text-main-color'}`}>
+          {title}
+        </p>
         {IsAddedClass && classNum && classNum > 0 ? ` (${classNum}개)` : null}
         {Isfixed && (
           <span className="ml-2 flex flex-col text-sm font-bold text-main-color">
