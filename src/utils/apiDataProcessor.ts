@@ -124,8 +124,8 @@ export const classOutputDataProcess = async (
 
       return {
         holidays,
-        startDate: classRange.from,
-        endDate: classRange.to,
+        startDate: classRange.startDate,
+        endDate: classRange.endDate,
         duration,
         reservationComment,
         reservationDeadline,

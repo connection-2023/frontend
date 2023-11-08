@@ -13,7 +13,7 @@ const ClassRange = ({
   onChange,
   defaultValue = { startDate: '', endDate: '' },
 }: {
-  onChange?: (value: DateRange | undefined) => void;
+  onChange: (value: { startDate: string; endDate: string }) => void;
   defaultValue?: { startDate: string; endDate: string };
 }) => {
   const [classRange, setClassRange] = useRecoilState(classRangeState);
@@ -23,13 +23,21 @@ const ClassRange = ({
   const ref = useRef(null);
 
   useEffect(() => {
-    const from = new Date(defaultValue.startDate);
-    const to = new Date(defaultValue.endDate);
-    setClassRange({ from, to });
-    if (onChange) {
-      onChange({ from, to });
+    const { endDate, startDate } = defaultValue;
+    const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+    const isValidStartDate = dateFormat.test(startDate);
+    const isValidEndDate = dateFormat.test(endDate);
+
+    if (isValidStartDate && isValidEndDate) {
+      const from = new Date(defaultValue.startDate);
+      const to = new Date(defaultValue.endDate);
+      setClassRange({ from, to });
     }
   }, [defaultValue, setClassRange]);
+
+  useEffect(() => {
+    onChange({ startDate: fromValue, endDate: toValue });
+  }, [fromValue, toValue]);
 
   useClickAway(ref, () => {
     setIsCalendarVisible(false);

@@ -1,3 +1,4 @@
+import { parse, format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -42,10 +43,6 @@ const ClassSchedule = () => {
     if (classData?.reservationDeadline) {
       setDeadline(classData?.reservationDeadline);
     }
-
-    if (classData?.reservationComment) {
-      setClassNotification(classData?.reservationComment);
-    }
   }, [classData]);
 
   return (
@@ -56,6 +53,25 @@ const ClassSchedule = () => {
         defaultValue={classData?.classRange}
         rules={{
           required: '전체 클래스 기간',
+          validate: ({ startDate, endDate }) => {
+            const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+            const isValidStartDate = dateFormat.test(startDate);
+            const isValidEndDate = dateFormat.test(endDate);
+
+            const parsedStartDate = parse(startDate, 'yyyy-MM-dd', new Date());
+            const parsedEndDate = parse(endDate, 'yyyy-MM-dd', new Date());
+
+            if (
+              !isValidStartDate ||
+              !isValidEndDate ||
+              !format(parsedStartDate, 'yyyy-MM-dd') === startDate ||
+              !format(parsedEndDate, 'yyyy-MM-dd') === endDate
+            ) {
+              return '올바른 클래스 기간';
+            }
+
+            return true;
+          },
         }}
         render={({ field }) => (
           <Section title="전체 클래스 기간을 설정해주세요">

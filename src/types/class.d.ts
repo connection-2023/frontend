@@ -192,8 +192,8 @@ export interface classCreateData {
     clear?: () => void;
   };
   holidays: Data[];
-  classRange: { from: Date; to: Date };
+  classRange: { startDate: string; endDate: string };
   duration: number;
   reservationComment: string;
-  reservationDeadline: number;
+  reservationDeadline: string;
 }
