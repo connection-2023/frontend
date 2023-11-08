@@ -26,3 +26,9 @@ export interface Juso {
   siNm?: string;
   roadAddrPart1?: string;
 }
+
+export interface ProcessedJuso {
+  roadAddr: string;
+  detail: string;
+  bdNm: string;
+}

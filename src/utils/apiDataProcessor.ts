@@ -132,7 +132,29 @@ export const classOutputDataProcess = async (
       };
       break;
     case 3:
-      break;
+      const {
+        detail,
+        address,
+        locationConsultative,
+        regions,
+        locationDescription,
+      } = data;
+
+      const detailAddress = {
+        detail,
+        roadAddr: address?.roadAddr,
+        bdNm: address?.bdNm,
+      };
+
+      if (locationConsultative) {
+        return {
+          regions: formatRegions(regions),
+          locationDescription,
+        };
+      }
+
+    // return {};
+
     case 4:
       break;
   }

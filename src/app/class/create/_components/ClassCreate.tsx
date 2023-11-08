@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
-import { getClassDraft, updateClassDraft } from '@/lib/apis/classApi';
+import { updateClassDraft } from '@/lib/apis/classApi';
 import { useClassCreateStore } from '@/store/classCreate';
 import { classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
@@ -13,7 +13,7 @@ import ClassLocation from './ClassLocation';
 import ClassPrice from './ClassPrice';
 import ClassSchedule from './ClassSchedule';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { IGetClassDraft, classCreateData } from '@/types/class';
+import { classCreateData } from '@/types/class';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [

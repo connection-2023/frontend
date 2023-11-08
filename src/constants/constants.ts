@@ -1,6 +1,6 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 
-export const DOMAIN = 'http://localhost:3000'; // 변경 필요
+export const DOMAIN = 'http://192.168.219.100:3000'; // 변경 필요
 
 export const ProfileImgSize = {
   xsmall: 22,

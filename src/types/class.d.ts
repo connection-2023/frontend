@@ -1,4 +1,5 @@
 import { fileInfo } from 'suneditor/src/lib/core';
+import { Juso } from '@/types/address';
 
 export interface ClassCardType {
   status: '모집중' | '마감임박' | '마감';
@@ -196,4 +197,9 @@ export interface classCreateData {
   duration: number;
   reservationComment: string;
   reservationDeadline: string;
+  address: Juso | null;
+  detail: string;
+  locationConsultative: boolean;
+  regions: Record<string, string[]>;
+  locationDescription: string;
 }
