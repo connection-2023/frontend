@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { formatDate } from '@/utils/apiDataProcessor';
+import { formatDate, resRegions } from '@/utils/apiDataProcessor';
 import { IGetClassDraft, IprocessedDraft } from '@/types/class';
 
 interface IUseClassCreateStore {
@@ -49,6 +49,17 @@ const dataProcess = (data: IGetClassDraft) => {
 
   const reservationDeadline = Number(data.reservationDeadline);
 
+  const regions = resRegions(
+    data.temporaryLectureToRegion.map(({ region }) => region),
+  );
+
+  // temporaryLectureToRegion?: {
+  //   region: {
+  //     administrativeDistrict: string;
+  //     district: string;
+  //   };
+  // }[];
+
   return {
     ...data,
     temporaryLectureToDanceGenre: genres,
@@ -62,5 +73,6 @@ const dataProcess = (data: IGetClassDraft) => {
     },
     holidays,
     reservationDeadline,
+    regions,
   };
 };

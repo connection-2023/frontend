@@ -1,4 +1,8 @@
-import { CITY_FULL_NAME, WARD_LIST } from '@/constants/administrativeDistrict';
+import {
+  CITY_ABBREVIATION_NAME,
+  CITY_FULL_NAME,
+  WARD_LIST,
+} from '@/constants/administrativeDistrict';
 import { DANCE_GENRE } from '@/constants/constants';
 import { deleteImage, postMultipleImage } from '@/lib/apis/imageApi';
 import { classCreateData } from '@/types/class';
@@ -29,7 +33,7 @@ export const categorizeGenres = (genres: string[]) => {
   );
 };
 
-export const formatRegions = (regions: { [key: string]: string[] }) => {
+export const reqRegions = (regions: { [key: string]: string[] }) => {
   return Object.entries(regions).flatMap(([key, value]) => {
     const valArray = value as string[];
     if (key === '온라인' || key === '세종') {
@@ -40,6 +44,38 @@ export const formatRegions = (regions: { [key: string]: string[] }) => {
       return valArray.map((val) => `${CITY_FULL_NAME[key]} ${val}`);
     }
   });
+};
+
+export const resRegions = (
+  regions: {
+    administrativeDistrict: string;
+    district: string | null;
+  }[],
+) => {
+  const result: { [key: string]: string[] } = {};
+
+  regions.forEach(({ administrativeDistrict, district }) => {
+    const abbreviation = CITY_ABBREVIATION_NAME[administrativeDistrict];
+
+    if (!abbreviation) return;
+
+    if (!result[abbreviation]) {
+      result[abbreviation] = [];
+    }
+
+    const newEntries =
+      district === null || district === '전 지역'
+        ? abbreviation === '온라인'
+          ? ['온라인']
+          : WARD_LIST[abbreviation]
+        : [district];
+
+    result[abbreviation] = [
+      ...new Set([...result[abbreviation], ...newEntries]),
+    ];
+  });
+
+  return result;
 };
 
 export const formatDate = (dateString: string | undefined) => {
@@ -146,10 +182,13 @@ export const classOutputDataProcess = async (
         bdNm: address?.bdNm,
       };
 
+      console.log(reqRegions(regions));
+
       if (locationConsultative) {
         return {
-          regions: formatRegions(regions),
+          regions: reqRegions(regions),
           locationDescription,
+          detailAddress: null,
         };
       }
 
