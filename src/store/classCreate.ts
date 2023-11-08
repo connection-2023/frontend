@@ -39,10 +39,15 @@ const dataProcess = (data: IGetClassDraft) => {
 
   const notification = data.temporaryLecturenotification?.notification;
 
-  const newStartDate =
-    data.startDate === null ? null : formatDate(data.startDate);
+  const startDate = data.startDate === null ? '' : formatDate(data.startDate);
 
-  const newEndDatee = data.endDate === null ? null : formatDate(data.endDate);
+  const endDate = data.endDate === null ? '' : formatDate(data.endDate);
+
+  const holidays = data.temporaryLectureHoliday.map(
+    ({ holiday }) => new Date(holiday),
+  );
+
+  const reservationDeadline = Number(data.reservationDeadline);
 
   return {
     ...data,
@@ -51,7 +56,11 @@ const dataProcess = (data: IGetClassDraft) => {
     lectureMethod,
     lessonType,
     notification,
-    endDate: newEndDatee,
-    startDate: newStartDate,
+    classRange: {
+      startDate,
+      endDate,
+    },
+    holidays,
+    reservationDeadline,
   };
 };

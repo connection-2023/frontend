@@ -125,6 +125,10 @@ export interface IprocessedDraft {
   id: number;
   lecturerId: number;
   step: number | null;
+  classRange: {
+    startDate?: string | null;
+    endDate?: string | null;
+  };
   lessonType?: string | null;
   lectureTypeId?: number;
   lectureMethod?: string | null;
@@ -137,7 +141,7 @@ export interface IprocessedDraft {
   difficultyLevel?: string | null;
   minCapacity?: number;
   maxCapacity?: number;
-  reservationDeadline?: string;
+  reservationDeadline?: number;
   reservationComment?: string;
   price?: number;
   noShowDeposit?: number;
@@ -162,9 +166,7 @@ export interface IprocessedDraft {
     };
   }[];
   temporaryLectureToDanceGenre?: string[];
-  temporaryLectureHoliday?: {
-    holiday: string;
-  }[];
+  holidays?: Data[];
 }
 
 export interface classCreateData {
@@ -189,4 +191,9 @@ export interface classCreateData {
     deletedImages: fileInfo[];
     clear?: () => void;
   };
+  holidays: Data[];
+  classRange: { from: Date; to: Date };
+  duration: number;
+  reservationComment: string;
+  reservationDeadline: number;
 }

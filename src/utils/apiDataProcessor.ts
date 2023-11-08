@@ -114,6 +114,22 @@ export const classOutputDataProcess = async (
         curriculum: curriculum.content,
       };
     case 2:
+      const {
+        holidays,
+        classRange,
+        duration,
+        reservationComment,
+        reservationDeadline,
+      } = data;
+
+      return {
+        holidays,
+        startDate: classRange.from,
+        endDate: classRange.to,
+        duration,
+        reservationComment,
+        reservationDeadline,
+      };
       break;
     case 3:
       break;
