@@ -142,7 +142,7 @@ export interface userProfile {
   id: string;
   name: string;
   nickname: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   email: string;
   userProfileImage: { imageUrl: string | null };
   verified: boolean;
@@ -156,4 +156,6 @@ export interface instructorProfile {
   id: string;
   profileCardImageUrl: string | null;
   nickname: string;
+  name: string;
+  phoneNumber: string;
 }
