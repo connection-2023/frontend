@@ -15,6 +15,8 @@ export const GET = async (request: NextRequest) => {
     headers: {
       'Content-Type': 'application/json',
     },
+
+    next: { tags: ['schedules'] },
   }).then((data) => data.json());
 
   if (serverResponse.statusCode !== 200) {
