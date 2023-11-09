@@ -28,9 +28,9 @@ const dataProcess = (data: IGetClassDraft) => {
       : null;
 
   const lectureMethod =
-    data.lectureMethod === '원데이'
+    data.lectureMethod?.name === '원데이'
       ? '원데이 레슨'
-      : data.lectureMethod === '정기'
+      : data.lectureMethod?.name === '정기'
       ? '정기클래스'
       : null;
 

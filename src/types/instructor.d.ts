@@ -41,7 +41,7 @@ export interface InstructorApplyData {
   instagramPostUrls0: string;
   instagramPostUrls1: string;
   instagramPostUrls2: string;
-  profileImageUrls: { file: File; url: string }[];
+  profileImageUrls: { file: File; imageUrl: string }[];
   regions: Regions;
   genres: string[];
   instagramUrl: string;

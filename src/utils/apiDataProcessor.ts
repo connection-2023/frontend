@@ -4,15 +4,43 @@ import {
   WARD_LIST,
 } from '@/constants/administrativeDistrict';
 import { DANCE_GENRE } from '@/constants/constants';
-import { deleteImage, postMultipleImage } from '@/lib/apis/imageApi';
+import {
+  deleteImage,
+  postMultipleImage,
+  postSingleImage,
+} from '@/lib/apis/imageApi';
 import { classCreateData } from '@/types/class';
 
-export const handleImageUpload = async (
-  profileImageUrls: any[],
+export const uploadImageFiles = async (
+  profileImageUrls: {
+    file: File;
+    imageUrl: string;
+  }[],
   mode: 'lecturers' | 'lectures',
 ) => {
   const imgFileList = profileImageUrls.map(({ file }) => file);
   return await postMultipleImage(imgFileList, mode);
+};
+
+export const uploadImageFilesWithFallback = async (
+  profileImageUrls: {
+    file?: File;
+    imageUrl: string;
+  }[],
+  mode: 'lecturers' | 'lectures',
+) => {
+  const updatedUrls = await Promise.all(
+    profileImageUrls.map(async ({ file, imageUrl }) => {
+      if (file) {
+        const newUrl = await postSingleImage(file, mode);
+        return newUrl;
+      } else {
+        return imageUrl;
+      }
+    }),
+  );
+
+  return updatedUrls;
 };
 
 export const constructEmail = (emailFront: string, emailBack: string) => {
@@ -101,7 +129,10 @@ export const classOutputDataProcess = async (
         lectureMethod,
         lessonType,
       } = data;
-      const images = await handleImageUpload(data.images, 'lectures');
+      const images = await uploadImageFilesWithFallback(
+        data.images,
+        'lectures',
+      );
 
       const classLevel =
         difficultyLevel === '상급'
@@ -166,7 +197,6 @@ export const classOutputDataProcess = async (
         reservationComment,
         reservationDeadline,
       };
-      break;
     case 3:
       const {
         detail,
@@ -190,7 +220,11 @@ export const classOutputDataProcess = async (
         };
       }
 
-    // return {};
+      return {
+        detailAddress: detail,
+        locationDescription,
+        regions: [],
+      }; //api 교체후 수정
 
     case 4:
       break;

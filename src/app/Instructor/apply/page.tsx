@@ -10,7 +10,7 @@ import {
   categorizeGenres,
   constructEmail,
   reqRegions,
-  handleImageUpload,
+  uploadImageFiles,
 } from '@/utils/apiDataProcessor';
 import { switchToInstructor } from '@/utils/switchUserUtil';
 import InstructorAuth from './_components/InstructorAuth';
@@ -70,7 +70,7 @@ const ApplyPage = () => {
         instagramPostUrls2,
       } = data;
 
-      const uploadImgList = await handleImageUpload(
+      const uploadImgList = await uploadImageFiles(
         profileImageUrls,
         'lecturers',
       );
