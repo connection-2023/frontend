@@ -142,8 +142,10 @@ export interface IprocessedDraft {
   detailAddress?: string | null;
   duration?: number;
   difficultyLevel?: string | null;
-  minCapacity?: number;
-  maxCapacity?: number;
+  classSize?: {
+    min: number;
+    max: number;
+  };
   reservationDeadline?: number;
   reservationComment?: string;
   price?: number;

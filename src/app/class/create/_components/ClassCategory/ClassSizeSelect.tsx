@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
-import { classCreateState } from '@/recoil/Create/atoms';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
 
-const ClassSizeSelect = () => {
-  const classData = useRecoilValue(classCreateState);
+const ClassSizeSelect = ({
+  defaultValue,
+}: {
+  defaultValue: { min: number; max: number } | undefined;
+}) => {
   const allOptions = createOptions(1, 100);
 
   const { watch, control, getValues } = useFormContext();
@@ -14,16 +15,16 @@ const ClassSizeSelect = () => {
 
   const [minStudent, setMinStudent] = useState({
     select: {
-      value: classData.classSize.min,
-      label: String(classData.classSize.min),
+      value: defaultValue?.min ?? 1,
+      label: String(defaultValue?.min ?? 1),
     },
     option: allOptions,
   });
 
   const [maxStudent, setMaxStudent] = useState({
     select: {
-      value: classData.classSize.max,
-      label: String(classData.classSize.max),
+      value: defaultValue?.max ?? 100,
+      label: String(defaultValue?.max ?? 100),
     },
     option: allOptions,
   });
@@ -96,7 +97,7 @@ const ClassSizeSelect = () => {
           <Controller
             name="classSize"
             control={control}
-            defaultValue={classData.classSize}
+            defaultValue={defaultValue}
             render={({ field }) => (
               <NumberSelect
                 instanceId={`select-${title}`}

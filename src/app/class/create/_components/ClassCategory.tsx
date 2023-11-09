@@ -94,7 +94,7 @@ const ClassCategory = () => {
           checkList={CATEGORY_LESSON_TYPE}
           select={classData?.lessonType}
         />
-        <ClassSizeSelect />
+        <ClassSizeSelect defaultValue={classData?.classSize} />
       </CategoryContainer>
 
       <CategoryContainer id="lectureMethod" title="진행방식">

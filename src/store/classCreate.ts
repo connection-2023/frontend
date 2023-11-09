@@ -37,6 +37,11 @@ const dataProcess = (data: IGetClassDraft) => {
   const lessonType =
     data.isGroup === null ? null : data.isGroup ? '그룹레슨' : '개인(1:1)레슨';
 
+  const classSize = {
+    max: data.maxCapacity ?? 100,
+    min: data.minCapacity ?? 1,
+  };
+
   const notification = data.temporaryLecturenotification?.notification;
 
   const startDate = data.startDate === null ? '' : formatDate(data.startDate);
@@ -67,5 +72,6 @@ const dataProcess = (data: IGetClassDraft) => {
     holidays,
     reservationDeadline,
     regions,
+    classSize,
   };
 };
