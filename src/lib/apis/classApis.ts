@@ -1,6 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
 import {
-  IClassPostResponse,
+  IClassInfoResponse,
   IClassScheduleResponse,
   IUserReview,
   ReviewOrderType,
@@ -8,13 +8,13 @@ import {
 
 export const getClassPost = async (
   id: string,
-): Promise<IClassPostResponse | Error> => {
+): Promise<IClassInfoResponse | Error> => {
   try {
     const response = await fetch(`${DOMAIN}/api/post/class/info?id=${id}`, {
       method: 'GET',
     }).then((data) => data.json());
 
-    return response.data.lecture;
+    return response.data;
   } catch (error) {
     return new Error('잘못된 요청입니다!');
   }

@@ -17,8 +17,8 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `Connection | ${classData.title}`,
-    description: classData.introduction,
+    title: `Connection | ${classData.lecture.title}`,
+    description: classData.lecture.introduction,
   };
 };
 

@@ -42,16 +42,20 @@ export type ReviewOrderType =
 export interface IClassSchedule {
   id: number;
   lectureId: number;
-  startDateTime: Date;
+  startDateTime: string;
   numberOfParticipants: number;
   team: null | string;
 }
 
 export interface IClassScheduleResponse {
   schedule: IClassSchedule[];
-  holidayArr: Date[];
+  holidayArr: string[];
 }
 
+export interface IClassInfoResponse {
+  lecture: IClassPostResponse;
+  lecturer: IInstructorProfile;
+}
 export interface IClassPostResponse {
   id: number;
   lecturerId: number;
@@ -64,6 +68,7 @@ export interface IClassPostResponse {
   introduction: string;
   curriculum: string;
   detailAddress: string;
+  locationDescription: string;
   duration: number;
   difficultyLevel: string;
   minCapacity: number;
@@ -89,8 +94,6 @@ export interface IClassPostResponse {
   lectureImage: IImage[];
   lectureToRegion: IRegion[];
   lectureToDanceGenre: IGenre[];
-
-  lecturer: IInstructorProfile;
 }
 
 export interface IClassNotification {
