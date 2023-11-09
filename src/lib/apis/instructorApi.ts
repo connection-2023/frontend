@@ -9,7 +9,7 @@ export const getInstructorProfile = async () => {
   }).then((data) => data.json());
 
   if (!response.ok) new Error('강사 기본 프로필 조회 API 오류!');
-  console.log(response);
+
   return response.data.lecturerBasicProfile;
 };
 
