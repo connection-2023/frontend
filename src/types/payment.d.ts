@@ -21,9 +21,8 @@ export interface IApplicantInfo {
 
 export interface IPaymentConfirm {
   paymentKey: string;
-  orderName: string;
   orderId: string;
-  amount: number;
+  amount: string;
 }
 
 export interface IPaymentInfoResponse {
