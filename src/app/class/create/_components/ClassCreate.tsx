@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -30,8 +29,8 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const { setClassData, setProcessedClassData } = useClassCreateStore();
-  const classData = useClassCreateStore((state) => state.classData);
+  const { classData, setClassData, setProcessedClassData } =
+    useClassCreateStore();
 
   const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
@@ -61,6 +60,10 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
       }
     }
   }, [searchParams]);
+
+  const setProcessedClassDataHandler = (data: IprocessedDraft) => {
+    setProcessedClassData({ ...classData, ...data });
+  };
 
   const moveStep = (step: number | string) => {
     if (classData) {
@@ -108,13 +111,17 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
 
   const updateDraft = async (data: classCreateData) => {
     console.log(data);
-    if (classData) {
+    if (classData && classData.step && classData.id) {
       try {
         if (classData.step === null || classData.step < activeStep) {
           setProcessedClassData({ ...classData, step: activeStep });
         }
 
-        const processData = await classOutputDataProcess(data, activeStep);
+        const processData = await classOutputDataProcess(
+          data,
+          activeStep,
+          setProcessedClassDataHandler,
+        );
 
         await updateClassDraft({
           lectureId: classData.id,
@@ -160,7 +167,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
                 : 'text-sub-color2'
             } ${
               classData &&
-              classData.step !== null &&
+              classData.step &&
               classData.step + 1 >= index &&
               activeStep !== index
                 ? 'hover:bg-[#8338ec] hover:bg-opacity-50 hover:text-white' // 추후 컬러 글로버 설정 된걸로 변경 ex)opactity sub 1
@@ -181,7 +188,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
                 } 
               ${
                 classData &&
-                classData.step !== null &&
+                classData.step &&
                 classData.step + 1 >= index &&
                 activeStep !== index &&
                 'group-hover:bg-white group-hover:text-sub-color1'

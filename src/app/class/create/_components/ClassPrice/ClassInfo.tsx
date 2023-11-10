@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassCreateStore } from '@/store/classCreate';
 import createOptions from '@/utils/generateStudentCountOptions';
@@ -17,15 +17,21 @@ const ClassInfo = ({
   } = useFormContext();
 
   const { classData } = useClassCreateStore();
-  const isIndividualLesson = classData?.lessonType === '개인(1:1)레슨';
+  const [defaultValue, setDefaultValue] = useState({
+    value: classData?.classSize?.max ?? 1,
+    label: String(classData?.classSize?.max ?? 1),
+  });
 
-  const MaxStudent = isIndividualLesson ? 1 : classData?.classSize?.max;
-
-  const defaultValue = { value: MaxStudent, label: String(MaxStudent) };
+  useEffect(() => {
+    setDefaultValue({
+      value: classData?.classSize?.max ?? 1,
+      label: String(classData?.classSize?.max ?? 1),
+    });
+  }, [classData?.classSize?.max]);
 
   const options = createOptions(
     classData?.classSize?.min ?? 1,
-    isIndividualLesson ? 1 : 100,
+    classData?.classSize?.max ?? 100,
   );
 
   return (
@@ -40,11 +46,10 @@ const ClassInfo = ({
         <Controller
           name="classSize"
           control={control}
-          defaultValue={defaultValue}
           render={({ field }) => (
             <NumberSelect
               instanceId="StudentCountSelect"
-              defaultValue={field.value}
+              defaultValue={defaultValue}
               options={options}
               onChange={(selected) => {
                 field.onChange({

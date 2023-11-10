@@ -24,8 +24,6 @@ const ClassSchedule = () => {
 
   const { classData } = useClassCreateStore();
 
-  const [deadline, setDeadline] = useState<number | null>(null);
-
   const [classTime, setClassTime] = useRecoilState(classTimeState);
   const classDates = useRecoilValue(classDatesState);
   const classNum = classDates?.length;
@@ -37,7 +35,8 @@ const ClassSchedule = () => {
   ) => {
     setClassNotification(event.target.value);
   };
-  //to은서: 29~34라인 내가 볼땐 필요 없어 보이는데 필요 없으면 제거 해줘
+  const [deadline, setDeadline] = useState<number | null>(null);
+  //to은서: 32~38라인 내가 볼땐 필요 없어 보이는데 필요 없으면 제거 해줘
 
   useEffect(() => {
     if (classData?.duration) {

@@ -135,10 +135,10 @@ export interface IUpdateClassDraft {
 }
 
 export interface IprocessedDraft {
-  id: number;
-  lecturerId: number;
-  step: number | null;
-  classRange: {
+  id?: number;
+  lecturerId?: number;
+  step?: number | null;
+  classRange?: {
     startDate?: string | null;
     endDate?: string | null;
   };
@@ -147,6 +147,7 @@ export interface IprocessedDraft {
   lectureMethod?: string | null;
   lectureMethodId?: number;
   title?: string;
+  isGroup?: boolean | null;
   introduction?: string;
   curriculum?: string;
   detailAddress?: string | null;
