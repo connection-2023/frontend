@@ -13,7 +13,7 @@ import ClassLocation from './ClassLocation';
 import ClassPrice from './ClassPrice';
 import ClassSchedule from './ClassSchedule';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { classCreateData } from '@/types/class';
+import { IprocessedDraft, classCreateData } from '@/types/class';
 import { ErrorMessage } from '@/types/types';
 
 const steps = [
@@ -29,7 +29,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const { setClassData } = useClassCreateStore();
+  const { setClassData, setProcessedClassData } = useClassCreateStore();
   const classData = useClassCreateStore((state) => state.classData);
 
   const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
@@ -75,7 +75,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     }
   };
 
-  const onValid = (data: any) => {
+  const onValid = (data: classCreateData) => {
     // setLectureData((prevState) => ({
     //   ...prevState,
     //   ...data,
@@ -102,12 +102,18 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   const updateDraft = async (data: classCreateData) => {
     if (classData) {
       try {
+        if (classData.step === null || classData.step < activeStep) {
+          setProcessedClassData({ ...classData, step: activeStep });
+        }
+
         const processData = await classOutputDataProcess(data, activeStep);
-        console.log(processData);
 
         await updateClassDraft({
           lectureId: classData.id,
-          step: activeStep,
+          step:
+            classData.step === null || classData.step < activeStep
+              ? activeStep
+              : classData.step,
           ...processData,
         });
       } catch (error) {
@@ -116,6 +122,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
       toast.success('임시저장 완료');
     }
   };
+
   return (
     <main className="mx-auto max-w-[1440px] px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
