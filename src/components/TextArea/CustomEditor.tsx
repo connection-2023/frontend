@@ -7,7 +7,7 @@ import {
   UploadBeforeReturn,
   UploadInfo,
 } from 'suneditor-react/dist/types/upload';
-import { TOOLBAR } from '@/constants/constants';
+import { QUILL_DEFAULT_VALUE, TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
 import { postSingleImage } from '@/lib/apis/imageApi';
 import { toast } from 'react-toastify';
@@ -33,7 +33,7 @@ const CustomEditor = ({
 }: CustomEditorProps) => {
   const editor = useRef<SunEditorCore>();
   const editorText = useRef<string>(defaultValue);
-  const [textLength, setTextLenght] = useState(defaultValue.length);
+  const [textLength, setTextLenght] = useState(defaultValue?.length);
   const imagesRef = useRef<fileInfo[]>([]);
   const deletedImagesRef = useRef<fileInfo[]>([]);
 
@@ -166,7 +166,7 @@ const CustomEditor = ({
               lang="ko"
               width="100%"
               height={height}
-              setContents={field.value.content}
+              setContents={field.value.content || QUILL_DEFAULT_VALUE}
               setOptions={{
                 buttonList: TOOLBAR,
               }}

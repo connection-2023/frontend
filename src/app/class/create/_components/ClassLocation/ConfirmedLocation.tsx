@@ -18,7 +18,9 @@ const ConfirmedLocation = ({
     formState: { errors },
   } = useFormContext();
   const newWindowRef = useRef<Window | null>(null);
-  const [location, setLocation] = useState<Juso | null | ProcessedJuso>(null);
+  const [location, setLocation] = useState<Juso | null | ProcessedJuso>(
+    defaultValue,
+  );
 
   const openPopup = () => {
     newWindowRef.current = window.open(
@@ -64,7 +66,7 @@ const ConfirmedLocation = ({
       >
         <SearchSVG className="mb-1 h-5 w-5 fill-sub-color1 " /> 주소 검색하기
       </button>
-      {location && (
+      {location?.roadAddr && (
         <section className="flex flex-col gap-3">
           <address className="flex">
             <LocationSVG />
@@ -73,9 +75,9 @@ const ConfirmedLocation = ({
           <input
             type="text"
             className={`w-full border border-solid border-sub-color2 px-2 py-1 focus:outline-none  ${
-              errors.classDetailAddress &&
-              'animate-vibration placeholder:text-main-color'
+              errors.detail && 'animate-vibration placeholder:text-main-color'
             }`}
+            defaultValue={location.detailAddress || ''}
             placeholder="상세주소를 입력해주세요."
             {...register('detail', {
               required: '상세주소',

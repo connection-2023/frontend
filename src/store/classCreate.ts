@@ -14,64 +14,87 @@ export const useClassCreateStore = create<IUseClassCreateStore>()((set) => ({
 }));
 
 const dataProcess = (data: IGetClassDraft) => {
-  const genres = data.temporaryLectureToDanceGenre.map(
+  const {
+    temporaryLectureToDanceGenre,
+    isGroup,
+    maxCapacity,
+    minCapacity,
+    difficultyLevel,
+    lectureMethod,
+    temporaryLecturenotification,
+    startDate,
+    endDate,
+    temporaryLectureHoliday,
+    reservationDeadline,
+    temporaryLectureToRegion,
+  } = data.temporaryLecture;
+
+  const genres = temporaryLectureToDanceGenre.map(
     (item) => item.danceCategory.genre,
   );
 
-  const difficultyLevel =
-    data.difficultyLevel === '상'
+  const newDifficultyLevel =
+    difficultyLevel === '상'
       ? '상급'
-      : data.difficultyLevel === '중'
+      : difficultyLevel === '중'
       ? '중급'
-      : data.difficultyLevel === '하'
+      : difficultyLevel === '하'
       ? '초급(입문)'
       : null;
 
-  const lectureMethod =
-    data.lectureMethod?.name === '원데이'
+  const newlectureMethod =
+    lectureMethod?.name === '원데이'
       ? '원데이 레슨'
-      : data.lectureMethod?.name === '정기'
+      : lectureMethod?.name === '정기'
       ? '정기클래스'
       : null;
 
   const lessonType =
-    data.isGroup === null ? null : data.isGroup ? '그룹레슨' : '개인(1:1)레슨';
+    isGroup === null ? null : isGroup ? '그룹레슨' : '개인(1:1)레슨';
 
   const classSize = {
-    max: data.maxCapacity ?? 100,
-    min: data.minCapacity ?? 1,
+    max: maxCapacity ?? 100,
+    min: minCapacity ?? 1,
   };
 
-  const notification = data.temporaryLecturenotification?.notification;
+  const notification = temporaryLecturenotification?.notification;
 
-  const startDate = data.startDate === null ? '' : formatDate(data.startDate);
+  const newStartDate = startDate === null ? '' : formatDate(startDate);
 
-  const endDate = data.endDate === null ? '' : formatDate(data.endDate);
+  const newEndDate = endDate === null ? '' : formatDate(endDate);
 
-  const holidays = data.temporaryLectureHoliday.map(
+  const holidays = temporaryLectureHoliday.map(
     ({ holiday }) => new Date(holiday),
   );
 
-  const reservationDeadline = Number(data.reservationDeadline);
+  const newReservationDeadline = Number(reservationDeadline);
 
   const regions = resRegions(
-    data.temporaryLectureToRegion.map(({ region }) => region),
+    temporaryLectureToRegion.map(({ region }) => region),
   );
 
   return {
-    ...data,
+    ...data.temporaryLecture,
     temporaryLectureToDanceGenre: genres,
-    difficultyLevel,
-    lectureMethod,
+    difficultyLevel: newDifficultyLevel,
+    lectureMethod: newlectureMethod,
     lessonType,
     notification,
     classRange: {
-      startDate,
-      endDate,
+      startDate: newStartDate,
+      endDate: newEndDate,
     },
     holidays,
-    reservationDeadline,
+    reservationDeadline: newReservationDeadline,
     regions,
     classSize,
+    location: {
+      roadAddr: data.location?.address,
+      bdNm: data.location?.buildingName,
+      detailAddress: data.location?.detailAddress,
+    },
+    temporaryLectureDateSchedule: data.temporaryLectureDateSchedule
+      ? [...data.temporaryLectureDateSchedule]
+      : [],
   };
 };

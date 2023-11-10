@@ -64,7 +64,7 @@ const TextAreaSection = ({
         maxLength={maxLength}
       />
       <div className="absolute bottom-2 right-3 text-sub-color2">
-        ({length} / {maxLength})
+        ({length || 0} / {maxLength})
       </div>
     </section>
   );

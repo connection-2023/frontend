@@ -48,7 +48,7 @@ export const getClassDraft = async (lectureId: string | number) => {
 
   const data = await response.json();
 
-  return data.data.temporaryLecture;
+  return data.data;
 };
 
 export const createClassDraft = async () => {

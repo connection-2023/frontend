@@ -12,7 +12,7 @@ const ClassLocation = () => {
   const classData = store.classData;
 
   const [isLocationSet, setIsLocationSet] = useState(
-    classData?.detailAddress ? false : true,
+    classData?.location ? false : true,
   );
   const { control, register } = useFormContext();
 
@@ -42,9 +42,13 @@ const ClassLocation = () => {
           key="address"
           name="address"
           control={control}
-          defaultValue={classData?.detailAddress}
+          defaultValue={classData?.location}
           rules={{
-            required: '주소',
+            validate: (value) => {
+              if (!value.roadAddr) {
+                return '주소';
+              }
+            },
           }}
           render={({ field }) => (
             <ConfirmedLocation

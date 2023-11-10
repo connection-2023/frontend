@@ -206,25 +206,25 @@ export const classOutputDataProcess = async (
         locationDescription,
       } = data;
 
-      const detailAddress = {
-        detail,
-        roadAddr: address?.roadAddr,
-        bdNm: address?.bdNm,
+      const location = {
+        detailAddress: detail,
+        address: address?.roadAddr,
+        buildingName: address?.bdNm,
       };
 
       if (locationConsultative) {
         return {
           regions: reqRegions(regions),
           locationDescription,
-          detailAddress: null,
+          location: null,
         };
       }
 
       return {
-        detailAddress: detail,
+        location,
         locationDescription,
         regions: [],
-      }; //api 교체후 수정
+      };
 
     case 4:
       break;

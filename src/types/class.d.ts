@@ -40,58 +40,68 @@ export interface IGetClassDrafts {
 }
 
 export interface IGetClassDraft {
-  id: number;
-  lecturerId: number;
-  step: number | null;
-  startDate?: string | null;
-  endDate?: string | null;
-  isGroup?: boolean | null;
-  lectureTypeId?: number;
-  lectureMethodId?: number;
-  title?: string;
-  introduction?: string;
-  curriculum?: string;
-  detailAddress?: string | null;
-  duration?: number;
-  difficultyLevel?: string;
-  minCapacity?: number;
-  maxCapacity?: number;
-  lectureMethod?: {
-    name: string;
+  temporaryLecture: {
+    id: number;
+    lecturerId: number;
+    step: number | null;
+    startDate?: string | null;
+    endDate?: string | null;
+    isGroup?: boolean | null;
+    lectureTypeId?: number;
+    lectureMethodId?: number;
+    title?: string;
+    introduction?: string;
+    curriculum?: string;
+    detailAddress?: string | null;
+    duration?: number;
+    difficultyLevel?: string;
+    minCapacity?: number;
+    maxCapacity?: number;
+    lectureMethod?: {
+      name: string;
+    } | null;
+    reservationDeadline?: string;
+    reservationComment?: string;
+    price?: number;
+    noShowDeposit?: number;
+    reviewCount: number;
+    stars: number;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null | string;
+    temporaryLecturenotification: { notification: string };
+    temporaryLectureImage: { imageUrl: string }[];
+    temporaryLectureCouponTarget: any[];
+    temporaryLectureSchedule: {
+      startDateTime: string;
+      team: null;
+      numberOfParticipants: number;
+    }[];
+    temporaryLectureToRegion: {
+      region: {
+        administrativeDistrict: string;
+        district: string;
+      };
+    }[];
+    temporaryLectureToDanceGenre: {
+      name: null | string;
+      danceCategory: {
+        genre: string;
+      };
+    }[];
+    temporaryLectureHoliday: {
+      holiday: string;
+    }[];
+  };
+  location: {
+    id: number;
+    lectureId: number;
+    address: string;
+    detailAddress: string;
+    buildingName: string;
   } | null;
-  reservationDeadline?: string;
-  reservationComment?: string;
-  price?: number;
-  noShowDeposit?: number;
-  reviewCount: number;
-  stars: number;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: null | string;
-  temporaryLecturenotification: { notification: string };
-  temporaryLectureImage: { imageUrl: string }[];
-  temporaryLectureCouponTarget: any[];
-  temporaryLectureSchedule: {
-    startDateTime: string;
-    team: null;
-    numberOfParticipants: number;
-  }[];
-  temporaryLectureToRegion: {
-    region: {
-      administrativeDistrict: string;
-      district: string;
-    };
-  }[];
-  temporaryLectureToDanceGenre: {
-    name: null | string;
-    danceCategory: {
-      genre: string;
-    };
-  }[];
-  temporaryLectureHoliday: {
-    holiday: string;
-  }[];
+  temporaryLectureDateSchedule: string[] | null;
 }
 
 export interface IUpdateClassDraft {
@@ -170,6 +180,12 @@ export interface IprocessedDraft {
   };
   temporaryLectureToDanceGenre?: string[];
   holidays?: Data[];
+  location?: {
+    roadAddr: string | undefined;
+    detailAddress: string | undefined;
+    bdNm: string | undefined;
+  };
+  temporaryLectureDateSchedule?: string[] | [];
 }
 
 export interface classCreateData {

@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useClassCreateStore } from '@/store/classCreate';
+import { IGetClassDraft } from '@/types/class';
 
-const ClassStoreInitializer = ({ data }: { data: any }) => {
+const ClassStoreInitializer = ({ data }: { data: IGetClassDraft }) => {
   const initialized = useRef(false);
   const { setClassData } = useClassCreateStore();
 
