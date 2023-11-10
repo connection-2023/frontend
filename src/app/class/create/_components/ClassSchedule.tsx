@@ -22,7 +22,7 @@ const ClassSchedule = () => {
     formState: { errors },
   } = useFormContext();
 
-  const { classData, setProcessedClassData } = useClassCreateStore();
+  const { classData } = useClassCreateStore();
 
   const [deadline, setDeadline] = useState<number | null>(null);
 
@@ -43,11 +43,8 @@ const ClassSchedule = () => {
     if (classData?.duration) {
       setClassTime(classData.duration);
     }
-
-    if (classData?.reservationDeadline) {
-      setDeadline(classData?.reservationDeadline);
-    }
   }, [classData]);
+
   return (
     <>
       <Controller
@@ -183,9 +180,8 @@ const ClassSchedule = () => {
               <span>수업 시작</span>
               <input
                 type="number"
-                value={deadline || ''}
+                defaultValue={field.value}
                 onChange={(e) => {
-                  setDeadline(Number(e.target.value));
                   field.onChange(Number(e.target.value));
                 }}
                 className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.81rem] py-1"

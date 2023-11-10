@@ -88,30 +88,56 @@ const ClassCategory = () => {
       </section>
 
       <CategoryContainer id="lessonType" title="인원">
-        <RadioComponent
-          message="인원"
-          title="lessonType"
-          checkList={CATEGORY_LESSON_TYPE}
-          select={classData?.lessonType}
+        <Controller
+          name="lessonType"
+          control={control}
+          defaultValue={classData?.lessonType}
+          render={({ field }) => (
+            <RadioComponent
+              message="인원"
+              title="lessonType"
+              checkList={CATEGORY_LESSON_TYPE}
+              select={field.value}
+            />
+          )}
         />
-        <ClassSizeSelect defaultValue={classData?.classSize} />
+        <Controller
+          name="classSize"
+          control={control}
+          defaultValue={classData?.classSize}
+          render={({ field }) => <ClassSizeSelect defaultValue={field.value} />}
+        />
       </CategoryContainer>
 
       <CategoryContainer id="lectureMethod" title="진행방식">
-        <RadioComponent
-          message="진행방식"
-          title="lectureMethod"
-          checkList={CATEGORY_PROGRESS_METHOD}
-          select={classData?.lectureMethod}
+        <Controller
+          name="lectureMethod"
+          control={control}
+          defaultValue={classData?.lectureMethod}
+          render={({ field }) => (
+            <RadioComponent
+              message="진행방식"
+              title="lectureMethod"
+              checkList={CATEGORY_PROGRESS_METHOD}
+              select={field.value}
+            />
+          )}
         />
       </CategoryContainer>
 
       <CategoryContainer id="difficultyLevel" title="난이도">
-        <RadioComponent
-          message="난이도"
-          title="difficultyLevel"
-          checkList={CATEGORY_DIFFICULTY_LEVEL}
-          select={classData?.difficultyLevel}
+        <Controller
+          name="difficultyLevel"
+          control={control}
+          defaultValue={classData?.difficultyLevel}
+          render={({ field }) => (
+            <RadioComponent
+              message="난이도"
+              title="difficultyLevel"
+              checkList={CATEGORY_DIFFICULTY_LEVEL}
+              select={field.value}
+            />
+          )}
         />
       </CategoryContainer>
     </>

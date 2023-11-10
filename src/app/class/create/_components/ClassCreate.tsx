@@ -107,6 +107,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   };
 
   const updateDraft = async (data: classCreateData) => {
+    console.log(data);
     if (classData) {
       try {
         if (classData.step === null || classData.step < activeStep) {
