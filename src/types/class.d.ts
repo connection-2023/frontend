@@ -186,6 +186,7 @@ export interface IprocessedDraft {
     bdNm: string | undefined;
   };
   temporaryLectureDateSchedule?: string[] | [];
+  totalClasses?: number;
 }
 
 export interface classCreateData {

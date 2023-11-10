@@ -22,8 +22,7 @@ const ClassSchedule = () => {
     formState: { errors },
   } = useFormContext();
 
-  const store = useClassCreateStore();
-  const classData = store.classData;
+  const { classData, setProcessedClassData } = useClassCreateStore();
 
   const [deadline, setDeadline] = useState<number | null>(null);
 
@@ -49,6 +48,15 @@ const ClassSchedule = () => {
       setDeadline(classData?.reservationDeadline);
     }
   }, [classData]);
+
+  useEffect(() => {
+    if (classData) {
+      setProcessedClassData({
+        ...classData,
+        totalClasses: classDates?.length,
+      });
+    }
+  }, [classDates]);
 
   return (
     <>
