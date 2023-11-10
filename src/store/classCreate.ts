@@ -98,6 +98,6 @@ const dataProcess = (data: IGetClassDraft) => {
     temporaryLectureDateSchedule: data.temporaryLectureDateSchedule
       ? [...data.temporaryLectureDateSchedule]
       : [],
-    totalClasses: data.temporaryLectureDateSchedule?.length, // 추후 스케줄 로직 확인 후 틀리면 변경
+    totalClasses: data.temporaryLectureDateSchedule?.length, // to은서: 추후 스케줄 로직 확인 후 틀리면 변경
   };
 };

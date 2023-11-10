@@ -1,6 +1,6 @@
 'use client';
 import { format } from 'date-fns';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { dummyCouponList } from '@/constants/dummy';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';

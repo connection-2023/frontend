@@ -9,7 +9,7 @@ import {
   postMultipleImage,
   postSingleImage,
 } from '@/lib/apis/imageApi';
-import { classCreateData } from '@/types/class';
+import { IprocessedDraft, classCreateData } from '@/types/class';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -129,6 +129,7 @@ export const classOutputDataProcess = async (
         lectureMethod,
         lessonType,
       } = data;
+
       const images = await uploadImageFilesWithFallback(
         data.images,
         'lectures',

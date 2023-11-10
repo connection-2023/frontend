@@ -48,16 +48,6 @@ const ClassSchedule = () => {
       setDeadline(classData?.reservationDeadline);
     }
   }, [classData]);
-
-  useEffect(() => {
-    if (classData) {
-      setProcessedClassData({
-        ...classData,
-        totalClasses: classDates?.length,
-      });
-    }
-  }, [classDates]);
-
   return (
     <>
       <Controller

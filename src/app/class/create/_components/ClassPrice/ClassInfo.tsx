@@ -1,7 +1,6 @@
 import { ChangeEvent } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
-import { classCreateState } from '@/recoil/Create/atoms';
+import { useClassCreateStore } from '@/store/classCreate';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
 
@@ -17,15 +16,15 @@ const ClassInfo = ({
     formState: { errors },
   } = useFormContext();
 
-  const classData = useRecoilValue(classCreateState);
-  const isIndividualLesson = classData.classLessonType === '개인(1:1)레슨';
+  const { classData } = useClassCreateStore();
+  const isIndividualLesson = classData?.lessonType === '개인(1:1)레슨';
 
-  const MaxStudent = isIndividualLesson ? 1 : classData.classSize.max;
+  const MaxStudent = isIndividualLesson ? 1 : classData?.classSize?.max;
 
   const defaultValue = { value: MaxStudent, label: String(MaxStudent) };
 
   const options = createOptions(
-    classData.classSize.min,
+    classData?.classSize?.min ?? 1,
     isIndividualLesson ? 1 : 100,
   );
 
@@ -33,7 +32,7 @@ const ClassInfo = ({
     <section className="mt-3 flex flex-col text-lg font-semibold">
       <div className="flex h-16 items-center border-b border-solid border-sub-color2">
         <h2 className="w-1/4">총 클래스 횟수</h2>
-        <div>20회</div>
+        <div>{classData?.totalClasses}회</div>
       </div>
 
       <div className="flex h-16 items-center border-b border-solid border-sub-color2">
@@ -41,11 +40,11 @@ const ClassInfo = ({
         <Controller
           name="classSize"
           control={control}
-          defaultValue={classData.classSize}
+          defaultValue={defaultValue}
           render={({ field }) => (
             <NumberSelect
               instanceId="StudentCountSelect"
-              defaultValue={defaultValue}
+              defaultValue={field.value}
               options={options}
               onChange={(selected) => {
                 field.onChange({

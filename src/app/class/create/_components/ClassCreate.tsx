@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -61,17 +62,23 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     }
   }, [searchParams]);
 
+  const moveStep = (step: number | string) => {
+    if (classData) {
+      router.push(`${pathname}?step=${step}&id=${classData.id}`);
+    }
+  };
+
   const nextStep = () => {
     if (activeStep < steps.length - 1 && classData) {
       setActiveStep(activeStep + 1);
-      router.push(`${pathname}?step=${activeStep + 1}&id=${classData.id}`);
+      moveStep(activeStep + 1);
     }
   };
 
   const prevStep = () => {
     if (activeStep > 0 && classData) {
       setActiveStep(activeStep - 1);
-      router.push(`${pathname}?step=${activeStep - 1}&id=${classData.id}`);
+      moveStep(activeStep - 1);
     }
   };
 
@@ -123,6 +130,19 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     }
   };
 
+  const navOnValidHandler = async (data: classCreateData, index: number) => {
+    if (activeStep < index) {
+      await updateDraft(data);
+    }
+    moveStep(index);
+  };
+
+  const navinvalidHandler = async (
+    data: Record<string, any>,
+    index: number,
+  ) => {
+    activeStep > index ? moveStep(index) : invalid(data);
+  };
   return (
     <main className="mx-auto max-w-[1440px] px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
@@ -130,29 +150,49 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
       </h1>
 
       {/* 상태 바  */}
-      <ul className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
+      <nav className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
         {steps.map((step, index) => (
-          <li
-            key={index}
-            className={`flex h-full flex-grow items-center justify-center gap-2 rounded-[3.13rem] px-1 ${
+          <form
+            className={`group flex h-full flex-grow items-center justify-center rounded-[3.13rem] px-1 ${
               activeStep === index
                 ? 'bg-sub-color1 text-white'
                 : 'text-sub-color2'
-            }`}
+            } ${
+              classData &&
+              classData.step !== null &&
+              classData.step + 1 >= index &&
+              activeStep !== index
+                ? 'hover:bg-[#8338ec] hover:bg-opacity-50 hover:text-white' // 추후 컬러 글로버 설정 된걸로 변경 ex)opactity sub 1
+                : 'pointer-events-none'
+            } `}
+            key={step.title}
+            onSubmit={handleSubmit(
+              (data) => navOnValidHandler(data, index),
+              (data) => navinvalidHandler(data, index),
+            )}
           >
-            <span
-              className={`flex h-6 w-6 items-center justify-center rounded-full ${
-                activeStep === index
-                  ? 'bg-white text-sub-color1'
-                  : 'bg-sub-color2 text-white'
+            <button className="flex flex-grow items-center justify-center gap-2">
+              <span
+                className={`flex h-6 w-6 items-center justify-center rounded-full ${
+                  activeStep === index
+                    ? 'bg-white text-sub-color1'
+                    : 'bg-sub-color2 text-white'
+                } 
+              ${
+                classData &&
+                classData.step !== null &&
+                classData.step + 1 >= index &&
+                activeStep !== index &&
+                'group-hover:bg-white group-hover:text-sub-color1'
               }`}
-            >
-              {index + 1}
-            </span>
-            {step.title}
-          </li>
+              >
+                {index + 1}
+              </span>
+              {step.title}
+            </button>
+          </form>
         ))}
-      </ul>
+      </nav>
       <section className="mx-auto flex max-w-[675px] flex-col">
         <h2 className="mt-8 flex items-center text-2xl font-bold text-sub-color1">
           <span
