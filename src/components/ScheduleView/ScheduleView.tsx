@@ -1,9 +1,23 @@
 'use client';
 import { isSameDay } from 'date-fns';
 import React, { useState } from 'react';
-import ScheduleCalendar from '../Calendar/ScheduleCalendar';
+import ScheduleCalendar from '../Calendar/SingleCalendar';
 import { IClassSchedule } from '@/types/class';
 import { formatDateTime } from '@/utils/parseUtils';
+
+const textStyle = {
+  normal: 'text-sub-color3',
+  full: 'text-sub-color2',
+};
+
+interface ISchedule {
+  id: number;
+  lectureId: number;
+  startDateTime: string;
+  numberOfParticipants: number;
+  team: null | string;
+}
+
 
 interface ScheduleViewProps {
   lectureSchedule: IClassSchedule[];
@@ -31,6 +45,7 @@ const ScheduleView = ({
     <div className="flex w-full flex-col whitespace-nowrap md:flex-row md:justify-between">
       <div className="flex w-full justify-center md:w-fit md:justify-start">
         <ScheduleCalendar
+          mode="schedule"
           clickableDates={clickableDates}
           handleClickDate={handleClickDate}
         />

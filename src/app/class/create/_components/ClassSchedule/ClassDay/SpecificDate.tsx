@@ -136,7 +136,7 @@ const SpecificDate = () => {
           {state.selectableDates && (
             <InputClassDates
               clickableDates={state.selectableDates}
-              handleSelectedDate={handleSelectedDate}
+              handleClickDate={handleSelectedDate}
             />
           )}
           {state.selectedDate && (

@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG, MoneySVG, DoubleRightSVG } from '@/icons/svg';
-import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
+import RangeCalendar from '@/components/Calendar/RangeCalendar';
 
 const PaymentRange = () => {
   const [fromValue, setFromValue] = useState<string | undefined>('2023-09-04');
@@ -69,7 +69,8 @@ const PaymentRange = () => {
               />
             </span>
             {isCalendarVisible && (
-              <IncomeCalendar
+              <RangeCalendar
+                mode="income"
                 selectedRange={classRange}
                 handleRangeSelect={handleRangeSelect}
               />
