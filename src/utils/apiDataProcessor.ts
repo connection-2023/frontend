@@ -4,6 +4,7 @@ import {
   WARD_LIST,
 } from '@/constants/administrativeDistrict';
 import { DANCE_GENRE } from '@/constants/constants';
+import { getClassDraft } from '@/lib/apis/classApi';
 import {
   deleteImage,
   postMultipleImage,
@@ -244,3 +245,82 @@ export const classOutputDataProcess = async (
       };
   }
 };
+
+export const classCreate = async (id: number) => {
+  const { location, temporaryLecture, temporaryLectureDateSchedule } =
+    await getClassDraft(id);
+
+  const {
+    temporaryLectureToRegion,
+    lectureMethod,
+    isGroup,
+    startDate,
+    endDate,
+    temporaryLecturenotification,
+    temporaryLectureToDanceGenre,
+    temporaryLectureImage,
+    title,
+    introduction,
+    curriculum,
+    duration,
+    difficultyLevel,
+    maxCapacity,
+    minCapacity,
+    reservationDeadline,
+    reservationComment,
+    price,
+    temporaryLectureHoliday,
+    locationDescription,
+    temporaryLectureCouponTarget,
+  } = temporaryLecture;
+
+  const isLocationConfirmed = temporaryLectureToRegion.length > 0;
+
+  const { newGenres, etcGenres } = categorizeGenres(
+    temporaryLectureToDanceGenre.map(
+      ({ danceCategory }) => danceCategory.genre,
+    ),
+  );
+
+  const images = temporaryLectureImage.map(({ imageUrl }) => imageUrl);
+
+  const data = {
+    regions: isLocationConfirmed
+      ? temporaryLectureToRegion.map(
+          ({ region }) => region.administrativeDistrict + ' ' + region.district,
+        )
+      : [],
+    location: isLocationConfirmed
+      ? {}
+      : {
+          address: location?.address,
+          detailAddress: location?.detailAddress,
+          buildingName: location?.buildingName,
+        },
+    lectureType: 'dance',
+    lectureMethod: lectureMethod?.name,
+    isGroup,
+    startDate,
+    endDate,
+    notification: temporaryLecturenotification.notification,
+    genres: newGenres,
+    etcGenres,
+    images,
+    title,
+    introduction,
+    curriculum,
+    duration,
+    difficultyLevel,
+    maxCapacity,
+    minCapacity,
+    reservationDeadline,
+    reservationComment,
+    price,
+    locationDescription,
+    holiday: temporaryLectureHoliday.map(({ holiday }) => holiday),
+    coupons: temporaryLectureCouponTarget.map(
+      ({ lectureCouponId }) => lectureCouponId,
+    ),
+    schedules: temporaryLectureDateSchedule,
+  };
+}; //스프레드 안쓰고 일단 꺼냈음

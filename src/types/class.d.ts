@@ -57,6 +57,7 @@ export interface IGetClassDraft {
     difficultyLevel?: string;
     minCapacity?: number;
     maxCapacity?: number;
+    locationDescription?: string;
     lectureMethod?: {
       name: string;
     } | null;

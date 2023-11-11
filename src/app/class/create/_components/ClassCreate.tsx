@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
 import { updateClassDraft } from '@/lib/apis/classApi';
 import { useClassCreateStore } from '@/store/classCreate';
-import { classOutputDataProcess } from '@/utils/apiDataProcessor';
+import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
 import ClassExplanation from './ClassExplanation';
 import ClassLocation from './ClassLocation';
@@ -152,6 +152,14 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   ) => {
     activeStep > index ? moveStep(index) : invalid(data);
   };
+
+  const createClass = async (data: classCreateData) => {
+    if (classData && classData.id) {
+      await updateDraft(data);
+      await classCreate(classData.id);
+    }
+  };
+
   return (
     <main className="mx-auto max-w-[1440px] px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
@@ -230,12 +238,18 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
                 임시저장
               </button>
             </form>
-            <form onSubmit={handleSubmit(onValid, invalid)}>
-              <button className="ml-4 flex items-center">
-                다음
-                <ArrowRightSVG className="ml-3 h-[15px] w-[9px] stroke-black" />
-              </button>
-            </form>
+            {activeStep !== 4 ? (
+              <form onSubmit={handleSubmit(onValid, invalid)}>
+                <button className="ml-4 flex items-center">
+                  다음
+                  <ArrowRightSVG className="ml-3 h-[15px] w-[9px] stroke-black" />
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit(createClass, invalid)}>
+                <button className="ml-4 flex items-center">등록하기</button>
+              </form>
+            )}
           </div>
         </nav>
       </section>
