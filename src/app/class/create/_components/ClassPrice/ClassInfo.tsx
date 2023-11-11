@@ -8,7 +8,7 @@ const ClassInfo = () => {
   const {
     control,
     formState: { errors },
-    getValues,
+    setValue,
   } = useFormContext();
 
   const { classData, setProcessedClassData } = useClassCreateStore();
@@ -20,6 +20,11 @@ const ClassInfo = () => {
 
   useEffect(() => {
     setDefaultValue({
+      value: classData?.isGroup ? classData?.max! : 1,
+      label: String(classData?.isGroup ? classData?.max! : 1),
+    });
+
+    setValue('max', {
       value: classData?.isGroup ? classData?.max! : 1,
       label: String(classData?.isGroup ? classData?.max! : 1),
     });
@@ -63,7 +68,7 @@ const ClassInfo = () => {
       <Controller
         name="classPrice"
         control={control}
-        defaultValue={classData?.duration}
+        defaultValue={classData?.price}
         rules={{
           required: '가격',
         }}

@@ -10,24 +10,6 @@ const ClassSizeSelect = ({
 }) => {
   const allOptions = createOptions(1, 100);
 
-  useEffect(() => {
-    setMinStudent({
-      select: {
-        value: defaultValue?.min ?? 1,
-        label: String(defaultValue?.min ?? 1),
-      },
-      option: allOptions,
-    });
-
-    setMaxStudent({
-      select: {
-        value: defaultValue?.max ?? 100,
-        label: String(defaultValue?.max ?? 100),
-      },
-      option: allOptions,
-    });
-  }, [defaultValue]);
-
   const { watch, control } = useFormContext();
 
   const isGroupType = watch('lessonType');

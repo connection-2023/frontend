@@ -62,7 +62,7 @@ export interface IGetClassDraft {
     } | null;
     reservationDeadline?: string;
     reservationComment?: string;
-    price?: number;
+    price?: number | string;
     noShowDeposit?: number;
     reviewCount: number;
     stars: number;
@@ -124,7 +124,7 @@ export interface IUpdateClassDraft {
   maxCapacity?: number;
   reservationDeadline?: string;
   reservationComment?: string;
-  price?: number;
+  price?: number | string;
   noShowDeposit?: number;
   schedules?: string[];
   regularSchedules?: {
@@ -157,7 +157,7 @@ export interface IprocessedDraft {
   max?: number;
   reservationDeadline?: number;
   reservationComment?: string;
-  price?: number;
+  price?: number | string;
   noShowDeposit?: number;
   reviewCount?: number;
   stars?: number;

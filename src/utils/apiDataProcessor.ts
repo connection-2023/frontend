@@ -236,8 +236,11 @@ export const classOutputDataProcess = async (
       };
 
     case 4:
-      const { classPrice } = data;
+      const { classPrice, max: priceMax } = data;
 
-      break;
+      return {
+        maxCapacity: priceMax.value,
+        price: classPrice,
+      };
   }
 };
