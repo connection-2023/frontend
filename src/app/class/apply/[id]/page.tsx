@@ -1,5 +1,6 @@
+import { revalidateTag } from 'next/cache';
 import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getClassPost } from '@/lib/apis/classApis';
+import { getClassPost, getClassSchedules } from '@/lib/apis/classApis';
 import ApplySidebar from './_components/ApplySidebar';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
@@ -9,21 +10,22 @@ const ClassApplyPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const classData = await getClassPost(id);
+  revalidateTag('schedules');
+  const classData = getClassPost(id);
+  const classSchedules = getClassSchedules(id);
 
-  if (classData instanceof Error) {
-    console.error(classData.message);
+  const [classInfo, classSchedule] = await Promise.all([
+    classData,
+    classSchedules,
+  ]);
+
+  if (classInfo instanceof Error || classSchedule instanceof Error) {
     return <></>;
   }
 
-  const {
-    title,
-    lectureSchedule,
-    duration,
-    maxCapacity,
-    reservationComment,
-    price,
-  } = classData;
+  const { title, duration, maxCapacity, reservationComment, price } =
+    classInfo.lecture;
+  const { schedule } = classSchedule;
 
   return (
     <main className="grid-auto-rows-2 border-box mx-auto mb-20 flex grid w-full grid-cols-[1fr_2fr_1fr] gap-x-12 px-[4.5rem]">
@@ -54,7 +56,7 @@ const ClassApplyPage = async ({
         </section>
 
         <ReservationInfo
-          schedule={lectureSchedule}
+          schedule={schedule}
           duration={duration}
           maxCapacity={maxCapacity}
         />

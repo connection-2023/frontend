@@ -22,7 +22,7 @@ export const ButtonStyles = {
   default:
     'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 active:bg-sub-color1 active:text-white',
   secondary:
-    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/[.1] active:bg-black active:text-white',
+    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/10 active:bg-black active:text-white',
 };
 
 export const DAY_MODIFIERS = {

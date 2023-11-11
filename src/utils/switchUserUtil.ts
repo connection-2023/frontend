@@ -4,7 +4,7 @@ import { IUserStore } from '@/store/userStore';
 
 export const switchToInstructor = async (store: IUserStore) => {
   try {
-    await getSwitchUserRole();
+    await getSwitchUserRole('lecturer');
 
     const instructorProfile = await getInstructorProfile();
 

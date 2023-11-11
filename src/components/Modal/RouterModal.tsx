@@ -1,19 +1,16 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { CloseSVG } from '@/icons/svg';
 
-interface ModalProps {
-  children: React.ReactNode;
-  isOpened: boolean;
-  handleClosed: () => void;
-}
-const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
+const Modal = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const overlayRef = React.useRef(null);
 
   const handleKeyUp = (e: KeyboardEvent) => {
     if (e.key !== 'Escape') return;
-    handleClosed();
+
+    router.back();
   };
 
   React.useEffect(() => {
@@ -22,17 +19,20 @@ const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
     return () => window.removeEventListener('keyup', handleKeyUp);
   }, []);
 
-  return isOpened ? (
+  return (
     <div
       ref={overlayRef}
-      className="z-modal fixed bottom-0 left-0 right-0 top-0 mx-auto bg-black/60 backdrop-blur-sm"
+      className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto bg-black/60 backdrop-blur-sm"
       onClick={(e) => {
         if (overlayRef.current !== e.target) return;
-        handleClosed();
+        router.back();
       }}
     >
-      <div className="absolute left-1/2 top-1/2 h-auto w-auto -translate-x-1/2 -translate-y-1/2 rounded-md bg-white shadow-float">
-        <button onClick={handleClosed} className="absolute right-2 top-2">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white py-4 shadow-float">
+        <button
+          onClick={() => router.back()}
+          className="absolute right-2 top-2"
+        >
           <CloseSVG
             width="24"
             height="24"
@@ -43,7 +43,7 @@ const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
         {children}
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default Modal;

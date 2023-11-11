@@ -33,6 +33,12 @@ export interface DayTimeList {
   timeSlots: string[];
 }
 
+export type ReviewOrderType =
+  | '최신순'
+  | '좋아요순'
+  | '평점 높은순'
+  | '평점 낮은순';
+
 export interface IClassSchedule {
   id: number;
   lectureId: number;
@@ -41,16 +47,28 @@ export interface IClassSchedule {
   team: null | string;
 }
 
+export interface IClassScheduleResponse {
+  schedule: IClassSchedule[];
+  holidayArr: string[];
+}
+
+export interface IClassInfoResponse {
+  lecture: IClassPostResponse;
+  lecturer: IInstructorProfile;
+}
 export interface IClassPostResponse {
   id: number;
   lecturerId: number;
   lectureTypeId: number;
   lectureMethodId: number;
   isGroup: boolean;
+  startDate: string;
+  endDate: string;
   title: string;
   introduction: string;
   curriculum: string;
   detailAddress: string;
+  locationDescription: string;
   duration: number;
   difficultyLevel: string;
   minCapacity: number;
@@ -62,27 +80,28 @@ export interface IClassPostResponse {
   reviewCount: number;
   stars: number;
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: null | string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: null;
   lectureType: {
     name: string;
   };
   lectureMethod: {
     name: string;
   };
-  lectureReview: IUserReview[];
-  lectureNotification: {
-    notification: string;
-  };
+  lectureNotification: IClassNotification;
+
   lectureImage: IImage[];
-  lectureCouponTarget: any; // 변경 예정
-  lectureSchedule: IClassSchedule[];
-  lectureHoliday: IHoilday[];
   lectureToRegion: IRegion[];
   lectureToDanceGenre: IGenre[];
+}
 
-  lecturer: IInstructorProfile;
+export interface IClassNotification {
+  id: number;
+  lectureId: number;
+  notification: string;
+  updatedAt: string;
+  deletedAt: null;
 }
 
 interface IInstructorProfile {
@@ -92,7 +111,7 @@ interface IInstructorProfile {
 }
 
 interface IHoilday {
-  holiday: Date | string;
+  holiday: string;
 }
 
 interface IImage {

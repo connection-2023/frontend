@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { revalidateTag } from 'next/cache';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -25,6 +26,7 @@ export const POST = async (request: NextRequest) => {
         headers,
         body: JSON.stringify(data),
       }).then((res) => res.json());
+      revalidateTag('schedules');
 
       return NextResponse.json(serverResponse);
     } catch (error) {

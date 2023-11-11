@@ -1,54 +1,72 @@
 import Link from 'next/link';
 import React from 'react';
+import { cookies } from 'next/headers';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
+import { patchPaymentConfirm } from '@/lib/apis/paymentApis';
+import { IPaymentConfirm } from '@/types/payment';
 
-const applicationDetails = [
-  {
-    type: '클래스',
-    content: `"원밀리언 댄스 스튜디오 with리아킴" 에게 배우는 댄스 입문`,
-  },
-  {
-    type: '횟수',
-    content: `(A반)10회`,
-  },
-  {
-    type: '총 금액',
-    content: `200,000원`,
-  },
-  {
-    type: '결제일시',
-    content: `2023.10.23 17:00:55`,
-  },
-  {
-    type: '결제방식',
-    content: `카드 결제`,
-  },
-  {
-    type: '승인번호',
-    content: `2203286`,
-  },
-  {
-    type: '결제금액',
-    content: `200,000원`,
-  },
-  {
-    type: '영수증',
-    content: (
-      <Link
-        href="/class/apply-complete/receipt"
-        className="underline underline-offset-2"
-      >
-        영수증 보기
-      </Link>
-    ),
-  },
-];
-
-const ApplyCompletePage = ({
+const ApplyCompletePage = async ({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string };
 }) => {
+  const { orderId, paymentKey, amount } = searchParams;
+  const cookieStore = cookies();
+
+  const paymentInfo: IPaymentConfirm = {
+    orderId,
+    paymentKey,
+    amount,
+  };
+
+  const userToken = cookieStore.get('userAccessToken')?.value;
+
+  if (!userToken) return;
+  const PaymentData = await patchPaymentConfirm(userToken, paymentInfo);
+  const { orderName, price, updatedAt } = PaymentData;
+
+  const applicationDetails = [
+    {
+      type: '클래스',
+      content: `${orderName}`,
+    },
+    {
+      type: '횟수',
+      content: `(A반)10회`,
+    },
+    {
+      type: '총 금액',
+      content: `${price.toLocaleString()}원`,
+    },
+    {
+      type: '결제일시',
+      content: `2023.10.23 17:00:55`,
+    },
+    {
+      type: '결제방식',
+      content: `카드 결제`,
+    },
+    {
+      type: '승인번호',
+      content: `2203286`,
+    },
+    {
+      type: '결제금액',
+      content: `200,000원`,
+    },
+    {
+      type: '영수증',
+      content: (
+        <Link
+          href="/class/apply-complete/receipt"
+          className="underline underline-offset-2"
+        >
+          영수증 보기
+        </Link>
+      ),
+    },
+  ];
+
   return (
     <div className="flex w-full flex-col items-center whitespace-nowrap">
       <ApplySuccessSVG className="mb-5 mt-6" />

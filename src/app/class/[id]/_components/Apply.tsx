@@ -1,6 +1,5 @@
 'use client';
-import { format, parseISO, addMinutes } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { parseISO } from 'date-fns';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -9,6 +8,7 @@ import ReservationItem from './apply/ReservationItem';
 import SelectBox from './apply/SelectBox';
 import ApplyButton from '@/components/Button/ApplyButton';
 import { IClassSchedule, IDateTime } from '@/types/class';
+import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 
 interface ApplyProps {
   schedule: IClassSchedule[];
@@ -30,13 +30,18 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
     (sum, schedule) => sum + schedule.count,
     0,
   );
-  const formattedData = schedule.map((list) => {
+
+  const scheduleLists = applyScheduleFilter(schedule, maxCapacity);
+
+  const formattedData = scheduleLists.map((list) => {
     const datetime = parseISO(list.startDateTime);
+    const space =
+      list.numberOfParticipants === maxCapacity
+        ? '마감'
+        : `${list.numberOfParticipants}/${maxCapacity}명`;
     return {
       lectureScheduleId: list.id,
-      dateTime: `${formatDateTime(datetime, duration)} (${
-        list.numberOfParticipants
-      }/${maxCapacity})명`,
+      dateTime: `${formatDateTime(datetime, duration)} (${space})`,
     };
   });
 
@@ -56,7 +61,9 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
       const newValue = {
         lectureScheduleId: selectedSchedule.id,
         lectureId: selectedSchedule.lectureId,
-        dateTime: getFormattedDateTime(selectedDateTime),
+        dateTime: selectedDateTime
+          .slice(0, selectedDateTime.lastIndexOf('('))
+          .trim(),
         space: {
           total: maxCapacity,
           current: selectedSchedule.numberOfParticipants,
@@ -105,7 +112,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
   };
 
   const handleApply = () => {
-    if (!isOpened) {
+    if (!isOpened && window.innerWidth < 768) {
       setIsOpened(true);
       return;
     }
@@ -127,7 +134,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
       ref={modalRef}
       className="flex min-h-[5.5rem] w-full flex-col items-center rounded-t-lg bg-white px-4 py-3.5 shadow-vertical md:min-h-0 md:items-stretch md:p-0 md:shadow-none"
     >
-      <div className="sticky top-20 mt-5 hidden w-full flex-col whitespace-nowrap border pr-2 md:flex">
+      <div className="sticky top-20 mt-5 hidden w-full flex-col whitespace-nowrap pr-2 md:flex">
         <div className="mb-3 flex w-full flex-col gap-2">
           <SelectBox
             lists={formattedData.map((item) => item.dateTime)}
@@ -195,28 +202,13 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
             {totalCount > 1 ? `총 ${totalCount}회` : '1회'}
           </span>
           <span className="text-xl">
-            {' '}
             {(totalCount > 1 ? price * totalCount : price).toLocaleString()}원
           </span>
         </p>
-        <button
-          onClick={handleApply}
-          className="flex h-10 w-full items-center justify-center rounded-md bg-main-color text-white"
-        >
-          신청하기
-        </button>
+        <ApplyButton label="신청하기" onClick={handleApply} />
       </div>
     </div>
   );
 };
 
 export default Apply;
-
-const formatDateTime = (datetime: Date, duration: number) => {
-  const endDatetime = addMinutes(datetime, duration);
-  const formattedStartDatetime = format(datetime, 'M월 d일 (eee) HH:mm', {
-    locale: ko,
-  });
-  const formattedEndDatetime = format(endDatetime, 'HH:mm');
-  return `${formattedStartDatetime}-${formattedEndDatetime}`;
-};

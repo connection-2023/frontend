@@ -19,6 +19,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@channel.io/channel-web-sdk-loader": "^1.1.3",
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-table": "^8.10.6",
     "@tosspayments/payment-widget-sdk": "^0.10.0",

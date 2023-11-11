@@ -1,8 +1,9 @@
 'use client';
-import { format, parseISO, isSameDay, addMinutes } from 'date-fns';
-import ko from 'date-fns/locale/ko';
+import { isSameDay } from 'date-fns';
 import React, { useState } from 'react';
 import ScheduleCalendar from '../Calendar/SingleCalendar';
+import { IClassSchedule } from '@/types/class';
+import { formatDateTime } from '@/utils/parseUtils';
 
 const textStyle = {
   normal: 'text-sub-color3',
@@ -17,8 +18,9 @@ interface ISchedule {
   team: null | string;
 }
 
+
 interface ScheduleViewProps {
-  lectureSchedule: ISchedule[];
+  lectureSchedule: IClassSchedule[];
   maxCapacity: number;
   duration: number;
 }
@@ -60,46 +62,35 @@ const ScheduleView = ({
 
 export default React.memo(ScheduleView);
 
+const textStyle = {
+  normal: 'text-gray-100',
+  full: 'text-gray-300',
+};
+
 const formatSchedule = (
   clickDate: Date | undefined,
   duration: number,
-  schedule: ISchedule,
+  schedule: IClassSchedule,
   maxCapacity: number,
 ) => {
-  if (!clickDate || !isSameDay(clickDate, new Date(schedule.startDateTime)))
-    return;
+  const scheduleDate = new Date(schedule.startDateTime);
+  if (!clickDate || !isSameDay(clickDate, scheduleDate)) return;
 
-  const date = parseISO(schedule.startDateTime);
-  const endDate = addMinutes(date, duration);
-  const formattedStartDate = format(date, 'MM.dd (E) HH:mm', { locale: ko });
-  const formattedEndDate = format(endDate, 'HH:mm', { locale: ko });
-
-  return (
-    <ScheduleList
-      key={schedule.id}
-      dateTime={`${formattedStartDate} - ${formattedEndDate}`}
-      current={schedule.numberOfParticipants}
-      total={maxCapacity}
-    />
-  );
-};
-interface IScheduleListProps {
-  dateTime: string;
-
-  current: number;
-  total: number;
-}
-
-const ScheduleList = ({ dateTime, current, total }: IScheduleListProps) => {
-  const mode = current === total ? 'full' : 'normal';
-
+  const formattedDateTime = formatDateTime(scheduleDate, duration);
+  const mode =
+    schedule.numberOfParticipants === maxCapacity ? 'full' : 'normal';
   return (
     <li
-      className={`border-box flex h-[2.8125rem] w-full items-center justify-between rounded-[0.31rem] border border-solid
-    border-[#D8D8D8] px-[1.62rem] md:max-w-[16.8125rem] ${textStyle[mode]} text-sm font-medium`}
+      key={schedule.id}
+      className={`border-box flex h-[2.8125rem] w-full items-center justify-between rounded-md border border-solid
+    border-gray-700 px-6 md:max-w-[16.8125rem] ${textStyle[mode]} text-sm font-medium`}
     >
-      <p>{dateTime}</p>
-      <p>{mode === 'normal' ? `(${current}/${total}명)` : '(인원마감)'}</p>
+      <p>{formattedDateTime}</p>
+      <p>
+        {mode === 'normal'
+          ? `(${schedule.numberOfParticipants}/${maxCapacity}명)`
+          : '(인원마감)'}
+      </p>
     </li>
   );
 };

@@ -1,29 +1,49 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
-import { StarSVG, ArrowUpSVG } from '@/icons/svg';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
-import { IUserReview } from '@/types/class';
+import { IUserReview, ReviewOrderType } from '@/types/class';
+import { StarSVG, ArrowUpSVG } from '@/icons/svg';
+import { getClassReviews } from '@/lib/apis/classApis';
 
-const filterOption = ['최신순', '좋아요순', '평점 높은순', '평점 낮은순'];
+const filterOption: ReviewOrderType[] = [
+  '최신순',
+  '좋아요순',
+  '평점 높은순',
+  '평점 낮은순',
+];
 
 interface ClassReviewSectionProps {
+  id: string;
   classTitle: string;
   reviewCount: number;
   stars: number;
-  userReviews: IUserReview[];
 }
 
 const ClassReviewSection = ({
+  id,
   classTitle,
   reviewCount,
   stars,
-  userReviews,
 }: ClassReviewSectionProps) => {
   const [isListOpened, setIsListOpened] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('최신순');
+  const [selectedOption, setSelectedOption] =
+    useState<ReviewOrderType>('최신순');
+  const [userReviews, setUserReviews] = useState<IUserReview[]>([]);
   const modalRef = useRef(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getClassReviews(id, selectedOption);
+      if (data instanceof Error) {
+        return;
+      }
+      setUserReviews(data);
+    };
+
+    fetchData();
+  }, [selectedOption]);
 
   useClickAway(modalRef, () => {
     setIsListOpened(false);
@@ -33,7 +53,7 @@ const ClassReviewSection = ({
     setIsListOpened(!isListOpened);
   };
 
-  const onClickList = (listValue: string) => {
+  const onClickList = (listValue: ReviewOrderType) => {
     setSelectedOption(listValue);
     setIsListOpened(false);
   };
@@ -74,7 +94,7 @@ const ClassReviewSection = ({
             isListOpened ? 'flex flex-col' : 'hidden'
           } absolute right-0 top-8 cursor-pointer divide-y divide-solid divide-gray-700 border border-solid border-black bg-white text-sm font-medium text-gray-300`}
         >
-          {filterOption.map((list: string) => (
+          {filterOption.map((list: ReviewOrderType) => (
             <li
               key={list}
               className={`flex h-7 items-center gap-2 px-2 hover:bg-gray-900 ${
