@@ -12,7 +12,7 @@ const Close = () => {
       width={24}
       height={24}
       onClick={onClickClose}
-      className="cursor-pointer stroke-sub-color2 stroke-2"
+      className="cursor-pointer stroke-gray-500 stroke-2"
     />
   );
 };

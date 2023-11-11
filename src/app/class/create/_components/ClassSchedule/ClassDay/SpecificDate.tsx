@@ -136,7 +136,7 @@ const SpecificDate = () => {
           {state.selectableDates && (
             <InputClassDates
               clickableDates={state.selectableDates}
-              handleSelectedDate={handleSelectedDate}
+              handleClickDate={handleSelectedDate}
             />
           )}
           {state.selectedDate && (
@@ -152,7 +152,7 @@ const SpecificDate = () => {
                 </div>
                 <button
                   onClick={clearTimeSlot}
-                  className="flex items-start whitespace-nowrap text-sm font-semibold text-sub-color2 underline"
+                  className="flex items-start whitespace-nowrap text-sm font-semibold text-gray-500 underline"
                 >
                   전체 삭제
                 </button>
@@ -213,7 +213,7 @@ const TimeSlotManager = ({
 
       <button
         onClick={addTimeSlot}
-        className="mt-2 flex w-full justify-end text-sm font-bold text-sub-color2"
+        className="mt-2 flex w-full justify-end text-sm font-bold text-gray-500"
       >
         + 시간추가
       </button>

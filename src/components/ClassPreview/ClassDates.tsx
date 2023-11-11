@@ -1,28 +1,29 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useClickAway } from 'react-use';
 import { CalendarSVG } from '@/icons/svg';
 import BasicCalendar from '../Calendar/BasicCalendar';
 
 const ClassDates = ({ selectedDates }: { selectedDates: Date[] }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const calendarRef = useRef(null);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+  useClickAway(calendarRef, () => {
+    setShowCalendar(false);
+  });
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
   return (
-    <div className="relative ">
+    <div ref={calendarRef}>
       <CalendarSVG
+        onClick={() => setShowCalendar((prev) => !prev)}
         width="1.875rem"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="ml-2 mr-1.5 cursor-pointer fill-sub-color2 hover:fill-main-color "
+        className={`ml-2 mr-1.5 cursor-pointer ${
+          showCalendar ? 'fill-main-color' : 'fill-gray-500'
+        } hover:fill-main-color`}
       />
-      {isHovered && (
-        <div className="absolute z-10 bg-white ">
+
+      {showCalendar && (
+        <div className="absolute z-10 overflow-hidden rounded-lg bg-white p-3.5 shadow-horizontal">
           <BasicCalendar mode="preview" selectedDates={selectedDates} />
         </div>
       )}

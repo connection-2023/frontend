@@ -12,7 +12,7 @@ export default function ClassCreateLayout({
 }) {
   return (
     <>
-      <h1 className="mx-auto mb-6 flex w-full max-w-[1440px] items-center justify-center py-4 text-2xl font-bold shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]">
+      <h1 className="mx-auto mb-6 flex w-full items-center justify-center py-4 text-2xl font-bold shadow-float">
         클래스 신청하기
       </h1>
       {children}

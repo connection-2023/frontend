@@ -69,7 +69,7 @@ const Nav = ({ sections }: { sections: NavSection[] }) => {
           className={`${
             activeSection === id
               ? 'text-sub-color1 underline underline-offset-8'
-              : 'text-sub-color2'
+              : 'text-gray-500'
           }`}
         >
           {label}

@@ -131,7 +131,7 @@ const CustomEditor = ({
         >
           {title}
         </h2>
-        {minLength !== 0 && <p className="text-sub-color2">(필수)</p>}
+        {minLength !== 0 && <p className="text-gray-500">(필수)</p>}
       </label>
 
       <div className="w-full">
@@ -179,7 +179,7 @@ const CustomEditor = ({
         />
       </div>
 
-      <p className="absolute -bottom-1 right-3 z-10 flex gap-1 text-sub-color2">
+      <p className="absolute -bottom-1 right-3 z-10 flex gap-1 text-gray-500">
         (
         <span className={`${textLength < minLength && 'text-main-color'}`}>
           {textLength}

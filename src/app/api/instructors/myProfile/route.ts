@@ -8,16 +8,12 @@ if (!END_POINT) {
 }
 
 export const GET = async (request: NextRequest) => {
-  const cookies = request.headers.get('cookie');
+  const token = request.cookies.get('lecturerAccessToken');
 
-  let tokenValue = '';
-  if (cookies) {
-    const [cookieName, cookieValue] = cookies.split('=');
+  if (!token)
+    return new NextResponse('토큰이 존재하지 않습니다! ', { status: 500 });
 
-    if (cookieName === 'lecturerAccessToken') {
-      tokenValue = cookieValue.trim();
-    }
-  }
+  const tokenValue = token.value;
 
   const headers: Record<string, string> = {
     Authorization: `Bearer ${tokenValue}`,

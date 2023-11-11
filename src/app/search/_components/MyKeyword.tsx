@@ -11,7 +11,7 @@ const MyKeyword = ({ userKeywords }: { userKeywords: string[] }) => {
           최근 검색어
         </h1>
         <button
-          className="text-sm text-sub-color2 underline"
+          className="text-sm text-gray-500 underline"
           onClick={onClickRemoveAll}
         >
           전체삭제

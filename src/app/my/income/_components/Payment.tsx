@@ -45,8 +45,8 @@ const Payment = () => {
   });
 
   return (
-    <div className="flex w-full max-w-[40rem] flex-col gap-7 text-sub-color3 ">
-      <section className="rounded-admin bg-white p-5 shadow-float">
+    <div className="flex w-full max-w-[40rem] flex-col gap-7 text-gray-100 ">
+      <section className="rounded-lg bg-white p-5 shadow-float">
         <div
           className={`mb-2 flex w-full ${
             data.length === 0 && 'flex-col'
@@ -59,7 +59,7 @@ const Payment = () => {
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
               }}
-              className="h-7 w-[5.75rem] border border-solid border-sub-color2"
+              className="h-7 w-[5.75rem] border border-solid border-gray-500"
             >
               {[10, 20, 30, 40, 50].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
@@ -68,14 +68,14 @@ const Payment = () => {
               ))}
             </select>
           ) : (
-            <div className="mt-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-sub-color3">
+            <div className="mt-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
               <NotFoundSVG />
               <p>정산 내역이 없습니다!</p>
             </div>
           )}
         </div>
         {data.length > 0 && (
-          <table className="mb-5 box-border w-full border-collapse border border-solid border-sub-color2">
+          <table className="mb-5 box-border w-full border-collapse border border-solid border-gray-500">
             <thead className="flex w-full border-collapse text-left text-sm font-semibold">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
@@ -86,7 +86,7 @@ const Payment = () => {
                     return (
                       <th
                         key={header.id}
-                        className={`flex items-center justify-start border-l border-solid border-sub-color2 px-2 py-[0.81rem] ${getCellWidth(
+                        className={`flex items-center justify-start border-l border-solid border-gray-500 px-2 py-[0.81rem] ${getCellWidth(
                           index,
                         )}`}
                       >
@@ -120,13 +120,13 @@ const Payment = () => {
                 return (
                   <tr
                     key={row.id}
-                    className="flex w-full flex-nowrap justify-between whitespace-nowrap border-t border-solid border-sub-color2"
+                    className="flex w-full flex-nowrap justify-between whitespace-nowrap border-t border-solid border-gray-500"
                   >
                     {row.getVisibleCells().map((cell, index) => {
                       return (
                         <td
                           key={cell.id}
-                          className={`border-l border-solid border-sub-color2 px-2 py-[0.81rem] ${getCellWidth(
+                          className={`border-l border-solid border-gray-500 px-2 py-[0.81rem] ${getCellWidth(
                             index,
                           )}`}
                         >

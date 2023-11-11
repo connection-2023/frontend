@@ -63,7 +63,7 @@ const ClassPrice = () => {
           changeCouponList={changeCouponList}
         />
 
-        {isCouponSectionOpen && <hr className="border-sub-color2" />}
+        {isCouponSectionOpen && <hr className="border-gray-500" />}
 
         <AppliedCouponDisplay
           isCouponSectionOpen={isCouponSectionOpen}

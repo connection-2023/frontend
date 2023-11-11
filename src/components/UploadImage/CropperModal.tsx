@@ -72,7 +72,7 @@ const CropperModal = ({
           width={24}
           height={24}
           onClick={closeModal}
-          className="absolute right-2 cursor-pointer stroke-sub-color2 stroke-2"
+          className="absolute right-2 cursor-pointer stroke-gray-500 stroke-2"
         />
       </div>
 
@@ -95,7 +95,7 @@ const CropperModal = ({
         <div className="flex">
           <button
             onClick={handleReset}
-            className="mr-5 flex items-center text-lg font-bold text-sub-color2"
+            className="mr-5 flex items-center text-lg font-bold text-gray-500"
           >
             <ResetSVG className="mr-2" /> 되돌리기
           </button>
@@ -108,7 +108,7 @@ const CropperModal = ({
         </div>
         <button
           onClick={handleApply}
-          className="h-9 w-[5.3125rem] rounded-[0.31rem] bg-sub-color1 text-lg font-bold text-white"
+          className="h-9 w-[5.3125rem] rounded-md bg-sub-color1 text-lg font-bold text-white"
         >
           적용하기
         </button>

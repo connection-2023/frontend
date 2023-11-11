@@ -128,7 +128,7 @@ const DayByDay = () => {
 
   const getDayStyle = (day: string, list: DayTimeList) => {
     const baseClass =
-      'flex h-[34px] w-[34px] items-center justify-center rounded-full border border-solid text-sm  text-sub-color2';
+      'flex h-[34px] w-[34px] items-center justify-center rounded-full border border-solid text-sm  text-gray-500';
     const styles = {
       selected: 'cursor-pointer bg-sub-color1 font-bold text-white',
       clickable: 'cursor-pointer font-medium',
@@ -179,7 +179,7 @@ const DayByDay = () => {
               </ul>
               <button
                 onClick={() => addNewTimeSlot(listIndex)}
-                className="mt-2 flex w-full justify-end text-sm font-bold text-sub-color2"
+                className="mt-2 flex w-full justify-end text-sm font-bold text-gray-500"
               >
                 + 시간 추가
               </button>
@@ -213,7 +213,7 @@ const getButtonClass = (
 
   const isDisabled =
     !isEveryListHasDay || FILTER_WEEK.length === allSelectedDays.length;
-  const colorClass = isDisabled ? 'text-sub-color2' : 'black';
+  const colorClass = isDisabled ? 'text-gray-500' : 'black';
 
   return `${baseClass} ${colorClass}`;
 };

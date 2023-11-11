@@ -25,7 +25,7 @@ const ReportModal = ({ isOpen, closeModal }: ReportModalProps) => {
       ariaHideApp={false}
       shouldCloseOnOverlayClick={true}
     >
-      <ul className="flex w-full flex-col border-b border-solid border-sub-color4 px-[1.13rem] py-4 text-sm font-semibold text-[#969696]">
+      <ul className="flex w-full flex-col border-b border-solid border-gray-700 px-[1.13rem] py-4 text-sm font-semibold text-gray-300">
         <li className="flex gap-3">
           <p className="w-20">신고한 회원</p>
           <span className="font-medium">{reportedUser}</span>
@@ -37,18 +37,18 @@ const ReportModal = ({ isOpen, closeModal }: ReportModalProps) => {
         <li className="mt-3 flex">{detail}</li>
       </ul>
 
-      <div className="mb-3 w-full border-b border-solid border-sub-color4 px-[1.13rem] py-4 text-sm">
-        <p className="mb-2 font-semibold text-sub-color3">관리자 답변</p>
+      <div className="mb-3 w-full border-b border-solid border-gray-700 px-[1.13rem] py-4 text-sm">
+        <p className="mb-2 font-semibold text-gray-100">관리자 답변</p>
         <p>{response}</p>
       </div>
 
       <div className="mb-4 flex w-full gap-3 px-[1.13rem] text-sm font-semibold">
-        <button className="h-7 w-1/2 rounded-[0.31rem] bg-sub-color2 text-white">
+        <button className="h-7 w-1/2 rounded-md bg-gray-500 text-white">
           추가 문의하기
         </button>
         <button
           onClick={closeModal}
-          className="h-7 w-1/2 rounded-[0.31rem] bg-black text-white"
+          className="h-7 w-1/2 rounded-md bg-black text-white"
         >
           확인
         </button>

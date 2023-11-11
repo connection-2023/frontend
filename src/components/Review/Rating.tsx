@@ -48,7 +48,7 @@ const Rating = ({ rate, handleRate }: IRatingProps) => {
               className={`${
                 Math.max(selectedStar, hoveredStar) >= index + 1
                   ? 'fill-sub-color1'
-                  : 'fill-[#D8D8D8]'
+                  : 'fill-gray-700'
               } cursor-pointer`}
             />
           ))}

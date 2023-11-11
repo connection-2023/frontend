@@ -22,7 +22,7 @@ const InstructorIntroduction = () => {
     <main className="my-10 flex flex-col gap-10">
       <section
         id="profileImageUrls"
-        className="flex w-full flex-col border-b border-solid border-sub-color2 pb-10"
+        className="flex w-full flex-col border-b border-solid border-gray-500 pb-10"
       >
         <Controller
           name="profileImageUrls"
@@ -93,7 +93,7 @@ const InstructorIntroduction = () => {
         <input
           id="affiliation"
           type="text"
-          className="rounded-[0.31rem] px-4 py-2 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
+          className="rounded-md px-4 py-2 outline outline-1 outline-gray-500 focus:outline-sub-color1"
           placeholder="현재 속하고 있는 크루, 학원명 등을 적어주세요."
           {...register('affiliation')}
         />
@@ -120,7 +120,7 @@ const InstructorIntroduction = () => {
           >
             프로필에서 보여질 강사 인스타그램 게시물의 링크를 설정해주세요.
           </h2>
-          <p className="text-sub-color2">*최대 3개까지 표시 가능합니다.</p>
+          <p className="text-gray-500">*최대 3개까지 표시 가능합니다.</p>
         </label>
 
         {Array.from({ length: 3 }).map((_, index) => (
@@ -128,7 +128,7 @@ const InstructorIntroduction = () => {
             key={index}
             id={'link' + index}
             type="text"
-            className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
+            className="h-6 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1"
             placeholder="게시물 주소 입력"
             {...register('instagramPostUrls' + index, {
               pattern: {
@@ -187,7 +187,7 @@ const IntroductionSection = ({
       }`}
     >
       <h2>{title}</h2>
-      {required && <p className="text-sub-color2">(필수)</p>}
+      {required && <p className="text-gray-500">(필수)</p>}
     </label>
     {children}
   </section>
@@ -226,7 +226,7 @@ const SNSItem = ({
       <input
         id={dataName}
         type="text"
-        className="h-6 flex-grow rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
+        className="h-6 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1"
         placeholder={placeholder}
         {...register(dataName)}
       />

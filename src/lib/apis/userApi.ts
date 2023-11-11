@@ -1,9 +1,10 @@
 import { DOMAIN } from '@/constants/constants';
+import { userType } from '@/types/auth';
 
 export const checkUserNickname = async (nickname: string) => {
   try {
     const res = await fetch(
-      `api/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+      `api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
     );
 
     return res;
@@ -83,13 +84,16 @@ export const postProfileImage = async (image: File) => {
   return response;
 };
 
-export const getSwitchUserRole = async () => {
-  const response = await fetch(`${DOMAIN}/api/auth/switch-user`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
+export const getSwitchUserRole = async (userType: userType) => {
+  const response = await fetch(
+    `${DOMAIN}/api/auth/switch-user?userType=${userType}`,
+    {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-  }).then((data) => data.json());
+  ).then((data) => data.json());
 
   return response;
 };

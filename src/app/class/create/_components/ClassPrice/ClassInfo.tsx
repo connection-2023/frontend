@@ -37,12 +37,12 @@ const ClassInfo = () => {
 
   return (
     <section className="mt-3 flex flex-col text-lg font-semibold">
-      <div className="flex h-16 items-center border-b border-solid border-sub-color2">
+      <div className="flex h-16 items-center border-b border-solid border-gray-500">
         <h2 className="w-1/4">총 클래스 횟수</h2>
         <div>{classData?.totalClasses}회</div>
       </div>
 
-      <div className="flex h-16 items-center border-b border-solid border-sub-color2">
+      <div className="flex h-16 items-center border-b border-solid border-gray-500">
         <h2 className="w-1/4">1회 최대 수강생</h2>
         <Controller
           name="max"

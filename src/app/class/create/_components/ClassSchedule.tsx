@@ -1,11 +1,6 @@
 import { parse, format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import {
-  Controller,
-  FieldErrors,
-  FieldValues,
-  useFormContext,
-} from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { dummyClass } from '@/constants/dummy';
 import { classTimeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
@@ -200,7 +195,8 @@ const ClassSchedule = () => {
           {/* 추가된 클래스  lectureSchedule 데이터 가공 구현 예정 */}
           {classDates && (
             <ScheduleView
-              clickableDates={classDates}
+              maxCapacity={12}
+              duration={120}
               lectureSchedule={lectureSchedule}
             />
           )}
@@ -212,7 +208,7 @@ const ClassSchedule = () => {
           defaultValue={classData?.reservationComment}
           {...register('reservationComment')}
           placeholder={`수강생이 클래스 신청시 예약 화면에서 보여지는 사항입니다. \n클래스를 시작하기 전 숙지해야 할 사항을 적어주세요`}
-          className="h-32 w-full resize-none whitespace-pre-wrap break-keep rounded-[0.31rem] border border-solid border-sub-color4 p-[0.62rem]"
+          className="h-32 w-full resize-none whitespace-pre-wrap break-keep rounded-md border border-solid border-gray-700 p-[0.62rem]"
         />
       </Section>
     </>

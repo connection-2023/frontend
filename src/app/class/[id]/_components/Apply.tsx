@@ -1,130 +1,212 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { parseISO } from 'date-fns';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
+import { useClickAway } from 'react-use';
 import ReservationItem from './apply/ReservationItem';
 import SelectBox from './apply/SelectBox';
-import { Button } from '@/components/Button/Button';
-import { DateTime } from '@/types/class';
+import ApplyButton from '@/components/Button/ApplyButton';
+import { IClassSchedule, IDateTime } from '@/types/class';
+import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 
-/* Mock data */
-type DateTimeData = {
-  [date: string]: {
-    time: string[];
-  };
-};
-
-const dateTimeData: DateTimeData = {
-  '09월 09일 (토)': {
-    time: ['11:00-12:00', '14:00-15:00'],
-  },
-  '09월 11일 (월)': {
-    time: ['10:00-11:00', '13:00-14:00'],
-  },
-};
-
-interface IApplyProps {
-  coupon: number;
-  price: {
-    origin: string;
-    discount: string;
-  };
+interface ApplyProps {
+  schedule: IClassSchedule[];
+  price: number;
+  maxCapacity: number;
+  duration: number;
 }
-const Apply = ({ coupon, price }: IApplyProps) => {
-  const [selectedDatetimes, setSelectedDatetimes] = useState<DateTime[]>([]);
-  const [selectedDate, setSelectedDate] = useState('날짜 선택');
-  const [selectedTime, setSelectedTime] = useState('시간 선택');
 
-  useEffect(() => {
-    if (selectedDate !== '날짜 선택' && selectedTime !== '시간 선택') {
+const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const pathnameParts = pathname.split('/class/');
+  const id = pathnameParts[1];
+  const [isOpened, setIsOpened] = useState(false);
+  const modalRef = useRef(null);
+  const [selectedSchedules, setSelectedSchedules] = useState<IDateTime[]>([]);
+  const [selectedDateTime, setSelectedDateTime] = useState('날짜 및 시간 선택');
+  const totalCount = selectedSchedules.reduce(
+    (sum, schedule) => sum + schedule.count,
+    0,
+  );
+
+  const scheduleLists = applyScheduleFilter(schedule, maxCapacity);
+
+  const formattedData = scheduleLists.map((list) => {
+    const datetime = parseISO(list.startDateTime);
+    const space =
+      list.numberOfParticipants === maxCapacity
+        ? '마감'
+        : `${list.numberOfParticipants}/${maxCapacity}명`;
+    return {
+      lectureScheduleId: list.id,
+      dateTime: `${formatDateTime(datetime, duration)} (${space})`,
+    };
+  });
+
+  const getFormattedDateTime = (selectedDateTime: string) =>
+    selectedDateTime.slice(0, selectedDateTime.lastIndexOf('(')).trim();
+
+  const addSelectedSchedule = (selectedDateTime: string) => {
+    const selectedSchedule = schedule.find((item) => {
+      const datetime = parseISO(item.startDateTime);
+      return (
+        formatDateTime(datetime, duration) ===
+        getFormattedDateTime(selectedDateTime)
+      );
+    });
+
+    if (selectedSchedule) {
       const newValue = {
-        date: `${selectedDate} ${selectedTime}`,
-        space: { total: 8, current: 3 },
+        lectureScheduleId: selectedSchedule.id,
+        lectureId: selectedSchedule.lectureId,
+        dateTime: selectedDateTime
+          .slice(0, selectedDateTime.lastIndexOf('('))
+          .trim(),
+        space: {
+          total: maxCapacity,
+          current: selectedSchedule.numberOfParticipants,
+        },
         count: 1,
       };
 
-      const isDuplicate = selectedDatetimes.some((value) => {
-        return value.date === newValue.date;
+      const isDuplicate = selectedSchedules.some((value) => {
+        return value.dateTime === newValue.dateTime;
       });
 
-      if (!isDuplicate) {
-        setSelectedDatetimes([...selectedDatetimes, newValue]);
-      }
-      setSelectedDate('날짜 선택');
-      setSelectedTime('시간 선택');
-    }
-  }, [selectedDate, selectedTime]);
-
-  const onSelect = (type: string, listValue: string) => {
-    if (type === 'date') {
-      setSelectedDate(listValue);
-    } else {
-      setSelectedTime(listValue);
+      if (isDuplicate) return;
+      setSelectedSchedules([...selectedSchedules, newValue]);
     }
   };
 
-  const removeReservationItem = (date: string) => {
-    setSelectedDatetimes((prevDatetimes) =>
-      prevDatetimes.filter((datetime) => datetime.date !== date),
+  useClickAway(modalRef, () => {
+    setIsOpened(false);
+  });
+
+  useEffect(() => {
+    if (selectedDateTime !== '날짜 및 시간 선택') {
+      addSelectedSchedule(selectedDateTime);
+      setSelectedDateTime('날짜 및 시간 선택');
+    }
+  }, [selectedDateTime]);
+
+  const onSelect = (listValue: string) => {
+    setSelectedDateTime(listValue);
+  };
+
+  const removeReservationItem = (id: number) => {
+    setSelectedSchedules((prevDatetimes) =>
+      prevDatetimes.filter((datetime) => datetime.lectureScheduleId !== id),
     );
   };
 
-  const updateCount = (date: string, newCount: number) => {
-    setSelectedDatetimes((prevDatetimes) =>
+  const updateCount = (id: number, newCount: number) => {
+    setSelectedSchedules((prevDatetimes) =>
       prevDatetimes.map((datetime) =>
-        datetime.date === date ? { ...datetime, count: newCount } : datetime,
+        datetime.lectureScheduleId === id
+          ? { ...datetime, count: newCount }
+          : datetime,
       ),
     );
   };
 
+  const handleApply = () => {
+    if (!isOpened && window.innerWidth < 768) {
+      setIsOpened(true);
+      return;
+    }
+
+    if (selectedSchedules.length === 0) {
+      toast.error('한 개 이상의 클래스를 선택해주세요!');
+      return;
+    }
+
+    const queryString = selectedSchedules
+      .map((item) => `count=${item.lectureScheduleId}-${item.count}`)
+      .join('&');
+
+    router.push(`/class/apply/${id}?${queryString}`);
+  };
+
   return (
-    <div className="sticky top-20 mt-5 flex w-full flex-col whitespace-nowrap border pr-2">
-      <div className="mb-3 flex w-full flex-col gap-2">
-        <SelectBox
-          type="date"
-          lists={Object.keys(dateTimeData)}
-          onSelect={onSelect}
-          selected={selectedDate}
-        />
-        {selectedDate in dateTimeData && (
+    <div
+      ref={modalRef}
+      className="flex min-h-[5.5rem] w-full flex-col items-center rounded-t-lg bg-white px-4 py-3.5 shadow-vertical md:min-h-0 md:items-stretch md:p-0 md:shadow-none"
+    >
+      <div className="sticky top-20 mt-5 hidden w-full flex-col whitespace-nowrap pr-2 md:flex">
+        <div className="mb-3 flex w-full flex-col gap-2">
           <SelectBox
-            type="time"
-            lists={dateTimeData[selectedDate].time}
+            lists={formattedData.map((item) => item.dateTime)}
             onSelect={onSelect}
-            selected={selectedTime}
+            selected={selectedDateTime}
           />
-        )}
-      </div>
-      <div className="flex flex-col gap-2">
-        {selectedDate &&
-          selectedTime &&
-          selectedDatetimes.map((dateTime) => (
+        </div>
+        <div className="hidden flex-col gap-2 md:flex">
+          {selectedSchedules.map((dateTime) => (
             <ReservationItem
-              key={dateTime.date}
-              date={dateTime.date}
+              key={dateTime.lectureScheduleId}
+              lectureScheduleId={dateTime.lectureScheduleId}
+              dateTime={dateTime.dateTime}
               space={dateTime.space}
               count={dateTime.count}
-              onRemove={() => removeReservationItem(dateTime.date)}
-              countUpdate={(newCount) => updateCount(dateTime.date, newCount)}
+              onRemove={() => removeReservationItem(dateTime.lectureScheduleId)}
+              countUpdate={updateCount}
             />
           ))}
+        </div>
+
+        {/* 가격 */}
+        <div className="mb-4 mt-7 hidden w-full justify-between md:flex">
+          <span className="text-xl font-bold">
+            {totalCount > 1 ? `총 ${totalCount}회` : '1회'}
+          </span>
+          <span className="text-xl font-bold">
+            {(totalCount > 1 ? price * totalCount : price).toLocaleString()}원
+          </span>
+        </div>
+
+        <ApplyButton label="신청하기" onClick={handleApply} />
       </div>
-      {/* 사용 가능 쿠폰 -- 기능 추가 필요 */}
-      <button className="mt-2 flex w-full justify-end text-sm text-sub-color1">
-        사용 가능 쿠폰 ({coupon})
-      </button>
-      {/* 가격 */}
-      <div className="mb-4 mt-7 flex w-full justify-between">
-        <span className="text-xl font-bold">1회</span>
-        <span>
-          <s className="mr-[0.88rem] text-base font-bold text-sub-color2">
-            {price.origin}원
-          </s>
-          <span className="text-xl font-bold">{price.discount}원</span>
-        </span>
+
+      {isOpened && (
+        <>
+          <div className="mb-3 flex w-full flex-col gap-2 md:hidden">
+            <SelectBox
+              lists={formattedData.map((item) => item.dateTime)}
+              onSelect={onSelect}
+              selected={selectedDateTime}
+            />
+          </div>
+          <div className="mb-11 flex w-full flex-col gap-2 md:hidden">
+            {selectedSchedules.map((dateTime) => (
+              <ReservationItem
+                key={dateTime.lectureScheduleId}
+                lectureScheduleId={dateTime.lectureScheduleId}
+                dateTime={dateTime.dateTime}
+                space={dateTime.space}
+                count={dateTime.count}
+                onRemove={() =>
+                  removeReservationItem(dateTime.lectureScheduleId)
+                }
+                countUpdate={updateCount}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      <div className="flex w-full items-center justify-between gap-12 font-semibold md:hidden">
+        <p className="flex max-w-[6rem] gap-x-[0.69rem] whitespace-nowrap">
+          <span className="text-lg text-gray-500">
+            {totalCount > 1 ? `총 ${totalCount}회` : '1회'}
+          </span>
+          <span className="text-xl">
+            {(totalCount > 1 ? price * totalCount : price).toLocaleString()}원
+          </span>
+        </p>
+        <ApplyButton label="신청하기" onClick={handleApply} />
       </div>
-      {/* 신청하기 버튼 -- 기능 추가 필요 */}
-      <Button primary={true} mode="default" size="large" onClick={() => {}}>
-        신청하기
-      </Button>
     </div>
   );
 };

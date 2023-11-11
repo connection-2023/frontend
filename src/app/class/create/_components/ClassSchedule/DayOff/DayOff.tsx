@@ -9,7 +9,7 @@ import {
   classDaysDatesState,
   classDayTypeState,
 } from '@/recoil/ClassSchedule/atoms';
-import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
+import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
@@ -75,6 +75,7 @@ const DayOff = ({
             {!isDisabled && (
               <>
                 <DayOffCalendar
+                  mode="dayoff"
                   selectedDates={initDates}
                   handleSelected={handleUnselected}
                 />
@@ -83,11 +84,11 @@ const DayOff = ({
                   <p className="mb-[0.87rem] text-sm font-semibold">
                     선택한 휴무일
                   </p>
-                  <div className="flex h-fit w-fit flex-wrap gap-x-2 gap-y-3 text-sm font-medium text-sub-color3">
+                  <div className="flex h-fit w-fit flex-wrap gap-x-2 gap-y-3 text-sm font-medium text-gray-100">
                     {unselectedDates.map((date) => (
                       <p
                         key={date.toLocaleDateString()}
-                        className="h-fit rounded-[0.3125rem] border border-solid border-sub-color2 px-[0.69rem] py-[0.31rem]"
+                        className="h-fit rounded-[0.3125rem] border border-solid border-gray-500 px-[0.69rem] py-[0.31rem]"
                       >
                         {format(date, 'yy.MM.dd (E)', { locale: ko })}
                       </p>
@@ -107,18 +108,18 @@ const DayOff = ({
 export default React.memo(DayOff);
 
 const getClassNames = (isSelected: boolean, isDisabled: boolean) => {
-  let classNames = 'h-10 w-1/2 rounded-[0.31rem]';
+  let classNames = 'h-10 w-1/2 rounded-md';
 
   if (isDisabled) {
-    classNames += ' border border-solid border-sub-color2 text-sub-color2';
+    classNames += ' border border-solid border-gray-500 text-gray-500';
   }
 
   if (isSelected) {
     classNames += ' bg-sub-color1 text-white';
   } else if (isSelected && !isDisabled) {
-    classNames += ' border border-solid border-sub-color2 text-sub-color3';
+    classNames += ' border border-solid border-gray-500 text-gray-100';
   } else {
-    classNames += ' border border-solid border-sub-color2';
+    classNames += ' border border-solid border-gray-500';
   }
 
   return classNames;

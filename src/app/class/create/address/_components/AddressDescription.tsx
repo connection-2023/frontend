@@ -8,7 +8,7 @@ const AddressDescription = () => {
       <dl className="text-sm">
         {ADDRESS_DESCRIPTION.map(({ term, description }) => (
           <Fragment key={term}>
-            <dt className="pb-1 text-[#969696]">{term}</dt>
+            <dt className="pb-1 text-gray-300">{term}</dt>
             <dd className="mb-4 text-sub-color1">{description}</dd>
           </Fragment>
         ))}

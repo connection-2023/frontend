@@ -7,8 +7,8 @@ const ClassListView = ({ onItemClick }: { onItemClick: () => void }) => {
   const [activeTab, setActiveTab] = useState('progress');
 
   return (
-    <section className="col-span-2 h-full w-full flex-col rounded-admin bg-white p-6 shadow-float">
-      <div className="mb-8 flex gap-[2.13rem] text-2xl text-sub-color2">
+    <section className="col-span-2 h-full w-full flex-col rounded-lg bg-white p-6 shadow-float">
+      <div className="mb-8 flex gap-[2.13rem] text-2xl text-gray-500">
         <h1
           onClick={() => setActiveTab('progress')}
           className={`${

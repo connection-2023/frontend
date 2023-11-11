@@ -1,26 +1,54 @@
-import React from 'react';
-import ScheduleCalendar from '@/components/Calendar/ScheduleCalendar';
+'use client';
+import { isSameDay } from 'date-fns';
+import React, { useState } from 'react';
+import { formatDateTime } from '@/utils/parseUtils';
+import ScheduleCalendar from '../Calendar/SingleCalendar';
+import { IClassSchedule } from '@/types/class';
 
-const textStyle = {
-  normal: 'text-sub-color3',
-  full: 'text-sub-color2',
-};
-
-interface IScheduleProps {
-  clickableDates: Date[];
-  lectureSchedule: IScheduleListProps[];
+interface ISchedule {
+  id: number;
+  lectureId: number;
+  startDateTime: string;
+  numberOfParticipants: number;
+  team: null | string;
 }
 
-const ScheduleView = ({ clickableDates, lectureSchedule }: IScheduleProps) => {
-  if (!clickableDates.length) return null;
-  return (
-    <div className="flex w-full justify-between whitespace-nowrap">
-      <ScheduleCalendar clickableDates={clickableDates} />
+interface ScheduleViewProps {
+  lectureSchedule: IClassSchedule[];
+  maxCapacity: number;
+  duration: number;
+}
 
-      <ul className="flex flex-col gap-[0.37rem] pl-3">
-        {lectureSchedule.map((s) => (
-          <ScheduleList key={s.date} date={s.date} space={s.space} />
-        ))}
+const ScheduleView = ({
+  lectureSchedule,
+  maxCapacity,
+  duration,
+}: ScheduleViewProps) => {
+  const [clickDate, setClickDate] = useState<Date | undefined>(undefined);
+
+  const handleClickDate = (newDate: Date) => {
+    setClickDate(newDate);
+  };
+
+  const clickableDates = lectureSchedule.map(
+    (date) => new Date(date.startDateTime),
+  );
+  if (!clickableDates.length) return null;
+
+  return (
+    <div className="flex w-full flex-col whitespace-nowrap md:flex-row md:justify-between">
+      <div className="flex w-full justify-center md:w-fit md:justify-start">
+        <ScheduleCalendar
+          mode="schedule"
+          clickableDates={clickableDates}
+          handleClickDate={handleClickDate}
+        />
+      </div>
+
+      <ul className="flex w-full flex-col items-center gap-[0.37rem] overflow-y-auto pl-3">
+        {lectureSchedule.map((schedule) => {
+          return formatSchedule(clickDate, duration, schedule, maxCapacity);
+        })}
       </ul>
     </div>
   );
@@ -28,26 +56,33 @@ const ScheduleView = ({ clickableDates, lectureSchedule }: IScheduleProps) => {
 
 export default React.memo(ScheduleView);
 
-interface IScheduleListProps {
-  date: string;
-  space: {
-    current: number;
-    total: number;
-  };
-}
+const textStyle = {
+  normal: 'text-gray-100',
+  full: 'text-gray-300',
+};
 
-const ScheduleList = ({ date, space }: IScheduleListProps) => {
-  const mode = space.current === space.total ? 'full' : 'normal';
+const formatSchedule = (
+  clickDate: Date | undefined,
+  duration: number,
+  schedule: IClassSchedule,
+  maxCapacity: number,
+) => {
+  const scheduleDate = new Date(schedule.startDateTime);
+  if (!clickDate || !isSameDay(clickDate, scheduleDate)) return;
 
+  const formattedDateTime = formatDateTime(scheduleDate, duration);
+  const mode =
+    schedule.numberOfParticipants === maxCapacity ? 'full' : 'normal';
   return (
     <li
-      className={`border-box flex h-[2.8125rem] w-full max-w-[16.8125rem] items-center justify-between rounded-[0.31rem] border
-    border-solid border-[#D8D8D8] px-[1.62rem] ${textStyle[mode]} text-sm font-medium`}
+      key={schedule.id}
+      className={`border-box flex h-[2.8125rem] w-full items-center justify-between rounded-md border border-solid
+    border-gray-700 px-6 md:max-w-[16.8125rem] ${textStyle[mode]} text-sm font-medium`}
     >
-      <p>{date}</p>
+      <p>{formattedDateTime}</p>
       <p>
         {mode === 'normal'
-          ? `(${space.current}/${space.total}명)`
+          ? `(${schedule.numberOfParticipants}/${maxCapacity}명)`
           : '(인원마감)'}
       </p>
     </li>

@@ -41,9 +41,9 @@ interface IncomeOverviewProps {
 const IncomeOverview = ({ view, handlePrev }: IncomeOverviewProps) => {
   const [chartView, setChartView] = useState('month');
   return (
-    <section className="max-h-[16.5rem] w-full rounded-admin rounded-t-[0.31rem] shadow-float">
+    <section className="max-h-[16.5rem] w-full rounded-lg rounded-t-md shadow-float">
       <h1
-        className={`flex items-center bg-white px-1 py-3 text-2xl font-bold text-sub-color3 ${
+        className={`flex items-center bg-white px-1 py-3 text-2xl font-bold text-gray-100 ${
           view === 'main' && 'mb-1 px-4'
         }`}
       >
@@ -56,8 +56,8 @@ const IncomeOverview = ({ view, handlePrev }: IncomeOverviewProps) => {
       </h1>
 
       {view === 'main' ? (
-        <div className="border-box flex w-full flex-col rounded-b-[0.31rem] bg-white px-9 py-4 shadow-float">
-          <div className="mb-2 flex gap-3 text-sm text-sub-color2">
+        <div className="border-box flex w-full flex-col rounded-b-md bg-white px-9 py-4 shadow-float">
+          <div className="mb-2 flex gap-3 text-sm text-gray-500">
             <button
               onClick={() => setChartView('month')}
               className={`${chartView === 'month' ? 'text-black' : ''}`}
@@ -82,8 +82,8 @@ const IncomeOverview = ({ view, handlePrev }: IncomeOverviewProps) => {
           )}
         </div>
       ) : (
-        <section className="rounded-b-admin bg-white pt-5">
-          <ul className="mb-3 flex w-full gap-6 whitespace-nowrap border-b border-solid border-sub-color2 px-4 pb-4 text-sm text-sub-color3">
+        <section className="rounded-b-lg bg-white pt-5">
+          <ul className="mb-3 flex w-full gap-6 whitespace-nowrap border-b border-solid border-gray-500 px-4 pb-4 text-sm text-gray-100">
             <li className="flex items-center">
               <p className="w-10 font-semibold">총 수익</p>
               <span className="ml-[0.69rem] text-lg font-bold text-black">
