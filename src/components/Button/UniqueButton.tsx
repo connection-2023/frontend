@@ -4,6 +4,7 @@ interface UniqueButtonProps {
   size?: 'small' | 'medium' | 'large';
   color?: 'primary' | 'secondary';
   children?: React.ReactNode;
+  type?: 'button' | 'submit';
   onClick?: () => void;
 }
 
@@ -12,6 +13,7 @@ const UniqueButton = ({
   color = 'primary',
   children,
   onClick,
+  type = 'button',
 }: UniqueButtonProps) => {
   const buttonStyles = {
     primary:
@@ -23,7 +25,11 @@ const UniqueButton = ({
   const buttonColor = buttonStyles[color];
 
   return (
-    <button onClick={onClick} className={`${buttonSize} ${buttonColor}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`${buttonSize} ${buttonColor}`}
+    >
       {children}
     </button>
   );

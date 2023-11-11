@@ -23,7 +23,7 @@ const SelectBox = ({ lists, selected, onSelect }: SelectBoxProps) => {
   };
 
   return (
-    <div className="w-full text-sm text-gray-100">
+    <div className="w-full text-sm">
       <div
         onClick={openList}
         className={`flex h-8 w-full cursor-pointer items-center pl-2 ${selectBoxBorderStyle}`}
@@ -42,11 +42,14 @@ const SelectBox = ({ lists, selected, onSelect }: SelectBoxProps) => {
           const parts = list.split(' ');
           const dateTime = parts.slice(0, parts.length - 1).join(' ');
           const participants = parts[parts.length - 1];
+          const textColor = participants.includes('마감')
+            ? 'text-gray-500'
+            : 'text-gray-100';
 
           return (
             <li
               key={list}
-              className="flex h-8 cursor-pointer items-center justify-between gap-2 px-2 hover:bg-gray-900"
+              className={`flex h-8 cursor-pointer items-center justify-between gap-2 px-2 hover:bg-gray-900 ${textColor}`}
               onClick={() => onClickList(list)}
             >
               <p>{dateTime}</p>

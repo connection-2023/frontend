@@ -1,5 +1,19 @@
+export const dynamic = 'force-dynamic';
 import Image from 'next/image';
-import { CLASS_SECTIONS } from '@/constants/constants';
+import Link from 'next/link';
+import Apply from './_components/Apply';
+import ClassReviewSection from './_components/ClassReviewSection';
+import DiscountCouponBanner from './_components/DiscountCouponBanner';
+import OptionButton from './_components/OptionButton';
+import ReadMore from './_components/ReadMore';
+import Carousel from '@/components/Carousel/Carousel';
+import Notice from '@/components/ClassNotice/Notice';
+import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import Review from '@/components/Review/Review';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass } from '@/constants/dummy';
 import {
   LocationSVG,
@@ -7,26 +21,17 @@ import {
   GroupSVG,
   LevelSVG,
   BasicCalendarSVG,
+  ChatSVG,
+  GenreSVG,
 } from '@/icons/svg';
-import { getClassPost } from '@/lib/apis/classApis';
+import { getClassPost, getClassSchedules } from '@/lib/apis/classApis';
 import {
   formatLocationToString,
   formatGenreToString,
+  formatDate,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
-import Apply from './_components/Apply';
-import ClassReviewSection from './_components/ClassReviewSection';
-import DiscountCouponBanner from './_components/DiscountCouponBanner';
-import ProfileButtons from './_components/ProfileButtons';
-import Carousel from '@/components/Carousel/Carousel';
-import Notice from '@/components/ClassNotice/Notice';
-import Like from '@/components/Like/Like';
-import Map from '@/components/Map/Map';
-import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import Review from '@/components/Review/Review';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import Sharing from '@/components/Sharing/Sharing';
+import { revalidateTag } from 'next/cache';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -36,47 +41,58 @@ const ClassDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const classData = await getClassPost(id);
+  revalidateTag('schedules');
+  // parallel requests
+  const classData = getClassPost(id);
+  const classSchedules = getClassSchedules(id);
 
-  if (classData instanceof Error) {
-    console.error(classData.message);
+  const [classInfo, classSchedule] = await Promise.all([
+    classData,
+    classSchedules,
+  ]);
+
+  if (classInfo instanceof Error || classSchedule instanceof Error) {
     return <></>;
   }
-
+  const { lecturer, lecture } = classInfo;
   const {
     title,
     difficultyLevel,
     isGroup,
     duration,
+    lecturerId,
     price,
     stars,
-    lectureSchedule,
-    lectureHoliday,
     maxCapacity,
     introduction,
     curriculum,
+    startDate,
+    endDate,
     lectureMethod,
-    lecturer,
+    locationDescription,
     lectureToRegion,
     detailAddress,
     reservationDeadline,
+    lectureToDanceGenre,
     lectureNotification,
     lectureImage,
     reviewCount,
-    lectureReview,
-  } = classData;
-  const { notice, schedule, locationDetail, studioName } = dummyClass;
+  } = lecture;
 
-  const filteredSchedule = lectureSchedule.filter((schedule) => {
-    const isHoliday = lectureHoliday.some(
-      (holiday) => holiday.holiday === schedule.startDateTime,
+  const { schedule, holidayArr } = classSchedule;
+
+  const { locationDetail, studioName } = dummyClass;
+
+  const filteredSchedule = schedule.filter((schedule) => {
+    const isHoliday = holidayArr.some(
+      (holiday) => holiday === schedule.startDateTime,
     );
     return !isHoliday;
   });
 
   return (
     <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 md:grid-cols-[1fr_1.37fr_1fr]">
-      <section className="mb-4 flex w-full flex-col items-center shadow-float md:col-span-3">
+      <section className="mb-4 flex w-full flex-col items-center border-b border-solid border-gray-500 md:col-span-3">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
           {lectureImage.length > 2 ? (
@@ -107,8 +123,7 @@ const ClassDetailPage = async ({
         <h1 className="relative flex w-full max-w-[40rem] px-4 text-lg font-bold md:justify-center">
           <p className="w-11/12 md:text-center">{title}</p>
           <div className="absolute right-4 flex flex-col-reverse items-center gap-2 md:right-0 md:flex-row">
-            <Sharing mode="class" header={title} />
-            <Like />
+            <OptionButton lecturerId={lecturerId} />
           </div>
         </h1>
         {/* Review */}
@@ -123,7 +138,7 @@ const ClassDetailPage = async ({
 
         <hr className="mb-4 h-1 w-full max-w-[40rem] md:mb-6" />
         {/* Class Info */}
-        <div className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 md:mb-7 md:grid-cols-4 md:justify-items-center">
+        <div className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 px-4 md:mb-7 md:flex md:flex-wrap md:justify-items-center md:gap-x-10 md:whitespace-nowrap">
           <h3 className={h3Style}>
             <LocationSVG />
             <span className="w-fit break-keep">
@@ -131,11 +146,18 @@ const ClassDetailPage = async ({
             </span>
           </h3>
           <h3 className={h3Style}>
+            <GenreSVG />
+            <span className="w-fit break-keep">
+              {formatGenreToString(lectureToDanceGenre)}
+            </span>
+          </h3>
+
+          <h3 className={h3Style}>
             <TimeSVG /> {duration}분
           </h3>
           <h3 className={h3Style}>
             <GroupSVG />
-            {isGroup ? `그룹레슨 (최대 ${maxCapacity}인)` : '개인레슨'}
+            {isGroup ? `그룹레슨 (${maxCapacity}인)` : '개인레슨'}
           </h3>
           <h3 className={h3Style}>
             <LevelSVG /> {difficultyLevel}
@@ -150,7 +172,7 @@ const ClassDetailPage = async ({
 
         <Notice
           content={lectureNotification.notification}
-          updateDate={notice.lastDate}
+          updateDate={lectureNotification.updatedAt}
         />
         {/* 프로필 */}
         <div className="mb-10 mt-[1.81rem] flex w-full items-center justify-between">
@@ -161,8 +183,21 @@ const ClassDetailPage = async ({
               size="medium"
             />
           </div>
-          <div className="flex gap-[0.81rem] text-sm font-normal">
-            <ProfileButtons id={lecturer.id} />
+          <div className="flex h-[1.8rem] w-[12.5rem] items-center gap-[0.81rem] whitespace-nowrap text-sm font-normal">
+            <Link
+              href={`/instructor/${lecturer.id}`}
+              className={`h-[28px] ${ButtonStyles.secondary}`}
+            >
+              강사 프로필
+            </Link>
+            {/* 채팅으로 링크 연결하기 */}
+            <Link
+              href={`/chat/${lecturer.id}`}
+              className={`h-[28px] ${ButtonStyles.secondary}`}
+            >
+              <ChatSVG className="mr-[3px] stroke-black" />
+              문의하기
+            </Link>
           </div>
         </div>
 
@@ -173,11 +208,14 @@ const ClassDetailPage = async ({
         </section>
 
         {/* 커리큘럼 */}
-        <section id="curriculum-section" className="mb-14 text-sm">
+        <section id="curriculum-section" className="relative mb-14 text-sm ">
           <h2 className={h2Style}>커리큘럼</h2>
+
           <div
             dangerouslySetInnerHTML={{ __html: sanitizeHtmlString(curriculum) }}
+            className="curriculum line-clamp-[18] peer-checked:line-clamp-none"
           />
+          <ReadMore />
         </section>
 
         <section
@@ -188,7 +226,7 @@ const ClassDetailPage = async ({
           <div className="my-4 flex gap-7">
             <span className="flex items-center gap-2">
               <BasicCalendarSVG className="w-[19px] fill-sub-color1" />
-              {schedule.date}
+              {`${formatDate(startDate)}~${formatDate(endDate)}`}
             </span>
             <span className="flex items-center gap-2">
               <TimeSVG /> {duration}분 수업
@@ -213,14 +251,15 @@ const ClassDetailPage = async ({
           <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
             <Map address={locationDetail} studioName={studioName} />
           </div>
+          <p className="text-sm font-normal">{locationDescription}</p>
         </section>
 
         {/* 클래스 후기 */}
         <ClassReviewSection
+          id={id}
           classTitle={title}
           reviewCount={reviewCount}
           stars={stars}
-          userReviews={lectureReview}
         />
       </section>
 

@@ -14,7 +14,9 @@ const Notice = ({ content, updateDate }: INoticeProps) => {
           className="mr-[0.38rem] fill-sub-color1 stroke-sub-color1"
         />
         공지사항
-        <span className="flex w-full justify-end">{updateDate}</span>
+        <span className="flex w-full justify-end text-sm font-medium">
+          최근 업데이트 {new Date(updateDate).toLocaleDateString('ko-KR')}
+        </span>
       </h2>
       <div>{content}</div>
     </div>
