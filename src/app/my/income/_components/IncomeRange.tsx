@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG } from '@/icons/svg';
-import IncomeCalendar from '@/components/Calendar/IncomeCalendar';
+import RangeCalendar from '@/components/Calendar/RangeCalendar';
 
 const IncomeRange = () => {
   const [fromValue, setFromValue] = useState<string | undefined>(undefined);
@@ -87,7 +87,8 @@ const IncomeRange = () => {
             />
           </span>
           {isCalendarVisible && (
-            <IncomeCalendar
+            <RangeCalendar
+              mode="income"
               selectedRange={
                 classRange.from && classRange.to ? classRange : undefined
               }
