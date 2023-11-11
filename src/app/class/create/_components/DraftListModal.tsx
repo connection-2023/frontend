@@ -85,7 +85,7 @@ const DraftList = ({
             <Link
               className=" w-2/3 cursor-pointer truncate"
               href={`/class/create?step=${
-                step === null ? 0 : step + 1
+                step === null ? 0 : step === 4 ? step : step + 1
               }&id=${id}`}
             >
               {title === null ? '제목 없음' : title}

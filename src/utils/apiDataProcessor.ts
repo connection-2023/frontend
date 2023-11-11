@@ -124,11 +124,12 @@ export const classOutputDataProcess = async (
     case 0:
       const {
         title,
-        classSize,
         difficultyLevel,
         genres,
         lectureMethod,
         lessonType,
+        min,
+        max,
       } = data;
 
       const images = await uploadImageFilesWithFallback(
@@ -148,18 +149,16 @@ export const classOutputDataProcess = async (
 
       const isGroup = lessonType === '그룹레슨';
 
-      const minCapacity = isGroup ? classSize.min : undefined;
+      const minCapacity = isGroup ? min.value : undefined;
 
-      const maxCapacity = isGroup ? classSize.max : undefined;
+      const maxCapacity = isGroup ? max.value : undefined;
 
       const { newGenres, etcGenres } = categorizeGenres(genres);
 
       setProcessedClassDataHandler({
         isGroup,
-        classSize: {
-          min: minCapacity ?? 1,
-          max: maxCapacity ?? 1,
-        },
+        min: min.value,
+        max: max.value,
       });
 
       return {
@@ -237,6 +236,8 @@ export const classOutputDataProcess = async (
       };
 
     case 4:
+      const { classPrice } = data;
+
       break;
   }
 };

@@ -131,10 +131,11 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
               : classData.step,
           ...processData,
         });
+        toast.success('임시저장 완료');
       } catch (error) {
+        console.error(error);
         toast.error('임시저장 실패');
       }
-      toast.success('임시저장 완료');
     }
   };
 

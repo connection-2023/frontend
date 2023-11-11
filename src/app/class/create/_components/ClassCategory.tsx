@@ -101,11 +101,12 @@ const ClassCategory = () => {
             />
           )}
         />
-        <Controller
-          name="classSize"
-          control={control}
-          defaultValue={classData?.classSize}
-          render={({ field }) => <ClassSizeSelect defaultValue={field.value} />}
+
+        <ClassSizeSelect
+          defaultValue={{
+            min: classData?.min ?? 1,
+            max: classData?.max ?? 100,
+          }}
         />
       </CategoryContainer>
 

@@ -36,7 +36,7 @@ export interface IGetClassDrafts {
   id: string;
   updatedAt: string;
   title: null | string;
-  step: null | string;
+  step: null | number;
 }
 
 export interface IGetClassDraft {
@@ -153,10 +153,8 @@ export interface IprocessedDraft {
   detailAddress?: string | null;
   duration?: number;
   difficultyLevel?: string | null;
-  classSize?: {
-    min: number;
-    max: number;
-  };
+  min?: number;
+  max?: number;
   reservationDeadline?: number;
   reservationComment?: string;
   price?: number;
@@ -197,10 +195,8 @@ export interface classCreateData {
     imageUrl: string;
   }[];
   genres: string[];
-  classSize: {
-    min: number;
-    max: number;
-  };
+  min: { value: number; label: string };
+  max: { value: number; label: string };
   lectureMethod: string;
   lessonType: string;
   difficultyLevel: string;
@@ -222,4 +218,5 @@ export interface classCreateData {
   locationConsultative: boolean;
   regions: Record<string, string[]>;
   locationDescription: string;
+  classPrice: string | number;
 }
