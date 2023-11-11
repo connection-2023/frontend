@@ -190,7 +190,7 @@ export const classOutputDataProcess = async (
         introduction,
         curriculum: curriculum.content,
       };
-    case 2:
+    case 2: //to은서: 스케줄 파트 임시저장 데이터 정리후 전송하는 부분임
       const {
         holidays,
         classRange,
@@ -321,7 +321,7 @@ export const classCreate = async (id: number) => {
     coupons: temporaryLectureCouponTarget.map(
       ({ lectureCouponId }) => lectureCouponId,
     ),
-    // schedules: temporaryLectureDateSchedule,
+    schedules: temporaryLectureDateSchedule, //to은서: 해당 부분 스케줄 맞춰서 수정
   };
 
   await createClass(data);

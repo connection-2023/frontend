@@ -85,13 +85,8 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     }
   };
 
-  const onValid = (data: classCreateData) => {
-    // setLectureData((prevState) => ({
-    //   ...prevState,
-    //   ...data,
-    // }));
-
-    // const uploadImgList = await handleImageUpload(profileImageUrls);
+  const onValid = async (data: classCreateData) => {
+    await updateDraft(data); //to은서:다음 버튼 눌렀을때 임시저장 메시지 나타나는 거 마음에 안들면 2번째 매개변수 false 나는 개인적으로 지금 마음에 듬
 
     nextStep();
   };
