@@ -1,76 +1,40 @@
 import { isSameDay } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import { useEffect, useState } from 'react';
+import React from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
 import { useRecoilState } from 'recoil';
-import { DAY_MODIFIERS, DAY_MODIFIERS_CLASSNAMES } from '@/constants/constants';
 import { classDatesState } from '@/recoil/ClassSchedule/atoms';
-import { FormattedCaption } from './BasicCalendar';
-import 'react-day-picker/dist/style.css';
+import { FormattedCaption } from '@/utils/calendarUtils/CalendarCaption';
+import {
+  getInputCalendarModifiers,
+  INPUT_SCHEDULE_MODIFIERS_ClassNames,
+  INPUT_SCHEDULE_ClassNames,
+} from '../../utils/calendarUtils/dateUtils';
 import '../../styles/calendar.css';
-
-interface IRangeCalendarProps {
+import 'react-day-picker/dist/style.css';
+interface IInputClassDatesProps {
   clickableDates: Date[];
-  handleSelectedDate: (date: Date) => void;
+  handleClickDate: (date: Date) => void;
 }
 const InputClassDates = ({
   clickableDates,
-  handleSelectedDate,
-}: IRangeCalendarProps) => {
+  handleClickDate,
+}: IInputClassDatesProps) => {
   const [classDates, setClassDates] = useRecoilState(classDatesState);
   const [selected, setSelected] = useState<Date | undefined>();
 
   useEffect(() => {
-    if (selected) handleSelectedDate(selected);
+    if (selected) handleClickDate(selected);
   }, [selected]);
 
   if (!clickableDates.length) {
     return null;
   }
-
-  const classDateObjects = classDates?.map((dateStr) => new Date(dateStr));
-
-  const clickableDateObjects = clickableDates.map(
-    (dateStr) => new Date(dateStr),
-  );
-
   const disabledDays = (date: Date) =>
-    !clickableDateObjects.some((clickableDate) =>
-      isSameDay(clickableDate, date),
+    !clickableDates.some((clickableDate) =>
+      isSameDay(new Date(clickableDate), date),
     );
-
-  const scheduleModifiers = {
-    ...DAY_MODIFIERS,
-
-    selectableDays: (date: Date) => {
-      return isDateSelectable(date);
-    },
-
-    disabled: (date: Date) => {
-      return !isDateSelectable(date);
-    },
-
-    classDay: (date: Date) => {
-      return classDateObjects
-        ? classDateObjects.some((classDate) => isSameDay(classDate, date))
-        : false;
-    },
-  };
-
-  const isDateSelectable = (date: Date) => {
-    return clickableDates.some(
-      (clickableDate) =>
-        date.getDate() === clickableDate.getDate() &&
-        date.getMonth() === clickableDate.getMonth() &&
-        date.getFullYear() === clickableDate.getFullYear(),
-    );
-  };
-
-  const inputModifiersClassNames = {
-    ...DAY_MODIFIERS_CLASSNAMES,
-    selectableDays: 'specific-selectable',
-    classDay: 'specific-class-day',
-  };
 
   return (
     <DayPicker
@@ -81,12 +45,10 @@ const InputClassDates = ({
       selected={selected}
       onSelect={setSelected}
       disabled={disabledDays}
-      modifiers={scheduleModifiers}
-      modifiersClassNames={inputModifiersClassNames}
+      modifiers={getInputCalendarModifiers(classDates, clickableDates)}
+      modifiersClassNames={INPUT_SCHEDULE_MODIFIERS_ClassNames}
       className="flex w-fit rounded-[0.625rem] px-4 py-6 shadow-horizontal"
-      classNames={{
-        day_selected: 'specific-selected-day',
-      }}
+      classNames={INPUT_SCHEDULE_ClassNames}
       components={{
         Caption: ({ displayMonth }: CaptionProps) =>
           FormattedCaption({
@@ -97,4 +59,4 @@ const InputClassDates = ({
   );
 };
 
-export default InputClassDates;
+export default React.memo(InputClassDates);

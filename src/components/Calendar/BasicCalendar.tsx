@@ -1,18 +1,20 @@
 'use client';
-import { format } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
+import React from 'react';
 import { useEffect, useState } from 'react';
-import { DayPicker, CaptionProps, useNavigation } from 'react-day-picker';
-import { ArrowRightSVG } from '@/icons/svg';
+import { DayPicker, CaptionProps } from 'react-day-picker';
+import { FormattedCaption } from '../../utils/calendarUtils/CalendarCaption';
 import {
-  DAY_MODIFIERS,
-  DAY_MODIFIERS_CLASSNAMES,
-} from '../../constants/constants';
-import 'react-day-picker/dist/style.css';
+  getBasicCalendarModifiersClassNames,
+  DAY_OFF_ClassNames,
+  getBasicCalendarModifiers,
+} from '../../utils/calendarUtils/dateUtils';
 import '../../styles/calendar.css';
+import 'react-day-picker/dist/style.css';
 
 interface ICalendarProps {
-  mode: 'preview' | 'filter';
+  mode: 'preview' | 'filter' | 'dayoff';
   selectedDates?: Date[];
   handleSelected?: (value: Date[]) => void;
 }
@@ -23,10 +25,19 @@ const BasicCalendar = ({
   handleSelected,
 }: ICalendarProps) => {
   const [selected, setSelected] = useState<Date[] | undefined>(selectedDates);
+  const initialSelectedDates = selectedDates;
 
   useEffect(() => {
     if (handleSelected !== undefined && selected) {
-      handleSelected(selected);
+      if (mode === 'dayoff') {
+        const unselectedDates = initialSelectedDates.filter(
+          (date) => !selected.some((selDate) => isSameDay(selDate, date)),
+        );
+
+        handleSelected(unselectedDates);
+      } else {
+        handleSelected(selected);
+      }
     }
   }, [selected]);
 
@@ -34,52 +45,44 @@ const BasicCalendar = ({
     setSelected(selectedDates);
   }, [selectedDates]);
 
+  const disabledDays = (date: Date) =>
+    !selectedDates.some((clickableDate) => isSameDay(clickableDate, date));
+
+  const modifiers = getBasicCalendarModifiers(mode, selectedDates);
+  const modifiersClassNames = getBasicCalendarModifiersClassNames(mode);
+  const classNames = mode === 'dayoff' ? DAY_OFF_ClassNames : undefined;
+  const className = mode === 'dayoff' ? '' : 'z-10 bg-white';
+  const disabled = mode === 'dayoff' ? disabledDays : undefined;
+
   return (
     <div
       className={
-        mode === 'preview' ? 'rounded-[0.625rem] py-1 shadow-horizontal' : ''
+        mode === 'preview'
+          ? 'z-20 rounded-[0.625rem] py-1 shadow-horizontal'
+          : 'z-20'
       }
     >
       <DayPicker
+        mode={mode === 'preview' ? 'default' : 'multiple'}
         locale={ko}
         showOutsideDays
-        mode={mode === 'preview' ? 'default' : 'multiple'}
         selected={selected}
         onSelect={setSelected}
-        modifiers={DAY_MODIFIERS}
-        modifiersClassNames={DAY_MODIFIERS_CLASSNAMES}
+        defaultMonth={selectedDates[0] || new Date()}
+        disabled={disabled}
+        modifiers={modifiers}
+        modifiersClassNames={modifiersClassNames}
+        classNames={classNames}
         components={{
           Caption: ({ displayMonth }: CaptionProps) =>
             FormattedCaption({
               displayMonth,
             }),
         }}
+        className={className}
       />
     </div>
   );
 };
 
-export default BasicCalendar;
-
-export const FormattedCaption = ({ displayMonth }: CaptionProps) => {
-  const { goToMonth, nextMonth, previousMonth } = useNavigation();
-  return (
-    <div className="flex w-full justify-between px-3">
-      <button
-        disabled={!previousMonth}
-        onClick={() => previousMonth && goToMonth(previousMonth)}
-      >
-        <ArrowRightSVG className="h-[5px] w-[9px] origin-center rotate-180 stroke-black" />
-      </button>
-      <p className="text-base font-bold">
-        {format(displayMonth, 'yy년 MM월', { locale: ko })}
-      </p>
-      <button
-        disabled={!nextMonth}
-        onClick={() => nextMonth && goToMonth(nextMonth)}
-      >
-        <ArrowRightSVG className="h-[5px] w-[9px] stroke-black" />
-      </button>
-    </div>
-  );
-};
+export default React.memo(BasicCalendar);
