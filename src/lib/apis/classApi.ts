@@ -131,9 +131,36 @@ export const updateClassDraft = async (data: IUpdateClassDraft) => {
       );
     }
 
-    const res = await response.json();
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
     console.error('임시저장 오류', error);
+    throw error;
+  }
+};
+
+export const createClass = async (data: any) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/create`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `강의생성 오류: ${errorData.message || ''}, status: ${response.status}`,
+      );
+    }
+
+    const res = await response.json();
+    console.log(res);
+  } catch (error) {
+    console.error('강의생성 오류', error);
     throw error;
   }
 };

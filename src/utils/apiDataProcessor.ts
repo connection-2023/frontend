@@ -4,7 +4,7 @@ import {
   WARD_LIST,
 } from '@/constants/administrativeDistrict';
 import { DANCE_GENRE } from '@/constants/constants';
-import { getClassDraft } from '@/lib/apis/classApi';
+import { createClass, getClassDraft } from '@/lib/apis/classApi';
 import {
   deleteImage,
   postMultipleImage,
@@ -317,10 +317,12 @@ export const classCreate = async (id: number) => {
     reservationComment,
     price,
     locationDescription,
-    holiday: temporaryLectureHoliday.map(({ holiday }) => holiday),
+    holidays: temporaryLectureHoliday.map(({ holiday }) => holiday),
     coupons: temporaryLectureCouponTarget.map(
       ({ lectureCouponId }) => lectureCouponId,
     ),
     schedules: temporaryLectureDateSchedule,
   };
+
+  await createClass(data);
 }; //스프레드 안쓰고 일단 꺼냈음

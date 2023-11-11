@@ -13,7 +13,7 @@ export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
   const lectureId = searchParams.get('lectureId');
 
-  const tokenValue = request.headers.get('cookie')?.split('=')[1]?.trim();
+  const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
 
   if (!tokenValue) {
     return NextResponse.json({

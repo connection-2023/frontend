@@ -10,7 +10,7 @@ export const PATCH = async (request: NextRequest) => {
     });
   }
 
-  const tokenValue = request.headers.get('cookie')?.split('=')[1]?.trim();
+  const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
   const data = await request.json();
 
   if (!tokenValue) {

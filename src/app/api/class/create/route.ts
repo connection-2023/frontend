@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const GET = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   if (!END_POINT) {
     return NextResponse.json({
       status: 500,
@@ -11,6 +11,7 @@ export const GET = async (request: NextRequest) => {
   }
 
   const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
+  const data = await request.json();
 
   if (!tokenValue) {
     return NextResponse.json({
@@ -24,10 +25,11 @@ export const GET = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + '/lecture-temporarily-save', {
-    method: 'GET',
+  const response = await fetch(END_POINT + '/lectures', {
+    method: 'POST',
     credentials: 'include',
     headers,
+    body: JSON.stringify(data),
   });
 
   if (!response.ok) {

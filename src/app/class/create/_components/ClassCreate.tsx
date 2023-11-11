@@ -154,9 +154,14 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   };
 
   const createClass = async (data: classCreateData) => {
-    if (classData && classData.id) {
-      await updateDraft(data);
-      await classCreate(classData.id);
+    try {
+      if (classData && classData.id) {
+        await updateDraft(data);
+        await classCreate(classData.id);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('클래스 등록 실패');
     }
   };
 
