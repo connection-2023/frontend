@@ -1,4 +1,5 @@
 import AddImageSVG from './addimage.svg';
+import AuthIconSVG from './authIcon.svg';
 import AlarmSVG from './alarm.svg';
 import ApplySuccessSVG from './applySuccess.svg';
 import Arrow from './arrow.svg';
@@ -73,6 +74,7 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   ApplySuccessSVG,
+  AuthIconSVG,
   ClassStatusSVG,
   ReviewSVG,
   RecentSVG,
