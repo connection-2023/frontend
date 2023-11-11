@@ -109,8 +109,12 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     setInvalidData(null);
   };
 
-  const updateDraft = async (data: classCreateData) => {
-    console.log(data);
+  const updateDraft = async (
+    data: classCreateData,
+    shouldShowToast?: boolean,
+  ) => {
+    shouldShowToast = shouldShowToast === undefined ? true : shouldShowToast;
+
     if (classData && classData.step && classData.id) {
       try {
         if (classData.step === null || classData.step < activeStep) {
@@ -131,7 +135,9 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
               : classData.step,
           ...processData,
         });
-        toast.success('임시저장 완료');
+        if (shouldShowToast) {
+          toast.success('임시저장 완료');
+        }
       } catch (error) {
         console.error(error);
         toast.error('임시저장 실패');
@@ -156,8 +162,10 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   const createClass = async (data: classCreateData) => {
     try {
       if (classData && classData.id) {
-        await updateDraft(data);
-        await classCreate(classData.id);
+        await updateDraft(data, false);
+        const lecturerId = await classCreate(classData.id);
+        toast.success('클래스 등록 완료');
+        router.push(`/class/${lecturerId}`);
       }
     } catch (error) {
       console.error(error);
@@ -238,7 +246,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
             이전
           </button>
           <div className="flex">
-            <form onSubmit={handleSubmit(updateDraft, invalid)}>
+            <form onSubmit={handleSubmit((data) => updateDraft(data), invalid)}>
               <button className="flex items-center whitespace-nowrap rounded-md bg-black px-[0.87rem] py-[0.31rem] text-sm font-bold text-white">
                 임시저장
               </button>

@@ -321,7 +321,7 @@ export const classCreate = async (id: number) => {
     coupons: temporaryLectureCouponTarget.map(
       ({ lectureCouponId }) => lectureCouponId,
     ),
-    schedules: temporaryLectureDateSchedule,
+    // schedules: temporaryLectureDateSchedule,
   };
 
   await createClass(data);

@@ -158,7 +158,8 @@ export const createClass = async (data: any) => {
     }
 
     const res = await response.json();
-    console.log(res);
+
+    return res.data.newLecture.lecturerId;
   } catch (error) {
     console.error('강의생성 오류', error);
     throw error;
