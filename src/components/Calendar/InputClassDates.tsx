@@ -11,8 +11,8 @@ import {
   INPUT_SCHEDULE_MODIFIERS_ClassNames,
   INPUT_SCHEDULE_ClassNames,
 } from '../../utils/calendarUtils/dateUtils';
-import '../../styles/calendar.css';
 import 'react-day-picker/dist/style.css';
+import '../../styles/calendar.css';
 interface IInputClassDatesProps {
   clickableDates: Date[];
   handleClickDate: (date: Date) => void;

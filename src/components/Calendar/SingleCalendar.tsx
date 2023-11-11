@@ -11,8 +11,8 @@ import {
   getSingleCalendarModifiers,
   getSingleCalendarModifiersClassNames,
 } from '../../utils/calendarUtils/dateUtils';
-import '../../styles/calendar.css';
 import 'react-day-picker/dist/style.css';
+import '../../styles/calendar.css';
 
 // mockData
 const scheduleDay = [

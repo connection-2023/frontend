@@ -10,9 +10,8 @@ import {
   DAY_OFF_ClassNames,
   getBasicCalendarModifiers,
 } from '../../utils/calendarUtils/dateUtils';
-import '../../styles/calendar.css';
 import 'react-day-picker/dist/style.css';
-
+import '../../styles/calendar.css';
 interface ICalendarProps {
   mode: 'preview' | 'filter' | 'dayoff';
   selectedDates?: Date[];
@@ -51,37 +50,29 @@ const BasicCalendar = ({
   const modifiers = getBasicCalendarModifiers(mode, selectedDates);
   const modifiersClassNames = getBasicCalendarModifiersClassNames(mode);
   const classNames = mode === 'dayoff' ? DAY_OFF_ClassNames : undefined;
-  const className = mode === 'dayoff' ? '' : 'z-10 bg-white';
+  const className = mode === 'dayoff' ? '' : '';
   const disabled = mode === 'dayoff' ? disabledDays : undefined;
 
   return (
-    <div
-      className={
-        mode === 'preview'
-          ? 'z-20 rounded-[0.625rem] py-1 shadow-horizontal'
-          : 'z-20'
-      }
-    >
-      <DayPicker
-        mode={mode === 'preview' ? 'default' : 'multiple'}
-        locale={ko}
-        showOutsideDays
-        selected={selected}
-        onSelect={setSelected}
-        defaultMonth={selectedDates[0] || new Date()}
-        disabled={disabled}
-        modifiers={modifiers}
-        modifiersClassNames={modifiersClassNames}
-        classNames={classNames}
-        components={{
-          Caption: ({ displayMonth }: CaptionProps) =>
-            FormattedCaption({
-              displayMonth,
-            }),
-        }}
-        className={className}
-      />
-    </div>
+    <DayPicker
+      mode={mode === 'preview' ? 'default' : 'multiple'}
+      locale={ko}
+      showOutsideDays
+      selected={selected}
+      onSelect={setSelected}
+      defaultMonth={selectedDates[0] || new Date()}
+      disabled={disabled}
+      modifiers={modifiers}
+      modifiersClassNames={modifiersClassNames}
+      classNames={classNames}
+      components={{
+        Caption: ({ displayMonth }: CaptionProps) =>
+          FormattedCaption({
+            displayMonth,
+          }),
+      }}
+      className={className}
+    />
   );
 };
 
