@@ -57,6 +57,7 @@ import RecentSVG from './recent.svg';
 import ReportSVG from './report.svg';
 import ResetSVG from './reset.svg';
 import ReviewSVG from './review.svg';
+import ScrollTopSVG from './scrollTop.svg';
 import SearchSVG from './search.svg';
 import ShareSVG from './share.svg';
 import SmallLogoSVG from './smallLogo.svg';
@@ -74,6 +75,7 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   ApplySuccessSVG,
+  ScrollTopSVG,
   GenreSVG,
   ClassStatusSVG,
   ReviewSVG,
