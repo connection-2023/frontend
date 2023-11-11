@@ -2,7 +2,7 @@
 import { format, parseISO, isSameDay, addMinutes } from 'date-fns';
 import ko from 'date-fns/locale/ko';
 import React, { useState } from 'react';
-import ScheduleCalendar from '../Calendar/ScheduleCalendar';
+import ScheduleCalendar from '../Calendar/SingleCalendar';
 
 const textStyle = {
   normal: 'text-sub-color3',
@@ -43,6 +43,7 @@ const ScheduleView = ({
     <div className="flex w-full flex-col whitespace-nowrap md:flex-row md:justify-between">
       <div className="flex w-full justify-center md:w-fit md:justify-start">
         <ScheduleCalendar
+          mode="schedule"
           clickableDates={clickableDates}
           handleClickDate={handleClickDate}
         />
