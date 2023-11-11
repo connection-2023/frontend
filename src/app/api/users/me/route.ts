@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
@@ -7,20 +6,13 @@ if (!END_POINT) {
   throw new Error('environment variables are missing');
 }
 
-export const GET = async (req: NextRequest) => {
-  const cookieStore = cookies();
+export const GET = async (request: NextRequest) => {
+  const token = request.cookies.get('userAccessToken');
 
-  let userToken =
-    req.headers.get('Authorization') ||
-    cookieStore.get('userAccessToken')?.value;
+  if (!token)
+    return new NextResponse('로그인된 유저가 아닙니다', { status: 500 });
 
-  if (userToken) {
-    userToken = userToken.startsWith('Bearer ')
-      ? userToken.slice(7)
-      : userToken;
-  } else {
-    return new NextResponse('로그인된 유저가 아닙니다', { status: 401 });
-  }
+  const userToken = token.value;
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',

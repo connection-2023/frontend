@@ -11,9 +11,12 @@ const ProfileMenu = () => {
   const store = useUserStore();
   const user = useSession();
   const router = useRouter();
+  const userType = useUserStore((state) => state.userType);
 
   const handleSwitchUser = async () => {
-    const res = await getSwitchUserRole();
+    if (!userType) return;
+
+    const res = await getSwitchUserRole(userType);
 
     if (res.status !== 200) {
       if (store.userType === 'user' && res.status === 400) {
@@ -28,7 +31,7 @@ const ProfileMenu = () => {
       return;
     }
 
-    if (store.userType === 'user') {
+    if (userType === 'user') {
       const instructorProfile = await getInstructorProfile();
 
       if (!instructorProfile) {
