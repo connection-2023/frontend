@@ -1,9 +1,15 @@
 import { ConnectionLogoSVG, AuthIconSVG } from '@/icons/svg';
 import LoginButtons from './_components/LoginButtons';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Connection | 로그인 페이지',
+  description: 'Connection 로그인 페이지',
+};
 
 const LoginPage = () => {
   return (
-    <section className="mt-auto flex h-max w-full flex-col items-center">
+    <section className="mx-auto flex h-max w-full max-w-[25.5rem] flex-grow flex-col items-center rounded-md bg-white shadow-float">
       <AuthIconSVG className="mt-12 scale-90" />
 
       <h1 className="mt-1.5 text-lg font-semibold">
