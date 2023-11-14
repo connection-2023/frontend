@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { CloseSVG } from '@/icons/svg';
 
 interface RouterModalProps {
@@ -10,7 +10,7 @@ interface RouterModalProps {
 
 const RouterModal = ({ path, children }: RouterModalProps) => {
   const router = useRouter();
-  const overlayRef = React.useRef(null);
+  const overlayRef = useRef(null);
 
   const handleRouter = () => (path ? router.push(path) : router.back());
 
