@@ -110,7 +110,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   ) => {
     shouldShowToast = shouldShowToast === undefined ? true : shouldShowToast;
 
-    if (classData && classData.step && classData.id) {
+    if (classData && classData.id) {
       try {
         if (classData.step === null || classData.step < activeStep) {
           setProcessedClassData({ ...classData, step: activeStep });

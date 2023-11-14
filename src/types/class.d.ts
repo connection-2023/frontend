@@ -141,7 +141,7 @@ export interface IUpdateClassDraft {
 export interface IprocessedDraft {
   id?: number;
   lecturerId?: number;
-  step?: number | null;
+  step: number | null;
   classRange?: {
     startDate?: string | null;
     endDate?: string | null;
