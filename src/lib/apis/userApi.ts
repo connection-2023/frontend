@@ -1,4 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
+import { userType } from '@/types/auth';
+import { IRegisterForm } from '@/types/form';
 
 export const checkUserNickname = async (nickname: string) => {
   try {
@@ -37,6 +39,18 @@ export const getAuth = async (
       console.error('로그인 fetch 요청 오류: ', error.message);
     }
   }
+};
+
+export const postUserRegister = async (data: IRegisterForm) => {
+  const response = await fetch('api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  }).then((data) => data.json());
+
+  return response;
 };
 
 export const getMyProfile = async (token?: string) => {
@@ -83,13 +97,16 @@ export const postProfileImage = async (image: File) => {
   return response;
 };
 
-export const getSwitchUserRole = async () => {
-  const response = await fetch(`${DOMAIN}/api/auth/switch-user`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
+export const getSwitchUserRole = async (userType: userType) => {
+  const response = await fetch(
+    `${DOMAIN}/api/auth/switch-user?userType=${userType}`,
+    {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-  }).then((data) => data.json());
+  ).then((data) => data.json());
 
   return response;
 };
