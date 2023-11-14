@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import { useEffect } from 'react';
 import { CloseSVG } from '@/icons/svg';
 
 interface RouterModalProps {
@@ -20,7 +20,7 @@ const RouterModal = ({ path, children }: RouterModalProps) => {
     handleRouter();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('keyup', handleKeyUp);
 
     return () => window.removeEventListener('keyup', handleKeyUp);

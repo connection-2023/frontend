@@ -30,6 +30,7 @@ import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
+import GenreSVG from './genre.svg';
 import GoogleSVG from './googleIcon.svg';
 import GroupSVG from './group.svg';
 import HeartSVG from './heart.svg';
@@ -57,6 +58,7 @@ import RecentSVG from './recent.svg';
 import ReportSVG from './report.svg';
 import ResetSVG from './reset.svg';
 import ReviewSVG from './review.svg';
+import ScrollTopSVG from './scrollTop.svg';
 import SearchSVG from './search.svg';
 import ShareSVG from './share.svg';
 import SmallLogoSVG from './smallLogo.svg';
@@ -75,6 +77,8 @@ import ZoomOutSVG from './zoomOut.svg';
 export {
   ApplySuccessSVG,
   AuthIconSVG,
+  ScrollTopSVG,
+  GenreSVG,
   ClassStatusSVG,
   ReviewSVG,
   RecentSVG,

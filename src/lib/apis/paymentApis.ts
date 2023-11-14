@@ -1,5 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
 import { IPaymentInfo, IPaymentConfirm } from '@/types/payment';
+const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT; // 추후 파일 이동 예정
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {
@@ -24,18 +25,27 @@ export const postPaymentInfo = async (data: IPaymentInfo) => {
   }
 };
 
-export const patchPaymentConfirm = async (data: IPaymentConfirm) => {
+// 추후 파일 이동 예정
+export const patchPaymentConfirm = async (
+  token: string,
+  data: IPaymentConfirm,
+) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/payment/confirm`, {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    const response = await fetch(END_POINT + '/payments/lecture/confirm', {
       method: 'PATCH',
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify(data),
     }).then((data) => data.json());
 
-    return response;
+    const responseData = await response.json();
+
+    return responseData.data.paymentResult;
   } catch (error) {
     console.error('결제 승인 오류', error);
     throw error;

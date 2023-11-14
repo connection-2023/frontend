@@ -1,19 +1,20 @@
 import { StoryObj, Meta } from '@storybook/react';
-import ScheduleCalendar from './ScheduleCalendar';
+import SingleCalendar from './SingleCalendar';
 
-const meta: Meta<typeof ScheduleCalendar> = {
-  title: 'Components/ScheduleCalendar',
-  component: ScheduleCalendar,
+const meta: Meta<typeof SingleCalendar> = {
+  title: 'Components/Calendars/SingleCalendar',
+  component: SingleCalendar,
   tags: ['autodocs'],
   argTypes: {},
   args: {},
 };
 
 export default meta;
-type Story = StoryObj<typeof ScheduleCalendar>;
+type Story = StoryObj<typeof SingleCalendar>;
 
 export const PreviewCalendar: Story = {
   args: {
+    mode: 'schedule',
     clickableDates: [
       new Date(2023, 8, 4),
       new Date(2023, 8, 5),
@@ -28,5 +29,5 @@ export const PreviewCalendar: Story = {
       new Date(2023, 8, 20),
     ],
   },
-  render: (args) => <ScheduleCalendar {...args} />,
+  render: (args) => <SingleCalendar {...args} />,
 };

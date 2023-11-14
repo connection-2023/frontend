@@ -9,7 +9,7 @@ import {
   classDaysDatesState,
   classDayTypeState,
 } from '@/recoil/ClassSchedule/atoms';
-import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
+import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
@@ -66,6 +66,7 @@ const DayOff = () => {
             {!isDisabled && (
               <>
                 <DayOffCalendar
+                  mode="dayoff"
                   selectedDates={initDates}
                   handleSelected={handleUnselected}
                 />

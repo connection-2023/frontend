@@ -6,41 +6,24 @@ if (!END_POINT) {
   throw new Error('Required environment variables are missing');
 }
 
-export const GET = async (req: NextRequest) => {
-  const cookies = req.headers.get('cookie');
-  let tokenName = '';
-  let tokenValue = '';
+export const GET = async (request: NextRequest) => {
+  const searchParams = request.nextUrl.searchParams;
+  const userType = searchParams.get('userType');
 
-  if (cookies) {
-    const cookieArray = cookies.split(';');
+  const tokenName =
+    userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
 
-    const foundCookie =
-      cookieArray.find((cookie) => {
-        const [name, value] = cookie.split('=');
+  const token = request.cookies.get(tokenName);
 
-        if (
-          name.trim() === 'userAccessToken' ||
-          name.trim() === 'lecturerAccessToken'
-        ) {
-          tokenName = name.trim();
-          tokenValue = value.trim();
-          return true;
-        }
-
-        return false;
-      }) || '';
-
-    if (foundCookie) {
-      const [foundCookieName, foundCookieValue] = foundCookie.split('=');
-      tokenName = foundCookieName.trim();
-      tokenValue = foundCookieValue.trim();
-    }
-  }
   const requestUrl =
     tokenName === 'userAccessToken'
       ? '/auth/token/switch-user-to-lecturer'
       : '/auth/token/switch-lecturer-to-user';
 
+  if (!token)
+    return new NextResponse('토큰이 존재하지 않습니다! ', { status: 500 });
+
+  const tokenValue = token.value;
   const headers: Record<string, string> = {
     Authorization: `Bearer ${tokenValue}`,
   };
@@ -82,6 +65,6 @@ export const GET = async (req: NextRequest) => {
     }
     return clientResponse;
   } catch (error) {
-    return new NextResponse('네트워크 요청 에러: ', { status: 500 });
+    return new NextResponse('유저 전환 네트워크 요청 에러: ', { status: 500 });
   }
 };

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import { useState } from 'react';
-import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
+import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const EditDayOff = () => {
   // 전체 클래스에 해당하는 날짜 -- 서버에서 받아오기
@@ -17,6 +17,7 @@ const EditDayOff = () => {
     <div className="mb-[1.38rem] flex w-full gap-7">
       <div className="rounded-lg px-3 py-2 shadow-horizontal">
         <DayOffCalendar
+          mode="dayoff"
           selectedDates={selectableDate}
           handleSelected={handleUnselected}
         />

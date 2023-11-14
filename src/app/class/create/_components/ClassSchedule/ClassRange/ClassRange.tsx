@@ -102,6 +102,7 @@ const ClassRange = ({
         </span>
         {isCalendarVisible && (
           <RangeCalendar
+            mode="class"
             selectedRange={classRange}
             handleRangeSelect={handleRangeSelect}
           />

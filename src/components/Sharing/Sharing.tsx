@@ -1,15 +1,8 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useState, useRef, useEffect } from 'react';
-import { useClickAway } from 'react-use';
+import { useEffect } from 'react';
 import { DOMAIN } from '@/constants/constants';
-import {
-  KaKaoTalkSVG,
-  ShareSVG,
-  FacebookSVG,
-  TwitterSVG,
-  LinkSVG,
-} from '@/icons/svg';
+import { KaKaoTalkSVG, FacebookSVG, TwitterSVG, LinkSVG } from '@/icons/svg';
 import {
   shareToKakaoTalk,
   shareToFacebook,
@@ -25,8 +18,8 @@ const shareOptions = [
   {
     label: '카카오톡',
     button: (
-      <button className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-kakao">
-        <KaKaoTalkSVG />
+      <button className="bg-kakao flex h-[35px] w-[35px] items-center justify-center rounded-full">
+        <KaKaoTalkSVG width="17" height="16" />
       </button>
     ),
   },
@@ -54,44 +47,22 @@ interface ISharingProps {
 }
 
 const Sharing = ({ mode, header }: ISharingProps) => {
-  const [isOpened, setIsOpened] = useState(false);
-  const modalRef = useRef(null);
-
-  useClickAway(modalRef, () => {
-    if (isOpened) setIsOpened(false);
-  });
-
-  const handleOpenModal = () => {
-    setIsOpened((prev) => !prev);
-  };
-
   return (
-    <div ref={modalRef} className="relative">
-      <ShareSVG
-        onClick={handleOpenModal}
-        className={`cursor-pointer ${
-          isOpened ? 'fill-gray-100' : 'fill-gray-500'
-        }  hover:fill-gray-100`}
-      />
-
-      {isOpened && (
-        <div className="absolute right-0 top-8 z-10 flex h-28 flex-col items-center rounded-md bg-white shadow-float">
-          <p className="flex h-[35px] w-full items-center justify-center border-b border-solid border-gray-700 text-sm font-semibold ">
-            공유하기
-          </p>
-          <div className="border-box flex items-center gap-[1.41rem] px-4 py-[0.69rem]">
-            {shareOptions.map((option) => (
-              <ShareButton
-                key={option.label}
-                mode={mode}
-                header={header}
-                label={option.label}
-                button={option.button}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+    <div className="flex flex-col items-center">
+      <p className="flex w-full items-center justify-center border-b border-solid border-gray-700 py-3 text-sm font-semibold">
+        공유하기
+      </p>
+      <div className="border-box flex items-center gap-[1.41rem] px-4 py-[0.69rem]">
+        {shareOptions.map((option) => (
+          <ShareButton
+            key={option.label}
+            mode={mode}
+            header={header}
+            label={option.label}
+            button={option.button}
+          />
+        ))}
+      </div>
     </div>
   );
 };
