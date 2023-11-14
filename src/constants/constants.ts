@@ -1,5 +1,5 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
-
+import { ConsentListType } from '@/types/auth';
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
 export const ProfileImgSize = {
@@ -22,8 +22,31 @@ export const ButtonStyles = {
   default:
     'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 active:bg-sub-color1 active:text-white',
   secondary:
-    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/[.1] active:bg-black active:text-white',
+    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/10 active:bg-black active:text-white',
 };
+
+export const REGISTER_CONSENT_LIST: ConsentListType = [
+  {
+    id: 'termsOfService',
+    title: '(필수) 서비스 이용 약관',
+  },
+  {
+    id: 'talk',
+    title: '(선택) 알림톡 수신 동의',
+  },
+  {
+    id: 'email',
+    title: '(선택) 이메일 수신 동의',
+  },
+  {
+    id: 'marketing',
+    title: '(선택) 마케팅 정보 수집 동의',
+    subOptions: [
+      { id: 'marketingChannelTalk', title: '채널톡 (카카오톡 채널)' },
+      { id: 'marketingEmail', title: '이메일' },
+    ],
+  },
+];
 
 export const DAY_MODIFIERS = {
   saturday: (date: Date) => date.getDay() === 6,
