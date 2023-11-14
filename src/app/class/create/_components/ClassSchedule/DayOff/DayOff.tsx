@@ -13,7 +13,15 @@ import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
-const DayOff = () => {
+//to은서: defaultValue 값만 올바른 곳에 넣어줘 unselectedDates 값이 들어와 휴무일 있는지 없는지도 처리하면 될거 같아
+
+const DayOff = ({
+  onChange,
+  defaultValue = [],
+}: {
+  onChange: (value: Date[]) => void;
+  defaultValue?: Date[];
+}) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
     null,
   );
@@ -40,6 +48,7 @@ const DayOff = () => {
         (date) => !unselectedDates.includes(date),
       );
       setClassDates(newClassDates);
+      onChange(unselectedDates);
     }
   }, [unselectedDates]);
 

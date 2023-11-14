@@ -1,141 +1,69 @@
-'use client';
-import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useSetRecoilState } from 'recoil';
-import { ArrowRightSVG } from '@/icons/svg';
-import { classCreateState } from '@/recoil/Create/atoms';
-import ClassCategory from './_components/ClassCategory';
-import ClassExplanation from './_components/ClassExplanation';
-import ClassLocation from './_components/ClassLocation';
-import ClassPrice from './_components/ClassPrice';
-import ClassSchedule from './_components/ClassSchedule';
-import Button from '@/components/Button/Button';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { ErrorMessage } from '@/types/types';
+import { redirect } from 'next/navigation';
+import {
+  getClassDrafts,
+  createClassDraft,
+  getClassDraft,
+} from '@/lib/apis/serverApis/classApi';
+import ClassCreate from './_components/ClassCreate';
+import ClassStoreInitializer from './_components/ClassStoreInitializer';
+import DraftListModalContainer from './_components/DraftListModalContainer';
 
-const steps = [
-  { title: '사진, 카테고리 설정', component: <ClassCategory /> },
-  { title: '클래스 상세 설명', component: <ClassExplanation /> },
-  { title: '일정 및 공지사항', component: <ClassSchedule /> },
-  { title: '클래스 장소', component: <ClassLocation /> },
-  { title: '가격 설정', component: <ClassPrice /> },
-];
+const validateSearchParams = (searchParams: {
+  [key: string]: string | undefined;
+}) => {
+  if (isNaN(Number(searchParams.id)) || isNaN(Number(searchParams.step))) {
+    throw new Error('id 혹은 step 숫자가 아닙니다.');
+  }
 
-export default function ClassCreate() {
-  const [activeStep, setActiveStep] = useState(0);
-  const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
-  const setClassCreate = useSetRecoilState(classCreateState);
+  if (Number(searchParams.step) > 4 || Number(searchParams.step) < 0) {
+    throw new Error('step이 비 정상적입니다.');
+  }
+};
 
-  const formMethods = useForm({ shouldFocusError: false });
+const handleServerError = (error: unknown, redirectPath: string): void => {
+  if (error instanceof Error) {
+    console.error(error.message);
+    redirect(redirectPath);
+  }
+};
 
-  const { handleSubmit } = formMethods;
+const ClassCreatePage = async ({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) => {
+  let data, classDrafts;
 
-  const nextStep = () => {
-    if (activeStep < steps.length - 1) {
-      setActiveStep(activeStep + 1);
+  if (searchParams && searchParams.id && searchParams.step) {
+    try {
+      validateSearchParams(searchParams);
+      data = await getClassDraft(searchParams.id);
+    } catch (error) {
+      handleServerError(error, '/class/create');
     }
-  };
-
-  const prevStep = () => {
-    if (activeStep > 0) {
-      setActiveStep(activeStep - 1);
+  } else {
+    try {
+      classDrafts = await getClassDrafts();
+      if (classDrafts.length === 0) {
+        const { id } = await createClassDraft();
+        redirect(`/class/create?step=0&id=${id}`);
+      }
+    } catch (error) {
+      handleServerError(error, '/');
+      // 추후 401이면 로그인으로 이동
     }
-  };
-
-  const onValid = (data: any) => {
-    //Validation 작성 하면서 data 타입 변경 요망
-    setClassCreate((prevState) => ({
-      ...prevState,
-      ...data,
-    }));
-
-    nextStep();
-  };
-
-  const invalid = (data: Record<string, any>) => {
-    const invalidList = Object.entries(data).map(([key, value]) => ({
-      key,
-      ...value,
-    }));
-
-    setInvalidData(invalidList);
-  };
-
-  const closeValidationMessage = () => {
-    setInvalidData(null);
-  };
+  }
 
   return (
-    <main className="mx-auto px-[2.38rem]">
-      <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
-        클래스 작성
-      </h1>
-
-      {/* 상태 바  */}
-      <ul className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-float">
-        {steps.map((step, index) => (
-          <li
-            key={index}
-            className={`flex h-full flex-grow items-center justify-center gap-2 rounded-[3.13rem] px-1 ${
-              activeStep === index
-                ? 'bg-sub-color1 text-white'
-                : 'text-gray-500'
-            }`}
-          >
-            <span
-              className={`flex h-6 w-6 items-center justify-center rounded-full ${
-                activeStep === index
-                  ? 'bg-white text-sub-color1'
-                  : 'bg-gray-500 text-white'
-              }`}
-            >
-              {index + 1}
-            </span>
-            {step.title}
-          </li>
+    <>
+      <ClassStoreInitializer data={data} />
+      {!searchParams ||
+        ((!searchParams.id || !searchParams.step) && classDrafts.length > 0 && (
+          <DraftListModalContainer classDrafts={classDrafts} />
         ))}
-      </ul>
-      <section className="mx-auto flex max-w-[675px] flex-col">
-        <h2 className="mt-8 flex items-center text-2xl font-bold text-sub-color1">
-          <span
-            className="mr-2 flex h-7 w-7
-items-center justify-center rounded-full border border-solid border-sub-color1 text-lg"
-          >
-            {activeStep + 1}
-          </span>
-          {steps[activeStep].title}
-        </h2>
-
-        {/* 해당 컴포넌트*/}
-        <FormProvider {...formMethods}>
-          {steps[activeStep].component}
-        </FormProvider>
-
-        {/* 하단 버튼 */}
-        <nav className="my-10 flex w-full justify-between text-lg font-bold">
-          <button onClick={prevStep} className="flex items-center">
-            <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
-            이전
-          </button>
-          <div className="flex w-[4.5rem]">
-            <Button size="small" color="secondary">
-              임시저장
-            </Button>
-            <form onSubmit={handleSubmit(onValid, invalid)}>
-              <button className="ml-4 flex items-center">
-                다음
-                <ArrowRightSVG className="ml-3 h-[15px] w-[9px] stroke-black" />
-              </button>
-            </form>
-          </div>
-        </nav>
-      </section>
-
-      {/* 유효성 토스트 메세지 */}
-      <ValidationMessage
-        closeModal={closeValidationMessage}
-        invalidData={invalidData}
-      />
-    </main>
+      <ClassCreate step={searchParams?.step} />
+    </>
   );
-}
+};
+
+export default ClassCreatePage;

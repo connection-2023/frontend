@@ -9,9 +9,9 @@ import { useUserStore } from '@/store';
 import {
   categorizeGenres,
   constructEmail,
-  formatRegions,
-  handleImageUpload,
-} from '@/utils/apiDataPreparers';
+  reqRegions,
+  uploadImageFiles,
+} from '@/utils/apiDataProcessor';
 import { switchToInstructor } from '@/utils/switchUserUtil';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
@@ -70,13 +70,16 @@ const ApplyPage = () => {
         instagramPostUrls2,
       } = data;
 
-      const uploadImgList = await handleImageUpload(profileImageUrls);
+      const uploadImgList = await uploadImageFiles(
+        profileImageUrls,
+        'lecturers',
+      );
 
       const email = constructEmail(emailFront, emailBack);
 
       const { newGenres, etcGenres } = categorizeGenres(genres);
 
-      const newRegions = formatRegions(regions);
+      const newRegions = reqRegions(regions);
 
       const instructorData = {
         profileImageUrls: uploadImgList,

@@ -11,14 +11,33 @@ import '@/styles/calendar.css';
 
 const ClassRange = ({
   onChange,
+  defaultValue = { startDate: '', endDate: '' },
 }: {
-  onChange?: (value: DateRange | undefined) => void;
+  onChange: (value: { startDate: string; endDate: string }) => void;
+  defaultValue?: { startDate: string; endDate: string };
 }) => {
   const [classRange, setClassRange] = useRecoilState(classRangeState);
-  const [fromValue, setFromValue] = useState<string>('');
-  const [toValue, setToValue] = useState<string>('');
+  const [fromValue, setFromValue] = useState<string>(defaultValue.startDate);
+  const [toValue, setToValue] = useState<string>(defaultValue.endDate);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const ref = useRef(null);
+
+  useEffect(() => {
+    const { endDate, startDate } = defaultValue;
+    const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+    const isValidStartDate = dateFormat.test(startDate);
+    const isValidEndDate = dateFormat.test(endDate);
+
+    if (isValidStartDate && isValidEndDate) {
+      const from = new Date(defaultValue.startDate);
+      const to = new Date(defaultValue.endDate);
+      setClassRange({ from, to });
+    }
+  }, [defaultValue, setClassRange]);
+
+  useEffect(() => {
+    onChange({ startDate: fromValue, endDate: toValue });
+  }, [fromValue, toValue]);
 
   useClickAway(ref, () => {
     setIsCalendarVisible(false);
@@ -27,12 +46,6 @@ const ClassRange = ({
   const openCalendar = () => {
     setIsCalendarVisible(true);
   };
-
-  useEffect(() => {
-    if (onChange) {
-      onChange(classRange);
-    }
-  }, [classRange]);
 
   const updateSelectedRange = useCallback((date: Date) => {
     setClassRange((current) => {

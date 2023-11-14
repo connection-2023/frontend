@@ -13,9 +13,6 @@ const GenreCheckboxGroup = ({
   onChange,
   defaultValue = [],
 }: GenreCheckboxGroupProps) => {
-  const {
-    formState: { errors },
-  } = useFormContext();
   const [selectGenreList, setSelectGenreList] =
     useState<string[]>(defaultValue);
   const combinedArray = ['전체', ...DANCE_GENRE, ...defaultValue];

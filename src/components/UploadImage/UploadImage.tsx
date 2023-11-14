@@ -7,14 +7,10 @@ import CropperModal from './CropperModal';
 interface UploadImageProps {
   onChange?: (
     data: {
-      file: File;
-      url: string;
+      imageUrl: string;
     }[],
   ) => void;
-  defaultImg?: {
-    file: File;
-    url: string;
-  }[];
+  defaultImg?: { imageUrl: string }[];
   situation?: string;
   errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
@@ -26,9 +22,9 @@ const UploadImage = ({
   situation = '클래스',
 }: UploadImageProps) => {
   const [images, setImages] =
-    useState<{ file: File; url: string }[]>(defaultImg);
+    useState<{ file?: File; imageUrl: string }[]>(defaultImg);
   const [selectedImage, setSelectedImage] = useState<string | null>(
-    defaultImg?.[0]?.url || null,
+    defaultImg?.[0]?.imageUrl || null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isFirstRender = useRef(true);
@@ -56,7 +52,7 @@ const UploadImage = ({
     if (event.target.files) {
       const filesArray = Array.from(event.target.files).map((file) => ({
         file,
-        url: URL.createObjectURL(file),
+        imageUrl: URL.createObjectURL(file),
       }));
 
       if (images.length + filesArray.length > 5) {
@@ -72,7 +68,7 @@ const UploadImage = ({
       }
 
       if (!selectedImage && filesArray.length > 0) {
-        setSelectedImage(filesArray[0].url);
+        setSelectedImage(filesArray[0].imageUrl);
       }
     }
   };
@@ -82,8 +78,8 @@ const UploadImage = ({
       const newImages = prevImages.filter((_, i) => i !== index);
 
       // 선택된 이미지가 삭제되면 selectedImage를 null로 설정
-      if (selectedImage === prevImages[index].url) {
-        setSelectedImage(newImages[0] ? newImages[0].url : null);
+      if (selectedImage === prevImages[index].imageUrl) {
+        setSelectedImage(newImages[0] ? newImages[0].imageUrl : null);
       }
 
       // 모든 이미지가 삭제되면 selectedImage를 null로 설정
@@ -125,7 +121,9 @@ const UploadImage = ({
 
     setImages((prevImages) =>
       prevImages.map((image) =>
-        image.url === selectedImage ? { ...image, url: croppedDataURL } : image,
+        image.imageUrl === selectedImage
+          ? { ...image, imageUrl: croppedDataURL }
+          : image,
       ),
     );
   };
@@ -197,18 +195,18 @@ const UploadImage = ({
                 onDrop={(e) => handleDrop(e, index)}
                 onDragOver={(e) => e.preventDefault()}
                 className={`relative h-[4rem] w-[6.3rem] ${
-                  image.url === selectedImage
+                  image.imageUrl === selectedImage
                     ? 'border-[3px] border-solid border-sub-color1'
                     : ''
                 }`}
               >
                 <div className="relative h-full w-full cursor-grab overflow-hidden">
                   <Image
-                    src={image.url}
+                    src={image.imageUrl}
                     alt={`${situation} 업로드 이미지 ${index + 1}`}
                     fill
                     style={{ objectFit: 'cover' }}
-                    onClick={() => setSelectedImage(image.url)}
+                    onClick={() => setSelectedImage(image.imageUrl)}
                   />
                 </div>
                 <ClearSVG

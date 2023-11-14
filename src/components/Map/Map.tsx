@@ -45,6 +45,10 @@ const NaverMapRenderer = ({ address, studioName }: MapProps) => {
   );
 
   useEffect(() => {
+    if (!address) {
+      return;
+    }
+
     navermaps.Service.geocode(
       {
         query: address,

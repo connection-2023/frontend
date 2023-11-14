@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CheckMarkSVG } from '@/icons/svg';
 
@@ -6,10 +6,20 @@ interface RadioComponentProps {
   title: string;
   message: string;
   checkList: string[];
+  select?: string | null;
 }
 
-const RadioComponent = ({ title, checkList, message }: RadioComponentProps) => {
-  const { register } = useFormContext();
+const RadioComponent = ({
+  title,
+  checkList,
+  message,
+  select = '',
+}: RadioComponentProps) => {
+  const { register, setValue } = useFormContext();
+
+  useEffect(() => {
+    setValue(title, select);
+  }, []);
 
   return (
     <>
