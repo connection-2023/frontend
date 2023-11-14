@@ -8,12 +8,8 @@ import { useUserStore } from '@/store';
 import Button from '@/components/Button/Button';
 import RouterModal from '@/components/Modal/RouterModal';
 
-interface UploadProfileModalProps {
-  defaultProfile: string | null;
-}
-
-const UploadProfileModal = ({ defaultProfile }: UploadProfileModalProps) => {
-  const [imgSrc, setImgSrc] = useState<string | null>(defaultProfile);
+const UploadProfileModal = () => {
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();

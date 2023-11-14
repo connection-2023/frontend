@@ -7,12 +7,8 @@ import { postProfileImage } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import Button from '@/components/Button/Button';
 
-interface UploadProfileProps {
-  defaultProfile: string | null;
-}
-
-const UploadProfile = ({ defaultProfile }: UploadProfileProps) => {
-  const [imgSrc, setImgSrc] = useState<string | null>(defaultProfile);
+const UploadProfile = () => {
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
