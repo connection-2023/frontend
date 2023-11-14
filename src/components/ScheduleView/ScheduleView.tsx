@@ -1,10 +1,9 @@
 'use client';
 import { isSameDay } from 'date-fns';
-import React, { useState } from 'react';
+import { useState, memo } from 'react';
 import { formatDateTime } from '@/utils/parseUtils';
 import ScheduleCalendar from '../Calendar/SingleCalendar';
 import { IClassSchedule } from '@/types/class';
-import { formatDateTime } from '@/utils/parseUtils';
 
 interface ScheduleViewProps {
   lectureSchedule: IClassSchedule[];
@@ -47,7 +46,7 @@ const ScheduleView = ({
   );
 };
 
-export default React.memo(ScheduleView);
+export default memo(ScheduleView);
 
 const textStyle = {
   normal: 'text-gray-100',
