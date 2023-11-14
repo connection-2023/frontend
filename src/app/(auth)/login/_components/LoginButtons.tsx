@@ -25,11 +25,11 @@ const LoginButtons = () => {
       store.setAuthUser(profileRes.data.myProfile);
       store.setUserType('user');
       toast.success('로그인 성공!');
-      router.push('/');
+      router.replace('/');
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
 
-      router.push(
+      router.replace(
         `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
       );
     }
@@ -45,13 +45,11 @@ const LoginButtons = () => {
       store.setAuthUser(profileRes.data.myProfile);
       store.setUserType('user');
       toast.success('로그인 성공!');
-      router.push('/');
+      router.replace('/');
     } else if (status === 201) {
-      console.log(data);
       const { authEmail, signUpType } = data;
-      console.log(authEmail, signUpType);
 
-      router.push(
+      router.replace(
         `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
       );
     }
