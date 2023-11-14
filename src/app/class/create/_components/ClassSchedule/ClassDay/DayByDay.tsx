@@ -1,12 +1,7 @@
 import { eachDayOfInterval, getDay } from 'date-fns';
 import React, { useState, useEffect, useMemo } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { FILTER_WEEK } from '@/constants/constants';
-import {
-  classRangeState,
-  classDatesState,
-  classDaysDatesState,
-} from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import TimeList from './TimeList';
 import { DayTimeList } from '@/types/class';
 
@@ -14,9 +9,12 @@ const DayByDay = () => {
   const [dayTimeLists, setDayTimeLists] = useState<DayTimeList[]>([
     { day: [], timeSlots: [''] },
   ]);
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const [selectedDates, setSelectedDates] = useRecoilState(classDaysDatesState);
-  const classRange = useRecoilValue(classRangeState);
+  const store = useClassScheduleStore();
+  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
+  const setSelectedDates = useClassScheduleStore(
+    (state) => state.setClassDates,
+  );
+  const classRange = store.classRange;
   const isEveryListHasDay = dayTimeLists.every((list) => list.day.length > 0);
   const allSelectedDays = useMemo(
     () => dayTimeLists.flatMap((list) => list.day),

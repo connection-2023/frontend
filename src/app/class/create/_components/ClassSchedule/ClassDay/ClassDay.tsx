@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
 import { CheckSVG } from '@/icons/svg';
-import {
-  classRangeState,
-  classTimeState,
-  classDayTypeState,
-} from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import DayByDay from './DayByDay';
 import SpecificDate from './SpecificDate';
 
@@ -17,13 +12,16 @@ const dayTypeComponents: DayTypeComponents = {
   '요일별로 달라요': <DayByDay />,
   '특정 날짜에만 운영해요': <SpecificDate />,
 };
-
-const ClassDay = () => {
+//정기클래스, 원데이 레슨
+const ClassDay = ({ lectureMethod }: { lectureMethod: string }) => {
   const [selectedType, setSelectedType] = useState('요일별로 달라요');
-  const classRange = useRecoilValue(classRangeState);
-  const classTime = useRecoilValue(classTimeState);
-  const [classType, setClassType] = useRecoilState(classDayTypeState);
-  const isDisabled = !(classRange && classTime);
+  const store = useClassScheduleStore();
+  const duration = store.classDuration;
+  const classRange = useClassScheduleStore((state) => state.classRange);
+
+  const setClassType = useClassScheduleStore((state) => state.setClassType);
+
+  const isDisabled = !(classRange && duration);
 
   useEffect(() => {
     const classType = selectedType === '요일별로 달라요' ? '요일' : '특정 날짜';

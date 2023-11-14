@@ -1,14 +1,7 @@
 import { format } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import {
-  classDatesState,
-  classRangeState,
-  classTimeState,
-  classDaysDatesState,
-  classDayTypeState,
-} from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
@@ -25,12 +18,15 @@ const DayOff = ({
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
     null,
   );
+  const store = useClassScheduleStore();
   const [unselectedDates, setUnselectedDates] = useState<Date[]>([]);
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const classType = useRecoilValue(classDayTypeState);
-  const initDates = useRecoilValue(classDaysDatesState);
-  const classRange = useRecoilValue(classRangeState);
-  const classTime = useRecoilValue(classTimeState);
+
+  const classDates = store.filteredDates;
+  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
+  const classType = store.classType;
+  const initDates = store.classDates;
+  const classRange = store.classRange;
+  const classTime = store.classDuration;
   const isDisabled =
     !(classRange && classTime && initDates) || classType === '특정 날짜';
 

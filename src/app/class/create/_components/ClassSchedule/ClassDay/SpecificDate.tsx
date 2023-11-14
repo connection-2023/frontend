@@ -1,8 +1,7 @@
 import { eachDayOfInterval, format, isSameDay } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import { useEffect, useId, useReducer, useMemo } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { classRangeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import { specificDateReducer } from '@/utils/specificDateReducer';
 import TimeList from './TimeList';
 import InputClassDates from '@/components/Calendar/InputClassDates';
@@ -15,8 +14,10 @@ const initialState = {
 };
 
 const SpecificDate = () => {
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const classRange = useRecoilValue(classRangeState);
+  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
+
+  const classRange = useClassScheduleStore((state) => state.classRange);
+
   const [state, dispatch] = useReducer(specificDateReducer, initialState);
 
   useEffect(() => {

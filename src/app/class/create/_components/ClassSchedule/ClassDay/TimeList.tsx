@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { ClearSVG } from '@/icons/svg';
-import { classTimeState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 
-interface ITimeListProps {
+interface TimeListProps {
   startTime: string;
   onChange: (newStartTime: string) => void;
   onRemove?: () => void;
 }
 
-const TimeList = ({ startTime, onChange, onRemove }: ITimeListProps) => {
-  const classTime = useRecoilValue(classTimeState);
+const TimeList = ({ startTime, onChange, onRemove }: TimeListProps) => {
+  const classTime = useClassScheduleStore((state) => state.classDuration);
   const [startValue, setStartValue] = useState(startTime);
   const [endTime, setEndTime] = useState<string>('');
 

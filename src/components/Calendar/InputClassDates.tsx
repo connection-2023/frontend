@@ -3,8 +3,7 @@ import { ko } from 'date-fns/esm/locale';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
-import { useRecoilState } from 'recoil';
-import { classDatesState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import { FormattedCaption } from '@/utils/calendarUtils/CalendarCaption';
 import {
   getInputCalendarModifiers,
@@ -21,7 +20,8 @@ const InputClassDates = ({
   clickableDates,
   handleClickDate,
 }: IInputClassDatesProps) => {
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
+  const classDates =
+    useClassScheduleStore((state) => state.filteredDates) || [];
   const [selected, setSelected] = useState<Date | undefined>();
 
   useEffect(() => {

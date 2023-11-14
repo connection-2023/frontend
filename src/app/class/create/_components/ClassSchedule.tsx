@@ -1,9 +1,7 @@
 import { parse, format } from 'date-fns';
-import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { dummyClass } from '@/constants/dummy';
-import { classTimeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
@@ -14,30 +12,18 @@ const ClassSchedule = () => {
   const {
     register,
     control,
+    watch,
     formState: { errors },
   } = useFormContext();
-
   const { classData } = useClassCreateStore();
-
-  const [classTime, setClassTime] = useRecoilState(classTimeState);
-  const classDates = useRecoilValue(classDatesState);
+  const duration = watch('duration');
+  const classRange = watch('classRange');
+  const setClassDuration = useClassScheduleStore(
+    (state) => state.setClassDuration,
+  );
+  const classDates = useClassScheduleStore((state) => state.filteredDates);
   const classNum = classDates?.length;
   const { lectureSchedule } = dummyClass;
-
-  const [classNotification, setClassNotification] = useState('');
-  const handleTextareaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setClassNotification(event.target.value);
-  };
-  const [deadline, setDeadline] = useState<number | null>(null);
-  //to은서: 32~38라인 내가 볼땐 필요 없어 보이는데 필요 없으면 제거 해줘
-
-  useEffect(() => {
-    if (classData?.duration) {
-      setClassTime(classData.duration);
-    }
-  }, [classData]);
 
   return (
     <>
@@ -99,9 +85,9 @@ const ClassSchedule = () => {
               <input
                 type="number"
                 min={30}
-                value={classTime || ''}
+                value={duration || ''}
                 onChange={(e) => {
-                  setClassTime(Number(e.target.value));
+                  setClassDuration(Number(e.target.value));
                   field.onChange(Number(e.target.value));
                 }}
                 className="h-7 w-12 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.81rem] py-1"
@@ -133,7 +119,7 @@ const ClassSchedule = () => {
             id={field.name}
             // !!errors.임시 저장될 데이터이름?.message 넣기
           >
-            <ClassDay />
+            <ClassDay lectureMethod={watch('lectureMethod')} />
           </Section>
         )}
       />
