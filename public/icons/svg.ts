@@ -65,6 +65,7 @@ import StarSVG from './star.svg';
 import TimeSVG from './time.svg';
 import TooltipSVG from './tooltip.svg';
 import TransFormSVG from './transform.svg';
+import TrashcanSVG from './trashcan.svg';
 import TwitterSVG from './twitter.svg';
 import UnreadMessageSVG from './unreadMessage.svg';
 import UploadImageSVG from './UploadImg.svg';
@@ -74,6 +75,7 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  TrashcanSVG,
   ApplySuccessSVG,
   ScrollTopSVG,
   GenreSVG,

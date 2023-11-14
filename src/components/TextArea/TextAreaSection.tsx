@@ -29,6 +29,7 @@ const TextAreaSection = ({
     getValues,
     watch,
     formState: { errors },
+    setValue,
   } = useFormContext();
 
   const textareaWatch = watch(dataName);
@@ -36,6 +37,10 @@ const TextAreaSection = ({
   useEffect(() => {
     setLength(getValues(dataName)?.length);
   }, [textareaWatch]);
+
+  useEffect(() => {
+    setValue(dataName, defaultValue);
+  }, []);
 
   return (
     <section className="relative flex flex-col">
@@ -56,11 +61,10 @@ const TextAreaSection = ({
         })}
         className={`${height} resize-none rounded-md border border-gray-500 p-3 focus:outline-sub-color1`}
         placeholder={placeholder}
-        defaultValue={defaultValue}
         maxLength={maxLength}
       />
-      <div className="absolute bottom-2 right-3 text-gray-500">
-        ({length} / {maxLength})
+      <div className="absolute bottom-2 right-3 text-sub-color2">
+        ({length || 0} / {maxLength})
       </div>
     </section>
   );

@@ -41,7 +41,7 @@ export interface InstructorApplyData {
   instagramPostUrls0: string;
   instagramPostUrls1: string;
   instagramPostUrls2: string;
-  profileImageUrls: { file: File; url: string }[];
+  profileImageUrls: { file: File; imageUrl: string }[];
   regions: Regions;
   genres: string[];
   instagramUrl: string;
@@ -49,4 +49,22 @@ export interface InstructorApplyData {
   homepageUrl: string;
   introduction: string;
   experience: string;
+}
+
+export interface IInstructorRegister {
+  profileImageUrls: string[];
+  nickname: string;
+  email: string;
+  phoneNumber: string;
+  profileCardImageUrl?: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
+  homepageUrl?: string;
+  affiliation?: string;
+  introduction: string;
+  experience?: string;
+  regions: string[];
+  genres: string[];
+  instagramPostUrls?: string[];
+  etcGenres?: string[];
 }

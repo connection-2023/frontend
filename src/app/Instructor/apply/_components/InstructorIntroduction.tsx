@@ -57,7 +57,12 @@ const InstructorIntroduction = () => {
               }
             },
           }}
-          render={({ field }) => <SelectLocation onChange={field.onChange} />}
+          render={({ field }) => (
+            <SelectLocation
+              defaultValue={field.value}
+              onChange={field.onChange}
+            />
+          )}
         />
       </IntroductionSection>
 

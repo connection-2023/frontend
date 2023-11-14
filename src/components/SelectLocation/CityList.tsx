@@ -5,12 +5,14 @@ const selectList = ['온라인', ...CITY_LIST];
 const selectCityStyle = (
   focusLocation: string | null,
   city: string,
-  selectLocationList: Record<string, string[]>,
+  selectLocationList: Record<string, string[]> | null,
 ) => {
   return focusLocation === city ||
-    (selectLocationList[city] && selectLocationList[city].length > 0)
-    ? 'select-shadow-border bg-gray-900 font-bold flex h-[1.75rem] w-[11.11%] cursor-pointer items-center justify-center'
-    : 'shadow-border text-gray-500 flex h-[1.75rem] w-[11.11%] cursor-pointer items-center justify-center';
+    (selectLocationList &&
+      selectLocationList[city] &&
+      selectLocationList[city].length > 0)
+    ? 'select-shadow-border bg-[#F5F5F5] font-bold flex h-[1.75rem] w-[11.11%] cursor-pointer items-center justify-center'
+    : 'shadow-border text-sub-color2 flex h-[1.75rem] w-[11.11%] cursor-pointer items-center justify-center';
 };
 
 interface CityListProps {

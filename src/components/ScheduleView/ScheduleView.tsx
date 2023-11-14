@@ -1,14 +1,9 @@
 'use client';
 import { isSameDay } from 'date-fns';
 import React, { useState } from 'react';
+import { formatDateTime } from '@/utils/parseUtils';
 import ScheduleCalendar from '../Calendar/SingleCalendar';
 import { IClassSchedule } from '@/types/class';
-import { formatDateTime } from '@/utils/parseUtils';
-
-const textStyle = {
-  normal: 'text-sub-color3',
-  full: 'text-sub-color2',
-};
 
 interface ISchedule {
   id: number;
@@ -17,7 +12,6 @@ interface ISchedule {
   numberOfParticipants: number;
   team: null | string;
 }
-
 
 interface ScheduleViewProps {
   lectureSchedule: IClassSchedule[];
