@@ -129,11 +129,13 @@ const ClassRange = ({
           />
         </span>
         {isCalendarVisible && (
-          <RangeCalendar
-            mode="class"
-            selectedRange={store.classRange}
-            handleRangeSelect={handleRangeSelect}
-          />
+          <div className="absolute left-4 top-3 z-10 flex h-auto -translate-x-4 translate-y-5 rounded-md border border-solid border-gray-500 bg-white px-3 py-4">
+            <RangeCalendar
+              mode="class"
+              selectedRange={store.classRange}
+              handleRangeSelect={handleRangeSelect}
+            />
+          </div>
         )}
       </div>
     </div>
