@@ -1,5 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
 import { userType } from '@/types/auth';
+import { IRegisterForm } from '@/types/form';
 
 export const checkUserNickname = async (nickname: string) => {
   try {
@@ -38,6 +39,18 @@ export const getAuth = async (
       console.error('로그인 fetch 요청 오류: ', error.message);
     }
   }
+};
+
+export const postUserRegister = async (data: IRegisterForm) => {
+  const response = await fetch('api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  }).then((data) => data.json());
+
+  return response;
 };
 
 export const getMyProfile = async (token?: string) => {

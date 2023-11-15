@@ -14,3 +14,9 @@ export const reportTypes: Array<keyof ReportFormData> = [
   '부적절한 내용',
   '기타',
 ];
+
+export interface IRegisterForm {
+  name: string;
+  nickname: string;
+  phoneNumber?: string;
+}

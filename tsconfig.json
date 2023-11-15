@@ -30,7 +30,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "public/icons/svg.js",
-    "src/app/_components/Header"
+    "src/app/_components/Header",
+    "src/app/@modal/(.)login"
   ],
   "exclude": ["node_modules"]
 }
