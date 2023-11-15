@@ -1,9 +1,4 @@
 import { DOMAIN } from '@/constants/constants';
-import {
-  IGetClassDrafts,
-  IGetClassDraft,
-  IUpdateClassDraft,
-} from '@/types/class';
 import { IInstructorRegister } from '@/types/instructor';
 
 export const getInstructorProfile = async () => {
