@@ -1,11 +1,17 @@
 import { eachDayOfInterval, getDay } from 'date-fns';
 import React, { useState, useEffect, useMemo } from 'react';
+import { toast } from 'react-toastify';
 import { FILTER_WEEK } from '@/constants/constants';
 import { useClassScheduleStore } from '@/store';
 import TimeList from './TimeList';
 import { DayTimeList } from '@/types/class';
 
-const DayByDay = () => {
+const DayByDay = ({
+  lectureMethod = '원데이 레슨',
+}: {
+  lectureMethod?: string;
+}) => {
+  const isRegularClass = lectureMethod !== '원데이 레슨';
   const [dayTimeLists, setDayTimeLists] = useState<DayTimeList[]>([
     { day: [], timeSlots: [''] },
   ]);
@@ -21,24 +27,37 @@ const DayByDay = () => {
     [dayTimeLists],
   );
 
+  const [selectedDaysCountList, setSelectedDaysCountList] = useState<number[]>(
+    [],
+  );
+
   useEffect(() => {
     if (!classRange || !classRange.from || !classRange.to) return;
-    // 선택한 요일에 맞는 날짜만 필터링
+
     const allDatesInRange = eachDayOfInterval({
       start: classRange.from,
       end: classRange.to,
     });
 
-    const selectedDays = allDatesInRange.filter((date) => {
-      // 월요일=0, 화요일=1, ..., 일요일=7
-      const dayIndex = (getDay(date) + 6) % 7;
+    const selectedDaysCountList = dayTimeLists.map((list) => {
+      const daysInThisList = allDatesInRange.filter((date) => {
+        const dayIndex = (getDay(date) + 6) % 7;
+        return list.day.includes(FILTER_WEEK[dayIndex]);
+      });
 
+      return daysInThisList.length;
+    });
+
+    setSelectedDaysCountList(selectedDaysCountList);
+
+    const selectedDays = allDatesInRange.filter((date) => {
+      const dayIndex = (getDay(date) + 6) % 7;
       return allSelectedDays.includes(FILTER_WEEK[dayIndex]);
     });
 
     setClassDates(selectedDays);
     setSelectedDates(selectedDays);
-  }, [allSelectedDays, classRange, setClassDates]);
+  }, [dayTimeLists, classRange, allSelectedDays, setClassDates]);
 
   const toggleDaySelection = (day: string, listIndex: number) => {
     setDayTimeLists(
@@ -66,7 +85,7 @@ const DayByDay = () => {
     if (dayTimeLists.length < 7) {
       setDayTimeLists([...dayTimeLists, { day: [], timeSlots: [''] }]);
     } else {
-      alert('모든 요일이 이미 선택되었습니다.');
+      toast.error('모든 요일이 이미 선택되었습니다.');
     }
   };
 
@@ -151,18 +170,37 @@ const DayByDay = () => {
       <div className="flex flex-col gap-5">
         {dayTimeLists.map((list, listIndex) => (
           <div key={listIndex} className="flex w-full justify-between">
-            <ul key={listIndex} className="flex gap-3">
-              {FILTER_WEEK.map((day) => (
-                <li
-                  key={listIndex + day}
-                  onClick={() => handleDayClick(day, listIndex)}
-                  className={getDayStyle(day, list)}
-                >
-                  {day}
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-col">
+            <div
+              className={`flex w-full flex-col gap-3 ${
+                isRegularClass && 'mb-8'
+              }`}
+            >
+              {isRegularClass && (
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    placeholder="구분"
+                    className="h-7 w-16 rounded-md border border-solid border-gray-500 px-2.5 py-0.5 text-base font-medium focus:outline-sub-color1"
+                  />
+                  <span className="text-base font-medium text-sub-color1">
+                    {selectedDaysCountList[listIndex]}회
+                  </span>
+                </div>
+              )}
+              <ul key={listIndex} className="flex gap-3">
+                {FILTER_WEEK.map((day) => (
+                  <li
+                    key={listIndex + day}
+                    onClick={() => handleDayClick(day, listIndex)}
+                    className={getDayStyle(day, list)}
+                  >
+                    {day}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className={`flex flex-col ${isRegularClass && 'mt-12'}`}>
               <ul className="flex flex-col gap-2">
                 {list.timeSlots.map((timeslot, timeslotIndex) => (
                   <TimeList
@@ -175,6 +213,7 @@ const DayByDay = () => {
                   />
                 ))}
               </ul>
+
               <button
                 onClick={() => addNewTimeSlot(listIndex)}
                 className="mt-2 flex w-full justify-end text-sm font-bold text-gray-500"
@@ -194,7 +233,7 @@ const DayByDay = () => {
         className={getButtonClass(isEveryListHasDay, allSelectedDays)}
         aria-disabled={FILTER_WEEK.length === allSelectedDays.length}
       >
-        + 요일 추가
+        {isRegularClass ? '+ 새로운 일정 추가' : '+ 요일 추가'}
       </button>
     </>
   );
