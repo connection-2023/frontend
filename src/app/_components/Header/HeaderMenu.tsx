@@ -5,13 +5,13 @@ const HeaderMenu = () => {
   return (
     <nav className="flex">
       <Link href="/" className="mr-6">
-        <ConnectionLogoSVG className=" h-[1.375rem] w-[12.6875rem]" />
+        <ConnectionLogoSVG className="h-4 w-40 md:h-[1.375rem] md:w-[12.6875rem]" />
       </Link>
       <h1 className="text-0 overflow-hidden indent-[-9999px]">
         Connection 댄스 플랫폼
       </h1>
 
-      <ul className="flex gap-6 text-lg">
+      <ul className="hidden gap-6 text-lg md:flex">
         <h2 className="text-0 overflow-hidden indent-[-9999px]">
           Connection 서비스 주요 메뉴
         </h2>

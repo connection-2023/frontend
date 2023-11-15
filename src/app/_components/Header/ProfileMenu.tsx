@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { TransFormSVG } from '@/icons/svg';
+import { ArrowDownSVG, TransFormSVG } from '@/icons/svg';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import useSession from '@/lib/useSession';
 import { useUserStore } from '@/store';
 
-const ProfileMenu = () => {
+const ProfileMenu = ({ userMenuHandler }: { userMenuHandler: () => void }) => {
   const store = useUserStore();
   const user = useSession();
   const router = useRouter();
@@ -73,9 +73,17 @@ const ProfileMenu = () => {
   };
 
   return (
-    <ul className="absolute right-0 top-3 inline-flex w-[9.4375rem] select-none flex-col bg-white shadow-vertical">
-      <li className="my-4 ml-4 flex overflow-hidden whitespace-nowrap font-bold">
-        <p className="max-w-[7rem] truncate">{user?.nickname}</p>님
+    <ul className="absolute right-0 top-3 inline-flex w-[9.4375rem] select-none flex-col rounded-md bg-white shadow-vertical">
+      <li className="my-4 ml-4 flex justify-between overflow-hidden whitespace-nowrap font-bold">
+        <div className="flex">
+          <p className="max-w-[5.5rem] truncate md:max-w-[7rem]">
+            {user?.nickname}
+          </p>
+          님
+        </div>
+        <div onClick={userMenuHandler} className="md:hidden">
+          <ArrowDownSVG className="h-6 w-8 -translate-x-1 -translate-y-1.5 fill-black " />
+        </div>
       </li>
       <li className="mb-3 ml-4">
         <Link href="/">마이 페이지</Link>
@@ -97,7 +105,7 @@ const ProfileMenu = () => {
         </button>
       </li>
 
-      <li className="bg-gray-200 text-gray-500">
+      <li className="rounded-b-md bg-gray-200 text-gray-500">
         <button
           onClick={handleLogout}
           className="h-full w-full py-2 pl-4 text-left hover:text-black"
