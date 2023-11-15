@@ -1,24 +1,14 @@
 import Link from 'next/link';
-import { useState } from 'react';
-import AuthModal from '@/app/_components/Header/Auth/AuthModal';
 import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, CommentSVG, SearchSVG } from '@/icons/svg';
 import useSession from '@/lib/useSession';
+import { useRouter } from 'next/navigation';
 import Profile from './Profile';
 
 const UserProfileLinks = () => {
   const { alarmCount, commentCount } = dummyUserInfo;
-  const [isOpened, setIsOpened] = useState(false);
-
   const user = useSession();
-
-  const handleOpened = () => {
-    setIsOpened(true);
-  };
-
-  const handleClosed = () => {
-    setIsOpened(false);
-  };
+  const router = useRouter();
 
   return (
     <div className="flex items-end gap-3">
@@ -31,9 +21,12 @@ const UserProfileLinks = () => {
       </Link>
 
       {!user && (
-        <div className="text-lg">
-          <button onClick={handleOpened}>로그인/회원가입</button>
-        </div>
+        <button
+          onClick={() => router.push('/login')}
+          className="text-lg font-medium"
+        >
+          로그인/회원가입
+        </button>
       )}
 
       {user && (
@@ -55,8 +48,6 @@ const UserProfileLinks = () => {
           <Profile />
         </>
       )}
-
-      {isOpened && <AuthModal isOpened={isOpened} isClosed={handleClosed} />}
     </div>
   );
 };

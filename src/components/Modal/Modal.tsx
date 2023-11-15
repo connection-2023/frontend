@@ -1,6 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { CloseSVG } from '@/icons/svg';
 
 interface ModalProps {
@@ -9,14 +8,14 @@ interface ModalProps {
   handleClosed: () => void;
 }
 const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
-  const overlayRef = React.useRef(null);
+  const overlayRef = useRef(null);
 
   const handleKeyUp = (e: KeyboardEvent) => {
     if (e.key !== 'Escape') return;
     handleClosed();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('keyup', handleKeyUp);
 
     return () => window.removeEventListener('keyup', handleKeyUp);
@@ -25,7 +24,7 @@ const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
   return isOpened ? (
     <div
       ref={overlayRef}
-      className="z-modal fixed bottom-0 left-0 right-0 top-0 mx-auto bg-black/60 backdrop-blur-sm"
+      className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto bg-black/60 backdrop-blur-sm"
       onClick={(e) => {
         if (overlayRef.current !== e.target) return;
         handleClosed();
