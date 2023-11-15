@@ -32,6 +32,13 @@ const DayOff = ({
 
   const handleOptionClick = (index: number) => {
     setSelectedOptionIndex(index);
+
+    if (index === 1) {
+      setUnselectedDates([]);
+      if (initDates) {
+        setClassDates(initDates);
+      }
+    }
   };
 
   const handleUnselected = (unselectedDates: Date[]) => {
@@ -70,13 +77,14 @@ const DayOff = ({
           <div className="mt-5 flex w-full px-5">
             {!isDisabled && (
               <>
-                <DayOffCalendar
-                  mode="dayoff"
-                  selectedDates={initDates}
-                  handleSelected={handleUnselected}
-                />
-
-                <div className="ml-[3.75rem] flex flex-col">
+                <div className="w-fit">
+                  <DayOffCalendar
+                    mode="dayoff"
+                    selectedDates={initDates}
+                    handleSelected={handleUnselected}
+                  />
+                </div>
+                <div className="ml-[3.75rem] flex w-full flex-col">
                   <p className="mb-[0.87rem] text-sm font-semibold">
                     선택한 휴무일
                   </p>
@@ -94,7 +102,6 @@ const DayOff = ({
               </>
             )}
           </div>
-          <p />
         </>
       )}
     </>
