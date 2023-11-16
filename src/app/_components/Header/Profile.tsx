@@ -2,17 +2,17 @@
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { ArrowDownSVG } from '@/icons/svg';
-import useSession from '@/lib/useSession';
+import { useUserStore } from '@/store';
 import ProfileMenu from './ProfileMenu';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import { instructorProfile, userProfile } from '@/types/auth';
 
-const Profile = () => {
-  const user = useSession();
-  const profileImg = user
-    ? 'userProfileImage' in user
-      ? user.userProfileImage?.imageUrl
-      : user.profileCardImageUrl
-    : null;
+const Profile = ({
+  defaultProfileImg,
+}: {
+  defaultProfileImg: string | null;
+}) => {
+  const userStoreState = useUserStore();
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -24,6 +24,11 @@ const Profile = () => {
     setIsProfileMenu((prev) => !prev);
   };
 
+  const profileImg =
+    userStoreState.userType === 'user'
+      ? (userStoreState.authUser as userProfile)?.userProfileImage?.imageUrl
+      : (userStoreState.authUser as instructorProfile)?.profileCardImageUrl;
+
   return (
     <div className="relative w-[2.5rem] md:w-[4.8125rem]" ref={menuRef}>
       <div
@@ -31,7 +36,11 @@ const Profile = () => {
         className="absolute -top-10 hidden h-12 w-full cursor-pointer items-center justify-center rounded-[3.125rem] bg-white shadow-horizontal md:flex"
       >
         <div className="relative ml-1.5 overflow-hidden rounded-full">
-          <ProfileImage size="small" src={profileImg} label={false} />
+          <ProfileImage
+            size="small"
+            src={userStoreState.userType ? profileImg : defaultProfileImg}
+            label={false}
+          />
         </div>
         <ArrowDownSVG
           className={` fill-black ${
@@ -48,7 +57,11 @@ const Profile = () => {
             : 'p-1'
         }  md:hidden`}
       >
-        <ProfileImage size="small" src={profileImg} label={false} />
+        <ProfileImage
+          size="small"
+          src={userStoreState.userType ? profileImg : defaultProfileImg}
+          label={false}
+        />
       </div>
 
       {isProfileMenu && <ProfileMenu userMenuHandler={userMenuHandler} />}

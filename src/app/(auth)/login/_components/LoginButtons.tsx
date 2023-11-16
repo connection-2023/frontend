@@ -26,6 +26,7 @@ const LoginButtons = () => {
       store.setUserType('user');
       toast.success('로그인 성공!');
       router.replace('/');
+      router.refresh();
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
 
@@ -46,6 +47,7 @@ const LoginButtons = () => {
       store.setUserType('user');
       toast.success('로그인 성공!');
       router.replace('/');
+      router.refresh();
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
 

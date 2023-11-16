@@ -4,12 +4,10 @@ import { toast } from 'react-toastify';
 import { ArrowDownSVG, TransFormSVG } from '@/icons/svg';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
-import useSession from '@/lib/useSession';
 import { useUserStore } from '@/store';
 
 const ProfileMenu = ({ userMenuHandler }: { userMenuHandler: () => void }) => {
   const store = useUserStore();
-  const user = useSession();
   const router = useRouter();
   const userType = useUserStore((state) => state.userType);
 
@@ -69,6 +67,7 @@ const ProfileMenu = ({ userMenuHandler }: { userMenuHandler: () => void }) => {
     } finally {
       store.reset();
       router.push('/');
+      router.refresh();
     }
   };
 
@@ -77,7 +76,8 @@ const ProfileMenu = ({ userMenuHandler }: { userMenuHandler: () => void }) => {
       <li className="my-4 ml-4 flex justify-between overflow-hidden whitespace-nowrap font-bold">
         <div className="flex">
           <p className="max-w-[5.5rem] truncate md:max-w-[7rem]">
-            {user?.nickname}
+            {/* {user?.nickname} */}
+            {store.authUser?.nickname}
           </p>
           님
         </div>

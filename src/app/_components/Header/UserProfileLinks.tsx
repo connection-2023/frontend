@@ -1,14 +1,13 @@
 import Link from 'next/link';
 import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, CommentSVG, SearchSVG } from '@/icons/svg';
-import useSession from '@/lib/useSession';
-import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/store/userStore';
 import Profile from './Profile';
+import { instructorProfile, userProfile } from '@/types/auth';
 
 const UserProfileLinks = () => {
   const { alarmCount, commentCount } = dummyUserInfo;
-  const user = useSession();
-  const router = useRouter();
+  const userStoreState = useUserStore.getState();
 
   return (
     <div className="flex items-end gap-3">
@@ -20,16 +19,13 @@ const UserProfileLinks = () => {
         <SearchSVG className="h-[1.8rem] w-[1.8rem] fill-black" />
       </Link>
 
-      {!user && (
-        <button
-          onClick={() => router.push('/login')}
-          className="text-lg font-medium"
-        >
+      {!userStoreState.authUser && (
+        <Link href="/login" className="text-lg font-medium">
           로그인/회원가입
-        </button>
+        </Link>
       )}
 
-      {user && (
+      {userStoreState.authUser && (
         <>
           <button className="relative">
             <AlarmSVG className="pt-0.5" />
@@ -45,11 +41,21 @@ const UserProfileLinks = () => {
             </span>
           </button>
 
-          <Profile />
+          <Profile
+            defaultProfileImg={
+              userStoreState.userType === 'lecturer'
+                ? (userStoreState.authUser as instructorProfile)
+                    ?.profileCardImageUrl
+                : (userStoreState.authUser as userProfile)?.userProfileImage
+                    ?.imageUrl
+            }
+          />
         </>
       )}
     </div>
   );
 };
+// profileCardImageUrl
+// userProfileImage
 
 export default UserProfileLinks;

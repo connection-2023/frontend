@@ -6,9 +6,8 @@ import {
   NO_HEADER_FOOTER_PATHS,
 } from '@/constants/constants';
 import HeaderMenu from './HeaderMenu';
-import UserProfileLinks from './UserProfileLinks';
 
-const Header = () => {
+const Header = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const lastScrollTopRef = useRef(0);
   const [isScrollingUp, setIsScrollingUp] = useState(true);
@@ -28,6 +27,7 @@ const Header = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -49,7 +49,7 @@ const Header = () => {
   return !shouldRenderHeader ? (
     <header className={getHeaderStyle(isStickyHeader)}>
       <HeaderMenu />
-      <UserProfileLinks />
+      {children}
     </header>
   ) : null;
 };

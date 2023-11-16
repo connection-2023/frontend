@@ -1,8 +1,9 @@
 import { cookies } from 'next/headers';
+import { instructorProfile, userProfile } from '@/types/auth';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const getInstructorProfile = async () => {
+export const getInstructorProfile = async (): Promise<instructorProfile> => {
   const cookieStore = cookies();
   const authorization = cookieStore.get('lecturerAccessToken')?.value;
 
@@ -22,10 +23,10 @@ export const getInstructorProfile = async () => {
 
   const data = await response.json();
 
-  return data.data;
+  return data.data.lecturerBasicProfile;
 };
 
-export const getMyProfile = async () => {
+export const getMyProfile = async (): Promise<userProfile> => {
   const cookieStore = cookies();
   const authorization = cookieStore.get('userAccessToken')?.value;
 
@@ -45,5 +46,5 @@ export const getMyProfile = async () => {
 
   const data = await response.json();
 
-  return data.data;
+  return data.data.myProfile;
 };
