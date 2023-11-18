@@ -1,7 +1,22 @@
 import Link from 'next/link';
 import { ConnectionLogoSVG, MapSVG, SmallLogoSVG } from '@/icons/svg';
+import { useUserStore } from '@/store/userStore';
+
+const USER_MENU = [
+  { href: '/intructor', menu: '강사' },
+  { href: '/class', menu: '클래스' },
+  { href: '/', menu: '패스권' },
+  { href: '/', menu: <MapSVG /> },
+];
+
+const LECTURER_MENU = [
+  { href: '/intructor', menu: '강사' },
+  { href: '/class', menu: '클래스' },
+  { href: '/class/create', menu: '클래스 등록' },
+];
 
 const HeaderMenu = () => {
+  const store = useUserStore();
   return (
     <nav className="flex">
       <Link href="/" className="mr-6">
@@ -16,20 +31,13 @@ const HeaderMenu = () => {
         <h2 className="text-0 overflow-hidden indent-[-9999px]">
           Connection 서비스 주요 메뉴
         </h2>
-        <li>
-          <Link href="/intructor">강사</Link>
-        </li>
-        <li>
-          <Link href="/class">클래스</Link>
-        </li>
-        <li>
-          <Link href="/">패스권</Link>
-        </li>
-        <li>
-          <Link href="/">
-            <MapSVG />
-          </Link>
-        </li>
+        {(store.userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
+          ({ href, menu }, index) => (
+            <li key={href + index}>
+              <Link href={href}>{menu}</Link>
+            </li>
+          ),
+        )}
       </ul>
     </nav>
   );
