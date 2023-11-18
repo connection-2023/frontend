@@ -16,7 +16,7 @@ const Home = () => {
       {/* 유저 로그인시에만 보여지는 맞춤 클래스 */}
       <section className="absolute top-[23rem] mt-3 w-full">
         <h2 className="mb-3 flex w-full items-center gap-1 px-[4.37rem] text-lg font-bold text-white">
-          <SmallLogoSVG />
+          <SmallLogoSVG className="h-3 w-6" />
           AI가 추천하는 맞춤 클래스
         </h2>
 

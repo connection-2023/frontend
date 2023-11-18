@@ -36,7 +36,7 @@ const Header = ({ children }: { children: React.ReactNode }) => {
       isScrollingUp
         ? 'translate-y-0 duration-[300ms]'
         : '-translate-y-full duration-[300ms]'
-    } top-0 z-header pb-3 px-4 mx-auto flex h-[5.6rem] md:h-[7.6rem] w-screen items-end justify-between bg-white/[.95] md:px-16 md:pb-5 backdrop-blur-sm `;
+    } whitespace-nowrap top-0 z-header pb-3 px-4 mx-auto flex h-[5.6rem] md:h-[7.6rem] w-screen items-end justify-between bg-white/[.95] md:px-16 md:pb-5 backdrop-blur-sm `;
     return isStickyHeader ? `${baseStyle} relative ` : `${baseStyle} sticky`;
   };
 

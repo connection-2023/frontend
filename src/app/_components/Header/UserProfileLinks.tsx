@@ -15,7 +15,7 @@ const UserProfileLinks = () => {
         Connection 유저 메뉴
       </h2>
 
-      <Link href="/search" className="hidden md:block">
+      <Link href="/search">
         <SearchSVG className="h-[1.8rem] w-[1.8rem] fill-black" />
       </Link>
 

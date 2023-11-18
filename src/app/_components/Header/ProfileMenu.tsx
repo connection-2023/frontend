@@ -75,14 +75,7 @@ const ProfileMenu = ({ userMenuHandler }: { userMenuHandler: () => void }) => {
     <ul className="absolute right-0 top-3 inline-flex w-[9.4375rem] select-none flex-col rounded-md bg-white shadow-vertical">
       <li className="my-4 ml-4 flex justify-between overflow-hidden whitespace-nowrap font-bold">
         <div className="flex">
-          <p className="max-w-[5.5rem] truncate md:max-w-[7rem]">
-            {/* {user?.nickname} */}
-            {store.authUser?.nickname}
-          </p>
-          님
-        </div>
-        <div onClick={userMenuHandler} className="md:hidden">
-          <ArrowDownSVG className="h-6 w-8 -translate-x-1 -translate-y-1.5 fill-black " />
+          <p className="max-w-[7rem] truncate">{store.authUser?.nickname}</p>님
         </div>
       </li>
       <li className="mb-3 ml-4">
