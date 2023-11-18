@@ -1,8 +1,9 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { ArrowDownSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
+import { useScrollStore } from '@/store/scrollStore';
 import ProfileMenu from './ProfileMenu';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import { instructorProfile, userProfile } from '@/types/auth';
@@ -15,6 +16,14 @@ const Profile = ({
   const userStoreState = useUserStore();
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
+
+  const { isScrollingUp } = useScrollStore();
+
+  useEffect(() => {
+    if (!isScrollingUp) {
+      setIsProfileMenu(false);
+    }
+  }, [isScrollingUp]);
 
   useClickAway(menuRef, () => {
     setIsProfileMenu(false);
@@ -49,7 +58,7 @@ const Profile = ({
         />
       </div>
 
-      {isProfileMenu && <ProfileMenu userMenuHandler={userMenuHandler} />}
+      {isProfileMenu && <ProfileMenu />}
     </div>
   );
 };

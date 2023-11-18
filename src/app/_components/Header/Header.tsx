@@ -5,12 +5,14 @@ import {
   NON_STICKY_HEADER_PATHS,
   NO_HEADER_FOOTER_PATHS,
 } from '@/constants/constants';
+import { useScrollStore } from '@/store/scrollStore';
 import HeaderMenu from './HeaderMenu';
 
 const Header = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const lastScrollTopRef = useRef(0);
-  const [isScrollingUp, setIsScrollingUp] = useState(true);
+
+  const { isScrollingUp, setIsScrollingUp } = useScrollStore();
 
   useEffect(() => {
     const handleScroll = () => {

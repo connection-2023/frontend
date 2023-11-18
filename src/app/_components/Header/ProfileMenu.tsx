@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { ArrowDownSVG, TransFormSVG } from '@/icons/svg';
+import { TransFormSVG } from '@/icons/svg';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 
-const ProfileMenu = ({ userMenuHandler }: { userMenuHandler: () => void }) => {
+const ProfileMenu = () => {
   const store = useUserStore();
   const router = useRouter();
   const userType = useUserStore((state) => state.userType);
