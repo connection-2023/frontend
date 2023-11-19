@@ -19,17 +19,20 @@ export const GET = async (request: NextRequest) => {
       throw new Error('HTTP error ' + response.status);
     }
 
-    const data = await response.json();
+    const { statusCode, data } = await response.json();
 
     const clientResponse = new NextResponse(
-      JSON.stringify({ status: response.status, data }),
+      JSON.stringify({ status: statusCode, data }),
       {
-        status: response.status,
-        headers: { 'Content-Type': 'application/json' },
+        status: statusCode,
+        headers: {
+          'Content-Type': 'application/json',
+          'Set-Cookie': response.headers.get('Set-Cookie') || '',
+        },
       },
     );
 
-    if (response.status === 200) {
+    if (statusCode === 200) {
       await Promise.all([
         clientResponse.cookies.set({
           name: Object.keys(data)[0],
