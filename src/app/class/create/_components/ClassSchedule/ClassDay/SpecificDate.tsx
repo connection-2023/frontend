@@ -164,7 +164,7 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
       (item) => state.selectedDate && isSameDay(item.date, state.selectedDate),
     );
   }, [state.selected, state.selectedDate]);
-  console.log('state.selectableDates: ', state.selectableDates);
+
   return (
     <>
       <p className="mb-3 text-sm font-medium text-main-color">

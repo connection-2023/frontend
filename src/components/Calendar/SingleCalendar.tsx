@@ -32,7 +32,6 @@ const SingleCalendar = ({
   const initSelected =
     mode === 'dashboard' ? store.selectedDate || undefined : undefined;
   const [selected, setSelected] = useState<Date | undefined>(initSelected);
-  console.log(classDates, clickableDates);
 
   useEffect(() => {
     if (selected && mode === 'dashboard') {
