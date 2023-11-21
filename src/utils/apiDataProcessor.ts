@@ -190,11 +190,12 @@ export const classOutputDataProcess = async (
         introduction,
         curriculum: curriculum.content,
       };
-    case 2: //to은서: 스케줄 파트 임시저장 데이터 정리후 전송하는 부분임
+    case 2:
       const {
         holidays,
         classRange,
         duration,
+        schedules,
         reservationComment,
         reservationDeadline,
       } = data;
@@ -204,6 +205,7 @@ export const classOutputDataProcess = async (
         startDate: classRange.startDate,
         endDate: classRange.endDate,
         duration,
+        schedules,
         reservationComment,
         reservationDeadline,
       };
@@ -247,8 +249,7 @@ export const classOutputDataProcess = async (
 };
 
 export const classCreate = async (id: number) => {
-  const { location, temporaryLecture, temporaryLectureDateSchedule } =
-    await getClassDraft(id);
+  const { location, temporaryLecture, schedules } = await getClassDraft(id);
 
   const {
     temporaryLectureToRegion,
@@ -321,7 +322,15 @@ export const classCreate = async (id: number) => {
     coupons: temporaryLectureCouponTarget.map(
       ({ lectureCouponId }) => lectureCouponId,
     ),
-    schedules: temporaryLectureDateSchedule, //to은서: 해당 부분 스케줄 맞춰서 수정
+    schedules: schedules?.map((schedule) => {
+      if ('date' in schedule) {
+        return {
+          ...schedule,
+          date: new Date(schedule.date),
+        };
+      }
+      return schedule;
+    }),
   };
 
   await createClass(data);

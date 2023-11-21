@@ -12,6 +12,8 @@ interface IClassScheduleStore {
   setClassDates: (date: Date[]) => void;
   classType: string | undefined;
   setClassType: (type: string) => void;
+  classSchedules: Date[] | undefined;
+  setClassSchedules: (dates: Date[]) => void;
 }
 
 export const useClassScheduleStore = create<IClassScheduleStore>((set) => ({
@@ -25,4 +27,6 @@ export const useClassScheduleStore = create<IClassScheduleStore>((set) => ({
   setClassDates: (date) => set({ classDates: date }),
   classType: undefined,
   setClassType: (type) => set({ classType: type }),
+  classSchedules: undefined,
+  setClassSchedules: (dates) => set({ classSchedules: dates }),
 }));
