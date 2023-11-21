@@ -61,9 +61,17 @@ export const middleware = async (request: NextRequest) => {
 
           return response;
         } catch (error) {
-          console.error('refresh 에러', error.message);
-          //logout 로직
-          // + LOGIN_REQUIRED_URLS 확인
+          const response = LOGIN_REQUIRED_URLS.includes(
+            request.nextUrl.pathname,
+          )
+            ? NextResponse.redirect(new URL('/login', request.url))
+            : NextResponse.redirect(request.url);
+
+          response.cookies.delete('userAccessToken');
+          response.cookies.delete('lecturerAccessToken');
+          response.cookies.delete('refreshToken');
+
+          return response;
         }
       }
       return NextResponse.redirect(new URL('/', request.url));
