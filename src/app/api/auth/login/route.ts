@@ -26,20 +26,20 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
-    const { statusCode, data } = await response.json();
+    if (response.status === 200) {
+      const { statusCode, data } = await response.json();
 
-    const clientResponse = new NextResponse(
-      JSON.stringify({ status: statusCode, data }),
-      {
-        status: statusCode,
-        headers: {
-          'Content-Type': 'application/json',
-          'Set-Cookie': response.headers.get('Set-Cookie') || '',
+      const clientResponse = new NextResponse(
+        JSON.stringify({ status: statusCode, data }),
+        {
+          status: statusCode,
+          headers: {
+            'Content-Type': 'application/json',
+            'Set-Cookie': response.headers.get('Set-Cookie') || '',
+          },
         },
-      },
-    );
+      );
 
-    if (statusCode === 200) {
       await Promise.all([
         clientResponse.cookies.set({
           name: Object.keys(data)[0],
@@ -49,9 +49,15 @@ export const GET = async (request: NextRequest) => {
           secure: process.env.NODE_ENV !== 'development',
         }),
       ]);
-    }
 
-    return clientResponse;
+      return clientResponse;
+    } else {
+      const data = await response.json();
+
+      return new NextResponse(
+        JSON.stringify({ status: response.status, data }),
+      );
+    }
   });
 
   return serverResponse;
