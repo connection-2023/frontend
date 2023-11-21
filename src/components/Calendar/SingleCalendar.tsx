@@ -14,16 +14,10 @@ import {
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 
-// mockData
-const scheduleDay = [
-  new Date(2023, 10, 1),
-  new Date(2023, 10, 15),
-  new Date(2023, 10, 25),
-];
 interface SingleCalendarProps {
   mode: 'schedule' | 'dashboard';
   clickableDates?: Date[];
-  handleClickDate?: (newDate: Date) => void;
+  handleClickDate?: (newDate: Date | undefined) => void;
 }
 
 const SingleCalendar = ({
@@ -33,14 +27,14 @@ const SingleCalendar = ({
 }: SingleCalendarProps) => {
   const store = dashboardStore();
   const [selected, setSelected] = useState<Date | undefined>(
-    store.selectedDate || new Date(),
+    store.selectedDate || undefined,
   );
 
   useEffect(() => {
     if (selected && mode === 'dashboard') {
       store.setSelectedDate(selected);
     }
-    if (selected && mode !== 'dashboard' && handleClickDate) {
+    if (mode !== 'dashboard' && handleClickDate) {
       handleClickDate(selected);
     }
   }, [selected]);
@@ -58,11 +52,7 @@ const SingleCalendar = ({
     return null;
   }
 
-  const modifiers = getSingleCalendarModifiers(
-    mode,
-    clickableDates,
-    scheduleDay,
-  );
+  const modifiers = getSingleCalendarModifiers(mode, clickableDates);
   const modifiersClassNames = getSingleCalendarModifiersClassNames(mode);
   const classNames = mode === 'schedule' ? SCHEDULE_CLASSNAMES : {};
   const className =

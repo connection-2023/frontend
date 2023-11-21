@@ -78,7 +78,6 @@ export const getInputCalendarModifiers = (
 export const getSingleCalendarModifiers = (
   mode: 'schedule' | 'dashboard',
   clickableDates: Date[],
-  scheduleDay: Date[],
 ) => {
   if (mode === 'schedule') {
     return {
@@ -89,7 +88,7 @@ export const getSingleCalendarModifiers = (
   }
   return {
     ...DAY_MODIFIERS,
-    scheduleDay: (date: Date) => isDateSelectable(scheduleDay, date),
+    scheduleDay: (date: Date) => isDateSelectable(clickableDates, date),
   };
 };
 
