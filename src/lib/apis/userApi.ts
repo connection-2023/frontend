@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { DOMAIN } from '@/constants/constants';
 import { userType } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
@@ -29,8 +30,15 @@ export const getAuth = async (
         },
       },
     );
+
     if (!response.ok) {
-      throw new Error('Server responded with an error');
+      if (response.status === 400) {
+        toast.error('이미 존재하는 이메일로 가입 했습니다.');
+      } else {
+        toast.error(`${social} 로그인 실패, 다시 시도해 주세요.`);
+      }
+
+      throw new Error(response.statusText);
     }
 
     return await response.json();

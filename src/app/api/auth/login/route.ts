@@ -16,7 +16,14 @@ export const GET = async (request: NextRequest) => {
     END_POINT + '/auth/oauth/signin/' + social + '?access-token=' + token,
   ).then(async (response) => {
     if (!response.ok) {
-      throw new Error('HTTP error ' + response.status);
+      const errorData = await response.json();
+      return NextResponse.json(
+        {
+          status: response.status,
+          message: errorData.message || '서버 요청 오류',
+        },
+        { status: response.status },
+      );
     }
 
     const { statusCode, data } = await response.json();
