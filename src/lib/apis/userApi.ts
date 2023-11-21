@@ -110,3 +110,25 @@ export const getSwitchUserRole = async (userType: userType) => {
 
   return response;
 };
+
+export const accessTokenReissuance = async () => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/auth/refresh`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'manual',
+    });
+
+    if (response.type === 'opaqueredirect') {
+      window.location.replace(response.url);
+    }
+
+    return response;
+  } catch (error) {
+    console.error('엑세스 토큰 재발급 오류', error);
+    throw error;
+  }
+};

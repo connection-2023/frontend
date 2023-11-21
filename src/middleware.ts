@@ -41,10 +41,10 @@ export const middleware = async (request: NextRequest) => {
         }
       }
 
-      if (NON_ACCESSIBLE_AFTER_LOGIN.includes(request.nextUrl.pathname)) {
-        //로그인해서 가면 안되는 링크
-        return NextResponse.redirect(new URL('/', request.url));
-      }
+      // if (NON_ACCESSIBLE_AFTER_LOGIN.includes(request.nextUrl.pathname)) {
+      //   //로그인해서 가면 안되는 링크
+      //   return NextResponse.redirect(new URL('/', request.url));
+      // }
 
       return NextResponse.next();
     } catch (error) {
@@ -79,7 +79,9 @@ export const middleware = async (request: NextRequest) => {
   }
 
   if (LOGIN_REQUIRED_URLS.includes(request.nextUrl.pathname)) {
-    //로그인 필요한 링크
+    //강사 토큰이 필요한 링크
+    //유저 토큰이 필요한 링크
+    // 로그인이 필요한 링크
     return NextResponse.redirect(new URL('/login', request.url));
   }
 

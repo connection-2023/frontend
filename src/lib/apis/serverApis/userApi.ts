@@ -1,6 +1,4 @@
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
-import { DOMAIN } from '@/constants/constants';
 import { instructorProfile, userProfile } from '@/types/auth';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
