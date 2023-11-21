@@ -42,7 +42,7 @@ const Sidebar = ({
 
   return (
     <aside
-      className={`flex flex-col items-start whitespace-nowrap rounded-lg bg-white ${
+      className={`mt-3.5 flex flex-col items-start whitespace-nowrap rounded-lg bg-white ${
         view === 'my' ? 'max-w-[19.5rem] px-4 py-10 shadow-float' : 'w-full'
       }`}
     >
@@ -166,6 +166,6 @@ const userLinks = [
   },
   { path: '/my/instructor', text: '관심/차단 강사' },
   { path: '/my/pass-coupon', text: '패스권/쿠폰' },
-  { path: '/my/pay-hisotry', text: '결제 내역' },
+  { path: '/my/payment-hisotry', text: '결제 내역' },
   { path: '/my/report', text: '신고내역' },
 ];
