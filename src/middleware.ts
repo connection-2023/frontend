@@ -41,10 +41,10 @@ export const middleware = async (request: NextRequest) => {
         }
       }
 
-      // if (NON_ACCESSIBLE_AFTER_LOGIN.includes(request.nextUrl.pathname)) {
-      //   //로그인해서 가면 안되는 링크
-      //   return NextResponse.redirect(new URL('/', request.url));
-      // }
+      if (NON_ACCESSIBLE_AFTER_LOGIN.includes(request.nextUrl.pathname)) {
+        //로그인해서 가면 안되는 링크
+        return NextResponse.redirect(new URL('/', request.url));
+      }
 
       return NextResponse.next();
     } catch (error) {

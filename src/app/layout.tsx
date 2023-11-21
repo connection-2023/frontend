@@ -1,5 +1,8 @@
 import { Inter } from 'next/font/google';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
+import { DOMAIN } from '@/constants/constants';
 import {
   getInstructorProfile,
   getMyProfile,
@@ -14,7 +17,6 @@ import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
-import { cookies } from 'next/headers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -53,8 +55,9 @@ export default async function RootLayout({
       useUserStore.setState({ authUser: null, userType: null });
     }
   } catch (error) {
-    //refresh
-    useUserStore.setState({ authUser: null, userType: null });
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
   }
 
   return (

@@ -6,6 +6,7 @@ import { getAuth, getMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
+import NaverAuth from './NaverAuth';
 import { LoginResponse } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
@@ -57,6 +58,26 @@ const LoginButtons = () => {
     }
   };
 
+  const naverOnSuccess = async (idToken: string) => {
+    const response = await getAuth('NAVER', idToken);
+    const { status, data } = response;
+
+    if (status === 200) {
+      const profileRes = await getMyProfile(data.userAccessToken);
+
+      store.setAuthUser(profileRes.data.myProfile);
+      store.setUserType('user');
+      toast.success('로그인 성공!');
+      router.replace('/');
+      router.refresh();
+    } else if (status === 201) {
+      const { authEmail, signUpType } = data;
+
+      router.replace(
+        `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
+      );
+    }
+  };
   return (
     <div className="flex items-center gap-6">
       <KakaoAuth
@@ -67,6 +88,8 @@ const LoginButtons = () => {
         }}
         useLoginForm
       />
+
+      <NaverAuth onSuccess={naverOnSuccess} />
       {GOOGLE_CLIENT_ID && (
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <GoogleAuth
