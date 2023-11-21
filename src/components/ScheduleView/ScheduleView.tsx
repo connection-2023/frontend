@@ -5,16 +5,8 @@ import { formatDateTime } from '@/utils/parseUtils';
 import ScheduleCalendar from '../Calendar/SingleCalendar';
 import { IClassSchedule } from '@/types/class';
 
-interface ISchedule {
-  id: number;
-  lectureId: number;
-  startDateTime: string;
-  numberOfParticipants: number;
-  team: null | string;
-}
-
 interface ScheduleViewProps {
-  lectureSchedule: IClassSchedule[];
+  lectureSchedule: IClassSchedule[] | Date[];
   maxCapacity: number;
   duration: number;
 }
@@ -25,15 +17,15 @@ const ScheduleView = ({
   duration,
 }: ScheduleViewProps) => {
   const [clickDate, setClickDate] = useState<Date | undefined>(undefined);
+  const clickableDates = lectureSchedule.map((schedule) =>
+    schedule instanceof Date ? schedule : new Date(schedule.startDateTime),
+  );
 
-  const handleClickDate = (newDate: Date) => {
+  if (!clickableDates.length) return null;
+
+  const handleClickDate = (newDate: Date | undefined) => {
     setClickDate(newDate);
   };
-
-  const clickableDates = lectureSchedule.map(
-    (date) => new Date(date.startDateTime),
-  );
-  if (!clickableDates.length) return null;
 
   return (
     <div className="flex w-full flex-col whitespace-nowrap md:flex-row md:justify-between">
@@ -46,9 +38,34 @@ const ScheduleView = ({
       </div>
 
       <ul className="flex w-full flex-col items-center gap-[0.37rem] overflow-y-auto pl-3">
-        {lectureSchedule.map((schedule) => {
-          return formatSchedule(clickDate, duration, schedule, maxCapacity);
-        })}
+        {lectureSchedule.length > 0 && lectureSchedule[0] instanceof Date
+          ? (lectureSchedule as Date[]).map((date, index) => {
+              return (
+                <FormatCreateSchedule
+                  key={index}
+                  clickDate={clickDate}
+                  duration={duration}
+                  schedule={date}
+                />
+              );
+            })
+          : (lectureSchedule as IClassSchedule[]).map((schedule, index) => {
+              if (
+                !clickDate ||
+                !isSameDay(clickDate, new Date(schedule.startDateTime))
+              ) {
+                return null;
+              }
+              return (
+                <FormatSchedule
+                  key={index}
+                  clickDate={clickDate}
+                  duration={duration}
+                  schedule={schedule}
+                  maxCapacity={maxCapacity}
+                />
+              );
+            })}
       </ul>
     </div>
   );
@@ -61,15 +78,19 @@ const textStyle = {
   full: 'text-gray-300',
 };
 
-const formatSchedule = (
-  clickDate: Date | undefined,
-  duration: number,
-  schedule: IClassSchedule,
-  maxCapacity: number,
-) => {
+interface IFormatSchedule {
+  clickDate: Date | undefined;
+  duration: number;
+  schedule: IClassSchedule;
+  maxCapacity: number;
+}
+const FormatSchedule = ({
+  clickDate,
+  duration,
+  schedule,
+  maxCapacity,
+}: IFormatSchedule) => {
   const scheduleDate = new Date(schedule.startDateTime);
-  if (!clickDate || !isSameDay(clickDate, scheduleDate)) return;
-
   const formattedDateTime = formatDateTime(scheduleDate, duration);
   const mode =
     schedule.numberOfParticipants === maxCapacity ? 'full' : 'normal';
@@ -85,6 +106,32 @@ const formatSchedule = (
           ? `(${schedule.numberOfParticipants}/${maxCapacity}명)`
           : '(인원마감)'}
       </p>
+    </li>
+  );
+};
+
+interface IFormatCreateSchedule {
+  clickDate: Date | undefined;
+  duration: number;
+  schedule: Date;
+}
+const FormatCreateSchedule = ({
+  clickDate,
+  duration,
+  schedule,
+}: IFormatCreateSchedule) => {
+  if (!clickDate || !isSameDay(clickDate, schedule)) {
+    return null;
+  }
+  const formattedDateTime = formatDateTime(schedule, duration);
+
+  return (
+    <li
+      key={schedule.toDateString()}
+      className={`border-box flex h-[2.8125rem] w-full items-center justify-between rounded-md border border-solid
+    border-gray-700 px-6 text-sm font-medium md:max-w-[16.8125rem]`}
+    >
+      <p>{formattedDateTime}</p>
     </li>
   );
 };
