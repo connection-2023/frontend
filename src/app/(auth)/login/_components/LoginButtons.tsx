@@ -10,14 +10,15 @@ import NaverAuth from './NaverAuth';
 import { LoginResponse } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-
 const LoginButtons = () => {
   const store = useUserStore();
   const router = useRouter();
-  // --- 로그인 로직 하나로 합치기 ---
-  const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {
-    const idToken = resData.response.access_token;
-    const response = await getAuth('KAKAO', idToken);
+
+  const handleAuthSuccess = async (
+    social: 'NAVER' | 'KAKAO' | 'GOOGLE',
+    idToken: string,
+  ) => {
+    const response = await getAuth(social, idToken);
     const { status, data } = response;
 
     if (status === 200) {
@@ -35,49 +36,21 @@ const LoginButtons = () => {
         `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
       );
     }
+  };
+
+  const kakaoOnSuccess = async (resData: { response: LoginResponse }) => {
+    const idToken = resData.response.access_token;
+    handleAuthSuccess('KAKAO', idToken);
   };
 
   const googleOnSuccess = async (idToken: string) => {
-    const response = await getAuth('GOOGLE', idToken);
-    const { status, data } = response;
-
-    if (status === 200) {
-      const profileRes = await getMyProfile(data.userAccessToken);
-
-      store.setAuthUser(profileRes.data.myProfile);
-      store.setUserType('user');
-      toast.success('로그인 성공!');
-      router.replace('/');
-      router.refresh();
-    } else if (status === 201) {
-      const { authEmail, signUpType } = data;
-
-      router.replace(
-        `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
-      );
-    }
+    handleAuthSuccess('GOOGLE', idToken);
   };
 
   const naverOnSuccess = async (idToken: string) => {
-    const response = await getAuth('NAVER', idToken);
-    const { status, data } = response;
-
-    if (status === 200) {
-      const profileRes = await getMyProfile(data.userAccessToken);
-
-      store.setAuthUser(profileRes.data.myProfile);
-      store.setUserType('user');
-      toast.success('로그인 성공!');
-      router.replace('/');
-      router.refresh();
-    } else if (status === 201) {
-      const { authEmail, signUpType } = data;
-
-      router.replace(
-        `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
-      );
-    }
+    handleAuthSuccess('NAVER', idToken);
   };
+
   return (
     <div className="flex items-center gap-6">
       <KakaoAuth
