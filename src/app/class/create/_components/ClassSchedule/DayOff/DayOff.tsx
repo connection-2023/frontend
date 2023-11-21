@@ -6,21 +6,23 @@ import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
-//to은서: defaultValue 값만 올바른 곳에 넣어줘 unselectedDates 값이 들어와 휴무일 있는지 없는지도 처리하면 될거 같아
-
 const DayOff = ({
   onChange,
-  defaultValue = [],
+  defaultValue,
 }: {
   onChange: (value: Date[]) => void;
-  defaultValue?: Date[];
+  defaultValue: Date[];
 }) => {
+  const defultOption = defaultValue.length ? 0 : null;
+  const initialValue =
+    defaultValue && defaultValue.length > 0
+      ? defaultValue.map((date) => new Date(date))
+      : [];
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
-    null,
+    defultOption,
   );
   const store = useClassScheduleStore();
-  const [unselectedDates, setUnselectedDates] = useState<Date[]>([]);
-
+  const [unselectedDates, setUnselectedDates] = useState<Date[]>(initialValue);
   const classDates = store.filteredDates;
   const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
   const classType = store.classType;
@@ -29,6 +31,15 @@ const DayOff = ({
   const classTime = store.classDuration;
   const isDisabled =
     !(classRange && classTime && initDates) || classType === '특정 날짜';
+
+  useEffect(() => {
+    if (classDates && initDates) {
+      const newClassDates = initDates.filter(
+        (date) => !unselectedDates.includes(date),
+      );
+      setClassDates(newClassDates);
+    }
+  }, [unselectedDates]);
 
   const handleOptionClick = (index: number) => {
     setSelectedOptionIndex(index);
@@ -43,17 +54,8 @@ const DayOff = ({
 
   const handleUnselected = (unselectedDates: Date[]) => {
     setUnselectedDates(unselectedDates);
+    onChange(unselectedDates);
   };
-
-  useEffect(() => {
-    if (classDates && initDates) {
-      const newClassDates = initDates.filter(
-        (date) => !unselectedDates.includes(date),
-      );
-      setClassDates(newClassDates);
-      onChange(unselectedDates);
-    }
-  }, [unselectedDates]);
 
   return (
     <>
