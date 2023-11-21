@@ -200,6 +200,7 @@ export const NON_STICKY_HEADER_PATHS = [
   '/class/',
   '/instructor/',
   '/class/creat',
+  '/my',
 ];
 
 export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];

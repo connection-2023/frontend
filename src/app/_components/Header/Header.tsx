@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   NON_STICKY_HEADER_PATHS,
   NO_HEADER_FOOTER_PATHS,
@@ -36,9 +36,14 @@ const Header = ({ children }: { children: React.ReactNode }) => {
   const getHeaderStyle = (isStickyHeader: boolean) => {
     const baseStyle = `${
       isScrollingUp
-        ? 'translate-y-0 duration-[300ms]'
-        : '-translate-y-full duration-[300ms]'
-    } whitespace-nowrap top-0 z-header pb-3 px-4 mx-auto flex h-[5.6rem] md:h-[7.6rem] w-screen items-end justify-between bg-white/[.95] md:px-16 md:pb-5 backdrop-blur-sm `;
+        ? 'translate-y-0'
+        : pathname.startsWith('/my')
+        ? '-translate-y-full xl:translate-y-0'
+        : '-translate-y-full'
+    } ${
+      pathname.startsWith('/my') &&
+      'sticky xl:bg-sub-color1-transparent xl:px-16 xl:pb-0 xl:pt-12 xl:relative'
+    } z-header top-0 duration-[300ms] mx-auto w-full`;
     return isStickyHeader ? `${baseStyle} relative ` : `${baseStyle} sticky`;
   };
 
@@ -50,8 +55,15 @@ const Header = ({ children }: { children: React.ReactNode }) => {
 
   return !shouldRenderHeader ? (
     <header className={getHeaderStyle(isStickyHeader)}>
-      <HeaderMenu />
-      {children}
+      <div
+        className={` ${
+          pathname.startsWith('/my') &&
+          'xl:relative xl:h-[6rem] xl:w-full xl:items-center xl:rounded-lg xl:bg-white xl:px-4 xl:pb-0'
+        } flex h-[5.6rem] items-end justify-between whitespace-nowrap bg-white/[.95] px-4 pb-3 backdrop-blur-sm md:h-[7.6rem] md:px-16 md:pb-5`}
+      >
+        <HeaderMenu />
+        {children}
+      </div>
     </header>
   ) : null;
 };
