@@ -109,3 +109,16 @@ export interface IGenre {
   name: string | null;
   danceCategory: { genre: string };
 }
+
+export interface IMyPaymentInfo {
+  orderId: number;
+  id: number;
+  type: 'class' | 'pass';
+  status: '입금대기' | '결제완료';
+  image: string;
+  paymentDate: string;
+  count: number;
+  title: string;
+  classTime?: string;
+  price: number;
+}
