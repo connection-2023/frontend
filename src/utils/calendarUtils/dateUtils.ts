@@ -56,27 +56,9 @@ export const INPUT_SCHEDULE_MODIFIERS_ClassNames = {
   classDay: 'specific-class-day',
 };
 
-export const getInputCalendarModifiers = (
-  classDates: Date[] | null,
-  clickableDates: Date[],
-) => {
-  const convertedClassDates = classDates?.map((dateStr) => new Date(dateStr));
-
-  return {
-    ...DAY_MODIFIERS,
-
-    selectableDays: (date: Date) => isDateSelectable(clickableDates, date),
-    disabled: (date: Date) => !isDateSelectable(clickableDates, date),
-    classDay: (date: Date) => {
-      return convertedClassDates
-        ? convertedClassDates.some((classDate) => isSameDay(classDate, date))
-        : false;
-    },
-  };
-};
-
 export const getSingleCalendarModifiers = (
-  mode: 'schedule' | 'dashboard',
+  mode: 'schedule' | 'dashboard' | 'specific',
+  classDates: Date[] | null,
   clickableDates: Date[],
 ) => {
   if (mode === 'schedule') {
@@ -85,19 +67,45 @@ export const getSingleCalendarModifiers = (
       selectableDays: (date: Date) => isDateSelectable(clickableDates, date),
       disabled: (date: Date) => !isDateSelectable(clickableDates, date),
     };
+  } else if (mode === 'dashboard') {
+    return {
+      ...DAY_MODIFIERS,
+      scheduleDay: (date: Date) => isDateSelectable(clickableDates, date),
+    };
+  } else {
+    const convertedClassDates = classDates?.map((dateStr) => new Date(dateStr));
+
+    return {
+      ...DAY_MODIFIERS,
+
+      selectableDays: (date: Date) => isDateSelectable(clickableDates, date),
+      disabled: (date: Date) => !isDateSelectable(clickableDates, date),
+      classDay: (date: Date) => {
+        return convertedClassDates
+          ? convertedClassDates.some((classDate) => isSameDay(classDate, date))
+          : false;
+      },
+    };
   }
-  return {
-    ...DAY_MODIFIERS,
-    scheduleDay: (date: Date) => isDateSelectable(clickableDates, date),
-  };
 };
 
 export const getSingleCalendarModifiersClassNames = (
-  mode: 'schedule' | 'dashboard',
+  mode: 'schedule' | 'dashboard' | 'specific',
 ) =>
   mode === 'schedule'
     ? SCHEDULE_MODIFIERS_CLASSNAMES
-    : DASHBOARD_MODIFIERS_CLASSNAMES;
+    : mode === 'dashboard'
+    ? DASHBOARD_MODIFIERS_CLASSNAMES
+    : INPUT_SCHEDULE_MODIFIERS_ClassNames;
+
+export const getSingleCalendarClassNames = (
+  mode: 'schedule' | 'dashboard' | 'specific',
+) =>
+  mode === 'schedule'
+    ? SCHEDULE_CLASSNAMES
+    : mode === 'specific'
+    ? INPUT_SCHEDULE_ClassNames
+    : {};
 
 export const getBasicCalendarModifiers = (
   mode: 'preview' | 'filter' | 'dayoff',

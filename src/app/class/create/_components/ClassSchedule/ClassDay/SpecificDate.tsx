@@ -4,7 +4,7 @@ import { useEffect, useId, useReducer, useMemo } from 'react';
 import { useClassScheduleStore } from '@/store';
 import { specificDateReducer } from '@/utils/specificDateReducer';
 import TimeList from './TimeList';
-import InputClassDates from '@/components/Calendar/InputClassDates';
+import InputClassDates from '@/components/Calendar/SingleCalendar';
 import { DateTimeList } from '@/types/class';
 
 interface SpecificDateProps {
@@ -111,8 +111,10 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
     updateOrAddTimeSlot(index, newStartTime);
   };
 
-  const handleSelectedDate = (date: Date) => {
-    dispatch({ type: 'SET_SELECTED_DATE', payload: date });
+  const handleSelectedDate = (date: Date | undefined) => {
+    if (date instanceof Date) {
+      dispatch({ type: 'SET_SELECTED_DATE', payload: date });
+    }
   };
 
   const addTimeSlot = () => {
@@ -162,7 +164,7 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
       (item) => state.selectedDate && isSameDay(item.date, state.selectedDate),
     );
   }, [state.selected, state.selectedDate]);
-
+  console.log('state.selectableDates: ', state.selectableDates);
   return (
     <>
       <p className="mb-3 text-sm font-medium text-main-color">
@@ -173,6 +175,7 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
           {state.selectableDates && (
             <div className="w-fit">
               <InputClassDates
+                mode="specific"
                 clickableDates={state.selectableDates}
                 handleClickDate={handleSelectedDate}
               />
