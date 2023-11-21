@@ -32,7 +32,12 @@ export interface IDateTime {
 
 export interface DayTimeList {
   day: string[];
-  timeSlots: string[];
+  startDateTime: string[];
+}
+
+export interface DateTimeList {
+  date: Date;
+  startDateTime: string[];
 }
 
 export interface IGetClassDrafts {
@@ -77,11 +82,6 @@ export interface IGetClassDraft {
     temporaryLecturenotification: { notification: string };
     temporaryLectureImage: { imageUrl: string }[];
     temporaryLectureCouponTarget: any[];
-    temporaryLectureSchedule: {
-      startDateTime: string;
-      team: null;
-      numberOfParticipants: number;
-    }[];
     temporaryLectureToRegion: {
       region: {
         administrativeDistrict: string;
@@ -105,7 +105,7 @@ export interface IGetClassDraft {
     detailAddress: string;
     buildingName: string;
   } | null;
-  temporaryLectureDateSchedule: string[] | null;
+  schedules: DayTimeList[] | DateTimeList[];
 }
 
 export interface IUpdateClassDraft {
@@ -130,10 +130,7 @@ export interface IUpdateClassDraft {
   reservationComment?: string;
   price?: number | string;
   noShowDeposit?: number;
-  schedules?: string[];
-  regularSchedules?: {
-    [key: string]: string[];
-  };
+  schedules?: DayTimeList[] | DateTimeList[];
   holidays?: string[];
   coupons?: number[];
 }
@@ -173,11 +170,6 @@ export interface IprocessedDraft {
   locationDescription?: string;
   temporaryLectureImage?: { imageUrl: string }[];
   temporaryLectureCouponTarget?: any[];
-  temporaryLectureSchedule?: {
-    startDateTime: string;
-    team: null;
-    numberOfParticipants: number;
-  }[];
   regions?: {
     [key: string]: string[];
   };
@@ -188,8 +180,8 @@ export interface IprocessedDraft {
     detailAddress: string | undefined;
     bdNm: string | undefined;
   };
-  temporaryLectureDateSchedule?: string[] | [];
   totalClasses?: number;
+  schedules?: DayTimeList[] | DateTimeList[];
 }
 
 export interface classCreateData {
@@ -223,6 +215,7 @@ export interface classCreateData {
   regions: Record<string, string[]>;
   locationDescription: string;
   classPrice: string | number;
+  schedules: DayTimeList[] | DateTimeList[];
 }
 
 export type ReviewOrderType =
