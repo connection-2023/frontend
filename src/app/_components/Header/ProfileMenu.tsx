@@ -3,7 +3,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TransFormSVG } from '@/icons/svg';
 import { getInstructorProfile } from '@/lib/apis/instructorApi';
-import { getSwitchUserRole, getLogout, getMyProfile } from '@/lib/apis/userApi';
+import {
+  getSwitchUserRole,
+  getLogout,
+  getMyProfile,
+  accessTokenReissuance,
+} from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 
 const ProfileMenu = () => {
@@ -20,11 +25,12 @@ const ProfileMenu = () => {
       if (store.userType === 'user' && res.status === 400) {
         router.push('/instructor/apply');
       } else {
-        toast.error(
-          res.status === 401
-            ? '잘못된 토큰으로 요청하였습니다!'
-            : '잘못된 요청입니다!',
-        );
+        if (res.status === 401) {
+          await accessTokenReissuance();
+          await handleSwitchUser();
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
       }
       return;
     }
@@ -79,7 +85,7 @@ const ProfileMenu = () => {
         </div>
       </li>
       <li className="mb-3 ml-4">
-        <Link href="/">마이 페이지</Link>
+        <Link href="/my">마이 페이지</Link>
       </li>
       <li className="mb-3 ml-4">
         <Link href="/">관심 클래스</Link>

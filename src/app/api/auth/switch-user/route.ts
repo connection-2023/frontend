@@ -21,7 +21,7 @@ export const GET = async (request: NextRequest) => {
       : '/auth/token/switch-lecturer-to-user';
 
   if (!token)
-    return new NextResponse('토큰이 존재하지 않습니다! ', { status: 500 });
+    return new NextResponse('토큰이 존재하지 않습니다! ', { status: 401 });
 
   const tokenValue = token.value;
   const headers: Record<string, string> = {
@@ -34,7 +34,14 @@ export const GET = async (request: NextRequest) => {
       headers,
     }).then(async (res) => {
       if (!res.ok) {
-        throw new Error('HTTP error ' + res.status);
+        const errorData = await res.json();
+        return NextResponse.json(
+          {
+            status: res.status,
+            message: errorData.message || '서버 요청 오류',
+          },
+          { status: res.status },
+        );
       }
 
       const { statusCode, data } = await res.json();

@@ -92,9 +92,11 @@ export const postProfileImage = async (image: File) => {
     method: 'POST',
     credentials: 'include',
     body: formData,
-  }).then((data) => data.json());
+  });
 
-  return response;
+  const res = await response.json();
+
+  return res;
 };
 
 export const getSwitchUserRole = async (userType: userType) => {
@@ -106,9 +108,11 @@ export const getSwitchUserRole = async (userType: userType) => {
         'Content-Type': 'application/json',
       },
     },
-  ).then((data) => data.json());
+  );
 
-  return response;
+  const res = await response.json();
+
+  return res;
 };
 
 export const accessTokenReissuance = async () => {
