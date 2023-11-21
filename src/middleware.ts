@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
+  LECTURER_NO_ACCESS,
+  LOGIN_REQUIRED_URLS,
+  NON_ACCESSIBLE_AFTER_LOGIN,
+  USER_NO_ACCESS,
+} from './constants/constants';
+import {
   checkAccessToken,
   accessTokenReissuance,
 } from './lib/apis/serverApis/userApi';
@@ -21,15 +27,30 @@ export const middleware = async (request: NextRequest) => {
     try {
       if (user) {
         await checkAccessToken('userAccessToken');
+
+        if (USER_NO_ACCESS.includes(request.nextUrl.pathname)) {
+          // 유저가 가면 안되는 lecturer 링크
+          return NextResponse.redirect(new URL('/', request.url));
+        }
       } else if (lecturer) {
         await checkAccessToken('lecturerAccessToken');
+
+        if (LECTURER_NO_ACCESS.includes(request.nextUrl.pathname)) {
+          // 강사가 가면 안되는 user 링크 확인
+          return NextResponse.redirect(new URL('/', request.url));
+        }
+      }
+
+      if (NON_ACCESSIBLE_AFTER_LOGIN.includes(request.nextUrl.pathname)) {
+        //로그인해서 가면 안되는 링크
+        return NextResponse.redirect(new URL('/', request.url));
       }
 
       return NextResponse.next();
     } catch (error) {
       if (error instanceof Error && error.message.includes('401')) {
         try {
-          const response = NextResponse.redirect(new URL(request.url));
+          const response = NextResponse.redirect(request.url);
 
           const { accessToken, refreshToken } = await accessTokenReissuance();
 
@@ -40,40 +61,23 @@ export const middleware = async (request: NextRequest) => {
 
           return response;
         } catch (error) {
-          console.log('refresh 에러', error.message);
-          //logout 로직 발동
+          console.error('refresh 에러', error.message);
+          //logout 로직
+          // + LOGIN_REQUIRED_URLS 확인
         }
       }
+      return NextResponse.redirect(new URL('/', request.url));
     }
+  }
+
+  if (LOGIN_REQUIRED_URLS.includes(request.nextUrl.pathname)) {
+    //로그인 필요한 링크
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
 };
 
 export const config = {
-  matcher: ['/my/:path*', '/', '/instructor/apply'], // '/login', '/api/my/:path*', '/api/auth/logout
+  matcher: ['/my/:path*', '/', '/instructor/apply', '/class/create'], // '/login', '/api/my/:path*', '/api/auth/logout
 };
-
-// let token: string | undefined;
-
-// if (req.cookies.has('token')) {
-//   token = req.cookies.get('token')?.value;
-// } else if (req.headers.get('Authorization')?.startsWith('Bearer ')) {
-//   token = req.headers.get('Authorization')?.substring(7);
-// }
-
-// if (req.nextUrl.pathname.startsWith('/login') && !token) return;
-
-// if (
-//   !token &&
-//   (req.nextUrl.pathname.startsWith('/api/users') ||
-//     req.nextUrl.pathname.startsWith('/api/auth/logout'))
-// ) {
-//   return console.log(401, '로그인 후 이용해주세요');
-// }
-
-// const response = NextResponse.next();
-
-// if (req.url.includes('/my') && !token) {
-//   return NextResponse.redirect(new URL('/', req.url));
-// }
