@@ -1,46 +1,36 @@
 import { format } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import {
-  classDatesState,
-  classRangeState,
-  classTimeState,
-  classDaysDatesState,
-  classDayTypeState,
-} from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
-//to은서: defaultValue 값만 올바른 곳에 넣어줘 unselectedDates 값이 들어와 휴무일 있는지 없는지도 처리하면 될거 같아
-
 const DayOff = ({
   onChange,
-  defaultValue = [],
+  defaultValue,
 }: {
   onChange: (value: Date[]) => void;
-  defaultValue?: Date[];
+  defaultValue: Date[];
 }) => {
+  const defultOption = defaultValue.length ? 0 : null;
+  const initialValue =
+    defaultValue && defaultValue.length > 0
+      ? defaultValue.map((date) => new Date(date))
+      : [];
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
-    null,
+    defultOption,
   );
-  const [unselectedDates, setUnselectedDates] = useState<Date[]>([]);
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const classType = useRecoilValue(classDayTypeState);
-  const initDates = useRecoilValue(classDaysDatesState);
-  const classRange = useRecoilValue(classRangeState);
-  const classTime = useRecoilValue(classTimeState);
+  const store = useClassScheduleStore();
+  const [unselectedDates, setUnselectedDates] = useState<Date[]>(initialValue);
+  const classDates = store.filteredDates;
+  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
+  const classType = store.classType;
+  const initDates = store.classDates;
+  const classRange = store.classRange;
+  const classTime = store.classDuration;
   const isDisabled =
     !(classRange && classTime && initDates) || classType === '특정 날짜';
-
-  const handleOptionClick = (index: number) => {
-    setSelectedOptionIndex(index);
-  };
-
-  const handleUnselected = (unselectedDates: Date[]) => {
-    setUnselectedDates(unselectedDates);
-  };
 
   useEffect(() => {
     if (classDates && initDates) {
@@ -48,9 +38,24 @@ const DayOff = ({
         (date) => !unselectedDates.includes(date),
       );
       setClassDates(newClassDates);
-      onChange(unselectedDates);
     }
   }, [unselectedDates]);
+
+  const handleOptionClick = (index: number) => {
+    setSelectedOptionIndex(index);
+
+    if (index === 1) {
+      setUnselectedDates([]);
+      if (initDates) {
+        setClassDates(initDates);
+      }
+    }
+  };
+
+  const handleUnselected = (unselectedDates: Date[]) => {
+    setUnselectedDates(unselectedDates);
+    onChange(unselectedDates);
+  };
 
   return (
     <>
@@ -74,13 +79,14 @@ const DayOff = ({
           <div className="mt-5 flex w-full px-5">
             {!isDisabled && (
               <>
-                <DayOffCalendar
-                  mode="dayoff"
-                  selectedDates={initDates}
-                  handleSelected={handleUnselected}
-                />
-
-                <div className="ml-[3.75rem] flex flex-col">
+                <div className="w-fit">
+                  <DayOffCalendar
+                    mode="dayoff"
+                    selectedDates={initDates}
+                    handleSelected={handleUnselected}
+                  />
+                </div>
+                <div className="ml-[3.75rem] flex w-full flex-col">
                   <p className="mb-[0.87rem] text-sm font-semibold">
                     선택한 휴무일
                   </p>
@@ -98,7 +104,6 @@ const DayOff = ({
               </>
             )}
           </div>
-          <p />
         </>
       )}
     </>

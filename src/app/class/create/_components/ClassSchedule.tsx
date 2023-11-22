@@ -1,43 +1,36 @@
 import { parse, format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { dummyClass } from '@/constants/dummy';
-import { classTimeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import { DayTimeList, DateTimeList } from '@/types/class';
 
 const ClassSchedule = () => {
   const {
     register,
     control,
+    watch,
     formState: { errors },
   } = useFormContext();
-
   const { classData } = useClassCreateStore();
-
-  const [classTime, setClassTime] = useRecoilState(classTimeState);
-  const classDates = useRecoilValue(classDatesState);
+  const duration = watch('duration') || classData?.duration;
+  const lectureMethod = watch('lectureMethod') || classData?.lectureMethod;
+  const setClassDuration = useClassScheduleStore(
+    (state) => state.setClassDuration,
+  );
+  const classDates = useClassScheduleStore((state) => state.filteredDates);
   const classNum = classDates?.length;
-  const { lectureSchedule } = dummyClass;
-
-  const [classNotification, setClassNotification] = useState('');
-  const handleTextareaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setClassNotification(event.target.value);
-  };
-  const [deadline, setDeadline] = useState<number | null>(null);
-  //to은서: 32~38라인 내가 볼땐 필요 없어 보이는데 필요 없으면 제거 해줘
+  const maxCapacitity = watch('max')?.value || classData?.max;
+  const classSchedules =
+    useClassScheduleStore((state) => state.classSchedules) || [];
 
   useEffect(() => {
-    if (classData?.duration) {
-      setClassTime(classData.duration);
-    }
-  }, [classData]);
+    setClassDuration(duration);
+  }, [duration]);
 
   return (
     <>
@@ -99,14 +92,14 @@ const ClassSchedule = () => {
               <input
                 type="number"
                 min={30}
-                value={classTime || ''}
+                value={field.value}
                 onChange={(e) => {
-                  setClassTime(Number(e.target.value));
+                  setClassDuration(Number(e.target.value));
                   field.onChange(Number(e.target.value));
                 }}
-                className="h-7 w-12 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.81rem] py-1"
+                className="h-7 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1 focus:outline-sub-color1"
               />
-              <span className="ml-[0.38rem] text-sm font-bold text-sub-color3">
+              <span className="ml-[0.38rem] text-sm font-bold text-gray-100">
                 분
               </span>
             </div>
@@ -115,25 +108,36 @@ const ClassSchedule = () => {
       />
 
       {/* 운영시간 */}
-      {/* to은서:  name, defaultValue 아래 주석 확인 바람*/}
       <Controller
-        name="임시 저장될 데이터이름"
+        name="schedules"
         control={control}
-        defaultValue="classData에 넣는 이름"
+        defaultValue={classData?.schedules}
         rules={{
-          required: '운영 요일',
+          required: '운영 일정',
+          validate: (schedules) => {
+            return schedules?.every((schedule: DayTimeList | DateTimeList) => {
+              if ('day' in schedule) {
+                return schedule.day && schedule.startDateTime;
+              } else if ('date' in schedule) {
+                return schedule.date && schedule.startDateTime;
+              }
+              return false;
+            });
+          },
         }}
         render={({ field }) => (
-          // field.onChang로 보낼 데이터 바뀌는 곳 넣기
-          // field.value로 임시저장 불러와지는 곳에 넣기
           <Section
             Isfixed={true}
-            title="클래스 운영 요일을 알려주세요"
-            error={false}
+            title="클래스 운영 일정을 알려주세요"
+            error={!!errors.schedules?.message}
             id={field.name}
-            // !!errors.임시 저장될 데이터이름?.message 넣기
           >
-            <ClassDay />
+            <ClassDay
+              defaultValue={field.value}
+              onChange={field.onChange}
+              lectureMethod={lectureMethod}
+              duration={duration}
+            />
           </Section>
         )}
       />
@@ -142,15 +146,8 @@ const ClassSchedule = () => {
         name="holidays"
         control={control}
         defaultValue={classData?.holidays}
-        rules={{
-          required: '휴무일',
-        }}
         render={({ field }) => (
-          <Section
-            title="휴무일이 있나요?"
-            id={field.name}
-            error={!!errors.holidays?.message}
-          >
+          <Section title="휴무일이 있나요?" id={field.name}>
             <DayOff onChange={field.onChange} defaultValue={field.value} />
           </Section>
         )}
@@ -162,7 +159,7 @@ const ClassSchedule = () => {
         defaultValue={classData?.reservationDeadline}
         rules={{
           required: '신청 마감 시간',
-          min: { value: 0, message: '올바른 마감 시간' },
+          min: { value: 1, message: '올바른 마감 시간' },
         }}
         render={({ field }) => (
           <Section
@@ -170,7 +167,7 @@ const ClassSchedule = () => {
             error={!!errors.reservationDeadline?.message}
             id={field.name}
           >
-            <div className="ml-[0.38rem] text-sm font-medium text-sub-color3">
+            <div className="ml-[0.38rem] text-sm font-medium text-gray-100">
               <span>수업 시작</span>
               <input
                 type="number"
@@ -178,7 +175,7 @@ const ClassSchedule = () => {
                 onChange={(e) => {
                   field.onChange(Number(e.target.value));
                 }}
-                className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-[0.31rem] border border-solid border-sub-color2 px-[0.81rem] py-1"
+                className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1 focus:outline-sub-color1"
               />
               <span>시간 전</span>
             </div>
@@ -192,12 +189,11 @@ const ClassSchedule = () => {
         classNum={classNum}
       >
         <div className="max-w-[37.4rem]">
-          {/* 추가된 클래스  lectureSchedule 데이터 가공 구현 예정 */}
           {classDates && (
             <ScheduleView
-              maxCapacity={12}
-              duration={120}
-              lectureSchedule={lectureSchedule}
+              maxCapacity={maxCapacitity}
+              duration={duration}
+              lectureSchedule={classSchedules}
             />
           )}
         </div>
@@ -239,7 +235,7 @@ const Section = ({
   return (
     <section
       id={id}
-      className="max-w-[675px] border-b border-solid border-sub-color4 py-6"
+      className="max-w-[675px] border-b border-solid border-gray-700 py-6"
     >
       <h2 className="mb-4 flex items-center text-lg font-bold">
         <p className={`${error && 'animate-vibration text-main-color'}`}>

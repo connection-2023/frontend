@@ -1,23 +1,57 @@
 import { eachDayOfInterval, format, isSameDay } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import { useEffect, useId, useReducer, useMemo } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { classRangeState, classDatesState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import { specificDateReducer } from '@/utils/specificDateReducer';
 import TimeList from './TimeList';
-import InputClassDates from '@/components/Calendar/InputClassDates';
-import { dateTimes } from '@/types/types';
+import InputClassDates from '@/components/Calendar/SingleCalendar';
+import { DateTimeList } from '@/types/class';
 
-const initialState = {
-  selected: [],
-  selectableDates: [],
-  selectedDate: null,
-};
+interface SpecificDateProps {
+  onChange: (value: DateTimeList[]) => void;
+  defaultValue: DateTimeList[];
+}
 
-const SpecificDate = () => {
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const classRange = useRecoilValue(classRangeState);
+const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
+  const initialDates =
+    defaultValue.length && Object.keys(defaultValue[0]).includes('date')
+      ? defaultValue.map((value) => ({
+          date: new Date(value.date),
+          startDateTime: [...value.startDateTime],
+        }))
+      : [];
+
+  const initialState = {
+    selected: [...initialDates] as DateTimeList[],
+    selectableDates: [],
+    selectedDate: null,
+  };
+  const classRange = useClassScheduleStore((state) => state.classRange);
+  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
+  const setClassSchedules = useClassScheduleStore(
+    (state) => state.setClassSchedules,
+  );
   const [state, dispatch] = useReducer(specificDateReducer, initialState);
+
+  const updateState = () => {
+    const dates = state.selected.map((item) => item.date);
+    const classSchedules = state.selected.flatMap((schedule) => {
+      return schedule.startDateTime.map((time) => {
+        const date = new Date(schedule.date);
+        const [hours, minutes] = time.split(':').map(Number);
+        date.setHours(hours, minutes);
+        return date;
+      });
+    });
+
+    setClassSchedules(classSchedules);
+    setClassDates(dates);
+    onChange(state.selected);
+  };
+
+  useEffect(() => {
+    updateState();
+  }, []);
 
   useEffect(() => {
     if (classRange && classRange.from && classRange.to) {
@@ -28,11 +62,6 @@ const SpecificDate = () => {
       dispatch({ type: 'SET_SELECTABLE_DATES', payload: allDatesInRange });
     }
   }, [classRange]);
-
-  useEffect(() => {
-    const dates = state.selected.map((item) => item.date);
-    setClassDates(dates);
-  }, [state.selected]);
 
   const findIndexBySelectedDate = (selectedDate: Date) => {
     return state.selected.findIndex((item) =>
@@ -51,8 +80,9 @@ const SpecificDate = () => {
     if (selectedIndex !== -1) {
       const updatedItem = getUpdatedItem(selectedIndex);
 
-      if (newStartTime !== undefined) updatedItem.time[index] = newStartTime;
-      else updatedItem.time.push('');
+      if (newStartTime !== undefined)
+        updatedItem.startDateTime[index] = newStartTime;
+      else updatedItem.startDateTime.push('');
 
       dispatch({
         type: 'UPDATE_SELECTED',
@@ -61,12 +91,18 @@ const SpecificDate = () => {
       });
     } else {
       if (state.selectedDate && newStartTime !== undefined) {
+        const newItem = {
+          date: state.selectedDate,
+          startDateTime: [newStartTime],
+        };
+
         dispatch({
           type: 'ADD_SELECTED',
-          payload: { date: state.selectedDate, time: [newStartTime] },
+          payload: newItem,
         });
       }
     }
+    updateState();
   };
 
   const handleStartTimeChange = (index: number, newStartTime: string) => {
@@ -75,8 +111,10 @@ const SpecificDate = () => {
     updateOrAddTimeSlot(index, newStartTime);
   };
 
-  const handleSelectedDate = (date: Date) => {
-    dispatch({ type: 'SET_SELECTED_DATE', payload: date });
+  const handleSelectedDate = (date: Date | undefined) => {
+    if (date instanceof Date) {
+      dispatch({ type: 'SET_SELECTED_DATE', payload: date });
+    }
   };
 
   const addTimeSlot = () => {
@@ -91,9 +129,9 @@ const SpecificDate = () => {
 
     if (selectedIndex !== -1) {
       const updatedItem = { ...state.selected[selectedIndex] };
-      updatedItem.time.splice(indexToRemove, 1);
+      updatedItem.startDateTime.splice(indexToRemove, 1);
 
-      if (updatedItem.time.length === 0) {
+      if (updatedItem.startDateTime.length === 0) {
         dispatch({ type: 'REMOVE_SELECTED', index: selectedIndex });
       } else {
         dispatch({
@@ -103,6 +141,8 @@ const SpecificDate = () => {
         });
       }
     }
+
+    updateState();
   };
 
   const clearTimeSlot = () => {
@@ -113,16 +153,15 @@ const SpecificDate = () => {
     if (selectedIndex !== -1) {
       dispatch({ type: 'REMOVE_SELECTED', index: selectedIndex });
     }
+
+    updateState();
   };
 
   const selectedItem = useMemo(() => {
     if (!state.selectedDate) return null;
 
     return state.selected.find(
-      (item) =>
-        item.date &&
-        state.selectedDate &&
-        isSameDay(item.date, state.selectedDate),
+      (item) => state.selectedDate && isSameDay(item.date, state.selectedDate),
     );
   }, [state.selected, state.selectedDate]);
 
@@ -134,10 +173,13 @@ const SpecificDate = () => {
       {state.selectableDates && (
         <div className="flex w-full justify-between">
           {state.selectableDates && (
-            <InputClassDates
-              clickableDates={state.selectableDates}
-              handleClickDate={handleSelectedDate}
-            />
+            <div className="w-fit">
+              <InputClassDates
+                mode="specific"
+                clickableDates={state.selectableDates}
+                handleClickDate={handleSelectedDate}
+              />
+            </div>
           )}
           {state.selectedDate && (
             <div className="ml-2 flex flex-col">
@@ -175,7 +217,7 @@ const SpecificDate = () => {
 export default SpecificDate;
 
 interface TimeSlotManagerProps {
-  selectedItem?: dateTimes | null;
+  selectedItem?: DateTimeList | null;
   handleStartTimeChange: (index: number, newStartTime: string) => void;
   addTimeSlot: () => void;
   removeTimeSlot: (indexToRemove: number) => void;
@@ -192,7 +234,7 @@ const TimeSlotManager = ({
     <>
       <ul className="mt-2 flex w-auto flex-col gap-2">
         {selectedItem ? (
-          selectedItem.time.map((startTime, index) => (
+          selectedItem.startDateTime.map((startTime, index) => (
             <TimeList
               key={index}
               startTime={startTime}

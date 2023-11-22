@@ -4,26 +4,21 @@ import { ko } from 'date-fns/esm/locale';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
+import { useClassScheduleStore } from '@/store';
 import { dashboardStore } from '../../store';
 import { FormattedCaption } from '../../utils/calendarUtils/CalendarCaption';
 import {
-  SCHEDULE_CLASSNAMES,
   getSingleCalendarModifiers,
   getSingleCalendarModifiersClassNames,
+  getSingleCalendarClassNames,
 } from '../../utils/calendarUtils/dateUtils';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 
-// mockData
-const scheduleDay = [
-  new Date(2023, 10, 1),
-  new Date(2023, 10, 15),
-  new Date(2023, 10, 25),
-];
 interface SingleCalendarProps {
-  mode: 'schedule' | 'dashboard';
+  mode: 'schedule' | 'dashboard' | 'specific';
   clickableDates?: Date[];
-  handleClickDate?: (newDate: Date) => void;
+  handleClickDate?: (newDate: Date | undefined) => void;
 }
 
 const SingleCalendar = ({
@@ -32,15 +27,20 @@ const SingleCalendar = ({
   handleClickDate,
 }: SingleCalendarProps) => {
   const store = dashboardStore();
-  const [selected, setSelected] = useState<Date | undefined>(
-    store.selectedDate || new Date(),
-  );
+  const classDates =
+    useClassScheduleStore((state) => state.filteredDates) || [];
+  const initSelected =
+    mode === 'dashboard' ? store.selectedDate || undefined : undefined;
+  const [selected, setSelected] = useState<Date | undefined>(initSelected);
 
   useEffect(() => {
     if (selected && mode === 'dashboard') {
       store.setSelectedDate(selected);
     }
-    if (selected && mode !== 'dashboard' && handleClickDate) {
+    if (mode === 'schedule' && handleClickDate) {
+      handleClickDate(selected);
+    }
+    if (mode === 'specific' && selected && handleClickDate) {
       handleClickDate(selected);
     }
   }, [selected]);
@@ -54,20 +54,33 @@ const SingleCalendar = ({
     }
   }, [store.selectedDate]);
 
-  if (!clickableDates.length && mode === 'schedule') {
+  if (!clickableDates.length && mode !== 'dashboard') {
     return null;
   }
 
+  const disabledDays = (date: Date) => {
+    if (mode === 'specific') {
+      return !clickableDates.some((clickableDate) =>
+        isSameDay(new Date(clickableDate), date),
+      );
+    } else {
+      return false;
+    }
+  };
+
   const modifiers = getSingleCalendarModifiers(
     mode,
+    classDates,
     clickableDates,
-    scheduleDay,
   );
   const modifiersClassNames = getSingleCalendarModifiersClassNames(mode);
-  const classNames = mode === 'schedule' ? SCHEDULE_CLASSNAMES : {};
+  const classNames = getSingleCalendarClassNames(mode);
+
   const className =
     mode === 'schedule'
       ? 'w-fit rounded-[0.625rem] px-5 py-4 md:shadow-horizontal'
+      : mode === 'specific'
+      ? 'flex w-fit rounded-[0.625rem] px-4 py-6 shadow-horizontal'
       : 'h-[15.5rem] w-full px-5 py-6';
 
   return (
@@ -78,6 +91,7 @@ const SingleCalendar = ({
       defaultMonth={clickableDates[0]}
       selected={selected}
       onSelect={setSelected}
+      disabled={disabledDays}
       modifiers={modifiers}
       modifiersClassNames={modifiersClassNames}
       classNames={classNames}
