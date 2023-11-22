@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
 import CropperModal from './CropperModal';
@@ -7,26 +7,34 @@ import CropperModal from './CropperModal';
 interface UploadImageProps {
   onChange?: (
     data: {
-      file: File;
-      url: string;
+      imageUrl: string;
     }[],
   ) => void;
-  defaultImg: {
-    file: File;
-    url: string;
-  }[];
+  defaultImg?: { imageUrl: string }[];
+  situation?: string;
   errors?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 }
 
-const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
+const UploadImage = ({
+  onChange,
+  defaultImg = [],
+  errors,
+  situation = '클래스',
+}: UploadImageProps) => {
   const [images, setImages] =
-    useState<{ file: File; url: string }[]>(defaultImg);
+    useState<{ file?: File; imageUrl: string }[]>(defaultImg);
   const [selectedImage, setSelectedImage] = useState<string | null>(
-    defaultImg?.[0]?.url || null,
+    defaultImg?.[0]?.imageUrl || null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     if (onChange) {
       onChange(images);
     }
@@ -44,7 +52,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files).map((file) => ({
         file,
-        url: URL.createObjectURL(file),
+        imageUrl: URL.createObjectURL(file),
       }));
 
       if (images.length + filesArray.length > 5) {
@@ -60,7 +68,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
       }
 
       if (!selectedImage && filesArray.length > 0) {
-        setSelectedImage(filesArray[0].url);
+        setSelectedImage(filesArray[0].imageUrl);
       }
     }
   };
@@ -70,8 +78,8 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
       const newImages = prevImages.filter((_, i) => i !== index);
 
       // 선택된 이미지가 삭제되면 selectedImage를 null로 설정
-      if (selectedImage === prevImages[index].url) {
-        setSelectedImage(newImages[0] ? newImages[0].url : null);
+      if (selectedImage === prevImages[index].imageUrl) {
+        setSelectedImage(newImages[0] ? newImages[0].imageUrl : null);
       }
 
       // 모든 이미지가 삭제되면 selectedImage를 null로 설정
@@ -113,7 +121,9 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
 
     setImages((prevImages) =>
       prevImages.map((image) =>
-        image.url === selectedImage ? { ...image, url: croppedDataURL } : image,
+        image.imageUrl === selectedImage
+          ? { ...image, imageUrl: croppedDataURL }
+          : image,
       ),
     );
   };
@@ -129,14 +139,14 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
             <UploadImageSVG
               width={117}
               height={107}
-              className="fill-sub-color2"
+              className="fill-gray-500"
             />
             <p
-              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-[0.31rem] text-lg font-bold  shadow-float
-            ${errors ? 'animate-vibration text-main-color' : 'text-sub-color2'}
+              className={`mb-3 mt-6 flex h-10 w-[12.5rem] items-center justify-center rounded-md text-lg font-bold  shadow-float
+            ${errors ? 'animate-vibration text-main-color' : 'text-gray-500'}
             `}
             >
-              클래스 사진 업로드
+              {`${situation} 사진 업로드`}
             </p>
             <p className="text-sm text-sub-color1">
               *최대 5개까지 업로드 가능합니다
@@ -159,11 +169,11 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
               <div className="relative h-full w-full overflow-hidden">
                 <Image
                   src={selectedImage}
-                  alt="선택된 클래스 업로드 이미지"
+                  alt={`선택된 ${situation} 업로드 이미지`}
                   fill
                   style={{ objectFit: 'contain' }}
                 />
-                <div className="absolute right-0 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-sub-color3">
+                <div className="absolute right-0 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gray-100">
                   <CropSVG
                     width={19}
                     height={19}
@@ -185,18 +195,18 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
                 onDrop={(e) => handleDrop(e, index)}
                 onDragOver={(e) => e.preventDefault()}
                 className={`relative h-[4rem] w-[6.3rem] ${
-                  image.url === selectedImage
+                  image.imageUrl === selectedImage
                     ? 'border-[3px] border-solid border-sub-color1'
                     : ''
                 }`}
               >
                 <div className="relative h-full w-full cursor-grab overflow-hidden">
                   <Image
-                    src={image.url}
-                    alt={`클래스 업로드 이미지 ${index + 1}`}
+                    src={image.imageUrl}
+                    alt={`${situation} 업로드 이미지 ${index + 1}`}
                     fill
                     style={{ objectFit: 'cover' }}
-                    onClick={() => setSelectedImage(image.url)}
+                    onClick={() => setSelectedImage(image.imageUrl)}
                   />
                 </div>
                 <ClearSVG
@@ -204,7 +214,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
                   width={19}
                   aria-label="이미지 삭제"
                   onClick={() => handleRemoveImage(index)}
-                  className="absolute right-0 top-0 cursor-pointer fill-sub-color3"
+                  className="absolute right-0 top-0 cursor-pointer fill-gray-100"
                 />
                 {index === 0 && (
                   <div className="absolute bottom-0 right-0 flex h-6 w-9 translate-y-[1px] items-center justify-center bg-sub-color1 text-white">
@@ -217,7 +227,7 @@ const UploadImage = ({ onChange, defaultImg, errors }: UploadImageProps) => {
             {images.length < 5 && (
               <>
                 <label htmlFor="addintional-image-upload">
-                  <div className="flex h-[4rem] w-[6.3rem] cursor-pointer items-center justify-center bg-sub-color4">
+                  <div className="flex h-[4rem] w-[6.3rem] cursor-pointer items-center justify-center bg-gray-700">
                     <UploadImageSVG width={52} height={47} fill="white" />
                   </div>
                 </label>

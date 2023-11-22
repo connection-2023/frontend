@@ -43,15 +43,13 @@ const DistributionCount = ({
     >
       <div className="flex items-center">
         <p
-          className={`mr-2 font-semibold ${
-            hasCouponLimit && 'text-sub-color2'
-          }`}
+          className={`mr-2 font-semibold ${hasCouponLimit && 'text-gray-500'}`}
         >
           선착순
         </p>
         <input
           type="number"
-          className="mr-1 h-7 w-12 rounded-md border border-solid border-sub-color2 text-center focus:outline-none"
+          className="mr-1 h-7 w-12 rounded-md border border-solid border-gray-500 text-center focus:outline-none"
           {...register('couponDistributionCount', {
             validate: (value) => {
               return getValues('hasCouponLimit') || value
@@ -66,9 +64,7 @@ const DistributionCount = ({
           onFocus={() => setValue('hasCouponLimit', false)}
         />
         <p
-          className={`mr-4 font-semibold ${
-            hasCouponLimit && 'text-sub-color2'
-          }`}
+          className={`mr-4 font-semibold ${hasCouponLimit && 'text-gray-500'}`}
         >
           명
         </p>
@@ -80,7 +76,7 @@ const DistributionCount = ({
         />
         <label
           htmlFor="hasCouponLimit"
-          className="cursor-pointer select-none font-semibold text-sub-color2 peer-checked:text-black"
+          className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
         >
           제한 없음
         </label>

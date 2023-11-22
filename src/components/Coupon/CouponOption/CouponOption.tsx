@@ -21,7 +21,7 @@ import {
 import { CouponData } from '@/types/coupon';
 
 const CouponOptionInputStyles =
-  'h-7 px-3 rounded-md border border-solid border-sub-color2 focus:outline-none';
+  'h-7 px-3 rounded-md border border-solid border-gray-500 focus:outline-none';
 
 interface CouponOptionProps {
   register: UseFormRegister<CouponData>;
@@ -144,7 +144,7 @@ const CouponOption = ({
           />
           <label
             htmlFor="apply"
-            className="cursor-pointer select-none font-semibold text-sub-color2 peer-checked:text-black"
+            className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
           >
             적용
           </label>
@@ -175,7 +175,7 @@ const CouponOption = ({
               },
             })}
           />
-          <p className="font-semibold text-sub-color2 peer-focus:text-black">
+          <p className="font-semibold text-gray-500 peer-focus:text-black">
             원
           </p>
         </div>

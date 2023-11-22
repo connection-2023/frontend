@@ -60,8 +60,8 @@ const ReportHistoryPage = () => {
   };
 
   return (
-    <section className="flex w-full flex-col text-sm text-sub-color3">
-      <h1 className="mb-[1.81rem] mt-7 text-2xl font-bold">신고내역</h1>
+    <section className="col-span-2 flex w-full flex-col rounded-lg bg-white p-5 text-sm text-gray-100 shadow-float">
+      <h1 className="mb-[1.81rem] text-2xl font-bold">신고내역</h1>
 
       <ul className="mb-4 flex gap-4 font-medium">
         {Object.values(filterOptions).map((option) => (
@@ -78,7 +78,7 @@ const ReportHistoryPage = () => {
         ))}
       </ul>
 
-      <table className="w-full max-w-[40rem] border-collapse px-4 py-2">
+      <table className="w-full border-collapse px-4 py-2">
         <thead>
           <tr className="flex items-center gap-10 border-y border-solid border-black px-4 py-2 text-left font-semibold">
             <th className="w-24">신고대상</th>
@@ -126,7 +126,7 @@ const TableList = ({
 }: ITableList) => {
   const [isOpened, setIsOpened] = useState(false);
   return (
-    <tr className="flex items-start gap-10 border-b border-solid border-sub-color4 px-4 text-left font-medium">
+    <tr className="flex items-start gap-10 border-b border-solid border-gray-700 px-4 text-left font-medium">
       <th className="h-full w-24 py-2">{target}</th>
       <th className="flex w-36 flex-1 flex-col items-center gap-[0.31rem] py-2">
         <p className="flex w-full items-center">
@@ -137,16 +137,16 @@ const TableList = ({
             height="16"
             onClick={() => setIsOpened(!isOpened)}
             className={`cursor-pointer ${
-              isOpened ? 'stroke-black' : 'stroke-sub-color2'
+              isOpened ? 'stroke-black' : 'stroke-gray-500'
             }  hover:stroke-black`}
           />
         </p>
-        {isOpened && <p className="mt-3 w-full text-sub-color2">{detail}</p>}
+        {isOpened && <p className="mt-3 w-full text-gray-500">{detail}</p>}
       </th>
       <th
         onClick={onClick}
         className={`w-12 cursor-pointer whitespace-nowrap py-2 ${
-          status === '처리중' ? 'text-sub-color1' : 'text-sub-color2'
+          status === '처리중' ? 'text-sub-color1' : 'text-gray-500'
         } underline`}
       >
         {status}

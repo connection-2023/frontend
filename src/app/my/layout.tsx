@@ -1,4 +1,4 @@
-import Sidebar from './_components/Sidebar';
+import Sidebar from '../_components/Sidebar';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default async function MyPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="mx-auto mb-[11.5rem] flex w-full max-w-[1440px] justify-between">
+    <main className=" mx-auto grid w-full grid-cols-[1fr,2fr,1fr] justify-between gap-x-4 bg-sub-color1-transparent px-16 pb-20 pt-4">
       <Sidebar />
       {children}
     </main>

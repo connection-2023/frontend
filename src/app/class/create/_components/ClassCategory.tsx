@@ -1,11 +1,10 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
 import {
   CATEGORY_DIFFICULTY_LEVEL,
   CATEGORY_LESSON_TYPE,
   CATEGORY_PROGRESS_METHOD,
 } from '@/constants/constants';
-import { classCreateState } from '@/recoil/Create/atoms';
+import { useClassCreateStore } from '@/store/classCreate';
 import CategoryContainer from './ClassCategory/CategoryContainer';
 import ClassSizeSelect from './ClassCategory/ClassSizeSelect';
 import RadioComponent from './ClassCategory/RadioComponent';
@@ -14,95 +13,132 @@ import UploadImage from '@/components/UploadImage/UploadImage';
 
 const ClassCategory = () => {
   const {
-    register,
     control,
     formState: { errors },
   } = useFormContext();
 
-  const classData = useRecoilValue(classCreateState);
+  const store = useClassCreateStore();
+  const classData = store.classData;
 
   return (
     <>
       <section
-        id="classImg"
+        id="images"
         className="mb-5 border-b border-solid border-sub-color2 py-10"
       >
         <Controller
-          name="classImg"
+          name="images"
           control={control}
-          defaultValue={[]}
+          defaultValue={classData?.temporaryLectureImage || []}
           rules={{
             required: '이미지',
           }}
           render={({ field }) => (
             <UploadImage
               onChange={field.onChange}
-              defaultImg={classData.classImg}
-              errors={errors.classImg}
+              defaultImg={field.value}
+              errors={errors.images}
             />
           )}
         />
       </section>
 
-      <input
-        id="className"
-        placeholder="클래스명"
-        className={`mb-6 h-10 border-b border-solid border-sub-color1 pb-2 text-2xl font-bold outline-0
-        ${errors.className && 'animate-vibration placeholder:text-main-color'}`}
-        {...register('className', {
-          required: '클래스명',
-        })}
+      <Controller
+        name="title"
+        control={control}
+        rules={{ required: '클래스명' }}
+        defaultValue={classData?.title || ''}
+        render={({ field }) => (
+          <input
+            {...field}
+            id="title"
+            placeholder="클래스명"
+            className={`mb-6 h-10 border-b border-solid border-sub-color1 pb-2 text-2xl font-bold outline-0 ${
+              errors.title && 'animate-vibration placeholder:text-main-color'
+            }`}
+          />
+        )}
       />
 
       <section className="flex">
         <h2
-          id="classGenre"
-          className={`w-1/6 text-lg font-bold ${
-            errors.classGenre && 'animate-vibration text-main-color'
+          id="genres"
+          className={`w-1/6 font-bold ${
+            errors.genres && 'animate-vibration text-main-color'
           }`}
         >
           장르
         </h2>
         <div className="w-5/6">
           <Controller
-            name="classGenre"
+            name="genres"
             control={control}
-            defaultValue={[]}
+            defaultValue={classData?.temporaryLectureToDanceGenre}
             rules={{
               required: '장르',
             }}
             render={({ field }) => (
               <GenreCheckboxGroup
                 onChange={field.onChange}
-                defaultValue={classData.classGenre}
+                defaultValue={field.value}
               />
             )}
           />
         </div>
       </section>
 
-      <CategoryContainer id="classLessonType" title="인원">
-        <RadioComponent
-          message="인원"
-          title="classLessonType"
-          checkList={CATEGORY_LESSON_TYPE}
+      <CategoryContainer id="lessonType" title="인원">
+        <Controller
+          name="lessonType"
+          control={control}
+          defaultValue={classData?.lessonType}
+          render={({ field }) => (
+            <RadioComponent
+              message="인원"
+              title="lessonType"
+              checkList={CATEGORY_LESSON_TYPE}
+              select={field.value}
+            />
+          )}
         />
-        <ClassSizeSelect />
+
+        <ClassSizeSelect
+          defaultValue={{
+            min: classData?.min ?? 1,
+            max: classData?.max ?? 100,
+          }}
+        />
       </CategoryContainer>
 
-      <CategoryContainer id="classProgressMethod" title="진행방식">
-        <RadioComponent
-          message="진행방식"
-          title="classProgressMethod"
-          checkList={CATEGORY_PROGRESS_METHOD}
+      <CategoryContainer id="lectureMethod" title="진행방식">
+        <Controller
+          name="lectureMethod"
+          control={control}
+          defaultValue={classData?.lectureMethod}
+          render={({ field }) => (
+            <RadioComponent
+              message="진행방식"
+              title="lectureMethod"
+              checkList={CATEGORY_PROGRESS_METHOD}
+              select={field.value}
+            />
+          )}
         />
       </CategoryContainer>
 
-      <CategoryContainer id="classDifficultyLevel" title="난이도">
-        <RadioComponent
-          message="난이도"
-          title="classDifficultyLevel"
-          checkList={CATEGORY_DIFFICULTY_LEVEL}
+      <CategoryContainer id="difficultyLevel" title="난이도">
+        <Controller
+          name="difficultyLevel"
+          control={control}
+          defaultValue={classData?.difficultyLevel}
+          render={({ field }) => (
+            <RadioComponent
+              message="난이도"
+              title="difficultyLevel"
+              checkList={CATEGORY_DIFFICULTY_LEVEL}
+              select={field.value}
+            />
+          )}
         />
       </CategoryContainer>
     </>

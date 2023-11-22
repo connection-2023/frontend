@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
 import { toggleSelection } from '@/utils/toggleSelection';
 import CityList from './CityList';
@@ -7,13 +7,18 @@ import WardList from './WardList';
 
 interface SelectLocationProps {
   onChange: (data: Record<string, string[]>) => void;
+  defaultValue: { [key: string]: string[] } | null;
 }
 
-const SelectLocation = ({ onChange }: SelectLocationProps) => {
+const SelectLocation = ({ onChange, defaultValue }: SelectLocationProps) => {
   const [focusLocation, setFocusLocation] = useState<string | null>(null);
   const [selectLocationList, setSelectLocationList] = useState<
     Record<string, string[]>
-  >({});
+  >(defaultValue || {});
+
+  useEffect(() => {
+    setSelectLocationList(defaultValue || {});
+  }, [defaultValue]);
 
   const selectLocation = (
     ward: string,
@@ -43,6 +48,18 @@ const SelectLocation = ({ onChange }: SelectLocationProps) => {
       ...selectLocationList,
       [targetLocation]: toggleSelection(toggleData),
     });
+
+    const updatedList = toggleSelection(toggleData);
+
+    if (updatedList.length === 0) {
+      const updatedSelectLocationList = { ...selectLocationList };
+      delete updatedSelectLocationList[targetLocation];
+      setSelectLocationList(updatedSelectLocationList);
+
+      const updatedData = { ...selectLocationList };
+      delete updatedData[targetLocation];
+      onChange(updatedData);
+    }
   };
 
   const focusLocationHandler = (city: string) => {
@@ -77,7 +94,7 @@ const SelectLocation = ({ onChange }: SelectLocationProps) => {
       )}
 
       <ul className="shadow-border flex flex-wrap">
-        {Object.entries(selectLocationList).map(([key, value]) => (
+        {Object.entries(selectLocationList || {}).map(([key, value]) => (
           <LocationListItem
             key={key}
             value={value}

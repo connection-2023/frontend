@@ -1,3 +1,13 @@
+export interface IBootOption {
+  pluginKey: string;
+  language: string;
+  id?: string;
+  profile?: {
+    name: string;
+    mobileNumber: string;
+    userType: 'user' | 'lecturer';
+  };
+}
 export interface IFilterButton {
   label: '지역' | '장르' | '평점' | '가격' | '지정날짜' | '진행방식' | '시간';
   content: React.JSX.Element;
@@ -66,4 +76,49 @@ export interface Instructors {
   imgURL: string[];
   average: number;
   href: string;
+}
+
+export interface INoticeMessage {
+  message: string;
+  date: string;
+  isRead: boolean;
+}
+
+export interface INotice {
+  type: string;
+  id: string;
+  date: string;
+  isRead: boolean;
+  title: string;
+  contents: INoticeMessage[];
+}
+
+export interface Verification {
+  nickname: boolean;
+  email: boolean;
+  phoneNumber: boolean;
+  accountNumber: boolean;
+}
+
+export interface IRegion {
+  administrativeDistrict: string;
+  district: string;
+}
+
+export interface IGenre {
+  name: string | null;
+  danceCategory: { genre: string };
+}
+
+export interface IMyPaymentInfo {
+  orderId: number;
+  id: number;
+  type: 'class' | 'pass';
+  status: '입금대기' | '결제완료';
+  image: string;
+  paymentDate: string;
+  count: number;
+  title: string;
+  classTime?: string;
+  price: number;
 }

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Carousel from '@/components/Carousel/Carousel';
-import ClassCard from '@/components/ClassCard/ClassCard';
+import ClassCard from '@/components/ClassPreview/ClassPreview';
 import { ClassCardType } from '@/types/class';
 
 const ClassList = ({ classList }: { classList: ClassCardType[] }) => {

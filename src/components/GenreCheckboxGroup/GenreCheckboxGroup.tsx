@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { DANCE_GENRE } from '@/constants/constants';
 import { toggleSelection } from '@/utils/toggleSelection';
@@ -13,18 +13,20 @@ const GenreCheckboxGroup = ({
   onChange,
   defaultValue = [],
 }: GenreCheckboxGroupProps) => {
-  const {
-    formState: { errors },
-  } = useFormContext();
-
   const [selectGenreList, setSelectGenreList] =
     useState<string[]>(defaultValue);
   const combinedArray = ['전체', ...DANCE_GENRE, ...defaultValue];
   const [genreList, setGenreList] = useState<string[]>([
     ...new Set(combinedArray),
   ]);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     if (onChange) {
       onChange(selectGenreList);
     }
@@ -42,6 +44,10 @@ const GenreCheckboxGroup = ({
     const newList = toggleSelection(toggleData);
 
     setSelectGenreList(newList);
+
+    if (onChange) {
+      onChange(newList);
+    }
   };
 
   const addGenreList = (value: string) => {

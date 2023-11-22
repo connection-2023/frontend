@@ -1,6 +1,53 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
+import { ConsentListType } from '@/types/auth';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
+
+export const ProfileImgSize = {
+  xsmall: 22,
+  small: 34,
+  medium: 59,
+  large: 101,
+  xlarge: 176,
+};
+
+export const ButtonSizes = {
+  small: 28,
+  medium: 35,
+  large: 45,
+};
+
+export const ButtonStyles = {
+  primary:
+    'hover:bg-main-color-transparent group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-white text-main-color active:bg-main-color active:text-white',
+  default:
+    'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 active:bg-sub-color1 active:text-white',
+  secondary:
+    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/10 active:bg-black active:text-white',
+};
+
+export const REGISTER_CONSENT_LIST: ConsentListType = [
+  {
+    id: 'termsOfService',
+    title: '(필수) 서비스 이용 약관',
+  },
+  {
+    id: 'talk',
+    title: '(선택) 알림톡 수신 동의',
+  },
+  {
+    id: 'email',
+    title: '(선택) 이메일 수신 동의',
+  },
+  {
+    id: 'marketing',
+    title: '(선택) 마케팅 정보 수집 동의',
+    subOptions: [
+      { id: 'marketingChannelTalk', title: '채널톡 (카카오톡 채널)' },
+      { id: 'marketingEmail', title: '이메일' },
+    ],
+  },
+];
 
 export const DAY_MODIFIERS = {
   saturday: (date: Date) => date.getDay() === 6,
@@ -153,6 +200,7 @@ export const NON_STICKY_HEADER_PATHS = [
   '/class/',
   '/instructor/',
   '/class/creat',
+  '/my',
 ];
 
 export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];
@@ -185,19 +233,19 @@ export const SNS_ITEMS = [
     icon: InstagramSVG,
     title: '인스타그램',
     placeholder: '인스타그램 아이디',
-    dataName: 'instructorInstagram',
+    dataName: 'instagramUrl',
   },
   {
     icon: YoutubeSVG,
     title: '유튜브',
     placeholder: '유튜브 링크',
-    dataName: 'instructorYoutube',
+    dataName: 'youtubeUrl',
   },
   {
     icon: LinkSVG,
     title: '홈페이지',
     placeholder: '관련 홈페이지 링크',
-    dataName: 'instructorHomePage',
+    dataName: 'homepageUrl',
   },
 ];
 
@@ -208,3 +256,32 @@ export const MY_COUPON_FILTER_OPTIONS = [
 ];
 
 export const MY_COUPON_CLASS_LIST_LENGTH = 10;
+
+export const BANK_LIST = [
+  { value: 'KEB하나은행', label: 'KEB하나은행' },
+  { value: 'SC제일은행', label: 'SC제일은행' },
+  { value: '국민은행', label: '국민은행' },
+  { value: '신한은행', label: '신한은행' },
+  { value: '외환은행', label: '외환은행' },
+  { value: '우리은행', label: '우리은행' },
+  { value: '한국시티은행', label: '한국시티은행' },
+  { value: '경남은행', label: '경남은행' },
+  { value: '광주은행', label: '광주은행' },
+  { value: '대구은행', label: '대구은행' },
+  { value: '부산은행', label: '부산은행' },
+  { value: '전북은행', label: '전북은행' },
+  { value: '제주은행', label: '제주은행' },
+  { value: '기업은행', label: '기업은행' },
+  { value: '농협', label: '농협' },
+  { value: '수협', label: '수협' },
+  { value: '한국산업은행', label: '한국산업은행' },
+  { value: '한국수출입은행', label: '한국수출입은행' },
+];
+
+export const LOGIN_REQUIRED_URLS = ['/instructor/apply', '/class/create'];
+
+export const LECTURER_NO_ACCESS = ['/instructor/apply'];
+
+export const USER_NO_ACCESS = ['/class/create'];
+
+export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];

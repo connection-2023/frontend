@@ -3,7 +3,7 @@ import { dummyInstructor, dummyMain } from '@/constants/dummy';
 import { SmallLogoSVG, MainPopularSVG, MainTopSVG } from '@/icons/svg';
 import Banner from './_components/Banner';
 import CarouselTemplate from './_components/CarouselTemplate';
-import ClassCard from '@/components/ClassCard/ClassCard';
+import ClassCard from '@/components/ClassPreview/ClassPreview';
 import InstructorPreview from '@/components/Preview/InstructorPreview';
 import SuggestionPreview from '@/components/Preview/SuggestionPreview';
 
@@ -11,12 +11,12 @@ const Home = () => {
   const { classList } = dummyInstructor;
   const { recentClass, suggestionClass, topInstructorList } = dummyMain;
   return (
-    <main className="relative mx-auto mb-20 max-w-[1440px]">
+    <main className="relative mx-auto mb-20">
       <Banner />
       {/* 유저 로그인시에만 보여지는 맞춤 클래스 */}
       <section className="absolute top-[23rem] mt-3 w-full">
         <h2 className="mb-3 flex w-full items-center gap-1 px-[4.37rem] text-lg font-bold text-white">
-          <SmallLogoSVG />
+          <SmallLogoSVG className="h-3 w-6" />
           AI가 추천하는 맞춤 클래스
         </h2>
 
@@ -97,7 +97,7 @@ const SectionHeader = ({ icon, title, link }: ISectionHeader) => (
       {icon}
       {title}
     </span>
-    <Link href={link} className="text-sm text-sub-color2 underline">
+    <Link href={link} className="text-sm text-gray-500 underline">
       전체보기
     </Link>
   </h2>

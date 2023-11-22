@@ -27,7 +27,8 @@ export const formats = {
     )}`,
 
   dayHeaderFormat: (date: Date) =>
-    format(date, 'MM월 dd일 eeee', { locale: koLocale }),
+    format(date, 'yy.MM.dd (eee)', { locale: koLocale }),
+  timeGutterFormat: 'ha',
 };
 
 export const eventStyleGetter: EventPropGetter<IFullCalendarEvent> = (

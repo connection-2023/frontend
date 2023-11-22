@@ -1,13 +1,12 @@
 import Select, {
   ActionMeta,
   components,
-  GroupBase,
   MultiValue,
   OptionProps,
   SingleValue,
   StylesConfig,
 } from 'react-select';
-import { couponGET, SelectCoupon } from '@/types/coupon';
+import { SelectCoupon } from '@/types/coupon';
 
 interface CouponSelectProps {
   options: SelectCoupon[];
@@ -61,25 +60,13 @@ const CustomOption = (props: OptionProps<SelectCoupon>) => {
   );
 };
 
-const couponSelectStyle:
-  | StylesConfig<
-      {
-        value: any;
-        label: string;
-      },
-      false,
-      GroupBase<{
-        value: any;
-        label: string;
-      }>
-    >
-  | undefined = {
+const couponSelectStyle: StylesConfig<SelectCoupon, true> = {
   control: (provided) => ({
     ...provided,
     boxShadow: 'none',
-    borderColor: 'var(--sub-color2)',
+    borderColor: 'var(--gray-500)',
     width: '100%',
-    '&:hover': { borderColor: 'var(--sub-color2)' },
+    '&:hover': { borderColor: 'var(--gray-500)' },
   }),
   valueContainer: (provided) => ({
     ...provided,
@@ -91,16 +78,16 @@ const couponSelectStyle:
     ...provided,
     marginTop: '-3px',
     boxShadow: 'none',
-    border: '1px solid var(--sub-color2)',
+    border: '1px solid var(--gray-500)',
     borderTop: 'none',
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isSelected ? 'var(--sub-color4)' : 'white',
-    borderTop: '1px solid var(--sub-color2)',
+    backgroundColor: state.isSelected ? 'var(--gray-700)' : 'white',
+    borderTop: '1px solid var(--gray-500)',
     color: 'black',
     '&:hover': {
-      backgroundColor: '#eceaea',
+      backgroundColor: 'var(----gray4)',
     },
   }),
 };

@@ -1,17 +1,29 @@
 'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { dummyUserInfo } from '@/constants/dummy';
-import { ArrowDownSVG, ProfileSVG } from '@/icons/svg';
+import { ArrowDownSVG } from '@/icons/svg';
+import { useUserStore } from '@/store';
+import { useScrollStore } from '@/store/scrollStore';
 import ProfileMenu from './ProfileMenu';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import { instructorProfile, userProfile } from '@/types/auth';
 
-const Profile = () => {
-  const { profileImg } = dummyUserInfo;
-
+const Profile = ({
+  defaultProfileImg,
+}: {
+  defaultProfileImg: string | null;
+}) => {
+  const userStoreState = useUserStore();
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
+
+  const { isScrollingUp } = useScrollStore();
+
+  useEffect(() => {
+    if (!isScrollingUp) {
+      setIsProfileMenu(false);
+    }
+  }, [isScrollingUp]);
 
   useClickAway(menuRef, () => {
     setIsProfileMenu(false);
@@ -21,23 +33,23 @@ const Profile = () => {
     setIsProfileMenu((prev) => !prev);
   };
 
+  const profileImg =
+    userStoreState.userType === 'user'
+      ? (userStoreState.authUser as userProfile)?.userProfileImage?.imageUrl
+      : (userStoreState.authUser as instructorProfile)?.profileCardImageUrl;
+
   return (
-    <div className="relative w-[4.8125rem]" ref={menuRef}>
+    <div className="relative hidden w-[4.8125rem] sm:block" ref={menuRef}>
       <div
         onClick={userMenuHandler}
-        className="absolute -top-10 flex h-12 w-full cursor-pointer items-center justify-center rounded-[3.125rem] bg-white shadow-horizontal"
+        className="absolute -top-10 flex h-12 w-full cursor-pointer items-center justify-center rounded-[3.125rem] bg-white shadow-horizontal "
       >
-        <div className="relative ml-1.5 h-[2.45rem] w-[2.45rem] overflow-hidden rounded-full">
-          {profileImg ? (
-            <Image
-              src="https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg"
-              fill
-              alt="사용자 프로필 이미지"
-              style={{ objectFit: 'cover' }}
-            />
-          ) : (
-            <ProfileSVG />
-          )}
+        <div className="relative ml-1.5 overflow-hidden rounded-full">
+          <ProfileImage
+            size="small"
+            src={userStoreState.userType ? profileImg : defaultProfileImg}
+            label={false}
+          />
         </div>
         <ArrowDownSVG
           className={` fill-black ${
@@ -53,7 +65,18 @@ const Profile = () => {
 
 export default Profile;
 {
-  /* <div className="text-lg">
-  <Link href="signin">로그인</Link>/<Link href="signup">회원가입</Link>
+  /* <div
+onClick={userMenuHandler}
+className={`absolute -top-9 flex items-center justify-center ${
+  isProfileMenu
+    ? 'rounded-full border-4 border-solid border-main-color'
+    : 'p-1'
+}  md:hidden`}
+>
+<ProfileImage
+  size="small"
+  src={userStoreState.userType ? profileImg : defaultProfileImg}
+  label={false}
+/>
 </div> */
-} // 로그인 비활성화
+}

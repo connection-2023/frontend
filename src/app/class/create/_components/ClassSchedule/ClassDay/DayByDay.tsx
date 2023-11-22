@@ -1,57 +1,104 @@
 import { eachDayOfInterval, getDay } from 'date-fns';
-import React, { useState, useEffect, useMemo } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useState, useEffect, useMemo } from 'react';
+import { toast } from 'react-toastify';
 import { FILTER_WEEK } from '@/constants/constants';
-import {
-  classRangeState,
-  classDatesState,
-  classDaysDatesState,
-} from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import TimeList from './TimeList';
 import { DayTimeList } from '@/types/class';
 
-const DayByDay = () => {
-  const [dayTimeLists, setDayTimeLists] = useState<DayTimeList[]>([
-    { day: [], timeSlots: [''] },
-  ]);
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const [selectedDates, setSelectedDates] = useRecoilState(classDaysDatesState);
-  const classRange = useRecoilValue(classRangeState);
+interface DayByDayProps {
+  lectureMethod?: string;
+  onChange: (value: DayTimeList[]) => void;
+  defaultValue: DayTimeList[];
+}
+
+const DayByDay = ({
+  lectureMethod = '원데이 레슨',
+  defaultValue,
+  onChange,
+}: DayByDayProps) => {
+  const initialValue =
+    defaultValue.length && !Object.keys(defaultValue[0]).includes('day')
+      ? [{ day: [], startDateTime: [''] }]
+      : defaultValue.length > 0
+      ? defaultValue
+      : [{ day: [], startDateTime: [''] }];
+  const isRegularClass = lectureMethod !== '원데이 레슨';
+  const [dayTimeLists, setDayTimeLists] = useState<DayTimeList[]>(initialValue);
+  const [selectedDaysCountList, setSelectedDaysCountList] = useState<number[]>( // 정기 클래스 일때만 사용
+    [],
+  );
+  const classRange = useClassScheduleStore((state) => state.classRange);
+  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
+  const setSelectedDates = useClassScheduleStore(
+    (state) => state.setClassDates,
+  );
   const isEveryListHasDay = dayTimeLists.every((list) => list.day.length > 0);
   const allSelectedDays = useMemo(
     () => dayTimeLists.flatMap((list) => list.day),
     [dayTimeLists],
   );
+  const setClassSchedules = useClassScheduleStore(
+    (state) => state.setClassSchedules,
+  );
 
   useEffect(() => {
     if (!classRange || !classRange.from || !classRange.to) return;
-    // 선택한 요일에 맞는 날짜만 필터링
+
     const allDatesInRange = eachDayOfInterval({
       start: classRange.from,
       end: classRange.to,
     });
 
-    const selectedDays = allDatesInRange.filter((date) => {
-      // 월요일=0, 화요일=1, ..., 일요일=7
-      const dayIndex = (getDay(date) + 6) % 7;
+    const selectedDaysCountList = dayTimeLists.map((list) => {
+      const daysInThisList = allDatesInRange.filter((date) => {
+        const dayIndex = (getDay(date) + 6) % 7;
+        return list.day.includes(FILTER_WEEK[dayIndex]);
+      });
 
+      return daysInThisList.length;
+    });
+
+    setSelectedDaysCountList(selectedDaysCountList);
+
+    const selectedDays = allDatesInRange.filter((date) => {
+      const dayIndex = (getDay(date) + 6) % 7;
       return allSelectedDays.includes(FILTER_WEEK[dayIndex]);
     });
 
     setClassDates(selectedDays);
     setSelectedDates(selectedDays);
-  }, [allSelectedDays, classRange, setClassDates]);
+
+    const classSchedules = allDatesInRange.flatMap((date) => {
+      const dayOfWeek = (getDay(date) + 6) % 7;
+
+      return dayTimeLists.flatMap((obj) => {
+        if (obj.day.includes(FILTER_WEEK[dayOfWeek])) {
+          return obj.startDateTime.map((t) => {
+            const [hours, minutes] = t.split(':').map(Number);
+            if (!hours || !minutes) [];
+            const newDate = new Date(date);
+            newDate.setHours(hours, minutes);
+            return newDate;
+          });
+        }
+        return [];
+      });
+    });
+    setClassSchedules(classSchedules);
+  }, [dayTimeLists, classRange, allSelectedDays, setClassDates]);
 
   const toggleDaySelection = (day: string, listIndex: number) => {
-    setDayTimeLists(
-      dayTimeLists.map((list, index) =>
-        index === listIndex
-          ? list.day.includes(day)
-            ? { ...list, day: list.day.filter((d) => d !== day) }
-            : { ...list, day: [...list.day, day] }
-          : list,
-      ),
+    const newDaytimeLists = dayTimeLists.map((list, index) =>
+      index === listIndex
+        ? list.day.includes(day)
+          ? { ...list, day: list.day.filter((d) => d !== day) }
+          : { ...list, day: [...list.day, day] }
+        : list,
     );
+
+    setDayTimeLists(newDaytimeLists);
+    onChange(newDaytimeLists);
   };
 
   const handleDayClick = (day: string, listIndex: number) => {
@@ -66,45 +113,52 @@ const DayByDay = () => {
 
   const addNewDayList = () => {
     if (dayTimeLists.length < 7) {
-      setDayTimeLists([...dayTimeLists, { day: [], timeSlots: [''] }]);
+      const newDayTimeLists = [
+        ...dayTimeLists,
+        { day: [], startDateTime: [''] },
+      ];
+      setDayTimeLists(newDayTimeLists);
+      onChange(newDayTimeLists);
     } else {
-      alert('모든 요일이 이미 선택되었습니다.');
+      toast.error('모든 요일이 이미 선택되었습니다.');
     }
   };
 
-  const updateStartTime = (
+  const updatestartDateTime = (
     listIndex: number,
     timeslotIndex: number,
     newStartTime: string,
   ) => {
-    setDayTimeLists((prevDayTimeList) =>
-      prevDayTimeList.map((list, index) =>
-        index === listIndex
-          ? {
-              ...list,
-              timeSlots: list.timeSlots.map((timeslot, i) =>
-                i === timeslotIndex ? newStartTime : timeslot,
-              ),
-            }
-          : list,
-      ),
+    const newDayTimeLists = dayTimeLists.map((list, index) =>
+      index === listIndex
+        ? {
+            ...list,
+            startDateTime: list.startDateTime.map((timeslot, i) =>
+              i === timeslotIndex ? newStartTime : timeslot,
+            ),
+          }
+        : list,
     );
+
+    setDayTimeLists(newDayTimeLists);
+    onChange(newDayTimeLists);
   };
 
   const updateTimeslots = (listIndex: number, newTimeslots: string[]) => {
-    setDayTimeLists((prevDayTimeList) =>
-      prevDayTimeList.map((timeslots, index) =>
-        index === listIndex
-          ? { ...timeslots, timeSlots: newTimeslots }
-          : timeslots,
-      ),
+    const newDayTimeLists = dayTimeLists.map((timeslots, index) =>
+      index === listIndex
+        ? { ...timeslots, startDateTime: newTimeslots }
+        : timeslots,
     );
+
+    setDayTimeLists(newDayTimeLists);
+    onChange(newDayTimeLists);
   };
 
   const addNewTimeSlot = (listIndex: number) => {
     const newTimeslot = '';
     const updatedTimeslots = [
-      ...dayTimeLists[listIndex].timeSlots,
+      ...dayTimeLists[listIndex].startDateTime,
       newTimeslot,
     ];
 
@@ -112,14 +166,17 @@ const DayByDay = () => {
   };
 
   const removeTimeSlot = (listIndex: number, timeslotIndex: number) => {
-    const updatedTimeslots = dayTimeLists[listIndex].timeSlots.filter(
+    const updatedTimeslots = dayTimeLists[listIndex].startDateTime.filter(
       (_, i) => i !== timeslotIndex,
     );
 
     if (listIndex !== 0 && updatedTimeslots.length === 0) {
-      setDayTimeLists((prevDayTimeList) =>
-        prevDayTimeList.filter((_, index) => index !== listIndex),
+      const newDayTimeLists = dayTimeLists.filter(
+        (_, index) => index !== listIndex,
       );
+
+      setDayTimeLists(newDayTimeLists);
+      onChange(newDayTimeLists);
       return;
     }
 
@@ -128,7 +185,7 @@ const DayByDay = () => {
 
   const getDayStyle = (day: string, list: DayTimeList) => {
     const baseClass =
-      'flex h-[34px] w-[34px] items-center justify-center rounded-full border border-solid text-sm  text-sub-color2';
+      'flex h-[34px] w-[34px] items-center justify-center rounded-full border border-solid text-sm  text-gray-500';
     const styles = {
       selected: 'cursor-pointer bg-sub-color1 font-bold text-white',
       clickable: 'cursor-pointer font-medium',
@@ -153,33 +210,53 @@ const DayByDay = () => {
       <div className="flex flex-col gap-5">
         {dayTimeLists.map((list, listIndex) => (
           <div key={listIndex} className="flex w-full justify-between">
-            <ul key={listIndex} className="flex gap-3">
-              {FILTER_WEEK.map((day) => (
-                <li
-                  key={listIndex + day}
-                  onClick={() => handleDayClick(day, listIndex)}
-                  className={getDayStyle(day, list)}
-                >
-                  {day}
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-col">
+            <div
+              className={`flex w-full flex-col gap-3 ${
+                isRegularClass && 'mb-8'
+              }`}
+            >
+              {isRegularClass && (
+                <div className="flex items-center gap-3.5 text-lg font-medium">
+                  <span>{list.day.join('')}</span>
+                  <span className="text-sub-color1">
+                    {selectedDaysCountList[listIndex]}회
+                  </span>
+                </div>
+              )}
+              <ul key={listIndex} className="flex gap-3">
+                {FILTER_WEEK.map((day) => (
+                  <li
+                    key={listIndex + day}
+                    onClick={() => handleDayClick(day, listIndex)}
+                    className={getDayStyle(day, list)}
+                  >
+                    {day}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className={`flex flex-col ${isRegularClass && 'mt-8'}`}>
               <ul className="flex flex-col gap-2">
-                {list.timeSlots.map((timeslot, timeslotIndex) => (
+                {list.startDateTime.map((timeslot, timeslotIndex) => (
                   <TimeList
                     key={timeslotIndex + timeslot}
                     startTime={timeslot}
                     onChange={(newStartTime) =>
-                      updateStartTime(listIndex, timeslotIndex, newStartTime)
+                      updatestartDateTime(
+                        listIndex,
+                        timeslotIndex,
+                        newStartTime,
+                      )
                     }
                     onRemove={() => removeTimeSlot(listIndex, timeslotIndex)}
                   />
                 ))}
               </ul>
+
               <button
                 onClick={() => addNewTimeSlot(listIndex)}
-                className="mt-2 flex w-full justify-end text-sm font-bold text-sub-color2"
+                className="mt-2 flex w-full justify-end text-sm font-bold text-gray-500"
               >
                 + 시간 추가
               </button>
@@ -196,7 +273,7 @@ const DayByDay = () => {
         className={getButtonClass(isEveryListHasDay, allSelectedDays)}
         aria-disabled={FILTER_WEEK.length === allSelectedDays.length}
       >
-        + 요일 추가
+        {isRegularClass ? '+ 새로운 일정 추가' : '+ 요일 추가'}
       </button>
     </>
   );
@@ -213,7 +290,7 @@ const getButtonClass = (
 
   const isDisabled =
     !isEveryListHasDay || FILTER_WEEK.length === allSelectedDays.length;
-  const colorClass = isDisabled ? 'text-sub-color2' : 'black';
+  const colorClass = isDisabled ? 'text-gray-500' : 'black';
 
   return `${baseClass} ${colorClass}`;
 };

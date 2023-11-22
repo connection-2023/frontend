@@ -1,60 +1,27 @@
-'use client';
-import React from 'react';
-import { ResetSVG } from '@/icons/svg';
+import { ButtonSizes, ButtonStyles } from '../../constants/constants';
 
 interface ButtonProps {
-  primary?: boolean;
-  mode?: 'default' | 'reset';
-  backgroundColor?: string;
   size?: 'small' | 'medium' | 'large';
+  color?: 'primary' | 'default' | 'secondary';
   children?: React.ReactNode;
+  type?: 'button' | 'submit';
   onClick?: () => void;
 }
 
-const btnSize = {
-  small: 'text-sm px-[0.94rem] py-[0.35rem] ',
-  medium: 'text-sm px-[0.87rem] py-[0.31rem] ',
-  large: 'text-lg px-[6.25rem] py-[0.63rem] ',
-};
-
-const btnMode = {
-  primary: 'text-white bg-main-color',
-  secondary: 'text-white bg-black',
-};
-
-const commonStyle = 'flex cursor-pointer items-center whitespace-nowrap';
-
-export const Button = ({
-  primary = false,
-  mode = 'default',
+const Button = ({
   size = 'medium',
-  backgroundColor,
+  color = 'default',
   children,
-  ...props
+  type = 'button',
+  onClick,
 }: ButtonProps) => {
-  const styleType = primary ? 'primary' : 'secondary';
-  return mode === 'reset' ? (
-    <button
-      onClick={props.onClick}
-      className={`${commonStyle} text-sub-color2`}
-    >
+  const styles = `h-[${ButtonSizes[size]}px] ${ButtonStyles[color]}`;
+
+  return (
+    <button type={type} onClick={onClick} className={styles}>
       {children}
-      <ResetSVG className="ml-1 fill-sub-color2" />
-    </button>
-  ) : (
-    <button
-      type="button"
-      className={`${commonStyle} rounded-md ${primary ? 'font-bold' : ''} ${
-        btnMode[styleType]
-      } ${btnSize[size]}`}
-      {...props}
-    >
-      {children}
-      <style jsx>{`
-        button {
-          background-color: ${backgroundColor};
-        }
-      `}</style>
     </button>
   );
 };
+
+export default Button;

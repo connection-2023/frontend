@@ -59,9 +59,9 @@ const PriceFilter = ({
                     background: getTrackBackground({
                       values,
                       colors: [
-                        'var(--sub-color4)',
+                        'var(--gray-700)',
                         'var(--sub-color1)',
-                        'var(--sub-color4)',
+                        'var(--gray-700)',
                       ],
                       min: MIN,
                       max: MAX,
@@ -89,7 +89,7 @@ const PriceFilter = ({
           />
         </div>
         <div className="mb-[0.5rem] flex items-center gap-[0.5rem]">
-          <div className="flexflex-col box-border rounded-md border border-solid border-sub-color4 px-[0.44rem] py-[0.31rem] text-sm font-bold text-sub-color3">
+          <div className="flexflex-col box-border rounded-md border border-solid border-gray-700 px-[0.44rem] py-[0.31rem] text-sm font-bold text-gray-100">
             <span className="text-[0.625rem]">최저</span>
             <div className="flex">
               <label>₩</label>
@@ -104,7 +104,7 @@ const PriceFilter = ({
             </div>
           </div>
           -
-          <div className="box-border flex flex-col rounded-md border border-solid border-sub-color4 px-[0.44rem] py-[0.31rem] text-sm font-bold text-sub-color3">
+          <div className="box-border flex flex-col rounded-md border border-solid border-gray-700 px-[0.44rem] py-[0.31rem] text-sm font-bold text-gray-100">
             <span className="text-[0.625rem]">최고</span>
             <div className="flex">
               <label>₩</label>

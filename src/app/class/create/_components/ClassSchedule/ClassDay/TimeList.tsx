@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { ClearSVG } from '@/icons/svg';
-import { classTimeState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 
-interface ITimeListProps {
+interface TimeListProps {
   startTime: string;
   onChange: (newStartTime: string) => void;
   onRemove?: () => void;
 }
 
-const TimeList = ({ startTime, onChange, onRemove }: ITimeListProps) => {
-  const classTime = useRecoilValue(classTimeState);
+const TimeList = ({ startTime, onChange, onRemove }: TimeListProps) => {
+  const classTime = useClassScheduleStore((state) => state.classDuration);
   const [startValue, setStartValue] = useState(startTime);
   const [endTime, setEndTime] = useState<string>('');
 
@@ -25,7 +24,7 @@ const TimeList = ({ startTime, onChange, onRemove }: ITimeListProps) => {
   }, [startValue, classTime]);
 
   return (
-    <li className="relative box-border flex h-10 items-center justify-between whitespace-nowrap rounded-[0.31rem] border border-solid border-sub-color2 px-4 text-sm font-medium">
+    <li className="relative box-border flex h-10 items-center justify-between whitespace-nowrap rounded-md border border-solid border-gray-500 px-4 text-sm font-medium">
       <span className="mr-2">시작</span>
       <input
         type="time"
@@ -41,7 +40,7 @@ const TimeList = ({ startTime, onChange, onRemove }: ITimeListProps) => {
         width={19}
         height={19}
         onClick={onRemove}
-        className="absolute right-0 top-0 -translate-y-2 translate-x-2 cursor-pointer fill-sub-color2"
+        className="absolute right-0 top-0 -translate-y-2 translate-x-2 cursor-pointer fill-gray-500"
       />
     </li>
   );

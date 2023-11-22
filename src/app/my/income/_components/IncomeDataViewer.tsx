@@ -20,8 +20,8 @@ const IncomeDataViewer = () => {
   };
 
   return (
-    <section className="w-full max-w-[40rem] rounded-[0.31rem] shadow-float">
-      <div className="flex flex-col gap-[0.69rem] whitespace-nowrap border-b border-solid border-sub-color4 px-4 py-5">
+    <section className="w-full max-w-[40rem] rounded-md bg-white shadow-float">
+      <div className="flex flex-col gap-[0.69rem] whitespace-nowrap border-b border-solid border-gray-700 px-4 py-5">
         {/* 조회 기간 선택 */}
         <IncomeRange />
 
@@ -47,7 +47,7 @@ const IncomeDataViewer = () => {
         </div>
       </div>
 
-      <div className="">
+      <div className="px-4">
         <IncomeTable selectedOption={selectedOption} />
       </div>
     </section>
@@ -71,9 +71,9 @@ const Select = ({ options }: SelectProps) => {
       id="bank"
       value={selectedOption}
       onChange={handleChange}
-      className="h-7 w-full max-w-[24rem] rounded-[0.31rem] px-2 py-1 outline outline-1 outline-sub-color2 focus:outline-sub-color1"
+      className="h-7 w-full max-w-[24rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1"
     >
-      <option value="" disabled className="text-sub-color2">
+      <option value="" disabled className="text-gray-500">
         클래스를 선택해주세요
       </option>
       {options.map((option, index) => (

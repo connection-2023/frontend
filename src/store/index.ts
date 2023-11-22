@@ -1,31 +1,7 @@
-'use client';
-import { create } from 'zustand';
-import { userProfile } from '@/types/auth';
+export { usePaymentStore } from './paymentStore';
 
-type Store = {
-  authUser: userProfile | null;
-  requestLoading: boolean;
-  setAuthUser: (user: userProfile | null) => void;
-  setAuthUserImage: (imageUrl: string) => void;
-  setRequestLoading: (isLoading: boolean) => void;
-  reset: () => void;
-};
+export { dashboardStore } from './dashboardStore';
 
-const useStore = create<Store>((set, get) => ({
-  authUser: null,
-  requestLoading: false,
-  setAuthUser: (user) => set((state) => ({ ...state, authUser: user })),
-  setAuthUserImage(imageUrl) {
-    const currentUser = get().authUser;
+export { useUserStore } from './userStore';
 
-    if (currentUser) {
-      const updatedUser = { ...currentUser, userProfileImage: { imageUrl } };
-      set({ authUser: updatedUser });
-    }
-  },
-  setRequestLoading: (isLoading) =>
-    set((state) => ({ ...state, requestLoading: isLoading })),
-  reset: () => set({ authUser: null, requestLoading: false }),
-}));
-
-export default useStore;
+export { useClassScheduleStore } from './classScheduleStore';

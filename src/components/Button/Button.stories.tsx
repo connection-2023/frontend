@@ -1,45 +1,43 @@
-import { Button } from './Button';
+import Button from './Button';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Button> = {
-  title: 'Components/Button',
+  title: 'Components/Buttons/Button',
   component: Button,
-  parameters: {
-    layout: 'centered',
-  },
+  parameters: {},
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      description: '버튼 크기',
+      defaultValue: { summary: 'medium' },
+      options: ['small', 'medium', 'large'],
+      control: { type: 'radio' },
+    },
+    color: {
+      description: '버튼 색상',
+      defaultValue: { summary: 'default' },
+      options: ['primary', 'default', 'secondary'],
+      control: { type: 'radio' },
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Button>;
 
+export const Default: Story = {
+  args: { color: 'default' },
+  render: (args) => <Button {...args}>Button</Button>,
+};
+
 export const Primary: Story = {
-  args: {
-    primary: true,
-  },
-  render: (args) => <Button {...args}>Button</Button>,
+  render: () => <Button color="primary">Button</Button>,
 };
 
-export const Reset: Story = {
-  args: {
-    mode: 'reset',
-  },
-  render: (args) => <Button {...args}>초기화</Button>,
-};
-
-export const Large: Story = {
-  args: {
-    primary: true,
-    size: 'large',
-    mode: 'default',
-  },
-  render: (args) => <Button {...args}>Button</Button>,
-};
-
-export const Small: Story = {
-  args: {
-    size: 'small',
-  },
-  render: (args) => <Button {...args}>Button</Button>,
+export const Secondary: Story = {
+  render: () => (
+    <Button color="secondary" size="large">
+      Button
+    </Button>
+  ),
 };

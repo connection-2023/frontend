@@ -25,4 +25,11 @@ export interface Juso {
   jibunAddr?: string;
   siNm?: string;
   roadAddrPart1?: string;
+  detailAddress?: string;
+}
+
+export interface ProcessedJuso {
+  roadAddr: string;
+  detailAddress: string;
+  bdNm: string;
 }

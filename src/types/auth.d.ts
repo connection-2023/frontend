@@ -140,10 +140,46 @@ export interface ISignUp {
 
 export interface userProfile {
   id: string;
+  name: string;
   nickname: string;
+  phoneNumber: string;
   email: string;
   userProfileImage: { imageUrl: string | null };
   verified: boolean;
   createdAt: string;
   updatedAt: string;
 }
+
+export type userType = 'user' | 'lecturer';
+
+export interface instructorProfile {
+  id: string;
+  profileCardImageUrl: string | null;
+  nickname: string;
+  name: string;
+  phoneNumber: string;
+}
+
+interface IMarketingConsent {
+  marketingChannelTalk: boolean;
+  marketingEmail: boolean;
+}
+
+export interface IRegisterConsents {
+  termsOfService: boolean;
+  talk: boolean;
+  email: boolean;
+  marketing: IMarketingConsent;
+}
+
+type ConsentOptionType<T extends keyof any> = T extends keyof IRegisterConsents
+  ? IRegisterConsents[T] extends boolean
+    ? { id: T; title: string }
+    : {
+        id: T;
+        title: string;
+        subOptions: Array<{ id: keyof IRegisterConsents[T]; title: string }>;
+      }
+  : never;
+
+export type ConsentListType = Array<ConsentOptionType<keyof IRegisterConsents>>;

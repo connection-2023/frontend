@@ -4,7 +4,9 @@ import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import path from 'path';
 
 const config: StorybookConfig = {
+  framework: '@storybook/nextjs',
   stories: ['../**/*.mdx', '../**/*.stories.@(js|jsx|ts|tsx)'],
+  staticDirs: ['../public'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -19,11 +21,6 @@ const config: StorybookConfig = {
       },
     },
   ],
-
-  framework: {
-    name: '@storybook/nextjs',
-    options: {},
-  },
 
   typescript: {
     reactDocgen: false,
@@ -43,6 +40,11 @@ const config: StorybookConfig = {
     });
 
     config.resolve.plugins = config.resolve.plugins || [];
+    config.resolve.alias['/images/receipt-background.svg'] = path.resolve(
+      __dirname,
+      '../public/images/receipt-background.svg',
+    );
+
     config.resolve.plugins.push(
       new TsconfigPathsPlugin({
         configFile: path.resolve(__dirname, '../tsconfig.json'),
@@ -55,6 +57,7 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+
   env: (config) => ({
     ...config,
     NEXT_PUBLIC_NAVER_MAP_CLIENT_ID:

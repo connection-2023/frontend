@@ -2,23 +2,41 @@ import { format, isAfter, isBefore, isValid, parse } from 'date-fns';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
-import { useRecoilState } from 'recoil';
 import { BasicCalendarSVG } from '@/icons/svg';
-import { classRangeState } from '@/recoil/ClassSchedule/atoms';
+import { useClassScheduleStore } from '@/store';
 import RangeCalendar from '@/components/Calendar/RangeCalendar';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
 
 const ClassRange = ({
   onChange,
+  defaultValue = { startDate: '', endDate: '' },
 }: {
-  onChange?: (value: DateRange | undefined) => void;
+  onChange: (value: { startDate: string; endDate: string }) => void;
+  defaultValue?: { startDate: string; endDate: string };
 }) => {
-  const [classRange, setClassRange] = useRecoilState(classRangeState);
-  const [fromValue, setFromValue] = useState<string>('');
-  const [toValue, setToValue] = useState<string>('');
+  const [fromValue, setFromValue] = useState<string>(defaultValue.startDate);
+  const [toValue, setToValue] = useState<string>(defaultValue.endDate);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const ref = useRef(null);
+  const store = useClassScheduleStore();
+
+  useEffect(() => {
+    const { endDate, startDate } = defaultValue;
+    const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
+    const isValidStartDate = dateFormat.test(startDate);
+    const isValidEndDate = dateFormat.test(endDate);
+
+    if (isValidStartDate && isValidEndDate) {
+      const from = new Date(defaultValue.startDate);
+      const to = new Date(defaultValue.endDate);
+      store.setClassRange({ from, to });
+    }
+  }, [defaultValue]);
+
+  useEffect(() => {
+    onChange({ startDate: fromValue, endDate: toValue });
+  }, [fromValue, toValue]);
 
   useClickAway(ref, () => {
     setIsCalendarVisible(false);
@@ -28,22 +46,31 @@ const ClassRange = ({
     setIsCalendarVisible(true);
   };
 
-  useEffect(() => {
-    if (onChange) {
-      onChange(classRange);
-    }
-  }, [classRange]);
+  const updateSelectedRange = useCallback(
+    (date: Date) => {
+      const computeNewRange = (currentRange?: DateRange) => {
+        if (!currentRange) {
+          return { from: date, to: undefined };
+        }
 
-  const updateSelectedRange = useCallback((date: Date) => {
-    setClassRange((current) => {
-      if (!current) return { from: date, to: undefined };
-      if (isAfter(date, current.to || new Date(0)))
-        return { from: current.to || new Date(0), to: date };
-      if (isBefore(date, current.from || new Date(0)))
-        return { from: date, to: current.from || new Date(0) };
-      return { ...current, from: date };
-    });
-  }, []);
+        const { from, to } = currentRange;
+
+        if (isAfter(date, to || new Date(0))) {
+          return { from: to || new Date(0), to: date };
+        }
+
+        if (isBefore(date, from || new Date(0))) {
+          return { from: date, to: from || new Date(0) };
+        }
+
+        return { ...currentRange, from: date };
+      };
+      const classRange = store.classRange;
+      const newRange = computeNewRange(classRange);
+      store.setClassRange(newRange);
+    },
+    [store.classRange],
+  );
 
   const handleDateChange =
     (setDateValue: React.Dispatch<React.SetStateAction<string>>) =>
@@ -52,7 +79,7 @@ const ClassRange = ({
       const date = parse(e.target.value, 'y-MM-dd', new Date());
 
       if (!isValid(date)) {
-        setClassRange({ from: undefined, to: undefined });
+        store.setClassRange({ from: undefined, to: undefined });
         return;
       }
 
@@ -65,7 +92,8 @@ const ClassRange = ({
   const handleRangeSelect: SelectRangeEventHandler = (
     range: DateRange | undefined,
   ) => {
-    setClassRange(range);
+    if (!range) return;
+    store.setClassRange(range);
     if (range?.from) {
       setFromValue(format(range.from, 'y-MM-dd'));
     } else {
@@ -80,7 +108,7 @@ const ClassRange = ({
 
   return (
     <div ref={ref}>
-      <div className="relative flex h-7 w-full max-w-[312px] items-center rounded-[0.31rem] border border-solid border-sub-color2 pl-[0.69rem] text-base text-sub-color3">
+      <div className="relative flex h-7 w-full max-w-[312px] items-center rounded-md border border-solid border-gray-500 pl-[0.69rem] text-base text-gray-100">
         <DateInput
           placeholder="시작 날짜"
           value={fromValue}
@@ -101,10 +129,13 @@ const ClassRange = ({
           />
         </span>
         {isCalendarVisible && (
-          <RangeCalendar
-            selectedRange={classRange}
-            handleRangeSelect={handleRangeSelect}
-          />
+          <div className="absolute left-4 top-3 z-10 flex h-auto -translate-x-4 translate-y-5 rounded-md border border-solid border-gray-500 bg-white px-3 py-4">
+            <RangeCalendar
+              mode="class"
+              selectedRange={store.classRange}
+              handleRangeSelect={handleRangeSelect}
+            />
+          </div>
         )}
       </div>
     </div>

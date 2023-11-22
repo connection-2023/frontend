@@ -1,38 +1,36 @@
 import { format } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import {
-  classDatesState,
-  classRangeState,
-  classTimeState,
-  classDaysDatesState,
-  classDayTypeState,
-} from '@/recoil/ClassSchedule/atoms';
-import DayOffCalendar from '@/components/Calendar/DayOffCalendar';
+import { useClassScheduleStore } from '@/store';
+import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
-const DayOff = () => {
+const DayOff = ({
+  onChange,
+  defaultValue,
+}: {
+  onChange: (value: Date[]) => void;
+  defaultValue: Date[];
+}) => {
+  const defultOption = defaultValue.length ? 0 : null;
+  const initialValue =
+    defaultValue && defaultValue.length > 0
+      ? defaultValue.map((date) => new Date(date))
+      : [];
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
-    null,
+    defultOption,
   );
-  const [unselectedDates, setUnselectedDates] = useState<Date[]>([]);
-  const [classDates, setClassDates] = useRecoilState(classDatesState);
-  const classType = useRecoilValue(classDayTypeState);
-  const initDates = useRecoilValue(classDaysDatesState);
-  const classRange = useRecoilValue(classRangeState);
-  const classTime = useRecoilValue(classTimeState);
+  const store = useClassScheduleStore();
+  const [unselectedDates, setUnselectedDates] = useState<Date[]>(initialValue);
+  const classDates = store.filteredDates;
+  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
+  const classType = store.classType;
+  const initDates = store.classDates;
+  const classRange = store.classRange;
+  const classTime = store.classDuration;
   const isDisabled =
     !(classRange && classTime && initDates) || classType === '특정 날짜';
-
-  const handleOptionClick = (index: number) => {
-    setSelectedOptionIndex(index);
-  };
-
-  const handleUnselected = (unselectedDates: Date[]) => {
-    setUnselectedDates(unselectedDates);
-  };
 
   useEffect(() => {
     if (classDates && initDates) {
@@ -42,6 +40,22 @@ const DayOff = () => {
       setClassDates(newClassDates);
     }
   }, [unselectedDates]);
+
+  const handleOptionClick = (index: number) => {
+    setSelectedOptionIndex(index);
+
+    if (index === 1) {
+      setUnselectedDates([]);
+      if (initDates) {
+        setClassDates(initDates);
+      }
+    }
+  };
+
+  const handleUnselected = (unselectedDates: Date[]) => {
+    setUnselectedDates(unselectedDates);
+    onChange(unselectedDates);
+  };
 
   return (
     <>
@@ -65,20 +79,22 @@ const DayOff = () => {
           <div className="mt-5 flex w-full px-5">
             {!isDisabled && (
               <>
-                <DayOffCalendar
-                  selectedDates={initDates}
-                  handleSelected={handleUnselected}
-                />
-
-                <div className="ml-[3.75rem] flex flex-col">
+                <div className="w-fit">
+                  <DayOffCalendar
+                    mode="dayoff"
+                    selectedDates={initDates}
+                    handleSelected={handleUnselected}
+                  />
+                </div>
+                <div className="ml-[3.75rem] flex w-full flex-col">
                   <p className="mb-[0.87rem] text-sm font-semibold">
                     선택한 휴무일
                   </p>
-                  <div className="flex h-fit w-fit flex-wrap gap-x-2 gap-y-3 text-sm font-medium text-sub-color3">
+                  <div className="flex h-fit w-fit flex-wrap gap-x-2 gap-y-3 text-sm font-medium text-gray-100">
                     {unselectedDates.map((date) => (
                       <p
                         key={date.toLocaleDateString()}
-                        className="h-fit rounded-[0.3125rem] border border-solid border-sub-color2 px-[0.69rem] py-[0.31rem]"
+                        className="h-fit rounded-[0.3125rem] border border-solid border-gray-500 px-[0.69rem] py-[0.31rem]"
                       >
                         {format(date, 'yy.MM.dd (E)', { locale: ko })}
                       </p>
@@ -88,7 +104,6 @@ const DayOff = () => {
               </>
             )}
           </div>
-          <p />
         </>
       )}
     </>
@@ -98,18 +113,18 @@ const DayOff = () => {
 export default React.memo(DayOff);
 
 const getClassNames = (isSelected: boolean, isDisabled: boolean) => {
-  let classNames = 'h-10 w-1/2 rounded-[0.31rem]';
+  let classNames = 'h-10 w-1/2 rounded-md';
 
   if (isDisabled) {
-    classNames += ' border border-solid border-sub-color2 text-sub-color2';
+    classNames += ' border border-solid border-gray-500 text-gray-500';
   }
 
   if (isSelected) {
     classNames += ' bg-sub-color1 text-white';
   } else if (isSelected && !isDisabled) {
-    classNames += ' border border-solid border-sub-color2 text-sub-color3';
+    classNames += ' border border-solid border-gray-500 text-gray-100';
   } else {
-    classNames += ' border border-solid border-sub-color2';
+    classNames += ' border border-solid border-gray-500';
   }
 
   return classNames;

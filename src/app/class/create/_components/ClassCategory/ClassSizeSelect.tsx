@@ -1,47 +1,34 @@
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
-import { classCreateState } from '@/recoil/Create/atoms';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
 
-const ClassSizeSelect = () => {
-  const classData = useRecoilValue(classCreateState);
+const ClassSizeSelect = ({
+  defaultValue,
+}: {
+  defaultValue: { min: number; max: number } | undefined;
+}) => {
   const allOptions = createOptions(1, 100);
 
-  const { watch, control, getValues } = useFormContext();
-  const isGroupType = watch('classLessonType');
+  const { watch, control } = useFormContext();
+
+  const isGroupType = watch('lessonType');
 
   const [minStudent, setMinStudent] = useState({
     select: {
-      value: classData.classSize.min,
-      label: String(classData.classSize.min),
+      value: defaultValue?.min ?? 1,
+      label: String(defaultValue?.min ?? 1),
     },
     option: allOptions,
   });
 
   const [maxStudent, setMaxStudent] = useState({
     select: {
-      value: classData.classSize.max,
-      label: String(classData.classSize.max),
+      value: defaultValue?.max ?? 100,
+      label: String(defaultValue?.max ?? 100),
     },
     option: allOptions,
   });
-
-  useEffect(() => {
-    const { value: minValue } = minStudent.select;
-    const { value: maxValue } = maxStudent.select;
-
-    setMinStudent({
-      select: minStudent.select,
-      option: allOptions.slice(0, maxValue),
-    });
-
-    setMaxStudent({
-      select: maxStudent.select,
-      option: allOptions.slice(minValue),
-    });
-  }, [minStudent.select, maxStudent.select]);
 
   const studentCounts = [
     {
@@ -85,38 +72,36 @@ const ClassSizeSelect = () => {
 
   return (
     <>
-      {studentCounts.map(({ title, state, setState, rangeType }) => (
-        <div
-          key={title}
-          className={`flex items-center gap-1 ${
-            isDisabled && 'text-sub-color4'
-          }`}
-        >
-          <h3>{title}</h3>
-          <Controller
-            name="classSize"
-            control={control}
-            defaultValue={classData.classSize}
-            render={({ field }) => (
-              <NumberSelect
-                instanceId={`select-${title}`}
-                defaultValue={state.select}
-                onChange={(selected) => {
-                  selectClassSize(selected, title, setState, state.option);
-
-                  field.onChange({
-                    ...getValues('classSize'),
-                    [rangeType]: selected?.value,
-                  });
-                }}
-                isDisabled={isDisabled}
-                options={state.option}
-              />
-            )}
-          />
-          명
-        </div>
-      ))}
+      {studentCounts.map(({ title, state, setState, rangeType }) => {
+        return (
+          <div
+            key={title}
+            className={`flex items-center gap-1 ${
+              isDisabled && 'text-sub-color4'
+            }`}
+          >
+            <h3>{title}</h3>
+            <Controller
+              name={rangeType}
+              control={control}
+              defaultValue={state.select}
+              render={({ field }) => (
+                <NumberSelect
+                  instanceId={`select-${title}`}
+                  defaultValue={field.value}
+                  onChange={(selected) => {
+                    selectClassSize(selected, title, setState, state.option);
+                    field.onChange(selected);
+                  }}
+                  isDisabled={isDisabled}
+                  options={state.option}
+                />
+              )}
+            />
+            명
+          </div>
+        );
+      })}
     </>
   );
 };

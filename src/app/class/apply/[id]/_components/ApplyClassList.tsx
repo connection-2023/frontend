@@ -1,52 +1,64 @@
-import { useState } from 'react';
-import { ClearSVG } from '../../../../../../public/icons/svg';
+import { useEffect, useState } from 'react';
+import { ClearSVG } from '@/icons/svg';
 
 interface ApplyClassListProps {
-  selectedCount: number;
-  // onClear: () => void;
+  dateTime: string;
+  lectureScheduleId: number;
+  participants: number;
+  remain: number;
+  updateParticipants: (id: number, value: number) => void;
+  removeSchedule: (id: number) => void;
 }
-// --- 추후 API 연결 시 props로 받을 예정 ---
-const space = {
-  total: 10,
-  current: 4,
-};
 
-const ApplyClassList = ({ selectedCount }: ApplyClassListProps) => {
-  const [reservationCount, setReservationCount] = useState(selectedCount);
-  const remainSpace = space.total - space.current;
+const ApplyClassList = ({
+  dateTime,
+  lectureScheduleId,
+  participants,
+  remain,
+  updateParticipants,
+  removeSchedule,
+}: ApplyClassListProps) => {
+  const [reservationCount, setReservationCount] = useState(1);
+
+  useEffect(() => {
+    if (participants) {
+      setReservationCount(participants);
+    }
+  }, [participants]);
 
   const onClickUp = () => {
-    if (reservationCount < remainSpace) {
+    if (reservationCount < remain) {
       setReservationCount((prev) => prev + 1);
+      updateParticipants(lectureScheduleId, reservationCount + 1);
     }
   };
 
   const onClickDown = () => {
     if (reservationCount > 1) {
       setReservationCount((prev) => prev - 1);
+      updateParticipants(lectureScheduleId, reservationCount - 1);
     }
   };
 
+  const handleClear = () => {
+    removeSchedule(lectureScheduleId);
+  };
+
   return (
-    <li className="flex w-full items-center justify-between py-2 text-sm font-semibold text-sub-color3">
-      <span>09월 09일 (토) 15:00-16:00</span>
+    <li className="flex w-full items-center justify-between whitespace-nowrap py-2 text-sm font-semibold text-gray-100">
+      <span>{dateTime}</span>
       <div className="flex items-center">
-        <span className="mr-[1.31rem] text-sub-color2">
-          잔여자리: {remainSpace}명
-        </span>
-        <div className="flex items-center text-sm text-sub-color3">
+        <span className="mr-[1.31rem] text-gray-500">잔여자리: {remain}명</span>
+        <div className="flex items-center text-sm text-gray-100">
           <CountButton onClick={onClickDown}>-</CountButton>
-          <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-sub-color2">
+          <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-gray-500">
             {reservationCount}
           </span>
           <CountButton onClick={onClickUp}>+</CountButton>
         </div>
         <span className="ml-[0.31rem]">명</span>
-        <button
-          //   onClick={onClear}
-          className="ml-4 cursor-pointer"
-        >
-          <ClearSVG width={18} height={18} className="fill-sub-color4" />
+        <button onClick={handleClear} className="ml-4 cursor-pointer">
+          <ClearSVG width={18} height={18} className="fill-gray-700" />
         </button>
       </div>
     </li>
@@ -63,7 +75,7 @@ const CountButton = ({
   children: React.ReactNode;
 }) => (
   <button
-    className="h-[31px] w-[35px] border border-solid border-sub-color2 bg-[#F5F5F5F5] text-sub-color2"
+    className="h-[31px] w-[35px] border border-solid border-gray-500 bg-gray-900 text-gray-500"
     onClick={onClick}
   >
     {children}

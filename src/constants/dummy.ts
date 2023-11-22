@@ -1,6 +1,6 @@
 import { ClassCardType } from '@/types/class';
 import { couponGET, studentCouponGET } from '@/types/coupon';
-import { IPaymentList } from '@/types/types';
+import { INotice, IPaymentList } from '@/types/types';
 
 const dummyUserInputSuggestion = [
   '댄스',
@@ -103,9 +103,20 @@ const dummyClass = {
     },
   },
   lectureSchedule: [
-    { date: '09.06(수) 13:00-15:00', space: { current: 0, total: 8 } },
-    { date: '09.06(수) 16:00-17:00', space: { current: 2, total: 8 } },
-    { date: '09.06(수) 17:00-18:00', space: { current: 8, total: 8 } },
+    {
+      id: 48,
+      lectureId: 18,
+      startDateTime: '2023-10-05T11:00:00.000Z',
+      numberOfParticipants: 12,
+      team: null,
+    },
+    {
+      id: 45,
+      lectureId: 18,
+      startDateTime: '2023-10-03T03:00:00.000Z',
+      numberOfParticipants: 9,
+      team: null,
+    },
   ],
   coupon: 2,
   price: {
@@ -957,9 +968,119 @@ const dummyStudentCouponList: studentCouponGET[] = [
   },
 ];
 
+const dummyNotify: INotice[] = [
+  {
+    type: 'class',
+    id: '2',
+    date: '7시간 전',
+    isRead: false,
+    title:
+      '어어엄청 긴 제목 완전 초보 댄스입문자를 위한 K-pop 클래스(스우파, 에스파, 뉴진스,방탄소년단 완전 초보 댄스입문자를 위한 K-pop 클래스(스우파, 에스파, 뉴진스,방탄소년단',
+    contents: [
+      {
+        message: '내일 14:00 수업을 신청하셨습니다.',
+        date: '7시간 전',
+        isRead: true,
+      },
+      {
+        message: '내일 12:00 수업을 신청하셨습니다.',
+        date: '7시간 전',
+        isRead: true,
+      },
+      {
+        message: '내일 10:00 수업을 신청하셨습니다.',
+        date: '7시간 전',
+        isRead: false,
+      },
+    ],
+  },
+  {
+    type: 'coupon',
+    id: '2',
+    date: '23.10.30',
+    isRead: true,
+    title: '리아킴의 10% 할인 쿠폰',
+    contents: [
+      {
+        message: '쿠폰 만료일이 7일 남았습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+    ],
+  },
+  {
+    type: 'class',
+    id: '2',
+    date: '23.10.30',
+    isRead: false,
+    title: '원밀리언의 리아킴과 함께하는 댄스클래스',
+    contents: [
+      {
+        message: '내일 14:00 수업을 신청하셨습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+      {
+        message: '공지사항이 수정되었습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+      {
+        message: '공지사항이 수정되었습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+      {
+        message: '클래스 신청이 완료되었습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+      {
+        message: '관심있는 클래스가 내일 마감됩니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+    ],
+  },
+  {
+    type: 'instructor',
+    id: '2',
+    date: '23.10.29',
+    isRead: false,
+    title: '리아킴 강사',
+    contents: [
+      {
+        message: '관심강사가 새로운 클래스를 개설했습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+      {
+        message: '관심강사가 새로운 클래스를 개설했습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+    ],
+  },
+  {
+    type: 'coupon',
+    id: '2',
+    date: '23.10.29',
+    isRead: true,
+    title: '리아킴의 5% 할인 쿠폰',
+    contents: [
+      {
+        message: '쿠폰 만료일이 7일 남았습니다.',
+        date: '23.10.30',
+        isRead: false,
+      },
+    ],
+  },
+];
+
 export {
   dummyStudentCouponList,
   dummyCouponClassList,
+  dummyNotify,
   dummyInterestedInstructor,
   dummyCouponList,
   dummyUserInfo,

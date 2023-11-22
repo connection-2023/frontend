@@ -25,9 +25,9 @@ const SearchResults = ({ addressData }: { addressData: AddressData }) => {
           >
             <div className="text-sub-color1">{juso.zipNo}</div>
             <h3>{juso.roadAddr}</h3>
-            <div className="text-[#969696]">[지번] {juso.jibunAddr}</div>
+            <div className="text-gray-300">[지번] {juso.jibunAddr}</div>
           </address>
-          <hr className="border-t-1 my-4 w-full border-solid border-sub-color2" />
+          <hr className="border-t-1 my-4 w-full border-solid border-gray-500" />
         </Fragment>
       ))}
     </>

@@ -38,7 +38,7 @@ const GenreFilter = ({
 
   return (
     <FilterModal label={label} onReset={onReset} onApply={onApply}>
-      <ul className="flex max-h-80 w-72 select-none flex-col gap-3 overflow-y-auto py-3 pr-2.5 scrollbar scrollbar-track-[#F5F5F5] scrollbar-thumb-sub-color2  scrollbar-thumb-rounded-lg scrollbar-w-1">
+      <ul className="flex max-h-80 w-72 select-none flex-col gap-3 overflow-y-auto py-3 pr-2.5 scrollbar scrollbar-track-gray-900 scrollbar-thumb-gray-500  scrollbar-thumb-rounded-lg scrollbar-w-1">
         {DANCE_GENRE.map((genre, index) => {
           const isGenreIncluded = filterList.includes(genre);
 

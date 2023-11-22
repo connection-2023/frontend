@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import { Instructors } from '@/types/types';
 
 interface BlockedInstructorsProps {
@@ -11,22 +12,16 @@ const BlockedInstructors = ({ instructors }: BlockedInstructorsProps) => (
       return (
         <li
           key={name + index}
-          className="flex justify-between border-y border-solid border-sub-color4 py-4"
+          className="flex justify-between border-y border-solid border-gray-700 py-4"
         >
-          <div className="flex items-center gap-3">
-            <div className="relative h-[34px] w-[34px] rounded-full">
-              <Image
-                src={imgURL[0]}
-                fill
-                alt="사용자 프로필 이미지"
-                style={{ objectFit: 'cover' }}
-                className="rounded-full"
-              />
-            </div>
-            {/* Profile */}
-            {name}
-          </div>
-          <div className="flex gap-16 text-[#414141]">
+          <ProfileImage
+            size="small"
+            src={imgURL[0]}
+            nickname={name}
+            marginLeft={2}
+          />
+
+          <div className="flex gap-16 text-gray-100">
             <button>차단취소</button>
             <button>신고</button>
           </div>
