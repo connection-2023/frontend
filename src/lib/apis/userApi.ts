@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { DOMAIN } from '@/constants/constants';
 import { userType } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
@@ -29,8 +30,15 @@ export const getAuth = async (
         },
       },
     );
+
     if (!response.ok) {
-      throw new Error('Server responded with an error');
+      if (response.status === 400) {
+        toast.error('이미 존재하는 이메일로 가입 했습니다.');
+      } else {
+        toast.error(`${social} 로그인 실패, 다시 시도해 주세요.`);
+      }
+
+      throw new Error(response.statusText);
     }
 
     return await response.json();
@@ -92,9 +100,11 @@ export const postProfileImage = async (image: File) => {
     method: 'POST',
     credentials: 'include',
     body: formData,
-  }).then((data) => data.json());
+  });
 
-  return response;
+  const res = await response.json();
+
+  return res;
 };
 
 export const getSwitchUserRole = async (userType: userType) => {
@@ -106,7 +116,31 @@ export const getSwitchUserRole = async (userType: userType) => {
         'Content-Type': 'application/json',
       },
     },
-  ).then((data) => data.json());
+  );
 
-  return response;
+  const res = await response.json();
+
+  return res;
+};
+
+export const accessTokenReissuance = async () => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/auth/refresh`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'manual',
+    });
+
+    if (response.type === 'opaqueredirect') {
+      window.location.replace(response.url);
+    }
+
+    return response;
+  } catch (error) {
+    console.error('엑세스 토큰 재발급 오류', error);
+    throw error;
+  }
 };

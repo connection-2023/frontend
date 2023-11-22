@@ -1,5 +1,6 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
+
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
 export const ProfileImgSize = {
@@ -199,6 +200,7 @@ export const NON_STICKY_HEADER_PATHS = [
   '/class/',
   '/instructor/',
   '/class/creat',
+  '/my',
 ];
 
 export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];
@@ -267,3 +269,11 @@ export const BANK_LIST = [
   { value: '한국산업은행', label: '한국산업은행' },
   { value: '한국수출입은행', label: '한국수출입은행' },
 ];
+
+export const LOGIN_REQUIRED_URLS = ['/instructor/apply', '/class/create'];
+
+export const LECTURER_NO_ACCESS = ['/instructor/apply'];
+
+export const USER_NO_ACCESS = ['/class/create'];
+
+export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];
