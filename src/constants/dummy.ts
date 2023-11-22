@@ -1015,7 +1015,10 @@ const dummyNotify: INotice[] = [
   },
 ];
 
+const dummyClassSelect = [{ label: 'asdasd', value: '18' }];
+
 export {
+  dummyClassSelect,
   dummyNotify,
   dummyInterestedInstructor,
   dummyCouponList,

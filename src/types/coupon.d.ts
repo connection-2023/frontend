@@ -1,6 +1,6 @@
 interface ValidityPeriod {
-  from: string;
-  to: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface BaseCouponData {
@@ -10,6 +10,7 @@ interface BaseCouponData {
   validityPeriod: ValidityPeriod;
   couponQuantity: '원' | '%';
   discountValue: number;
+  private: boolean;
 }
 
 interface CouponDataWithDiscount extends BaseCouponData {
@@ -41,3 +42,8 @@ export interface SelectCoupon {
 }
 
 export type SelectCoupons = SelectCoupon[];
+
+export interface SelectClass {
+  value: string | number;
+  label: string;
+}
