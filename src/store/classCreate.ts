@@ -91,9 +91,7 @@ const dataProcess = (data: IGetClassDraft) => {
       bdNm: data.location?.buildingName,
       detailAddress: data.location?.detailAddress,
     },
-    temporaryLectureDateSchedule: data.temporaryLectureDateSchedule
-      ? [...data.temporaryLectureDateSchedule]
-      : [],
-    totalClasses: data.temporaryLectureDateSchedule?.length, // to은서: 추후 스케줄 로직 확인 후 틀리면 변경
+    schedules: data.schedules ? data.schedules : [],
+    totalClasses: data.schedules?.length, // 이거 왜 필요하지...?
   };
 };

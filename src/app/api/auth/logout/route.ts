@@ -7,6 +7,7 @@ export const GET = async (req: NextRequest) => {
     await Promise.all([
       clientResponse.cookies.delete('userAccessToken'),
       clientResponse.cookies.delete('lecturerAccessToken'),
+      clientResponse.cookies.delete('refreshToken'),
     ]);
 
     return clientResponse;

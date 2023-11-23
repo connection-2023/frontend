@@ -110,7 +110,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   ) => {
     shouldShowToast = shouldShowToast === undefined ? true : shouldShowToast;
 
-    if (classData && classData.step && classData.id) {
+    if (classData && classData.id) {
       try {
         if (classData.step === null || classData.step < activeStep) {
           setProcessedClassData({ ...classData, step: activeStep });
@@ -175,13 +175,13 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
       </h1>
 
       {/* 상태 바  */}
-      <nav className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-[0px_0px_4px_0px_rgba(0,0,0,0.25)]">
+      <nav className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-float">
         {steps.map((step, index) => (
           <form
             className={`group flex h-full flex-grow items-center justify-center rounded-[3.13rem] px-1 ${
               activeStep === index
                 ? 'bg-sub-color1 text-white'
-                : 'text-sub-color2'
+                : 'text-gray-500'
             } ${
               classData &&
               classData.step &&
@@ -201,7 +201,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
                 className={`flex h-6 w-6 items-center justify-center rounded-full ${
                   activeStep === index
                     ? 'bg-white text-sub-color1'
-                    : 'bg-sub-color2 text-white'
+                    : 'bg-gray-500 text-white'
                 } 
               ${
                 classData &&
