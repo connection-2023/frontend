@@ -12,5 +12,9 @@ export const GET = async (request: NextRequest) => {
 
   const data: AddressData = await response.json();
 
-  return NextResponse.json(data);
+  return NextResponse.json(data, {
+    headers: {
+      'Cache-Control': 's-maxage=3600, stale-while-revalidate',
+    },
+  });
 };

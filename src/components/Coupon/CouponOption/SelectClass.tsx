@@ -1,25 +1,35 @@
+import { useEffect, useState } from 'react';
 import Select, {
   ActionMeta,
   MultiValue,
   SingleValue,
   StylesConfig,
 } from 'react-select';
+import { getMyLecture } from '@/lib/apis/classApi';
 import { SelectClass } from '@/types/coupon';
 
 interface SelectClassProps {
-  options: SelectClass[];
   onChange: (
     selectedOptions: MultiValue<SelectClass> | SingleValue<SelectClass>,
     actionMeta: ActionMeta<SelectClass>,
   ) => void;
-  selectedOptionsLength: number;
 }
 
-const SelectClass = ({
-  options,
-  onChange,
-  selectedOptionsLength,
-}: SelectClassProps) => {
+const SelectClass = ({ onChange }: SelectClassProps) => {
+  const [options, setOptions] = useState<SelectClass[]>([]);
+
+  useEffect(() => {
+    getMyLecture()
+      .then((data) => {
+        const options = data.data.lecture.map(({ id, title }) => ({
+          label: title,
+          value: id,
+        }));
+        setOptions(options);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <Select
       instanceId="select-class"

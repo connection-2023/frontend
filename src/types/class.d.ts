@@ -314,3 +314,40 @@ export interface IUserReview {
   stars: number;
   description: string;
 }
+
+interface Lecture {
+  id: number;
+  lecturerId: number;
+  lectureTypeId: number;
+  lectureMethodId: number;
+  isGroup: boolean;
+  startDate: string;
+  endDate: string;
+  title: string;
+  introduction: string;
+  curriculum: string;
+  duration: number;
+  difficultyLevel: string;
+  minCapacity: number;
+  maxCapacity: number;
+  reservationDeadline: number;
+  reservationComment: string;
+  price: number;
+  noShowDeposit: number;
+  reviewCount: number;
+  stars: number;
+  isActive: boolean;
+  locationDescription: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: null | string;
+}
+
+interface ResponseData {
+  lecture: Lecture[];
+}
+
+export interface ApiResponse {
+  statusCode: number;
+  data: ResponseData;
+}
