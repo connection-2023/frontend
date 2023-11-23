@@ -23,9 +23,9 @@ export default async function RootLayout({
   modal: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
-        className={`${inter.className} flex min-h-screen max-w-desktop flex-col`}
+        className={`${inter.className} mx-auto flex min-h-screen max-w-desktop flex-col`}
       >
         <Header />
         <ToastContainer
