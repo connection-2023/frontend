@@ -41,6 +41,9 @@ const config: Config = {
         tablet: 'var(--max-tablet)',
         desktop: 'var(--max-desktop)',
       },
+      screens: {
+        xl: '1300px',
+      },
       boxShadow: {
         vertical: '0px 1px 4px 1px rgba(0, 0, 0, 0.25)',
         horizontal: '1px 1px 4px 1px rgba(0, 0, 0, 0.25)',
