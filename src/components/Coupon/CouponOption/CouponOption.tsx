@@ -1,3 +1,4 @@
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   Control,
   Controller,
@@ -11,14 +12,16 @@ import {
 import NoborderSelect from '@/app/class/create/_components/ClassPrice/NoborderSelect';
 import ClassRange from '@/app/class/create/_components/ClassSchedule/ClassRange/ClassRange';
 import { COUPON_UNIT_LIST } from '@/constants/constants';
+import { getMyLecture } from '@/lib/apis/classApi';
 import CouponOptionSection from './CouponOptionSection';
 import DistributionCount from './DistributionCount';
+import SelectClass from './SelectClass';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import {
   CouponDuplicationTooltip,
   MaxDiscountTooltip,
 } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
-import { CouponData } from '@/types/coupon';
+import { CouponData, SelectClassType } from '@/types/coupon';
 
 const CouponOptionInputStyles =
   'h-7 px-3 rounded-md border border-solid border-gray-500 focus:outline-none';
@@ -42,6 +45,20 @@ const CouponOption = ({
   watch,
   trigger,
 }: CouponOptionProps) => {
+  const [options, setOptions] = useState<SelectClassType[]>([]);
+
+  useEffect(() => {
+    getMyLecture()
+      .then((data) => {
+        const options = data.data.lecture.map(({ id, title }) => ({
+          label: title,
+          value: id,
+        }));
+        setOptions(options);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <main className="flex flex-col gap-4 ">
       <CouponOptionSection
@@ -69,15 +86,19 @@ const CouponOption = ({
           defaultValue={undefined}
           rules={{
             required: '사용기간은 필수 입력 사항입니다.',
-            validate: ({ from, to }) => {
-              const fromDate = new Date(from);
-              const toDate = new Date(to);
+            validate: ({ startDate, endDate }) => {
+              const fromDate = new Date(startDate);
+              const toDate = new Date(endDate);
 
               if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime()))
                 return '날짜 형태가 아닙니다.';
             },
           }}
-          render={({ field }) => <ClassRange onChange={field.onChange} />}
+          render={({ field }) => (
+            <div className="w-96">
+              <ClassRange onChange={field.onChange} />
+            </div>
+          )}
         />
       </CouponOptionSection>
 
@@ -178,6 +199,81 @@ const CouponOption = ({
           <p className="font-semibold text-gray-500 peer-focus:text-black">
             원
           </p>
+        </div>
+      </section>
+
+      <section className="flex items-center gap-10">
+        <div className="flex w-1/6 items-center gap-1">
+          <h2 className="whitespace-nowrap font-semibold">일부공개</h2>
+          <Tooltip>
+            <CouponDuplicationTooltip />
+          </Tooltip>
+        </div>
+        <div className="flex items-center">
+          <input
+            id="private"
+            type="checkbox"
+            className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
+            {...register('private')}
+          />
+          <label
+            htmlFor="private"
+            className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
+          >
+            적용
+          </label>
+        </div>
+      </section>
+
+      <section className="flex items-stretch gap-10">
+        <div className="h-full w-1/6 gap-1">
+          <h2 className="whitespace-nowrap font-semibold ">적용할 클래스</h2>
+        </div>
+
+        <div className="flex w-96 flex-col">
+          <Controller
+            name="lectureIds"
+            control={control}
+            defaultValue={options}
+            render={({ field }) => {
+              const classSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  setValue('lectureIds', options);
+                  field.onChange(options);
+                } else {
+                  setValue('lectureIds', []);
+                  field.onChange([]);
+                }
+              };
+
+              return (
+                <>
+                  <div className="flex">
+                    <input
+                      id="lectureIds"
+                      type="checkbox"
+                      className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
+                      defaultChecked={true}
+                      onChange={(e) => classSelectAll(e)}
+                    />
+                    <label
+                      htmlFor="lectureIds"
+                      className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
+                    >
+                      전체 클래스 적용
+                    </label>
+                  </div>
+                  <div className="w-full">
+                    <SelectClass
+                      options={options}
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  </div>
+                </>
+              );
+            }}
+          />
         </div>
       </section>
     </main>

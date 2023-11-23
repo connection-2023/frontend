@@ -1,35 +1,21 @@
-import { useEffect, useState } from 'react';
 import Select, {
   ActionMeta,
   MultiValue,
   SingleValue,
   StylesConfig,
 } from 'react-select';
-import { getMyLecture } from '@/lib/apis/classApi';
-import { SelectClass } from '@/types/coupon';
+import { SelectClassType } from '@/types/coupon';
 
 interface SelectClassProps {
   onChange: (
-    selectedOptions: MultiValue<SelectClass> | SingleValue<SelectClass>,
-    actionMeta: ActionMeta<SelectClass>,
+    selectedOptions: MultiValue<SelectClassType> | SingleValue<SelectClassType>,
+    actionMeta: ActionMeta<SelectClassType>,
   ) => void;
+  options: SelectClassType[];
+  value: SelectClassType[];
 }
 
-const SelectClass = ({ onChange }: SelectClassProps) => {
-  const [options, setOptions] = useState<SelectClass[]>([]);
-
-  useEffect(() => {
-    getMyLecture()
-      .then((data) => {
-        const options = data.data.lecture.map(({ id, title }) => ({
-          label: title,
-          value: id,
-        }));
-        setOptions(options);
-      })
-      .catch((error) => console.error(error));
-  }, []);
-
+const SelectClass = ({ onChange, options, value }: SelectClassProps) => {
   return (
     <Select
       instanceId="select-class"
@@ -40,13 +26,14 @@ const SelectClass = ({ onChange }: SelectClassProps) => {
       options={options}
       styles={couponSelectStyle}
       controlShouldRenderValue={false}
+      value={value}
     />
   );
 };
 
 export default SelectClass;
 
-const couponSelectStyle: StylesConfig<SelectClass, true> = {
+const couponSelectStyle: StylesConfig<SelectClassType, true> = {
   control: (provided) => ({
     ...provided,
     boxShadow: 'none',

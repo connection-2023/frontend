@@ -11,6 +11,7 @@ interface BaseCouponData {
   couponQuantity: '원' | '%';
   discountValue: number;
   private: boolean;
+  lectureIds: SelectClassType[];
 }
 
 interface CouponDataWithDiscount extends BaseCouponData {
@@ -43,7 +44,7 @@ export interface SelectCoupon {
 
 export type SelectCoupons = SelectCoupon[];
 
-export interface SelectClass {
+export interface SelectClassType {
   value: string | number;
   label: string;
 }
