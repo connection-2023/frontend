@@ -41,7 +41,8 @@ const couponSelectStyle: StylesConfig<SelectClass, true> = {
     ...provided,
     boxShadow: 'none',
     borderColor: 'var(--gray3)',
-    height: '100%',
+    height: '30px',
+    minHeight: '30px',
     width: '100%',
     '&:hover': { borderColor: 'var(--gray3)' },
   }),
@@ -49,7 +50,8 @@ const couponSelectStyle: StylesConfig<SelectClass, true> = {
     ...provided,
     justifyContent: 'center',
     borderColor: 'none',
-    height: '100%',
+    height: '30px',
+    paddingTop: '0',
   }),
   menu: (provided, state) => {
     const optionIsNotExists = state.options && state.options.length === 0;
@@ -71,5 +73,9 @@ const couponSelectStyle: StylesConfig<SelectClass, true> = {
     '&:hover': {
       backgroundColor: 'var(--sub-color1-transparent)',
     },
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: '30px',
   }),
 };
