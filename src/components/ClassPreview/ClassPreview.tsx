@@ -44,7 +44,7 @@ const ClassPreview = (props: ClassCardType) => {
       <div
         onMouseLeave={() => setFocus(false)}
         onMouseOver={() => setFocus(true)}
-        className="hidden max-h-[13.5rem] w-full min-w-[20.5rem] max-w-[40rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] md:flex"
+        className="hidden max-h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] xl:flex"
       >
         <div className="relative -z-10 mr-4 h-[188px] w-full overflow-hidden">
           {imgURL.length > 1 ? (
@@ -58,8 +58,13 @@ const ClassPreview = (props: ClassCardType) => {
             <Image
               src={imgURL[0]}
               alt="Connection 댄스 춤 이미지"
-              fill
+              width={0}
+              height={0}
               sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
             />
           )}
         </div>
@@ -86,7 +91,7 @@ const ClassPreview = (props: ClassCardType) => {
             {title.length < 20 ? title : title.slice(0, 19) + '...'}
           </p>
 
-          <div className="mb-2 flex w-full flex-wrap justify-between text-sm">
+          <div className="mb-2 flex w-full flex-wrap gap-3 text-sm">
             <span>{displayFirstElement(location)}</span>
             <span>{displayFirstElement(genre)}</span>
             <span>{displayFirstElement(type)}</span>
@@ -109,7 +114,7 @@ const ClassPreview = (props: ClassCardType) => {
         </div>
       </div>
 
-      <div className="md:hidden">
+      <div className="h-full w-full xl:hidden">
         <ResponsiveClassPreview {...props} />
       </div>
     </>

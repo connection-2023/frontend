@@ -61,9 +61,9 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
-        className={`${inter.className} flex min-h-screen max-w-desktop flex-col`}
+        className={`${inter.className} mx-auto flex min-h-screen max-w-desktop flex-col`}
       >
         <UserStoreInitializer authUser={authUser} userType={userType} />
         <Header>
