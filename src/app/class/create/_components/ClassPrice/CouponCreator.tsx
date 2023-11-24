@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { createNewCoupon } from '@/lib/apis/couponApis';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import { CouponData } from '@/types/coupon';
 
@@ -22,9 +24,41 @@ const CouponCreator = ({
     trigger,
   } = useForm<CouponData>();
 
+  const createCoupon = async (data: CouponData) => {
+    const {
+      validityPeriod,
+      couponQuantity,
+      discountValue,
+      maxUsageCount,
+      couponDistributionCount,
+      lectureIds,
+      title,
+      maxDiscountAmount,
+      isPrivate,
+      isStackable,
+    } = data;
+
+    const createData = {
+      title,
+      startAt: new Date(validityPeriod.startDate),
+      endAt: new Date(validityPeriod.endDate),
+      percentage: couponQuantity === '%' ? Number(discountValue) : undefined,
+      discountPrice:
+        couponQuantity === '원' ? Number(discountValue) : undefined,
+      maxUsageCount: maxUsageCount
+        ? undefined
+        : Number(couponDistributionCount),
+      isPrivate,
+      isStackable,
+      lectureIds: lectureIds.map(({ value }) => Number(value)),
+      maxDiscountPrice: Number(maxDiscountAmount) ?? undefined,
+    };
+    await createNewCoupon(createData);
+  };
+
   const onValid = (data: CouponData) => {
-    console.log(data);
-    // 추후 토스트 메시지 추가 예정
+    createCoupon(data);
+    toast.success('쿠폰 생성 완료');
     changeCouponList(data);
   };
 
