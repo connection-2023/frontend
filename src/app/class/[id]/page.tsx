@@ -24,7 +24,6 @@ import {
   ChatSVG,
   GenreSVG,
 } from '@/icons/svg';
-import { getClassPost, getClassSchedules } from '@/lib/apis/classApis';
 import {
   formatLocationToString,
   formatGenreToString,
@@ -32,6 +31,10 @@ import {
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import { revalidateTag } from 'next/cache';
+import {
+  getClassInfo,
+  getClassSchedules,
+} from '@/lib/apis/serverApis/classPostApis';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -43,7 +46,7 @@ const ClassDetailPage = async ({
 }) => {
   revalidateTag('schedules');
   // parallel requests
-  const classData = getClassPost(id);
+  const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
 
   const [classInfo, classSchedule] = await Promise.all([
