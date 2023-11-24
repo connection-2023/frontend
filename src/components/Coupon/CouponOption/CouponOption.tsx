@@ -12,6 +12,7 @@ import {
 import NoborderSelect from '@/app/class/create/_components/ClassPrice/NoborderSelect';
 import ClassRange from '@/app/class/create/_components/ClassSchedule/ClassRange/ClassRange';
 import { COUPON_UNIT_LIST } from '@/constants/constants';
+import { CloseSVG } from '@/icons/svg';
 import { getMyLecture } from '@/lib/apis/classApi';
 import CouponOptionSection from './CouponOptionSection';
 import DistributionCount from './DistributionCount';
@@ -47,6 +48,9 @@ const CouponOption = ({
 }: CouponOptionProps) => {
   const [options, setOptions] = useState<SelectClassType[]>([]);
   const [render, setRender] = useState(false);
+  const [isAllSelected, setIsAllSelected] = useState(false);
+
+  const selectClass = watch('lectureIds');
 
   useEffect(() => {
     getMyLecture()
@@ -60,6 +64,10 @@ const CouponOption = ({
       })
       .catch((error) => console.error(error));
   }, []);
+
+  useEffect(() => {
+    setIsAllSelected(selectClass?.length === options.length);
+  }, [selectClass, options]);
 
   return (
     <main className="flex flex-col gap-4 ">
@@ -232,7 +240,7 @@ const CouponOption = ({
           <h2 className="whitespace-nowrap font-semibold ">적용할 클래스</h2>
         </div>
 
-        <div className="flex w-96 flex-col">
+        <div className="flex w-96 flex-col gap-3">
           {(options.length > 0 || render) && (
             <Controller
               name="lectureIds"
@@ -256,7 +264,7 @@ const CouponOption = ({
                         id="lectureIds"
                         type="checkbox"
                         className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
-                        defaultChecked={true}
+                        checked={isAllSelected}
                         onChange={(e) => classSelectAll(e)}
                       />
                       <label
@@ -273,6 +281,17 @@ const CouponOption = ({
                         value={field.value}
                       />
                     </div>
+                    {selectClass?.map(({ label = '' }, index) => (
+                      <p
+                        key={label + index}
+                        className="flex items-center justify-between text-sm text-sub-color1"
+                      >
+                        #{label}
+                        <button className="group">
+                          <CloseSVG className=" h-4 w-4 stroke-gray-500 group-hover:stroke-sub-color1" />
+                        </button>
+                      </p>
+                    ))}
                   </>
                 );
               }}
