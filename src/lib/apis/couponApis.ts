@@ -22,7 +22,7 @@ export const createNewCoupon = async (data: createCouponData) => {
     }
 
     const responseData = await response.json();
-    return responseData;
+    return responseData.data.coupon;
   } catch (error) {
     console.error('쿠폰 생성 오류', error);
     throw error;

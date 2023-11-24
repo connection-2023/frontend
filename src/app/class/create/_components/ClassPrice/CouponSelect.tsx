@@ -71,9 +71,11 @@ const formatOptionLabel = (
   return (
     <dl className="flex flex-col gap-1 px-3 py-1 text-sm">
       <div className="flex justify-between">
-        <dt className="text-black">{label}</dt>
+        <dt className="w-96 truncate text-black">{label}</dt>
         <dd className="font-semibold text-main-color">
-          {percentage ? percentage + '%' : discountPrice + '원'}
+          {percentage
+            ? percentage + '%'
+            : discountPrice.toLocaleString() + '원'}
         </dd>
       </div>
       <div className="flex justify-between">

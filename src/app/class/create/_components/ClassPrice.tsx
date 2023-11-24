@@ -11,9 +11,7 @@ import { CouponData, couponGET } from '@/types/coupon';
 
 const ClassPrice = () => {
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
-  const [couponList, setCouponList] = useState<couponGET[] | []>(
-    dummyCouponList,
-  ); //추후 적용 api로 받아올 예정
+  const [couponList, setCouponList] = useState<couponGET[]>([]);
 
   useEffect(() => {
     const reqData = {
@@ -30,34 +28,8 @@ const ClassPrice = () => {
     setIsCouponSectionOpen((prev) => !prev);
   };
 
-  const changeCouponList = (couponOption: CouponData) => {
-    const {
-      couponName,
-      discountValue,
-      allowDuplicateCoupons,
-      maxDiscountAmount,
-      couponQuantity,
-      validityPeriod,
-    } = couponOption;
-    const { startDate: from, endDate: to } = validityPeriod;
-
-    const startDate = new Date(from);
-    const endDate = new Date(to);
-
-    const startAt = format(startDate, 'yyyy-MM-dd');
-    const endAt = format(endDate, 'yyyy-MM-dd');
-
-    const newCoupon = {
-      title: couponName,
-      discount: discountValue,
-      isStackable: allowDuplicateCoupons,
-      maxDiscountAmount,
-      unit: couponQuantity,
-      startAt,
-      endAt,
-    };
-
-    setCouponList((couponList) => [...couponList, newCoupon]);
+  const changeCouponList = (couponOption: couponGET) => {
+    setCouponList((couponList) => [...couponList, couponOption]);
   };
 
   return (

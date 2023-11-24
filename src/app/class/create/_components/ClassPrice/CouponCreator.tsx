@@ -3,10 +3,10 @@ import { toast } from 'react-toastify';
 import { createNewCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
-import { CouponData } from '@/types/coupon';
+import { CouponData, couponGET } from '@/types/coupon';
 
 interface CouponCreatorProps {
-  changeCouponList: (couponOption: CouponData) => void;
+  changeCouponList: (couponOption: couponGET) => void;
   isCouponSectionOpen: boolean;
 }
 
@@ -54,6 +54,7 @@ const CouponCreator = ({
       lectureIds: lectureIds.map(({ value }) => Number(value)),
       maxDiscountPrice: Number(maxDiscountAmount) ?? undefined,
     };
+
     return await createNewCoupon(createData);
   };
 
@@ -62,7 +63,7 @@ const CouponCreator = ({
       const resData = await createCoupon(data);
 
       toast.success('쿠폰 생성 완료');
-      changeCouponList(data);
+      changeCouponList(resData);
     } catch (error) {
       if (error instanceof Error && error.message.includes('401')) {
         await accessTokenReissuance();
