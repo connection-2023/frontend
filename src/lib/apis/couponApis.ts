@@ -51,7 +51,7 @@ export const getLecturerCoupons = async (data: IgetLecturerCoupons) => {
 
     const resData = await response.json();
 
-    return resData;
+    return resData.data.couponList;
   } catch (error) {
     console.error('쿠폰 조회 오류', error);
     throw error;

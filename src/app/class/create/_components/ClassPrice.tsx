@@ -1,7 +1,8 @@
 'use client';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dummyCouponList } from '@/constants/dummy';
+import { getLecturerCoupons } from '@/lib/apis/couponApis';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
@@ -13,6 +14,17 @@ const ClassPrice = () => {
   const [couponList, setCouponList] = useState<couponGET[] | []>(
     dummyCouponList,
   ); //추후 적용 api로 받아올 예정
+
+  useEffect(() => {
+    const reqData = {
+      take: 10000, //추후 null로 변경
+      firstItemId: 1,
+      issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
+      filterOption: 'LATEST' as 'LATEST',
+    };
+
+    getLecturerCoupons(reqData).then((data) => setCouponList(data));
+  }, []);
 
   const toggleCouponSection = () => {
     setIsCouponSectionOpen((prev) => !prev);

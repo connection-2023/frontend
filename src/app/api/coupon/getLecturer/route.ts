@@ -47,7 +47,5 @@ export const GET = async (request: NextRequest) => {
 
   const result = await response.json();
 
-  console.log(result);
-
   return NextResponse.json(result);
 };

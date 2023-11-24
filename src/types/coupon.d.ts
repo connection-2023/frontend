@@ -26,15 +26,26 @@ interface CouponDataWithLimit extends BaseCouponData {
 
 export type CouponData = CouponDataWithDiscount | CouponDataWithLimit;
 
-export interface couponGET {
-  //추후 수정 예정
-  discount: number;
-  unit: string;
+interface lectureCouponTarget {
+  id: number;
   title: string;
-  startAt: string;
-  endAt: string;
+}
+
+export interface couponGET {
+  createdAt: Date;
+  updatedAt: Date;
+  startAt: Date;
+  endAt: Date;
+  id: number;
+  title: string;
+  discountPrice: number;
+  isDisabled: boolean;
+  isPrivate: boolean;
   isStackable: boolean;
-  maxDiscountAmount?: number;
+  lectureCouponTarget: lectureCouponTarget[];
+  maxDiscountPrice: number;
+  maxUsageCount: number;
+  percentage: number;
 }
 
 export interface SelectCoupon {
