@@ -28,7 +28,12 @@ const SchedulePage = () => {
         <h1 className="mr-12 text-lg font-bold">이번달 진행 현황</h1>
         <ul className="flex w-full list-outside list-disc gap-11 text-base font-semibold">
           {progrss.map((item, i) => (
-            <ListItem text={item.text} count={item.count} color={item.color} />
+            <ListItem
+              key={i}
+              text={item.text}
+              count={item.count}
+              color={item.color}
+            />
           ))}
         </ul>
       </div>
