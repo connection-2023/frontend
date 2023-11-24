@@ -4,24 +4,24 @@ interface ValidityPeriod {
 }
 
 interface BaseCouponData {
-  couponName: string;
-  allowDuplicateCoupons: boolean;
+  title: string;
+  isStackable: boolean;
   maxDiscountAmount?: number;
   validityPeriod: ValidityPeriod;
   couponQuantity: '원' | '%';
   discountValue: number;
-  private: boolean;
+  isPrivate: boolean;
   lectureIds: SelectClassType[];
 }
 
 interface CouponDataWithDiscount extends BaseCouponData {
   couponDistributionCount: number;
-  hasCouponLimit?: never;
+  maxUsageCount?: never;
 }
 
 interface CouponDataWithLimit extends BaseCouponData {
   couponDistributionCount?: never;
-  hasCouponLimit: boolean;
+  maxUsageCount: boolean;
 }
 
 export type CouponData = CouponDataWithDiscount | CouponDataWithLimit;
@@ -47,4 +47,17 @@ export type SelectCoupons = SelectCoupon[];
 export interface SelectClassType {
   value: string | number;
   label: string;
+}
+
+export interface createCouponData {
+  title: string;
+  percentage: number | undefined;
+  discountPrice: number | undefined;
+  maxDiscountPrice: number | undefined;
+  maxUsageCount: number | undefined;
+  startAt: Date;
+  endAt: Date;
+  isStackable: boolean;
+  isPrivate: boolean;
+  lectureIds: number[];
 }
