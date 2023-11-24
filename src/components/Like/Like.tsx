@@ -3,7 +3,11 @@ import { HeartSVG } from '@/../public/icons/svg';
 
 const Like = () => {
   return (
-    <HeartSVG className="cursor-pointer hover:fill-main-color hover:stroke-main-color" />
+    <HeartSVG
+      width="29"
+      height="30"
+      className="cursor-pointer hover:fill-main-color hover:stroke-main-color"
+    />
   );
 };
 
