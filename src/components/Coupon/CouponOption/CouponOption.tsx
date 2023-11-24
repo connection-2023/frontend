@@ -46,6 +46,7 @@ const CouponOption = ({
   trigger,
 }: CouponOptionProps) => {
   const [options, setOptions] = useState<SelectClassType[]>([]);
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     getMyLecture()
@@ -55,6 +56,7 @@ const CouponOption = ({
           value: id,
         }));
         setOptions(options);
+        setRender(true);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -231,49 +233,51 @@ const CouponOption = ({
         </div>
 
         <div className="flex w-96 flex-col">
-          <Controller
-            name="lectureIds"
-            control={control}
-            defaultValue={options}
-            render={({ field }) => {
-              const classSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
-                if (e.target.checked) {
-                  setValue('lectureIds', options);
-                  field.onChange(options);
-                } else {
-                  setValue('lectureIds', []);
-                  field.onChange([]);
-                }
-              };
+          {(options.length > 0 || render) && (
+            <Controller
+              name="lectureIds"
+              control={control}
+              defaultValue={options}
+              render={({ field }) => {
+                const classSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
+                  if (e.target.checked) {
+                    setValue('lectureIds', options);
+                    field.onChange(options);
+                  } else {
+                    setValue('lectureIds', []);
+                    field.onChange([]);
+                  }
+                };
 
-              return (
-                <>
-                  <div className="flex">
-                    <input
-                      id="lectureIds"
-                      type="checkbox"
-                      className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
-                      defaultChecked={true}
-                      onChange={(e) => classSelectAll(e)}
-                    />
-                    <label
-                      htmlFor="lectureIds"
-                      className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
-                    >
-                      전체 클래스 적용
-                    </label>
-                  </div>
-                  <div className="w-full">
-                    <SelectClass
-                      options={options}
-                      onChange={field.onChange}
-                      value={field.value}
-                    />
-                  </div>
-                </>
-              );
-            }}
-          />
+                return (
+                  <>
+                    <div className="flex">
+                      <input
+                        id="lectureIds"
+                        type="checkbox"
+                        className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
+                        defaultChecked={true}
+                        onChange={(e) => classSelectAll(e)}
+                      />
+                      <label
+                        htmlFor="lectureIds"
+                        className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
+                      >
+                        전체 클래스 적용
+                      </label>
+                    </div>
+                    <div className="w-full">
+                      <SelectClass
+                        options={options}
+                        onChange={field.onChange}
+                        value={field.value}
+                      />
+                    </div>
+                  </>
+                );
+              }}
+            />
+          )}
         </div>
       </section>
     </main>
