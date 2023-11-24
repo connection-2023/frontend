@@ -1,5 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import { createCouponData } from '@/types/coupon';
+import { IgetLecturerCoupons, createCouponData } from '@/types/coupon';
 
 export const createNewCoupon = async (data: createCouponData) => {
   try {
@@ -25,6 +25,35 @@ export const createNewCoupon = async (data: createCouponData) => {
     return responseData;
   } catch (error) {
     console.error('쿠폰 생성 오류', error);
+    throw error;
+  }
+};
+
+export const getLecturerCoupons = async (data: IgetLecturerCoupons) => {
+  const params = new URLSearchParams({
+    ...Object.fromEntries(
+      Object.entries(data)
+        .filter(([_, v]) => v !== undefined)
+        .map(([k, v]) => [k, String(v)]),
+    ),
+  }).toString();
+
+  try {
+    const response = await fetch(`${DOMAIN}/api/coupon/getLecturer?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || '');
+    }
+
+    const resData = await response.json();
+
+    return resData;
+  } catch (error) {
+    console.error('쿠폰 조회 오류', error);
     throw error;
   }
 };

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getLecturerCoupons } from '@/lib/apis/couponApis';
 import CouponSelect from './CouponSelect';
 import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
 import { SelectCoupons, couponGET } from '@/types/coupon';
@@ -13,6 +14,17 @@ const AppliedCouponDisplay = ({
   couponList,
 }: AppliedCouponDisplayProps) => {
   const [selectCoupons, setSelectCoupons] = useState<SelectCoupons>([]);
+  const [couponLists, setCouponLists] = useState([]);
+
+  useEffect(() => {
+    const reqData = {
+      take: 10000,
+      firstItemId: 1,
+      issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
+      filterOption: 'LATEST' as 'LATEST',
+    };
+    getLecturerCoupons(reqData).then((data) => console.log(data));
+  }, []);
 
   const couponOptions = couponList.map((option) => {
     return { value: option, label: option.title };
