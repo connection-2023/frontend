@@ -71,15 +71,11 @@ const CouponOption = ({
 
   return (
     <main className="flex flex-col gap-4 ">
-      <CouponOptionSection
-        title="쿠폰명"
-        errors={errors}
-        registerId="couponName"
-      >
+      <CouponOptionSection title="쿠폰명" errors={errors} registerId="title">
         <input
           type="text"
           className={`${CouponOptionInputStyles} w-96`}
-          {...register('couponName', {
+          {...register('title', {
             required: '쿠폰명은 필수 입력 사항입니다.',
           })}
         />
@@ -171,7 +167,7 @@ const CouponOption = ({
             id="apply"
             type="checkbox"
             className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
-            {...register('allowDuplicateCoupons')}
+            {...register('isStackable')}
           />
           <label
             htmlFor="apply"
@@ -221,13 +217,13 @@ const CouponOption = ({
         </div>
         <div className="flex items-center">
           <input
-            id="private"
+            id="isPrivate"
             type="checkbox"
             className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
-            {...register('private')}
+            {...register('isPrivate')}
           />
           <label
-            htmlFor="private"
+            htmlFor="isPrivate"
             className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
           >
             적용
@@ -281,17 +277,30 @@ const CouponOption = ({
                         value={field.value}
                       />
                     </div>
-                    {selectClass?.map(({ label = '' }, index) => (
-                      <p
-                        key={label + index}
-                        className="flex items-center justify-between text-sm text-sub-color1"
-                      >
-                        #{label}
-                        <button className="group">
-                          <CloseSVG className=" h-4 w-4 stroke-gray-500 group-hover:stroke-sub-color1" />
-                        </button>
-                      </p>
-                    ))}
+                    <div className="flex flex-col gap-1">
+                      {selectClass?.map(({ label = '', value = '' }, index) => (
+                        <p
+                          key={label + index}
+                          className="flex items-center justify-between text-sm text-sub-color1"
+                        >
+                          #{label}
+                          <button
+                            type="button"
+                            className="group"
+                            onClick={() =>
+                              field.onChange(
+                                field.value.filter(
+                                  ({ value: fieldValue }) =>
+                                    fieldValue !== value,
+                                ),
+                              )
+                            }
+                          >
+                            <CloseSVG className=" h-4 w-4 stroke-gray-500 group-hover:stroke-sub-color1" />
+                          </button>
+                        </p>
+                      ))}
+                    </div>
                   </>
                 );
               }}

@@ -18,7 +18,7 @@ const AppliedCouponDisplay = ({
 
   useEffect(() => {
     const reqData = {
-      take: 10000,
+      take: 10000, //추후 null로 변경
       firstItemId: 1,
       issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
       filterOption: 'LATEST' as 'LATEST',

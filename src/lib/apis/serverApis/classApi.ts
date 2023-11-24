@@ -17,7 +17,7 @@ export const getClassDrafts = async () => {
   });
 
   if (!response.ok) {
-    throw new Error(`Server error: ${response.status}`);
+    throw new Error(`임시저장 목록 불러오기: ${response.status}`);
   }
 
   const data = await response.json();

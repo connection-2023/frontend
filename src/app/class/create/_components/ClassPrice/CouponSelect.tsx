@@ -64,9 +64,9 @@ const couponSelectStyle: StylesConfig<SelectCoupon, true> = {
   control: (provided) => ({
     ...provided,
     boxShadow: 'none',
-    borderColor: 'var(--gray-500)',
+    borderColor: 'var(--gray3)',
     width: '100%',
-    '&:hover': { borderColor: 'var(--gray-500)' },
+    '&:hover': { borderColor: 'var(--gray4)' },
   }),
   valueContainer: (provided) => ({
     ...provided,
@@ -78,13 +78,13 @@ const couponSelectStyle: StylesConfig<SelectCoupon, true> = {
     ...provided,
     marginTop: '-3px',
     boxShadow: 'none',
-    border: '1px solid var(--gray-500)',
+    border: '1px solid var(--gray3)',
     borderTop: 'none',
   }),
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isSelected ? 'var(--gray-700)' : 'white',
-    borderTop: '1px solid var(--gray-500)',
+    borderTop: '1px solid var(--gray4)',
     color: 'black',
     '&:hover': {
       backgroundColor: 'var(----gray4)',

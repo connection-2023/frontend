@@ -27,7 +27,7 @@ const ClassPrice = () => {
       couponQuantity,
       validityPeriod,
     } = couponOption;
-    const { from, to } = validityPeriod;
+    const { startDate: from, endDate: to } = validityPeriod;
 
     const startDate = new Date(from);
     const endDate = new Date(to);

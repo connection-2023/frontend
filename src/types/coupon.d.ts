@@ -61,3 +61,14 @@ export interface createCouponData {
   isPrivate: boolean;
   lectureIds: number[];
 }
+
+export interface IgetLecturerCoupons {
+  take: number | undefined;
+  currentPage?: number;
+  targetPage?: number;
+  firstItemId?: number;
+  lastItemId?: number;
+  issuedCouponStatusOptions: 'AVAILABLE' | 'DISABLED';
+  filterOption: 'LATEST' | 'UPCOMING';
+  lectureId?: number;
+}
