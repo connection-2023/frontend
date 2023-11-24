@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { createNewCoupon } from '@/lib/apis/couponApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import { CouponData } from '@/types/coupon';
 
@@ -53,13 +54,24 @@ const CouponCreator = ({
       lectureIds: lectureIds.map(({ value }) => Number(value)),
       maxDiscountPrice: Number(maxDiscountAmount) ?? undefined,
     };
-    await createNewCoupon(createData);
+    return await createNewCoupon(createData);
   };
 
-  const onValid = (data: CouponData) => {
-    createCoupon(data);
-    toast.success('쿠폰 생성 완료');
-    changeCouponList(data);
+  const onValid = async (data: CouponData) => {
+    try {
+      const resData = await createCoupon(data);
+
+      toast.success('쿠폰 생성 완료');
+      changeCouponList(data);
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('401')) {
+        await accessTokenReissuance();
+        await onValid(data);
+      } else {
+        toast.error('쿠폰 생성 실패, 잠시후 다시 시도해주세요.');
+        console.error(error);
+      }
+    }
   };
 
   const invalid = (data: any) => {
