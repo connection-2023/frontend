@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { ArrowDownSVG } from '@/icons/svg';
-import { postPaymentInfo } from '@/lib/apis/paymentApis';
+import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
 import ApplyButton from '@/components/Button/ApplyButton';
 
@@ -15,6 +15,7 @@ interface ApplySidebarProps {
 
 const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const [participants, setParticipants] = useState(0);
+  const orderId = nanoid();
   const totalPrice = price * participants;
   const applyClass = usePaymentStore((state) => state.applyClass);
   const applicant = usePaymentStore((state) => state.applicant);
@@ -71,7 +72,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
     const paymentData = {
       lectureId: postId,
       orderName: title,
-      orderId: nanoid(),
+      orderId,
       lectureSchedules: applyClass,
       price: totalPrice,
       representative,
@@ -84,8 +85,8 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       const { orderId, orderName } = paymentInfo;
       if (orderId && orderName) {
         await paymentWidget?.requestPayment({
-          orderId: orderId,
-          orderName: orderName,
+          orderId,
+          orderName,
           customerName: representative,
           customerEmail: '',
           successUrl: `${window.location.origin}/class/apply-complete`,
@@ -96,6 +97,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       }
     } catch (error) {
       if (error instanceof Error && error.message) {
+        postPaymentCancel(orderId);
         toast.error(error.message);
       }
     }

@@ -25,6 +25,24 @@ export const postPaymentInfo = async (data: IPaymentInfo) => {
   }
 };
 
+export const postPaymentCancel = async (id: string) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/payment/cancel?id=${id}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+  }
+};
+
 // 추후 파일 이동 예정
 export const patchPaymentConfirm = async (
   token: string,
