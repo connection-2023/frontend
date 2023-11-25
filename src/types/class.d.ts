@@ -280,6 +280,7 @@ export interface IClassPostResponse {
   lectureImage: IImage[];
   lectureToRegion: IRegion[];
   lectureToDanceGenre: IGenre[];
+  isLike: boolean;
 }
 
 export interface IClassNotification {

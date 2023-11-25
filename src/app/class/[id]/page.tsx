@@ -80,6 +80,7 @@ const ClassDetailPage = async ({
     lectureNotification,
     lectureImage,
     reviewCount,
+    isLike,
   } = lecture;
 
   const { schedule, holidayArr } = classSchedule;
@@ -126,7 +127,7 @@ const ClassDetailPage = async ({
         <h1 className="relative flex w-full max-w-[40rem] px-4 text-lg font-bold md:justify-center">
           <p className="w-11/12 md:text-center">{title}</p>
           <div className="absolute right-4 flex flex-col-reverse items-center gap-2 md:right-0 md:flex-row">
-            <OptionButton lecturerId={lecturerId} />
+            <OptionButton lecturerId={lecturerId} postId={id} isLike={isLike} />
           </div>
         </h1>
         {/* Review */}
@@ -252,7 +253,7 @@ const ClassDetailPage = async ({
             <LocationSVG /> {detailAddress}
           </span>
           <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
-            <Map address={locationDetail} studioName={studioName} />
+            {/* <Map address={locationDetail} studioName={studioName} /> */}
           </div>
           <p className="text-sm font-normal">{locationDescription}</p>
         </section>
