@@ -34,8 +34,8 @@ interface lectureCouponTarget {
 export interface couponGET {
   createdAt: Date;
   updatedAt: Date;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
   id: number;
   title: string;
   discountPrice: number;

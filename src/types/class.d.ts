@@ -1,4 +1,5 @@
 import { fileInfo } from 'suneditor/src/lib/core';
+import { couponGET } from './coupon';
 import { IRegion, IGenre } from './types';
 import { Juso } from '@/types/address';
 
@@ -216,6 +217,7 @@ export interface classCreateData {
   locationDescription: string;
   classPrice: string | number;
   schedules: DayTimeList[] | DateTimeList[];
+  coupons: { value: couponGET; label: string }[];
 }
 
 export type ReviewOrderType =

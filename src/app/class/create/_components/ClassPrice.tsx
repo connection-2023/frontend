@@ -1,13 +1,12 @@
 'use client';
-import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { dummyCouponList } from '@/constants/dummy';
 import { getLecturerCoupons } from '@/lib/apis/couponApis';
+import formatDate from '@/utils/formatDate';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
-import { CouponData, couponGET } from '@/types/coupon';
+import { couponGET } from '@/types/coupon';
 
 const ClassPrice = () => {
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
@@ -21,7 +20,15 @@ const ClassPrice = () => {
       filterOption: 'LATEST' as 'LATEST',
     };
 
-    getLecturerCoupons(reqData).then((data) => setCouponList(data));
+    getLecturerCoupons(reqData).then((data) => {
+      data.map((coupon) => {
+        coupon.startAt = formatDate(coupon.startAt);
+        coupon.endAt = formatDate(coupon.endAt);
+        return coupon;
+      });
+
+      setCouponList(data);
+    });
   }, []);
 
   const toggleCouponSection = () => {
@@ -29,6 +36,9 @@ const ClassPrice = () => {
   };
 
   const changeCouponList = (couponOption: couponGET) => {
+    couponOption.startAt = formatDate(couponOption.startAt);
+    couponOption.endAt = formatDate(couponOption.endAt);
+
     setCouponList((couponList) => [...couponList, couponOption]);
   };
 
