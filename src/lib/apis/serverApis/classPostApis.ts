@@ -8,7 +8,7 @@ export const getClassInfo = async (
 ): Promise<IClassInfoResponse | Error> => {
   const cookieStore = cookies();
   const token = cookieStore.get('userAccessToken')?.value;
-  const path = token ? '/users' : '/nonMembers';
+  const path = token ? '/users' : '/non-members';
 
   const headers: Record<string, string> = token
     ? {
