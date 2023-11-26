@@ -21,6 +21,8 @@ const CouponSelect = ({
   onChange,
   selectValue,
 }: CouponSelectProps) => {
+  console.log(selectValue);
+
   const selectedOptions = options.filter(
     (option) => selectValue?.some((val) => val.value.id === option.value.id),
   );

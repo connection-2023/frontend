@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { CloseSVG, EditSVG, LinkSVG } from '@/icons/svg';
@@ -6,7 +7,7 @@ import { couponGET } from '@/types/coupon';
 
 interface InstructorCouponProps {
   coupon: couponGET;
-  cancelSelectedCoupon: () => void;
+  cancelSelectedCoupon?: () => void;
 }
 
 const InstructorCoupon = ({
@@ -26,6 +27,7 @@ const InstructorCoupon = ({
   } = coupon;
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
+  const pathname = usePathname();
 
   useClickAway(classListRef, () => {
     setClassListsView(false);
@@ -89,13 +91,15 @@ const InstructorCoupon = ({
           </div>
         )}
       </span>
-      <button
-        type="button"
-        onClick={cancelSelectedCoupon}
-        className="absolute left-0 top-0"
-      >
-        <CloseSVG className="h-4 w-4 stroke-black" />
-      </button>
+      {pathname === '/class/create' && (
+        <button
+          type="button"
+          onClick={cancelSelectedCoupon}
+          className="absolute left-0 top-0"
+        >
+          <CloseSVG className="h-4 w-4 stroke-black" />
+        </button>
+      )}{' '}
     </dl>
   );
 };

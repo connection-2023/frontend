@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { getLecturerCoupons } from '@/lib/apis/couponApis';
 import formatDate from '@/utils/formatDate';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
@@ -11,6 +12,7 @@ import { couponGET } from '@/types/coupon';
 const ClassPrice = () => {
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
   const [couponList, setCouponList] = useState<couponGET[]>([]);
+  const { getValues, setValue } = useFormContext();
 
   useEffect(() => {
     const reqData = {
@@ -39,7 +41,11 @@ const ClassPrice = () => {
     couponOption.startAt = formatDate(couponOption.startAt);
     couponOption.endAt = formatDate(couponOption.endAt);
 
-    setCouponList((couponList) => [...couponList, couponOption]);
+    setValue('coupons', [
+      ...getValues('coupons'),
+      { value: couponOption, label: couponOption.title },
+    ]);
+    setCouponList((couponList) => [couponOption, ...couponList]);
   };
 
   return (

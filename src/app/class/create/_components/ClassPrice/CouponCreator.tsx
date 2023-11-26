@@ -61,6 +61,7 @@ const CouponCreator = ({
   const onValid = async (data: CouponData) => {
     try {
       const resData = await createCoupon(data);
+      resData.lectureCouponTarget = data.lectureIds;
 
       toast.success('쿠폰 생성 완료');
       changeCouponList(resData);
