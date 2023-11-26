@@ -7,14 +7,20 @@ import { useClassScheduleStore } from '@/store';
 import RangeCalendar from '@/components/Calendar/RangeCalendar';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
+import { UseFormClearErrors } from 'react-hook-form';
+import { CouponData } from '@/types/coupon';
+
+interface ClassRangeProps {
+  onChange: (value: { startDate: string; endDate: string }) => void;
+  defaultValue?: { startDate: string; endDate: string };
+  clearErrors?: UseFormClearErrors<CouponData>;
+}
 
 const ClassRange = ({
   onChange,
   defaultValue = { startDate: '', endDate: '' },
-}: {
-  onChange: (value: { startDate: string; endDate: string }) => void;
-  defaultValue?: { startDate: string; endDate: string };
-}) => {
+  clearErrors,
+}: ClassRangeProps) => {
   const [fromValue, setFromValue] = useState<string>(defaultValue.startDate);
   const [toValue, setToValue] = useState<string>(defaultValue.endDate);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
@@ -36,6 +42,9 @@ const ClassRange = ({
       store.setClassRange({ from, to });
     } else if (!isValidStartDate && !isValidEndDate) {
       store.setClassRange(undefined);
+      if (clearErrors) {
+        clearErrors('validityPeriod');
+      }
     }
   }, [defaultValue]);
 

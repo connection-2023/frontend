@@ -111,7 +111,7 @@ export interface IGetClassDraft {
 
 export interface IUpdateClassDraft {
   lectureId: number | string;
-  step: number;
+  step?: number;
   regions?: string[];
   lectureType?: string;
   lectureMethod?: string;
@@ -139,7 +139,7 @@ export interface IUpdateClassDraft {
 export interface IprocessedDraft {
   id?: number;
   lecturerId?: number;
-  step: number | null;
+  step?: number | null;
   classRange?: {
     startDate?: string | null;
     endDate?: string | null;

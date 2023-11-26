@@ -110,10 +110,9 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   ) => {
     shouldShowToast = shouldShowToast === undefined ? true : shouldShowToast;
 
-    console.log(data);
     if (classData && classData.id) {
       try {
-        if (classData.step === null || classData.step < activeStep) {
+        if (classData.step === null || classData.step! < activeStep) {
           setProcessedClassData({ ...classData, step: activeStep });
         }
 
@@ -126,7 +125,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
         await updateClassDraft({
           lectureId: classData.id,
           step:
-            classData.step === null || classData.step < activeStep
+            classData.step === null || classData.step! < activeStep
               ? activeStep
               : classData.step,
           ...processData,

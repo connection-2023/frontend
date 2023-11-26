@@ -44,7 +44,9 @@ const InstructorCoupon = ({
           </dt>
           {isPrivate && <LinkSVG className="fill-black" />}
         </div>
-        <EditSVG className="h-4 w-4 fill-gray-500" />
+        <button>
+          <EditSVG className="h-4 w-4 fill-gray-500" />
+        </button>
       </div>
       <div className="flex gap-2">
         <dd
@@ -99,7 +101,7 @@ const InstructorCoupon = ({
         >
           <CloseSVG className="h-4 w-4 stroke-black" />
         </button>
-      )}{' '}
+      )}
     </dl>
   );
 };

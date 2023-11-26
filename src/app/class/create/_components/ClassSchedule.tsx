@@ -75,7 +75,7 @@ const ClassSchedule = () => {
       <Controller
         name="duration"
         control={control}
-        defaultValue={classData?.duration}
+        defaultValue={classData?.duration || ''}
         rules={{
           required: '진행시간',
           max: { value: 999, message: '올바른 진행시간' },

@@ -42,7 +42,7 @@ const ClassPrice = () => {
     couponOption.endAt = formatDate(couponOption.endAt);
 
     setValue('coupons', [
-      ...getValues('coupons'),
+      ...(getValues('coupons') || []),
       { value: couponOption, label: couponOption.title },
     ]);
     setCouponList((couponList) => [couponOption, ...couponList]);
@@ -52,7 +52,11 @@ const ClassPrice = () => {
     <>
       <ClassInfo />
 
-      <section className="flex flex-col gap-7 border-y border-solid border-sub-color1 py-5">
+      <section
+        className={`flex flex-col border-y-2 border-solid border-sub-color1 py-5 ${
+          isCouponSectionOpen && 'gap-7'
+        } `}
+      >
         <CouponButton
           isCouponSectionOpen={isCouponSectionOpen}
           toggleCouponSection={toggleCouponSection}

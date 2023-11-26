@@ -239,11 +239,12 @@ export const classOutputDataProcess = async (
       };
 
     case 4:
-      const { classPrice, max: priceMax } = data;
+      const { classPrice, max: priceMax, coupons } = data;
 
       return {
         maxCapacity: priceMax.value,
         price: classPrice,
+        coupons: coupons.map(({ value }) => value.id),
       };
   }
 };
@@ -334,4 +335,4 @@ export const classCreate = async (id: number) => {
   };
 
   await createClass(data);
-}; //스프레드 안쓰고 일단 꺼냈음
+};

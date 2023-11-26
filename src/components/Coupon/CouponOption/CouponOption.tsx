@@ -3,6 +3,7 @@ import {
   Control,
   Controller,
   FieldErrors,
+  UseFormClearErrors,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
@@ -35,6 +36,7 @@ interface CouponOptionProps {
   watch: UseFormWatch<CouponData>;
   errors: FieldErrors<CouponData>;
   trigger: UseFormTrigger<CouponData>;
+  clearErrors: UseFormClearErrors<CouponData>;
 }
 
 const CouponOption = ({
@@ -45,6 +47,7 @@ const CouponOption = ({
   setValue,
   watch,
   trigger,
+  clearErrors,
 }: CouponOptionProps) => {
   const [options, setOptions] = useState<SelectClassType[]>([]);
   const [render, setRender] = useState(false);
@@ -89,7 +92,7 @@ const CouponOption = ({
         <Controller
           name="validityPeriod"
           control={control}
-          defaultValue={undefined}
+          defaultValue={{ startDate: '', endDate: '' }}
           rules={{
             required: '사용기간은 필수 입력 사항입니다.',
             validate: ({ startDate, endDate }) => {
@@ -102,7 +105,11 @@ const CouponOption = ({
           }}
           render={({ field }) => (
             <div className="w-96">
-              <ClassRange onChange={field.onChange} />
+              <ClassRange
+                defaultValue={field.value}
+                onChange={field.onChange}
+                clearErrors={clearErrors}
+              />
             </div>
           )}
         />

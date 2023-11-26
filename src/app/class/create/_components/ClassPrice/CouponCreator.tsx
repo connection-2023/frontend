@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { createNewCoupon } from '@/lib/apis/couponApis';
@@ -23,6 +24,8 @@ const CouponCreator = ({
     setValue,
     watch,
     trigger,
+    reset,
+    clearErrors,
   } = useForm<CouponData>();
 
   const createCoupon = async (data: CouponData) => {
@@ -63,6 +66,7 @@ const CouponCreator = ({
       const resData = await createCoupon(data);
       resData.lectureCouponTarget = data.lectureIds;
 
+      reset();
       toast.success('쿠폰 생성 완료');
       changeCouponList(resData);
     } catch (error) {
@@ -94,6 +98,7 @@ const CouponCreator = ({
         watch={watch}
         errors={errors}
         trigger={trigger}
+        clearErrors={clearErrors}
       />
       <button className="absolute bottom-0 right-5 h-7 w-[5.375rem] rounded-md bg-sub-color1 text-white">
         생성하기
