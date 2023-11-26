@@ -13,9 +13,18 @@ interface CouponSelectProps {
     selectedOptions: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
     actionMeta: ActionMeta<SelectCoupon>,
   ) => void;
+  selectValue: SelectCoupon[];
 }
 
-const CouponSelect = ({ options, onChange }: CouponSelectProps) => {
+const CouponSelect = ({
+  options,
+  onChange,
+  selectValue,
+}: CouponSelectProps) => {
+  const selectedOptions = options.filter(
+    (option) => selectValue?.some((val) => val.value.id === option.value.id),
+  );
+
   return (
     <Select
       instanceId="select-coupon"
@@ -25,8 +34,9 @@ const CouponSelect = ({ options, onChange }: CouponSelectProps) => {
       isMulti={true}
       onChange={onChange}
       options={options}
-      controlShouldRenderValue={false}
       styles={couponSelectStyle}
+      controlShouldRenderValue={false}
+      value={selectedOptions}
     />
   );
 };

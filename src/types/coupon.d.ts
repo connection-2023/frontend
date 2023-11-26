@@ -51,7 +51,7 @@ export interface couponGET {
 }
 
 export interface SelectCoupon {
-  value: CouponGET;
+  value: couponGET;
   label: string;
 }
 

@@ -1,10 +1,18 @@
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { EditSVG, LinkSVG } from '@/icons/svg';
+import { CloseSVG, EditSVG, LinkSVG } from '@/icons/svg';
 import { couponGET } from '@/types/coupon';
 
-const InstructorCoupon = ({ coupon }: { coupon: couponGET }) => {
+interface InstructorCouponProps {
+  coupon: couponGET;
+  cancelSelectedCoupon: () => void;
+}
+
+const InstructorCoupon = ({
+  coupon,
+  cancelSelectedCoupon,
+}: InstructorCouponProps) => {
   const {
     title,
     percentage,
@@ -24,7 +32,7 @@ const InstructorCoupon = ({ coupon }: { coupon: couponGET }) => {
   });
 
   return (
-    <dl className="flex w-80 flex-col justify-evenly gap-1 p-3 shadow-float">
+    <dl className="relative flex w-80 flex-col justify-evenly gap-1 p-3 shadow-float">
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
           <dt className="text-2xl font-bold text-main-color">
@@ -81,6 +89,13 @@ const InstructorCoupon = ({ coupon }: { coupon: couponGET }) => {
           </div>
         )}
       </span>
+      <button
+        type="button"
+        onClick={cancelSelectedCoupon}
+        className="absolute left-0 top-0"
+      >
+        <CloseSVG className="h-4 w-4 stroke-black" />
+      </button>
     </dl>
   );
 };
