@@ -82,7 +82,9 @@ export interface IGetClassDraft {
     deletedAt: null | string;
     temporaryLecturenotification: { notification: string };
     temporaryLectureImage: { imageUrl: string }[];
-    temporaryLectureCouponTarget: any[];
+    temporaryLectureCouponTarget: {
+      lectureCouponId: number;
+    }[];
     temporaryLectureToRegion: {
       region: {
         administrativeDistrict: string;

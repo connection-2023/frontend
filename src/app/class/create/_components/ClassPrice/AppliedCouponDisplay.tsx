@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useClassCreateStore } from '@/store/classCreate';
 import CouponSelect from './CouponSelect';
 import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
 import { classCreateData } from '@/types/class';
@@ -13,10 +15,27 @@ const AppliedCouponDisplay = ({
   isCouponSectionOpen,
   couponList,
 }: AppliedCouponDisplayProps) => {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
+  const renderRef = useRef(false);
   const couponOptions = couponList.map((option) => {
     return { value: option, label: option.title };
   });
+
+  const store = useClassCreateStore();
+  const classData = store.classData;
+
+  const couponSelectDefaultValue = (
+    classData?.temporaryLectureCouponTarget?.map(({ lectureCouponId }) =>
+      couponOptions.find(({ value }) => value.id === lectureCouponId),
+    ) || []
+  ).filter(Boolean);
+
+  useEffect(() => {
+    if (couponSelectDefaultValue.length > 0 && !renderRef.current) {
+      setValue('coupons', couponSelectDefaultValue);
+      renderRef.current = true;
+    }
+  }, [couponSelectDefaultValue]);
 
   return (
     <section>
@@ -29,6 +48,7 @@ const AppliedCouponDisplay = ({
             <Controller
               name="coupons"
               control={control}
+              defaultValue={couponSelectDefaultValue}
               render={({ field }) => (
                 <CouponSelect
                   options={couponOptions}
@@ -45,34 +65,38 @@ const AppliedCouponDisplay = ({
           name="coupons"
           control={control}
           defaultValue={[]}
-          render={({ field }) => (
-            <>
-              {[...field.value]
-                .reverse()
-                .map((coupon: { value: couponGET; label: string }) => {
-                  const cancelSelectedCoupon = () => {
-                    field.onChange(
-                      field.value.filter(
-                        (selectedCoupon: { value: couponGET; label: string }) =>
-                          selectedCoupon.value.id !== coupon.value.id,
-                      ),
-                    );
-                  };
+          render={({ field }) => {
+            return (
+              <>
+                {[...field.value]
+                  .reverse()
+                  .map((coupon: { value: couponGET; label: string }) => {
+                    const cancelSelectedCoupon = () => {
+                      field.onChange(
+                        field.value.filter(
+                          (selectedCoupon: {
+                            value: couponGET;
+                            label: string;
+                          }) => selectedCoupon.value.id !== coupon.value.id,
+                        ),
+                      );
+                    };
 
-                  return (
-                    <div
-                      key={coupon.value.id}
-                      className={!isCouponSectionOpen ? 'hidden' : ''}
-                    >
-                      <InstructorCoupon
-                        coupon={coupon.value}
-                        cancelSelectedCoupon={cancelSelectedCoupon}
-                      />
-                    </div>
-                  );
-                })}
-            </>
-          )}
+                    return (
+                      <div
+                        key={coupon.value.id}
+                        className={!isCouponSectionOpen ? 'hidden' : ''}
+                      >
+                        <InstructorCoupon
+                          coupon={coupon.value}
+                          cancelSelectedCoupon={cancelSelectedCoupon}
+                        />
+                      </div>
+                    );
+                  })}
+              </>
+            );
+          }}
         />
       </div>
     </section>

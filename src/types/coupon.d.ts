@@ -61,7 +61,10 @@ export interface createCoupon {
   isDisabled: boolean;
   isPrivate: boolean;
   isStackable: boolean;
-  lectureCouponTarget: SelectCoupon[];
+  lectureCouponTarget: {
+    value: number;
+    label: string;
+  }[];
   maxDiscountPrice: number;
   maxUsageCount: number;
   percentage: number;
