@@ -22,6 +22,9 @@ const ClassRange = ({
   const store = useClassScheduleStore();
 
   useEffect(() => {
+    setFromValue(defaultValue.startDate);
+    setToValue(defaultValue.endDate);
+
     const { endDate, startDate } = defaultValue;
     const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
     const isValidStartDate = dateFormat.test(startDate);
@@ -31,6 +34,8 @@ const ClassRange = ({
       const from = new Date(defaultValue.startDate);
       const to = new Date(defaultValue.endDate);
       store.setClassRange({ from, to });
+    } else if (!isValidStartDate && !isValidEndDate) {
+      store.setClassRange(undefined);
     }
   }, [defaultValue]);
 
