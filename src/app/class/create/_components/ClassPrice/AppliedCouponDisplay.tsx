@@ -40,31 +40,41 @@ const AppliedCouponDisplay = ({
           </div>
         </div>
       </div>
-      <Controller
-        name="coupons"
-        control={control}
-        defaultValue={[]}
-        render={({ field }) =>
-          field.value.map((coupon: { value: couponGET; label: string }) => {
-            const cancelSelectedCoupon = () => {
-              field.onChange(
-                field.value.filter(
-                  (selectedCoupon: { value: couponGET; label: string }) =>
-                    selectedCoupon.value.id !== coupon.value.id,
-                ),
-              );
-            };
+      <div className="flex flex-wrap gap-4">
+        <Controller
+          name="coupons"
+          control={control}
+          defaultValue={[]}
+          render={({ field }) => (
+            <>
+              {[...field.value]
+                .reverse()
+                .map((coupon: { value: couponGET; label: string }) => {
+                  const cancelSelectedCoupon = () => {
+                    field.onChange(
+                      field.value.filter(
+                        (selectedCoupon: { value: couponGET; label: string }) =>
+                          selectedCoupon.value.id !== coupon.value.id,
+                      ),
+                    );
+                  };
 
-            return (
-              <InstructorCoupon
-                key={coupon.value.id}
-                coupon={coupon.value}
-                cancelSelectedCoupon={cancelSelectedCoupon}
-              />
-            );
-          })
-        }
-      />
+                  return (
+                    <div
+                      key={coupon.value.id}
+                      className={!isCouponSectionOpen ? 'hidden' : ''}
+                    >
+                      <InstructorCoupon
+                        coupon={coupon.value}
+                        cancelSelectedCoupon={cancelSelectedCoupon}
+                      />
+                    </div>
+                  );
+                })}
+            </>
+          )}
+        />
+      </div>
     </section>
   );
 };
