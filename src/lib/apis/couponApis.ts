@@ -1,5 +1,9 @@
 import { DOMAIN } from '@/constants/constants';
-import { IgetLecturerCoupons, createCouponData } from '@/types/coupon';
+import {
+  IgetLecturerCoupons,
+  couponGET,
+  createCouponData,
+} from '@/types/coupon';
 
 export const createNewCoupon = async (data: createCouponData) => {
   try {
@@ -29,7 +33,9 @@ export const createNewCoupon = async (data: createCouponData) => {
   }
 };
 
-export const getLecturerCoupons = async (data: IgetLecturerCoupons) => {
+export const getLecturerCoupons = async (
+  data: IgetLecturerCoupons,
+): Promise<couponGET[]> => {
   const params = new URLSearchParams({
     ...Object.fromEntries(
       Object.entries(data)

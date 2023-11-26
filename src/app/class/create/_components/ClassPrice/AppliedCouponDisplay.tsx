@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import CouponSelect from './CouponSelect';
 import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
-import { SelectCoupons, couponGET } from '@/types/coupon';
+import { classCreateData } from '@/types/class';
+import { couponGET } from '@/types/coupon';
 
 interface AppliedCouponDisplayProps {
   isCouponSectionOpen: boolean;
@@ -12,27 +13,32 @@ const AppliedCouponDisplay = ({
   isCouponSectionOpen,
   couponList,
 }: AppliedCouponDisplayProps) => {
-  const [selectCoupons, setSelectCoupons] = useState<SelectCoupons>([]);
+  const { control, watch } = useFormContext<classCreateData>();
 
   const couponOptions = couponList.map((option) => {
     return { value: option, label: option.title };
   });
+
+  const selectCoupons = watch('coupons');
 
   return (
     <section className={`${!isCouponSectionOpen ? 'hidden' : ''} flex gap-10`}>
       <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
       <div className="flex w-5/6 flex-wrap gap-5">
         <div className="w-full">
-          <CouponSelect
-            options={couponOptions}
-            onChange={(selected) => {
-              setSelectCoupons(Array.isArray(selected) ? [...selected] : []);
-            }}
+          <Controller
+            name="coupons"
+            control={control}
+            render={({ field }) => (
+              <CouponSelect options={couponOptions} onChange={field.onChange} />
+            )}
           />
         </div>
-        {selectCoupons.map(({ value }, index) => {
-          return <InstructorCoupon key={value.title + index} {...value} />;
-        })}
+        {selectCoupons &&
+          selectCoupons.map(({ value }, index) => {
+            const key = value.id ? value.id + String(index) : String(index);
+            return <InstructorCoupon key={key} coupon={value} />;
+          })}
       </div>
     </section>
   );

@@ -1,9 +1,7 @@
 import Select, {
   ActionMeta,
-  components,
   FormatOptionLabelMeta,
   MultiValue,
-  OptionProps,
   SingleValue,
   StylesConfig,
 } from 'react-select';
@@ -47,26 +45,6 @@ const formatOptionLabel = (
     maxDiscountPrice,
     isStackable,
   } = value;
-  const startDate = new Date(startAt);
-  const endDate = new Date(endAt);
-
-  const startStr = startDate
-    .toLocaleDateString('ko-KR', {
-      year: '2-digit',
-      month: '2-digit',
-      day: '2-digit',
-    })
-    .replace(/\. /g, '.')
-    .replace(/\.$/, '');
-
-  const endStr = endDate
-    .toLocaleDateString('ko-KR', {
-      year: '2-digit',
-      month: '2-digit',
-      day: '2-digit',
-    })
-    .replace(/\. /g, '.')
-    .replace(/\.$/, '');
 
   return (
     <dl className="flex flex-col gap-1 px-3 py-1 text-sm">
@@ -80,8 +58,8 @@ const formatOptionLabel = (
       </div>
       <div className="flex justify-between">
         <div className="flex gap-2 text-gray-300">
-          <dd>{startStr + '-' + endStr}</dd>
-          {maxDiscountPrice && (
+          <dd>{startAt + '-' + endAt}</dd>
+          {maxDiscountPrice !== 0 && (
             <dd>(최대할인 {maxDiscountPrice.toLocaleString()}원)</dd>
           )}
         </div>

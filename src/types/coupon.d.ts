@@ -27,8 +27,10 @@ interface CouponDataWithLimit extends BaseCouponData {
 export type CouponData = CouponDataWithDiscount | CouponDataWithLimit;
 
 interface lectureCouponTarget {
-  id: number;
-  title: string;
+  lecture: {
+    id: number;
+    title: string;
+  };
 }
 
 export interface couponGET {
