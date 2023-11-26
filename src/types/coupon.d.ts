@@ -50,6 +50,23 @@ export interface couponGET {
   percentage: number;
 }
 
+export interface createCoupon {
+  createdAt: Date;
+  updatedAt: Date;
+  startAt: string;
+  endAt: string;
+  id: number;
+  title: string;
+  discountPrice: number;
+  isDisabled: boolean;
+  isPrivate: boolean;
+  isStackable: boolean;
+  lectureCouponTarget: SelectCoupon[];
+  maxDiscountPrice: number;
+  maxUsageCount: number;
+  percentage: number;
+}
+
 export interface SelectCoupon {
   value: couponGET;
   label: string;

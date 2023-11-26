@@ -4,10 +4,10 @@ import { toast } from 'react-toastify';
 import { createNewCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
-import { CouponData, couponGET } from '@/types/coupon';
+import { CouponData, createCoupon } from '@/types/coupon';
 
 interface CouponCreatorProps {
-  changeCouponList: (couponOption: couponGET) => void;
+  changeCouponList: (couponOption: createCoupon) => void;
   isCouponSectionOpen: boolean;
 }
 

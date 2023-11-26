@@ -7,7 +7,7 @@ import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
-import { couponGET } from '@/types/coupon';
+import { couponGET, createCoupon } from '@/types/coupon';
 
 const ClassPrice = () => {
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
@@ -37,15 +37,21 @@ const ClassPrice = () => {
     setIsCouponSectionOpen((prev) => !prev);
   };
 
-  const changeCouponList = (couponOption: couponGET) => {
-    couponOption.startAt = formatDate(couponOption.startAt);
-    couponOption.endAt = formatDate(couponOption.endAt);
+  const changeCouponList = (couponOption: createCoupon) => {
+    const formattedCoupon: couponGET = {
+      ...couponOption,
+      startAt: formatDate(couponOption.startAt),
+      endAt: formatDate(couponOption.endAt),
+      lectureCouponTarget: couponOption.lectureCouponTarget.map(
+        ({ value, label }) => ({ lecture: { id: value, title: label } }),
+      ),
+    };
 
     setValue('coupons', [
       ...(getValues('coupons') || []),
-      { value: couponOption, label: couponOption.title },
+      { value: formattedCoupon, label: formattedCoupon.title },
     ]);
-    setCouponList((couponList) => [couponOption, ...couponList]);
+    setCouponList((couponList) => [formattedCoupon, ...couponList]);
   };
 
   return (
