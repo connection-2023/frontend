@@ -12,7 +12,7 @@ interface SelectClassProps {
     actionMeta: ActionMeta<SelectClassType>,
   ) => void;
   options: SelectClassType[];
-  value: SelectClassType[];
+  value: SelectClassType;
 }
 
 const ClassFilterSelect = ({ onChange, options, value }: SelectClassProps) => {
@@ -21,11 +21,9 @@ const ClassFilterSelect = ({ onChange, options, value }: SelectClassProps) => {
       instanceId="select-class"
       placeholder="적용할 클래스를 선택해주세요."
       noOptionsMessage={() => '적용 가능한 클래스가 없습니다.'}
-      isMulti={true}
       onChange={onChange}
       options={options}
       styles={couponSelectStyle}
-      controlShouldRenderValue={false}
       value={value}
     />
   );

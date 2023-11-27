@@ -82,6 +82,11 @@ export interface SelectClassType {
   label: string;
 }
 
+export interface OptionType {
+  value: number | string;
+  label: string;
+}
+
 export interface createCouponData {
   title: string;
   percentage: number | undefined;

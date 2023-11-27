@@ -11,9 +11,17 @@ interface CouponPassProps {
 const CouponPass = ({ myLectureList }: CouponPassProps) => {
   const [isInterested, setIsInterested] = useState(true);
   const [passStatusOptions, setPassStatusOptions] = useState('AVAILABLE');
+  const [selectedClass, setSelectedClass] = useState<SelectClassType>({
+    value: 'select-all',
+    label: `전체 클래스(${myLectureList.length - 1})`,
+  });
 
-  const handleChange = (id: string) => {
+  const handleChangeOptions = (id: string) => {
     setPassStatusOptions(id);
+  };
+
+  const handleChangeSelectedClass = (selectedOptions: any) => {
+    setSelectedClass(selectedOptions);
   };
 
   const options = [
@@ -54,14 +62,20 @@ const CouponPass = ({ myLectureList }: CouponPassProps) => {
               type="checkbox"
               className="peer h-[18px] w-[18px] accent-black"
               checked={passStatusOptions === option.id}
-              onChange={() => handleChange(option.id)}
+              onChange={() => handleChangeOptions(option.id)}
             />
             <label htmlFor={option.id} className="cursor-pointer">
               {option.label}
             </label>
           </button>
         ))}
-        <ClassFilterSelect options={myLectureList} />
+        <div className="w-80">
+          <ClassFilterSelect
+            options={myLectureList}
+            value={selectedClass}
+            onChange={handleChangeSelectedClass}
+          />
+        </div>
       </nav>
 
       {isInterested ? <CouponComponent /> : null}
