@@ -42,3 +42,33 @@ export const deleteClassLikes = async (id: string) => {
     return new Error('클래스 좋아요 취소 요청 오류!');
   }
 };
+
+export const postReviewLikes = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/post/review/likes/add?id=${id}`,
+      {
+        method: 'POST',
+      },
+    );
+
+    return response;
+  } catch (error) {
+    return new Error('리뷰 좋아요 요청 오류!');
+  }
+};
+
+export const deleteReviewLikes = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/post/review/likes/delete?id=${id}`,
+      {
+        method: 'DELETE',
+      },
+    );
+
+    return response;
+  } catch (error) {
+    return new Error('리뷰 좋아요 취소 요청 오류!');
+  }
+};
