@@ -15,24 +15,47 @@ const CouponPass = ({
   totalItemCount,
   couponList,
 }: CouponPassProps) => {
-  const [isInterested, setIsInterested] = useState(true);
-  const [passStatusOptions, setPassStatusOptions] = useState('AVAILABLE');
-  const [filterOption, setFilterOption] = useState('LATEST');
-  const [selectedClass, setSelectedClass] = useState<SelectClassType | null>(
-    myLectureList.length > 0
-      ? {
-          value: 'select-all',
-          label: `전체 클래스(${myLectureList.length - 1})`,
-        }
-      : null,
-  );
+  const [filterState, setFilterState] = useState({
+    isInterested: true,
+    passStatusOptions: 'AVAILABLE',
+    filterOption: 'LATEST',
+    selectedClass:
+      myLectureList.length > 0
+        ? {
+            value: 'select-all',
+            label: `전체 클래스(${myLectureList.length - 1})`,
+          }
+        : null,
+  });
 
   const handleChangeOptions = (id: string) => {
-    setPassStatusOptions(id);
+    setFilterState((prevState) => ({
+      ...prevState,
+      passStatusOptions: id,
+    }));
   };
 
   const handleChangeSelectedClass = (selectedOptions: any) => {
-    setSelectedClass(selectedOptions);
+    setFilterState((prevState) => ({
+      ...prevState,
+      selectedClass: selectedOptions,
+    }));
+  };
+
+  const handleInterestChange = (isInterested: boolean) => {
+    setFilterState((prevState) => ({
+      ...prevState,
+      isInterested,
+      filterOption: 'LATEST',
+      passStatusOptions: 'AVAILABLE',
+    }));
+  };
+
+  const handleFilterOptionChange = (filterOption: string) => {
+    setFilterState((prevState) => ({
+      ...prevState,
+      filterOption,
+    }));
   };
 
   const options = [
@@ -45,21 +68,17 @@ const CouponPass = ({
       <nav className="flex gap-6 pb-2">
         <button
           className={`flex text-2xl font-bold ${
-            !isInterested && 'text-gray-500'
+            !filterState.isInterested && 'text-gray-500'
           }`}
-          onClick={() => {
-            setIsInterested(true);
-            setPassStatusOptions('AVAILABLE');
-          }}
+          onClick={() => handleInterestChange(true)}
         >
           쿠폰({totalItemCount})
         </button>
         <button
-          className={`text-2xl font-bold ${isInterested && 'text-gray-500'}`}
-          onClick={() => {
-            setIsInterested(false);
-            setPassStatusOptions('AVAILABLE');
-          }}
+          className={`text-2xl font-bold ${
+            filterState.isInterested && 'text-gray-500'
+          }`}
+          onClick={() => handleInterestChange(false)}
         >
           패스권
         </button>
@@ -72,7 +91,7 @@ const CouponPass = ({
               id={option.id}
               type="checkbox"
               className="peer h-[18px] w-[18px] accent-black"
-              checked={passStatusOptions === option.id}
+              checked={filterState.passStatusOptions === option.id}
               onChange={() => handleChangeOptions(option.id)}
             />
             <label
@@ -86,7 +105,7 @@ const CouponPass = ({
         <div className="w-80">
           <ClassFilterSelect
             options={myLectureList}
-            value={selectedClass}
+            value={filterState.selectedClass}
             onChange={handleChangeSelectedClass}
           />
         </div>
@@ -95,23 +114,25 @@ const CouponPass = ({
       <nav className="flex gap-2.5 py-4">
         <button
           className={`flex text-sm font-bold ${
-            filterOption !== 'LATEST' && 'text-gray-500'
+            filterState.filterOption !== 'LATEST' && 'text-gray-500'
           }`}
-          onClick={() => setFilterOption('LATEST')}
+          onClick={() => handleFilterOptionChange('LATEST')}
         >
           최신순
         </button>
         <button
           className={`flex text-sm font-bold ${
-            filterOption !== 'UPCOMING' && 'text-gray-500'
+            filterState.filterOption !== 'UPCOMING' && 'text-gray-500'
           }`}
-          onClick={() => setFilterOption('UPCOMING')}
+          onClick={() => handleFilterOptionChange('UPCOMING')}
         >
           기간 임박순
         </button>
       </nav>
 
-      {isInterested ? <CouponComponent couponList={couponList} /> : null}
+      {filterState.isInterested ? (
+        <CouponComponent couponList={couponList} />
+      ) : null}
     </section>
   );
 };
