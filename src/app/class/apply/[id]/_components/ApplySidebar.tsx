@@ -2,10 +2,10 @@
 import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import ApplyButton from '@/components/Button/ApplyButton';
 import { ArrowDownSVG } from '@/icons/svg';
 import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
-import ApplyButton from '@/components/Button/ApplyButton';
 
 interface ApplySidebarProps {
   postId: string;
@@ -74,7 +74,8 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       orderName: title,
       orderId,
       lectureSchedules: applyClass,
-      price: totalPrice,
+      originalPrice: totalPrice,
+      finalPrice: totalPrice,
       representative,
       phoneNumber,
       requests,
@@ -83,6 +84,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
     try {
       const paymentInfo = await postPaymentInfo(paymentData);
       const { orderId, orderName } = paymentInfo;
+
       if (orderId && orderName) {
         await paymentWidget?.requestPayment({
           orderId,
