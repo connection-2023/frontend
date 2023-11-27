@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { cookies } from 'next/headers';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
-import { patchPaymentConfirm } from '@/lib/apis/paymentApis';
+import { patchPaymentConfirm } from '@/lib/apis/serverApis/paymentsApis';
 import { IPaymentConfirm } from '@/types/payment';
 
 const ApplyCompletePage = async ({
