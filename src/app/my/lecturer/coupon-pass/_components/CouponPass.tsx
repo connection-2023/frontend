@@ -17,6 +17,7 @@ const CouponPass = ({
 }: CouponPassProps) => {
   const [isInterested, setIsInterested] = useState(true);
   const [passStatusOptions, setPassStatusOptions] = useState('AVAILABLE');
+  const [filterOption, setFilterOption] = useState('LATEST');
   const [selectedClass, setSelectedClass] = useState<SelectClassType | null>(
     myLectureList.length > 0
       ? {
@@ -36,7 +37,7 @@ const CouponPass = ({
 
   const options = [
     { id: 'AVAILABLE', label: '활성화 쿠폰' },
-    { id: 'DISABLED', label: '비 활성화' },
+    { id: 'DISABLED', label: '만료 쿠폰' },
   ];
 
   return (
@@ -74,7 +75,10 @@ const CouponPass = ({
               checked={passStatusOptions === option.id}
               onChange={() => handleChangeOptions(option.id)}
             />
-            <label htmlFor={option.id} className="cursor-pointer">
+            <label
+              htmlFor={option.id}
+              className="cursor-pointer text-gray-500 peer-checked:text-black"
+            >
               {option.label}
             </label>
           </button>
@@ -86,6 +90,25 @@ const CouponPass = ({
             onChange={handleChangeSelectedClass}
           />
         </div>
+      </nav>
+
+      <nav className="flex gap-2.5 py-4">
+        <button
+          className={`flex text-sm font-bold ${
+            filterOption !== 'LATEST' && 'text-gray-500'
+          }`}
+          onClick={() => setFilterOption('LATEST')}
+        >
+          최신순
+        </button>
+        <button
+          className={`flex text-sm font-bold ${
+            filterOption !== 'UPCOMING' && 'text-gray-500'
+          }`}
+          onClick={() => setFilterOption('UPCOMING')}
+        >
+          기간 임박순
+        </button>
       </nav>
 
       {isInterested ? <CouponComponent couponList={couponList} /> : null}
