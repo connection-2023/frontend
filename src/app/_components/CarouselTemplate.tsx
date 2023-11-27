@@ -9,8 +9,9 @@ interface ICarouselTemplateProps {
 
 const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
   const [focus, setFocus] = useState(false);
-  const width = mode === 'class' ? 'w-[30rem]' : 'w-[9.25rem]';
-  const height = mode === 'class' ? 'h-[14rem]' : 'h-[6.5rem]';
+  const width =
+    mode === 'class' ? 'w-[13rem] xl:w-[30rem]' : 'w-[4.3rem] md:w-[9.25rem]';
+  const height = mode === 'class' ? 'h-[14rem]' : 'h-24 md:h-[8.3rem]';
   const priority = mode === 'class' ? 3 : 8;
 
   const onFocus = () => {
@@ -20,6 +21,7 @@ const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
   const offFocus = () => {
     setFocus(false);
   };
+
   return (
     <div className={`relative flex ${height} w-full justify-center px-2`}>
       <div className="flex h-full w-11/12 items-center overflow-hidden">

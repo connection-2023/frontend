@@ -1,8 +1,8 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { useUserStore } from '@/store/userStore';
 import {
   ArrowUpSVG,
   BookmarkSVG,
@@ -11,6 +11,7 @@ import {
   ProfileSVG,
   ReportSVG,
   MoneySVG,
+  HeartSVG,
 } from '@/icons/svg';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
@@ -26,6 +27,8 @@ const Sidebar = ({
   profileImg = 'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
 }: SidebarProps) => {
   const pathname = usePathname();
+  const { userType } = useUserStore();
+  const isUser = userType === 'user';
   const isSubmenuActive = Boolean(
     instructorLinks.find(
       (link) =>
@@ -41,9 +44,9 @@ const Sidebar = ({
       : 'text-gray-500 hover:text-gray-100';
 
   return (
-    <aside
-      className={`mt-3.5 flex flex-col items-start whitespace-nowrap rounded-lg bg-white ${
-        view === 'my' ? 'max-w-[19.5rem] px-4 py-10 shadow-float' : 'w-full'
+    <nav
+      className={`flex h-full flex-col items-start whitespace-nowrap rounded-lg bg-white ${
+        view === 'my' ? 'max-w-[19.5rem] px-4 py-10' : 'w-full'
       }`}
     >
       <div
@@ -61,38 +64,40 @@ const Sidebar = ({
           view === 'dashboard' && 'px-4'
         }`}
       >
-        {instructorLinks.map((link) => (
+        {(isUser ? userLinks : instructorLinks).map((link) => (
           <li key={link.path} className={getTextColorClass(link.path)}>
-            <Link
-              href={link.path}
-              className="group flex items-center gap-[0.13rem]"
-            >
-              {link.icon}
-              {link.text}
+            <div className="flex items-center">
+              <Link href={link.path} className="group flex items-center">
+                {link.icon}
+                {link.text}
+              </Link>
 
-              {link.text === '클래스 관리' &&
-                (isOpen ? (
-                  <ArrowUpSVG
-                    width="34"
-                    height="34"
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="fill-sub-color1"
-                  />
-                ) : (
-                  <ArrowUpSVG
-                    width="34"
-                    height="34"
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="origin-center rotate-180 fill-gray-500"
-                  />
-                ))}
-            </Link>
+              {link.text === '클래스 관리' ||
+                (link.text === '내 클래스' &&
+                  (isOpen ? (
+                    <button onClick={() => setIsOpen(!isOpen)}>
+                      <ArrowUpSVG
+                        width="34"
+                        height="34"
+                        className="fill-sub-color1"
+                      />
+                    </button>
+                  ) : (
+                    <button onClick={() => setIsOpen(!isOpen)}>
+                      <ArrowUpSVG
+                        width="34"
+                        height="34"
+                        className="origin-center rotate-180 fill-gray-500"
+                      />
+                    </button>
+                  )))}
+            </div>
 
             {link.submenuItems && (
               <ul
                 className={`${
                   isOpen ? 'mt-2 max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                } ml-6 flex flex-col gap-[0.62rem] transition-all duration-300 ease-linear `}
+                } ml-[2rem] flex flex-col gap-[0.62rem] transition-all duration-300 ease-linear`}
               >
                 {link.submenuItems.map((item) => (
                   <li key={item.path} className={getTextColorClass(item.path)}>
@@ -104,14 +109,14 @@ const Sidebar = ({
           </li>
         ))}
       </ul>
-    </aside>
+    </nav>
   );
 };
 
 export default Sidebar;
 
 const iconStyle =
-  'fill-stroke-gray-500 stroke-gray-500 group-hover:fill-stroke-sub-color1 group-hover:stroke-sub-color1 group-focus:fill-stroke-sub-color1 group-focus:stroke-sub-color1';
+  'mr-[0.63rem] fill-stroke-gray-500 stroke-gray-500 group-hover:fill-stroke-sub-color1 group-hover:stroke-sub-color1 group-focus:fill-stroke-sub-color1 group-focus:stroke-sub-color1';
 
 const instructorLinks = [
   {
@@ -153,19 +158,40 @@ const instructorLinks = [
 ];
 
 const userLinks = [
-  { path: '/my/info', text: '내 정보' },
+  {
+    path: '/my/info',
+    text: '내 정보',
+    icon: <ProfileSVG width="21" height="21" className={iconStyle} />,
+  },
 
   {
     path: '/my/class/apply',
     text: '내 클래스',
+    icon: <BookmarkSVG width="21" height="21" className={iconStyle} />,
     submenuItems: [
       { path: '/my/class/apply', text: '신청한 클래스' },
       { path: '/my/class/myclass', text: '관심 클래스' },
       { path: '/my/class/member', text: '클래스 후기' },
     ],
   },
-  { path: '/my/instructor', text: '관심/차단 강사' },
-  { path: '/my/pass-coupon', text: '패스권/쿠폰' },
-  { path: '/my/payment-hisotry', text: '결제 내역' },
-  { path: '/my/report', text: '신고내역' },
+  {
+    path: '/my/instructor',
+    text: '관심/차단 강사',
+    icon: <HeartSVG width="21" height="21" className={iconStyle} />,
+  },
+  {
+    path: '/my/pass-coupon',
+    text: '패스권/쿠폰',
+    icon: <CouponSVG width="21" height="21" className={iconStyle} />,
+  },
+  {
+    path: '/my/payment-hisotry',
+    text: '결제 내역',
+    icon: <MoneySVG width="19" height="19" className={iconStyle} />,
+  },
+  {
+    path: '/my/report',
+    text: '신고내역',
+    icon: <ReportSVG width="20" height="20" className={iconStyle} />,
+  },
 ];

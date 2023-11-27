@@ -12,15 +12,18 @@ const Home = () => {
   const { recentClass, suggestionClass, topInstructorList } = dummyMain;
   return (
     <main className="relative mx-auto mb-20">
-      <Banner />
+      <div className="h-[472px]">
+        <Banner />
+      </div>
+
       {/* 유저 로그인시에만 보여지는 맞춤 클래스 */}
       <section className="absolute top-[23rem] mt-3 w-full">
-        <h2 className="mb-3 flex w-full items-center gap-1 px-[4.37rem] text-lg font-bold text-white">
+        <h2 className="mb-3 flex w-full items-center gap-1 px-4 text-lg font-bold text-white sm:px-9">
           <SmallLogoSVG className="h-3 w-6" />
           AI가 추천하는 맞춤 클래스
         </h2>
 
-        <div className="flex gap-4 px-[4.37rem]">
+        <div className="flex gap-4 overflow-x-auto px-4 sm:px-9">
           {suggestionClass.map((item) => (
             <SuggestionPreview
               key={item.title}
@@ -37,12 +40,17 @@ const Home = () => {
         <SectionHeader
           icon={<MainPopularSVG />}
           title="오늘의 인기 클래스"
-          link="/"
+          link="/class"
         />
 
         <CarouselTemplate mode="class">
           {classList.map((state, index) => (
-            <ClassCard key={state.title + index} {...state} />
+            <div
+              key={state.title + index}
+              className="w-full max-w-[13rem] xl:max-w-[33.7rem]"
+            >
+              <ClassCard key={state.title + index} {...state} />
+            </div>
           ))}
         </CarouselTemplate>
       </section>
@@ -51,7 +59,7 @@ const Home = () => {
         <SectionHeader
           icon={<MainTopSVG />}
           title="오늘의 인기 강사 TOP8"
-          link="/"
+          link="/instructor"
         />
 
         <CarouselTemplate mode="instructor">
@@ -65,16 +73,13 @@ const Home = () => {
         </CarouselTemplate>
       </section>
       {/* 최신 클래스 - 무한 스크롤 (예정) */}
-      <section className="mt-3 px-[4.37rem]">
-        <h2 className="flex w-full items-center text-lg font-bold">
+      <section className="mt-3 px-4 sm:px-9">
+        <h2 className="mb-4 flex w-full justify-start text-lg font-bold">
           최신 클래스
         </h2>
-        <div className="grid auto-cols-auto grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="grid auto-cols-auto grid-cols-1 justify-items-center gap-x-4 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 xl:gap-y-4">
           {recentClass.map((item, i) => (
-            <div
-              className="w-full min-w-[543px] max-w-[639px] flex-shrink flex-grow"
-              key={i}
-            >
+            <div className="w-full flex-shrink flex-grow" key={i}>
               <ClassCard {...item} />
             </div>
           ))}
@@ -92,7 +97,7 @@ interface ISectionHeader {
 }
 
 const SectionHeader = ({ icon, title, link }: ISectionHeader) => (
-  <h2 className="mb-3 flex w-full items-center justify-between px-[4.37rem]">
+  <h2 className="mb-3 flex w-full items-center justify-between px-4 sm:px-9">
     <span className="flex items-center gap-1 text-lg font-bold">
       {icon}
       {title}

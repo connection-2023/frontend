@@ -14,9 +14,9 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
     <div
       onMouseLeave={() => setFocus(false)}
       onMouseOver={() => setFocus(true)}
-      className="flex min-w-[20.5rem] flex-col font-medium"
+      className="flex h-full w-full flex-col font-medium"
     >
-      <div className="relative aspect-[328/212] overflow-hidden rounded-lg">
+      <div className="relative aspect-[328/212] w-full overflow-hidden rounded-lg">
         {imgURL.length > 1 ? (
           <Carousel
             imgURL={imgURL}
@@ -28,8 +28,13 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
           <Image
             src={imgURL[0]}
             alt="Connection 댄스 춤 이미지"
-            fill
+            width={0}
+            height={0}
             sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
           />
         )}
 
@@ -44,7 +49,7 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
       </div>
 
       <div className="mt-3 flex items-start justify-between">
-        <h1 className="w-5/6 whitespace-pre-line text-base font-semibold leading-5">
+        <h1 className="w-5/6 truncate text-base font-semibold leading-5">
           {title}
         </h1>
         <div className="flex items-center gap-1 text-gray-100">
@@ -56,7 +61,7 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
         {genre.length > 1 ? genre[0] + ' 외 ' + (genre.length - 1) : genre[0]}
       </span>
       <div className="mt-0.5 flex items-center justify-between text-base text-gray-100">
-        <p className="text-lg font-bold"> {price}</p>
+        <p className="text-lg font-bold">{price.toLocaleString()}원</p>
 
         <ProfileImage
           size="xsmall"
