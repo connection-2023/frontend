@@ -1,3 +1,4 @@
+import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { getMyLecture } from '@/lib/apis/serverApis/classApi';
 import { getLecturerCoupons } from '@/lib/apis/serverApis/couponApis';
 import CouponPass from './_components/CouponPass';
@@ -25,7 +26,7 @@ const CouponPassPage = async () => {
       });
 
     const reqData = {
-      take: 8, //추후 null로 변경
+      take: LECTURE_COUPON_TAKE,
       firstItemId: 1,
       issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
       filterOption: 'LATEST' as 'LATEST',

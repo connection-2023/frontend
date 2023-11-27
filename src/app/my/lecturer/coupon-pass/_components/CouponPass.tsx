@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
 import Pagination from '@/components/Pagination/Pagination';
@@ -16,6 +17,7 @@ const CouponPass = ({
   totalItemCount,
   couponList,
 }: CouponPassProps) => {
+  const [couponLists, setCouponLists] = useState(couponList);
   const [filterState, setFilterState] = useState({
     isInterested: true,
     passStatusOptions: 'AVAILABLE',
@@ -29,6 +31,8 @@ const CouponPass = ({
         : null,
     currentPage: 0,
   });
+
+  useEffect(() => {}, [filterState]);
 
   const handleChangeOptions = (id: string) => {
     setFilterState((prevState) => ({
@@ -68,9 +72,26 @@ const CouponPass = ({
   };
 
   const options = [
-    { id: 'AVAILABLE', label: '활성화 쿠폰' },
-    { id: 'DISABLED', label: '만료 쿠폰' },
+    {
+      id: 'AVAILABLE',
+      label: filterState.isInterested ? '활성화 쿠폰' : '활성화된 패스권',
+    },
+    {
+      id: 'DISABLED',
+      label: filterState.isInterested ? '만료 쿠폰' : '비활성화된 패스권',
+    },
   ];
+
+  const sortOptions = filterState.isInterested
+    ? [
+        { id: 'LATEST', label: '최신순' },
+        { id: 'UPCOMING', label: '기간 임박순' },
+      ]
+    : [
+        { id: 'LATEST', label: '최신순' },
+        { id: 'HIGHEST_PRICE', label: '높은 가격순' },
+        { id: 'BEST_SELLING', label: '판매순' },
+      ];
 
   return (
     <section className="z-0 col-span-2 flex w-full flex-col bg-white px-5 pt-5">
@@ -121,33 +142,28 @@ const CouponPass = ({
       </nav>
 
       <nav className="flex gap-2.5 py-4">
-        <button
-          className={`flex text-sm font-bold ${
-            filterState.filterOption !== 'LATEST' && 'text-gray-500'
-          }`}
-          onClick={() => handleFilterOptionChange('LATEST')}
-        >
-          최신순
-        </button>
-        <button
-          className={`flex text-sm font-bold ${
-            filterState.filterOption !== 'UPCOMING' && 'text-gray-500'
-          }`}
-          onClick={() => handleFilterOptionChange('UPCOMING')}
-        >
-          기간 임박순
-        </button>
+        {sortOptions.map((option) => (
+          <button
+            key={option.id} //check
+            className={`flex text-sm font-bold ${
+              filterState.filterOption !== option.id && 'text-gray-500'
+            }`}
+            onClick={() => handleFilterOptionChange(option.id)}
+          >
+            {option.label}
+          </button>
+        ))}
       </nav>
 
       <div className="flex flex-wrap gap-4">
         {filterState.isInterested ? (
-          <CouponComponent couponList={couponList} />
+          <CouponComponent couponList={couponLists} />
         ) : null}
       </div>
 
       <nav className="my-8">
         <Pagination
-          pageCount={totalItemCount / 8}
+          pageCount={totalItemCount / LECTURE_COUPON_TAKE}
           currentPage={filterState.currentPage}
           onPageChange={handleChangePage}
         />

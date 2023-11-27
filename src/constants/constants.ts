@@ -277,3 +277,5 @@ export const LECTURER_NO_ACCESS = ['/instructor/apply'];
 export const USER_NO_ACCESS = ['/class/create'];
 
 export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];
+
+export const LECTURE_COUPON_TAKE = 8;
