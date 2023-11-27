@@ -1,10 +1,10 @@
-import { IPaymentConfirm } from '@/types/payment';
+import { IPaymentConfirmRequest } from '@/types/payment';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
 export const patchPaymentConfirm = async (
   token: string,
-  data: IPaymentConfirm,
+  data: IPaymentConfirmRequest,
 ) => {
   try {
     const headers: Record<string, string> = {

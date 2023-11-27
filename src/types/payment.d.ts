@@ -19,7 +19,7 @@ export interface IApplicantInfo {
   requests?: string;
 }
 
-export interface IPaymentConfirm {
+export interface IPaymentConfirmRequest {
   paymentKey: string;
   orderId: string;
   amount: string;
