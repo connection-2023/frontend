@@ -308,10 +308,14 @@ interface IImage {
 export interface IUserReview {
   id: number;
   userId: number;
-  users: {
+  user: {
     nickname: string;
     userProfileImage: null | string;
   };
   stars: number;
   description: string;
+  startDateTime: string;
+  lectureTitle: string;
+  isLike: boolean;
+  count: number;
 }
