@@ -319,7 +319,7 @@ export interface IUserReview {
   description: string;
 }
 
-interface Lecture {
+export interface Lecture {
   id: number;
   lecturerId: number;
   lectureTypeId: number;

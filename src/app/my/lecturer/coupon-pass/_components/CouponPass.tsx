@@ -1,14 +1,19 @@
 'use client';
-import { ChangeEvent, useState } from 'react';
-import { CheckMarkSVG } from '@/icons/svg';
+import { useState } from 'react';
+import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
+import { SelectClassType } from '@/types/coupon';
 
-const CouponPass = () => {
+interface CouponPassProps {
+  myLectureList: SelectClassType[];
+}
+
+const CouponPass = ({ myLectureList }: CouponPassProps) => {
   const [isInterested, setIsInterested] = useState(true);
   const [passStatusOptions, setPassStatusOptions] = useState('AVAILABLE');
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassStatusOptions(event.target.value);
+  const handleChange = (id: string) => {
+    setPassStatusOptions(id);
   };
 
   const options = [
@@ -23,13 +28,19 @@ const CouponPass = () => {
           className={`flex text-2xl font-bold ${
             !isInterested && 'text-gray-500'
           }`}
-          onClick={() => setIsInterested(true)}
+          onClick={() => {
+            setIsInterested(true);
+            setPassStatusOptions('AVAILABLE');
+          }}
         >
           쿠폰
         </button>
         <button
           className={`text-2xl font-bold ${isInterested && 'text-gray-500'}`}
-          onClick={() => setIsInterested(false)}
+          onClick={() => {
+            setIsInterested(false);
+            setPassStatusOptions('AVAILABLE');
+          }}
         >
           패스권
         </button>
@@ -37,25 +48,20 @@ const CouponPass = () => {
 
       <nav className="flex items-center gap-2 border-y border-solid border-gray-500 py-5">
         {options.map((option) => (
-          <div className="flex items-center gap-1" key={option.id}>
+          <button key={option.id} className="flex items-center gap-1">
             <input
               id={option.id}
-              type="radio"
-              name="statusOptions"
-              value={option.id}
+              type="checkbox"
+              className="peer h-[18px] w-[18px] accent-black"
               checked={passStatusOptions === option.id}
-              onChange={handleChange}
-              className="peer hidden"
+              onChange={() => handleChange(option.id)}
             />
-            <label
-              htmlFor={option.id}
-              className=" h-[1.125rem] w-[1.125rem] cursor-pointer rounded-sm border border-solid border-gray-500 fill-none text-sm peer-checked:bg-black peer-checked:fill-white"
-            >
-              {passStatusOptions === option.id && <CheckMarkSVG />}
+            <label htmlFor={option.id} className="cursor-pointer">
+              {option.label}
             </label>
-            <label htmlFor={option.id}>{option.label}</label>
-          </div>
+          </button>
         ))}
+        <ClassFilterSelect options={myLectureList} />
       </nav>
 
       {isInterested ? <CouponComponent /> : null}

@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { ApiResponse, Lecture } from '@/types/class';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -73,4 +74,27 @@ export const createClassDraft = async () => {
   const data = await response.json();
 
   return data;
+};
+
+export const getMyLecture = async (): Promise<Lecture[]> => {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get('lecturerAccessToken')?.value;
+
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${authorization}`,
+  };
+
+  const response = await fetch(END_POINT + '/lectures/lecturers', {
+    method: 'GET',
+    credentials: 'include',
+    headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(`강의 조회 에러: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  return data.data.lecture;
 };
