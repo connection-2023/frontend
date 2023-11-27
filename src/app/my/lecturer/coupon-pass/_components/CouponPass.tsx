@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
+import Pagination from '@/components/Pagination/Pagination';
 import { SelectClassType, couponGET } from '@/types/coupon';
 
 interface CouponPassProps {
@@ -26,6 +27,7 @@ const CouponPass = ({
             label: `전체 클래스(${myLectureList.length - 1})`,
           }
         : null,
+    currentPage: 0,
   });
 
   const handleChangeOptions = (id: string) => {
@@ -58,13 +60,20 @@ const CouponPass = ({
     }));
   };
 
+  const handleChangePage = (selectedPage: { selected: number }) => {
+    setFilterState((prevState) => ({
+      ...prevState,
+      currentPage: selectedPage.selected,
+    }));
+  };
+
   const options = [
     { id: 'AVAILABLE', label: '활성화 쿠폰' },
     { id: 'DISABLED', label: '만료 쿠폰' },
   ];
 
   return (
-    <section className="col-span-2 flex w-full flex-col bg-white px-5 pt-5">
+    <section className="z-0 col-span-2 flex w-full flex-col bg-white px-5 pt-5">
       <nav className="flex gap-6 pb-2">
         <button
           className={`flex text-2xl font-bold ${
@@ -130,9 +139,19 @@ const CouponPass = ({
         </button>
       </nav>
 
-      {filterState.isInterested ? (
-        <CouponComponent couponList={couponList} />
-      ) : null}
+      <div className="flex flex-wrap gap-4">
+        {filterState.isInterested ? (
+          <CouponComponent couponList={couponList} />
+        ) : null}
+      </div>
+
+      <nav className="my-8">
+        <Pagination
+          pageCount={totalItemCount / 8}
+          currentPage={filterState.currentPage}
+          onPageChange={handleChangePage}
+        />
+      </nav>
     </section>
   );
 };
