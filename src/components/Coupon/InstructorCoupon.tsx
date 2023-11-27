@@ -3,6 +3,8 @@ import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { CloseSVG, EditSVG, LinkSVG } from '@/icons/svg';
+import Button from '../Button/Button';
+import UniqueButton from '../Button/UniqueButton';
 import { couponGET } from '@/types/coupon';
 
 interface InstructorCouponProps {
@@ -44,16 +46,29 @@ const InstructorCoupon = ({
           </dt>
           {isPrivate && <LinkSVG className="fill-black" />}
         </div>
-        <button>
-          <EditSVG className="h-4 w-4 fill-gray-500" />
-        </button>
+
+        {pathname === '/class/create' ? (
+          <div className="text-sm">
+            <UniqueButton
+              type="button"
+              onClick={cancelSelectedCoupon}
+              size="small"
+            >
+              <p className="mx-2">적용취소</p>
+            </UniqueButton>
+          </div>
+        ) : (
+          <button>
+            <EditSVG className="h-4 w-4 fill-gray-500" />
+          </button>
+        )}
       </div>
       <div className="flex gap-2">
         <dd
           className={`rounded-md px-2 py-0.5 text-sm ${
             isStackable
               ? 'bg-sub-color1-transparent text-sub-color1'
-              : 'bg-gray-700'
+              : 'bg-black/10'
           }`}
         >
           {isStackable ? '중복가능' : '중복불가'}
@@ -93,15 +108,6 @@ const InstructorCoupon = ({
           </div>
         )}
       </span>
-      {pathname === '/class/create' && (
-        <button
-          type="button"
-          onClick={cancelSelectedCoupon}
-          className="absolute left-0 top-0"
-        >
-          <CloseSVG className="h-4 w-4 stroke-black" />
-        </button>
-      )}
     </dl>
   );
 };
