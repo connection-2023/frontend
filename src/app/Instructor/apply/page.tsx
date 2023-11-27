@@ -94,8 +94,8 @@ const ApplyPage = () => {
         instagramUrl,
         homepageUrl,
         affiliation,
-        introduction,
-        experience,
+        introduction: introduction.content,
+        experience: experience.content,
         instagramPostUrls: [
           instagramPostUrls0,
           instagramPostUrls1,
@@ -106,9 +106,9 @@ const ApplyPage = () => {
       await instructorRegister(instructorData);
       toast.success('강사 등록 완료!');
 
-      // await switchToInstructor(store);
+      await switchToInstructor(store);
 
-      // router.push('/');
+      router.push('/');
     } catch (error) {
       if (error instanceof Error) {
         toast.error('잠시 후 다시 시도해 주세요');

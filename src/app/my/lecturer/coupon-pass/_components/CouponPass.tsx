@@ -2,19 +2,29 @@
 import { useState } from 'react';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
-import { SelectClassType } from '@/types/coupon';
+import { SelectClassType, couponGET } from '@/types/coupon';
 
 interface CouponPassProps {
   myLectureList: SelectClassType[];
+  totalItemCount: number;
+  couponList: couponGET[];
 }
 
-const CouponPass = ({ myLectureList }: CouponPassProps) => {
+const CouponPass = ({
+  myLectureList,
+  totalItemCount,
+  couponList,
+}: CouponPassProps) => {
   const [isInterested, setIsInterested] = useState(true);
   const [passStatusOptions, setPassStatusOptions] = useState('AVAILABLE');
-  const [selectedClass, setSelectedClass] = useState<SelectClassType>({
-    value: 'select-all',
-    label: `전체 클래스(${myLectureList.length - 1})`,
-  });
+  const [selectedClass, setSelectedClass] = useState<SelectClassType | null>(
+    myLectureList.length > 0
+      ? {
+          value: 'select-all',
+          label: `전체 클래스(${myLectureList.length - 1})`,
+        }
+      : null,
+  );
 
   const handleChangeOptions = (id: string) => {
     setPassStatusOptions(id);
@@ -41,7 +51,7 @@ const CouponPass = ({ myLectureList }: CouponPassProps) => {
             setPassStatusOptions('AVAILABLE');
           }}
         >
-          쿠폰
+          쿠폰({totalItemCount})
         </button>
         <button
           className={`text-2xl font-bold ${isInterested && 'text-gray-500'}`}
@@ -78,7 +88,7 @@ const CouponPass = ({ myLectureList }: CouponPassProps) => {
         </div>
       </nav>
 
-      {isInterested ? <CouponComponent /> : null}
+      {isInterested ? <CouponComponent couponList={couponList} /> : null}
     </section>
   );
 };

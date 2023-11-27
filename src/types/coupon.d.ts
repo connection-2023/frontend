@@ -50,6 +50,11 @@ export interface couponGET {
   percentage: number;
 }
 
+export interface IcouponsData {
+  totalItemCount: number;
+  couponList: couponGET[];
+}
+
 export interface createCoupon {
   createdAt: Date;
   updatedAt: Date;

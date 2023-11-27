@@ -12,7 +12,7 @@ interface SelectClassProps {
     actionMeta: ActionMeta<SelectClassType>,
   ) => void;
   options: SelectClassType[];
-  value: SelectClassType;
+  value: SelectClassType | null;
 }
 
 const ClassFilterSelect = ({ onChange, options, value }: SelectClassProps) => {
