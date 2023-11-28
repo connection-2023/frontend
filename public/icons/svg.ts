@@ -1,11 +1,11 @@
 import AddImageSVG from './addimage.svg';
-import AuthIconSVG from './authIcon.svg';
 import AlarmSVG from './alarm.svg';
 import ApplySuccessSVG from './applySuccess.svg';
 import Arrow from './arrow.svg';
 import ArrowDownSVG from './ArrowDown.svg';
 import ArrowRightSVG from './ArrowRight.svg';
 import ArrowUpSVG from './ArrowUp.svg';
+import AuthIconSVG from './authIcon.svg';
 import AuthWelcomeSVG from './authWelcome.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import BigArrowSVG from './bigArrow.svg';
@@ -33,6 +33,7 @@ import FacebookSVG from './facebook.svg';
 import GenreSVG from './genre.svg';
 import GoogleSVG from './googleIcon.svg';
 import GroupSVG from './group.svg';
+import HamburgerSVG from './hamburgerMenu.svg';
 import HeartSVG from './heart.svg';
 import ImageSVG from './image.svg';
 import InstagramSVG from './instagram.svg';
@@ -78,6 +79,7 @@ import ZoomOutSVG from './zoomOut.svg';
 export {
   TrashcanSVG,
   ApplySuccessSVG,
+  HamburgerSVG,
   AuthIconSVG,
   ScrollTopSVG,
   GenreSVG,

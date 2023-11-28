@@ -27,7 +27,11 @@ const Like = ({ id, type, isLiked }: LikeProps) => {
 
   return (
     <button onClick={handleLike}>
-      <HeartSVG className={style} />
+      <HeartSVG
+        width="29"
+        height="30"
+        className={style}
+      />
     </button>
   );
 };
