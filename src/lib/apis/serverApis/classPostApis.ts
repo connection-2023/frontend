@@ -53,3 +53,26 @@ export const getClassSchedules = async (
     return new Error('잘못된 요청입니다!');
   }
 };
+
+export const getUserReservation = async (id: string): Promise<boolean> => {
+  const cookieStore = cookies();
+  const token = cookieStore.get('userAccessToken')?.value;
+
+  if (!token) return false;
+  const response = await fetch(
+    END_POINT + '/lectures/' + id + '/reservations',
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+
+  if (response.status === 200) {
+    return true;
+  }
+  return false;
+};
