@@ -1,4 +1,5 @@
 'use client';
+import { parseISO, format } from 'date-fns';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
 import Review from '@/components/Review/Review';
@@ -39,6 +40,7 @@ const ClassReviewSection = ({
       if (data instanceof Error) {
         return;
       }
+
       setUserReviews(data);
     };
 
@@ -111,12 +113,15 @@ const ClassReviewSection = ({
         {userReviews.map((review) => (
           <UserReview
             key={review.id}
-            src={review.users.userProfileImage}
-            nickname={review.users.nickname}
+            reviewId={review.id}
+            src={review.user.userProfileImage}
+            nickname={review.user.nickname}
             average={review.stars}
             content={review.description}
-            date="23.07.11"
-            title={classTitle}
+            date={format(parseISO(review.startDateTime), 'yy.MM.dd')}
+            title={review.lectureTitle}
+            isLike={review.isLike}
+            count={review.count}
           />
         ))}
       </div>

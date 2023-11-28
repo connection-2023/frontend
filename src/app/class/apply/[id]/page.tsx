@@ -1,6 +1,9 @@
 import { revalidateTag } from 'next/cache';
 import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getClassPost, getClassSchedules } from '@/lib/apis/classApis';
+import {
+  getClassInfo,
+  getClassSchedules,
+} from '@/lib/apis/serverApis/classPostApis';
 import ApplySidebar from './_components/ApplySidebar';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
@@ -11,7 +14,7 @@ const ClassApplyPage = async ({
   params: { id: string };
 }) => {
   revalidateTag('schedules');
-  const classData = getClassPost(id);
+  const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
 
   const [classInfo, classSchedule] = await Promise.all([

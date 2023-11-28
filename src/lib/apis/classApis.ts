@@ -1,38 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import {
-  IClassInfoResponse,
-  IClassScheduleResponse,
-  IUserReview,
-  ReviewOrderType,
-} from '@/types/class';
-
-export const getClassPost = async (
-  id: string,
-): Promise<IClassInfoResponse | Error> => {
-  try {
-    const response = await fetch(`${DOMAIN}/api/post/class/info?id=${id}`, {
-      method: 'GET',
-    }).then((data) => data.json());
-
-    return response.data;
-  } catch (error) {
-    return new Error('잘못된 요청입니다!');
-  }
-};
-
-export const getClassSchedules = async (
-  id: string,
-): Promise<IClassScheduleResponse | Error> => {
-  try {
-    const response = await fetch(`${DOMAIN}/api/post/class/schedule?id=${id}`, {
-      method: 'GET',
-    }).then((data) => data.json());
-
-    return response.data;
-  } catch (error) {
-    return new Error('잘못된 요청입니다!');
-  }
-};
+import { IUserReview, ReviewOrderType } from '@/types/class';
 
 export const getClassReviews = async (
   id: string,
@@ -40,7 +7,7 @@ export const getClassReviews = async (
 ): Promise<IUserReview[] | Error> => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/post/class/review?id=${id}?orderBy=${order}`,
+      `${DOMAIN}/api/post/class/review?id=${id}&orderBy=${order}`,
       {
         method: 'GET',
       },
@@ -49,5 +16,59 @@ export const getClassReviews = async (
     return response.data.review;
   } catch (error) {
     return new Error('잘못된 요청입니다!');
+  }
+};
+
+export const postClassLikes = async (id: string) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/likes/add?id=${id}`, {
+      method: 'POST',
+    });
+
+    return response;
+  } catch (error) {
+    return new Error('클래스 좋아요 요청 오류!');
+  }
+};
+
+export const deleteClassLikes = async (id: string) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/likes/delete?id=${id}`, {
+      method: 'DELETE',
+    });
+
+    return response;
+  } catch (error) {
+    return new Error('클래스 좋아요 취소 요청 오류!');
+  }
+};
+
+export const postReviewLikes = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/post/review/likes/add?id=${id}`,
+      {
+        method: 'POST',
+      },
+    );
+
+    return response;
+  } catch (error) {
+    return new Error('리뷰 좋아요 요청 오류!');
+  }
+};
+
+export const deleteReviewLikes = async (id: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/post/review/likes/delete?id=${id}`,
+      {
+        method: 'DELETE',
+      },
+    );
+
+    return response;
+  } catch (error) {
+    return new Error('리뷰 좋아요 취소 요청 오류!');
   }
 };

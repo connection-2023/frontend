@@ -8,7 +8,13 @@ import Sharing from '@/components/Sharing/Sharing';
 import { ReportSVG, EditSVG, ShareSVG, OptionSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 
-const OptionButton = ({ lecturerId }: { lecturerId: number }) => {
+interface OptionButtonProps {
+  lecturerId: number;
+  postId: string;
+  isLike: boolean;
+}
+
+const OptionButton = ({ lecturerId, postId, isLike }: OptionButtonProps) => {
   const loggedInUserType = useUserStore((state) => state.userType);
   const loggedInUser = useUserStore((state) => state.authUser);
   const [isOptionMenuOpened, setIsOptionMenuOpened] = useState(false);
@@ -23,9 +29,10 @@ const OptionButton = ({ lecturerId }: { lecturerId: number }) => {
 
   const styles =
     'flex cursor-pointer items-center gap-1.5 px-2 hover:bg-gray-700 py-1.5';
+
   return (
     <div ref={optionButtonRef} className="relative flex items-center gap-2">
-      <Like />
+      <Like type="class" id={postId} isLiked={isLike} />
       <OptionSVG
         onClick={() => setIsOptionMenuOpened((prev) => !prev)}
         className={`peer cursor-pointer hover:fill-black ${

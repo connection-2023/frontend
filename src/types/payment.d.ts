@@ -8,7 +8,8 @@ export interface IPaymentInfo extends IApplicantInfo {
   orderName: string;
   orderId: string;
   lectureSchedules: IReservationInfo[];
-  price: number;
+  originalPrice: number;
+  finalPrice: number;
   couponId?: number;
   stackableCouponId?: number;
 }
@@ -19,14 +20,74 @@ export interface IApplicantInfo {
   requests?: string;
 }
 
-export interface IPaymentConfirm {
+export interface IPaymentConfirmRequest {
   paymentKey: string;
   orderId: string;
   amount: string;
+}
+
+export interface IPaymentConfirmResponse {
+  orderId: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+  paymentProductType: { name: string };
+  paymentMethod: { name: string };
+  updatedAt: string;
+  reservation: {
+    participants: number;
+    requests: string;
+    lectureSchedule: {
+      startDateTime: string;
+    };
+  }[];
+
+  cardPaymentInfo: ICardPaymentInfo | null;
+  virtualAccountPaymentInfo: IVirtualAccountInfo | null;
 }
 
 export interface IPaymentInfoResponse {
   orderId: string;
   orderName: string;
   value: number;
+}
+
+export interface IReceiptResponse {
+  orderId: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+  paymentProductType: { name: string };
+  paymentMethod: { name: string };
+  createdAt: string;
+  updatedAt: string;
+  cardPaymentInfo: ICardPaymentInfo | null;
+  virtualAccountPaymentInfo: IVirtualAccountInfo | null;
+  paymentCouponUsage: IPaymentCoupon | null;
+}
+
+interface ICardPaymentInfo {
+  number: string;
+  installmentPlanMonths: number;
+  approveNo: number;
+  issuer?: { code: string; name: string };
+  acquirer?: { code: string; name: string };
+}
+
+interface IVirtualAccountInfo {
+  accountNumber: string;
+  customerName: string;
+  dueDate: string;
+  bank: { code: number; name: string };
+}
+
+interface IPaymentCoupon {
+  couponTitle: string | null;
+  couponDiscountPrice: number | null;
+  couponMaxDiscountPrice: number | null;
+  couponPercentage: number | null;
+  stackableCouponTitle: string | null;
+  stackableCouponPercentage: number | null;
+  stackableCouponDiscountPrice: number | null;
+  stackableCouponMaxDiscountPrice: number | null;
 }

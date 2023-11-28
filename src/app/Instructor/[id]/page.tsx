@@ -60,7 +60,7 @@ const InstructorDetailPage = async ({
           <div className=" relative flex w-full min-w-[23rem] items-center justify-center ">
             <h1 className="box-border flex items-center gap-1 pl-6 text-lg font-bold">
               {nickname}
-              <Like />
+              <Like type="instructor" id={id} />
             </h1>
             <div className="absolute right-0 flex gap-3">
               <Sharing header={nickname} mode="instructor" />

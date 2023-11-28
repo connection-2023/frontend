@@ -28,7 +28,7 @@ const UserProfileLinks = () => {
       {userStoreState.authUser && (
         <>
           <button className="relative">
-            <AlarmSVG className="pt-0.5" />
+            <AlarmSVG className="fill-black pt-0.5" width="31" height="31" />
             <span className="absolute -right-1.5 top-0 min-w-[1rem] rounded-full bg-main-color px-1 text-xs font-bold text-white">
               {alarmCount}
             </span>

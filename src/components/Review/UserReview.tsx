@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { LikeSVG } from '@/icons/svg';
+import { postReviewLikes, deleteReviewLikes } from '@/lib/apis/classApis';
 import Review from './Review';
 import Profile from '../ProfileImage/ProfileImage';
 
@@ -9,6 +11,9 @@ interface UserReviewProps {
   content: string;
   title: string;
   date: string;
+  count: number;
+  isLike: boolean;
+  reviewId: number;
 }
 
 const UserReview = ({
@@ -18,7 +23,30 @@ const UserReview = ({
   content,
   date,
   title,
+  count,
+  isLike,
+  reviewId,
 }: UserReviewProps) => {
+  const [liked, setLiked] = useState(isLike);
+  const [likeCount, setLikeCount] = useState(count);
+
+  const style = liked
+    ? 'fill-sub-color1'
+    : 'fill-gray-500 hover:fill-sub-color1';
+
+  const handleLike = async () => {
+    if (liked) {
+      await deleteReviewLikes(reviewId);
+      if (count > 0) {
+        setLikeCount((prev) => prev - 1);
+      }
+    } else {
+      await postReviewLikes(reviewId);
+      setLikeCount((prev) => prev + 1);
+    }
+    setLiked(!liked);
+  };
+
   return (
     <div className="w-full rounded-md border-b border-solid border-gray-700 text-sm shadow-float">
       <div className="flex w-full justify-between p-[0.8rem]">
@@ -42,12 +70,10 @@ const UserReview = ({
       <div className="flex items-center justify-between border-t border-solid border-gray-700 p-[0.8rem]">
         <p className="text-gray-300">{title}</p>
         <p className="flex items-center gap-1.5 text-sm font-semibold text-gray-500">
-          <LikeSVG
-            width="15"
-            height="14"
-            className="cursor-pointer fill-gray-500 hover:fill-sub-color1"
-          />
-          10
+          <button onClick={handleLike}>
+            <LikeSVG width="15" height="14" className={style} />
+          </button>
+          {likeCount}
         </p>
       </div>
     </div>
