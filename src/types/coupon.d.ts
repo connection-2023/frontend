@@ -112,6 +112,15 @@ export interface IgetLecturerCoupons {
   firstItemId?: number;
   lastItemId?: number;
   issuedCouponStatusOptions: 'AVAILABLE' | 'DISABLED';
-  filterOption: 'LATEST' | 'UPCOMING';
-  lectureId?: number;
+  filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
+  lectureId?: string | number;
+}
+
+export interface IFilterState {
+  isInterested: boolean;
+  passStatusOptions: 'AVAILABLE' | 'DISABLED';
+  filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
+  selectedClass: { value: string; label: string } | null;
+  currentPage: number;
+  targetPage: number;
 }

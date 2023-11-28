@@ -36,7 +36,7 @@ const InstructorCoupon = ({
   });
 
   return (
-    <dl className="relative flex w-80 flex-col justify-evenly gap-1 p-3 shadow-float">
+    <dl className="relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float">
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
           <dt className="text-2xl font-bold text-main-color">

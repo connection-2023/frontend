@@ -23,13 +23,13 @@ const ClassPrice = () => {
     };
 
     getLecturerCoupons(reqData).then((data) => {
-      data.map((coupon) => {
+      data.couponList.map((coupon) => {
         coupon.startAt = formatDate(coupon.startAt);
         coupon.endAt = formatDate(coupon.endAt);
         return coupon;
       });
 
-      setCouponList(data);
+      setCouponList(data.couponList);
     });
   }, []);
 

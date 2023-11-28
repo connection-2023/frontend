@@ -27,7 +27,6 @@ const CouponPassPage = async () => {
 
     const reqData = {
       take: LECTURE_COUPON_TAKE,
-      firstItemId: 1,
       issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
       filterOption: 'LATEST' as 'LATEST',
     };

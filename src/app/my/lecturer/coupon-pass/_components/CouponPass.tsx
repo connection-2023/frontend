@@ -1,10 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
+import { getLecturerCoupons } from '@/lib/apis/couponApis';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
 import Pagination from '@/components/Pagination/Pagination';
-import { SelectClassType, couponGET } from '@/types/coupon';
+import { IFilterState, SelectClassType, couponGET } from '@/types/coupon';
 
 interface CouponPassProps {
   myLectureList: SelectClassType[];
@@ -14,11 +15,16 @@ interface CouponPassProps {
 
 const CouponPass = ({
   myLectureList,
-  totalItemCount,
+  totalItemCount: defaultTotalItemCount,
   couponList,
 }: CouponPassProps) => {
   const [couponLists, setCouponLists] = useState(couponList);
-  const [filterState, setFilterState] = useState({
+  const [totalItemCount, setTotalItemCount] = useState(defaultTotalItemCount);
+  const [itemId, setItemId] = useState({
+    firstItemId: couponList[0].id ?? 0,
+    lastItemId: couponList[couponList.length - 1].id ?? 0,
+  });
+  const [filterState, setFilterState] = useState<IFilterState>({
     isInterested: true,
     passStatusOptions: 'AVAILABLE',
     filterOption: 'LATEST',
@@ -30,11 +36,57 @@ const CouponPass = ({
           }
         : null,
     currentPage: 0,
+    targetPage: 0,
   });
+  const initialFilterState = useRef(filterState);
 
-  useEffect(() => {}, [filterState]);
+  const handleGetList = async () => {
+    if (filterState.isInterested) {
+      const { selectedClass } = filterState;
 
-  const handleChangeOptions = (id: string) => {
+      const data = {
+        take: LECTURE_COUPON_TAKE,
+        currentPage: filterState.currentPage,
+        targetPage: filterState.targetPage,
+        firstItemId: itemId.firstItemId,
+        lastItemId: itemId.lastItemId,
+        issuedCouponStatusOptions: filterState.passStatusOptions,
+        filterOption: filterState.filterOption,
+        lectureId:
+          selectedClass?.value === 'select-all'
+            ? undefined
+            : selectedClass?.value,
+      };
+
+      console.log(data);
+
+      const resData = await getLecturerCoupons(data);
+
+      setCouponLists(resData.couponList ?? []);
+
+      setItemId({
+        firstItemId:
+          resData.couponList.length > 0 ? resData.couponList[0].id : 0,
+        lastItemId:
+          resData.couponList.length > 0
+            ? resData.couponList[resData.couponList.length - 1].id
+            : 0,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (filterState !== initialFilterState.current) {
+      handleGetList();
+    }
+  }, [filterState]);
+
+  const handleChangeOptions = async (id: 'AVAILABLE' | 'DISABLED') => {
+    setItemId({
+      firstItemId: 0,
+      lastItemId: 0,
+    });
+
     setFilterState((prevState) => ({
       ...prevState,
       passStatusOptions: id,
@@ -54,24 +106,36 @@ const CouponPass = ({
       isInterested,
       filterOption: 'LATEST',
       passStatusOptions: 'AVAILABLE',
+      currentPage: 0,
+      targetPage: 0,
     }));
   };
 
-  const handleFilterOptionChange = (filterOption: string) => {
+  const handleFilterOptionChange = (
+    filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING',
+  ) => {
+    setItemId({
+      firstItemId: 0,
+      lastItemId: 0,
+    });
+
     setFilterState((prevState) => ({
       ...prevState,
       filterOption,
+      currentPage: 0,
+      targetPage: 0,
     }));
   };
 
   const handleChangePage = (selectedPage: { selected: number }) => {
     setFilterState((prevState) => ({
       ...prevState,
-      currentPage: selectedPage.selected,
+      currentPage: prevState.targetPage,
+      targetPage: selectedPage.selected,
     }));
   };
 
-  const options = [
+  const options: { id: 'AVAILABLE' | 'DISABLED'; label: string }[] = [
     {
       id: 'AVAILABLE',
       label: filterState.isInterested ? '활성화 쿠폰' : '활성화된 패스권',
@@ -82,7 +146,10 @@ const CouponPass = ({
     },
   ];
 
-  const sortOptions = filterState.isInterested
+  const sortOptions: {
+    id: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
+    label: string;
+  }[] = filterState.isInterested
     ? [
         { id: 'LATEST', label: '최신순' },
         { id: 'UPCOMING', label: '기간 임박순' },
@@ -102,7 +169,7 @@ const CouponPass = ({
           }`}
           onClick={() => handleInterestChange(true)}
         >
-          쿠폰({totalItemCount})
+          쿠폰({defaultTotalItemCount})
         </button>
         <button
           className={`text-2xl font-bold ${
@@ -163,8 +230,8 @@ const CouponPass = ({
 
       <nav className="my-8">
         <Pagination
-          pageCount={totalItemCount / LECTURE_COUPON_TAKE}
-          currentPage={filterState.currentPage}
+          pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
+          currentPage={filterState.targetPage}
           onPageChange={handleChangePage}
         />
       </nav>
