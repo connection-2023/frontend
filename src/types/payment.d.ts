@@ -74,7 +74,7 @@ interface ICardPaymentInfo {
   acquirer?: { code: string; name: string };
 }
 
-interface IVirtualAccountInfo {
+export interface IVirtualAccountInfo {
   accountNumber: string;
   customerName: string;
   dueDate: string;

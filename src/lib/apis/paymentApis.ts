@@ -1,5 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import { IPaymentInfo } from '@/types/payment';
+import { IPaymentInfo, IVirtualAccountInfo } from '@/types/payment';
 import { IMyPaymentResponse } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
@@ -60,8 +60,25 @@ export const getPaymentHistory = async (
         'Content-Type': 'application/json',
       },
     }).then((res) => res.json());
-    console.log(response.data);
+
     return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAccountInfo = async (
+  id: number,
+): Promise<IVirtualAccountInfo | Error> => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/payment/accountInfo?id=${id}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
+
+    return response.data.virtualAccountPaymentInfo;
   } catch (error) {
     throw error;
   }
