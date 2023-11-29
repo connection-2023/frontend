@@ -1,9 +1,13 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
+import { CouponSVG } from '@/icons/svg';
 import { getLecturerCoupons } from '@/lib/apis/couponApis';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
+import CouponCreateModal from './CouponCreateModal';
+import Button from '@/components/Button/Button';
+import UniqueButton from '@/components/Button/UniqueButton';
 import Pagination from '@/components/Pagination/Pagination';
 import { IFilterState, SelectClassType, couponGET } from '@/types/coupon';
 
@@ -19,10 +23,12 @@ const CouponPass = ({
   couponList,
 }: CouponPassProps) => {
   const [couponLists, setCouponLists] = useState(couponList);
+  const [createCouponOpened, setCreateCouponOpened] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
   const [totalItemCount, setTotalItemCount] = useState(defaultTotalItemCount);
   const [itemId, setItemId] = useState({
-    firstItemId: couponList[0].id ?? 0,
-    lastItemId: couponList[couponList.length - 1].id ?? 0,
+    firstItemId: couponList[0]?.id ?? 0,
+    lastItemId: couponList[couponList.length - 1]?.id ?? 0,
   });
   const [filterState, setFilterState] = useState<IFilterState>({
     isInterested: true,
@@ -162,23 +168,31 @@ const CouponPass = ({
 
   return (
     <section className="z-0 col-span-2 flex w-full flex-col bg-white px-5 pt-5">
-      <nav className="flex gap-6 pb-2">
-        <button
-          className={`flex text-2xl font-bold ${
-            !filterState.isInterested && 'text-gray-500'
-          }`}
-          onClick={() => handleInterestChange(true)}
-        >
-          쿠폰({defaultTotalItemCount})
-        </button>
-        <button
-          className={`text-2xl font-bold ${
-            filterState.isInterested && 'text-gray-500'
-          }`}
-          onClick={() => handleInterestChange(false)}
-        >
-          패스권
-        </button>
+      <nav className="flex justify-between pb-2">
+        <div className="flex gap-6">
+          <button
+            className={`flex text-2xl font-bold ${
+              !filterState.isInterested && 'text-gray-500'
+            }`}
+            onClick={() => handleInterestChange(true)}
+          >
+            쿠폰({defaultTotalItemCount})
+          </button>
+          <button
+            className={`text-2xl font-bold ${
+              filterState.isInterested && 'text-gray-500'
+            }`}
+            onClick={() => handleInterestChange(false)}
+          >
+            패스권
+          </button>
+        </div>
+        <div className="w-[7.3rem]">
+          <Button onClick={() => setCreateCouponOpened(true)}>
+            <CouponSVG className="mr-1 h-6 w-6 fill-sub-color1 group-active:fill-white" />
+            쿠폰 생성
+          </Button>
+        </div>
       </nav>
 
       <nav className="flex items-center gap-2 border-y border-solid border-gray-500 py-5">
@@ -235,6 +249,11 @@ const CouponPass = ({
           onPageChange={handleChangePage}
         />
       </nav>
+
+      <CouponCreateModal
+        isOpen={createCouponOpened}
+        closeModal={() => setCreateCouponOpened(false)}
+      />
     </section>
   );
 };

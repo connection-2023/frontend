@@ -62,6 +62,11 @@ const couponSelectStyle: StylesConfig<SelectClassType, true> = {
       borderTopRightRadius: 0,
     };
   },
+  menuList: (base) => ({
+    ...base,
+    maxHeight: '170px',
+    overflowY: 'auto',
+  }),
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isSelected ? 'var(--gray5)' : 'white',

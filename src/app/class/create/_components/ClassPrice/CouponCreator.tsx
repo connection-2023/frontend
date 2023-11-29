@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { createNewCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
+import { createCouponUtils } from '@/utils/createCoupon';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import { CouponData, createCoupon } from '@/types/coupon';
 
@@ -28,42 +28,9 @@ const CouponCreator = ({
     clearErrors,
   } = useForm<CouponData>();
 
-  const createCoupon = async (data: CouponData) => {
-    const {
-      validityPeriod,
-      couponQuantity,
-      discountValue,
-      maxUsageCount,
-      couponDistributionCount,
-      lectureIds,
-      title,
-      maxDiscountAmount,
-      isPrivate,
-      isStackable,
-    } = data;
-
-    const createData = {
-      title,
-      startAt: new Date(validityPeriod.startDate),
-      endAt: new Date(validityPeriod.endDate),
-      percentage: couponQuantity === '%' ? Number(discountValue) : undefined,
-      discountPrice:
-        couponQuantity === '원' ? Number(discountValue) : undefined,
-      maxUsageCount: maxUsageCount
-        ? undefined
-        : Number(couponDistributionCount),
-      isPrivate,
-      isStackable,
-      lectureIds: lectureIds.map(({ value }) => Number(value)),
-      maxDiscountPrice: Number(maxDiscountAmount) ?? undefined,
-    };
-
-    return await createNewCoupon(createData);
-  };
-
   const onValid = async (data: CouponData) => {
     try {
-      const resData = await createCoupon(data);
+      const resData = await createCouponUtils(data);
       resData.lectureCouponTarget = data.lectureIds;
 
       reset();
