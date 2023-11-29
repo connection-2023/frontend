@@ -79,7 +79,11 @@ const CouponOption = ({
           type="text"
           className={`${CouponOptionInputStyles} w-96`}
           {...register('title', {
-            required: '쿠폰명은 필수 입력 사항입니다.',
+            required: '쿠폰명은 필수 값 입니다.',
+            validate: (title) => {
+              const regex = /^[ㄱ-ㅎㅏ-ㅣ]*$/;
+              return !regex.test(title) || '쿠폰명이 올바르지 않습니다.';
+            },
           })}
         />
       </CouponOptionSection>
@@ -94,13 +98,13 @@ const CouponOption = ({
           control={control}
           defaultValue={{ startDate: '', endDate: '' }}
           rules={{
-            required: '사용기간은 필수 입력 사항입니다.',
+            required: '사용기간은 필수 값 입니다.',
             validate: ({ startDate, endDate }) => {
               const fromDate = new Date(startDate);
               const toDate = new Date(endDate);
 
               if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime()))
-                return '날짜 형태가 아닙니다.';
+                return '사용기간이 올바른 날짜 형태가 아닙니다.';
             },
           }}
           render={({ field }) => (
@@ -125,7 +129,7 @@ const CouponOption = ({
             type="number"
             className={`${CouponOptionInputStyles} mr-[0.25rem] w-[5rem] text-right`}
             {...register('discountValue', {
-              required: '쿠폰 상세는 필수 입력 사항입니다.',
+              required: '쿠폰 상세는 필수 값 입니다.',
               pattern: {
                 value: /^[0-9]*$/,
                 message: '쿠폰 상세는 숫자만 입력 가능합니다.',
@@ -206,6 +210,14 @@ const CouponOption = ({
               pattern: {
                 value: /^[0-9]*$/,
                 message: '최대할인 금액은 숫자만 입력 가능합니다.',
+              },
+              validate: (discountAmount) => {
+                if (getValues('couponQuantity') === '원' && discountAmount) {
+                  return discountAmount <= getValues('discountValue')
+                    ? true
+                    : '최대할인금액은 할인금액보다 높을 수 없습니다.';
+                }
+                return true;
               },
             })}
           />

@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
 import { CloseSVG, CouponSVG } from '@/icons/svg';
@@ -50,9 +50,10 @@ const CouponCreateModal = ({ closeModal, isOpen }: CouponCreateModal) => {
     }
   };
 
-  const invalid = (data: any) => {
-    console.log(data, '실패');
-    // 추후 토스트 메시지 추가 예정
+  const invalid = (data: FieldErrors<CouponData>) => {
+    Object.values(data).forEach(({ message }) => {
+      toast.error(message);
+    });
   };
 
   return (
