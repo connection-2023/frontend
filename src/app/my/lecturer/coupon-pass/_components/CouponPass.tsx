@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
-import { CouponSVG } from '@/icons/svg';
+import { CouponSVG, NotFoundSVG } from '@/icons/svg';
 import { getLecturerCoupons } from '@/lib/apis/couponApis';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
@@ -310,7 +310,7 @@ const CouponPass = ({
         ) : null}
       </div>
 
-      {couponList.length > 0 && (
+      {!!totalItemCount ? (
         <nav className="my-8">
           <Pagination
             pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
@@ -320,6 +320,13 @@ const CouponPass = ({
             onPageChange={handleChangePage}
           />
         </nav>
+      ) : (
+        <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
+          <NotFoundSVG />
+          <p>{`해당 ${
+            filterState.isInterested ? '쿠폰' : '패스권'
+          }이 없습니다!`}</p>
+        </div>
       )}
 
       {couponModalOpened && (
