@@ -7,7 +7,6 @@ import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
 import CouponCreateModal from './CouponCreateModal';
 import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
 import Pagination from '@/components/Pagination/Pagination';
 import { IFilterState, SelectClassType, couponGET } from '@/types/coupon';
 
@@ -23,13 +22,11 @@ const CouponPass = ({
   couponList,
 }: CouponPassProps) => {
   const [couponLists, setCouponLists] = useState(couponList);
-
   const [selectCouponData, setSelectCouponData] = useState<
     couponGET | undefined
   >(undefined);
   const [couponModalOpened, setCouponModalOpened] = useState(false);
   const [modalType, setModalType] = useState<'CREATE' | 'UPDATE'>('CREATE');
-
   const [totalItemCount, setTotalItemCount] = useState(defaultTotalItemCount);
   const [itemId, setItemId] = useState({
     firstItemId: couponList[0]?.id ?? 0,
@@ -80,16 +77,17 @@ const CouponPass = ({
   }, [filterState]);
 
   const handleGetList = async () => {
+    if (filterState.currentPage === 1 && filterState.targetPage === 1) {
+      return;
+    }
+
     if (controller.current) {
       controller.current.abort();
     }
 
     controller.current = new AbortController();
 
-    if (
-      filterState.isInterested &&
-      !(filterState.currentPage === 1 && filterState.targetPage === 1)
-    ) {
+    if (filterState.isInterested) {
       const { selectedClass } = filterState;
 
       const data = {
@@ -112,9 +110,11 @@ const CouponPass = ({
 
       setItemId({
         firstItemId:
-          resData.couponList.length > 0 ? resData.couponList[0].id : 0,
+          resData.couponList && resData.couponList.length > 0
+            ? resData.couponList[0].id
+            : 0,
         lastItemId:
-          resData.couponList.length > 0
+          resData.couponList && resData.couponList.length > 0
             ? resData.couponList[resData.couponList.length - 1].id
             : 0,
       });
@@ -310,15 +310,17 @@ const CouponPass = ({
         ) : null}
       </div>
 
-      <nav className="my-8">
-        <Pagination
-          pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
-          currentPage={
-            filterState.targetPage === 0 ? 0 : filterState.targetPage - 1
-          }
-          onPageChange={handleChangePage}
-        />
-      </nav>
+      {couponList.length > 0 && (
+        <nav className="my-8">
+          <Pagination
+            pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
+            currentPage={
+              filterState.targetPage === 0 ? 0 : filterState.targetPage - 1
+            }
+            onPageChange={handleChangePage}
+          />
+        </nav>
+      )}
 
       {couponModalOpened && (
         <CouponCreateModal

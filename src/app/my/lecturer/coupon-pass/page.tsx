@@ -45,7 +45,7 @@ const CouponPassPage = async () => {
   return (
     <CouponPass
       myLectureList={myLectureListsOption ?? []}
-      couponList={couponList}
+      couponList={couponList ?? []}
       totalItemCount={totalItemCount}
     />
   );
