@@ -1,5 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
 import { IPaymentInfo } from '@/types/payment';
+import { IMyPaymentResponse } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {
@@ -39,5 +40,29 @@ export const postPaymentCancel = async (id: string) => {
     if (error instanceof Error && error.message) {
       return error.message;
     }
+  }
+};
+
+export const getPaymentHistory = async (
+  displayCount: number,
+  currentPage: number,
+  targetPage: number,
+  firstItemId: number,
+  lastItemId: number,
+  option: string,
+): Promise<IMyPaymentResponse | Error> => {
+  const query = `displayCount=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&option=${option}`;
+
+  try {
+    const response = await fetch(`${DOMAIN}/api/payment/history?${query}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };
