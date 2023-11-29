@@ -123,7 +123,7 @@ export interface IMyPayment {
     name: '카드' | '가상계좌';
   };
   paymentStatus: {
-    name: 'WAITING_FOR_DEPOSIT' | 'DONE';
+    name: 'WAITING_FOR_DEPOSIT' | 'DONE' | 'CANCELED';
   };
   updatedAt: string;
   reservation: {
