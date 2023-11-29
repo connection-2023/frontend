@@ -11,12 +11,14 @@ interface InstructorCouponProps {
   coupon: couponGET;
   cancelSelectedCoupon?: () => void;
   editEventHandler?: () => void;
+  lastItemElementRef?: (node: HTMLElement | null) => void;
 }
 
 const InstructorCoupon = ({
   coupon,
   cancelSelectedCoupon,
   editEventHandler,
+  lastItemElementRef,
 }: InstructorCouponProps) => {
   const {
     title,
@@ -38,7 +40,10 @@ const InstructorCoupon = ({
   });
 
   return (
-    <dl className="relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float">
+    <dl
+      className="relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] lg:w-[20.5rem]"
+      ref={lastItemElementRef}
+    >
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
           <dt className="text-2xl font-bold text-main-color">

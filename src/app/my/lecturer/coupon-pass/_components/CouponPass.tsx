@@ -1,5 +1,7 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useWindowSize } from 'react-use';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
 import { getLecturerCoupons } from '@/lib/apis/couponApis';
@@ -48,7 +50,24 @@ const CouponPass = ({
   });
   const initialFilterState = useRef(filterState);
   const prevPage = useRef<number | null>(null);
+
   const controller = useRef<AbortController | null>(null);
+  const [loading, setLoading] = useState(false);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const { width } = useWindowSize();
+  const [prevWidth, setPrevWidth] = useState(width);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (prevWidth < 640 && width >= 640) {
+      router.refresh();
+      setPrevWidth(width);
+    } else if (prevWidth >= 640 && width < 640) {
+      router.refresh();
+      setPrevWidth(width);
+    }
+  }, [width, prevWidth]);
 
   useEffect(() => {
     setCouponLists(couponList);
@@ -87,6 +106,7 @@ const CouponPass = ({
 
     controller.current = new AbortController();
 
+    setLoading(true);
     if (filterState.isInterested) {
       const { selectedClass } = filterState;
 
@@ -106,7 +126,14 @@ const CouponPass = ({
 
       const resData = await getLecturerCoupons(data, controller.current.signal);
 
-      setCouponLists(resData.couponList ?? []);
+      if (width < 640) {
+        setCouponLists((couponList) => [
+          ...couponList,
+          ...(resData.couponList ? resData.couponList : []),
+        ]);
+      } else {
+        setCouponLists(resData.couponList ?? []);
+      }
 
       setItemId({
         firstItemId:
@@ -123,7 +150,23 @@ const CouponPass = ({
     }
 
     prevPage.current = null;
+    setLoading(false);
   };
+
+  const lastItemElementRef = useCallback(
+    (node: HTMLElement | null) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          handleChangePage({ selected: filterState.targetPage });
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading],
+  );
 
   const handleOpenCouponModal = (
     type: 'CREATE' | 'UPDATE',
@@ -232,11 +275,11 @@ const CouponPass = ({
       ];
 
   return (
-    <section className="z-0 col-span-2 flex w-full flex-col bg-white px-5 pt-5">
+    <section className="z-0 col-span-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
       <nav className="flex justify-between pb-2">
-        <div className="flex gap-6">
+        <div className="flex items-center gap-2 sm:gap-6">
           <button
-            className={`flex text-2xl font-bold ${
+            className={`flex text-xl font-bold sm:text-2xl ${
               !filterState.isInterested && 'text-gray-500'
             }`}
             onClick={() => handleInterestChange(true)}
@@ -244,7 +287,7 @@ const CouponPass = ({
             쿠폰({totalItemCount})
           </button>
           <button
-            className={`text-2xl font-bold ${
+            className={`text-xl font-bold sm:text-2xl ${
               filterState.isInterested && 'text-gray-500'
             }`}
             onClick={() => handleInterestChange(false)}
@@ -260,7 +303,7 @@ const CouponPass = ({
         </div>
       </nav>
 
-      <nav className="flex items-center gap-2 border-y border-solid border-gray-500 py-5">
+      <nav className="flex flex-wrap items-center gap-2 border-y border-solid border-gray-500 py-5 sm:flex-nowrap">
         {options.map((option) => (
           <button key={option.id} className="flex items-center gap-1">
             <input
@@ -301,17 +344,20 @@ const CouponPass = ({
         ))}
       </nav>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-4 pb-4">
         {filterState.isInterested ? (
           <CouponComponent
             couponList={couponLists}
             handleOpenCouponModal={handleOpenCouponModal}
+            lastItemElementRef={lastItemElementRef}
+            totalItemCount={totalItemCount}
           />
         ) : null}
       </div>
+      {loading && <div className="block sm:hidden">로딩중입니다...</div>}
 
       {!!totalItemCount ? (
-        <nav className="my-8">
+        <nav className="my-8 hidden sm:block">
           <Pagination
             pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
             currentPage={

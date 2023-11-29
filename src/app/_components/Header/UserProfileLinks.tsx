@@ -41,7 +41,7 @@ const UserProfileLinks = () => {
             </span>
           </button>
 
-          {/* <Profile
+          <Profile
             defaultProfileImg={
               userStoreState.userType === 'lecturer'
                 ? (userStoreState.authUser as instructorProfile)
@@ -49,7 +49,7 @@ const UserProfileLinks = () => {
                 : (userStoreState.authUser as userProfile)?.userProfileImage
                     ?.imageUrl
             }
-          /> */}
+          />
         </>
       )}
     </div>
