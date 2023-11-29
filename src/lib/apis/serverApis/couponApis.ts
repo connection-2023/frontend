@@ -23,6 +23,7 @@ export const getLecturerCoupons = async (
   };
 
   const response = await fetch(END_POINT + '/coupons/lecturer?' + params, {
+    cache: 'no-store',
     method: 'GET',
     credentials: 'include',
     headers,

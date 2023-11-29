@@ -52,13 +52,36 @@ const CouponPass = ({
   const initialFilterState = useRef(filterState);
 
   useEffect(() => {
+    setCouponLists(couponList);
+
+    setItemId({
+      firstItemId: couponList[0]?.id ?? 0,
+      lastItemId: couponList[couponList.length - 1]?.id ?? 0,
+    });
+
+    setTotalItemCount(defaultTotalItemCount);
+
+    setFilterState(initialFilterState.current);
+  }, [couponList]);
+
+  useEffect(() => {
     if (filterState !== initialFilterState.current) {
       handleGetList();
+    }
+    if (filterState.currentPage === 0 && filterState.targetPage === 0) {
+      setFilterState((prevState) => ({
+        ...prevState,
+        currentPage: 1,
+        targetPage: 1,
+      }));
     }
   }, [filterState]);
 
   const handleGetList = async () => {
-    if (filterState.isInterested) {
+    if (
+      filterState.isInterested &&
+      !(filterState.currentPage === 1 && filterState.targetPage === 1)
+    ) {
       const { selectedClass } = filterState;
 
       const data = {
@@ -87,6 +110,8 @@ const CouponPass = ({
             ? resData.couponList[resData.couponList.length - 1].id
             : 0,
       });
+
+      setTotalItemCount(resData.totalItemCount);
     }
   };
 
@@ -108,17 +133,31 @@ const CouponPass = ({
     setFilterState((prevState) => ({
       ...prevState,
       passStatusOptions: id,
+      currentPage: 0,
+      targetPage: 0,
     }));
   };
 
   const handleChangeSelectedClass = (selectedOptions: any) => {
+    setItemId({
+      firstItemId: 0,
+      lastItemId: 0,
+    });
+
     setFilterState((prevState) => ({
       ...prevState,
       selectedClass: selectedOptions,
+      currentPage: 0,
+      targetPage: 0,
     }));
   };
 
   const handleInterestChange = (isInterested: boolean) => {
+    setItemId({
+      firstItemId: 0,
+      lastItemId: 0,
+    });
+
     setFilterState((prevState) => ({
       ...prevState,
       isInterested,
@@ -188,7 +227,7 @@ const CouponPass = ({
             }`}
             onClick={() => handleInterestChange(true)}
           >
-            쿠폰({defaultTotalItemCount})
+            쿠폰({totalItemCount})
           </button>
           <button
             className={`text-2xl font-bold ${
@@ -260,7 +299,9 @@ const CouponPass = ({
       <nav className="my-8">
         <Pagination
           pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
-          currentPage={filterState.targetPage - 1}
+          currentPage={
+            filterState.targetPage === 0 ? 0 : filterState.targetPage - 1
+          }
           onPageChange={handleChangePage}
         />
       </nav>

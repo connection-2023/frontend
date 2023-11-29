@@ -85,6 +85,7 @@ export const getMyLecture = async (): Promise<Lecture[]> => {
   };
 
   const response = await fetch(END_POINT + '/lectures/lecturers', {
+    cache: 'no-store',
     method: 'GET',
     credentials: 'include',
     headers,

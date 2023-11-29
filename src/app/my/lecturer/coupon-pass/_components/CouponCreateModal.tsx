@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { FieldErrors, useForm } from 'react-hook-form';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
@@ -34,7 +35,7 @@ const CouponCreateModal = ({
     reset,
     clearErrors,
   } = useForm<CouponData>();
-
+  const router = useRouter();
   const closeModalHandler = () => {
     reset();
     closeModal();
@@ -48,6 +49,8 @@ const CouponCreateModal = ({
 
       const resData = await createCouponUtils(data);
       resData.lectureCouponTarget = data.lectureIds;
+
+      router.refresh();
 
       reset();
       toast.success('쿠폰 생성 완료');
@@ -63,8 +66,6 @@ const CouponCreateModal = ({
   };
 
   const invalid = (data: FieldErrors<CouponData>) => {
-    console.log(data);
-
     Object.values(data).forEach(({ message }) => {
       toast.error(message);
     });
@@ -104,7 +105,7 @@ const CouponCreateModal = ({
         <div className="mt-5 flex justify-end gap-2">
           {type === 'UPDATE' && (
             <div className="w-24 font-semibold">
-              <UniqueButton size="small">쿠폰 삭제</UniqueButton>
+              <UniqueButton size="small">배포 중지</UniqueButton>
             </div>
           )}
           <div className="w-24 font-semibold">
