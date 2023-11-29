@@ -23,7 +23,7 @@ import {
   CouponDuplicationTooltip,
   MaxDiscountTooltip,
 } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
-import { CouponData, SelectClassType } from '@/types/coupon';
+import { CouponData, SelectClassType, couponGET } from '@/types/coupon';
 
 const CouponOptionInputStyles =
   'h-7 px-3 rounded-md border border-solid border-gray-500 focus:outline-none';
@@ -37,6 +37,8 @@ interface CouponOptionProps {
   errors: FieldErrors<CouponData>;
   trigger: UseFormTrigger<CouponData>;
   clearErrors: UseFormClearErrors<CouponData>;
+  defaultValue?: couponGET;
+  type: 'CREATE' | 'UPDATE';
 }
 
 const CouponOption = ({
@@ -48,6 +50,8 @@ const CouponOption = ({
   watch,
   trigger,
   clearErrors,
+  defaultValue,
+  type,
 }: CouponOptionProps) => {
   const [options, setOptions] = useState<SelectClassType[]>([]);
   const [render, setRender] = useState(false);
@@ -57,8 +61,8 @@ const CouponOption = ({
 
   useEffect(() => {
     getMyLecture()
-      .then((data) => {
-        const options = data.data.lecture.map(({ id, title }) => ({
+      .then((resData) => {
+        const options = resData.data.lecture.map(({ id, title }) => ({
           label: title,
           value: id,
         }));
@@ -78,6 +82,7 @@ const CouponOption = ({
         <input
           type="text"
           className={`${CouponOptionInputStyles} w-96`}
+          defaultValue={defaultValue?.title ?? ''}
           {...register('title', {
             required: '쿠폰명은 필수 값 입니다.',
             validate: (title) => {
@@ -96,7 +101,14 @@ const CouponOption = ({
         <Controller
           name="validityPeriod"
           control={control}
-          defaultValue={{ startDate: '', endDate: '' }}
+          defaultValue={{
+            startDate: defaultValue?.startAt
+              ? new Date(defaultValue.startAt).toISOString().split('T')[0]
+              : '',
+            endDate: defaultValue?.endAt
+              ? new Date(defaultValue.endAt).toISOString().split('T')[0]
+              : '',
+          }}
           rules={{
             required: '사용기간은 필수 값 입니다.',
             validate: ({ startDate, endDate }) => {
@@ -128,6 +140,9 @@ const CouponOption = ({
           <input
             type="number"
             className={`${CouponOptionInputStyles} mr-[0.25rem] w-[5rem] text-right`}
+            defaultValue={
+              defaultValue?.discountPrice ?? defaultValue?.percentage ?? ''
+            }
             {...register('discountValue', {
               required: '쿠폰 상세는 필수 값 입니다.',
               pattern: {
@@ -144,10 +159,10 @@ const CouponOption = ({
           <Controller
             name="couponQuantity"
             control={control}
-            defaultValue="원"
+            defaultValue={defaultValue?.percentage ? '%' : '원'}
             render={({ field }) => (
               <NoborderSelect
-                defaultValue="원"
+                defaultValue={field.value}
                 selectList={COUPON_UNIT_LIST}
                 onChange={field.onChange}
               />
@@ -164,6 +179,7 @@ const CouponOption = ({
         watch={watch}
         errors={errors}
         trigger={trigger}
+        defaultValue={defaultValue?.maxUsageCount}
       />
 
       <section className="flex items-center gap-10">
@@ -178,6 +194,7 @@ const CouponOption = ({
             id="apply"
             type="checkbox"
             className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
+            defaultChecked={defaultValue?.isPrivate ?? false}
             {...register('isStackable')}
           />
           <label
@@ -206,6 +223,7 @@ const CouponOption = ({
           <input
             type="number"
             className={`${CouponOptionInputStyles} peer mr-1 w-20 text-right`}
+            defaultValue={defaultValue?.maxDiscountPrice ?? ''}
             {...register('maxDiscountAmount', {
               pattern: {
                 value: /^[0-9]*$/,
@@ -239,6 +257,7 @@ const CouponOption = ({
             id="isPrivate"
             type="checkbox"
             className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
+            defaultChecked={defaultValue?.isPrivate ?? false}
             {...register('isPrivate')}
           />
           <label
@@ -260,7 +279,14 @@ const CouponOption = ({
             <Controller
               name="lectureIds"
               control={control}
-              defaultValue={options}
+              defaultValue={
+                type === 'CREATE'
+                  ? options
+                  : defaultValue?.lectureCouponTarget.map(({ lecture }) => ({
+                      value: lecture.id,
+                      label: lecture.title,
+                    }))
+              }
               render={({ field }) => {
                 const classSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
                   if (e.target.checked) {

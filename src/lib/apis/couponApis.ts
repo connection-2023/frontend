@@ -1,5 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
 import {
+  IcouponsData,
   IgetLecturerCoupons,
   couponGET,
   createCouponData,
@@ -35,7 +36,7 @@ export const createNewCoupon = async (data: createCouponData) => {
 
 export const getLecturerCoupons = async (
   data: IgetLecturerCoupons,
-): Promise<couponGET[]> => {
+): Promise<IcouponsData> => {
   const params = new URLSearchParams({
     ...Object.fromEntries(
       Object.entries(data)

@@ -23,8 +23,13 @@ const CouponPass = ({
   couponList,
 }: CouponPassProps) => {
   const [couponLists, setCouponLists] = useState(couponList);
-  const [createCouponOpened, setCreateCouponOpened] = useState(false);
-  const [isOpened, setIsOpened] = useState(false);
+
+  const [selectCouponData, setSelectCouponData] = useState<
+    couponGET | undefined
+  >(undefined);
+  const [couponModalOpened, setCouponModalOpened] = useState(false);
+  const [modalType, setModalType] = useState<'CREATE' | 'UPDATE'>('CREATE');
+
   const [totalItemCount, setTotalItemCount] = useState(defaultTotalItemCount);
   const [itemId, setItemId] = useState({
     firstItemId: couponList[0]?.id ?? 0,
@@ -41,10 +46,16 @@ const CouponPass = ({
             label: `전체 클래스(${myLectureList.length - 1})`,
           }
         : null,
-    currentPage: 0,
-    targetPage: 0,
+    currentPage: 1,
+    targetPage: 1,
   });
   const initialFilterState = useRef(filterState);
+
+  useEffect(() => {
+    if (filterState !== initialFilterState.current) {
+      handleGetList();
+    }
+  }, [filterState]);
 
   const handleGetList = async () => {
     if (filterState.isInterested) {
@@ -64,8 +75,6 @@ const CouponPass = ({
             : selectedClass?.value,
       };
 
-      console.log(data);
-
       const resData = await getLecturerCoupons(data);
 
       setCouponLists(resData.couponList ?? []);
@@ -81,11 +90,14 @@ const CouponPass = ({
     }
   };
 
-  useEffect(() => {
-    if (filterState !== initialFilterState.current) {
-      handleGetList();
-    }
-  }, [filterState]);
+  const handleOpenCouponModal = (
+    type: 'CREATE' | 'UPDATE',
+    coupon?: couponGET,
+  ) => {
+    setModalType(type);
+    setSelectCouponData(coupon);
+    setCouponModalOpened(true);
+  };
 
   const handleChangeOptions = async (id: 'AVAILABLE' | 'DISABLED') => {
     setItemId({
@@ -137,7 +149,7 @@ const CouponPass = ({
     setFilterState((prevState) => ({
       ...prevState,
       currentPage: prevState.targetPage,
-      targetPage: selectedPage.selected,
+      targetPage: selectedPage.selected + 1,
     }));
   };
 
@@ -188,7 +200,7 @@ const CouponPass = ({
           </button>
         </div>
         <div className="w-[7.3rem]">
-          <Button onClick={() => setCreateCouponOpened(true)}>
+          <Button onClick={() => handleOpenCouponModal('CREATE')}>
             <CouponSVG className="mr-1 h-6 w-6 fill-sub-color1 group-active:fill-white" />
             쿠폰 생성
           </Button>
@@ -238,22 +250,29 @@ const CouponPass = ({
 
       <div className="flex flex-wrap gap-4">
         {filterState.isInterested ? (
-          <CouponComponent couponList={couponLists} />
+          <CouponComponent
+            couponList={couponLists}
+            handleOpenCouponModal={handleOpenCouponModal}
+          />
         ) : null}
       </div>
 
       <nav className="my-8">
         <Pagination
           pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
-          currentPage={filterState.targetPage}
+          currentPage={filterState.targetPage - 1}
           onPageChange={handleChangePage}
         />
       </nav>
 
-      <CouponCreateModal
-        isOpen={createCouponOpened}
-        closeModal={() => setCreateCouponOpened(false)}
-      />
+      {couponModalOpened && (
+        <CouponCreateModal
+          isOpen={couponModalOpened}
+          closeModal={() => setCouponModalOpened(false)}
+          type={modalType}
+          selectCouponData={selectCouponData}
+        />
+      )}
     </section>
   );
 };

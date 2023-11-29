@@ -1,6 +1,5 @@
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { createNewCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/createCoupon';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
@@ -30,6 +29,15 @@ const CouponCreator = ({
 
   const onValid = async (data: CouponData) => {
     try {
+      if (
+        !window.confirm(`쿠폰을 생성을 완료 하겠습니까?
+      
+      ** 추후 마이페이지 > 쿠폰/패스권 에서 수정 가능 합니다. **
+      `)
+      ) {
+        return;
+      }
+
       const resData = await createCouponUtils(data);
       resData.lectureCouponTarget = data.lectureIds;
 
@@ -47,9 +55,10 @@ const CouponCreator = ({
     }
   };
 
-  const invalid = (data: any) => {
-    console.log(data, '실패');
-    // 추후 토스트 메시지 추가 예정
+  const invalid = (data: FieldErrors<CouponData>) => {
+    Object.values(data).forEach(({ message }) => {
+      toast.error(message);
+    });
   };
 
   return (

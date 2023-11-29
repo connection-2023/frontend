@@ -10,11 +10,13 @@ import { couponGET } from '@/types/coupon';
 interface InstructorCouponProps {
   coupon: couponGET;
   cancelSelectedCoupon?: () => void;
+  editEventHandler?: () => void;
 }
 
 const InstructorCoupon = ({
   coupon,
   cancelSelectedCoupon,
+  editEventHandler,
 }: InstructorCouponProps) => {
   const {
     title,
@@ -58,7 +60,7 @@ const InstructorCoupon = ({
             </UniqueButton>
           </div>
         ) : (
-          <button>
+          <button onClick={editEventHandler}>
             <EditSVG className="h-4 w-4 fill-gray-500" />
           </button>
         )}
@@ -99,7 +101,7 @@ const InstructorCoupon = ({
                 <Link
                   key={lecture.id + lecture.title + String(index)}
                   href={`/class/${lecture.id}`}
-                  className="border-b border-solid border-gray-500 px-4 py-2 hover:bg-sub-color4"
+                  className="border-b border-solid border-gray-500 px-4 py-2 hover:bg-sub-color1-transparent"
                 >
                   {lecture.title}
                 </Link>

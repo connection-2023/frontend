@@ -5,15 +5,23 @@ import { CloseSVG, CouponSVG } from '@/icons/svg';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/createCoupon';
 import Button from '@/components/Button/Button';
+import UniqueButton from '@/components/Button/UniqueButton';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
-import { CouponData } from '@/types/coupon';
+import { CouponData, couponGET } from '@/types/coupon';
 
 interface CouponCreateModal {
   isOpen: boolean;
   closeModal: () => void;
+  type: 'CREATE' | 'UPDATE';
+  selectCouponData?: couponGET;
 }
 
-const CouponCreateModal = ({ closeModal, isOpen }: CouponCreateModal) => {
+const CouponCreateModal = ({
+  closeModal,
+  isOpen,
+  type,
+  selectCouponData,
+}: CouponCreateModal) => {
   const {
     register,
     handleSubmit,
@@ -34,6 +42,10 @@ const CouponCreateModal = ({ closeModal, isOpen }: CouponCreateModal) => {
 
   const onValid = async (data: CouponData) => {
     try {
+      if (!window.confirm('쿠폰을 생성하시겠습니까?')) {
+        return;
+      }
+
       const resData = await createCouponUtils(data);
       resData.lectureCouponTarget = data.lectureIds;
 
@@ -51,6 +63,8 @@ const CouponCreateModal = ({ closeModal, isOpen }: CouponCreateModal) => {
   };
 
   const invalid = (data: FieldErrors<CouponData>) => {
+    console.log(data);
+
     Object.values(data).forEach(({ message }) => {
       toast.error(message);
     });
@@ -64,9 +78,11 @@ const CouponCreateModal = ({ closeModal, isOpen }: CouponCreateModal) => {
       ariaHideApp={false}
     >
       <header className="mb-4 flex justify-between gap-2 border-b border-gray-500 px-5 pb-4 pt-5">
-        <div className="flex">
+        <div className="flex items-center gap-2">
           <CouponSVG className="h-6 w-6 fill-black " />
-          <h1 className="text-lg font-semibold">쿠폰 생성하기</h1>
+          <h1 className="text-lg font-semibold">
+            쿠폰 {type === 'CREATE' ? '생성하기' : '수정/삭제'}
+          </h1>
         </div>
         <button onClick={closeModalHandler}>
           <CloseSVG className="h-6 w-6 stroke-gray-300" />
@@ -82,10 +98,19 @@ const CouponCreateModal = ({ closeModal, isOpen }: CouponCreateModal) => {
           errors={errors}
           trigger={trigger}
           clearErrors={clearErrors}
+          defaultValue={selectCouponData}
+          type={type}
         />
-        <div className="mt-3 flex justify-end">
+        <div className="mt-5 flex justify-end gap-2">
+          {type === 'UPDATE' && (
+            <div className="w-24 font-semibold">
+              <UniqueButton size="small">쿠폰 삭제</UniqueButton>
+            </div>
+          )}
           <div className="w-24 font-semibold">
-            <Button type="submit">생성 하기</Button>
+            <Button type="submit" size="small">
+              {type === 'CREATE' ? '생성 하기' : '수정 완료'}
+            </Button>
           </div>
         </div>
       </form>

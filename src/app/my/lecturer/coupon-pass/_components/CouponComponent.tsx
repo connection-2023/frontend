@@ -2,17 +2,36 @@ import formatDate from '@/utils/formatDate';
 import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
 import { couponGET } from '@/types/coupon';
 
-const CouponComponent = ({ couponList }: { couponList: couponGET[] }) => {
+interface CouponComponentProps {
+  couponList: couponGET[];
+  handleOpenCouponModal: (
+    type: 'CREATE' | 'UPDATE',
+    coupon?: couponGET,
+  ) => void;
+}
+
+const CouponComponent = ({
+  couponList,
+  handleOpenCouponModal,
+}: CouponComponentProps) => {
   return (
     <>
       {couponList.map((coupon) => {
-        const coupo = {
+        const customCoupon = {
           ...coupon,
           startAt: formatDate(coupon.startAt),
           endAt: formatDate(coupon.endAt),
         };
 
-        return <InstructorCoupon key={coupon.id} coupon={coupo} />;
+        return (
+          <InstructorCoupon
+            key={coupon.id}
+            coupon={customCoupon}
+            editEventHandler={() => {
+              handleOpenCouponModal('UPDATE', coupon);
+            }}
+          />
+        );
       })}
     </>
   );
