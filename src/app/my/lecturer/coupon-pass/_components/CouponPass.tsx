@@ -50,6 +50,8 @@ const CouponPass = ({
     targetPage: 1,
   });
   const initialFilterState = useRef(filterState);
+  const prevPage = useRef<number | null>(null);
+  const controller = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setCouponLists(couponList);
@@ -78,6 +80,12 @@ const CouponPass = ({
   }, [filterState]);
 
   const handleGetList = async () => {
+    if (controller.current) {
+      controller.current.abort();
+    }
+
+    controller.current = new AbortController();
+
     if (
       filterState.isInterested &&
       !(filterState.currentPage === 1 && filterState.targetPage === 1)
@@ -98,7 +106,7 @@ const CouponPass = ({
             : selectedClass?.value,
       };
 
-      const resData = await getLecturerCoupons(data);
+      const resData = await getLecturerCoupons(data, controller.current.signal);
 
       setCouponLists(resData.couponList ?? []);
 
@@ -113,6 +121,8 @@ const CouponPass = ({
 
       setTotalItemCount(resData.totalItemCount);
     }
+
+    prevPage.current = null;
   };
 
   const handleOpenCouponModal = (
@@ -185,9 +195,13 @@ const CouponPass = ({
   };
 
   const handleChangePage = (selectedPage: { selected: number }) => {
+    if (prevPage.current === null) {
+      prevPage.current = filterState.targetPage;
+    }
+
     setFilterState((prevState) => ({
       ...prevState,
-      currentPage: prevState.targetPage,
+      currentPage: prevPage.current!,
       targetPage: selectedPage.selected + 1,
     }));
   };

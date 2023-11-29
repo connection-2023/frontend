@@ -36,6 +36,7 @@ export const createNewCoupon = async (data: createCouponData) => {
 
 export const getLecturerCoupons = async (
   data: IgetLecturerCoupons,
+  signal?: AbortSignal,
 ): Promise<IcouponsData> => {
   const params = new URLSearchParams({
     ...Object.fromEntries(
@@ -49,6 +50,7 @@ export const getLecturerCoupons = async (
     const response = await fetch(`${DOMAIN}/api/coupon/getLecturer?${params}`, {
       method: 'GET',
       credentials: 'include',
+      signal,
     });
 
     if (!response.ok) {
