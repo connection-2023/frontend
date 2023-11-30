@@ -20,7 +20,7 @@ export const POST = async (request: NextRequest) => {
     const data = await request.json();
 
     try {
-      const serverResponse = await fetch(END_POINT + '/payments/lecture', {
+      const serverResponse = await fetch(END_POINT + '/payments/toss/lecture', {
         method: 'POST',
         credentials: 'include',
         headers,

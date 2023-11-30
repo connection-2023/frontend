@@ -23,7 +23,7 @@ export const POST = async (request: NextRequest) => {
 
     try {
       const serverResponse = await fetch(
-        END_POINT + '/payments/' + id + '/cancel',
+        END_POINT + '/payments/toss/' + id + '/cancel',
         {
           method: 'POST',
           credentials: 'include',
