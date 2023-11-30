@@ -52,7 +52,7 @@ export interface couponGET {
 
 export interface IcouponsData {
   totalItemCount: number;
-  couponList: couponGET[];
+  itemList: couponGET[];
 }
 
 export interface createCoupon {
@@ -105,7 +105,7 @@ export interface createCouponData {
   lectureIds: number[];
 }
 
-export interface IgetLecturerCoupons {
+export interface IgetFunction {
   take: number | undefined;
   currentPage?: number;
   targetPage?: number;
@@ -117,10 +117,22 @@ export interface IgetLecturerCoupons {
 }
 
 export interface IFilterState {
-  isInterested: boolean;
+  isInterested: 'COUPON' | 'PASS';
   passStatusOptions: 'AVAILABLE' | 'DISABLED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   selectedClass: { value: string; label: string } | null;
   currentPage: number;
   targetPage: number;
+}
+
+export interface IonChangeItemList {
+  type: 'COUPON' | 'PASS';
+  itemList: any[];
+  prevPage?: boolean;
+}
+
+export interface IgetListFunctionHandler {
+  type: 'COUPON' | 'PASS';
+  data: IgetFunction;
+  signal?: AbortSignal;
 }

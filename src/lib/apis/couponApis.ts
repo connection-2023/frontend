@@ -1,10 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import {
-  IcouponsData,
-  IgetLecturerCoupons,
-  couponGET,
-  createCouponData,
-} from '@/types/coupon';
+import { IcouponsData, IgetFunction, createCouponData } from '@/types/coupon';
 
 export const createNewCoupon = async (data: createCouponData) => {
   try {
@@ -35,7 +30,7 @@ export const createNewCoupon = async (data: createCouponData) => {
 };
 
 export const getLecturerCoupons = async (
-  data: IgetLecturerCoupons,
+  data: IgetFunction,
   signal?: AbortSignal,
 ): Promise<IcouponsData> => {
   const params = new URLSearchParams({
@@ -60,7 +55,9 @@ export const getLecturerCoupons = async (
 
     const resData = await response.json();
 
-    return resData.data;
+    const { couponList: itemList, totalItemCount } = resData.data;
+
+    return { itemList, totalItemCount };
   } catch (error) {
     console.error('쿠폰 조회 오류', error);
     throw error;

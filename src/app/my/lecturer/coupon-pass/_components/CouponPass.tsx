@@ -1,16 +1,22 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useWindowSize } from 'react-use';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
 import { getLecturerCoupons } from '@/lib/apis/couponApis';
+import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
 import CouponCreateModal from './CouponCreateModal';
 import Button from '@/components/Button/Button';
 import Pagination from '@/components/Pagination/Pagination';
-import { IFilterState, SelectClassType, couponGET } from '@/types/coupon';
+import Spinner from '@/components/Spinner/Spinner';
+import {
+  IgetListFunctionHandler,
+  IonChangeItemList,
+  SelectClassType,
+  couponGET,
+} from '@/types/coupon';
 
 interface CouponPassProps {
   myLectureList: SelectClassType[];
@@ -20,153 +26,61 @@ interface CouponPassProps {
 
 const CouponPass = ({
   myLectureList,
-  totalItemCount: defaultTotalItemCount,
+  totalItemCount: defaultItemCount,
   couponList,
 }: CouponPassProps) => {
   const [couponLists, setCouponLists] = useState(couponList);
+  const [modalType, setModalType] = useState<'CREATE' | 'UPDATE'>('CREATE');
   const [selectCouponData, setSelectCouponData] = useState<
     couponGET | undefined
   >(undefined);
   const [couponModalOpened, setCouponModalOpened] = useState(false);
-  const [modalType, setModalType] = useState<'CREATE' | 'UPDATE'>('CREATE');
-  const [totalItemCount, setTotalItemCount] = useState(defaultTotalItemCount);
-  const [itemId, setItemId] = useState({
-    firstItemId: couponList[0]?.id ?? 0,
-    lastItemId: couponList[couponList.length - 1]?.id ?? 0,
-  });
-  const [filterState, setFilterState] = useState<IFilterState>({
-    isInterested: true,
-    passStatusOptions: 'AVAILABLE',
-    filterOption: 'LATEST',
-    selectedClass:
-      myLectureList.length > 0
-        ? {
-            value: 'select-all',
-            label: `전체 클래스(${myLectureList.length - 1})`,
-          }
-        : null,
-    currentPage: 1,
-    targetPage: 1,
-  });
-  const initialFilterState = useRef(filterState);
-  const prevPage = useRef<number | null>(null);
 
-  const controller = useRef<AbortController | null>(null);
-  const [loading, setLoading] = useState(false);
-  const observer = useRef<IntersectionObserver | null>(null);
-
-  const { width } = useWindowSize();
-  const [prevWidth, setPrevWidth] = useState(width);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (prevWidth < 640 && width >= 640) {
-      router.refresh();
-      setPrevWidth(width);
-    } else if (prevWidth >= 640 && width < 640) {
-      router.refresh();
-      setPrevWidth(width);
-    }
-  }, [width, prevWidth]);
-
-  useEffect(() => {
-    setCouponLists(couponList);
-
-    setItemId({
-      firstItemId: couponList[0]?.id ?? 0,
-      lastItemId: couponList[couponList.length - 1]?.id ?? 0,
-    });
-
-    setTotalItemCount(defaultTotalItemCount);
-
-    setFilterState(initialFilterState.current);
-  }, [couponList]);
-
-  useEffect(() => {
-    if (filterState !== initialFilterState.current) {
-      handleGetList();
-    }
-    if (filterState.currentPage === 0 && filterState.targetPage === 0) {
-      setFilterState((prevState) => ({
-        ...prevState,
-        currentPage: 1,
-        targetPage: 1,
-      }));
-    }
-  }, [filterState]);
-
-  const handleGetList = async () => {
-    if (filterState.currentPage === 1 && filterState.targetPage === 1) {
-      return;
-    }
-
-    if (controller.current) {
-      controller.current.abort();
-    }
-
-    controller.current = new AbortController();
-
-    setLoading(true);
-    if (filterState.isInterested) {
-      const { selectedClass } = filterState;
-
-      const data = {
-        take: LECTURE_COUPON_TAKE,
-        currentPage: filterState.currentPage,
-        targetPage: filterState.targetPage,
-        firstItemId: itemId.firstItemId,
-        lastItemId: itemId.lastItemId,
-        issuedCouponStatusOptions: filterState.passStatusOptions,
-        filterOption: filterState.filterOption,
-        lectureId:
-          selectedClass?.value === 'select-all'
-            ? undefined
-            : selectedClass?.value,
-      };
-
-      const resData = await getLecturerCoupons(data, controller.current.signal);
-
-      if (width < 640) {
-        setCouponLists((couponList) => [
-          ...couponList,
-          ...(resData.couponList ? resData.couponList : []),
+  const onChangeItemList = ({
+    itemList,
+    prevPage,
+    type,
+  }: IonChangeItemList) => {
+    if (type === 'COUPON') {
+      if (prevPage) {
+        setCouponLists((prevList) => [
+          ...prevList,
+          ...(itemList ? itemList : []),
         ]);
       } else {
-        setCouponLists(resData.couponList ?? []);
+        setCouponLists([...itemList]);
       }
-
-      setItemId({
-        firstItemId:
-          resData.couponList && resData.couponList.length > 0
-            ? resData.couponList[0].id
-            : 0,
-        lastItemId:
-          resData.couponList && resData.couponList.length > 0
-            ? resData.couponList[resData.couponList.length - 1].id
-            : 0,
-      });
-
-      setTotalItemCount(resData.totalItemCount);
+    } else {
     }
-
-    prevPage.current = null;
-    setLoading(false);
   };
 
-  const lastItemElementRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
+  const getListFunctionHandler = async ({
+    type,
+    data,
+    signal,
+  }: IgetListFunctionHandler) => {
+    // if (type === 'COUPON') {} else {}
+    return await getLecturerCoupons(data, signal);
+  };
 
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          handleChangePage({ selected: filterState.targetPage });
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading],
-  );
+  const {
+    width,
+    loading,
+    filterState,
+    totalItemCount,
+    handleFilterOptionChange,
+    handleInterestChange,
+    handleChangeOptions,
+    handleChangeSelectedClass,
+    lastItemElementRef,
+    handleChangePage,
+  } = useCouponPassHook({
+    myLectureList,
+    defaultItemCount,
+    itemList: couponList,
+    onChange: onChangeItemList,
+    getFunction: getListFunctionHandler,
+  });
 
   const handleOpenCouponModal = (
     type: 'CREATE' | 'UPDATE',
@@ -175,78 +89,6 @@ const CouponPass = ({
     setModalType(type);
     setSelectCouponData(coupon);
     setCouponModalOpened(true);
-  };
-
-  const handleChangeOptions = async (id: 'AVAILABLE' | 'DISABLED') => {
-    setItemId({
-      firstItemId: 0,
-      lastItemId: 0,
-    });
-
-    setFilterState((prevState) => ({
-      ...prevState,
-      passStatusOptions: id,
-      currentPage: 0,
-      targetPage: 0,
-    }));
-  };
-
-  const handleChangeSelectedClass = (selectedOptions: any) => {
-    setItemId({
-      firstItemId: 0,
-      lastItemId: 0,
-    });
-
-    setFilterState((prevState) => ({
-      ...prevState,
-      selectedClass: selectedOptions,
-      currentPage: 0,
-      targetPage: 0,
-    }));
-  };
-
-  const handleInterestChange = (isInterested: boolean) => {
-    setItemId({
-      firstItemId: 0,
-      lastItemId: 0,
-    });
-
-    setFilterState((prevState) => ({
-      ...prevState,
-      isInterested,
-      filterOption: 'LATEST',
-      passStatusOptions: 'AVAILABLE',
-      currentPage: 0,
-      targetPage: 0,
-    }));
-  };
-
-  const handleFilterOptionChange = (
-    filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING',
-  ) => {
-    setItemId({
-      firstItemId: 0,
-      lastItemId: 0,
-    });
-
-    setFilterState((prevState) => ({
-      ...prevState,
-      filterOption,
-      currentPage: 0,
-      targetPage: 0,
-    }));
-  };
-
-  const handleChangePage = (selectedPage: { selected: number }) => {
-    if (prevPage.current === null) {
-      prevPage.current = filterState.targetPage;
-    }
-
-    setFilterState((prevState) => ({
-      ...prevState,
-      currentPage: prevPage.current!,
-      targetPage: selectedPage.selected + 1,
-    }));
   };
 
   const options: { id: 'AVAILABLE' | 'DISABLED'; label: string }[] = [
@@ -282,15 +124,15 @@ const CouponPass = ({
             className={`flex text-xl font-bold sm:text-2xl ${
               !filterState.isInterested && 'text-gray-500'
             }`}
-            onClick={() => handleInterestChange(true)}
+            onClick={() => handleInterestChange('COUPON')}
           >
-            쿠폰({totalItemCount})
+            쿠폰({totalItemCount ?? 0})
           </button>
           <button
             className={`text-xl font-bold sm:text-2xl ${
               filterState.isInterested && 'text-gray-500'
             }`}
-            onClick={() => handleInterestChange(false)}
+            onClick={() => handleInterestChange('PASS')}
           >
             패스권
           </button>
@@ -344,7 +186,7 @@ const CouponPass = ({
         ))}
       </nav>
 
-      <div className="flex flex-wrap gap-4 pb-4">
+      <div className="flex flex-wrap justify-center gap-4 pb-4 sm:justify-normal">
         {filterState.isInterested ? (
           <CouponComponent
             couponList={couponLists}
@@ -354,7 +196,11 @@ const CouponPass = ({
           />
         ) : null}
       </div>
-      {loading && <div className="block sm:hidden">로딩중입니다...</div>}
+      {loading && width < 640 && (
+        <div className="mb-5 flex justify-center">
+          <Spinner />
+        </div>
+      )}
 
       {!!totalItemCount ? (
         <nav className="my-8 hidden sm:block">
