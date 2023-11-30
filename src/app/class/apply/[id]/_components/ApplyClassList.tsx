@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { ClearSVG } from '@/icons/svg';
+import { useState } from 'react';
 
 interface ApplyClassListProps {
   dateTime: string;
@@ -7,7 +6,6 @@ interface ApplyClassListProps {
   participants: number;
   remain: number;
   updateParticipants: (id: number, value: number) => void;
-  removeSchedule: (id: number) => void;
 }
 
 const ApplyClassList = ({
@@ -16,15 +14,11 @@ const ApplyClassList = ({
   participants,
   remain,
   updateParticipants,
-  removeSchedule,
 }: ApplyClassListProps) => {
-  const [reservationCount, setReservationCount] = useState(1);
-
-  useEffect(() => {
-    if (participants) {
-      setReservationCount(participants);
-    }
-  }, [participants]);
+  const [reservationCount, setReservationCount] = useState(participants || 1);
+  const [isChecked, setIsChecked] = useState(true);
+  const date = dateTime.substring(0, dateTime.length - 11);
+  const time = dateTime.substring(dateTime.length - 11);
 
   const onClickUp = () => {
     if (reservationCount < remain) {
@@ -40,14 +34,32 @@ const ApplyClassList = ({
     }
   };
 
-  const handleClear = () => {
-    removeSchedule(lectureScheduleId);
+  const handleCheckbox = () => {
+    const newCheckedStatus = !isChecked;
+    setIsChecked(newCheckedStatus);
+
+    updateParticipants(
+      lectureScheduleId,
+      newCheckedStatus ? reservationCount : 0,
+    );
   };
 
   return (
-    <li className="flex w-full items-center justify-between whitespace-nowrap py-2 text-sm font-semibold text-gray-100">
-      <span>{dateTime}</span>
-      <div className="flex items-center">
+    <li className="flex w-full items-center justify-between py-2 text-sm font-semibold text-gray-100">
+      <label className="flex items-start gap-1.5">
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckbox}
+          className="h-[18px] w-[18px] cursor-pointer accent-sub-color1"
+        />
+        <div className="flex flex-wrap gap-1">
+          <p>{date}</p>
+          <p>{time}</p>
+        </div>
+      </label>
+
+      <div className="flex items-center whitespace-nowrap">
         <span className="mr-[1.31rem] text-gray-500">잔여자리: {remain}명</span>
         <div className="flex items-center text-sm text-gray-100">
           <CountButton onClick={onClickDown}>-</CountButton>
@@ -57,9 +69,6 @@ const ApplyClassList = ({
           <CountButton onClick={onClickUp}>+</CountButton>
         </div>
         <span className="ml-[0.31rem]">명</span>
-        <button onClick={handleClear} className="ml-4 cursor-pointer">
-          <ClearSVG width={18} height={18} className="fill-gray-700" />
-        </button>
       </div>
     </li>
   );
