@@ -1,12 +1,12 @@
 import { revalidateTag } from 'next/cache';
+import ApplySidebar from './_components/ApplySidebar';
+import PaymentType from './_components/PaymentType';
+import ReservationInfo from './_components/ReservationInfo';
 import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
 import {
   getClassInfo,
   getClassSchedules,
 } from '@/lib/apis/serverApis/classPostApis';
-import ApplySidebar from './_components/ApplySidebar';
-import PaymentType from './_components/PaymentType';
-import ReservationInfo from './_components/ReservationInfo';
 
 const ClassApplyPage = async ({
   params: { id },
@@ -31,11 +31,11 @@ const ClassApplyPage = async ({
   const { schedule } = classSchedule;
 
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto mb-20 flex grid w-full grid-cols-[1fr_2fr_1fr] gap-x-12 px-[4.5rem]">
+    <main className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 gap-x-12 px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
       {/* 임시 빈 공간 */}
-      <div className="" />
+      <div className="hidden xl:block" />
 
-      <section className="w-full max-w-[40rem]">
+      <section className="w-full lg:max-w-[40rem]">
         <h2 className="flex w-full items-center gap-2 whitespace-pre-line break-keep border-b-[3px] border-solid border-black py-[0.81rem] text-2xl font-bold">
           <MusicalNoteSVG
             width="21"
@@ -74,7 +74,7 @@ const ClassApplyPage = async ({
           <PaymentType price={price} />
         </section>
       </section>
-      <aside className="h-full max-w-[17rem]">
+      <aside className="mt-3.5 h-full w-full rounded-md shadow-float lg:max-w-[17rem] lg:shadow-none">
         <ApplySidebar postId={id} title={title} price={price} />
       </aside>
     </main>

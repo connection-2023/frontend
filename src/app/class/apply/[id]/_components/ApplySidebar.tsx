@@ -106,7 +106,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   };
 
   return (
-    <section className="sticky top-20 mt-14 flex flex-col whitespace-pre-line break-keep text-sm text-gray-100">
+    <section className="sticky top-20 mt-5 flex flex-col whitespace-pre-line break-keep px-3.5 text-sm text-gray-100 lg:mt-14 lg:px-0">
       <h4 className="text-lg font-bold">결제 금액</h4>
       <ul className="mb-5 mt-6 flex flex-col gap-3 border-b border-solid border-gray-500 pb-[0.81rem]">
         <li className="flex items-center justify-between">
@@ -131,7 +131,20 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       <p className="mb-4 mt-[1.31rem] font-bold">
         상기 필수약관을 확인하였으며 결제에 동의합니다.
       </p>
-      <ApplyButton label="결제하기" onClick={handlePayment} />
+
+      <div className="fixed bottom-4 left-0 w-screen px-9 lg:static lg:w-full lg:px-0">
+        <ApplyButton
+          label={
+            <>
+              <p className="hidden lg:block">결제하기</p>
+              <p className="lg:hidden">
+                {totalPrice.toLocaleString()}원 결제하기
+              </p>
+            </>
+          }
+          onClick={handlePayment}
+        />
+      </div>
     </section>
   );
 };
