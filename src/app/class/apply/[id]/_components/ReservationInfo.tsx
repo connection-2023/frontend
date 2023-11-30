@@ -1,7 +1,7 @@
 'use client';
 import { parseISO } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, useMemo } from 'react';
 import ApplyClassList from './ApplyClassList';
 import { IClassSchedule } from '@/types/class';
 import { IReservationInfo } from '@/types/payment';
@@ -65,10 +65,18 @@ const ReservationInfo = ({
     setApplyClass(newValue);
   }, [selectedCounts.length]);
 
-  const selectedSchedules = schedule.filter((lecture) =>
-    selectedSchedule.some(
-      (selectedLecture) => selectedLecture.lectureScheduleId === lecture.id,
-    ),
+  const selectedScheduleIds = useMemo(
+    () =>
+      selectedSchedule.map(
+        (selectedLecture) => selectedLecture.lectureScheduleId,
+      ),
+    [selectedSchedule],
+  );
+
+  const selectedSchedules = useMemo(
+    () =>
+      schedule.filter((lecture) => selectedScheduleIds.includes(lecture.id)),
+    [schedule, selectedScheduleIds],
   );
 
   const processedSchedules = selectedSchedules.map((lecture) => {
