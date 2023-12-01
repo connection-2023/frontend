@@ -36,32 +36,24 @@ const ClassApplyPage = async ({
   const { schedule } = classSchedule;
 
   // 쿼리 파싱
-  const initialApplyData = Array.isArray(count)
-    ? count.map((item) => {
-        const [lectureScheduleId, participants] = item.split('-').map(Number);
-        return {
-          lectureScheduleId,
-          participants,
-        };
-      })
-    : (() => {
-        const [lectureScheduleId, participants] = count.split('-').map(Number);
-        return [
-          {
-            lectureScheduleId,
-            participants,
-          },
-        ];
-      })();
+  const parseCount = (count: string | string[]) => {
+    const countArray = Array.isArray(count) ? count : [count];
+    return countArray.map((item) => {
+      const [lectureScheduleId, participants] = item.split('-').map(Number);
+      return {
+        lectureScheduleId,
+        participants,
+      };
+    });
+  };
 
+  const initialApplyData = parseCount(count);
   const initialScheduleIds = initialApplyData.map(
     (selectedLecture) => selectedLecture.lectureScheduleId,
   );
-
   const selectedSchedule = schedule.filter((lecture) =>
     initialScheduleIds.includes(lecture.id),
   );
-
   const processedSchedules = selectedSchedule.map((lecture) => {
     const datetime = parseISO(lecture.startDateTime);
     const remain = maxCapacity - lecture.numberOfParticipants;
