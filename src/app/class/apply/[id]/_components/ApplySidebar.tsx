@@ -110,7 +110,10 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       <h4 className="text-lg font-bold">결제 금액</h4>
       <ul className="mb-5 mt-6 flex flex-col gap-3 border-b border-solid border-gray-500 pb-[0.81rem]">
         <li className="flex items-center justify-between">
-          주문 금액 <span>{totalPrice.toLocaleString()}원</span>
+          주문 금액
+          <span className="min-w-[1.25rem]">
+            {totalPrice.toLocaleString()}원
+          </span>
         </li>
         <li className="flex items-center justify-between pl-4 text-gray-300">
           ㄴ 쿠폰사용 <span>30,000원</span>
@@ -119,7 +122,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
 
       <div className="mb-2 flex items-center justify-between font-bold">
         <p>최종 결제 금액</p>
-        <span className="text-2xl text-black">
+        <span className="min-w-[2rem] text-2xl text-black">
           {totalPrice.toLocaleString()}원
         </span>
       </div>
