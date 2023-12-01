@@ -126,7 +126,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
       .map((item) => `count=${item.lectureScheduleId}-${item.count}`)
       .join('&');
 
-    router.push(`/class/apply/${id}?${queryString}`);
+    router.push(`/class/${id}/apply?${queryString}`);
   };
 
   return (

@@ -91,7 +91,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
           orderName,
           customerName: representative,
           customerEmail: '',
-          successUrl: `${window.location.origin}/class/apply-complete`,
+          successUrl: `${window.location.origin}/class/${postId}/apply/complete`,
           failUrl: `${window.location.origin}/fail`,
         });
       } else {
