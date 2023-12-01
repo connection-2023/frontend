@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import CountButton from '@/components/Button/CountButton';
 import { IApplyClassList } from '@/types/payment';
 
 interface ApplyClassListProps extends IApplyClassList {
@@ -72,18 +73,3 @@ const ApplyClassList = ({
 };
 
 export default ApplyClassList;
-
-const CountButton = ({
-  onClick,
-  children,
-}: {
-  onClick: () => void;
-  children: React.ReactNode;
-}) => (
-  <button
-    className="h-[31px] w-[35px] border border-solid border-gray-500 bg-gray-900 text-gray-500"
-    onClick={onClick}
-  >
-    {children}
-  </button>
-);
