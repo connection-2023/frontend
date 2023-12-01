@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import { revalidateTag } from 'next/cache';
 import ApplySidebar from './_components/ApplySidebar';
 import PaymentType from './_components/PaymentType';
@@ -7,13 +8,17 @@ import {
   getClassInfo,
   getClassSchedules,
 } from '@/lib/apis/serverApis/classPostApis';
+import { formatDateTime } from '@/utils/parseUtils';
 
 const ClassApplyPage = async ({
   params: { id },
+  searchParams,
 }: {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] };
 }) => {
   revalidateTag('schedules');
+  const { count } = searchParams;
   const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
 
@@ -30,8 +35,51 @@ const ClassApplyPage = async ({
     classInfo.lecture;
   const { schedule } = classSchedule;
 
+  // 쿼리 파싱
+  const initialApplyData = Array.isArray(count)
+    ? count.map((item) => {
+        const [lectureScheduleId, participants] = item.split('-').map(Number);
+        return {
+          lectureScheduleId,
+          participants,
+        };
+      })
+    : (() => {
+        const [lectureScheduleId, participants] = count.split('-').map(Number);
+        return [
+          {
+            lectureScheduleId,
+            participants,
+          },
+        ];
+      })();
+
+  const initialScheduleIds = initialApplyData.map(
+    (selectedLecture) => selectedLecture.lectureScheduleId,
+  );
+
+  const selectedSchedule = schedule.filter((lecture) =>
+    initialScheduleIds.includes(lecture.id),
+  );
+
+  const processedSchedules = selectedSchedule.map((lecture) => {
+    const datetime = parseISO(lecture.startDateTime);
+    const remain = maxCapacity - lecture.numberOfParticipants;
+    const matchedSchedule = initialApplyData.find(
+      (item) => item.lectureScheduleId === lecture.id,
+    );
+    const participants = matchedSchedule ? matchedSchedule.participants : 0;
+
+    return {
+      lectureScheduleId: lecture.id,
+      dateTime: formatDateTime(datetime, duration),
+      remain,
+      participants,
+    };
+  });
+
   return (
-    <main className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
+    <div className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
       {/* 임시 빈 공간 */}
       <div className="hidden xl:block" />
 
@@ -44,6 +92,7 @@ const ClassApplyPage = async ({
           />
           {title}
         </h2>
+
         {reservationComment && (
           <section>
             <h3 className="my-2 flex items-center gap-1 font-semibold text-main-color">
@@ -61,16 +110,16 @@ const ClassApplyPage = async ({
         )}
 
         <ReservationInfo
-          schedule={schedule}
-          duration={duration}
-          maxCapacity={maxCapacity}
+          initialApplyData={initialApplyData}
+          processedSchedules={processedSchedules}
         />
+
         <section className="mt-4 rounded-md px-4 py-[1.31rem] shadow-vertical">
           <h3 className="text-lg font-semibold">쿠폰/패스권 적용</h3>
           {/* 쿠폰 선택 */}
         </section>
 
-        <section className="mt-4 overflow-hidden rounded-md shadow-vertical">
+        <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">
           {/* <h3 className="text-lg font-semibold">결제 방법 선택</h3> */}
           {/* 페이 버튼 */}
           <PaymentType price={price} />
@@ -79,7 +128,7 @@ const ClassApplyPage = async ({
       <aside className="mt-3.5 h-full w-full rounded-md shadow-vertical lg:max-w-[17rem] lg:shadow-none">
         <ApplySidebar postId={id} title={title} price={price} />
       </aside>
-    </main>
+    </div>
   );
 };
 

@@ -1,39 +1,35 @@
 'use client';
-import { parseISO } from 'date-fns';
-import { useSearchParams } from 'next/navigation';
-import { useState, useEffect, ChangeEvent, useMemo } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import ApplyClassList from './ApplyClassList';
-import { IClassSchedule } from '@/types/class';
-import { IReservationInfo } from '@/types/payment';
+import { IReservationInfo, IApplyClassList } from '@/types/payment';
 import { useUserStore, usePaymentStore } from '@/store';
-import { formatDateTime } from '@/utils/parseUtils';
 
 interface ReservationInfoProps {
-  schedule: IClassSchedule[];
-  duration: number;
-  maxCapacity: number;
+  initialApplyData: IReservationInfo[];
+  processedSchedules: IApplyClassList[];
 }
 
 const ReservationInfo = ({
-  schedule,
-  duration,
-  maxCapacity,
+  initialApplyData,
+  processedSchedules,
 }: ReservationInfoProps) => {
-  const searchParams = useSearchParams();
-  const selectedCounts = searchParams.getAll('count');
   const [selectedSchedule, setSelectedSchedule] = useState<IReservationInfo[]>(
     [],
   );
-  const userInfo = useUserStore((state) => state.authUser);
-
   const [applicantInfo, setApplicantInfo] = useState({
     representative: '',
     phoneNumber: '',
     requests: '',
   });
   const [contactValidation, setContactValidation] = useState(false);
+  const userInfo = useUserStore((state) => state.authUser);
   const setApplyClass = usePaymentStore((state) => state.setApplyClass);
   const setApplicant = usePaymentStore((state) => state.setApplicant);
+
+  useEffect(() => {
+    setSelectedSchedule(initialApplyData);
+    setApplyClass(initialApplyData);
+  }, []);
 
   useEffect(() => {
     if (!userInfo) return;
@@ -51,49 +47,6 @@ const ReservationInfo = ({
       setApplicant(newValue);
     }
   }, [userInfo]);
-
-  useEffect(() => {
-    const newValue = selectedCounts.map((item) => {
-      const [id, count] = item.split('-').map(Number);
-      return {
-        lectureScheduleId: id,
-        participants: count,
-      };
-    });
-
-    setSelectedSchedule(newValue);
-    setApplyClass(newValue);
-  }, [selectedCounts.length]);
-
-  const selectedScheduleIds = useMemo(
-    () =>
-      selectedSchedule.map(
-        (selectedLecture) => selectedLecture.lectureScheduleId,
-      ),
-    [selectedSchedule],
-  );
-
-  const selectedSchedules = useMemo(
-    () =>
-      schedule.filter((lecture) => selectedScheduleIds.includes(lecture.id)),
-    [schedule, selectedScheduleIds],
-  );
-
-  const processedSchedules = selectedSchedules.map((lecture) => {
-    const datetime = parseISO(lecture.startDateTime);
-    const space = maxCapacity - lecture.numberOfParticipants;
-    const selected = selectedSchedule.find(
-      (item) => item.lectureScheduleId === lecture.id,
-    );
-    const participants = selected ? selected.participants : 0;
-
-    return {
-      lectureScheduleId: lecture.id,
-      dateTime: formatDateTime(datetime, duration),
-      remain: space,
-      participants,
-    };
-  });
 
   const updateParticipants = (id: number, value: number) => {
     const newSchedule = selectedSchedule.map((item) =>
@@ -181,7 +134,9 @@ const ReservationInfo = ({
 
         <section className="mt-4">
           <h3 className="mb-2 text-lg font-semibold">예약 시 요청사항</h3>
-          {/* <TextAreaSection
+          {/* 
+            공통 컴포넌트로 대체 예정
+           <TextAreaSection
             placeholder="강사에게 전달해야하는 요청사항을 적어주세요."
             maxLength={200}
             dataName="classRequest"

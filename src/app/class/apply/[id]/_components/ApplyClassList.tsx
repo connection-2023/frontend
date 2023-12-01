@@ -1,10 +1,7 @@
 import { useState } from 'react';
+import { IApplyClassList } from '@/types/payment';
 
-interface ApplyClassListProps {
-  dateTime: string;
-  lectureScheduleId: number;
-  participants: number;
-  remain: number;
+interface ApplyClassListProps extends IApplyClassList {
   updateParticipants: (id: number, value: number) => void;
 }
 
