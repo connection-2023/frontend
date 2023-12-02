@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
@@ -30,6 +31,7 @@ const Coupon = ({
   couponList,
   userType,
 }: CouponProps) => {
+  const router = useRouter();
   const [couponLists, setCouponLists] = useState(couponList);
 
   const onChangeItemList = ({ itemList, prevPage }: IonChangeItemList) => {
@@ -56,7 +58,6 @@ const Coupon = ({
     filterState,
     totalItemCount,
     handleFilterOptionChange,
-    handleInterestChange,
     handleChangeOptions,
     handleChangeSelectedClass,
     lastItemElementRef,
@@ -96,7 +97,7 @@ const Coupon = ({
             className={`flex text-xl font-bold sm:text-2xl ${
               filterState.isInterested === 'PASS' && 'text-gray-500'
             }`}
-            onClick={() => handleInterestChange('COUPON')}
+            onClick={() => router.push('/my/lecturer/coupon-pass?state=coupon')}
           >
             쿠폰({totalItemCount ?? 0})
           </button>
@@ -104,7 +105,7 @@ const Coupon = ({
             className={`text-xl font-bold sm:text-2xl ${
               filterState.isInterested === 'COUPON' && 'text-gray-500'
             }`}
-            onClick={() => handleInterestChange('PASS')}
+            onClick={() => router.push('/my/lecturer/coupon-pass?state=pass')}
           >
             패스권
           </button>
@@ -153,17 +154,18 @@ const Coupon = ({
       </nav>
 
       <nav className="flex gap-2.5 py-4">
-        {sortOptions.map((option) => (
-          <button
-            key={option.id} //check
-            className={`flex text-sm font-bold ${
-              filterState.filterOption !== option.id && 'text-gray-500'
-            }`}
-            onClick={() => handleFilterOptionChange(option.id)}
-          >
-            {option.label}
-          </button>
-        ))}
+        {filterState.passStatusOptions === 'AVAILABLE' &&
+          sortOptions.map((option) => (
+            <button
+              key={option.id}
+              className={`flex text-sm font-bold ${
+                filterState.filterOption !== option.id && 'text-gray-500'
+              }`}
+              onClick={() => handleFilterOptionChange(option.id)}
+            >
+              {option.label}
+            </button>
+          ))}
       </nav>
 
       <div className="flex flex-wrap justify-center gap-4 pb-4 sm:justify-normal">

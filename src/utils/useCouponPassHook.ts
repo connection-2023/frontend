@@ -194,22 +194,6 @@ const useCouponPassHook = ({
     }));
   };
 
-  const handleInterestChange = (isInterested: 'COUPON' | 'PASS') => {
-    setItemId({
-      firstItemId: 0,
-      lastItemId: 0,
-    });
-
-    setFilterState((prevState) => ({
-      ...prevState,
-      isInterested,
-      filterOption: 'LATEST',
-      passStatusOptions: 'AVAILABLE',
-      currentPage: 0,
-      targetPage: 0,
-    }));
-  };
-
   const handleFilterOptionChange = (
     filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING',
   ) => {
@@ -243,7 +227,6 @@ const useCouponPassHook = ({
 
   return {
     filterState,
-    handleInterestChange,
     handleChangeOptions,
     handleChangeSelectedClass,
     handleFilterOptionChange,

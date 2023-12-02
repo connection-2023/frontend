@@ -36,13 +36,15 @@ const CouponPassPage = async ({
   } else if (searchParams?.state === 'pass') {
   }
 
-  return (
+  return searchParams?.state === 'coupon' ? (
     <Coupon
       myLectureList={myClassListsOption ?? []}
       couponList={couponList ?? []}
       totalItemCount={totalItemCount}
       userType={params.userType}
     />
+  ) : (
+    <div>패스권</div>
   );
 };
 
