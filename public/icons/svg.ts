@@ -30,6 +30,7 @@ import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
+import FilterSVG from './filter.svg';
 import GenreSVG from './genre.svg';
 import GoogleSVG from './googleIcon.svg';
 import GroupSVG from './group.svg';
@@ -77,6 +78,7 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  FilterSVG,
   TrashcanSVG,
   ApplySuccessSVG,
   HamburgerSVG,

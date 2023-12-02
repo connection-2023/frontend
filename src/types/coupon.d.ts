@@ -111,14 +111,14 @@ export interface IgetFunction {
   targetPage?: number;
   firstItemId?: number;
   lastItemId?: number;
-  issuedCouponStatusOptions: 'AVAILABLE' | 'DISABLED';
+  issuedCouponStatusOptions: 'AVAILABLE' | 'DISABLED' | 'USED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   lectureId?: string | number;
 }
 
 export interface IFilterState {
   isInterested: 'COUPON' | 'PASS';
-  passStatusOptions: 'AVAILABLE' | 'DISABLED';
+  passStatusOptions: 'AVAILABLE' | 'DISABLED' | 'USED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   selectedClass: { value: string; label: string } | null;
   currentPage: number;

@@ -166,7 +166,7 @@ const useCouponPassHook = ({
     }));
   };
 
-  const handleChangeOptions = async (id: 'AVAILABLE' | 'DISABLED') => {
+  const handleChangeOptions = async (id: 'AVAILABLE' | 'DISABLED' | 'USED') => {
     setItemId({
       firstItemId: 0,
       lastItemId: 0,
