@@ -1,9 +1,12 @@
 import { redirect } from 'next/navigation';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { getMyLecture } from '@/lib/apis/serverApis/classApi';
-import { getLecturerCoupons } from '@/lib/apis/serverApis/couponApis';
+import {
+  getLecturerCoupons,
+  getUserCoupons,
+} from '@/lib/apis/serverApis/couponApis';
 import Coupon from './_components/Coupon';
-import { OptionType, couponGET } from '@/types/coupon';
+import { OptionType, couponGET, userCouponGET } from '@/types/coupon';
 
 const CouponPassPage = async ({
   params,
@@ -57,6 +60,55 @@ const getCouponInfo = async (type: string) => {
   let couponList: couponGET[] = [];
 
   try {
+    const reqData =
+      type === 'lecturer'
+        ? {
+            take: LECTURE_COUPON_TAKE,
+            issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
+            filterOption: 'LATEST' as 'LATEST',
+          }
+        : {
+            take: LECTURE_COUPON_TAKE,
+            couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
+            filterOption: 'LATEST' as 'LATEST',
+          };
+
+    const result =
+      type === 'lecturer'
+        ? await getLecturerCoupons(reqData)
+        : await getUserCoupons(reqData);
+
+    if (result) {
+      const { totalItemCount: resTotalItemCount, itemList: resCouponList } =
+        result;
+      totalItemCount = resTotalItemCount;
+
+      couponList = resCouponList.map(
+        (item: userCouponGET | couponGET): couponGET => {
+          if ('lectureCoupon' in item) {
+            return {
+              createdAt: new Date(),
+              updatedAt: new Date(item.updatedAt),
+              startAt: item.lectureCoupon.startAt,
+              endAt: item.lectureCoupon.endAt,
+              id: item.id,
+              title: item.lectureCoupon.title,
+              discountPrice: item.lectureCoupon.discountPrice,
+              isDisabled: item.lectureCoupon.isDisabled,
+              isPrivate: item.lectureCoupon.isPrivate,
+              isStackable: item.lectureCoupon.isStackable,
+              lectureCouponTarget: item.lectureCoupon.lectureCouponTarget,
+              maxDiscountPrice: item.lectureCoupon.maxDiscountPrice,
+              maxUsageCount: item.lectureCoupon.maxUsageCount ?? 0,
+              percentage: item.lectureCoupon.percentage ?? 0,
+            };
+          } else {
+            return item;
+          }
+        },
+      );
+    }
+
     const resLectureLists = type === 'lecturer' ? await getMyLecture() : [];
 
     myClassListsOption = resLectureLists.map(
@@ -71,24 +123,6 @@ const getCouponInfo = async (type: string) => {
         value: 'select-all',
         label: `전체 클래스(${myClassListsOption.length})`,
       });
-
-    const reqData = {
-      take: LECTURE_COUPON_TAKE,
-      issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
-      filterOption: 'LATEST' as 'LATEST',
-    };
-
-    const result =
-      type === 'lecturer'
-        ? await getLecturerCoupons(reqData)
-        : { totalItemCount: 0, itemList: [] };
-
-    if (result) {
-      const { totalItemCount: resTotalItemCount, itemList: resCouponList } =
-        result;
-      totalItemCount = resTotalItemCount;
-      couponList = resCouponList;
-    }
 
     //passItemCount 가져오는 로직 필요
     return { totalItemCount, couponList, passItemCount, myClassListsOption };

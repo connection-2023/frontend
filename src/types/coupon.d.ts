@@ -33,6 +33,27 @@ interface lectureCouponTarget {
   };
 }
 
+export interface userCouponGET {
+  id: number;
+  lectureCouponId: number;
+  isUsed: boolean;
+  updatedAt: string;
+  lectureCoupon: {
+    title: string;
+    isPrivate: boolean;
+    maxUsageCount: number | null;
+    usageCount: number;
+    percentage: number | null;
+    discountPrice: number;
+    maxDiscountPrice: number;
+    startAt: string;
+    endAt: string;
+    isDisabled: boolean;
+    isStackable: boolean;
+    lectureCouponTarget: lectureCouponTarget[];
+  };
+}
+
 export interface couponGET {
   createdAt: Date;
   updatedAt: Date;
@@ -53,6 +74,11 @@ export interface couponGET {
 export interface IcouponsData {
   totalItemCount: number;
   itemList: couponGET[];
+}
+
+export interface IuserCouponsData {
+  totalItemCount: number;
+  itemList: userCouponGET[];
 }
 
 export interface createCoupon {
@@ -111,7 +137,8 @@ export interface IgetFunction {
   targetPage?: number;
   firstItemId?: number;
   lastItemId?: number;
-  issuedCouponStatusOptions: 'AVAILABLE' | 'DISABLED' | 'USED';
+  issuedCouponStatusOptions?: 'AVAILABLE' | 'DISABLED' | 'USED';
+  couponStatusOption?: 'AVAILABLE' | 'EXPIRED' | 'USED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   lectureId?: string | number;
 }
