@@ -7,15 +7,15 @@ export const metadata: Metadata = {
 
 export default async function MyPageLayout({
   children,
-  couponModal,
+  managementModal,
 }: {
   children: React.ReactNode;
-  couponModal: React.ReactNode;
+  managementModal: React.ReactNode;
 }) {
   return (
     <>
       {children}
-      {couponModal}
+      {managementModal}
     </>
   );
 }

@@ -71,9 +71,10 @@ const InstructorCoupon = ({
         ) : (
           <Link
             href={{
-              pathname: '/my/lecturer/coupon-pass/coupon',
+              pathname: '/my/lecturer/coupon-pass/management',
               query: {
                 type: 'UPDATE',
+                state: 'coupon',
                 coupon: JSON.stringify(coupon),
               },
             }}

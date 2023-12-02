@@ -17,43 +17,36 @@ import {
   couponGET,
 } from '@/types/coupon';
 
-interface CouponPassProps {
+interface CouponProps {
   myLectureList: SelectClassType[];
   totalItemCount: number;
   couponList: couponGET[];
+  userType: 'user' | 'lecturer';
 }
 
-const CouponPass = ({
+const Coupon = ({
   myLectureList,
   totalItemCount: defaultItemCount,
   couponList,
-}: CouponPassProps) => {
+  userType,
+}: CouponProps) => {
   const [couponLists, setCouponLists] = useState(couponList);
 
-  const onChangeItemList = ({
-    itemList,
-    prevPage,
-    type,
-  }: IonChangeItemList) => {
-    if (type === 'COUPON') {
-      if (prevPage) {
-        setCouponLists((prevList) => [
-          ...prevList,
-          ...(itemList ? itemList : []),
-        ]);
-      } else {
-        setCouponLists([...itemList]);
-      }
+  const onChangeItemList = ({ itemList, prevPage }: IonChangeItemList) => {
+    if (prevPage) {
+      setCouponLists((prevList) => [
+        ...prevList,
+        ...(itemList ? itemList : []),
+      ]);
     } else {
+      setCouponLists([...itemList]);
     }
   };
 
   const getListFunctionHandler = async ({
-    type,
     data,
     signal,
   }: IgetListFunctionHandler) => {
-    // if (type === 'COUPON') {} else {}
     return await getLecturerCoupons(data, signal);
   };
 
@@ -79,34 +72,21 @@ const CouponPass = ({
   const options: { id: 'AVAILABLE' | 'DISABLED'; label: string }[] = [
     {
       id: 'AVAILABLE',
-      label:
-        filterState.isInterested === 'COUPON'
-          ? '활성화 쿠폰'
-          : '활성화된 패스권',
+      label: '활성화 쿠폰',
     },
     {
       id: 'DISABLED',
-      label:
-        filterState.isInterested === 'COUPON'
-          ? '만료 쿠폰'
-          : '비활성화된 패스권',
+      label: '만료 쿠폰',
     },
   ];
 
   const sortOptions: {
     id: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
     label: string;
-  }[] =
-    filterState.isInterested === 'COUPON'
-      ? [
-          { id: 'LATEST', label: '최신순' },
-          { id: 'UPCOMING', label: '기간 임박순' },
-        ]
-      : [
-          { id: 'LATEST', label: '최신순' },
-          { id: 'HIGHEST_PRICE', label: '높은 가격순' },
-          { id: 'BEST_SELLING', label: '판매순' },
-        ];
+  }[] = [
+    { id: 'LATEST', label: '최신순' },
+    { id: 'UPCOMING', label: '기간 임박순' },
+  ];
 
   return (
     <section className="z-0 col-span-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
@@ -133,8 +113,8 @@ const CouponPass = ({
           <Button>
             <Link
               href={{
-                pathname: '/my/lecturer/coupon-pass/coupon',
-                query: { type: 'CREATE' },
+                pathname: '/my/lecturer/coupon-pass/management',
+                query: { type: 'CREATE', state: 'coupon' },
               }}
               className="flex"
             >
@@ -223,4 +203,4 @@ const CouponPass = ({
   );
 };
 
-export default CouponPass;
+export default Coupon;
