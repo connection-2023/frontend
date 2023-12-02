@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
-import { IcouponsData, IgetLecturerCoupons } from '@/types/coupon';
+import { IcouponsData, IgetFunction } from '@/types/coupon';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
 export const getLecturerCoupons = async (
-  data: IgetLecturerCoupons,
+  data: IgetFunction,
 ): Promise<IcouponsData | null> => {
   const cookieStore = cookies();
   const authorization = cookieStore.get('lecturerAccessToken')?.value;
@@ -35,5 +35,7 @@ export const getLecturerCoupons = async (
 
   const resData = await response.json();
 
-  return resData.data;
+  const { couponList: itemList, totalItemCount } = resData.data;
+
+  return { itemList, totalItemCount };
 };

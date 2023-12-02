@@ -1,13 +1,12 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
 import { getLecturerCoupons } from '@/lib/apis/couponApis';
 import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from './ClassFilterSelect';
 import CouponComponent from './CouponComponent';
-import CouponCreateModal from './CouponCreateModal';
 import Button from '@/components/Button/Button';
 import Pagination from '@/components/Pagination/Pagination';
 import Spinner from '@/components/Spinner/Spinner';
@@ -30,11 +29,6 @@ const CouponPass = ({
   couponList,
 }: CouponPassProps) => {
   const [couponLists, setCouponLists] = useState(couponList);
-  const [modalType, setModalType] = useState<'CREATE' | 'UPDATE'>('CREATE');
-  const [selectCouponData, setSelectCouponData] = useState<
-    couponGET | undefined
-  >(undefined);
-  const [couponModalOpened, setCouponModalOpened] = useState(false);
 
   const onChangeItemList = ({
     itemList,
@@ -82,39 +76,37 @@ const CouponPass = ({
     getFunction: getListFunctionHandler,
   });
 
-  const handleOpenCouponModal = (
-    type: 'CREATE' | 'UPDATE',
-    coupon?: couponGET,
-  ) => {
-    setModalType(type);
-    setSelectCouponData(coupon);
-    setCouponModalOpened(true);
-  };
-
   const options: { id: 'AVAILABLE' | 'DISABLED'; label: string }[] = [
     {
       id: 'AVAILABLE',
-      label: filterState.isInterested ? '활성화 쿠폰' : '활성화된 패스권',
+      label:
+        filterState.isInterested === 'COUPON'
+          ? '활성화 쿠폰'
+          : '활성화된 패스권',
     },
     {
       id: 'DISABLED',
-      label: filterState.isInterested ? '만료 쿠폰' : '비활성화된 패스권',
+      label:
+        filterState.isInterested === 'COUPON'
+          ? '만료 쿠폰'
+          : '비활성화된 패스권',
     },
   ];
 
   const sortOptions: {
     id: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
     label: string;
-  }[] = filterState.isInterested
-    ? [
-        { id: 'LATEST', label: '최신순' },
-        { id: 'UPCOMING', label: '기간 임박순' },
-      ]
-    : [
-        { id: 'LATEST', label: '최신순' },
-        { id: 'HIGHEST_PRICE', label: '높은 가격순' },
-        { id: 'BEST_SELLING', label: '판매순' },
-      ];
+  }[] =
+    filterState.isInterested === 'COUPON'
+      ? [
+          { id: 'LATEST', label: '최신순' },
+          { id: 'UPCOMING', label: '기간 임박순' },
+        ]
+      : [
+          { id: 'LATEST', label: '최신순' },
+          { id: 'HIGHEST_PRICE', label: '높은 가격순' },
+          { id: 'BEST_SELLING', label: '판매순' },
+        ];
 
   return (
     <section className="z-0 col-span-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
@@ -122,7 +114,7 @@ const CouponPass = ({
         <div className="flex items-center gap-2 sm:gap-6">
           <button
             className={`flex text-xl font-bold sm:text-2xl ${
-              !filterState.isInterested && 'text-gray-500'
+              filterState.isInterested === 'PASS' && 'text-gray-500'
             }`}
             onClick={() => handleInterestChange('COUPON')}
           >
@@ -130,7 +122,7 @@ const CouponPass = ({
           </button>
           <button
             className={`text-xl font-bold sm:text-2xl ${
-              filterState.isInterested && 'text-gray-500'
+              filterState.isInterested === 'COUPON' && 'text-gray-500'
             }`}
             onClick={() => handleInterestChange('PASS')}
           >
@@ -138,9 +130,17 @@ const CouponPass = ({
           </button>
         </div>
         <div className="w-[7.3rem]">
-          <Button onClick={() => handleOpenCouponModal('CREATE')}>
-            <CouponSVG className="mr-1 h-6 w-6 fill-sub-color1 group-active:fill-white" />
-            쿠폰 생성
+          <Button>
+            <Link
+              href={{
+                pathname: '/my/lecturer/coupon-pass/coupon',
+                query: { type: 'CREATE' },
+              }}
+              className="flex"
+            >
+              <CouponSVG className="mr-1 h-6 w-6 fill-sub-color1 group-active:fill-white" />
+              쿠폰 생성
+            </Link>
           </Button>
         </div>
       </nav>
@@ -187,10 +187,9 @@ const CouponPass = ({
       </nav>
 
       <div className="flex flex-wrap justify-center gap-4 pb-4 sm:justify-normal">
-        {filterState.isInterested ? (
+        {filterState.isInterested === 'COUPON' ? (
           <CouponComponent
             couponList={couponLists}
-            handleOpenCouponModal={handleOpenCouponModal}
             lastItemElementRef={lastItemElementRef}
             totalItemCount={totalItemCount}
           />
@@ -219,15 +218,6 @@ const CouponPass = ({
             filterState.isInterested ? '쿠폰' : '패스권'
           }이 없습니다!`}</p>
         </div>
-      )}
-
-      {couponModalOpened && (
-        <CouponCreateModal
-          isOpen={couponModalOpened}
-          closeModal={() => setCouponModalOpened(false)}
-          type={modalType}
-          selectCouponData={selectCouponData}
-        />
       )}
     </section>
   );

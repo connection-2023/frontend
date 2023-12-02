@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { CloseSVG, EditSVG, LinkSVG } from '@/icons/svg';
+import formatDate from '@/utils/formatDate';
 import Button from '../Button/Button';
 import UniqueButton from '../Button/UniqueButton';
 import { couponGET } from '@/types/coupon';
@@ -17,7 +18,6 @@ interface InstructorCouponProps {
 const InstructorCoupon = ({
   coupon,
   cancelSelectedCoupon,
-  editEventHandler,
   lastItemElementRef,
 }: InstructorCouponProps) => {
   const {
@@ -25,12 +25,16 @@ const InstructorCoupon = ({
     percentage,
     discountPrice,
     isPrivate,
-    startAt,
-    endAt,
+    startAt: startDate,
+    endAt: endDate,
     isStackable,
     maxDiscountPrice,
     lectureCouponTarget,
   } = coupon;
+
+  const startAt = formatDate(startDate);
+  const endAt = formatDate(endDate);
+
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
   const pathname = usePathname();
@@ -65,9 +69,17 @@ const InstructorCoupon = ({
             </UniqueButton>
           </div>
         ) : (
-          <button onClick={editEventHandler}>
+          <Link
+            href={{
+              pathname: '/my/lecturer/coupon-pass/coupon',
+              query: {
+                type: 'UPDATE',
+                coupon: JSON.stringify(coupon),
+              },
+            }}
+          >
             <EditSVG className="h-4 w-4 fill-gray-500" />
-          </button>
+          </Link>
         )}
       </div>
       <div className="flex gap-2">

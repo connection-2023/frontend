@@ -33,7 +33,7 @@ const CouponPassPage = async () => {
 
     const result = await getLecturerCoupons(reqData);
     if (result) {
-      const { totalItemCount: resTotalItemCount, couponList: resCouponList } =
+      const { totalItemCount: resTotalItemCount, itemList: resCouponList } =
         result;
       totalItemCount = resTotalItemCount;
       couponList = resCouponList;
