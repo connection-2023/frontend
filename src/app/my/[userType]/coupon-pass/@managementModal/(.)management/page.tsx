@@ -22,7 +22,6 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
   const { type, coupon } = searchParams;
   const couponObj = coupon ? (JSON.parse(coupon) as couponGET) : undefined;
 
-  //couponGET
   const {
     register,
     handleSubmit,
@@ -70,40 +69,42 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
 
   return (
     <RouterModal>
-      <header className="mb-4 flex justify-between gap-2 border-b border-gray-500 px-5 pb-4 pt-5">
-        <div className="flex items-center gap-2">
-          <CouponSVG className="h-6 w-6 fill-black " />
-          <h1 className="text-lg font-semibold">
-            쿠폰 {type === 'CREATE' ? '생성하기' : '수정/삭제'}
-          </h1>
-        </div>
-      </header>
-      <form onSubmit={handleSubmit(onValid, invalid)} className="px-5 pb-7">
-        <CouponOption
-          register={register}
-          control={control}
-          getValues={getValues}
-          setValue={setValue}
-          watch={watch}
-          errors={errors}
-          trigger={trigger}
-          clearErrors={clearErrors}
-          defaultValue={couponObj}
-          type={type}
-        />
-        <div className="mt-5 flex justify-end gap-2">
-          {type === 'UPDATE' && (
-            <div className="w-24 font-semibold">
-              <UniqueButton size="small">배포 중지</UniqueButton>
-            </div>
-          )}
-          <div className="w-24 font-semibold">
-            <Button type="submit" size="small">
-              {type === 'CREATE' ? '생성 하기' : '수정 완료'}
-            </Button>
+      <div className="h-screen sm:h-fit">
+        <header className="mb-4 flex justify-between gap-2 border-b border-gray-500 px-5 pb-4 pt-5">
+          <div className="flex items-center gap-2">
+            <CouponSVG className="h-6 w-6 fill-black " />
+            <h1 className="text-lg font-semibold">
+              쿠폰 {type === 'CREATE' ? '생성하기' : '수정/삭제'}
+            </h1>
           </div>
-        </div>
-      </form>
+        </header>
+        <form onSubmit={handleSubmit(onValid, invalid)} className="px-5 pb-7">
+          <CouponOption
+            register={register}
+            control={control}
+            getValues={getValues}
+            setValue={setValue}
+            watch={watch}
+            errors={errors}
+            trigger={trigger}
+            clearErrors={clearErrors}
+            defaultValue={couponObj}
+            type={type}
+          />
+          <div className="mt-5 flex justify-end gap-2">
+            {type === 'UPDATE' && (
+              <div className="w-24 font-semibold">
+                <UniqueButton size="small">배포 중지</UniqueButton>
+              </div>
+            )}
+            <div className="w-24 font-semibold">
+              <Button type="submit" size="small">
+                {type === 'CREATE' ? '생성 하기' : '수정 완료'}
+              </Button>
+            </div>
+          </div>
+        </form>
+      </div>
     </RouterModal>
   );
 };

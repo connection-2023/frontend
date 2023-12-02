@@ -13,11 +13,11 @@ const CouponOptionSection = ({
   errors,
   registerId,
 }: CouponOptionSectionProps) => (
-  <section className="flex items-center gap-10">
+  <section className="flex flex-wrap sm:flex-nowrap sm:items-center sm:gap-10">
     <h2
       className={`${
         errors[registerId] && 'animate-vibration text-main-color'
-      } w-1/6 font-semibold`}
+      } w-36 whitespace-nowrap font-semibold sm:w-1/6`}
     >
       {title}
     </h2>

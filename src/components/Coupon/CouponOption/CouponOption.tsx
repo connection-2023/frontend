@@ -121,7 +121,7 @@ const CouponOption = ({
             },
           }}
           render={({ field }) => (
-            <div className="w-96">
+            <div className="w-96 border-b border-solid border-gray-700 pb-5 sm:border-none sm:pb-0">
               <ClassRange
                 defaultValue={field.value}
                 onChange={field.onChange}
@@ -173,6 +173,8 @@ const CouponOption = ({
         </div>
       </CouponOptionSection>
 
+      <hr className="border-gray-700 sm:hidden" />
+
       <DistributionCount
         register={register}
         getValues={getValues}
@@ -183,8 +185,10 @@ const CouponOption = ({
         defaultValue={defaultValue?.maxUsageCount}
       />
 
-      <section className="flex items-center gap-10">
-        <div className="flex w-1/6 items-center gap-1">
+      <hr className="border-gray-700 sm:hidden" />
+
+      <section className="flex items-center sm:gap-10">
+        <div className="flex w-36 items-center gap-1 sm:w-1/6">
           <h2 className="whitespace-nowrap font-semibold">중복할인 쿠폰</h2>
           <Tooltip>
             <CouponDuplicationTooltip />
@@ -207,8 +211,10 @@ const CouponOption = ({
         </div>
       </section>
 
-      <section className="flex items-center gap-10">
-        <div className="flex w-1/6 items-center gap-1">
+      <hr className="border-gray-700 sm:hidden" />
+
+      <section className="flex items-center sm:gap-10">
+        <div className="flex w-36 items-center gap-1 sm:w-1/6">
           <h2
             className={`whitespace-nowrap font-semibold ${
               errors.maxDiscountAmount && 'animate-vibration text-main-color'
@@ -246,8 +252,10 @@ const CouponOption = ({
         </div>
       </section>
 
-      <section className="flex items-center gap-10">
-        <div className="flex w-1/6 items-center gap-1">
+      <hr className="border-gray-700 sm:hidden" />
+
+      <section className="flex items-center sm:gap-10">
+        <div className="flex w-36 items-center gap-1 sm:w-1/6">
           <h2 className="whitespace-nowrap font-semibold">일부공개</h2>
           <Tooltip>
             <CouponDuplicationTooltip />
@@ -270,89 +278,86 @@ const CouponOption = ({
         </div>
       </section>
 
-      <section className="flex items-stretch gap-10">
-        <div className="h-full w-1/6 gap-1">
-          <h2 className="whitespace-nowrap font-semibold ">적용할 클래스</h2>
-        </div>
+      <hr className="border-gray-700 sm:hidden" />
 
-        <div className="flex w-96 flex-col gap-3">
-          {(options.length > 0 || render) && (
-            <Controller
-              name="lectureIds"
-              control={control}
-              defaultValue={
-                type === 'CREATE'
-                  ? options
-                  : defaultValue?.lectureCouponTarget.map(({ lecture }) => ({
-                      value: lecture.id,
-                      label: lecture.title,
-                    }))
-              }
-              render={({ field }) => {
-                const classSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
-                  if (e.target.checked) {
-                    setValue('lectureIds', options);
-                    field.onChange(options);
-                  } else {
-                    setValue('lectureIds', []);
-                    field.onChange([]);
-                  }
-                };
+      <section className="grid grid-cols-[1fr,5fr] items-stretch">
+        <h2 className="mr-10 whitespace-nowrap font-semibold">적용할 클래스</h2>
 
-                return (
-                  <>
-                    <div className="flex">
-                      <input
-                        id="lectureIds"
-                        type="checkbox"
-                        className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
-                        checked={isAllSelected}
-                        onChange={(e) => classSelectAll(e)}
-                      />
-                      <label
-                        htmlFor="lectureIds"
-                        className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
+        {(options.length > 0 || render) && (
+          <Controller
+            name="lectureIds"
+            control={control}
+            defaultValue={
+              type === 'CREATE'
+                ? options
+                : defaultValue?.lectureCouponTarget.map(({ lecture }) => ({
+                    value: lecture.id,
+                    label: lecture.title,
+                  }))
+            }
+            render={({ field }) => {
+              const classSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
+                if (e.target.checked) {
+                  setValue('lectureIds', options);
+                  field.onChange(options);
+                } else {
+                  setValue('lectureIds', []);
+                  field.onChange([]);
+                }
+              };
+
+              return (
+                <>
+                  <div className="mb-2 flex">
+                    <input
+                      id="lectureIds"
+                      type="checkbox"
+                      className="peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
+                      checked={isAllSelected}
+                      onChange={(e) => classSelectAll(e)}
+                    />
+                    <label
+                      htmlFor="lectureIds"
+                      className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
+                    >
+                      전체 클래스 적용
+                    </label>
+                  </div>
+                  <div className="col-span-2 mb-2 w-full sm:col-start-2">
+                    <SelectClass
+                      options={options}
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  </div>
+                  <div className="col-span-2 flex max-h-48 flex-col gap-1 overflow-y-auto sm:col-start-2">
+                    {selectClass?.map(({ label = '', value = '' }, index) => (
+                      <p
+                        key={label + index}
+                        className="flex items-center justify-between text-sm text-sub-color1"
                       >
-                        전체 클래스 적용
-                      </label>
-                    </div>
-                    <div className="w-full">
-                      <SelectClass
-                        options={options}
-                        onChange={field.onChange}
-                        value={field.value}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      {selectClass?.map(({ label = '', value = '' }, index) => (
-                        <p
-                          key={label + index}
-                          className="flex items-center justify-between text-sm text-sub-color1"
+                        #{label}
+                        <button
+                          type="button"
+                          className="group"
+                          onClick={() =>
+                            field.onChange(
+                              field.value.filter(
+                                ({ value: fieldValue }) => fieldValue !== value,
+                              ),
+                            )
+                          }
                         >
-                          #{label}
-                          <button
-                            type="button"
-                            className="group"
-                            onClick={() =>
-                              field.onChange(
-                                field.value.filter(
-                                  ({ value: fieldValue }) =>
-                                    fieldValue !== value,
-                                ),
-                              )
-                            }
-                          >
-                            <CloseSVG className=" h-4 w-4 stroke-gray-500 group-hover:stroke-sub-color1" />
-                          </button>
-                        </p>
-                      ))}
-                    </div>
-                  </>
-                );
-              }}
-            />
-          )}
-        </div>
+                          <CloseSVG className=" h-4 w-4 stroke-gray-500 group-hover:stroke-sub-color1" />
+                        </button>
+                      </p>
+                    ))}
+                  </div>
+                </>
+              );
+            }}
+          />
+        )}
       </section>
     </main>
   );
