@@ -16,7 +16,7 @@ export const patchPaymentConfirm = async (
       Authorization: `Bearer ${token}`,
     };
 
-    const response = await fetch(END_POINT + '/payments/lecture/confirm', {
+    const response = await fetch(END_POINT + '/payments/toss/confirm', {
       method: 'PATCH',
       credentials: 'include',
       headers,

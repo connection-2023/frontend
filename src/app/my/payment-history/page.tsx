@@ -1,8 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { getPaymentHistory } from '@/lib/apis/paymentApis';
 import PaymentList from './_components/PaymentList';
-import { IMyPaymentInfo } from '@/types/types';
+import Pagination from '@/components/Pagination/Pagination';
+import { IMyPayment } from '@/types/types';
 
 enum filterOptions {
   All = '전체',
@@ -10,62 +12,93 @@ enum filterOptions {
   Pass = '패스권',
 }
 
-const mockData: IMyPaymentInfo[] = [
-  {
-    id: 2,
-    orderId: 1,
-    type: 'class',
-    status: '결제완료',
-    paymentDate: '23.11.05',
-    image:
-      'https://connection-bucket.s3.amazonaws.com/lectures/1700525913534_99F17695-2B35-4571-85FA-93114EB95768-55389-000021ABFC85CE19-min.JPG',
-    count: 10,
-    title: '원밀리언의 리아킴과 함께하는 댄스클래스',
-    classTime: '23.11.07 11:00-11:50',
-    price: 40000,
-  },
-  {
-    id: 2,
-    orderId: 2,
-    type: 'class',
-    status: '입금대기',
-    paymentDate: '23.11.05',
-    image:
-      'https://connection-bucket.s3.amazonaws.com/lectures/1700525913534_99F17695-2B35-4571-85FA-93114EB95768-55389-000021ABFC85CE19-min.JPG',
-    count: 10,
-    title: '원밀리언의 리아킴과 함께하는 댄스클래스',
-    classTime: '23.11.07 11:00-11:50',
-    price: 40000,
-  },
-  {
-    id: 2,
-    orderId: 3,
-    type: 'pass',
-    status: '결제완료',
-    paymentDate: '23.11.05',
-    image:
-      'https://connection-bucket.s3.amazonaws.com/lectures/1700525913534_99F17695-2B35-4571-85FA-93114EB95768-55389-000021ABFC85CE19-min.JPG',
-    count: 10,
-    title: '10회 초특가 패스권',
-    price: 40000,
-  },
-];
-
 const PaymentHistory = () => {
   const [selectedOption, setSelectedOption] = useState(filterOptions.All);
   const [displayCount, setDisplayCount] = useState(5);
+  const [totalItemCount, setTotalItemCount] = useState(0);
+  const [paymentData, setPaymentData] = useState<IMyPayment[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemId, setItemId] = useState({
+    firstItemId: 0,
+    lastItemId: 0,
+  });
+  const pageCount = Math.round(totalItemCount / displayCount);
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    loadPaymentHistory(
+      displayCount,
+      currentPage,
+      currentPage,
+      itemId.firstItemId,
+      itemId.lastItemId,
+      selectedOption,
+    );
+  }, []);
+
+  const loadPaymentHistory = async (
+    displayCount: number,
+    currentPage: number,
+    targetPage: number,
+    firstItemId: number,
+    lastItemId: number,
+    option: string,
+  ) => {
+    const data = await getPaymentHistory(
+      displayCount,
+      currentPage,
+      targetPage,
+      firstItemId,
+      lastItemId,
+      option,
+    );
+
+    if (data instanceof Error) return;
+
+    const { totalItemCount, paymentHistory } = data;
+    setTotalItemCount(totalItemCount);
+    setPaymentData(paymentHistory);
+
+    const itemIds = {
+      firstItemId: paymentHistory[0].id,
+      lastItemId: paymentHistory[displayCount - 1].id,
+    };
+
+    setItemId(itemIds);
+  };
+
+  const handleCheckboxChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const option = event.target.id as filterOptions;
 
     if (Object.values(filterOptions).includes(option)) {
       setSelectedOption(option);
+
+      await loadPaymentHistory(
+        displayCount,
+        currentPage,
+        currentPage,
+        itemId.firstItemId,
+        itemId.lastItemId,
+        option,
+      );
     }
   };
 
-  const handleDisplayCount = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setDisplayCount(Number(event.target.value));
-    // api 호출
+  const handleDisplayCount = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const newValue = Number(event.target.value);
+    setDisplayCount(newValue);
+
+    await loadPaymentHistory(
+      newValue,
+      currentPage,
+      currentPage,
+      itemId.firstItemId,
+      itemId.lastItemId,
+      selectedOption,
+    );
   };
 
   const handlePaymentDelete = () => {
@@ -76,6 +109,19 @@ const PaymentHistory = () => {
       // API 처리
       toast.success('결제내역이 삭제되었습니다!');
     }
+  };
+
+  const handlePageChange = async ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+
+    await loadPaymentHistory(
+      displayCount,
+      currentPage,
+      selected,
+      itemId.firstItemId,
+      itemId.lastItemId,
+      selectedOption,
+    );
   };
 
   return (
@@ -114,14 +160,20 @@ const PaymentHistory = () => {
         </select>
       </div>
       <div className="flex flex-col gap-4">
-        {mockData.map((data) => (
+        {paymentData.map((data) => (
           <PaymentList
-            key={data.orderId}
+            key={data.id}
             {...data}
             handlePaymentDelete={handlePaymentDelete}
           />
         ))}
       </div>
+
+      <Pagination
+        pageCount={pageCount}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
     </section>
   );
 };

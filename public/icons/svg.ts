@@ -21,6 +21,7 @@ import ClearSVG from './clear.svg';
 import CloseSVG from './close.svg';
 import CommentSVG from './comment.svg';
 import ConnectionLogoSVG from './connectionLogo.svg';
+import CopySVG from './copy.svg';
 import CouponSVG from './coupon.svg';
 import CropSVG from './crop.svg';
 import DashboardSVG from './dashboard.svg';
@@ -78,6 +79,7 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   TrashcanSVG,
+  CopySVG,
   ApplySuccessSVG,
   HamburgerSVG,
   AuthIconSVG,

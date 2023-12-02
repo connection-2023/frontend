@@ -110,15 +110,40 @@ export interface IGenre {
   danceCategory: { genre: string };
 }
 
-export interface IMyPaymentInfo {
-  orderId: number;
+export interface IMyPayment {
   id: number;
-  type: 'class' | 'pass';
-  status: '입금대기' | '결제완료';
-  image: string;
-  paymentDate: string;
-  count: number;
-  title: string;
-  classTime?: string;
-  price: number;
+  orderId: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+  paymentProductType: {
+    name: '클래스' | '패스권';
+  };
+  paymentMethod: {
+    name: '카드' | '가상계좌';
+  };
+  paymentStatus: {
+    name: 'WAITING_FOR_DEPOSIT' | 'DONE' | 'CANCELED';
+  };
+  updatedAt: string;
+  reservation: {
+    participants: number;
+    requests: string;
+    lectureSchedule: {
+      lectureId: number;
+      startDateTime: string;
+      lecture: {
+        lectureImage: {
+          imageUrl: string;
+        }[];
+      };
+    };
+  }[];
+
+  userPass: string[];
+}
+
+export interface IMyPaymentResponse {
+  totalItemCount: number;
+  paymentHistory: IMyPayment[];
 }
