@@ -71,3 +71,30 @@ export const getCouponLists = async (
     throw error;
   }
 };
+
+export const getPrivateCode = async (couponId: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/coupon/getPrivateCode?couponId=${couponId}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || '');
+    }
+
+    const resData = await response.json();
+
+    return resData.data;
+  } catch (error) {
+    console.error('쿠폰 조회 오류', error);
+    throw error;
+  }
+};

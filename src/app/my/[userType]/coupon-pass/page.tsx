@@ -4,7 +4,7 @@ import { getMyLecture } from '@/lib/apis/serverApis/classApi';
 import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import { mapItemToCoupon } from '@/utils/apiDataProcessor';
 import CouponView from './_components/CouponView';
-import { OptionType, couponGET, userCouponGET } from '@/types/coupon';
+import { OptionType, couponGET } from '@/types/coupon';
 
 const CouponPassPage = async ({
   params,
@@ -60,7 +60,7 @@ const getCouponInfo = async (type: 'user' | 'lecturer') => {
   try {
     const reqData = {
       take: LECTURE_COUPON_TAKE,
-      couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
+      couponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
       filterOption: 'LATEST' as 'LATEST',
     };
 

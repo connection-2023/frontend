@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { getLecturerCoupons } from '@/lib/apis/couponApis';
+import { getCouponLists } from '@/lib/apis/couponApis';
 import formatDate from '@/utils/formatDate';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
@@ -18,18 +18,18 @@ const ClassPrice = () => {
     const reqData = {
       take: 10000, //추후 null로 변경
       firstItemId: 1,
-      issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
+      couponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
       filterOption: 'LATEST' as 'LATEST',
     };
 
-    getLecturerCoupons(reqData).then((data) => {
-      data.couponList.map((coupon) => {
+    getCouponLists(reqData, 'lecturer').then((data) => {
+      data.itemList.map((coupon) => {
         coupon.startAt = formatDate(coupon.startAt);
         coupon.endAt = formatDate(coupon.endAt);
         return coupon;
       });
 
-      setCouponList(data.couponList);
+      setCouponList(data.itemList);
     });
   }, []);
 

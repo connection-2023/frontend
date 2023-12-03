@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { EditSVG, LinkSVG } from '@/icons/svg';
+import { getPrivateCode } from '@/lib/apis/couponApis';
 import formatDate from '@/utils/formatDate';
 import Button from '../Button/Button';
 import UniqueButton from '../Button/UniqueButton';
@@ -46,6 +48,16 @@ const Coupon = ({
     setClassListsView(false);
   });
 
+  const getPrivateCouponCode = async (id: number) => {
+    try {
+      const { privateCouponCode } = await getPrivateCode(id);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
   return (
     <dl
       className="relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] lg:w-[20.5rem]"
@@ -59,7 +71,9 @@ const Coupon = ({
               : discountPrice.toLocaleString() + '원'}
           </dt>
           {isPrivate && type === 'lecturer' && (
-            <LinkSVG className="fill-black" />
+            <button onClick={() => getPrivateCouponCode(id)}>
+              <LinkSVG className="fill-black" />
+            </button>
           )}
         </div>
 

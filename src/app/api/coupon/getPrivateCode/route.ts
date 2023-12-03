@@ -10,15 +10,10 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const type = request.headers.get('type');
-  if (!type) {
-    return NextResponse.json({
-      status: 400,
-      message: 'type 헤더가 존재하지 않습니다.',
-    });
-  }
+  const searchParams = request.nextUrl.searchParams;
+  const couponId = searchParams.get('couponId');
 
-  const tokenValue = request.cookies.get(`${type}AccessToken`)?.value;
+  const tokenValue = request.cookies.get(`lecturerAccessToken`)?.value;
   if (!tokenValue) {
     return NextResponse.json({
       status: 401,
@@ -31,14 +26,11 @@ export const GET = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(
-    `${END_POINT}/coupons/${type}?${request.nextUrl.searchParams.toString()}`,
-    {
-      method: 'GET',
-      credentials: 'include',
-      headers,
-    },
-  );
+  const response = await fetch(`${END_POINT}/coupons/private/${couponId}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers,
+  });
 
   if (!response.ok) {
     const errorData = await response.json();

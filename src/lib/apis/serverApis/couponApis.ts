@@ -40,5 +40,5 @@ export const getCouponList = async (
 
   const { couponList: itemList, totalItemCount } = resData.data;
 
-  return { itemList, totalItemCount };
+  return { itemList: itemList ?? [], totalItemCount };
 };
