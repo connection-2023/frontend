@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassCreateStore } from '@/store/classCreate';
 import CouponSelect from './CouponSelect';
-import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
+import InstructorCoupon from '@/components/Coupon/Coupon';
 import { classCreateData } from '@/types/class';
 import { couponGET } from '@/types/coupon';
 

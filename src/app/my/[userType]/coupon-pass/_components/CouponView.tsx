@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
 import { getCouponLists } from '@/lib/apis/couponApis';
+import { mapItemToCoupon } from '@/utils/apiDataProcessor';
 import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from './ClassFilterSelect';
 import ClassFilterSelectListsUser from './ClassFilterSelectListsUser';
@@ -20,19 +21,19 @@ import {
   couponGET,
 } from '@/types/coupon';
 
-interface CouponProps {
+interface CouponViewProps {
   myLectureList: SelectClassType[];
   totalItemCount: number;
   couponList: couponGET[];
   userType: 'user' | 'lecturer';
 }
 
-const Coupon = ({
+const CouponView = ({
   myLectureList,
   totalItemCount: defaultItemCount,
   couponList,
   userType,
-}: CouponProps) => {
+}: CouponViewProps) => {
   const router = useRouter();
   const [userClassFilterView, setUserClassFilterView] = useState(false);
   const [couponLists, setCouponLists] = useState(couponList);
@@ -42,13 +43,15 @@ const Coupon = ({
   };
 
   const onChangeItemList = ({ itemList, prevPage }: IonChangeItemList) => {
+    const couponList = itemList.map(mapItemToCoupon);
+
     if (prevPage) {
       setCouponLists((prevList) => [
         ...prevList,
-        ...(itemList ? itemList : []),
+        ...(couponList ? couponList : []),
       ]);
     } else {
-      setCouponLists([...itemList]);
+      setCouponLists([...couponList]);
     }
   };
 
@@ -77,7 +80,10 @@ const Coupon = ({
     getFunction: getListFunctionHandler,
   });
 
-  const options: { id: 'AVAILABLE' | 'DISABLED' | 'USED'; label: string }[] =
+  const options: {
+    id: 'AVAILABLE' | 'DISABLED' | 'USED' | 'EXPIRED';
+    label: string;
+  }[] =
     userType === 'lecturer'
       ? [
           {
@@ -99,7 +105,7 @@ const Coupon = ({
             label: '사용한 쿠폰',
           },
           {
-            id: 'DISABLED',
+            id: 'EXPIRED',
             label: '만료 쿠폰',
           },
         ];
@@ -206,13 +212,12 @@ const Coupon = ({
       </nav>
 
       <div className="flex flex-wrap justify-center gap-4 pb-4 sm:justify-normal">
-        {filterState.isInterested === 'COUPON' ? (
-          <CouponComponent
-            couponList={couponLists}
-            lastItemElementRef={lastItemElementRef}
-            totalItemCount={totalItemCount}
-          />
-        ) : null}
+        <CouponComponent
+          couponList={couponLists}
+          lastItemElementRef={lastItemElementRef}
+          totalItemCount={totalItemCount}
+          type={userType}
+        />
       </div>
       {loading && width < 640 && (
         <div className="mb-5 flex justify-center">
@@ -242,4 +247,4 @@ const Coupon = ({
   );
 };
 
-export default Coupon;
+export default CouponView;

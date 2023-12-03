@@ -2,8 +2,9 @@ import { redirect } from 'next/navigation';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { getMyLecture } from '@/lib/apis/serverApis/classApi';
 import { getCouponList } from '@/lib/apis/serverApis/couponApis';
-import Coupon from './_components/Coupon';
-import { OptionType, couponGET, userCouponGET } from '@/types/coupon';
+import { mapItemToCoupon } from '@/utils/apiDataProcessor';
+import CouponView from './_components/CouponView';
+import { OptionType, couponGET } from '@/types/coupon';
 
 const CouponPassPage = async ({
   params,
@@ -37,7 +38,7 @@ const CouponPassPage = async ({
   }
 
   return searchParams?.state === 'coupon' ? (
-    <Coupon
+    <CouponView
       myLectureList={myClassListsOption ?? []}
       couponList={couponList ?? []}
       totalItemCount={totalItemCount}
@@ -70,30 +71,7 @@ const getCouponInfo = async (type: 'user' | 'lecturer') => {
         result;
       totalItemCount = resTotalItemCount;
 
-      couponList = resCouponList.map(
-        (item: userCouponGET | couponGET): couponGET => {
-          if ('lectureCoupon' in item) {
-            return {
-              createdAt: new Date(),
-              updatedAt: new Date(item.updatedAt),
-              startAt: item.lectureCoupon.startAt,
-              endAt: item.lectureCoupon.endAt,
-              id: item.id,
-              title: item.lectureCoupon.title,
-              discountPrice: item.lectureCoupon.discountPrice,
-              isDisabled: item.lectureCoupon.isDisabled,
-              isPrivate: item.lectureCoupon.isPrivate,
-              isStackable: item.lectureCoupon.isStackable,
-              lectureCouponTarget: item.lectureCoupon.lectureCouponTarget,
-              maxDiscountPrice: item.lectureCoupon.maxDiscountPrice,
-              maxUsageCount: item.lectureCoupon.maxUsageCount ?? 0,
-              percentage: item.lectureCoupon.percentage ?? 0,
-            };
-          } else {
-            return item;
-          }
-        },
-      );
+      couponList = resCouponList.map(mapItemToCoupon);
     }
 
     const resLectureLists = type === 'lecturer' ? await getMyLecture() : [];

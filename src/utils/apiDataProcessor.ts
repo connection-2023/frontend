@@ -11,6 +11,7 @@ import {
   postSingleImage,
 } from '@/lib/apis/imageApi';
 import { IprocessedDraft, classCreateData } from '@/types/class';
+import { couponGET, userCouponGET } from '@/types/coupon';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -335,4 +336,27 @@ export const classCreate = async (id: number) => {
   };
 
   await createClass(data);
+};
+
+export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
+  if ('lectureCoupon' in item) {
+    return {
+      createdAt: new Date(),
+      updatedAt: new Date(item.updatedAt),
+      startAt: item.lectureCoupon.startAt,
+      endAt: item.lectureCoupon.endAt,
+      id: item.id,
+      title: item.lectureCoupon.title,
+      discountPrice: item.lectureCoupon.discountPrice,
+      isDisabled: item.lectureCoupon.isDisabled,
+      isPrivate: item.lectureCoupon.isPrivate,
+      isStackable: item.lectureCoupon.isStackable,
+      lectureCouponTarget: item.lectureCoupon.lectureCouponTarget,
+      maxDiscountPrice: item.lectureCoupon.maxDiscountPrice,
+      maxUsageCount: item.lectureCoupon.maxUsageCount ?? 0,
+      percentage: item.lectureCoupon.percentage ?? 0,
+    };
+  } else {
+    return item;
+  }
 };

@@ -137,14 +137,14 @@ export interface IgetFunction {
   targetPage?: number;
   firstItemId?: number;
   lastItemId?: number;
-  couponStatusOption?: 'AVAILABLE' | 'DISABLED' | 'USED';
+  couponStatusOption?: 'AVAILABLE' | 'DISABLED' | 'USED' | 'EXPIRED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   lectureId?: string | number;
 }
 
 export interface IFilterState {
   isInterested: 'COUPON' | 'PASS';
-  passStatusOptions: 'AVAILABLE' | 'DISABLED' | 'USED';
+  passStatusOptions: 'AVAILABLE' | 'DISABLED' | 'USED' | 'EXPIRED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   selectedClass: { value: string; label: string } | null;
   currentPage: number;

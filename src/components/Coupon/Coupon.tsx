@@ -2,24 +2,26 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { CloseSVG, EditSVG, LinkSVG } from '@/icons/svg';
+import { EditSVG, LinkSVG } from '@/icons/svg';
 import formatDate from '@/utils/formatDate';
 import Button from '../Button/Button';
 import UniqueButton from '../Button/UniqueButton';
 import { couponGET } from '@/types/coupon';
 
-interface InstructorCouponProps {
+interface CouponProps {
   coupon: couponGET;
   cancelSelectedCoupon?: () => void;
   editEventHandler?: () => void;
   lastItemElementRef?: (node: HTMLElement | null) => void;
+  type?: 'user' | 'lecturer';
 }
 
-const InstructorCoupon = ({
+const Coupon = ({
   coupon,
   cancelSelectedCoupon,
   lastItemElementRef,
-}: InstructorCouponProps) => {
+  type = 'lecturer',
+}: CouponProps) => {
   const {
     title,
     percentage,
@@ -30,6 +32,7 @@ const InstructorCoupon = ({
     isStackable,
     maxDiscountPrice,
     lectureCouponTarget,
+    id,
   } = coupon;
 
   const startAt = formatDate(startDate);
@@ -55,7 +58,9 @@ const InstructorCoupon = ({
               ? percentage + '%'
               : discountPrice.toLocaleString() + '원'}
           </dt>
-          {isPrivate && <LinkSVG className="fill-black" />}
+          {isPrivate && type === 'lecturer' && (
+            <LinkSVG className="fill-black" />
+          )}
         </div>
 
         {pathname === '/class/create' ? (
@@ -68,7 +73,7 @@ const InstructorCoupon = ({
               <p className="mx-2">적용취소</p>
             </UniqueButton>
           </div>
-        ) : (
+        ) : type === 'lecturer' ? (
           <Link
             href={{
               pathname: '/my/lecturer/coupon-pass/management',
@@ -81,6 +86,17 @@ const InstructorCoupon = ({
           >
             <EditSVG className="h-4 w-4 fill-gray-500" />
           </Link>
+        ) : (
+          <div className="text-sm">
+            <UniqueButton
+              type="button"
+              onClick={() => console.log('추후 삭제 api 추가', id)}
+              size="small"
+              color="secondary"
+            >
+              <p className="mx-2">삭제</p>
+            </UniqueButton>
+          </div>
         )}
       </div>
       <div className="flex gap-2">
@@ -132,4 +148,4 @@ const InstructorCoupon = ({
   );
 };
 
-export default InstructorCoupon;
+export default Coupon;

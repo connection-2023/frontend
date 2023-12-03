@@ -1,17 +1,19 @@
 import { useWindowSize } from 'react-use';
-import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
+import Coupon from '@/components/Coupon/Coupon';
 import { couponGET } from '@/types/coupon';
 
 interface CouponComponentProps {
   couponList: couponGET[];
   lastItemElementRef: (node: HTMLElement | null) => void;
   totalItemCount: number;
+  type: 'user' | 'lecturer';
 }
 
 const CouponComponent = ({
   couponList,
   lastItemElementRef,
   totalItemCount,
+  type,
 }: CouponComponentProps) => {
   const { width } = useWindowSize();
 
@@ -20,13 +22,14 @@ const CouponComponent = ({
       {couponList.map((coupon, index) => {
         return couponList.length === index + 1 &&
           couponList.length < totalItemCount ? (
-          <InstructorCoupon
+          <Coupon
             key={coupon.id}
             coupon={coupon}
             lastItemElementRef={width < 640 ? lastItemElementRef : undefined}
+            type={type}
           />
         ) : (
-          <InstructorCoupon key={coupon.id} coupon={coupon} />
+          <Coupon key={coupon.id} coupon={coupon} type={type} />
         );
       })}
     </>
