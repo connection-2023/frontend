@@ -41,7 +41,7 @@ const ReportPage = () => {
       </h1>
       <ul className="mb-7 mt-6 grid w-full grid-cols-2 gap-y-3 px-6">
         {reportTypes.map((reason) => (
-          <ReportCheckBox label={reason} register={register} />
+          <ReportCheckBox key={reason} label={reason} register={register} />
         ))}
       </ul>
 
