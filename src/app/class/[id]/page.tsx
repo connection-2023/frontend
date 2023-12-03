@@ -268,12 +268,7 @@ const ClassDetailPage = async ({
         </section>
 
         {/* 클래스 후기 */}
-        <ClassReviewSection
-          id={id}
-          classTitle={title}
-          reviewCount={reviewCount}
-          stars={stars}
-        />
+        <ClassReviewSection id={id} reviewCount={reviewCount} stars={stars} />
       </section>
 
       <section className="fixed bottom-0 w-full md:static md:w-auto md:max-w-[17rem]">
