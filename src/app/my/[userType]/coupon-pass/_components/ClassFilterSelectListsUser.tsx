@@ -75,19 +75,20 @@ const ClassFilterSelectListsUser = ({
               }`}
               onClick={() => changeSelectedClass(Number(value))}
             >
-              <li>#{label}</li>
+              <li className="sm:blok flex w-64 truncate sm:w-auto">#{label}</li>
             </button>
           ),
       )}
       {myLectureList.length > listViewCount && (
         <button
-          className="group mb-2 mr-5 flex gap-1 text-gray-500 underline hover:text-sub-color1"
+          className="group mb-2 mr-5 flex gap-1 hover:text-sub-color1 sm:text-gray-500 sm:underline"
           onClick={() =>
             setListViewCount((count) => count + USER_COUPON_CLASS_LIST_TAKE)
           }
         >
+          <p className="sm:hidden">+{myLectureList.length - listViewCount}</p>
           더보기
-          <div className="flex h-5 w-5 items-center justify-center rounded-full border border-gray-500 group-hover:border-sub-color1">
+          <div className="hidden h-5 w-5 items-center justify-center rounded-full border border-gray-500 group-hover:border-sub-color1 sm:flex">
             <PlusesSVG className="fill-sub-color1" />
           </div>
         </button>
