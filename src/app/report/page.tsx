@@ -1,16 +1,18 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { postReportLecturer } from '@/lib/apis/reportApis';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
 import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
 
 const ReportPage = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { register, handleSubmit } = useForm<ReportFormData>();
 
-  const onSubmit = (data: ReportFormData) => {
+  const onSubmit = async (data: ReportFormData) => {
     const reportTypes: ReportType[] = [];
 
     for (const [key, value] of Object.entries(data)) {
@@ -27,7 +29,7 @@ const ReportPage = () => {
       return;
     }
 
-    const newData: Partial<IReportRequest> = {
+    const requestData: IReportRequest = {
       reportTypes,
       reason: data.reportDetail,
     };
@@ -36,13 +38,21 @@ const ReportPage = () => {
       if (
         ['targetUserId', 'targetLecturerId', 'lectureReviewId'].includes(key)
       ) {
-        newData[
+        requestData[
           key as 'targetUserId' | 'targetLecturerId' | 'lectureReviewId'
         ] = Number(value);
       }
     }
-    // --- api 연결하기 ---
-    console.log(newData);
+
+    try {
+      if (requestData) {
+        await postReportLecturer(requestData);
+      }
+      toast.success('신고가 성공적으로 접수되었습니다!');
+      router.back();
+    } catch (error) {
+      toast.error('다시 시도해주세요!');
+    }
   };
 
   return (

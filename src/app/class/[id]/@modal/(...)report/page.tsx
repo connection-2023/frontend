@@ -1,5 +1,5 @@
 'use client';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import UniqueButton from '@/components/Button/UniqueButton';
@@ -9,10 +9,12 @@ import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
 import { postReportLecturer } from '@/lib/apis/reportApis';
 
 const ReportModalPage = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const targetLecturerId = searchParams.get('targetLecturerId');
   const { register, handleSubmit } = useForm<ReportFormData>();
 
-  const onSubmit = (data: ReportFormData) => {
+  const onSubmit = async (data: ReportFormData) => {
     const reportTypes: ReportType[] = [];
 
     for (const [key, value] of Object.entries(data)) {
@@ -29,14 +31,30 @@ const ReportModalPage = () => {
       return;
     }
 
-    const newData = {
+    const requestData: IReportRequest = {
       reportTypes,
-      targetLecturerId: searchParams.get('targetLecturerId'),
       reason: data.reportDetail,
     };
 
-    // --- api 연결하기 ---
-    console.log(newData);
+    for (const [key, value] of searchParams.entries()) {
+      if (
+        ['targetUserId', 'targetLecturerId', 'lectureReviewId'].includes(key)
+      ) {
+        requestData[
+          key as 'targetUserId' | 'targetLecturerId' | 'lectureReviewId'
+        ] = Number(value);
+      }
+    }
+
+    try {
+      if (requestData) {
+        await postReportLecturer(requestData);
+      }
+      toast.success('신고가 성공적으로 접수되었습니다!');
+      router.back();
+    } catch (error) {
+      toast.error('다시 시도해주세요!');
+    }
   };
 
   return (
