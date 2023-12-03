@@ -78,6 +78,7 @@ const CouponView = ({
     itemList: couponList,
     onChange: onChangeItemList,
     getFunction: getListFunctionHandler,
+    type: userType,
   });
 
   const options: {
@@ -180,6 +181,7 @@ const CouponView = ({
         <div className={`${userType === 'user' ? '' : 'w-80'}`}>
           {userType === 'user' ? (
             <ClassFilterSelectUser
+              filterState={filterState.passStatusOptions}
               userClassFilterView={userClassFilterView}
               changeUserClassFilterView={changeUserClassFilterView}
             />
@@ -191,9 +193,15 @@ const CouponView = ({
             />
           )}
         </div>
-        {userType === 'user' && userClassFilterView && (
-          <ClassFilterSelectListsUser />
-        )}
+        {userType === 'user' &&
+          filterState.passStatusOptions === 'AVAILABLE' && (
+            <ClassFilterSelectListsUser
+              userClassFilterView={userClassFilterView}
+              myLectureList={myLectureList}
+              selectedClass={filterState.selectedClass}
+              handleChangeSelectedClass={handleChangeSelectedClass}
+            />
+          )}
       </nav>
 
       <nav className="flex gap-2.5 py-4">

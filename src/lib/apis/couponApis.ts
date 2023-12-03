@@ -38,7 +38,7 @@ export const getCouponLists = async (
     ...Object.fromEntries(
       Object.entries(data)
         .filter(([_, v]) => v !== undefined)
-        .map(([k, v]) => [k, String(v)]),
+        .map(([k, v]) => [k, Array.isArray(v) ? JSON.stringify(v) : String(v)]),
     ),
   }).toString();
 

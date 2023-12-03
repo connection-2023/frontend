@@ -20,6 +20,7 @@ interface useCouponPassHookProps {
     totalItemCount: number;
     itemList: any[];
   }>;
+  type: 'user' | 'lecturer';
 }
 
 const useCouponPassHook = ({
@@ -28,6 +29,7 @@ const useCouponPassHook = ({
   defaultItemCount,
   onChange,
   getFunction,
+  type,
 }: useCouponPassHookProps) => {
   const [totalItemCount, setTotalItemCount] = useState(defaultItemCount);
   const [itemId, setItemId] = useState({
@@ -119,7 +121,7 @@ const useCouponPassHook = ({
         lastItemId: itemId.lastItemId,
         couponStatusOption: filterState.passStatusOptions,
         filterOption: filterState.filterOption,
-        lectureId:
+        [type === 'user' ? 'lectureIds' : 'lectureId']:
           selectedClass?.value === 'select-all'
             ? undefined
             : selectedClass?.value,
@@ -177,6 +179,13 @@ const useCouponPassHook = ({
     setFilterState((prevState) => ({
       ...prevState,
       passStatusOptions: id,
+      selectedClass:
+        myLectureList.length > 0
+          ? {
+              value: 'select-all',
+              label: `전체 클래스(${myLectureList.length - 1})`,
+            }
+          : null,
       currentPage: 0,
       targetPage: 0,
     }));

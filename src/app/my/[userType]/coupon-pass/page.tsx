@@ -4,7 +4,7 @@ import { getMyLecture } from '@/lib/apis/serverApis/classApi';
 import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import { mapItemToCoupon } from '@/utils/apiDataProcessor';
 import CouponView from './_components/CouponView';
-import { OptionType, couponGET } from '@/types/coupon';
+import { OptionType, couponGET, userCouponGET } from '@/types/coupon';
 
 const CouponPassPage = async ({
   params,
@@ -74,7 +74,8 @@ const getCouponInfo = async (type: 'user' | 'lecturer') => {
       couponList = resCouponList.map(mapItemToCoupon);
     }
 
-    const resLectureLists = type === 'lecturer' ? await getMyLecture() : [];
+    const resLectureLists =
+      type === 'lecturer' ? await getMyLecture() : findClassList(couponList);
 
     myClassListsOption = resLectureLists.map(
       ({ id, title }): OptionType => ({
@@ -94,4 +95,16 @@ const getCouponInfo = async (type: 'user' | 'lecturer') => {
   } catch (error) {
     console.error(error);
   }
+};
+
+const findClassList = (couponList: couponGET[]) => {
+  const lectureList = couponList.flatMap(({ lectureCouponTarget }) =>
+    lectureCouponTarget.map(({ lecture }) => lecture),
+  );
+
+  const uniqueLectureList = Array.from(
+    new Set(lectureList.map((lecture) => JSON.stringify(lecture))),
+  ).map((lecture) => JSON.parse(lecture));
+
+  return uniqueLectureList;
 };

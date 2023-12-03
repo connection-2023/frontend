@@ -9,6 +9,7 @@ export const GET = async (request: NextRequest) => {
       message: '환경 변수가 설정되지 않았습니다.',
     });
   }
+  console.log(request.nextUrl.searchParams);
 
   const type = request.headers.get('type');
   if (!type) {
