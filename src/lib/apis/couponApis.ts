@@ -29,8 +29,9 @@ export const createNewCoupon = async (data: createCouponData) => {
   }
 };
 
-export const getLecturerCoupons = async (
+export const getCouponLists = async (
   data: IgetFunction,
+  type: 'lecturer' | 'user',
   signal?: AbortSignal,
 ): Promise<IcouponsData> => {
   const params = new URLSearchParams({
@@ -42,11 +43,18 @@ export const getLecturerCoupons = async (
   }).toString();
 
   try {
-    const response = await fetch(`${DOMAIN}/api/coupon/getLecturer?${params}`, {
-      method: 'GET',
-      credentials: 'include',
-      signal,
-    });
+    const response = await fetch(
+      `${DOMAIN}/api/coupon/getCouponList?${params}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        signal,
+        headers: {
+          'Content-Type': 'application/json',
+          type: type,
+        },
+      },
+    );
 
     if (!response.ok) {
       const errorData = await response.json();

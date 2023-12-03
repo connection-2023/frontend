@@ -137,8 +137,7 @@ export interface IgetFunction {
   targetPage?: number;
   firstItemId?: number;
   lastItemId?: number;
-  issuedCouponStatusOptions?: 'AVAILABLE' | 'DISABLED' | 'USED';
-  couponStatusOption?: 'AVAILABLE' | 'EXPIRED' | 'USED';
+  couponStatusOption?: 'AVAILABLE' | 'DISABLED' | 'USED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   lectureId?: string | number;
 }

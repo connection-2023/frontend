@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
-import { getLecturerCoupons } from '@/lib/apis/couponApis';
+import { getCouponLists } from '@/lib/apis/couponApis';
 import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from './ClassFilterSelect';
 import ClassFilterSelectListsUser from './ClassFilterSelectListsUser';
@@ -56,7 +56,7 @@ const Coupon = ({
     data,
     signal,
   }: IgetListFunctionHandler) => {
-    return await getLecturerCoupons(data, signal);
+    return await getCouponLists(data, userType, signal);
   };
 
   const {

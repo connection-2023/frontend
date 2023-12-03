@@ -1,10 +1,7 @@
 import { redirect } from 'next/navigation';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { getMyLecture } from '@/lib/apis/serverApis/classApi';
-import {
-  getLecturerCoupons,
-  getUserCoupons,
-} from '@/lib/apis/serverApis/couponApis';
+import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import Coupon from './_components/Coupon';
 import { OptionType, couponGET, userCouponGET } from '@/types/coupon';
 
@@ -53,30 +50,20 @@ const CouponPassPage = async ({
 
 export default CouponPassPage;
 
-const getCouponInfo = async (type: string) => {
+const getCouponInfo = async (type: 'user' | 'lecturer') => {
   let myClassListsOption;
   let totalItemCount = 0;
   let passItemCount = 0;
   let couponList: couponGET[] = [];
 
   try {
-    const reqData =
-      type === 'lecturer'
-        ? {
-            take: LECTURE_COUPON_TAKE,
-            issuedCouponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
-            filterOption: 'LATEST' as 'LATEST',
-          }
-        : {
-            take: LECTURE_COUPON_TAKE,
-            couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
-            filterOption: 'LATEST' as 'LATEST',
-          };
+    const reqData = {
+      take: LECTURE_COUPON_TAKE,
+      couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
+      filterOption: 'LATEST' as 'LATEST',
+    };
 
-    const result =
-      type === 'lecturer'
-        ? await getLecturerCoupons(reqData)
-        : await getUserCoupons(reqData);
+    const result = await getCouponList(reqData, type);
 
     if (result) {
       const { totalItemCount: resTotalItemCount, itemList: resCouponList } =

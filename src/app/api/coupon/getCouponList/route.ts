@@ -10,9 +10,15 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const searchParams = request.nextUrl.searchParams;
-  const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
+  const type = request.headers.get('type');
+  if (!type) {
+    return NextResponse.json({
+      status: 400,
+      message: 'type 헤더가 존재하지 않습니다.',
+    });
+  }
 
+  const tokenValue = request.cookies.get(`${type}AccessToken`)?.value;
   if (!tokenValue) {
     return NextResponse.json({
       status: 401,
@@ -26,7 +32,7 @@ export const GET = async (request: NextRequest) => {
   };
 
   const response = await fetch(
-    END_POINT + '/coupons/lecturer?' + searchParams.toString(),
+    `${END_POINT}/coupons/${type}?${request.nextUrl.searchParams.toString()}`,
     {
       method: 'GET',
       credentials: 'include',
