@@ -60,7 +60,7 @@ const getCouponInfo = async (type: 'user' | 'lecturer') => {
   try {
     const reqData = {
       take: LECTURE_COUPON_TAKE,
-      couponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
+      couponStatusOptions: 'AVAILABLE' as 'AVAILABLE', //s 빼야합니다 나중에
       filterOption: 'LATEST' as 'LATEST',
     };
 

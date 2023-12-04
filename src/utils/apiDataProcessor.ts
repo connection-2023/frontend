@@ -335,6 +335,8 @@ export const classCreate = async (id: number) => {
     }),
   };
 
+  console.log(data);
+
   await createClass(data);
 };
 

@@ -119,7 +119,7 @@ const useCouponPassHook = ({
         targetPage: filterState.targetPage,
         firstItemId: itemId.firstItemId,
         lastItemId: itemId.lastItemId,
-        couponStatusOption: filterState.passStatusOptions,
+        couponStatusOptions: filterState.passStatusOptions, //s 빼야합니다. 나중에
         filterOption: filterState.filterOption,
         [type === 'user' ? 'lectureIds' : 'lectureId']:
           selectedClass?.value === 'select-all'

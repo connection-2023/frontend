@@ -71,6 +71,17 @@ export interface couponGET {
   percentage: number;
 }
 
+export interface IprivateCoupon {
+  title: string;
+  percentage: number;
+  discountPrice: number;
+  startAt: string;
+  endAt: string;
+  isStackable: boolean;
+  maxDiscountPrice: number;
+  lectureCouponTarget: lectureCouponTarget[];
+}
+
 export interface IcouponsData {
   totalItemCount: number;
   itemList: couponGET[];

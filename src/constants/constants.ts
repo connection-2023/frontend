@@ -203,7 +203,11 @@ export const NON_STICKY_HEADER_PATHS = [
   '/my',
 ];
 
-export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];
+export const NO_HEADER_FOOTER_PATHS = [
+  '/search',
+  '/class/create/address',
+  '/coupon',
+];
 
 export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
 

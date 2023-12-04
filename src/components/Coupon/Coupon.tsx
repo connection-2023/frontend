@@ -3,11 +3,13 @@ import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
+import { DOMAIN } from '@/constants/constants';
 import { EditSVG, LinkSVG } from '@/icons/svg';
 import { getPrivateCode } from '@/lib/apis/couponApis';
+import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
-import Button from '../Button/Button';
 import UniqueButton from '../Button/UniqueButton';
+import { instructorProfile } from '@/types/auth';
 import { couponGET } from '@/types/coupon';
 
 interface CouponProps {
@@ -48,9 +50,35 @@ const Coupon = ({
     setClassListsView(false);
   });
 
-  const getPrivateCouponCode = async (id: number) => {
+  const getPrivateCouponCode = async () => {
     try {
       const { privateCouponCode } = await getPrivateCode(id);
+      const userStoreState = useUserStore.getState();
+
+      const lecturerInfo = userStoreState.authUser as instructorProfile;
+
+      const params = new URLSearchParams();
+      params.append('lecturerInfo', JSON.stringify(lecturerInfo));
+
+      params.append(
+        'coupon',
+        JSON.stringify({
+          title,
+          percentage,
+          discountPrice,
+          startAt,
+          endAt,
+          isStackable,
+          maxDiscountPrice,
+          lectureCouponTarget,
+        }),
+      );
+
+      const link = `${DOMAIN}/coupon/${privateCouponCode}?${params.toString()}`;
+
+      await navigator.clipboard.writeText(link);
+
+      toast.success('쿠폰 다운로드 링크가 클립보드에 복사되었습니다.');
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -71,7 +99,7 @@ const Coupon = ({
               : discountPrice.toLocaleString() + '원'}
           </dt>
           {isPrivate && type === 'lecturer' && (
-            <button onClick={() => getPrivateCouponCode(id)}>
+            <button onClick={getPrivateCouponCode}>
               <LinkSVG className="fill-black" />
             </button>
           )}
@@ -132,16 +160,20 @@ const Coupon = ({
       <dd className="w-full truncate text-sm">{title}</dd>
       <dd className="flex gap-2 text-sm">
         {startAt + '-' + endAt}
-        <p className="text-gray-500">
-          (최대할인 {maxDiscountPrice.toLocaleString()}원)
-        </p>
+        {maxDiscountPrice.toLocaleString() !== '0' && (
+          <p className="text-gray-500">
+            (최대할인 {maxDiscountPrice.toLocaleString()}원)
+          </p>
+        )}
       </dd>
       <span
         ref={classListRef}
         className="relative cursor-pointer text-gray-500 underline underline-offset-4"
         onClick={() => setClassListsView((prev) => !prev)}
       >
-        {`적용 된 클래스(${lectureCouponTarget.length})`}
+        {`적용${type === 'lecturer' ? ' 된' : '가능한'} 클래스(${
+          lectureCouponTarget.length
+        })`}
         {classListsView && lectureCouponTarget.length > 0 && (
           <div className="absolute top-5 z-10 flex min-w-[16rem] flex-col border border-solid border-gray-500 bg-white text-black">
             {lectureCouponTarget.map(({ lecture }, index) => {
