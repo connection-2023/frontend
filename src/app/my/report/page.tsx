@@ -1,55 +1,25 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NoteSVG } from '@/icons/svg';
+import { getUserReport } from '@/lib/apis/reportApis';
 import ReportModal from './ReportModal';
-import { IReportList } from '@/types/types';
-
-const data: IReportList[] = [
-  {
-    id: 1,
-    target: '벅키',
-    reason: '혐오 발언 또는 상징',
-    detail: `제가 진행한 수업 후기에 욕설을 기재하였습니다.
-    또한 금품갈취라는 허위 사실까지 작성하여 저의 이미지에 큰 타격을 입혔습
-    니다.`,
-    status: '처리중',
-  },
-  {
-    id: 2,
-    target: '벅키',
-    reason: '혐오 발언 또는 상징',
-    detail: `제가 진행한 수업 후기에 욕설을 기재하였습니다.
-    또한 금품갈취라는 허위 사실까지 작성하여 저의 이미지에 큰 타격을 입혔습
-    니다.`,
-    status: '처리완료',
-  },
-  {
-    id: 3,
-    target: '벅키',
-    reason: '혐오 발언 또는 상징',
-    detail: `제가 진행한 수업 후기에 욕설을 기재하였습니다.
-    또한 금품갈취라는 허위 사실까지 작성하여 저의 이미지에 큰 타격을 입혔습니다.`,
-    status: '처리완료',
-  },
-];
-
-enum filterOptions {
-  All = '전체',
-  Class = '클래스',
-  User = '사용자',
-}
+import { IUserReportResponse } from '@/types/report';
 
 const ReportHistoryPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(filterOptions.All);
+  const [userReportData, setUserReportData] = useState<IUserReportResponse[]>(
+    [],
+  );
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const option = event.target.id as filterOptions;
+  useEffect(() => {
+    const fetchData = async () => {
+      const reportData = await getUserReport(100, 0, 0, 0, 0, 'ALL');
 
-    if (Object.values(filterOptions).includes(option)) {
-      setSelectedOption(option);
-    }
-  };
+      setUserReportData(reportData.reportList);
+    };
+
+    fetchData();
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -63,21 +33,6 @@ const ReportHistoryPage = () => {
     <section className="col-span-2 flex w-full flex-col rounded-lg bg-white p-5 text-sm text-gray-100 shadow-float">
       <h1 className="mb-[1.81rem] text-2xl font-bold">신고내역</h1>
 
-      <ul className="mb-4 flex gap-4 font-medium">
-        {Object.values(filterOptions).map((option) => (
-          <li key={option} className="flex items-center gap-[0.31rem]">
-            <input
-              type="checkbox"
-              id={option}
-              checked={selectedOption === option}
-              onChange={handleCheckboxChange}
-              className="h-[18px] w-[18px] accent-sub-color1"
-            />
-            <label htmlFor={option}> {option}</label>
-          </li>
-        ))}
-      </ul>
-
       <table className="w-full border-collapse px-4 py-2">
         <thead>
           <tr className="flex items-center gap-10 border-y border-solid border-black px-4 py-2 text-left font-semibold">
@@ -87,61 +42,75 @@ const ReportHistoryPage = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {userReportData.map((item) => (
             <TableList
               key={item.id}
-              id={item.id}
-              target={item.target}
-              reason={item.reason}
-              detail={item.detail}
-              status={item.status}
+              {...item}
+              isModalOpen={isModalOpen}
               onClick={openModal}
+              closeModal={closeModal}
             />
           ))}
         </tbody>
       </table>
-      <ReportModal isOpen={isModalOpen} closeModal={closeModal} />
     </section>
   );
 };
 
 export default ReportHistoryPage;
 
-interface ITableList {
-  id: number;
-  target: string;
-  reason: string;
-  detail: string;
-  status: '처리중' | '처리완료';
+interface TableListProps extends IUserReportResponse {
+  closeModal: () => void;
   onClick: () => void;
+  isModalOpen: boolean;
 }
 
 const TableList = ({
-  id,
-  target,
+  targetUser,
+  targetLecturer,
   reason,
-  detail,
-  status,
+  userReportType,
+  isAnswered,
+  isModalOpen,
   onClick,
-}: ITableList) => {
-  const [isOpened, setIsOpened] = useState(false);
+  closeModal,
+}: TableListProps) => {
+  const target = targetUser
+    ? targetUser.nickname
+    : targetLecturer
+    ? targetLecturer.nickname
+    : null;
+  const status = isAnswered ? '처리완료' : '처리중';
+
+  const reportTypes = userReportType.map((type) => type.reportType.description);
+  const str = reportTypes.length > 1 ? `외 ${reportTypes.length - 1}` : '';
+
   return (
     <tr className="flex items-start gap-10 border-b border-solid border-gray-700 px-4 text-left font-medium">
       <th className="h-full w-24 py-2">{target}</th>
       <th className="flex w-36 flex-1 flex-col items-center gap-[0.31rem] py-2">
         <p className="flex w-full items-center">
-          {reason}
+          {reportTypes[0] + str}
 
           <NoteSVG
             width="16"
             height="16"
-            onClick={() => setIsOpened(!isOpened)}
-            className={`cursor-pointer ${
-              isOpened ? 'stroke-black' : 'stroke-gray-500'
+            onClick={onClick}
+            className={`ml-1.5 cursor-pointer ${
+              isModalOpen ? 'stroke-black' : 'stroke-gray-500'
             }  hover:stroke-black`}
           />
         </p>
-        {isOpened && <p className="mt-3 w-full text-gray-500">{detail}</p>}
+        <div>
+          <ReportModal
+            isOpen={isModalOpen}
+            closeModal={closeModal}
+            target={target}
+            reportTypes={reportTypes}
+            reason={reason}
+            status={status}
+          />
+        </div>
       </th>
       <th
         onClick={onClick}
