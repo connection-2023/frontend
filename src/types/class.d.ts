@@ -319,3 +319,13 @@ export interface IUserReview {
   isLike: boolean;
   count: number;
 }
+
+export interface ILecturerClassListResonse {
+  id: number;
+  allSchedule: number;
+  completedSchedule: number;
+  startDate: string;
+  endDate: string;
+  title: string;
+  [key: string]: any;
+}
