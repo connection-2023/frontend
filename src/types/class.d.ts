@@ -314,3 +314,28 @@ export interface IUserReview {
   stars: number;
   description: string;
 }
+
+export interface IUserClassResponse {
+  id: number;
+  orderId: string;
+  orderName: string;
+  reservation: {
+    lectureSchedule: {
+      startDateTime: string;
+      lecture: {
+        id: number;
+        title: string;
+        lectureImage: {
+          imageUrl: string;
+        }[];
+      };
+    };
+  }[];
+
+  lecturer: {
+    nickname: string;
+    lecturerProfileImageUrl: {
+      url: string;
+    }[];
+  };
+}
