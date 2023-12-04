@@ -34,13 +34,17 @@ export const getCouponLists = async (
   type: 'lecturer' | 'user',
   signal?: AbortSignal,
 ): Promise<IcouponsData> => {
-  const params = new URLSearchParams({
-    ...Object.fromEntries(
-      Object.entries(data)
-        .filter(([_, v]) => v !== undefined)
-        .map(([k, v]) => [k, Array.isArray(v) ? JSON.stringify(v) : String(v)]),
-    ),
-  }).toString();
+  const params = new URLSearchParams();
+
+  Object.entries(data)
+    .filter(([_, v]) => v !== undefined)
+    .forEach(([k, v]) => {
+      if (Array.isArray(v)) {
+        v.forEach((value) => params.append(`${k}[]`, value));
+      } else {
+        params.append(k, String(v));
+      }
+    });
 
   try {
     const response = await fetch(
@@ -94,7 +98,34 @@ export const getPrivateCode = async (couponId: number) => {
 
     return resData.data;
   } catch (error) {
-    console.error('쿠폰 조회 오류', error);
+    console.error('비공개 쿠폰 코드 발급 오류', error);
+    throw error;
+  }
+};
+
+export const getPrivateCoupon = async (couponCode: string) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/coupon/getPrivateCoupon?couponCode=${couponCode}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || '');
+    }
+
+    const resData = await response.json();
+
+    return resData.data;
+  } catch (error) {
+    console.error('비공개 쿠폰 다운 오류', error);
     throw error;
   }
 };

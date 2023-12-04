@@ -18,7 +18,7 @@ const ClassPrice = () => {
     const reqData = {
       take: 10000, //추후 null로 변경
       firstItemId: 1,
-      couponStatusOptions: 'AVAILABLE' as 'AVAILABLE',
+      couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
       filterOption: 'LATEST' as 'LATEST',
     };
 

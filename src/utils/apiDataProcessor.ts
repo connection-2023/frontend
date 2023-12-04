@@ -294,7 +294,7 @@ export const classCreate = async (id: number) => {
         )
       : [],
     location: isLocationConfirmed
-      ? {}
+      ? null
       : {
           address: location?.address,
           detailAddress: location?.detailAddress,

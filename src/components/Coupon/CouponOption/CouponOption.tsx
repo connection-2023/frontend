@@ -39,7 +39,7 @@ interface CouponOptionProps {
   trigger: UseFormTrigger<CouponData>;
   clearErrors: UseFormClearErrors<CouponData>;
   defaultValue?: couponGET;
-  type: 'CREATE' | 'UPDATE';
+  type?: 'CREATE' | 'UPDATE';
 }
 
 const CouponOption = ({
@@ -52,7 +52,7 @@ const CouponOption = ({
   trigger,
   clearErrors,
   defaultValue,
-  type,
+  type = 'CREATE',
 }: CouponOptionProps) => {
   const [options, setOptions] = useState<SelectClassType[]>([]);
   const [render, setRender] = useState(false);
