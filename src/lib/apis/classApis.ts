@@ -51,3 +51,24 @@ export const getClassReviews = async (
     return new Error('잘못된 요청입니다!');
   }
 };
+
+export const getUserClass = async (
+  displayCount: number,
+  currentPage: number,
+  targetPage: number,
+  firstItemId: number,
+  lastItemId: number,
+  type: string,
+) => {
+  const query = `take=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&enrollLectureType=${type}`;
+
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/myclass/list?${query}`, {
+      method: 'GET',
+    }).then((data) => data.json());
+
+    return response.data;
+  } catch (error) {
+    return new Error('유저 신청 내역 조회 에러!');
+  }
+};
