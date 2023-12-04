@@ -17,3 +17,22 @@ export interface IReportRequest {
   lectureReviewId?: number;
   reason?: string;
 }
+
+export interface IUserReportResponse {
+  id: number;
+  targetUser: {
+    nickname: string;
+  } | null;
+  targetLecturer: {
+    nickname: string;
+  } | null;
+  reason: string;
+  isAnswered: boolean;
+  createdAt: string;
+  updatedAt: string;
+  userReportType: {
+    reportType: {
+      description: string;
+    };
+  }[];
+}
