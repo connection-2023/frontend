@@ -1,5 +1,9 @@
 import { DOMAIN } from '@/constants/constants';
-import { IUserReview, ReviewOrderType } from '@/types/class';
+import {
+  IUserReview,
+  ReviewOrderType,
+  ILecturerClassListResonse,
+} from '@/types/class';
 
 export const getClassReviews = async (
   id: string,
@@ -70,5 +74,23 @@ export const deleteReviewLikes = async (id: number) => {
     return response;
   } catch (error) {
     return new Error('리뷰 좋아요 취소 요청 오류!');
+  }
+};
+
+export const getLecturerClassList = async (
+  progressType: string,
+): Promise<ILecturerClassListResonse[] | Error> => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/class/myclass/lecturer?progressType=${progressType}`,
+      {
+        credentials: 'include',
+        method: 'GET',
+      },
+    ).then((data) => data.json());
+    console.log(response.data);
+    return response.data.lectureProgress;
+  } catch (error) {
+    return new Error('잘못된 요청입니다!');
   }
 };
