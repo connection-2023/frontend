@@ -27,7 +27,7 @@ const DownloadCoupon = ({ coupon }: { coupon: IprivateCoupon }) => {
   });
 
   return (
-    <div className="relative flex h-[8.5rem] w-[21.8125rem] flex-col gap-1 bg-white px-4 pt-4 shadow-float">
+    <div className="relative mb-4 flex h-[8.5rem] w-[21.8125rem] flex-col bg-white px-4 pt-4 shadow-float">
       <div className="mb-2 flex items-center gap-2">
         <dt className="text-2xl font-bold text-main-color">
           {percentage
@@ -56,12 +56,12 @@ const DownloadCoupon = ({ coupon }: { coupon: IprivateCoupon }) => {
       </dd>
       <div
         ref={classListRef}
-        className="relative cursor-pointer text-gray-500 underline underline-offset-4"
+        className="relative cursor-pointer text-sm text-gray-500 underline underline-offset-4"
         onClick={() => setClassListsView((prev) => !prev)}
       >
         {`적용가능한 클래스(${lectureCouponTarget.length})`}
         {classListsView && lectureCouponTarget.length > 0 && (
-          <div className="absolute top-5 z-20 flex min-w-[16rem] flex-col border border-solid border-gray-500 bg-white text-black">
+          <div className="absolute top-4 z-20 flex min-w-[16rem] flex-col border border-solid border-gray-500 bg-white text-black">
             {lectureCouponTarget.map(({ lecture }) => {
               return (
                 <Link
