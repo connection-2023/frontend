@@ -12,6 +12,7 @@ export const ProfileImgSize = {
 };
 
 export const ButtonSizes = {
+  xsmall: 22,
   small: 28,
   medium: 35,
   large: 45,
