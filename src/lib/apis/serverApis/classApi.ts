@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { ApiResponse, Lecture } from '@/types/class';
+import { Lecture } from '@/types/class';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 

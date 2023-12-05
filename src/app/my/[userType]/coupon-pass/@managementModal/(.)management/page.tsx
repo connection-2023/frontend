@@ -31,10 +31,8 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
     setValue,
     watch,
     trigger,
-    reset,
     clearErrors,
   } = useForm<CouponData>();
-  const router = useRouter();
 
   const onValid = async (data: CouponData) => {
     try {
@@ -42,14 +40,11 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
         return;
       }
 
-      const resData = await createCouponUtils(data);
-      resData.lectureCouponTarget = data.lectureIds;
+      await createCouponUtils(data);
 
-      router.back();
-      router.refresh();
-
-      reset();
       toast.success('쿠폰 생성 완료');
+
+      window.location.reload();
     } catch (error) {
       if (error instanceof Error && error.message.includes('401')) {
         await accessTokenReissuance();

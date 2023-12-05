@@ -182,7 +182,7 @@ export const getMyLecture = async (): Promise<ApiResponse> => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('임시저장 목록 조회 오류', error);
+    console.error('내 보유 강의 조회 오류', error);
     throw error;
   }
 };

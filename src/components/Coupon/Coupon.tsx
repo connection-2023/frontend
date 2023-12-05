@@ -160,7 +160,7 @@ const Coupon = ({
       <dd className="w-full truncate text-sm">{title}</dd>
       <dd className="flex gap-2 text-sm">
         {startAt + '-' + endAt}
-        {maxDiscountPrice.toLocaleString() !== '0' && (
+        {maxDiscountPrice && maxDiscountPrice.toLocaleString() !== '0' && (
           <p className="text-gray-500">
             (최대할인 {maxDiscountPrice.toLocaleString()}원)
           </p>
