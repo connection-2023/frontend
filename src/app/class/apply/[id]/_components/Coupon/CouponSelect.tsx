@@ -14,29 +14,27 @@ interface CouponSelectProps {
     actionMeta: ActionMeta<SelectCoupon>,
   ) => void;
   selectValue: SelectCoupon[];
+  type: 'NOMAL' | 'STACKABLE';
 }
 
 const CouponSelect = ({
   options,
   onChange,
   selectValue,
+  type,
 }: CouponSelectProps) => {
-  const selectedOptions = options.filter(
-    (option) => selectValue?.some((val) => val.value.id === option.value.id),
-  );
-
   return (
     <Select
       instanceId="select-coupon"
-      placeholder="적용할 쿠폰 선택"
-      noOptionsMessage={() => '적용 가능한 쿠폰이 없습니다'}
+      placeholder={`(${type === 'NOMAL' ? '일반' : '중복'}) 적용할 쿠폰 선택`}
+      noOptionsMessage={() =>
+        `적용 가능한 ${type === 'NOMAL' ? '일반' : '중복'}쿠폰이 없습니다`
+      }
       formatOptionLabel={formatOptionLabel}
-      isMulti={true}
       onChange={onChange}
       options={options}
       styles={couponSelectStyle}
-      controlShouldRenderValue={false}
-      value={selectedOptions}
+      value={selectValue}
     />
   );
 };

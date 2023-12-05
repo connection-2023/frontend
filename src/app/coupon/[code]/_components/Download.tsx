@@ -10,10 +10,12 @@ import { FetchError } from '@/types/types';
 const Download = ({ code }: { code: string }) => {
   const router = useRouter();
 
-  const downloadCoupon = async () => {
+  const downloadPrivateCoupon = async () => {
+    if (!code) {
+      return;
+    }
     try {
       await getPrivateCoupon(code);
-
       router.push('/my/user/coupon-pass?state=coupon');
     } catch (error) {
       if (error instanceof Error) {
@@ -23,12 +25,7 @@ const Download = ({ code }: { code: string }) => {
             await accessTokenReissuance();
             await getPrivateCoupon(code);
           } catch (error) {
-            const confirmRedirect = window.confirm(
-              '로그인이 필요합니다. 로그인하러 이동 하시겠습니까?',
-            );
-            if (confirmRedirect) {
-              router.push('/login');
-            }
+            console.error(error);
           }
         } else {
           toast.error('잘못된 요청입니다!');
@@ -37,7 +34,7 @@ const Download = ({ code }: { code: string }) => {
     }
   };
 
-  return <Button onClick={downloadCoupon}>다운로드</Button>;
+  return <Button onClick={downloadPrivateCoupon}>다운로드</Button>;
 };
 
 export default Download;

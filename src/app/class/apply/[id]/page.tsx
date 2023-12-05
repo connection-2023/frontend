@@ -4,7 +4,9 @@ import {
   getClassInfo,
   getClassSchedules,
 } from '@/lib/apis/serverApis/classPostApis';
+import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import ApplySidebar from './_components/ApplySidebar';
+import CouponContainer from './_components/Coupon/CouponContainer';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
 
@@ -13,13 +15,20 @@ const ClassApplyPage = async ({
 }: {
   params: { id: string };
 }) => {
+  const reqData = {
+    take: 10000, //추후 null로 변경
+    couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
+    filterOption: 'LATEST' as 'LATEST',
+  };
+
   revalidateTag('schedules');
   const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
-
-  const [classInfo, classSchedule] = await Promise.all([
+  const couponLists = getCouponList(reqData, 'user');
+  const [classInfo, classSchedule, couponList] = await Promise.all([
     classData,
     classSchedules,
+    couponLists,
   ]);
 
   if (classInfo instanceof Error || classSchedule instanceof Error) {
@@ -65,6 +74,7 @@ const ClassApplyPage = async ({
         />
         <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
           <h3 className="text-lg font-semibold">쿠폰/패스권 적용</h3>
+          <CouponContainer couponList={couponList} price={price} />
           {/* 쿠폰 선택 */}
         </section>
 

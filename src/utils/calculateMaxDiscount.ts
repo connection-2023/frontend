@@ -1,14 +1,22 @@
-import { IclassCoupon, IclassCouponList } from '@/types/coupon';
+import { IclassCoupon, IclassCouponList, couponGET } from '@/types/coupon';
 
 const calculateMaxDiscount = (
   lecturePrice: number,
-  coupons: IclassCouponList[],
+  coupons: IclassCouponList[] | couponGET[],
 ) => {
   const normalCoupons = [] as IclassCoupon[];
   const stackableCoupons = [] as IclassCoupon[];
 
-  coupons.forEach(({ lectureCoupon: coupon }) => {
-    (coupon.isStackable ? stackableCoupons : normalCoupons).push(coupon);
+  coupons.forEach((coupon) => {
+    if ('lectureCoupon' in coupon) {
+      const lectureCoupon = coupon.lectureCoupon;
+
+      (lectureCoupon.isStackable ? stackableCoupons : normalCoupons).push(
+        lectureCoupon,
+      );
+    } else {
+      (coupon.isStackable ? stackableCoupons : normalCoupons).push(coupon);
+    }
   });
 
   const calculateDiscount = (coupon: IclassCoupon, price: number) => {
@@ -92,21 +100,31 @@ const calculateMaxDiscount = (
     stackableCouponId = maxStackableDiscountCouponId;
   }
 
-  const normalCoupon = coupons.find(
-    (coupon) => coupon.lectureCoupon.id === normalCouponId,
-  )?.lectureCoupon;
-  const stackableCoupon = coupons.find(
-    (coupon) => coupon.lectureCoupon.id === stackableCouponId,
-  )?.lectureCoupon;
+  let normalCoupon: any;
+  let stackableCoupon: any;
+
+  coupons.forEach((coupon) => {
+    if ('lectureCoupon' in coupon) {
+      if (coupon.lectureCoupon.id === normalCouponId) {
+        normalCoupon = coupon.lectureCoupon;
+      }
+      if (coupon.lectureCoupon.id === stackableCouponId) {
+        stackableCoupon = coupon.lectureCoupon;
+      }
+    } else {
+      if (coupon.id === normalCouponId) {
+        normalCoupon = coupon;
+      }
+      if (coupon.id === stackableCouponId) {
+        stackableCoupon = coupon;
+      }
+    }
+  });
 
   return {
     maxDiscount: maxDiscount,
-    normalCoupon: normalCoupon
-      ? { value: normalCoupon.id, label: normalCoupon.title }
-      : null,
-    stackableCoupon: stackableCoupon
-      ? { value: stackableCoupon.id, label: stackableCoupon.title }
-      : null,
+    normalCoupon: normalCoupon ? normalCoupon.id : null,
+    stackableCoupon: stackableCoupon ? stackableCoupon.id : null,
   };
 };
 

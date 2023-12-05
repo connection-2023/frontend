@@ -11,14 +11,17 @@ export const getCouponList = async (
   const authorization = cookieStore.get(
     type === 'lecturer' ? 'lecturerAccessToken' : 'userAccessToken',
   )?.value;
+  const params = new URLSearchParams();
 
-  const params = new URLSearchParams({
-    ...Object.fromEntries(
-      Object.entries(data)
-        .filter(([_, v]) => v !== undefined)
-        .map(([k, v]) => [k, String(v)]),
-    ),
-  }).toString();
+  Object.entries(data)
+    .filter(([_, v]) => v !== undefined)
+    .forEach(([k, v]) => {
+      if (Array.isArray(v)) {
+        v.forEach((value) => params.append(`${k}[]`, value));
+      } else {
+        params.append(k, String(v));
+      }
+    });
 
   const headers: Record<string, string> = {
     Authorization: `Bearer ${authorization}`,

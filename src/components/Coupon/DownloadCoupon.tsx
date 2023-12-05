@@ -18,7 +18,7 @@ const DownloadCoupon = ({
 }: {
   coupon: IprivateCoupon | IclassCoupon;
   code?: string;
-  couponListPop: (id: number) => void;
+  couponListPop?: (id: number) => void;
 }) => {
   const { title, percentage, discountPrice, isStackable, maxDiscountPrice } =
     coupon;
@@ -71,6 +71,10 @@ const DownloadCoupon = ({
   };
 
   const downloadClassCoupon = async (id: number) => {
+    if (!couponListPop) {
+      return;
+    }
+
     try {
       await getClassCoupon(id);
       couponListPop(id);
@@ -147,7 +151,9 @@ const DownloadCoupon = ({
       )}
       <button
         className="absolute right-[6%] top-1/2 -translate-y-1/2 transform"
-        onClick={() => (code ? downloadPrivateCoupon : downloadClassCoupon(id))}
+        onClick={() =>
+          code ? downloadPrivateCoupon() : downloadClassCoupon(id)
+        }
       >
         <DownloadSVG width="34" height="34" className="fill-main-color" />
       </button>

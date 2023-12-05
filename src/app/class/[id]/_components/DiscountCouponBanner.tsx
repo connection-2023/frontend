@@ -19,13 +19,7 @@ const DiscountCouponBanner = ({
   const [isOpened, setIsOpened] = useState(false);
   const [couponList, setCouponList] = useState(getCouponList);
 
-  const { maxDiscount, normalCoupon, stackableCoupon } = calculateMaxDiscount(
-    price,
-    getCouponList,
-  );
-
-  console.log(normalCoupon);
-  console.log(stackableCoupon);
+  const { maxDiscount } = calculateMaxDiscount(price, getCouponList);
 
   const couponListPop = (id: number) => {
     setCouponList((list) =>
