@@ -1,5 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
 import { IcouponsData, IgetFunction, createCouponData } from '@/types/coupon';
+import { FetchError } from '@/types/types';
 
 export const createNewCoupon = async (data: createCouponData) => {
   try {
@@ -108,7 +109,7 @@ export const getPrivateCoupon = async (couponCode: string) => {
     const response = await fetch(
       `${DOMAIN}/api/coupon/getPrivateCoupon?couponCode=${couponCode}`,
       {
-        method: 'GET',
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +119,9 @@ export const getPrivateCoupon = async (couponCode: string) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || '');
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const resData = await response.json();

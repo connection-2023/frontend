@@ -1,13 +1,22 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { DownloadSVG } from '@/icons/svg';
-import formatDate from '@/utils/formatDate';
+import { getPrivateCoupon } from '@/lib/apis/couponApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { IprivateCoupon } from '@/types/coupon';
+import { FetchError } from '@/types/types';
 
-const DownloadCoupon = ({ coupon }: { coupon: IprivateCoupon }) => {
+const DownloadCoupon = ({
+  coupon,
+  code,
+}: {
+  coupon: IprivateCoupon;
+  code: string;
+}) => {
   const {
     title,
     percentage,
@@ -18,13 +27,40 @@ const DownloadCoupon = ({ coupon }: { coupon: IprivateCoupon }) => {
     maxDiscountPrice,
     lectureCouponTarget,
   } = coupon;
-
+  const router = useRouter();
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
 
   useClickAway(classListRef, () => {
     setClassListsView(false);
   });
+
+  const downloadCoupon = async () => {
+    try {
+      await getPrivateCoupon(code);
+
+      router.push('/my/user/coupon-pass?state=coupon');
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await getPrivateCoupon(code);
+          } catch (error) {
+            const confirmRedirect = window.confirm(
+              '로그인이 필요합니다. 로그인하러 이동 하시겠습니까?',
+            );
+            if (confirmRedirect) {
+              router.replace('/login');
+            }
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
 
   return (
     <div className="relative mb-4 flex h-[8.5rem] w-[21.8125rem] flex-col bg-white px-4 pt-4 shadow-float">
@@ -76,7 +112,10 @@ const DownloadCoupon = ({ coupon }: { coupon: IprivateCoupon }) => {
           </div>
         )}
       </div>
-      <button className="absolute right-[6%] top-1/2 -translate-y-1/2 transform">
+      <button
+        className="absolute right-[6%] top-1/2 -translate-y-1/2 transform"
+        onClick={downloadCoupon}
+      >
         <DownloadSVG width="34" height="34" className="fill-main-color" />
       </button>
       <div className="absolute -top-3 right-[20%] z-10 h-[0.71rem] w-5 rounded-t-full bg-white" />

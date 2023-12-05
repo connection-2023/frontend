@@ -8,6 +8,7 @@ export interface IBootOption {
     userType: 'user' | 'lecturer';
   };
 }
+
 export interface IFilterButton {
   label: '지역' | '장르' | '평점' | '가격' | '지정날짜' | '진행방식' | '시간';
   content: React.JSX.Element;
@@ -121,4 +122,8 @@ export interface IMyPaymentInfo {
   title: string;
   classTime?: string;
   price: number;
+}
+
+export interface FetchError extends Error {
+  status?: number;
 }

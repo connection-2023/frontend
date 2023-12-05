@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Download from './_components/Download';
 import Button from '@/components/Button/Button';
 import DownloadCoupon from '@/components/Coupon/DownloadCoupon';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
@@ -20,14 +21,13 @@ const page = async ({ params, searchParams }: pageProps) => {
     searchParams.lecturerInfo,
   ) as instructorProfile;
   const coupon = JSON.parse(searchParams.coupon) as IprivateCoupon;
-
   return (
     <main className="mb-20 flex h-full w-full flex-col items-center gap-7">
       <header className="flex w-full justify-center border-b border-gray-500 pb-4 pt-8 text-lg font-semibold sm:text-2xl">
         비밀쿠폰 받기
       </header>
       <section className="flex w-[21.8125rem] flex-col gap-5">
-        <DownloadCoupon coupon={coupon} />
+        <DownloadCoupon coupon={coupon} code={params.code} />
 
         <dl className="flex items-center">
           <dt className="w-24 font-semibold">강사</dt>
@@ -82,8 +82,10 @@ const page = async ({ params, searchParams }: pageProps) => {
           </ul>
         </dl>
 
-        <Button>다운로드</Button>
-        <Button color="secondary">쿠폰함 확인하기</Button>
+        <Download code={params.code} />
+        <Link href="/my/user/coupon-pass?state=coupon">
+          <Button color="secondary">쿠폰함 확인하기</Button>
+        </Link>
       </section>
     </main>
   );
