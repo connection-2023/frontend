@@ -42,6 +42,9 @@ const Coupon = ({
   const startAt = formatDate(startDate);
   const endAt = formatDate(endDate);
 
+  console.log(startAt);
+  console.log(endAt);
+
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
   const pathname = usePathname();
@@ -160,11 +163,12 @@ const Coupon = ({
       <dd className="w-full truncate text-sm">{title}</dd>
       <dd className="flex gap-2 text-sm">
         {startAt + '-' + endAt}
-        {maxDiscountPrice && maxDiscountPrice.toLocaleString() !== '0' && (
-          <p className="text-gray-500">
-            (최대할인 {maxDiscountPrice.toLocaleString()}원)
-          </p>
-        )}
+        {maxDiscountPrice !== null &&
+          maxDiscountPrice.toLocaleString() !== '0' && (
+            <p className="text-gray-500">
+              (최대할인 {maxDiscountPrice.toLocaleString()}원)
+            </p>
+          )}
       </dd>
       <span
         ref={classListRef}

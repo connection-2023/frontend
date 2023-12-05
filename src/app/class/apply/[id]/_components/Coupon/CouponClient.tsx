@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
+import { MultiValue, SingleValue } from 'react-select';
 import CouponSelect from './CouponSelect';
+import Coupon from '@/components/Coupon/Coupon';
 import { SelectCoupon, couponGET } from '@/types/coupon';
 
 interface CouponClient {
@@ -20,12 +22,27 @@ const CouponClient = ({
   const [stackableCouponSelect, setStackableCouponSelect] =
     useState(stackableCoupon);
 
-  const onChangeNormalCoupon = (value) => {
-    setNormalCouponSelect(value);
+  const onChangeNormalCoupon = (
+    value: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
+  ) => {
+    if (!value) {
+      setNormalCouponSelect([]);
+      return;
+    }
+
+    const newValue = Array.isArray(value) ? value : [value];
+    setNormalCouponSelect(newValue);
   };
 
-  const onChangeStackableCoupon = (value) => {
-    setStackableCouponSelect(value);
+  const onChangeStackableCoupon = (
+    value: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
+  ) => {
+    if (!value) {
+      setStackableCouponSelect([]);
+      return;
+    }
+    const newValue = Array.isArray(value) ? value : [value];
+    setStackableCouponSelect(newValue);
   };
 
   return (
@@ -37,11 +54,14 @@ const CouponClient = ({
         onChange={onChangeNormalCoupon}
       />
       <CouponSelect
-        options={normalOptions}
+        options={stackableOptions}
         type="STACKABLE"
         selectValue={stackableCouponSelect}
         onChange={onChangeStackableCoupon}
       />
+
+      <Coupon coupon={normalCouponSelect[0].value} type="user" />
+      <Coupon coupon={stackableCouponSelect[0].value} type="user" />
     </div>
   );
 };
