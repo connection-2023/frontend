@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { DownloadSVG } from '@/icons/svg';
-import { getPrivateCoupon } from '@/lib/apis/couponApis';
+import { getClassCoupon, getPrivateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import formatDate from '@/utils/formatDate';
 import { IprivateCoupon, IclassCoupon } from '@/types/coupon';
@@ -23,6 +23,7 @@ const DownloadCoupon = ({
 
   let startAt: string;
   let endAt: string;
+  let id: number;
   let lectureCouponTarget;
 
   if ('lectureCouponTarget' in coupon) {
@@ -32,6 +33,7 @@ const DownloadCoupon = ({
   } else {
     startAt = formatDate(coupon.startAt);
     endAt = formatDate(coupon.endAt);
+    id = coupon.id;
   }
 
   const router = useRouter();
@@ -42,14 +44,12 @@ const DownloadCoupon = ({
     setClassListsView(false);
   });
 
-  const downloadCoupon = async () => {
+  const downloadPrivateCoupon = async () => {
     if (!code) {
       return;
     }
-
     try {
       await getPrivateCoupon(code);
-
       router.push('/my/user/coupon-pass?state=coupon');
     } catch (error) {
       if (error instanceof Error) {
@@ -59,12 +59,28 @@ const DownloadCoupon = ({
             await accessTokenReissuance();
             await getPrivateCoupon(code);
           } catch (error) {
-            const confirmRedirect = window.confirm(
-              '로그인이 필요합니다. 로그인하러 이동 하시겠습니까?',
-            );
-            if (confirmRedirect) {
-              router.replace('/login');
-            }
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
+
+  const downloadClassCoupon = async (id: number) => {
+    try {
+      await getClassCoupon(id);
+      toast.success('쿠폰 다운로드 완료');
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await getClassCoupon(id);
+          } catch (error) {
+            console.error(error);
           }
         } else {
           toast.error('잘못된 요청입니다!');
@@ -127,7 +143,7 @@ const DownloadCoupon = ({
       )}
       <button
         className="absolute right-[6%] top-1/2 -translate-y-1/2 transform"
-        onClick={() => (code ? downloadCoupon : console.log('asda'))}
+        onClick={() => (code ? downloadPrivateCoupon : downloadClassCoupon(id))}
       >
         <DownloadSVG width="34" height="34" className="fill-main-color" />
       </button>

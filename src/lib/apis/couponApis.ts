@@ -132,3 +132,32 @@ export const getPrivateCoupon = async (couponCode: string) => {
     throw error;
   }
 };
+
+export const getClassCoupon = async (couponId: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/coupon/getClassCoupon?couponId=${couponId}`,
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data;
+  } catch (error) {
+    console.error('클래스 공개 쿠폰 다운 오류', error);
+    throw error;
+  }
+};

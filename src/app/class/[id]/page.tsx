@@ -63,8 +63,6 @@ const ClassDetailPage = async ({
       couponLists,
     ]);
 
-  console.log(couponList);
-
   if (classInfo instanceof Error || classSchedule instanceof Error) {
     return <></>;
   }
