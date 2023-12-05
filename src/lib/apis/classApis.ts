@@ -3,6 +3,7 @@ import {
   IUserReview,
   ReviewOrderType,
   ILecturerClassListResonse,
+  ILecturerClassDetailResonse,
 } from '@/types/class';
 
 export const getClassReviews = async (
@@ -88,9 +89,46 @@ export const getLecturerClassList = async (
         method: 'GET',
       },
     ).then((data) => data.json());
-    console.log(response.data);
+
     return response.data.lectureProgress;
   } catch (error) {
     return new Error('잘못된 요청입니다!');
+  }
+};
+
+export const getLecturerClassDetail = async (
+  id: string,
+): Promise<ILecturerClassDetailResonse | Error> => {
+  try {
+    const [classInfoResponse, ScheduleResponse] = await Promise.all([
+      fetch(`${DOMAIN}/api/class/info?id=${id}`, {
+        credentials: 'include',
+        method: 'GET',
+      }).then((data) => data.json()),
+      fetch(`${DOMAIN}/api/class/schedules?id=${id}`, {
+        method: 'GET',
+      }).then((data) => data.json()),
+    ]);
+
+    const {
+      title,
+      lectureNotification,
+      reservationComment,
+      maxCapacity,
+      reservationDeadline,
+    } = classInfoResponse.data.lecture;
+    const { schedule, holidayArr } = ScheduleResponse.data;
+
+    return {
+      title,
+      lectureNotification,
+      reservationComment,
+      maxCapacity,
+      reservationDeadline,
+      schedule,
+      holidays: holidayArr,
+    };
+  } catch (error) {
+    return new Error('강사 클래스 관리 상세 요청 에러!');
   }
 };
