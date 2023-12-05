@@ -14,9 +14,11 @@ import { FetchError } from '@/types/types';
 const DownloadCoupon = ({
   coupon,
   code,
+  couponListPop,
 }: {
   coupon: IprivateCoupon | IclassCoupon;
   code?: string;
+  couponListPop: (id: number) => void;
 }) => {
   const { title, percentage, discountPrice, isStackable, maxDiscountPrice } =
     coupon;
@@ -71,6 +73,7 @@ const DownloadCoupon = ({
   const downloadClassCoupon = async (id: number) => {
     try {
       await getClassCoupon(id);
+      couponListPop(id);
       toast.success('쿠폰 다운로드 완료');
     } catch (error) {
       if (error instanceof Error) {
@@ -79,6 +82,7 @@ const DownloadCoupon = ({
           try {
             await accessTokenReissuance();
             await getClassCoupon(id);
+            couponListPop(id);
           } catch (error) {
             console.error(error);
           }

@@ -46,7 +46,9 @@ export const getCouponList = async (
 export const getClassCouponList = async (lectureId: string) => {
   try {
     const cookieStroe = cookies();
-    const authorization = cookieStroe.get('userAccessToken')?.value; //추후 토큰 확인 제거
+    const authorization = cookieStroe.get('userAccessToken')?.value;
+
+    //추후 백엔드 상의 후 토큰 필요 로직, 필요 없는 로직
 
     const headers: Record<string, string> = {
       Authorization: `Bearer ${authorization}`,
@@ -54,6 +56,7 @@ export const getClassCouponList = async (lectureId: string) => {
     };
 
     const response = await fetch(`${END_POINT}/coupons/lectures/${lectureId}`, {
+      cache: 'no-store',
       method: 'GET',
       credentials: 'include',
       headers,

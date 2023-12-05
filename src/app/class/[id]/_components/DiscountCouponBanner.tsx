@@ -12,12 +12,19 @@ interface DiscountCouponBannerProps {
 }
 
 const DiscountCouponBanner = ({
-  couponList,
+  couponList: getCouponList,
   price,
 }: DiscountCouponBannerProps) => {
   const [isOpened, setIsOpened] = useState(false);
+  const [couponList, setCouponList] = useState(getCouponList);
 
-  const maxDiscount = calculateMaxDiscount(price, couponList);
+  const maxDiscount = calculateMaxDiscount(price, getCouponList);
+
+  const couponListPop = (id: number) => {
+    setCouponList((list) =>
+      list.filter(({ lectureCoupon }) => lectureCoupon.id !== id),
+    );
+  };
 
   return (
     <>
@@ -37,7 +44,10 @@ const DiscountCouponBanner = ({
             <ul className="flex max-h-96 flex-col items-center overflow-y-auto py-2">
               {couponList.map(({ lectureCoupon }) => (
                 <li key={lectureCoupon.id}>
-                  <DownloadCoupon coupon={lectureCoupon} />
+                  <DownloadCoupon
+                    coupon={lectureCoupon}
+                    couponListPop={couponListPop}
+                  />
                 </li>
               ))}
             </ul>
