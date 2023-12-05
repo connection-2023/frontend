@@ -339,3 +339,17 @@ export interface ILecturerClassDetailResonse {
   schedule: IClassSchedule[];
   holidays: string[];
 }
+
+export interface IClassEditRequest {
+  images?: string[];
+  minCapacity?: number;
+  maxCapacity?: number;
+  introduction?: string;
+  curriculum?: string;
+  reservationDeadline?: number;
+  reservationComment?: string;
+  price?: number;
+  coupons?: number[];
+  notification?: string;
+  holidays?: string[];
+}
