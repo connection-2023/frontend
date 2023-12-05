@@ -3,7 +3,9 @@ import Select, {
   FormatOptionLabelMeta,
   MultiValue,
   SingleValue,
+  SingleValueProps,
   StylesConfig,
+  components,
 } from 'react-select';
 import { SelectCoupon } from '@/types/coupon';
 
@@ -16,13 +18,20 @@ interface CouponSelectProps {
   selectValue: SelectCoupon[];
   type: 'NOMAL' | 'STACKABLE';
 }
-
 const CouponSelect = ({
   options,
   onChange,
   selectValue,
   type,
 }: CouponSelectProps) => {
+  const SingleValue = (props: SingleValueProps<SelectCoupon, boolean>) => (
+    <components.SingleValue {...props}>
+      <div>
+        ({type === 'NOMAL' ? '일반' : '중복'}) {props.data.label}
+      </div>
+    </components.SingleValue>
+  );
+
   return (
     <Select
       instanceId="select-coupon"
@@ -35,6 +44,7 @@ const CouponSelect = ({
       options={options}
       styles={couponSelectStyle}
       value={selectValue}
+      components={{ SingleValue }}
     />
   );
 };

@@ -1,5 +1,5 @@
 import { revalidateTag } from 'next/cache';
-import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
 import {
   getClassInfo,
   getClassSchedules,
@@ -73,7 +73,10 @@ const ClassApplyPage = async ({
           maxCapacity={maxCapacity}
         />
         <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
-          <h3 className="text-lg font-semibold">쿠폰/패스권 적용</h3>
+          <h3 className="flex gap-1 text-lg font-semibold">
+            <CouponSVG className="h-6 w-6 fill-sub-color1" />
+            쿠폰/패스권 적용
+          </h3>
           <CouponContainer couponList={couponList} price={price} />
           {/* 쿠폰 선택 */}
         </section>

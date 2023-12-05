@@ -14,8 +14,8 @@ const CouponContainer = ({
   if (!resCouponList) {
     return null;
   }
-  let normalCoupon: SelectCoupon | undefined;
-  let stackableCoupon: SelectCoupon | undefined;
+  let normalCoupon: SelectCoupon[] | undefined;
+  let stackableCoupon: SelectCoupon[] | undefined;
   const couponList = resCouponList.itemList.map(mapItemToCoupon);
 
   const {
@@ -33,23 +33,19 @@ const CouponContainer = ({
       endAt: formatDate(coupon.endAt),
     };
 
-    (coupon.isStackable ? stackableCoupons : normalCoupons).push({
+    const selectOption = {
       value: formattedCoupon,
       label: coupon.title,
-    });
+    };
+
+    (coupon.isStackable ? stackableCoupons : normalCoupons).push(selectOption);
 
     if (maxNormalCouponId === coupon.id) {
-      normalCoupon = {
-        value: formattedCoupon,
-        label: coupon.title,
-      };
+      normalCoupon = [selectOption];
     }
 
     if (maxStackableCouponId === coupon.id) {
-      stackableCoupon = {
-        value: formattedCoupon,
-        label: coupon.title,
-      };
+      stackableCoupon = [selectOption];
     }
   });
 
