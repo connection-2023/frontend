@@ -228,8 +228,8 @@ export interface IClassSchedule {
   id: number;
   lectureId: number;
   startDateTime: string;
+  endDateTime: string;
   numberOfParticipants: number;
-  team: null | string;
 }
 
 export interface IClassScheduleResponse {
@@ -328,4 +328,14 @@ export interface ILecturerClassListResonse {
   endDate: string;
   title: string;
   [key: string]: any;
+}
+
+export interface ILecturerClassDetailResonse {
+  title: string;
+  lectureNotification: IClassNotification;
+  reservationComment: string;
+  maxCapacity: number;
+  reservationDeadline: number;
+  schedule: IClassSchedule[];
+  holidays: string[];
 }
