@@ -60,8 +60,20 @@ const CouponClient = ({
         onChange={onChangeStackableCoupon}
       />
 
-      <Coupon coupon={normalCouponSelect[0].value} type="user" />
-      <Coupon coupon={stackableCouponSelect[0].value} type="user" />
+      {normalCouponSelect.length > 0 && (
+        <Coupon
+          coupon={normalCouponSelect[0].value}
+          type="user"
+          cancelSelectedCoupon={() => onChangeNormalCoupon([])}
+        />
+      )}
+      {stackableCouponSelect.length > 0 && (
+        <Coupon
+          coupon={stackableCouponSelect[0].value}
+          type="user"
+          cancelSelectedCoupon={() => onChangeStackableCoupon([])}
+        />
+      )}
     </div>
   );
 };

@@ -42,9 +42,6 @@ const Coupon = ({
   const startAt = formatDate(startDate);
   const endAt = formatDate(endDate);
 
-  console.log(startAt);
-  console.log(endAt);
-
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
   const pathname = usePathname();
@@ -89,6 +86,8 @@ const Coupon = ({
     }
   };
 
+  console.log(pathname);
+
   return (
     <dl
       className="relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] lg:w-[20.5rem]"
@@ -108,7 +107,7 @@ const Coupon = ({
           )}
         </div>
 
-        {pathname === '/class/create' ? (
+        {pathname.startsWith('/class') ? (
           <div className="text-sm">
             <UniqueButton
               type="button"
