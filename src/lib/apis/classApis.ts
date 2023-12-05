@@ -4,6 +4,7 @@ import {
   ReviewOrderType,
   ILecturerClassListResonse,
   ILecturerClassDetailResonse,
+  IClassEditRequest,
 } from '@/types/class';
 
 export const getClassReviews = async (
@@ -130,5 +131,19 @@ export const getLecturerClassDetail = async (
     };
   } catch (error) {
     return new Error('강사 클래스 관리 상세 요청 에러!');
+  }
+};
+
+export const updateClassData = async (id: string, data: IClassEditRequest) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/edit?id=${id}`, {
+      credentials: 'include',
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }).then((data) => data.json());
+
+    return response;
+  } catch (error) {
+    return new Error('리뷰 좋아요 요청 오류!');
   }
 };
