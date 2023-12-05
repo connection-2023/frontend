@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { IcouponsData, IgetFunction, IuserCouponsData } from '@/types/coupon';
+import { IcouponsData, IgetFunction } from '@/types/coupon';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -41,4 +41,32 @@ export const getCouponList = async (
   const { couponList: itemList, totalItemCount } = resData.data;
 
   return { itemList: itemList ?? [], totalItemCount };
+};
+
+export const getClassCouponList = async (lectureId: string) => {
+  try {
+    const cookieStroe = cookies();
+    const authorization = cookieStroe.get('userAccessToken')?.value; //추후 토큰 확인 제거
+
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${authorization}`,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(`${END_POINT}/coupons/lectures/${lectureId}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`쿠폰 목록 불러오기: ${response.status}`);
+    }
+
+    const resData = await response.json();
+
+    return resData.data.applicableCoupons;
+  } catch (error) {
+    console.error(error);
+  }
 };

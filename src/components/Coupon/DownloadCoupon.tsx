@@ -7,26 +7,33 @@ import { useClickAway } from 'react-use';
 import { DownloadSVG } from '@/icons/svg';
 import { getPrivateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import { IprivateCoupon } from '@/types/coupon';
+import formatDate from '@/utils/formatDate';
+import { IprivateCoupon, IclassCoupon } from '@/types/coupon';
 import { FetchError } from '@/types/types';
 
 const DownloadCoupon = ({
   coupon,
   code,
 }: {
-  coupon: IprivateCoupon;
-  code: string;
+  coupon: IprivateCoupon | IclassCoupon;
+  code?: string;
 }) => {
-  const {
-    title,
-    percentage,
-    discountPrice,
-    startAt,
-    endAt,
-    isStackable,
-    maxDiscountPrice,
-    lectureCouponTarget,
-  } = coupon;
+  const { title, percentage, discountPrice, isStackable, maxDiscountPrice } =
+    coupon;
+
+  let startAt: string;
+  let endAt: string;
+  let lectureCouponTarget;
+
+  if ('lectureCouponTarget' in coupon) {
+    startAt = coupon.startAt;
+    endAt = coupon.endAt;
+    lectureCouponTarget = coupon.lectureCouponTarget;
+  } else {
+    startAt = formatDate(coupon.startAt);
+    endAt = formatDate(coupon.endAt);
+  }
+
   const router = useRouter();
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
@@ -36,6 +43,10 @@ const DownloadCoupon = ({
   });
 
   const downloadCoupon = async () => {
+    if (!code) {
+      return;
+    }
+
     try {
       await getPrivateCoupon(code);
 
@@ -64,11 +75,11 @@ const DownloadCoupon = ({
 
   return (
     <div className="relative mb-4 flex h-[8.5rem] w-[21.8125rem] flex-col bg-white px-4 pt-4 shadow-float">
-      <div className="mb-2 flex items-center gap-2">
+      <div className={`${code ? 'mb-2' : 'mb-6'} flex items-center gap-2`}>
         <dt className="text-2xl font-bold text-main-color">
           {percentage
             ? percentage + '%'
-            : discountPrice.toLocaleString() + '원'}
+            : discountPrice?.toLocaleString() + '원'}
         </dt>
         <dd
           className={`rounded-md px-2 py-0.5 text-sm ${
@@ -90,31 +101,33 @@ const DownloadCoupon = ({
           </p>
         )}
       </dd>
-      <div
-        ref={classListRef}
-        className="relative cursor-pointer text-sm text-gray-500 underline underline-offset-4"
-        onClick={() => setClassListsView((prev) => !prev)}
-      >
-        {`적용가능한 클래스(${lectureCouponTarget.length})`}
-        {classListsView && lectureCouponTarget.length > 0 && (
-          <div className="absolute top-4 z-20 flex min-w-[16rem] flex-col border border-solid border-gray-500 bg-white text-black">
-            {lectureCouponTarget.map(({ lecture }) => {
-              return (
-                <Link
-                  key={lecture.id + lecture.title}
-                  href={`/class/${lecture.id}`}
-                  className="border-b border-solid border-gray-500 px-4 py-2 hover:bg-sub-color1-transparent"
-                >
-                  {lecture.title}
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      {lectureCouponTarget && (
+        <div
+          ref={classListRef}
+          className="relative cursor-pointer text-sm text-gray-500 underline underline-offset-4"
+          onClick={() => setClassListsView((prev) => !prev)}
+        >
+          {`적용가능한 클래스(${lectureCouponTarget.length})`}
+          {classListsView && lectureCouponTarget.length > 0 && (
+            <div className="absolute top-4 z-20 flex min-w-[16rem] flex-col border border-solid border-gray-500 bg-white text-black">
+              {lectureCouponTarget.map(({ lecture }) => {
+                return (
+                  <Link
+                    key={lecture.id + lecture.title}
+                    href={`/class/${lecture.id}`}
+                    className="border-b border-solid border-gray-500 px-4 py-2 hover:bg-sub-color1-transparent"
+                  >
+                    {lecture.title}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
       <button
         className="absolute right-[6%] top-1/2 -translate-y-1/2 transform"
-        onClick={downloadCoupon}
+        onClick={() => (code ? downloadCoupon : console.log('asda'))}
       >
         <DownloadSVG width="34" height="34" className="fill-main-color" />
       </button>

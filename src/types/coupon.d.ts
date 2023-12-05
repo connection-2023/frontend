@@ -173,3 +173,19 @@ export interface IgetListFunctionHandler {
   data: IgetFunction;
   signal?: AbortSignal;
 }
+
+export interface IclassCouponList {
+  lectureCoupon: IclassCoupon;
+}
+
+export interface IclassCoupon {
+  id: number;
+  title: string;
+  maxUsageCount: number;
+  percentage: number;
+  discountPrice: number;
+  maxDiscountPrice: number;
+  isStackable: boolean;
+  startAt: string;
+  endAt: string;
+}
