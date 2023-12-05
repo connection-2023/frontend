@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { DownloadSVG } from '@/icons/svg';
+import calculateMaxDiscount from '@/utils/calculateMaxDiscount';
 import Button from '@/components/Button/Button';
 import DownloadCoupon from '@/components/Coupon/DownloadCoupon';
 import Modal from '@/components/Modal/Modal';
@@ -18,7 +19,13 @@ const DiscountCouponBanner = ({
   const [isOpened, setIsOpened] = useState(false);
   const [couponList, setCouponList] = useState(getCouponList);
 
-  const maxDiscount = calculateMaxDiscount(price, getCouponList);
+  const { maxDiscount, normalCoupon, stackableCoupon } = calculateMaxDiscount(
+    price,
+    getCouponList,
+  );
+
+  console.log(normalCoupon);
+  console.log(stackableCoupon);
 
   const couponListPop = (id: number) => {
     setCouponList((list) =>
@@ -53,6 +60,7 @@ const DiscountCouponBanner = ({
             </ul>
             <div className="flex w-full justify-center px-11 py-5">
               <Button>모두 다운받기</Button>
+              {/* 추후 백엔드 api 수정 시 모두 다운 로직 추가 */}
             </div>
           </section>
         </Modal>
@@ -62,59 +70,3 @@ const DiscountCouponBanner = ({
 };
 
 export default DiscountCouponBanner;
-
-const calculateMaxDiscount = (
-  lecturePrice: number,
-  coupons: IclassCouponList[],
-) => {
-  const normalCoupons = [] as IclassCoupon[];
-  const stackableCoupons = [] as IclassCoupon[];
-
-  coupons.forEach(({ lectureCoupon: coupon }) => {
-    (coupon.isStackable ? stackableCoupons : normalCoupons).push(coupon);
-  });
-
-  const calculateDiscount = (coupon: IclassCoupon, price: number) => {
-    let discount = 0;
-    if (coupon.percentage) {
-      discount = (price * coupon.percentage) / 100;
-    } else if (coupon.discountPrice) {
-      discount = coupon.discountPrice;
-    }
-
-    return coupon.maxDiscountPrice && discount > coupon.maxDiscountPrice
-      ? coupon.maxDiscountPrice
-      : discount;
-  };
-
-  const calculateMaxDiscounts = (coupons: IclassCoupon[]) => {
-    let maxDiscount = 0;
-    let maxPercentDiscount = 0;
-
-    coupons.forEach((coupon) => {
-      const discount = calculateDiscount(coupon, lecturePrice);
-      if (coupon.percentage) {
-        maxPercentDiscount = Math.max(discount, maxPercentDiscount);
-      } else {
-        maxDiscount = Math.max(discount, maxDiscount);
-      }
-    });
-
-    return { maxDiscount, maxPercentDiscount };
-  };
-
-  const {
-    maxDiscount: maxNormalDiscount,
-    maxPercentDiscount: maxNormalPercentDiscount,
-  } = calculateMaxDiscounts(normalCoupons);
-  const {
-    maxDiscount: totalStackableDiscount,
-    maxPercentDiscount: maxStackablePercentDiscount,
-  } = calculateMaxDiscounts(stackableCoupons);
-
-  return Math.max(
-    maxNormalDiscount + totalStackableDiscount,
-    maxNormalDiscount + maxStackablePercentDiscount,
-    maxNormalPercentDiscount + totalStackableDiscount,
-  );
-};
