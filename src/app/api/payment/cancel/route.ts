@@ -9,7 +9,10 @@ if (!END_POINT) {
 }
 
 export const POST = async (request: NextRequest) => {
+  const searchParams = request.nextUrl.searchParams;
+  const id = searchParams.get('id');
   const token = request.cookies.get('userAccessToken');
+
   if (token) {
     const tokenValue = token.value;
 
@@ -17,20 +20,21 @@ export const POST = async (request: NextRequest) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${tokenValue}`,
     };
-    const data = await request.json();
 
     try {
-      const serverResponse = await fetch(END_POINT + '/payments/toss/lecture', {
-        method: 'POST',
-        credentials: 'include',
-        headers,
-        body: JSON.stringify(data),
-      }).then((res) => res.json());
+      const serverResponse = await fetch(
+        END_POINT + '/payments/toss/' + id + '/cancel',
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers,
+        },
+      );
       revalidateTag('schedules');
 
       return NextResponse.json(serverResponse);
     } catch (error) {
-      console.error('결제 정보 요청 에러: ', error);
+      console.error('결제 취소 요청 에러: ', error);
 
       return NextResponse.json(error);
     }
