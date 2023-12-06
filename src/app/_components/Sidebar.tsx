@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { useUserStore } from '@/store/userStore';
 import {
   ArrowUpSVG,
   BookmarkSVG,
@@ -13,6 +12,7 @@ import {
   MoneySVG,
   HeartSVG,
 } from '@/icons/svg';
+import { useUserStore } from '@/store/userStore';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
 interface SidebarProps {
@@ -136,7 +136,7 @@ const instructorLinks = [
     ],
   },
   {
-    path: '/my/pass-coupon',
+    path: '/my/lecturer/coupon-pass?state=coupon',
     text: '패스권/쿠폰',
     icon: <CouponSVG width="21" height="21" className={iconStyle} />,
   },
@@ -180,7 +180,7 @@ const userLinks = [
     icon: <HeartSVG width="21" height="21" className={iconStyle} />,
   },
   {
-    path: '/my/pass-coupon',
+    path: '/my/user/coupon-pass?state=coupon',
     text: '패스권/쿠폰',
     icon: <CouponSVG width="21" height="21" className={iconStyle} />,
   },

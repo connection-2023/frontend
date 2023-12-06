@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
 import { getCouponLists } from '@/lib/apis/couponApis';
@@ -37,6 +37,16 @@ const CouponView = ({
   const router = useRouter();
   const [userClassFilterView, setUserClassFilterView] = useState(false);
   const [couponLists, setCouponLists] = useState(couponList);
+  const [refreshBtnView, setRefreshBtnView] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+  const triggerClassListRefresh = () => {
+    setRefreshTrigger((prev) => !prev);
+  };
+
+  const changeRefreshBtnView = (show: boolean) => {
+    setRefreshBtnView(show);
+  };
 
   const changeUserClassFilterView = () => {
     setUserClassFilterView((prev) => !prev);
@@ -184,6 +194,8 @@ const CouponView = ({
               filterState={filterState.passStatusOptions}
               userClassFilterView={userClassFilterView}
               changeUserClassFilterView={changeUserClassFilterView}
+              refreshBtnView={refreshBtnView}
+              triggerClassListRefresh={triggerClassListRefresh}
             />
           ) : (
             <ClassFilterSelect
@@ -200,6 +212,8 @@ const CouponView = ({
               myLectureList={myLectureList}
               selectedClass={filterState.selectedClass}
               handleChangeSelectedClass={handleChangeSelectedClass}
+              changeRefreshBtnView={changeRefreshBtnView}
+              refreshTrigger={refreshTrigger}
             />
           )}
       </nav>

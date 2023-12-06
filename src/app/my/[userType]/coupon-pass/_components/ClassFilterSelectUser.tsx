@@ -1,37 +1,52 @@
 import { useState } from 'react';
-import { FilterSVG } from '@/icons/svg';
+import { FilterSVG, RefreshSVG } from '@/icons/svg';
 
 interface ClassFilterSelectUserProps {
   userClassFilterView: boolean;
   changeUserClassFilterView: () => void;
   filterState: string;
+  refreshBtnView: boolean;
+  triggerClassListRefresh: () => void;
 }
 
 const ClassFilterSelectUser = ({
   userClassFilterView,
   changeUserClassFilterView,
   filterState,
+  refreshBtnView,
+  triggerClassListRefresh,
 }: ClassFilterSelectUserProps) => {
   return (
-    <button
-      className={`flex gap-1 ${
-        userClassFilterView && filterState === 'AVAILABLE'
-          ? 'text-black'
-          : 'text-gray-500'
-      }`}
-      onClick={changeUserClassFilterView}
-    >
-      <FilterSVG
-        className={`h-6 w-6  ${
+    <div className="flex gap-2 md:ml-7">
+      <button
+        className={`flex gap-1 ${
           userClassFilterView && filterState === 'AVAILABLE'
-            ? 'fill-black'
-            : 'fill-gray-500'
+            ? 'text-black'
+            : 'text-gray-500'
         }`}
-      />
-      <p className={userClassFilterView ? 'block' : 'hidden sm:block'}>
-        적용 가능한 모든 클래스 보기
-      </p>
-    </button>
+        onClick={changeUserClassFilterView}
+      >
+        <FilterSVG
+          className={`h-6 w-6  ${
+            userClassFilterView && filterState === 'AVAILABLE'
+              ? 'fill-black'
+              : 'fill-gray-500'
+          }`}
+        />
+        <p className={userClassFilterView ? 'block' : 'hidden sm:block'}>
+          적용 가능한 모든 클래스 보기
+        </p>
+      </button>
+
+      {refreshBtnView && (
+        <button
+          className="flex items-center gap-1 font-bold text-gray-500"
+          onClick={triggerClassListRefresh}
+        >
+          초기화 <RefreshSVG className="mb-0.5" />
+        </button>
+      )}
+    </div>
   );
 };
 

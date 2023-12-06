@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { USER_COUPON_CLASS_LIST_TAKE } from '@/constants/constants';
 import { PlusesSVG } from '@/icons/svg';
 import { SelectClassType } from '@/types/coupon';
@@ -8,6 +8,8 @@ interface ClassFilterSelectListsUserProps {
   handleChangeSelectedClass: (selectedOptions: any) => void;
   selectedClass: SelectClassType | null;
   userClassFilterView: boolean;
+  changeRefreshBtnView: (show: boolean) => void;
+  refreshTrigger: boolean;
 }
 
 const ClassFilterSelectListsUser = ({
@@ -15,6 +17,8 @@ const ClassFilterSelectListsUser = ({
   handleChangeSelectedClass,
   selectedClass,
   userClassFilterView,
+  changeRefreshBtnView,
+  refreshTrigger,
 }: ClassFilterSelectListsUserProps) => {
   const [listViewCount, setListViewCount] = useState(
     USER_COUPON_CLASS_LIST_TAKE,
@@ -22,36 +26,55 @@ const ClassFilterSelectListsUser = ({
   const [selectedClassValue, setSelectedClassValue] = useState<
     string | number | number[] | undefined
   >(selectedClass?.value);
+  const firstRender = useRef(true);
 
-  const changeSelectedClass = (classId: number) => {
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    changeSelectedClass();
+    setListViewCount(USER_COUPON_CLASS_LIST_TAKE);
+    changeRefreshBtnView(false);
+  }, [refreshTrigger]);
+
+  const changeSelectedClass = (classId: number = -1) => {
     let newValue;
 
-    if (selectedClassValue === 'select-all') {
+    if (classId === -1) {
+      newValue = 'select-all';
+    } else if (selectedClassValue === 'select-all') {
       newValue = [classId];
-    } else {
-      if (
-        Array.isArray(selectedClassValue) &&
-        selectedClassValue.includes(classId)
-      ) {
+    } else if (Array.isArray(selectedClassValue)) {
+      if (selectedClassValue.includes(classId)) {
         newValue = selectedClassValue.filter(
           (selectedId) => selectedId !== classId,
         );
-
         if (newValue.length === 0) {
           newValue = 'select-all';
         }
-      } else if (
-        Array.isArray(selectedClassValue) &&
-        selectedClassValue.length + 1 === myLectureList.length - 1
-      ) {
-        newValue = 'select-all';
       } else {
-        newValue = [...(selectedClassValue as number[]), classId];
+        newValue = [...selectedClassValue, classId];
+        if (newValue.length === myLectureList.length - 1) {
+          newValue = 'select-all';
+        }
       }
     }
 
+    const isNotAllSelected =
+      (newValue !== 'select-all' &&
+        newValue!.length - 1 !== myLectureList.length) ||
+      listViewCount !== USER_COUPON_CLASS_LIST_TAKE;
+
+    changeRefreshBtnView(isNotAllSelected);
     setSelectedClassValue(newValue);
     handleChangeSelectedClass({ value: newValue });
+  };
+
+  const showMoreClasses = () => {
+    setListViewCount((count) => count + USER_COUPON_CLASS_LIST_TAKE);
+    changeRefreshBtnView(true);
   };
 
   return (
@@ -82,9 +105,7 @@ const ClassFilterSelectListsUser = ({
       {myLectureList.length > listViewCount && (
         <button
           className="group mb-2 mr-5 flex gap-1 hover:text-sub-color1 sm:text-gray-500 sm:underline"
-          onClick={() =>
-            setListViewCount((count) => count + USER_COUPON_CLASS_LIST_TAKE)
-          }
+          onClick={showMoreClasses}
         >
           <p className="sm:hidden">+{myLectureList.length - listViewCount}</p>
           더보기
