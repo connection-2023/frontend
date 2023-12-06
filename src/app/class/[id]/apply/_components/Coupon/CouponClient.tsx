@@ -94,20 +94,22 @@ const CouponClient = ({
         onChange={onChangeStackableCoupon}
       />
 
-      {normalCouponSelect.length > 0 && (
-        <Coupon
-          coupon={normalCouponSelect[0].value}
-          type="user"
-          cancelSelectedCoupon={() => onChangeNormalCoupon([])}
-        />
-      )}
-      {stackableCouponSelect.length > 0 && (
-        <Coupon
-          coupon={stackableCouponSelect[0].value}
-          type="user"
-          cancelSelectedCoupon={() => onChangeStackableCoupon([])}
-        />
-      )}
+      <div className="mt-5 flex flex-wrap justify-evenly gap-4">
+        {normalCouponSelect.length > 0 && (
+          <Coupon
+            coupon={normalCouponSelect[0].value}
+            type="user"
+            cancelSelectedCoupon={() => onChangeNormalCoupon([])}
+          />
+        )}
+        {stackableCouponSelect.length > 0 && (
+          <Coupon
+            coupon={stackableCouponSelect[0].value}
+            type="user"
+            cancelSelectedCoupon={() => onChangeStackableCoupon([])}
+          />
+        )}
+      </div>
     </div>
   );
 };

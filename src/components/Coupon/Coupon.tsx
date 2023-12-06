@@ -90,7 +90,11 @@ const Coupon = ({
 
   return (
     <dl
-      className="relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] lg:w-[20.5rem]"
+      className={`relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] ${
+        pathname.startsWith('/my') || pathname.startsWith('/class/create')
+          ? 'lg:w-[20.5rem]'
+          : 'md:w-[20.5rem] lg:w-[17rem]'
+      }`}
       ref={lastItemElementRef}
     >
       <div className="flex justify-between">
