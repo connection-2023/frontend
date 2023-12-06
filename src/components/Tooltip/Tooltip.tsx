@@ -5,7 +5,11 @@ import { TooltipSVG } from '@/icons/svg';
 type ChildComponentProps = { setShow: (event: React.MouseEvent) => void };
 type ChildComponent = React.ReactElement<ChildComponentProps>;
 
-const Tooltip = ({ children }: { children: ChildComponent[] }) => {
+const Tooltip = ({
+  children,
+}: {
+  children: React.ReactElement | React.ReactElement[];
+}) => {
   const [show, setShow] = useState(true);
 
   const closeViewHandler = (event: React.MouseEvent) => {
