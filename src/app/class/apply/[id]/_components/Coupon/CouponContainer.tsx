@@ -55,6 +55,7 @@ const CouponContainer = ({
       stackableOptions={stackableCoupons}
       normalCoupon={normalCoupon ?? []}
       stackableCoupon={stackableCoupon ?? []}
+      price={price}
     />
   );
 };

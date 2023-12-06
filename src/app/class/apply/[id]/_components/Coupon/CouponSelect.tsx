@@ -34,7 +34,7 @@ const CouponSelect = ({
 
   return (
     <Select
-      instanceId="select-coupon"
+      instanceId={`${type}coupon-select`}
       placeholder={`(${type === 'NOMAL' ? '일반' : '중복'}) 적용할 쿠폰 선택`}
       noOptionsMessage={() =>
         `적용 가능한 ${type === 'NOMAL' ? '일반' : '중복'}쿠폰이 없습니다`
