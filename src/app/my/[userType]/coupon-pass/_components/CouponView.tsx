@@ -225,6 +225,7 @@ const CouponView = ({
           lastItemElementRef={lastItemElementRef}
           totalItemCount={totalItemCount}
           type={userType}
+          expiration={filterState.passStatusOptions}
         />
       </div>
       {loading && width < 640 && (

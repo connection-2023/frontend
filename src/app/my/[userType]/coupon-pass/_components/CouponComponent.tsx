@@ -7,6 +7,7 @@ interface CouponComponentProps {
   lastItemElementRef: (node: HTMLElement | null) => void;
   totalItemCount: number;
   type: 'user' | 'lecturer';
+  expiration: 'AVAILABLE' | 'DISABLED' | 'USED' | 'EXPIRED';
 }
 
 const CouponComponent = ({
@@ -14,6 +15,7 @@ const CouponComponent = ({
   lastItemElementRef,
   totalItemCount,
   type,
+  expiration,
 }: CouponComponentProps) => {
   const { width } = useWindowSize();
 
@@ -27,9 +29,15 @@ const CouponComponent = ({
             coupon={coupon}
             lastItemElementRef={width < 640 ? lastItemElementRef : undefined}
             type={type}
+            expiration={expiration === 'DISABLED'}
           />
         ) : (
-          <Coupon key={coupon.id} coupon={coupon} type={type} />
+          <Coupon
+            key={coupon.id}
+            coupon={coupon}
+            type={type}
+            expiration={expiration === 'DISABLED'}
+          />
         );
       })}
     </>

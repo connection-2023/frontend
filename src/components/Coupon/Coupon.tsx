@@ -18,6 +18,7 @@ interface CouponProps {
   editEventHandler?: () => void;
   lastItemElementRef?: (node: HTMLElement | null) => void;
   type?: 'user' | 'lecturer';
+  expiration?: boolean;
 }
 
 const Coupon = ({
@@ -25,6 +26,7 @@ const Coupon = ({
   cancelSelectedCoupon,
   lastItemElementRef,
   type = 'lecturer',
+  expiration = false,
 }: CouponProps) => {
   const {
     title,
@@ -93,12 +95,16 @@ const Coupon = ({
     >
       <div className="flex justify-between">
         <div className="flex items-center gap-1">
-          <dt className="text-2xl font-bold text-main-color">
+          <dt
+            className={`text-2xl font-bold ${
+              expiration ? 'text-gray-300' : 'text-main-color'
+            } `}
+          >
             {percentage
               ? percentage + '%'
               : discountPrice.toLocaleString() + '원'}
           </dt>
-          {isPrivate && type === 'lecturer' && (
+          {!expiration && isPrivate && type === 'lecturer' && (
             <button onClick={getPrivateCouponCode}>
               <LinkSVG className="fill-black" />
             </button>
