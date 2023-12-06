@@ -63,7 +63,9 @@ export const getCouponLists = async (
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || '');
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const resData = await response.json();

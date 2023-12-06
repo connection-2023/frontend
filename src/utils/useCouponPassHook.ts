@@ -1,12 +1,15 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useWindowSize } from 'react-use';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import {
   IFilterState,
   IgetListFunctionHandler,
   IonChangeItemList,
 } from '@/types/coupon';
+import { FetchError } from '@/types/types';
 
 interface useCouponPassHookProps {
   myLectureList: {
@@ -111,51 +114,69 @@ const useCouponPassHook = ({
 
     setLoading(true);
     if (filterState.isInterested === 'COUPON') {
-      const { selectedClass } = filterState;
+      try {
+        const { selectedClass } = filterState;
 
-      const data = {
-        take: LECTURE_COUPON_TAKE,
-        currentPage: filterState.currentPage,
-        targetPage: filterState.targetPage,
-        firstItemId: itemId.firstItemId,
-        lastItemId: itemId.lastItemId,
-        couponStatusOption: filterState.passStatusOptions, //s 빼야합니다. 나중에
-        filterOption: filterState.filterOption,
-        [type === 'user' ? 'lectureIds' : 'lectureId']:
-          selectedClass?.value === 'select-all'
-            ? undefined
-            : selectedClass?.value,
-      };
+        const data = {
+          take: LECTURE_COUPON_TAKE,
+          currentPage: filterState.currentPage,
+          targetPage: filterState.targetPage,
+          firstItemId: itemId.firstItemId,
+          lastItemId: itemId.lastItemId,
+          couponStatusOption: filterState.passStatusOptions, //s 빼야합니다. 나중에
+          filterOption: filterState.filterOption,
+          [type === 'user' ? 'lectureIds' : 'lectureId']:
+            selectedClass?.value === 'select-all'
+              ? undefined
+              : selectedClass?.value,
+        };
 
-      const resData = await getFunction({
-        data,
-        signal: controller.current.signal,
-        type: filterState.isInterested,
-      });
+        const resData = await getFunction({
+          data,
+          signal: controller.current.signal,
+          type: filterState.isInterested,
+        });
 
-      onChange({
-        itemList: resData.itemList ?? [],
-        prevPage: width < 640 ? prevPage.current !== null : false,
-        type: filterState.isInterested,
-      });
+        onChange({
+          itemList: resData.itemList ?? [],
+          prevPage: width < 640 ? prevPage.current !== null : false,
+          type: filterState.isInterested,
+        });
 
-      setItemId({
-        firstItemId:
-          resData.itemList && resData.itemList.length > 0
-            ? resData.itemList[0].id
-            : 0,
-        lastItemId:
-          resData.itemList && resData.itemList.length > 0
-            ? resData.itemList[resData.itemList.length - 1].id
-            : 0,
-      });
+        setItemId({
+          firstItemId:
+            resData.itemList && resData.itemList.length > 0
+              ? resData.itemList[0].id
+              : 0,
+          lastItemId:
+            resData.itemList && resData.itemList.length > 0
+              ? resData.itemList[resData.itemList.length - 1].id
+              : 0,
+        });
 
-      setTotalItemCount(resData.totalItemCount);
+        setTotalItemCount(resData.totalItemCount);
+      } catch (error) {
+        if (error instanceof Error) {
+          const fetchError = error as FetchError;
+          if (fetchError.status === 401) {
+            try {
+              await accessTokenReissuance();
+              setLoading(false);
+              await handleGetList();
+            } catch (error) {
+              console.error(error);
+            }
+          } else {
+            toast.error('잘못된 요청입니다!');
+          }
+        }
+      }
     }
 
     prevPage.current = null;
     setLoading(false);
   };
+
   const handleChangePage = (selectedPage: { selected: number }) => {
     if (prevPage.current === null) {
       prevPage.current = filterState.targetPage;
