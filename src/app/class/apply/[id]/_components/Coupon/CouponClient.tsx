@@ -12,6 +12,39 @@ interface CouponClient {
   stackableCoupon: SelectCoupon[];
 }
 
+const handleOnChangeCoupon = (
+  coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
+  setSelectCoupon: React.Dispatch<React.SetStateAction<SelectCoupon[]>>,
+  selectPercentage: React.MutableRefObject<boolean>,
+  setOptions: React.Dispatch<React.SetStateAction<SelectCoupon[]>>,
+  options: SelectCoupon[],
+) => {
+  if (!coupon) {
+    setSelectCoupon([]);
+    return;
+  }
+
+  if (
+    Array.isArray(coupon) &&
+    coupon.length === 0 &&
+    selectPercentage.current
+  ) {
+    selectPercentage.current = false;
+    setOptions(options);
+  }
+
+  if ('value' in coupon && coupon.value.percentage) {
+    selectPercentage.current = true;
+
+    setOptions((options) =>
+      options.filter((option) => !option.value.percentage),
+    );
+  }
+
+  const newValue = Array.isArray(coupon) ? coupon : [coupon];
+  setSelectCoupon(newValue);
+};
+
 const CouponClient = ({
   normalOptions,
   stackableOptions,
@@ -35,59 +68,25 @@ const CouponClient = ({
   const onChangeNormalCoupon = (
     coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
   ) => {
-    if (!coupon) {
-      setNormalCouponSelect([]);
-      return;
-    }
-
-    if (
-      Array.isArray(coupon) &&
-      coupon.length === 0 &&
-      normalSelectPercentage.current
-    ) {
-      normalSelectPercentage.current = false;
-      setStackableOption(stackableOptions);
-    }
-
-    if ('value' in coupon && coupon.value.percentage) {
-      normalSelectPercentage.current = true;
-
-      setStackableOption((options) =>
-        options.filter((option) => !option.value.percentage),
-      );
-    }
-
-    const newValue = Array.isArray(coupon) ? coupon : [coupon];
-    setNormalCouponSelect(newValue);
+    handleOnChangeCoupon(
+      coupon,
+      setNormalCouponSelect,
+      normalSelectPercentage,
+      setStackableOption,
+      stackableOptions,
+    );
   };
 
   const onChangeStackableCoupon = (
     coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
   ) => {
-    if (!coupon) {
-      setStackableCouponSelect([]);
-      return;
-    }
-
-    if (
-      Array.isArray(coupon) &&
-      coupon.length === 0 &&
-      stackablePercentage.current
-    ) {
-      stackablePercentage.current = false;
-      setNormalOption(stackableOptions);
-    }
-
-    if ('value' in coupon && coupon.value.percentage) {
-      stackablePercentage.current = true;
-
-      setNormalOption((options) =>
-        options.filter((option) => !option.value.percentage),
-      );
-    }
-
-    const newValue = Array.isArray(coupon) ? coupon : [coupon];
-    setStackableCouponSelect(newValue);
+    handleOnChangeCoupon(
+      coupon,
+      setStackableCouponSelect,
+      stackablePercentage,
+      setNormalOption,
+      normalOptions,
+    );
   };
 
   return (
