@@ -1,9 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
 import CouponSelect from './CouponSelect';
 import Coupon from '@/components/Coupon/Coupon';
-import { SelectCoupon, couponGET } from '@/types/coupon';
+import { SelectCoupon } from '@/types/coupon';
 
 interface CouponClient {
   normalOptions: SelectCoupon[];
@@ -22,39 +22,84 @@ const CouponClient = ({
   const [stackableCouponSelect, setStackableCouponSelect] =
     useState(stackableCoupon);
 
+  const normalSelectPercentage = useRef(
+    !!normalCoupon?.[0]?.value.percentage ?? false,
+  );
+  const stackablePercentage = useRef(
+    !!stackableCoupon?.[0]?.value.percentage ?? false,
+  );
+
+  const [normalOption, setNormalOption] = useState(normalOptions);
+  const [stackableOption, setStackableOption] = useState(stackableOptions);
+
   const onChangeNormalCoupon = (
-    value: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
+    coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
   ) => {
-    if (!value) {
+    if (!coupon) {
       setNormalCouponSelect([]);
       return;
     }
 
-    const newValue = Array.isArray(value) ? value : [value];
+    if (
+      Array.isArray(coupon) &&
+      coupon.length === 0 &&
+      normalSelectPercentage.current
+    ) {
+      normalSelectPercentage.current = false;
+      setStackableOption(stackableOptions);
+    }
+
+    if ('value' in coupon && coupon.value.percentage) {
+      normalSelectPercentage.current = true;
+
+      setStackableOption((options) =>
+        options.filter((option) => !option.value.percentage),
+      );
+    }
+
+    const newValue = Array.isArray(coupon) ? coupon : [coupon];
     setNormalCouponSelect(newValue);
   };
 
   const onChangeStackableCoupon = (
-    value: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
+    coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
   ) => {
-    if (!value) {
+    if (!coupon) {
       setStackableCouponSelect([]);
       return;
     }
-    const newValue = Array.isArray(value) ? value : [value];
+
+    if (
+      Array.isArray(coupon) &&
+      coupon.length === 0 &&
+      stackablePercentage.current
+    ) {
+      stackablePercentage.current = false;
+      setNormalOption(stackableOptions);
+    }
+
+    if ('value' in coupon && coupon.value.percentage) {
+      stackablePercentage.current = true;
+
+      setNormalOption((options) =>
+        options.filter((option) => !option.value.percentage),
+      );
+    }
+
+    const newValue = Array.isArray(coupon) ? coupon : [coupon];
     setStackableCouponSelect(newValue);
   };
 
   return (
     <div className="mt-11 flex flex-col gap-2">
       <CouponSelect
-        options={normalOptions}
+        options={normalOption}
         type="NOMAL"
         selectValue={normalCouponSelect}
         onChange={onChangeNormalCoupon}
       />
       <CouponSelect
-        options={stackableOptions}
+        options={stackableOption}
         type="STACKABLE"
         selectValue={stackableCouponSelect}
         onChange={onChangeStackableCoupon}

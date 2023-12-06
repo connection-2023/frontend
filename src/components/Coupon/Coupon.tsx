@@ -86,8 +86,6 @@ const Coupon = ({
     }
   };
 
-  console.log(pathname);
-
   return (
     <dl
       className="relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] lg:w-[20.5rem]"
