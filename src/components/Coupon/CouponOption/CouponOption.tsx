@@ -23,6 +23,7 @@ import Tooltip from '@/components/Tooltip/Tooltip';
 import {
   CouponDuplicationTooltip,
   MaxDiscountTooltip,
+  PrivateTooltip,
 } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
 import { CouponData, SelectClassType, couponGET } from '@/types/coupon';
 
@@ -258,7 +259,7 @@ const CouponOption = ({
         <div className="flex w-36 items-center gap-1 sm:w-1/6">
           <h2 className="whitespace-nowrap font-semibold">일부공개</h2>
           <Tooltip>
-            <CouponDuplicationTooltip />
+            <PrivateTooltip />
           </Tooltip>
         </div>
         <div className="flex items-center">
