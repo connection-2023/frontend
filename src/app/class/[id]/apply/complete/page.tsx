@@ -3,9 +3,9 @@ import { ko } from 'date-fns/locale';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import React from 'react';
+import { IPaymentConfirmRequest } from '@/types/payment';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
 import { patchPaymentConfirm } from '@/lib/apis/serverApis/paymentsApis';
-import { IPaymentConfirmRequest } from '@/types/payment';
 
 const ApplyCompletePage = async ({
   searchParams,
