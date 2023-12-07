@@ -81,7 +81,7 @@ const EditDayOff = ({
   };
 
   return (
-    <div className="mb-[1.38rem] grid w-full grid-cols-1 gap-7 border-t border-solid border-gray-700 py-4 md:grid-cols-[max-content_1fr]">
+    <div className="mb-[1.38rem] grid w-full grid-cols-1 gap-7 border-t border-solid border-gray-700 py-4 md:grid-cols-[max-content_1fr] md:border-none md:py-0">
       <div className="justify-self-center rounded-lg px-3 py-2 lg:w-64 lg:shadow-horizontal">
         <DayOffCalendar
           mode="dayoff"
@@ -91,7 +91,7 @@ const EditDayOff = ({
         />
       </div>
 
-      <div className="flex w-full flex-col border-t border-solid border-gray-700 pt-3">
+      <div className="flex w-full flex-col border-t border-solid border-gray-700 pt-3 md:border-none">
         <p className="mb-[0.87rem] text-sm font-semibold">선택한 휴무일</p>
 
         <ul className="flex min-h-[45px] w-fit flex-wrap gap-x-2 gap-y-3 overflow-y-auto text-sm font-medium text-gray-100">
