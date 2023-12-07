@@ -351,5 +351,5 @@ export interface IClassEditRequest {
   price?: number;
   coupons?: number[];
   notification?: string;
-  holidays?: string[];
+  holidays?: Date[];
 }
