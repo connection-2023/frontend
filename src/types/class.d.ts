@@ -332,7 +332,7 @@ export interface ILecturerClassListResonse {
 
 export interface ILecturerClassDetailResonse {
   title: string;
-  lectureNotification: IClassNotification;
+  notification: IClassNotification;
   reservationComment: string;
   maxCapacity: number;
   reservationDeadline: number;

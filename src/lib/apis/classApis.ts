@@ -122,7 +122,7 @@ export const getLecturerClassDetail = async (
 
     return {
       title,
-      lectureNotification,
+      notification: lectureNotification,
       reservationComment,
       maxCapacity,
       reservationDeadline,
