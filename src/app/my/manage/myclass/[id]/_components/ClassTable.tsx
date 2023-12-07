@@ -1,17 +1,29 @@
-import { parse, isPast, isFuture } from 'date-fns';
+import { isPast, isFuture, format, subHours } from 'date-fns';
 import { useState } from 'react';
-import { dummyClasstableData } from '@/constants/dummy';
 import EnrollmentModal from './EnrollmentModal';
+import { IClassSchedule } from '@/types/class';
 
 const TableCellStyle = 'border border-solid border-gray-700 py-2';
 
-const ClassTable = () => {
+interface ClassTableProps {
+  schedules: IClassSchedule[];
+  maxCapacity: number;
+  reservationDeadline: number;
+}
+
+const ClassTable = ({
+  schedules,
+  maxCapacity,
+  reservationDeadline,
+}: ClassTableProps) => {
   const [showPastClasses, setShowPastClasses] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState<number | null>(null);
+
+  if (!schedules) return null;
 
   const openModal = (item: any) => {
-    //setSelectedItem(item);
+    setSelectedItem(item);
     setIsModalOpen(true);
   };
 
@@ -20,22 +32,23 @@ const ClassTable = () => {
   };
 
   // 데이터 가공
-  const processedTableData = dummyClasstableData.map((item) => {
-    const dateObj = parseDateTime(item.dateTime);
+  const processedTableData = schedules.map((schedule, idx) => {
+    const date = new Date(schedule.startDateTime);
 
     return {
-      ...item,
-      dateObj,
-      isPastClass: isPast(dateObj),
+      ...schedule,
+      index: idx + 1,
+      date,
+      isPastClass: isPast(date),
     };
   });
 
   const filteredTableData = showPastClasses
     ? processedTableData
-    : processedTableData.filter((item) => isFuture(item.dateObj));
+    : processedTableData.filter((item) => isFuture(item.date));
 
   const firstFutureClassIndex = processedTableData.findIndex((item) =>
-    isFuture(item.dateObj),
+    isFuture(item.date),
   );
 
   return (
@@ -51,7 +64,7 @@ const ClassTable = () => {
       </label>
       <table className={`w-full border-collapse ${TableCellStyle} text-base`}>
         <thead>
-          <tr className="font-bold text-gray-100 ">
+          <tr className="break-keep font-bold text-gray-100">
             <th className={`${TableCellStyle}`}>클래스</th>
             <th className={`${TableCellStyle}`}>날짜 및 시간</th>
             <th className={`${TableCellStyle}`}>신청한 수강생</th>
@@ -62,14 +75,13 @@ const ClassTable = () => {
           {filteredTableData.map((item, idx) => (
             <TableList
               key={idx}
-              classInfo={item.classInfo}
-              dateTime={item.dateTime}
-              apply={item.apply}
-              duedate={item.duedate}
+              {...item}
+              reservationDeadline={reservationDeadline}
               isPastClass={item.isPastClass}
               isFirstClass={
                 showPastClasses ? idx === firstFutureClassIndex : idx === 0
               }
+              maxCapacity={maxCapacity}
               onClick={() => openModal(item)}
             />
           ))}
@@ -82,34 +94,35 @@ const ClassTable = () => {
 
 export default ClassTable;
 
-const parseDateTime = (dateTimeStr: string) => {
-  const [datePart, timePart] = dateTimeStr.split(' ');
-  const startTimeStr = timePart.split('-')[0];
-  return parse(`${datePart} ${startTimeStr}`, 'yy.MM.dd HH:mm', new Date());
+const formatDateTime = (startDateTime: string, endDateTime: string) => {
+  const startDate = format(new Date(startDateTime), 'yy.MM.dd HH:mm');
+  const endDate = format(new Date(endDateTime), 'HH:mm');
+
+  return `${startDate}-${endDate}`;
 };
 
-interface ITableList {
-  classInfo: string;
-  dateTime: string;
-  duedate: string;
-  apply: {
-    total: number;
-    current: number;
-  };
+interface TableListProps extends IClassSchedule {
+  index: number;
+  maxCapacity: number;
+  reservationDeadline: number;
   isPastClass: boolean;
   isFirstClass: boolean;
   onClick: () => void;
 }
 
 const TableList = ({
-  classInfo,
-  dateTime,
-  duedate,
-  apply,
+  index,
+  endDateTime,
+  startDateTime,
+  numberOfParticipants,
   isPastClass,
   isFirstClass,
+  maxCapacity,
+  reservationDeadline,
   onClick,
-}: ITableList) => {
+}: TableListProps) => {
+  const dateTime = formatDateTime(startDateTime, endDateTime).split(' ');
+  const deadlineTime = subHours(new Date(startDateTime), reservationDeadline);
   const textColor = isFirstClass
     ? 'text-sub-color1'
     : isPastClass
@@ -118,16 +131,23 @@ const TableList = ({
   const textBold = isPastClass ? '' : 'font-bold';
 
   return (
-    <tr className={textColor}>
-      <th className={`${TableCellStyle} ${textBold}`}>{classInfo}</th>
-      <th className={`${TableCellStyle}`}>{dateTime}</th>
+    <tr className={`${textColor} font-normal`}>
+      <th className={`${TableCellStyle} ${textBold}`}>{index}회차</th>
+      <th className={`${TableCellStyle} break-keep font-normal`}>
+        <p className="flex w-full flex-wrap justify-center gap-1">
+          <span>{dateTime[0]}</span>
+          <span>{dateTime[1]}</span>
+        </p>
+      </th>
       <th
         onClick={onClick}
-        className={`cursor-pointer ${TableCellStyle} underline`}
+        className={`cursor-pointer ${TableCellStyle} font-normal underline`}
       >
-        {apply.current}/{apply.total}명
+        {numberOfParticipants}/{maxCapacity}명
       </th>
-      <th className={`${TableCellStyle}`}>{duedate}</th>
+      <th className={`${TableCellStyle} font-normal`}>
+        {format(deadlineTime, 'yyyy.MM.dd HH:mm')}
+      </th>
     </tr>
   );
 };
