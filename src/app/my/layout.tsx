@@ -12,7 +12,7 @@ export default async function MyPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="grid h-max w-full flex-1 grid-cols-[2fr,1fr] justify-between gap-x-4 bg-sub-color1-transparent px-16 pb-20 pt-4 xl:grid-cols-[1fr,2fr,1fr]">
+    <section className="grid h-max w-full flex-1 grid-cols-1 justify-between gap-x-4 bg-sub-color1-transparent px-4 pb-20 pt-4 md:px-9 lg:grid-cols-[2fr,1fr] xl:grid-cols-[1fr,2fr,1fr] xl:px-16">
       <aside className="hidden w-full rounded-lg bg-white shadow-float xl:flex">
         <Sidebar />
       </aside>
