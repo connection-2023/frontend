@@ -5,6 +5,7 @@ import {
   compareAsc,
   isAfter,
   isEqual,
+  isSameDay,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { IGenre, IRegion } from '@/types/types';
@@ -76,3 +77,8 @@ export const applyScheduleFilter = (
 
   return [...spaceNotFull, ...spaceFull];
 };
+
+export const getUniqueDates = (dates: Date[]) =>
+  dates.filter(
+    (date, index, self) => index === self.findIndex((d) => isSameDay(date, d)),
+  );
