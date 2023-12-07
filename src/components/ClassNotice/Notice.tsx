@@ -6,14 +6,17 @@ interface INoticeProps {
   content: string;
   updateDate: string;
   isEditMode?: boolean;
-  submitNoticeUpdate?: (text: string) => void;
+  updateNotice?: (
+    key: 'notification' | 'reservationComment' | 'holidays',
+    value: string | Date[],
+  ) => void;
 }
 
 const Notice = ({
   content,
   updateDate,
   isEditMode = false,
-  submitNoticeUpdate,
+  updateNotice,
 }: INoticeProps) => {
   const [isEditable, setIsEditable] = useState(false);
   const [text, setText] = useState(content);
@@ -25,8 +28,8 @@ const Notice = ({
   };
 
   const handleNoticeUpdate = () => {
-    if (submitNoticeUpdate && text !== content) {
-      submitNoticeUpdate(text);
+    if (updateNotice && text !== content) {
+      updateNotice('notification', text);
       setIsEditable(false);
       setUpdatedDate(new Date());
     }
