@@ -6,9 +6,11 @@ interface InterestedInstructorsProps {
 }
 
 const InterestedInstructors = ({ instructors }: InterestedInstructorsProps) => (
-  <section className="flex flex-wrap gap-4">
+  <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
     {instructors.map((info, i) => (
-      <InstructorCard {...info} key={info.name + i} />
+      <div key={info.name + i} className="h-60 w-full">
+        <InstructorCard {...info} />
+      </div>
     ))}
   </section>
 );

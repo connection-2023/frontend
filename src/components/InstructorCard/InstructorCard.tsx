@@ -1,8 +1,10 @@
 'use client';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { StarSVG } from '@/icons/svg';
 import ImagesViewer from './ImagesViewer';
 import Like from '../Like/Like';
+import Rating from '../Review/Rating';
 import Review from '../Review/Review';
 import { Instructors } from '@/types/types';
 
@@ -29,10 +31,10 @@ const InstructorCard = ({
     <div
       onMouseOver={onFocus}
       onMouseLeave={offFocus}
-      className="relative h-60 w-[19.5rem] overflow-hidden rounded-md shadow-horizontal"
+      className="relative h-full w-full overflow-hidden rounded-md shadow-horizontal"
     >
       <figcaption
-        className={`pointer-events-none absolute z-10 flex h-10 w-full items-center justify-center ${
+        className={`pointer-events-none absolute z-10 hidden h-10 w-full items-center justify-center xl:flex ${
           focus ? 'bg-black' : 'bg-white'
         }`}
       >
@@ -64,21 +66,35 @@ const InstructorCard = ({
             })}
           </div>
 
-          <figcaption className="pointer-events-none absolute bottom-0 z-10 flex h-16 w-full flex-col items-center justify-evenly bg-white/[.75] ">
-            <Review average={average} />
-            <div className="flex justify-center gap-1 whitespace-nowrap">
-              <h2 className="w-24 overflow-hidden text-center">{address}</h2>
-              <h2 className="w-24 overflow-hidden text-center">
+          <figcaption className="pointer-events-none absolute bottom-0 z-10 flex h-16 w-full flex-col justify-evenly bg-white/[.75] px-1 xl:items-center">
+            <div className="hidden xl:block">
+              <Review average={average} />
+            </div>
+            <div className="flex w-full justify-between xl:hidden">
+              <p className="text-lg font-semibold">{name}</p>
+              <div className="flex gap-1">
+                <StarSVG
+                  width={16}
+                  height={15}
+                  className="translate-y-1 fill-sub-color1"
+                />
+                5.0
+              </div>
+            </div>
+            <div className="flex w-full gap-3 whitespace-nowrap sm:text-sm lg:text-base">
+              <h2 className="xl:w-1/3">{address}</h2>
+              <h2 className="max-w-[30%] truncate xl:w-1/3">
                 {teamAffiliation}
               </h2>
               {genres.length > 1 ? (
-                <h2 className="w-24 overflow-hidden text-center">
-                  {genres[0]} 외{genres.length - 1}
-                </h2>
+                <>
+                  <h2 className="xl:w-1/3">
+                    {genres[0]} 외{genres.length - 1}
+                  </h2>
+                  <h2 className="" />
+                </>
               ) : (
-                <h2 className="w-24 overflow-hidden text-center">
-                  {genres[0]}
-                </h2>
+                <h2 className="xl:w-1/3">{genres[0]}</h2>
               )}
             </div>
           </figcaption>

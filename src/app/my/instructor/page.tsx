@@ -8,7 +8,7 @@ const InstructorPage = () => {
   const [isInterested, setIsInterested] = useState(true);
 
   return (
-    <section className="mx-auto flex w-full flex-col p-4">
+    <section className="col-span-2 mx-auto flex w-full flex-col p-4">
       <nav className="mb-8 flex gap-6">
         <button
           className={`flex text-2xl font-bold ${
@@ -27,9 +27,7 @@ const InstructorPage = () => {
       </nav>
 
       {isInterested ? (
-        <section className="flex flex-wrap gap-4">
-          <InterestedInstructors instructors={dummyInterestedInstructor} />
-        </section>
+        <InterestedInstructors instructors={dummyInterestedInstructor} />
       ) : (
         <section className="flex flex-col gap-4">
           <h3 className="font-semibold">
