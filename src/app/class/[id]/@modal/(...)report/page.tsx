@@ -6,12 +6,11 @@ import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
 import RouterModal from '@/components/Modal/RouterModal';
 import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
-import { postReportLecturer } from '@/lib/apis/reportApis';
+import { postUserReport } from '@/lib/apis/reportApis';
 
 const ReportModalPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const targetLecturerId = searchParams.get('targetLecturerId');
   const { register, handleSubmit } = useForm<ReportFormData>();
 
   const onSubmit = async (data: ReportFormData) => {
@@ -46,14 +45,17 @@ const ReportModalPage = () => {
       }
     }
 
-    try {
-      if (requestData) {
-        await postReportLecturer(requestData);
-      }
+    if (!requestData) return;
+
+    const response = await postUserReport(requestData);
+
+    if (response === 201) {
       toast.success('신고가 성공적으로 접수되었습니다!');
       router.back();
-    } catch (error) {
-      toast.error('다시 시도해주세요!');
+    } else if (response === 400) {
+      toast.error('이미 신고가 접수되었습니다!');
+    } else {
+      toast.error(`신고 접수에 실패하였습니다. ${(<br />)}다시 시도해주세요!`);
     }
   };
 
