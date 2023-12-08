@@ -20,6 +20,25 @@ export const postUserReport = async (data: IReportRequest) => {
   }
 };
 
+export const postLecturerReport = async (data: IReportRequest) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/report/lecturer/submit`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then((data) => data.json());
+
+    return response.statusCode;
+  } catch (error) {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+  }
+};
+
 export const getUserReport = async (
   displayCount: number,
   currentPage: number,
