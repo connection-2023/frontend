@@ -122,12 +122,12 @@ const ClassDetailPage = async ({
           ) : (
             lectureImage.map((img, index) => (
               <div key={img.imageUrl + index} className="relative h-full w-1/3">
-                {/* <Image
+                <Image
                   src={img.imageUrl}
                   alt="Connection 댄스 춤 이미지"
                   fill
                   sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
-                /> */}
+                />
               </div>
             ))
           )}
