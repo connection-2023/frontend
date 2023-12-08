@@ -6,7 +6,6 @@ import ReportModal from './ReportModal';
 import { IUserReportResponse } from '@/types/report';
 
 const ReportHistoryPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [userReportData, setUserReportData] = useState<IUserReportResponse[]>(
     [],
   );
@@ -14,20 +13,11 @@ const ReportHistoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const reportData = await getUserReport(100, 0, 0, 0, 0, 'ALL');
-
       setUserReportData(reportData.reportList);
     };
 
     fetchData();
   }, []);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <section className="col-span-2 flex w-full flex-col rounded-lg bg-white p-5 text-sm text-gray-100 shadow-float">
@@ -43,13 +33,7 @@ const ReportHistoryPage = () => {
         </thead>
         <tbody>
           {userReportData.map((item) => (
-            <TableList
-              key={item.id}
-              {...item}
-              isModalOpen={isModalOpen}
-              onClick={openModal}
-              closeModal={closeModal}
-            />
+            <TableList key={item.id} {...item} />
           ))}
         </tbody>
       </table>
@@ -59,22 +43,24 @@ const ReportHistoryPage = () => {
 
 export default ReportHistoryPage;
 
-interface TableListProps extends IUserReportResponse {
-  closeModal: () => void;
-  onClick: () => void;
-  isModalOpen: boolean;
-}
-
 const TableList = ({
   targetUser,
   targetLecturer,
   reason,
   userReportType,
   isAnswered,
-  isModalOpen,
-  onClick,
-  closeModal,
-}: TableListProps) => {
+  userReportResponse,
+}: IUserReportResponse) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const target = targetUser
     ? targetUser.nickname
     : targetLecturer
@@ -83,7 +69,9 @@ const TableList = ({
   const status = isAnswered ? '처리완료' : '처리중';
 
   const reportTypes = userReportType.map((type) => type.reportType.description);
-  const str = reportTypes.length > 1 ? `외 ${reportTypes.length - 1}` : '';
+  const str = reportTypes.length > 1 ? ` 외 ${reportTypes.length - 1}` : '';
+
+  const response = userReportResponse?.description;
 
   return (
     <tr className="flex items-start gap-10 border-b border-solid border-gray-700 px-4 text-left font-medium">
@@ -95,10 +83,8 @@ const TableList = ({
           <NoteSVG
             width="16"
             height="16"
-            onClick={onClick}
-            className={`ml-1.5 cursor-pointer ${
-              isModalOpen ? 'stroke-black' : 'stroke-gray-500'
-            }  hover:stroke-black`}
+            onClick={openModal}
+            className="ml-1.5 cursor-pointer stroke-gray-500 hover:stroke-black"
           />
         </p>
         <div>
@@ -109,11 +95,12 @@ const TableList = ({
             reportTypes={reportTypes}
             reason={reason}
             status={status}
+            response={response}
           />
         </div>
       </th>
       <th
-        onClick={onClick}
+        onClick={openModal}
         className={`w-12 cursor-pointer whitespace-nowrap py-2 ${
           status === '처리중' ? 'text-sub-color1' : 'text-gray-500'
         } underline`}
