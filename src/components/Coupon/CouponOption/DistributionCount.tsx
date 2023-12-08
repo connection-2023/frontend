@@ -17,6 +17,7 @@ interface CouponOptionProps {
   watch: UseFormWatch<CouponData>;
   errors: FieldErrors<CouponData>;
   trigger: UseFormTrigger<CouponData>;
+  defaultValue?: number;
 }
 
 const DistributionCount = ({
@@ -26,14 +27,15 @@ const DistributionCount = ({
   watch,
   errors,
   trigger,
+  defaultValue,
 }: CouponOptionProps) => {
-  const hasCouponLimit = watch('hasCouponLimit');
+  const maxUsageCount = watch('maxUsageCount');
 
   useEffect(() => {
-    if (hasCouponLimit === true) {
+    if (maxUsageCount === true) {
       trigger('couponDistributionCount');
     }
-  }, [hasCouponLimit]);
+  }, [maxUsageCount]);
 
   return (
     <CouponOptionSection
@@ -41,45 +43,62 @@ const DistributionCount = ({
       errors={errors}
       registerId="couponDistributionCount"
     >
-      <div className="flex items-center">
-        <p
-          className={`mr-2 font-semibold ${hasCouponLimit && 'text-gray-500'}`}
-        >
-          선착순
-        </p>
-        <input
-          type="number"
-          className="mr-1 h-7 w-12 rounded-md border border-solid border-gray-500 text-center focus:outline-none"
-          {...register('couponDistributionCount', {
-            validate: (value) => {
-              return getValues('hasCouponLimit') || value
-                ? true
-                : '배부 개수는 필수 값 입니다.';
-            },
-            pattern: {
-              value: /^[0-9]*$/,
-              message: '배부 개수는 숫자만 입력 가능합니다.',
-            },
-          })}
-          onFocus={() => setValue('hasCouponLimit', false)}
-        />
-        <p
-          className={`mr-4 font-semibold ${hasCouponLimit && 'text-gray-500'}`}
-        >
-          명
-        </p>
-        <input
-          id="hasCouponLimit"
-          type="checkbox"
-          className="peer peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
-          {...register('hasCouponLimit')}
-        />
-        <label
-          htmlFor="hasCouponLimit"
-          className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
-        >
-          제한 없음
-        </label>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex">
+          <input
+            id="maxUsageCount"
+            type="checkbox"
+            className="peer peer mr-1 h-7 w-[1.12rem] accent-sub-color1"
+            defaultChecked={defaultValue ? false : true}
+            {...register('maxUsageCount')}
+          />
+          <label
+            htmlFor="maxUsageCount"
+            className="mr-3 cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
+          >
+            제한 없음
+          </label>
+        </div>
+        <div className="flex">
+          <p
+            className={`mr-2 font-semibold ${maxUsageCount && 'text-gray-500'}`}
+          >
+            선착순
+          </p>
+          <input
+            type="number"
+            className="mr-1 h-7 w-12 rounded-md border border-solid border-gray-500 text-center focus:outline-none"
+            defaultValue={defaultValue ?? ''}
+            {...register('couponDistributionCount', {
+              validate: {
+                required: (value) =>
+                  getValues('maxUsageCount') || value
+                    ? true
+                    : '배부 개수는 필수 값 입니다.',
+                min: (value) => {
+                  if (
+                    getValues('maxUsageCount') === false &&
+                    value &&
+                    value < 1
+                  ) {
+                    return '배부 개수는 최소 1개 이상이어야 합니다.';
+                  }
+                  return true;
+                },
+              },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: '배부 개수는 숫자만 입력 가능합니다.',
+              },
+            })}
+            onFocus={() => setValue('maxUsageCount', false)}
+          />
+          <p
+            className={`mr-4 font-semibold ${maxUsageCount && 'text-gray-500'}`}
+          >
+            명
+          </p>
+        </div>
       </div>
     </CouponOptionSection>
   );

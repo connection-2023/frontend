@@ -41,3 +41,7 @@
 .page_a.active_a {
   color: white;
 }
+
+.pagination li {
+  margin: 0 5px;
+}

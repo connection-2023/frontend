@@ -11,6 +11,7 @@ import {
   postSingleImage,
 } from '@/lib/apis/imageApi';
 import { IprocessedDraft, classCreateData } from '@/types/class';
+import { couponGET, userCouponGET } from '@/types/coupon';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -239,11 +240,12 @@ export const classOutputDataProcess = async (
       };
 
     case 4:
-      const { classPrice, max: priceMax } = data;
+      const { classPrice, max: priceMax, coupons } = data;
 
       return {
         maxCapacity: priceMax.value,
         price: classPrice,
+        coupons: coupons.map(({ value }) => value.id),
       };
   }
 };
@@ -292,7 +294,7 @@ export const classCreate = async (id: number) => {
         )
       : [],
     location: isLocationConfirmed
-      ? {}
+      ? null
       : {
           address: location?.address,
           detailAddress: location?.detailAddress,
@@ -333,5 +335,30 @@ export const classCreate = async (id: number) => {
     }),
   };
 
+  console.log(data);
+
   await createClass(data);
-}; //스프레드 안쓰고 일단 꺼냈음
+};
+
+export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
+  if ('lectureCoupon' in item) {
+    return {
+      createdAt: new Date(),
+      updatedAt: new Date(item.updatedAt),
+      startAt: item.lectureCoupon.startAt,
+      endAt: item.lectureCoupon.endAt,
+      id: item.id,
+      title: item.lectureCoupon.title,
+      discountPrice: item.lectureCoupon.discountPrice,
+      isDisabled: item.lectureCoupon.isDisabled,
+      isPrivate: item.lectureCoupon.isPrivate,
+      isStackable: item.lectureCoupon.isStackable,
+      lectureCouponTarget: item.lectureCoupon.lectureCouponTarget,
+      maxDiscountPrice: item.lectureCoupon.maxDiscountPrice,
+      maxUsageCount: item.lectureCoupon.maxUsageCount ?? 0,
+      percentage: item.lectureCoupon.percentage ?? 0,
+    };
+  } else {
+    return item;
+  }
+};

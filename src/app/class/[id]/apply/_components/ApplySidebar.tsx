@@ -2,10 +2,10 @@
 import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import ApplyButton from '@/components/Button/ApplyButton';
 import { ArrowDownSVG } from '@/icons/svg';
 import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
+import ApplyButton from '@/components/Button/ApplyButton';
 
 interface ApplySidebarProps {
   postId: string;
@@ -17,6 +17,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const [participants, setParticipants] = useState(0);
   const orderId = nanoid();
   const totalPrice = price * participants;
+  const discountPrice = usePaymentStore((state) => state.discountPrice);
   const applyClass = usePaymentStore((state) => state.applyClass);
   const applicant = usePaymentStore((state) => state.applicant);
   const paymentWidget = usePaymentStore((state) => state.paymentWidget);
@@ -91,7 +92,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
           orderName,
           customerName: representative,
           customerEmail: '',
-          successUrl: `${window.location.origin}/class/apply-complete`,
+          successUrl: `${window.location.origin}/class/${postId}/apply/complete`,
           failUrl: `${window.location.origin}/fail`,
         });
       } else {
@@ -106,20 +107,25 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   };
 
   return (
-    <section className="sticky top-20 mt-14 flex flex-col whitespace-pre-line break-keep text-sm text-gray-100">
+    <section className="sticky top-20 mt-5 flex flex-col whitespace-pre-line break-keep px-3.5 text-sm text-gray-100 lg:mt-14 lg:px-0">
       <h4 className="text-lg font-bold">결제 금액</h4>
       <ul className="mb-5 mt-6 flex flex-col gap-3 border-b border-solid border-gray-500 pb-[0.81rem]">
         <li className="flex items-center justify-between">
-          주문 금액 <span>{totalPrice.toLocaleString()}원</span>
+          주문 금액
+          <span className="min-w-[1.25rem]">
+            {totalPrice.toLocaleString()}원
+          </span>
         </li>
-        <li className="flex items-center justify-between pl-4 text-gray-300">
-          ㄴ 쿠폰사용 <span>30,000원</span>
-        </li>
+        {!!discountPrice && (
+          <li className="flex items-center justify-between pl-4 text-gray-300">
+            ㄴ 쿠폰사용 <span>{discountPrice?.toLocaleString()}원</span>
+          </li>
+        )}
       </ul>
 
       <div className="mb-2 flex items-center justify-between font-bold">
         <p>최종 결제 금액</p>
-        <span className="text-2xl text-black">
+        <span className="min-w-[2rem] text-2xl text-black">
           {totalPrice.toLocaleString()}원
         </span>
       </div>
@@ -131,7 +137,20 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       <p className="mb-4 mt-[1.31rem] font-bold">
         상기 필수약관을 확인하였으며 결제에 동의합니다.
       </p>
-      <ApplyButton label="결제하기" onClick={handlePayment} />
+
+      <div className="fixed bottom-4 left-0 w-screen px-9 lg:static lg:w-full lg:px-0">
+        <ApplyButton
+          label={
+            <>
+              <p className="hidden lg:block">결제하기</p>
+              <p className="lg:hidden">
+                {totalPrice.toLocaleString()}원 결제하기
+              </p>
+            </>
+          }
+          onClick={handlePayment}
+        />
+      </div>
     </section>
   );
 };
@@ -149,8 +168,8 @@ const Agreement = ({ title, detail }: AgreementProps) => {
   return (
     <>
       <li className="flex items-center">
-        <p>{title}</p>
-        <button onClick={() => setIsOpen(!isOpen)}>
+        <p className="flex-1">{title}</p>
+        <button onClick={() => setIsOpen(!isOpen)} aria-label="자세히보기">
           <ArrowDownSVG
             className={`fill-gray-500 ${isOpen ? 'rotate-180' : ''}`}
           />

@@ -1,8 +1,8 @@
 import { parseISO, format } from 'date-fns';
 import { cookies } from 'next/headers';
 import React from 'react';
-import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
 import Modal from '@/components/Modal/ReceiptModal';
+import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
 
 const ReceiptModalPage = async ({
   searchParams,
