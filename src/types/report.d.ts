@@ -35,4 +35,8 @@ export interface IUserReportResponse {
       description: string;
     };
   }[];
+  userReportResponse: {
+    id: number;
+    description: string;
+  } | null;
 }
