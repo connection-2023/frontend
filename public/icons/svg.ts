@@ -58,7 +58,6 @@ import PlusesSVG from './pluses.svg';
 import ProfileSVG from './profile_default.svg';
 import ReadMessageSVG from './readMessage.svg';
 import RecentSVG from './recent.svg';
-import RefreshSVG from './refresh.svg';
 import ReportSVG from './report.svg';
 import ResetSVG from './reset.svg';
 import ReviewSVG from './review.svg';
@@ -80,7 +79,6 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
-  RefreshSVG,
   FilterSVG,
   TrashcanSVG,
   CopySVG,

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FilterSVG, RefreshSVG } from '@/icons/svg';
+import { FilterSVG, ResetSVG } from '@/icons/svg';
 
 interface ClassFilterSelectUserProps {
   userClassFilterView: boolean;
@@ -43,7 +43,7 @@ const ClassFilterSelectUser = ({
           className="flex items-center gap-1 font-bold text-gray-500"
           onClick={triggerClassListRefresh}
         >
-          초기화 <RefreshSVG className="mb-0.5" />
+          초기화 <ResetSVG className="mb-0.5" />
         </button>
       )}
     </div>

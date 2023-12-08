@@ -167,7 +167,7 @@ const useCouponPassHook = ({
               console.error(error);
             }
           } else {
-            toast.error('잘못된 요청입니다!');
+            // toast.error('잘못된 요청입니다!');
           }
         }
       }
