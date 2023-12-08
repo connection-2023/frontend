@@ -2,12 +2,14 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { postUserReport } from '@/lib/apis/reportApis';
+import { postLecturerReport, postUserReport } from '@/lib/apis/reportApis';
+import { useUserStore } from '@/store';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
 import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
 
 const ReportPage = () => {
+  const loggedInUserType = useUserStore((state) => state.userType);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { register, handleSubmit } = useForm<ReportFormData>();
@@ -46,7 +48,10 @@ const ReportPage = () => {
 
     if (!requestData) return;
 
-    const response = await postUserReport(requestData);
+    const response =
+      loggedInUserType === 'user'
+        ? await postUserReport(requestData)
+        : await postLecturerReport(requestData);
 
     if (response === 201) {
       toast.success('신고가 성공적으로 접수되었습니다!');

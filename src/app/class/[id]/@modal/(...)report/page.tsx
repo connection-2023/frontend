@@ -6,9 +6,11 @@ import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
 import RouterModal from '@/components/Modal/RouterModal';
 import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
-import { postUserReport } from '@/lib/apis/reportApis';
+import { postLecturerReport, postUserReport } from '@/lib/apis/reportApis';
+import { useUserStore } from '@/store';
 
 const ReportModalPage = () => {
+  const loggedInUserType = useUserStore((state) => state.userType);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { register, handleSubmit } = useForm<ReportFormData>();
@@ -47,7 +49,10 @@ const ReportModalPage = () => {
 
     if (!requestData) return;
 
-    const response = await postUserReport(requestData);
+    const response =
+      loggedInUserType === 'user'
+        ? await postUserReport(requestData)
+        : await postLecturerReport(requestData);
 
     if (response === 201) {
       toast.success('신고가 성공적으로 접수되었습니다!');
