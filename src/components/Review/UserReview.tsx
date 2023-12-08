@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { LikeSVG } from '@/icons/svg';
 import { postReviewLikes, deleteReviewLikes } from '@/lib/apis/classApis';
