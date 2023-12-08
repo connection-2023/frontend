@@ -8,7 +8,7 @@ if (!END_POINT) {
 }
 
 export const POST = async (request: NextRequest) => {
-  const token = request.cookies.get('userAccessToken')?.value;
+  const token = request.cookies.get('lecturerAccessToken')?.value;
   const requestData = await request.json();
 
   if (!token) {
@@ -17,12 +17,13 @@ export const POST = async (request: NextRequest) => {
 
   const serverResponse = await fetch(END_POINT + `/lecturer-reports`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(requestData),
-  });
+  }).then((data) => data.json());
 
   return NextResponse.json(serverResponse);
 };
