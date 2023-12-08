@@ -41,7 +41,11 @@ const ReportModal = ({
 
       <div className="mb-3 min-h-[6rem] w-full border-b border-solid border-gray-700 px-[1.13rem] py-4 text-sm">
         <p className="mb-2 font-semibold text-gray-100">관리자 답변</p>
-        {status === '처리중' ? <></> : <p>{response}</p>}
+        {status === '처리중' ? (
+          <p className="text-normal text-gray-500">신고 처리 중입니다..</p>
+        ) : (
+          <p>{response}</p>
+        )}
       </div>
 
       <div className="mb-4 flex w-full gap-3 px-[1.13rem] text-sm font-semibold">
