@@ -12,6 +12,7 @@ import {
 } from '@/lib/apis/imageApi';
 import { IprocessedDraft, classCreateData } from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
+import { calculateFinalDates } from './parseUtils';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -250,9 +251,11 @@ export const classOutputDataProcess = async (
   }
 };
 
-export const classCreate = async (id: number) => {
+export const classCreate = async (
+  id: number,
+  finalSchedule: Date[] | undefined,
+) => {
   const { location, temporaryLecture, schedules } = await getClassDraft(id);
-
   const {
     temporaryLectureToRegion,
     lectureMethod,
@@ -276,6 +279,19 @@ export const classCreate = async (id: number) => {
     locationDescription,
     temporaryLectureCouponTarget,
   } = temporaryLecture;
+
+  const allClassDates = finalSchedule
+    ? finalSchedule
+    : startDate &&
+      endDate &&
+      schedules &&
+      temporaryLectureHoliday &&
+      calculateFinalDates(
+        startDate,
+        endDate,
+        schedules,
+        temporaryLectureHoliday,
+      );
 
   const isLocationConfirmed = temporaryLectureToRegion.length > 0;
 
@@ -324,20 +340,11 @@ export const classCreate = async (id: number) => {
     coupons: temporaryLectureCouponTarget.map(
       ({ lectureCouponId }) => lectureCouponId,
     ),
-    schedules: schedules?.map((schedule) => {
-      if ('date' in schedule) {
-        return {
-          ...schedule,
-          date: new Date(schedule.date),
-        };
-      }
-      return schedule;
-    }),
+    schedules: allClassDates,
   };
 
-  console.log(data);
-
-  await createClass(data);
+  const newClassId = await createClass(data);
+  return newClassId;
 };
 
 export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
