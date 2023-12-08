@@ -1,8 +1,6 @@
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
-import { DOMAIN } from '@/constants/constants';
 import {
   getInstructorProfile,
   getMyProfile,

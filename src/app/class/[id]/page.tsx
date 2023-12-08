@@ -1,19 +1,6 @@
 import { revalidateTag } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
-import Apply from './_components/Apply';
-import ClassReviewSection from './_components/ClassReviewSection';
-import DiscountCouponBanner from './_components/DiscountCouponBanner';
-import OptionButton from './_components/OptionButton';
-import ReadMore from './_components/ReadMore';
-import UserReservation from './_components/UserReservation';
-import Carousel from '@/components/Carousel/Carousel';
-import Notice from '@/components/ClassNotice/Notice';
-import Map from '@/components/Map/Map';
-import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import Review from '@/components/Review/Review';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass } from '@/constants/dummy';
 import {
@@ -30,12 +17,26 @@ import {
   getClassSchedules,
   getUserReservation,
 } from '@/lib/apis/serverApis/classPostApis';
+import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
 import {
   formatLocationToString,
   formatGenreToString,
   formatDate,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import Apply from './_components/Apply';
+import ClassReviewSection from './_components/ClassReviewSection';
+import DiscountCouponBanner from './_components/DiscountCouponBanner';
+import OptionButton from './_components/OptionButton';
+import ReadMore from './_components/ReadMore';
+import UserReservation from './_components/UserReservation';
+import Carousel from '@/components/Carousel/Carousel';
+import Notice from '@/components/ClassNotice/Notice';
+import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import Review from '@/components/Review/Review';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,12 +53,15 @@ const ClassDetailPage = async ({
   const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
   const userReservationData = getUserReservation(id);
+  const couponLists = getClassCouponList(id);
 
-  const [classInfo, classSchedule, userReservation] = await Promise.all([
-    classData,
-    classSchedules,
-    userReservationData,
-  ]);
+  const [classInfo, classSchedule, userReservation, couponList] =
+    await Promise.all([
+      classData,
+      classSchedules,
+      userReservationData,
+      couponLists,
+    ]);
 
   if (classInfo instanceof Error || classSchedule instanceof Error) {
     return <></>;
@@ -141,9 +145,11 @@ const ClassDetailPage = async ({
           <span className="text-sm font-bold text-gray-500">({stars})</span>
         </div>
         {/* 쿠폰 배너 */}
-        <div className="w-full max-w-[40rem] border-b border-solid border-gray-700 px-4 pb-3">
-          <DiscountCouponBanner discountPrice="10,000" />
-        </div>
+        {couponList && couponList.length > 0 && (
+          <div className="w-full max-w-[40rem] border-b border-solid border-gray-700 px-4 pb-3">
+            <DiscountCouponBanner couponList={couponList} price={price} />
+          </div>
+        )}
 
         <hr className="mb-4 h-1 w-full max-w-[40rem] md:mb-6" />
         {/* Class Info */}
@@ -256,7 +262,7 @@ const ClassDetailPage = async ({
           />
         </section>
 
-        <section id="location-section" className="mb-14 scroll-mt-16">
+        {/* <section id="location-section" className="mb-14 scroll-mt-16">
           <h2 className={h2Style}>진행 장소</h2>
           <span className="mb-[0.62rem] mt-2 flex items-center gap-[0.13rem]">
             <LocationSVG /> {detailAddress}
@@ -265,7 +271,7 @@ const ClassDetailPage = async ({
             <Map address={locationDetail} studioName={studioName} />
           </div>
           <p className="text-sm font-normal">{locationDescription}</p>
-        </section>
+        </section> */}
 
         {/* 클래스 후기 */}
         <ClassReviewSection

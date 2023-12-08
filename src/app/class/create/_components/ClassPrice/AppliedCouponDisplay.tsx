@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useClassCreateStore } from '@/store/classCreate';
 import CouponSelect from './CouponSelect';
-import InstructorCoupon from '@/components/Coupon/InstructorCoupon';
-import { SelectCoupons, couponGET } from '@/types/coupon';
+import InstructorCoupon from '@/components/Coupon/Coupon';
+import { classCreateData } from '@/types/class';
+import { couponGET } from '@/types/coupon';
 
 interface AppliedCouponDisplayProps {
   isCouponSectionOpen: boolean;
@@ -12,32 +15,89 @@ const AppliedCouponDisplay = ({
   isCouponSectionOpen,
   couponList,
 }: AppliedCouponDisplayProps) => {
-  const [selectCoupons, setSelectCoupons] = useState<SelectCoupons>([]);
-
+  const { control, setValue } = useFormContext();
+  const renderRef = useRef(false);
   const couponOptions = couponList.map((option) => {
     return { value: option, label: option.title };
   });
 
+  const store = useClassCreateStore();
+  const classData = store.classData;
+
+  const couponSelectDefaultValue = (
+    classData?.temporaryLectureCouponTarget?.map(({ lectureCouponId }) =>
+      couponOptions.find(({ value }) => value.id === lectureCouponId),
+    ) || []
+  ).filter(Boolean);
+
+  useEffect(() => {
+    if (couponSelectDefaultValue.length > 0 && !renderRef.current) {
+      setValue('coupons', couponSelectDefaultValue);
+      renderRef.current = true;
+    }
+  }, [couponSelectDefaultValue]);
+
   return (
-    <section className={`${!isCouponSectionOpen ? 'hidden' : ''} flex gap-10`}>
-      <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
-      <div className="flex w-5/6 flex-wrap gap-5">
-        <div className="w-96">
-          <CouponSelect
-            options={couponOptions.filter(
-              ({ value }) =>
-                value.isStackable !== selectCoupons[0]?.value.isStackable &&
-                selectCoupons.length !== 2,
-            )}
-            selectedOptionsLength={selectCoupons.length}
-            onChange={(selected) => {
-              setSelectCoupons(Array.isArray(selected) ? [...selected] : []);
-            }}
-          />
+    <section>
+      <div
+        className={`${!isCouponSectionOpen ? 'hidden' : ''} mb-3 flex gap-10`}
+      >
+        <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
+        <div className="flex w-5/6 flex-wrap gap-5">
+          <div className="w-full">
+            <Controller
+              name="coupons"
+              control={control}
+              defaultValue={couponSelectDefaultValue}
+              render={({ field }) => (
+                <CouponSelect
+                  options={couponOptions}
+                  onChange={field.onChange}
+                  selectValue={field.value}
+                />
+              )}
+            />
+          </div>
         </div>
-        {selectCoupons.map(({ value }, index) => {
-          return <InstructorCoupon key={value.title + index} {...value} />;
-        })}
+      </div>
+      <div className="flex flex-wrap gap-4">
+        <Controller
+          name="coupons"
+          control={control}
+          defaultValue={[]}
+          render={({ field }) => {
+            return (
+              <>
+                {[...field.value]
+                  .reverse()
+                  .map((coupon: { value: couponGET; label: string }) => {
+                    const cancelSelectedCoupon = () => {
+                      field.onChange(
+                        field.value.filter(
+                          (selectedCoupon: {
+                            value: couponGET;
+                            label: string;
+                          }) => selectedCoupon.value.id !== coupon.value.id,
+                        ),
+                      );
+                    };
+
+                    return (
+                      <div
+                        key={coupon.value.id}
+                        className={!isCouponSectionOpen ? 'hidden' : ''}
+                      >
+                        <InstructorCoupon
+                          coupon={coupon.value}
+                          cancelSelectedCoupon={cancelSelectedCoupon}
+                        />
+                      </div>
+                    );
+                  })}
+              </>
+            );
+          }}
+        />
       </div>
     </section>
   );

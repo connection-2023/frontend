@@ -2,10 +2,10 @@
 import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import ApplyButton from '@/components/Button/ApplyButton';
 import { ArrowDownSVG } from '@/icons/svg';
 import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
+import ApplyButton from '@/components/Button/ApplyButton';
 
 interface ApplySidebarProps {
   postId: string;
@@ -17,6 +17,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const [participants, setParticipants] = useState(0);
   const orderId = nanoid();
   const totalPrice = price * participants;
+  const discountPrice = usePaymentStore((state) => state.discountPrice);
   const applyClass = usePaymentStore((state) => state.applyClass);
   const applicant = usePaymentStore((state) => state.applicant);
   const paymentWidget = usePaymentStore((state) => state.paymentWidget);
@@ -115,9 +116,11 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
             {totalPrice.toLocaleString()}원
           </span>
         </li>
-        <li className="flex items-center justify-between pl-4 text-gray-300">
-          ㄴ 쿠폰사용 <span>30,000원</span>
-        </li>
+        {!!discountPrice && (
+          <li className="flex items-center justify-between pl-4 text-gray-300">
+            ㄴ 쿠폰사용 <span>{discountPrice?.toLocaleString()}원</span>
+          </li>
+        )}
       </ul>
 
       <div className="mb-2 flex items-center justify-between font-bold">

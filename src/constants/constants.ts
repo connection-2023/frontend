@@ -203,7 +203,11 @@ export const NON_STICKY_HEADER_PATHS = [
   '/my',
 ];
 
-export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];
+export const NO_HEADER_FOOTER_PATHS = [
+  '/search',
+  '/class/create/address',
+  '/coupon',
+];
 
 export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
 
@@ -277,3 +281,7 @@ export const LECTURER_NO_ACCESS = ['/instructor/apply'];
 export const USER_NO_ACCESS = ['/class/create'];
 
 export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];
+
+export const LECTURE_COUPON_TAKE = 8;
+
+export const USER_COUPON_CLASS_LIST_TAKE = 6;

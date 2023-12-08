@@ -7,14 +7,20 @@ import { useClassScheduleStore } from '@/store';
 import RangeCalendar from '@/components/Calendar/RangeCalendar';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
+import { UseFormClearErrors } from 'react-hook-form';
+import { CouponData } from '@/types/coupon';
+
+interface ClassRangeProps {
+  onChange: (value: { startDate: string; endDate: string }) => void;
+  defaultValue?: { startDate: string; endDate: string };
+  clearErrors?: UseFormClearErrors<CouponData>;
+}
 
 const ClassRange = ({
   onChange,
   defaultValue = { startDate: '', endDate: '' },
-}: {
-  onChange: (value: { startDate: string; endDate: string }) => void;
-  defaultValue?: { startDate: string; endDate: string };
-}) => {
+  clearErrors,
+}: ClassRangeProps) => {
   const [fromValue, setFromValue] = useState<string>(defaultValue.startDate);
   const [toValue, setToValue] = useState<string>(defaultValue.endDate);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
@@ -22,6 +28,9 @@ const ClassRange = ({
   const store = useClassScheduleStore();
 
   useEffect(() => {
+    setFromValue(defaultValue.startDate);
+    setToValue(defaultValue.endDate);
+
     const { endDate, startDate } = defaultValue;
     const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
     const isValidStartDate = dateFormat.test(startDate);
@@ -31,6 +40,11 @@ const ClassRange = ({
       const from = new Date(defaultValue.startDate);
       const to = new Date(defaultValue.endDate);
       store.setClassRange({ from, to });
+    } else if (!isValidStartDate && !isValidEndDate) {
+      store.setClassRange(undefined);
+      if (clearErrors) {
+        clearErrors('validityPeriod');
+      }
     }
   }, [defaultValue]);
 
@@ -108,7 +122,7 @@ const ClassRange = ({
 
   return (
     <div ref={ref}>
-      <div className="relative flex h-7 w-full max-w-[312px] items-center rounded-md border border-solid border-gray-500 pl-[0.69rem] text-base text-gray-100">
+      <div className="relative flex h-7 w-full items-center rounded-md border border-solid border-gray-500 pl-[0.69rem] text-base text-gray-100">
         <DateInput
           placeholder="시작 날짜"
           value={fromValue}

@@ -1,14 +1,16 @@
 import { parseISO } from 'date-fns';
 import { revalidateTag } from 'next/cache';
-import ApplySidebar from './_components/ApplySidebar';
-import PaymentType from './_components/PaymentType';
-import ReservationInfo from './_components/ReservationInfo';
-import { MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
 import {
   getClassInfo,
   getClassSchedules,
 } from '@/lib/apis/serverApis/classPostApis';
+import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import { formatDateTime } from '@/utils/parseUtils';
+import ApplySidebar from './_components/ApplySidebar';
+import CouponContainer from './_components/Coupon/CouponContainer';
+import PaymentType from './_components/PaymentType';
+import ReservationInfo from './_components/ReservationInfo';
 
 const ClassApplyPage = async ({
   params: { id },
@@ -17,14 +19,21 @@ const ClassApplyPage = async ({
   params: { id: string };
   searchParams: { [key: string]: string | string[] };
 }) => {
+  const reqData = {
+    take: 10000, //추후 null로 변경
+    couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
+    filterOption: 'LATEST' as 'LATEST',
+  };
+
   revalidateTag('schedules');
   const { count } = searchParams;
   const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
-
-  const [classInfo, classSchedule] = await Promise.all([
+  const couponLists = getCouponList(reqData, 'user');
+  const [classInfo, classSchedule, couponList] = await Promise.all([
     classData,
     classSchedules,
+    couponLists,
   ]);
 
   if (classInfo instanceof Error || classSchedule instanceof Error) {
@@ -106,8 +115,12 @@ const ClassApplyPage = async ({
           processedSchedules={processedSchedules}
         />
 
-        <section className="mt-4 rounded-md px-4 py-[1.31rem] shadow-vertical">
-          <h3 className="text-lg font-semibold">쿠폰/패스권 적용</h3>
+        <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
+          <h3 className="flex gap-1 text-lg font-semibold">
+            <CouponSVG className="h-6 w-6 fill-sub-color1" />
+            쿠폰/패스권 적용
+          </h3>
+          <CouponContainer couponList={couponList} price={price} />
           {/* 쿠폰 선택 */}
         </section>
 
