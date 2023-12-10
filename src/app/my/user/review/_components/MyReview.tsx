@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import { EditSVG } from '@/icons/svg';
@@ -66,7 +67,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
               </select>
               {writeReviews.length}개의 리뷰
             </div>
-            <div>
+            <Link href="/my/user/review/writeReviewModal">
               <Button>
                 <div className="flex items-center gap-1 px-4">
                   <EditSVG
@@ -77,7 +78,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
                   리뷰 작성하기({classLists.length})
                 </div>
               </Button>
-            </div>
+            </Link>
           </nav>
           <ul className="flex flex-col gap-2">
             {reviewList.map(({ id, stars, lecture, _count, description }) => (
