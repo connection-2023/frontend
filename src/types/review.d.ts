@@ -60,3 +60,8 @@ export interface ReservationDetails {
     startDateTime: string;
   };
 }
+
+export interface SelectClassType {
+  value: ReservationDetails;
+  label: string;
+}
