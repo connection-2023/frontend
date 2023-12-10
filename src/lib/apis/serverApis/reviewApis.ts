@@ -1,8 +1,11 @@
 import { cookies } from 'next/headers';
+import { WriteReview } from '@/types/review';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const getWriteReviews = async (orderBy: string) => {
+export const getWriteReviews = async (
+  orderBy: string,
+): Promise<WriteReview[]> => {
   const cookieStore = cookies();
   const authorization = cookieStore.get('userAccessToken')?.value;
 
@@ -24,6 +27,5 @@ export const getWriteReviews = async (orderBy: string) => {
   }
 
   const resData = await response.json();
-
   return resData.data.review;
 };
