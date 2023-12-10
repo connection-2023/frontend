@@ -33,20 +33,22 @@ const ReviewStatistics = ({ reviewList }: ReviewStatisticsProps) => {
         />
       </dd>
       {[5, 4, 3, 2, 1].map((score) => {
-        const percent = `w-[${scorePercent[5 - score]}%]`;
+        const percent = parseFloat(scorePercent[score - 1].toFixed(2));
+
         return (
           <dd
             key={score}
-            className="flex items-center gap-3 text-sm font-semibold"
+            className="flex items-center gap-2 text-sm font-semibold"
           >
-            {score}
+            <p className="w-2">{score}</p>
             <span className="relative h-2 flex-grow rounded-md bg-sub-color1-transparent">
               <span
-                className={`${percent} absolute h-2 rounded-md bg-sub-color1`}
+                className="absolute h-2 rounded-md bg-sub-color1"
+                style={{ width: `${percent}%` }}
               />
             </span>
-            <p className="font-medium text-gray-300">
-              {scoreCount[5 - score]}개
+            <p className="w-3 whitespace-nowrap font-medium text-gray-300">
+              {scoreCount[score - 1]}개
             </p>
           </dd>
         );

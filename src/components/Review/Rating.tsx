@@ -56,7 +56,7 @@ const Rating = (props: ReadonlyProps | EditableProps) => {
   };
 
   return (
-    <div className="flex items-center px-[0.94rem] py-[1.12rem]">
+    <div className="flex items-center">
       <div className="flex items-center">
         <div className="flex gap-1.5">
           {[...Array(5)].map((_, index) => (
