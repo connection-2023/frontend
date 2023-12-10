@@ -39,7 +39,7 @@ const WriteReview = ({ options }: WriteReview) => {
   const selectStar = watch('stars');
 
   return (
-    <section className="px-7 py-6">
+    <section className="px-4 pt-14 sm:px-7 sm:py-6">
       <form
         onSubmit={handleSubmit(onValid, invalid)}
         className="flex flex-col gap-7"
@@ -115,7 +115,7 @@ const WriteReview = ({ options }: WriteReview) => {
           />
         </div>
 
-        <div className="ml-auto w-24">
+        <div className="sm:ml-auto sm:w-24">
           <Button type="submit">
             <p className="px-2">리뷰등록</p>
           </Button>

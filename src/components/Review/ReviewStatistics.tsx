@@ -20,7 +20,7 @@ const ReviewStatistics = ({ reviewList }: ReviewStatisticsProps) => {
   const scorePercent = scoreCount.map((count) => (count / totalReviews) * 100);
 
   return (
-    <dl className="flex w-full flex-col gap-2 p-5 shadow-vertical">
+    <dl className="flex w-full flex-col gap-2 rounded-md bg-white p-5 shadow-vertical">
       <dt className="text-2xl font-bold">
         {averageScore} <span className="text-gray-500">/ 5.0</span>
       </dt>
