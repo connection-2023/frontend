@@ -1,6 +1,9 @@
 'use client';
 import { ChangeEvent, useState } from 'react';
+import { toast } from 'react-toastify';
 import { EditSVG } from '@/icons/svg';
+import { getWriteReviews } from '@/lib/apis/reviewApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
 import Button from '@/components/Button/Button';
@@ -8,6 +11,7 @@ import ReviewStatistics from '@/components/Review/ReviewStatistics';
 import UserReview from '@/components/Review/UserReview';
 import { userProfile } from '@/types/auth';
 import { ReservationDetails, WriteReview } from '@/types/review';
+import { FetchError } from '@/types/types';
 
 interface ReviewProps {
   writeReviews: WriteReview[];
@@ -22,7 +26,26 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
     ?.imageUrl;
   const nickname = (userStoreState.authUser as userProfile)?.nickname;
 
-  const filterChange = (e: ChangeEvent<HTMLSelectElement>) => {};
+  const filterChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    try {
+      const writeReviews = await getWriteReviews(e.target.value);
+      setReviewList(writeReviews);
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await getWriteReviews(e.target.value);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
 
   return (
     <section className="z-0 col-span-2 flex w-full flex-col ">
