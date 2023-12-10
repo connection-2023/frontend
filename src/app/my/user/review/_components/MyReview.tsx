@@ -1,18 +1,20 @@
 'use client';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { EditSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
 import Button from '@/components/Button/Button';
 import ReviewStatistics from '@/components/Review/ReviewStatistics';
 import UserReview from '@/components/Review/UserReview';
 import { userProfile } from '@/types/auth';
-import { WriteReview } from '@/types/review';
+import { ReservationDetails, WriteReview } from '@/types/review';
 
 interface ReviewProps {
   writeReviews: WriteReview[];
+  classLists: ReservationDetails[];
 }
 
-const MyReview = ({ writeReviews }: ReviewProps) => {
+const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
   const [reviewList, setReviewList] = useState(writeReviews);
   const userStoreState = useUserStore();
 
@@ -20,7 +22,7 @@ const MyReview = ({ writeReviews }: ReviewProps) => {
     ?.imageUrl;
   const nickname = (userStoreState.authUser as userProfile)?.nickname;
 
-  console.log(reviewList);
+  const filterChange = (e: ChangeEvent<HTMLSelectElement>) => {};
 
   return (
     <section className="z-0 col-span-2 flex w-full flex-col ">
@@ -32,6 +34,7 @@ const MyReview = ({ writeReviews }: ReviewProps) => {
               <select
                 name="sorting"
                 className="h-7 border border-solid border-gray-500"
+                onChange={filterChange}
               >
                 <option value="최신순">최신순</option>
                 <option value="좋아요순">좋아요순</option>
@@ -41,7 +44,16 @@ const MyReview = ({ writeReviews }: ReviewProps) => {
               {writeReviews.length}개의 리뷰
             </div>
             <div>
-              <Button>리뷰 작성하기()</Button>
+              <Button>
+                <div className="flex items-center gap-1 px-4">
+                  <EditSVG
+                    width="15px"
+                    height="15px"
+                    className="fill-sub-color1"
+                  />
+                  리뷰 작성하기({classLists.length})
+                </div>
+              </Button>
             </div>
           </nav>
           <ul className="flex flex-col gap-2">

@@ -42,3 +42,21 @@ export interface WriteReview {
     likedLectureReview: number;
   };
 }
+
+export interface ReservationDetails {
+  id: number;
+  userId: number;
+  paymentId: number;
+  lectureScheduleId: number;
+  representative: string;
+  phoneNumber: string;
+  participants: number;
+  requests?: string;
+  isEnabled: boolean;
+  lectureSchedule: {
+    lecture: {
+      title: string;
+    };
+    startDateTime: string;
+  };
+}

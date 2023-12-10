@@ -1,10 +1,16 @@
-import { getWriteReviews } from '@/lib/apis/serverApis/reviewApis';
-import Review from './_components/MyReview';
+import {
+  getReservationDetails,
+  getWriteReviews,
+} from '@/lib/apis/serverApis/reviewApis';
+import MyReview from './_components/MyReview';
 
 const page = async () => {
-  const writeReviews = await getWriteReviews('최신순');
+  const [writeReviews, reservationLists] = await Promise.all([
+    getWriteReviews('최신순'),
+    getReservationDetails(),
+  ]);
 
-  return <Review writeReviews={writeReviews} />;
+  return <MyReview writeReviews={writeReviews} classLists={reservationLists} />;
 };
 
 export default page;
