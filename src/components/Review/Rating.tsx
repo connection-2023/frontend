@@ -108,7 +108,7 @@ const Rating = (props: ReadonlyProps | EditableProps) => {
         </span>
       )}
       {reviewCount && (
-        <span className="ml-[0.94rem] text-lg font-semibold">
+        <span className="ml-[0.5rem] whitespace-nowrap text-base font-semibold lg:text-lg">
           {reviewCount}개의 리뷰
         </span>
       )}

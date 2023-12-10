@@ -50,11 +50,13 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
 
   return (
     <section className="z-0 col-span-2 flex w-full flex-col ">
-      <h1 className="col-span-2 h-auto text-2xl font-bold">작성한 리뷰</h1>
-      <section className="flex gap-5">
-        <div className="flex-grow border-t border-solid border-gray-700">
+      <h1 className="col-span-2 mb-4 h-auto border-b border-solid border-gray-700 pb-4 text-center text-lg font-semibold sm:mb-0 sm:border-none sm:pb-0 sm:text-start sm:text-2xl sm:font-bold">
+        작성한 리뷰
+      </h1>
+      <section className="flex flex-col-reverse gap-5 sm:flex-row">
+        <div className="flex-grow sm:border-t sm:border-solid sm:border-gray-700">
           <nav className="flex items-center justify-between">
-            <div className="flex items-center gap-3 py-3">
+            <div className="flex items-center gap-3 whitespace-nowrap py-3">
               <select
                 name="sorting"
                 className="h-7 border border-solid border-gray-500"
@@ -69,13 +71,15 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
             </div>
             <Link href="/my/user/review/writeReviewModal">
               <Button>
-                <div className="flex items-center gap-1 px-4">
+                <div className="flex items-center gap-1 whitespace-nowrap px-2 text-sm sm:px-4 sm:text-base">
                   <EditSVG
                     width="15px"
                     height="15px"
                     className="fill-sub-color1"
                   />
-                  리뷰 작성하기({classLists.length})
+                  <span className="hidden sm:block">리뷰 작성하기</span>
+                  <span className="block sm:hidden">리뷰 작성</span>(
+                  {classLists.length})
                 </div>
               </Button>
             </Link>
@@ -97,7 +101,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
             ))}
           </ul>
         </div>
-        <div className="w-80 self-start">
+        <div className="w-full self-start sm:w-56 md:w-72 lg:w-80">
           <ReviewStatistics reviewList={writeReviews} />
         </div>
       </section>
