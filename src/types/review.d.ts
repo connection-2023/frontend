@@ -65,3 +65,9 @@ export interface SelectClassType {
   value: ReservationDetails;
   label: string;
 }
+
+export interface WriteReviewData {
+  classInfo: SelectClassType | null;
+  description?: string;
+  stars: number;
+}
