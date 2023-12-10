@@ -1,12 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { StarSVG } from '@/icons/svg';
+import { BigStar, StarSVG } from '@/icons/svg';
 
 interface ReadonlyProps {
   rate: number;
   readonly: true;
   reviewCount?: number;
   viewRate?: boolean;
+  bigStar?: boolean;
+  viewSelectRate?: boolean;
 }
 
 interface EditableProps {
@@ -15,6 +17,8 @@ interface EditableProps {
   reviewCount?: number;
   readonly?: false;
   viewRate?: boolean;
+  bigStar?: boolean;
+  viewSelectRate?: boolean;
 }
 
 const Rating = (props: ReadonlyProps | EditableProps) => {
@@ -23,6 +27,8 @@ const Rating = (props: ReadonlyProps | EditableProps) => {
     readonly = false,
     viewRate = true,
     reviewCount = false,
+    bigStar = false,
+    viewSelectRate = false,
   } = props;
   const handleRate = 'handleRate' in props ? props.handleRate : undefined;
 
@@ -58,24 +64,42 @@ const Rating = (props: ReadonlyProps | EditableProps) => {
   return (
     <div className="flex items-center">
       <div className="flex items-center">
-        <div className="flex gap-1.5">
-          {[...Array(5)].map((_, index) => (
-            <StarSVG
-              key={index}
-              width={18}
-              height={17}
-              onClick={readonly ? undefined : () => handleClick(index + 1)}
-              onMouseEnter={
-                readonly ? undefined : () => handleMouseEnter(index + 1)
-              }
-              onMouseLeave={readonly ? undefined : handleMouseLeave}
-              className={`${
-                Math.max(selectedStar, hoveredStar) >= index + 1
-                  ? 'fill-sub-color1'
-                  : 'fill-gray-700'
-              } ${!readonly && 'cursor-pointer'}`}
-            />
-          ))}
+        <div className="flex gap-1">
+          {[...Array(5)].map((_, index) =>
+            bigStar ? (
+              <BigStar
+                key={index}
+                width={29}
+                height={27}
+                onClick={readonly ? undefined : () => handleClick(index + 1)}
+                onMouseEnter={
+                  readonly ? undefined : () => handleMouseEnter(index + 1)
+                }
+                onMouseLeave={readonly ? undefined : handleMouseLeave}
+                className={`${
+                  Math.max(selectedStar, hoveredStar) >= index + 1
+                    ? 'fill-sub-color1'
+                    : 'fill-gray-900 stroke-gray-300'
+                } ${!readonly && 'cursor-pointer'}`}
+              />
+            ) : (
+              <StarSVG
+                key={index}
+                width={18}
+                height={17}
+                onClick={readonly ? undefined : () => handleClick(index + 1)}
+                onMouseEnter={
+                  readonly ? undefined : () => handleMouseEnter(index + 1)
+                }
+                onMouseLeave={readonly ? undefined : handleMouseLeave}
+                className={`${
+                  Math.max(selectedStar, hoveredStar) >= index + 1
+                    ? 'fill-sub-color1'
+                    : 'fill-gray-700'
+                } ${!readonly && 'cursor-pointer'}`}
+              />
+            ),
+          )}
         </div>
       </div>
       {viewRate && (
@@ -87,6 +111,9 @@ const Rating = (props: ReadonlyProps | EditableProps) => {
         <span className="ml-[0.94rem] text-lg font-semibold">
           {reviewCount}개의 리뷰
         </span>
+      )}
+      {viewSelectRate && (
+        <span className="ml-[0.81rem] text-gray-300">{selectedStar}/5</span>
       )}
     </div>
   );
