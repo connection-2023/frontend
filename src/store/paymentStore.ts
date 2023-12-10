@@ -9,6 +9,8 @@ interface IPaymentStore {
   > | null;
   applyClass: IReservationInfo[] | null;
   applicant: IApplicantInfo | null;
+  discountPrice: number | null;
+  setDiscountPrice: (price: number) => void;
   setPaymentWidget: (widget: PaymentWidgetInstance) => void;
   setPaymentMethodsWidget: (
     widget: ReturnType<PaymentWidgetInstance['renderPaymentMethods']>,
@@ -22,6 +24,8 @@ export const usePaymentStore = create<IPaymentStore>()((set) => ({
   paymentMethodsWidget: null,
   applyClass: null,
   applicant: null,
+  discountPrice: null,
+  setDiscountPrice: (price) => set({ discountPrice: price }),
   setPaymentWidget: (widget) => set({ paymentWidget: widget }),
   setPaymentMethodsWidget: (widget) => set({ paymentMethodsWidget: widget }),
   setApplyClass: (participants) => set({ applyClass: participants }),

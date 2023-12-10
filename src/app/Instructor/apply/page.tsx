@@ -94,8 +94,8 @@ const ApplyPage = () => {
         instagramUrl,
         homepageUrl,
         affiliation,
-        introduction,
-        experience,
+        introduction: introduction.content,
+        experience: experience.content,
         instagramPostUrls: [
           instagramPostUrls0,
           instagramPostUrls1,
@@ -104,7 +104,6 @@ const ApplyPage = () => {
       };
 
       await instructorRegister(instructorData);
-
       toast.success('강사 등록 완료!');
 
       await switchToInstructor(store);

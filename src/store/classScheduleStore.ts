@@ -1,9 +1,9 @@
-import { create } from 'zustand';
 import { DateRange } from 'react-day-picker';
+import { create } from 'zustand';
 
 interface IClassScheduleStore {
   classRange: DateRange | undefined;
-  setClassRange: (newRange: DateRange) => void;
+  setClassRange: (newRange: DateRange | undefined) => void;
   classDuration: number | undefined;
   setClassDuration: (time: number) => void;
   filteredDates: Date[] | undefined;

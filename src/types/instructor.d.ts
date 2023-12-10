@@ -47,8 +47,12 @@ export interface InstructorApplyData {
   instagramUrl: string;
   youtubeUrl: string;
   homepageUrl: string;
-  introduction: string;
-  experience: string;
+  introduction: {
+    content: string;
+  };
+  experience: {
+    content: string;
+  };
 }
 
 export interface IInstructorRegister {
