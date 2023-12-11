@@ -152,3 +152,12 @@ export interface IMyPaymentResponse {
 export interface FetchError extends Error {
   status?: number;
 }
+
+export interface PagenationFilterState {
+  take: number | undefined;
+  firstItemId?: number;
+  lastItemId?: number;
+  currentPage?: number;
+  targetPage?: number;
+  [key: string]: any | undefined;
+}
