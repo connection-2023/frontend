@@ -5,6 +5,7 @@ import {
   ILecturerClassListResonse,
   ILecturerClassDetailResonse,
   IClassEditRequest,
+  IRegisterLists,
 } from '@/types/class';
 
 export const getClassReviews = async (
@@ -144,6 +145,20 @@ export const updateClassData = async (id: string, data: IClassEditRequest) => {
 
     return response;
   } catch (error) {
-    return new Error('리뷰 좋아요 요청 오류!');
+    return new Error('클래스 수정 요청 오류!');
+  }
+};
+
+export const getRegisterLists = async (lectureId: string, id: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/class/myclass/registerLists?lectureId=${lectureId}&scheduleId=${id}`,
+    ).then((data) => data.json());
+
+    return response.data.participant.map(
+      (item: { user: IRegisterLists }) => item.user,
+    );
+  } catch (error) {
+    return new Error('강사 관리 클래스 수강생 조회 요청 오류!');
   }
 };
