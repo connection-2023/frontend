@@ -1,15 +1,9 @@
 import { isFuture, format, subHours } from 'date-fns';
 import { useState, MouseEvent } from 'react';
 import EnrollmentModal from './EnrollmentModal';
-import { IClassSchedule } from '@/types/class';
+import { IClassSchedule, IProcessedSchedules } from '@/types/class';
 
 const TableCellStyle = 'border border-solid border-gray-700 py-2';
-
-interface IProcessedSchedules extends IClassSchedule {
-  index: number;
-  date: Date;
-  isPastClass: boolean;
-}
 interface ClassTableProps {
   schedules: IProcessedSchedules[];
   maxCapacity: number;
@@ -25,11 +19,13 @@ const ClassTable = ({
 }: ClassTableProps) => {
   const [showPastClasses, setShowPastClasses] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<number | null>(null);
-
+  const [selectedItem, setSelectedItem] = useState<IProcessedSchedules | null>(
+    null,
+  );
+  console.log(selectedItem);
   if (!schedules) return null;
 
-  const openModal = (item: any) => {
+  const openModal = (item: IProcessedSchedules) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   };
@@ -85,7 +81,13 @@ const ClassTable = ({
           ))}
         </tbody>
       </table>
-      <EnrollmentModal isOpen={isModalOpen} closeModal={closeModal} />
+      <EnrollmentModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        selectedClass={selectedItem}
+        maxCapacity={maxCapacity}
+        reservationDeadline={reservationDeadline}
+      />
     </>
   );
 };
