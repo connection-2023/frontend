@@ -71,3 +71,40 @@ export interface WriteReviewData {
   description?: string;
   stars: number;
 }
+
+export interface GetMyLecturersReviews {
+  take: number | undefined;
+  lecturerMyReviewType: string;
+  currentPage?: number;
+  targetPage?: number;
+  firstItemId?: number;
+  lastItemId?: number;
+}
+
+export interface GetMyLecturersReviewsData {
+  review: MyLecturersReviewsData[];
+}
+
+export interface MyLecturersReviewsData {
+  id: number;
+  lectureId: number;
+  userId: number;
+  reservationId: number;
+  stars: number;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  reservation: {
+    lectureSchedule: {
+      startDateTime: string;
+      lecture: { title: string };
+    };
+  };
+  users: {
+    nickname: string;
+    userProfileImage: {
+      imageUrl: string;
+    };
+  };
+}

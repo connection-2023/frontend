@@ -1,4 +1,7 @@
-const MyReview = () => {
+import { MyLecturersReviewsData } from '@/types/review';
+
+const MyReview = ({ reviewList }: { reviewList: MyLecturersReviewsData[] }) => {
+  console.log(reviewList);
   return (
     <main className="z-0 col-span-2 flex w-full flex-col ">
       <div className="flex flex-col-reverse gap-5 sm:flex-row">
