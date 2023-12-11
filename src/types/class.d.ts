@@ -237,6 +237,12 @@ export interface IClassScheduleResponse {
   holidayArr: string[];
 }
 
+export interface IProcessedSchedules extends IClassSchedule {
+  index: number;
+  date: Date;
+  isPastClass: boolean;
+}
+
 export interface IClassInfoResponse {
   lecture: IClassPostResponse;
   lecturer: IInstructorProfile;
@@ -352,4 +358,12 @@ export interface IClassEditRequest {
   coupons?: number[];
   notification?: string;
   holidays?: Date[];
+}
+
+export interface IRegisterLists {
+  nickname: string;
+  userProfileImage: {
+    userId: number;
+    imageUrl: string;
+  };
 }
