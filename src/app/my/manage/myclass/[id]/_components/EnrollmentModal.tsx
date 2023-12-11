@@ -1,82 +1,75 @@
+import { format, subHours } from 'date-fns';
 import { useState } from 'react';
-import Modal from 'react-modal';
+import Modal from '@/components/Modal/Modal';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import { IProcessedSchedules } from '@/types/class';
 import { dummyEnrollmentPerson } from '@/constants/dummy';
-import { CloseSVG, CommentSVG } from '@/icons/svg';
+import { CommentSVG } from '@/icons/svg';
 
 interface EnrollmentModalProps {
   isOpen: boolean;
   closeModal: () => void;
+  selectedClass: IProcessedSchedules | null;
+  maxCapacity: number;
+  reservationDeadline: number;
 }
 
-const EnrollmentModal = ({ isOpen, closeModal }: EnrollmentModalProps) => {
-  return (
-    <Modal
-      onRequestClose={closeModal}
-      isOpen={isOpen}
-      style={customModalStyles}
-      ariaHideApp={false}
-    >
-      <div className="relative w-full border-b border-solid border-gray-700 px-5">
-        <p className="mb-[0.81rem] text-base">
-          <span className="mr-[0.81rem] text-lg font-bold">1회차</span> 5/6명
-        </p>
-        <button aria-label="모달 닫기" className="absolute right-5 top-0">
-          <CloseSVG
-            width={24}
-            height={24}
-            onClick={closeModal}
-            className="stroke-gray-500 stroke-2"
-          />
-        </button>
-        <ul className="mb-4 flex w-11/12 justify-between text-base font-semibold text-gray-100">
-          <li>
-            수업일자
-            <span className="ml-4 font-normal">23.09.15 13:00-15:00</span>
-          </li>
-          <li>
-            신청마감일<span className="ml-4 font-normal">23.09.10 14:00</span>
-          </li>
-        </ul>
-      </div>
+const EnrollmentModal = ({
+  isOpen,
+  closeModal,
+  selectedClass,
+  maxCapacity,
+  reservationDeadline,
+}: EnrollmentModalProps) => {
+  if (!selectedClass) return null;
 
-      <ul className="flex h-[20rem] flex-col gap-4 overflow-y-auto px-5 py-4">
-        {dummyEnrollmentPerson.map((item) => (
-          <Person
-            key={item.userId}
-            userId={item.userId}
-            src={item.src}
-            nickname={item.nickname}
-            memo={item.memo}
-            request={item.request}
-          />
-        ))}
-      </ul>
+  const { id, index, numberOfParticipants, date, startDateTime } =
+    selectedClass;
+
+  const deadlineTime = format(
+    subHours(new Date(startDateTime), reservationDeadline),
+    'yyyy.MM.dd HH:mm',
+  );
+
+  return (
+    <Modal isOpened={isOpen} handleClosed={closeModal}>
+      <section className="flex w-[40rem] flex-col py-4">
+        <div className="w-full border-b border-solid border-gray-700 px-5">
+          <p className="mb-[0.81rem] text-base">
+            <span className="mr-[0.81rem] text-lg font-bold">{index}회차</span>
+            {numberOfParticipants}/{maxCapacity}명
+          </p>
+          <ul className="mb-4 flex w-11/12 justify-between text-base font-semibold text-gray-100">
+            <li>
+              수업일자
+              <span className="ml-4 font-normal">
+                {format(date, 'yyyy.MM.dd HH:mm')}
+              </span>
+            </li>
+            <li>
+              신청마감일<span className="ml-4 font-normal">{deadlineTime}</span>
+            </li>
+          </ul>
+        </div>
+
+        <ul className="flex h-[20rem] flex-col gap-4 overflow-y-auto px-5 py-4">
+          {dummyEnrollmentPerson.map((item) => (
+            <Person
+              key={item.userId}
+              userId={item.userId}
+              src={item.src}
+              nickname={item.nickname}
+              memo={item.memo}
+              request={item.request}
+            />
+          ))}
+        </ul>
+      </section>
     </Modal>
   );
 };
 
 export default EnrollmentModal;
-
-const customModalStyles: ReactModal.Styles = {
-  content: {
-    width: '80%',
-    height: '27.5rem',
-    maxWidth: '40.0625rem',
-    padding: '1.2rem 0',
-    zIndex: '10',
-    boxSizing: 'border-box',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    boxShadow: '0 1px 4px 0px rgba(0, 0, 0, 0.25)',
-    backgroundColor: 'white',
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-  },
-};
 
 interface IPerson {
   userId: number;
