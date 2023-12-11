@@ -14,7 +14,7 @@ interface ClassTableProps {
   schedules: IProcessedSchedules[];
   maxCapacity: number;
   reservationDeadline: number;
-  handleSelectClassId: (id: number) => void;
+  handleSelectClassId: (index: number, id: number) => void;
 }
 
 const ClassTable = ({
@@ -77,7 +77,9 @@ const ClassTable = ({
                 showPastClasses ? idx === firstFutureClassIndex : idx === 0
               }
               maxCapacity={maxCapacity}
-              handleSelectClassId={() => handleSelectClassId(item.id)}
+              handleSelectClassId={() =>
+                handleSelectClassId(item.index, item.id)
+              }
               handleModal={() => openModal(item)}
             />
           ))}

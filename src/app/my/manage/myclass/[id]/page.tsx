@@ -19,7 +19,10 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const [classData, setClassData] = useState<
     ILecturerClassDetailResonse | undefined
   >(undefined);
-  const [selectedClassId, setSelectedClassId] = useState<number | null>(null);
+  const [selectedClass, setSelectedClass] = useState<{
+    index: number | null;
+    id: number | null;
+  }>({ index: null, id: null });
 
   useEffect(() => {
     const fetchClassDetailData = async () => {
@@ -34,8 +37,12 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
   if (!classData) return null;
 
-  const handleSelectClassId = (id: number) => {
-    setSelectedClassId(id);
+  const handleSelectClassId = (index: number | null, id: number | null) => {
+    if (selectedClass.id === id) {
+      setSelectedClass({ index: null, id: null });
+    } else {
+      setSelectedClass({ index, id });
+    }
   };
 
   const handleGoBack = () => {
@@ -180,7 +187,8 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
         <ClassOverview
           totalClassNum={processedScheduleData.length}
           pastClassNum={futureScheduleData.length}
-          selectedClassId={selectedClassId}
+          selectedClass={selectedClass}
+          lectureId={id}
         />
       </section>
     </>
