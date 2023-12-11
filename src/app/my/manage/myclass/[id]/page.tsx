@@ -1,5 +1,5 @@
 'use client';
-import { parseISO, format } from 'date-fns';
+import { parseISO, format, isPast, isFuture } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -19,11 +19,11 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const [classData, setClassData] = useState<
     ILecturerClassDetailResonse | undefined
   >(undefined);
+  const [selectedClassId, setSelectedClassId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchClassDetailData = async () => {
       const data = await getLecturerClassDetail(id);
-
       if (data instanceof Error) return;
 
       setClassData(data);
@@ -33,6 +33,10 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   }, []);
 
   if (!classData) return null;
+
+  const handleSelectClassId = (id: number) => {
+    setSelectedClassId(id);
+  };
 
   const handleGoBack = () => {
     router.back();
@@ -83,6 +87,21 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       toast.error(`${type} 변경에 실패하였습니다`);
     }
   };
+
+  const processedScheduleData = classData.schedule.map((schedule, idx) => {
+    const date = new Date(schedule.startDateTime);
+
+    return {
+      ...schedule,
+      index: idx + 1,
+      date,
+      isPastClass: isPast(date),
+    };
+  });
+
+  const futureScheduleData = processedScheduleData.filter((item) =>
+    isFuture(item.date),
+  );
 
   return (
     <>
@@ -148,16 +167,21 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
             <div className="my-5 w-full ">
               <ClassTable
-                schedules={classData.schedule}
+                schedules={processedScheduleData}
                 maxCapacity={classData.maxCapacity}
                 reservationDeadline={classData.reservationDeadline}
+                handleSelectClassId={handleSelectClassId}
               />
             </div>
           </section>
         </div>
       </section>
       <section className="mt-4 lg:mt-0">
-        <ClassOverview />
+        <ClassOverview
+          totalClassNum={processedScheduleData.length}
+          pastClassNum={futureScheduleData.length}
+          selectedClassId={selectedClassId}
+        />
       </section>
     </>
   );

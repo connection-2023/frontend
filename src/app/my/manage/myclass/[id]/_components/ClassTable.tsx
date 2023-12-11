@@ -1,20 +1,27 @@
-import { isPast, isFuture, format, subHours } from 'date-fns';
-import { useState } from 'react';
+import { isFuture, format, subHours } from 'date-fns';
+import { useState, MouseEvent } from 'react';
 import EnrollmentModal from './EnrollmentModal';
 import { IClassSchedule } from '@/types/class';
 
 const TableCellStyle = 'border border-solid border-gray-700 py-2';
 
+interface IProcessedSchedules extends IClassSchedule {
+  index: number;
+  date: Date;
+  isPastClass: boolean;
+}
 interface ClassTableProps {
-  schedules: IClassSchedule[];
+  schedules: IProcessedSchedules[];
   maxCapacity: number;
   reservationDeadline: number;
+  handleSelectClassId: (id: number) => void;
 }
 
 const ClassTable = ({
   schedules,
   maxCapacity,
   reservationDeadline,
+  handleSelectClassId,
 }: ClassTableProps) => {
   const [showPastClasses, setShowPastClasses] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,23 +38,11 @@ const ClassTable = ({
     setIsModalOpen(false);
   };
 
-  // 데이터 가공
-  const processedTableData = schedules.map((schedule, idx) => {
-    const date = new Date(schedule.startDateTime);
-
-    return {
-      ...schedule,
-      index: idx + 1,
-      date,
-      isPastClass: isPast(date),
-    };
-  });
-
   const filteredTableData = showPastClasses
-    ? processedTableData
-    : processedTableData.filter((item) => isFuture(item.date));
+    ? schedules
+    : schedules.filter((item) => isFuture(item.date));
 
-  const firstFutureClassIndex = processedTableData.findIndex((item) =>
+  const firstFutureClassIndex = schedules.findIndex((item) =>
     isFuture(item.date),
   );
 
@@ -82,7 +77,8 @@ const ClassTable = ({
                 showPastClasses ? idx === firstFutureClassIndex : idx === 0
               }
               maxCapacity={maxCapacity}
-              onClick={() => openModal(item)}
+              handleSelectClassId={() => handleSelectClassId(item.id)}
+              handleModal={() => openModal(item)}
             />
           ))}
         </tbody>
@@ -107,7 +103,8 @@ interface TableListProps extends IClassSchedule {
   reservationDeadline: number;
   isPastClass: boolean;
   isFirstClass: boolean;
-  onClick: () => void;
+  handleModal: () => void;
+  handleSelectClassId: () => void;
 }
 
 const TableList = ({
@@ -119,7 +116,8 @@ const TableList = ({
   isFirstClass,
   maxCapacity,
   reservationDeadline,
-  onClick,
+  handleModal,
+  handleSelectClassId,
 }: TableListProps) => {
   const dateTime = formatDateTime(startDateTime, endDateTime).split(' ');
   const deadlineTime = subHours(new Date(startDateTime), reservationDeadline);
@@ -130,8 +128,16 @@ const TableList = ({
     : 'text-black';
   const textBold = isPastClass ? '' : 'font-bold';
 
+  const handleModalOpened = (e: MouseEvent) => {
+    e.stopPropagation();
+    handleModal();
+  };
+
   return (
-    <tr className={`${textColor} font-normal`}>
+    <tr
+      onClick={() => handleSelectClassId()}
+      className={`${textColor} cursor-default font-normal`}
+    >
       <th className={`${TableCellStyle} ${textBold}`}>{index}회차</th>
       <th className={`${TableCellStyle} break-keep font-normal`}>
         <p className="flex w-full flex-wrap justify-center gap-1">
@@ -140,7 +146,7 @@ const TableList = ({
         </p>
       </th>
       <th
-        onClick={onClick}
+        onClick={handleModalOpened}
         className={`cursor-pointer ${TableCellStyle} font-normal underline`}
       >
         {numberOfParticipants}/{maxCapacity}명
