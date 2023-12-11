@@ -7,7 +7,7 @@ interface usePageNationProps {
   defaultFilterState: PagenationFilterState; //기본 값
   itemList: any[]; // 아이템 state
   changeItemListFn: (data: any) => void; // 아이템 setState
-  getItemListFn: (data: any) => any; // 아이템 받아오는 비동기 함수
+  getItemListFn: (data: any, signal: AbortSignal) => any; // 아이템 받아오는 비동기 함수
   pageIndex?: number;
 }
 
@@ -27,6 +27,7 @@ const usePageNation = ({
     useState<PagenationFilterState>(defaultFilterState);
   const initialFilterState = useRef(filterState);
   const controller = useRef<AbortController | null>(null);
+  const prevPage = useRef<number | null>(null);
 
   useEffect(() => {
     setItemId({
@@ -55,16 +56,24 @@ const usePageNation = ({
       ...itemId,
     };
 
+    console.log(data);
+
     try {
-      const responseItem = await getItemListFn(data);
+      const responseItem = await getItemListFn(data, controller.current.signal);
       changeItemListFn(responseItem);
     } catch (error) {
-      if (error instanceof Error) {
+      if (
+        !(error instanceof DOMException && error.name === 'AbortError') &&
+        error instanceof Error
+      ) {
         const fetchError = error as FetchError;
         if (fetchError.status === 401) {
           try {
             await accessTokenReissuance();
-            const responseItem = await getItemListFn(data);
+            const responseItem = await getItemListFn(
+              data,
+              controller.current.signal,
+            );
             changeItemListFn(responseItem);
           } catch (error) {
             console.error(error);
@@ -74,6 +83,8 @@ const usePageNation = ({
         }
       }
     }
+
+    prevPage.current = null;
   };
 
   const updateFilter = (key: string, value: any) => {
@@ -103,9 +114,13 @@ const usePageNation = ({
   };
 
   const handleChangePage = ({ selected }: { selected: number }) => {
+    if (prevPage.current === null) {
+      prevPage.current = filterState.targetPage ?? 0;
+    }
+
     setFilterState((prevState) => ({
       ...prevState,
-      currentPage: prevState.targetPage,
+      currentPage: prevPage.current ?? filterState.targetPage,
       targetPage: selected + pageIndex,
     }));
   };

@@ -24,7 +24,8 @@ const MyReview = ({ reviewList }: { reviewList: MyLecturersReviewsData[] }) => {
     pageIndex: 1,
     itemList: reviews,
     changeItemListFn: changeReviews,
-    getItemListFn: (data: GetMyLecturersReviews) => getMyLecturersReviews(data),
+    getItemListFn: (data: GetMyLecturersReviews, signal: AbortSignal) =>
+      getMyLecturersReviews(data, signal),
   });
 
   return (
