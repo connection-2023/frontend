@@ -53,7 +53,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
       <h1 className="col-span-2 mb-4 h-auto border-b border-solid border-gray-700 pb-4 text-center text-lg font-semibold sm:mb-0 sm:border-none sm:pb-0 sm:text-start sm:text-2xl sm:font-bold">
         작성한 리뷰
       </h1>
-      <section className="flex flex-col-reverse gap-5 sm:flex-row">
+      <div className="flex flex-col-reverse gap-5 sm:flex-row">
         <div className="flex-grow sm:border-t sm:border-solid sm:border-gray-700">
           <nav className="flex items-center justify-between">
             <div className="flex items-center gap-3 whitespace-nowrap py-3">
@@ -104,7 +104,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
         <div className="w-full self-start sm:w-56 md:w-72 lg:w-80">
           <ReviewStatistics reviewList={writeReviews} />
         </div>
-      </section>
+      </div>
     </section>
   );
 };
