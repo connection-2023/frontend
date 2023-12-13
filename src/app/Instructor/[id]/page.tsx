@@ -1,4 +1,12 @@
 import Link from 'next/link';
+import ClassList from './_components/ClassList';
+import InstructorCarousel from './_components/InstructorCarousel';
+import ManagementButton from './_components/ManagementButton';
+import ReviewSection from './_components/ReviewSection';
+import Like from '@/components/Like/Like';
+import Nav from '@/components/Nav/Nav';
+import Review from '@/components/Review/Review';
+import Sharing from '@/components/Sharing/Sharing';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { dummyInstructor } from '@/constants/dummy';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
@@ -8,14 +16,6 @@ import {
   formatGenreToString,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
-import ClassList from './_components/ClassList';
-import InstructorCarousel from './_components/InstructorCarousel';
-import ManagementButton from './_components/ManagementButton';
-import Like from '@/components/Like/Like';
-import Nav from '@/components/Nav/Nav';
-import Review from '@/components/Review/Review';
-import UserReview from '@/components/Review/UserReview';
-import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -28,7 +28,7 @@ const InstructorDetailPage = async ({
 
   if (data instanceof Error) {
     console.error(data.message);
-    return <></>;
+    return null;
   }
 
   const {
@@ -189,27 +189,7 @@ const InstructorDetailPage = async ({
         <ClassList classList={classList} />
       </section>
 
-      {/* 강사 후기 */}
-      <section id="review-section" className="w-full max-w-[51.1rem] py-20">
-        <h2 className={`flex items-center ${h2Style}`}>
-          강사 후기 {review.count}건 <span className="ml-3" />
-          <Review average={review.average} />
-          <span className="ml-1 text-gray-500">({review.average})</span>
-        </h2>
-        <div className="flex flex-col gap-6">
-          {review.reviewer.map((review) => (
-            <UserReview
-              key={review.nickname}
-              src={review.src}
-              nickname={review.nickname}
-              average={review.average}
-              content={review.content}
-              date={review.date}
-              title={review.title}
-            />
-          ))}
-        </div>
-      </section>
+      <ReviewSection id={id} stars={4.2} totalReviewCount={6} />
     </main>
   );
 };
