@@ -72,3 +72,29 @@ export interface IInstructorRegister {
   instagramPostUrls?: string[];
   etcGenres?: string[];
 }
+
+export interface IInstructorReviewList {
+  id: number;
+  lectureId: number;
+  userId: number;
+  reservationId: number;
+  stars: number;
+  description: string;
+  createdAt: string;
+  reservation: {
+    lectureSchedule: {
+      startDateTime: string;
+      lecture: {
+        title: string;
+      };
+    };
+  };
+  users: {
+    nickname: string;
+    userProfileImage: { imageUrl: string };
+  };
+  likedLectureReview?: {}[];
+  _count: {
+    likedLectureReview: number;
+  };
+}
