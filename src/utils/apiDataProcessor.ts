@@ -1,3 +1,4 @@
+import { parseISO, format } from 'date-fns';
 import {
   CITY_ABBREVIATION_NAME,
   CITY_FULL_NAME,
@@ -10,8 +11,17 @@ import {
   postMultipleImage,
   postSingleImage,
 } from '@/lib/apis/imageApi';
-import { IprocessedDraft, classCreateData } from '@/types/class';
+import {
+  IprocessedDraft,
+  classCreateData,
+  IClassPostResponse,
+  ClassCardType,
+} from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
+import {
+  formatLocationToString,
+  formatGenreToString,
+} from '@/utils/parseUtils';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -362,3 +372,49 @@ export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
     return item;
   }
 };
+
+export const transformToCardData = (
+  data: IClassPostResponse[],
+  lecturer: { nickname: string; img: string | null },
+): ClassCardType[] =>
+  data.map((item) => {
+    const {
+      id,
+      title,
+      price,
+      isGroup,
+      startDate,
+      endDate,
+      isActive,
+      stars,
+      reviewCount,
+      lectureToRegion,
+      lectureToDanceGenre,
+      lectureImage,
+    } = item;
+    const date = `${format(parseISO(startDate), 'MM/dd')}~${format(
+      parseISO(endDate),
+      'MM/dd',
+    )}`;
+    const status = isActive ? '모집중' : '마감';
+    const review = { average: stars, count: reviewCount };
+    const type = isGroup ? '그룹레슨' : '개인레슨';
+    const profile = { src: lecturer.img, nickname: lecturer.nickname };
+    const location = formatLocationToString(lectureToRegion).split(', ');
+    const genre = lectureToDanceGenre.map((genre) => genre.danceCategory.genre);
+    const imgURL = lectureImage.map((img) => img.imageUrl);
+
+    return {
+      id,
+      title,
+      imgURL,
+      date,
+      status,
+      review,
+      type,
+      profile,
+      price,
+      location,
+      genre,
+    };
+  });
