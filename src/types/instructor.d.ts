@@ -13,6 +13,8 @@ export interface instructorPostResponse {
   lecturerDanceGenre: any; // 추후 변경 예정
   lecturerInstagramPostUrl: Url[]; // 추후 변경 예정
   lecturerProfileImageUrl: Url[]; // 추후 변경 예정
+  stars: number;
+  reviewCount: number;
 }
 
 interface Url {

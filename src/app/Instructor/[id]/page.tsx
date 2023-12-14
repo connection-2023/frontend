@@ -8,7 +8,6 @@ import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
 import Sharing from '@/components/Sharing/Sharing';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import { dummyInstructor } from '@/constants/dummy';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
 import { getInstructorClassLists } from '@/lib/apis/serverApis/instructorPostApis';
@@ -46,14 +45,14 @@ const InstructorDetailPage = async ({
     instagramUrl,
     homepageUrl,
     affiliation,
+    stars,
+    reviewCount,
   } = data;
 
   const classList = transformToCardData(classListsResponse, {
     nickname,
     img: profileCardImageUrl,
   });
-
-  const { review } = dummyInstructor;
 
   return (
     <main className="flex w-screen flex-col items-center">
@@ -80,9 +79,9 @@ const InstructorDetailPage = async ({
 
           {/* 리뷰 */}
           <div className="mb-4 mt-2 box-border flex h-4 gap-1 pl-4">
-            <Review average={review.average} />
+            <Review average={stars} />
             <span className="text-sm font-bold text-gray-500">
-              ({review.average})
+              ({reviewCount})
             </span>
           </div>
 
@@ -196,7 +195,7 @@ const InstructorDetailPage = async ({
         <ClassList classList={classList} />
       </section>
 
-      <ReviewSection id={id} stars={4.2} totalReviewCount={6} />
+      <ReviewSection id={id} stars={stars} totalReviewCount={reviewCount} />
     </main>
   );
 };
