@@ -1,5 +1,5 @@
 export interface instructorPostResponse {
-  profileCardImageUrl: string;
+  profileCardImageUrl: string | null;
   nickname: string;
   email: string;
   phoneNumber: string;
