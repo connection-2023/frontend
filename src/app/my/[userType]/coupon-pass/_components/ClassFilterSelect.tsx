@@ -13,9 +13,15 @@ interface SelectClassProps {
   ) => void;
   options: SelectClassType[];
   value: SelectClassType | null;
+  isDisabled?: boolean;
 }
 
-const ClassFilterSelect = ({ onChange, options, value }: SelectClassProps) => {
+const ClassFilterSelect = ({
+  onChange,
+  options,
+  value,
+  isDisabled = false,
+}: SelectClassProps) => {
   return (
     <Select
       instanceId="select-class"
@@ -25,6 +31,7 @@ const ClassFilterSelect = ({ onChange, options, value }: SelectClassProps) => {
       options={options}
       styles={couponSelectStyle}
       value={value}
+      isDisabled={isDisabled}
     />
   );
 };
@@ -58,6 +65,7 @@ const couponSelectStyle: StylesConfig<SelectClassType, true> = {
       borderTop: optionIsNotExists ? '' : 'none',
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0,
+      zIndex: 20,
     };
   },
   option: (provided, state) => ({
@@ -68,6 +76,11 @@ const couponSelectStyle: StylesConfig<SelectClassType, true> = {
     '&:hover': {
       backgroundColor: 'var(--sub-color1-transparent)',
     },
+
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    width: '100%',
   }),
   indicatorsContainer: (provided) => ({
     ...provided,

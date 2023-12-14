@@ -8,7 +8,7 @@ interface usePageNationProps {
   itemList: any[]; // 아이템 state
   changeItemListFn: (data: any) => void; // 아이템 setState
   getItemListFn: (data: any, signal: AbortSignal) => any; // 아이템 받아오는 비동기 함수
-  pageIndex?: number;
+  firstPageIndex?: number;
 }
 
 const usePageNation = ({
@@ -16,7 +16,7 @@ const usePageNation = ({
   itemList,
   changeItemListFn,
   getItemListFn,
-  pageIndex = 0,
+  firstPageIndex = 0,
 }: usePageNationProps) => {
   const [totalItemCount, setTotalItemCount] = useState(itemList.length);
   const [itemId, setItemId] = useState({
@@ -25,6 +25,7 @@ const usePageNation = ({
   });
   const [filterState, setFilterState] =
     useState<PagenationFilterState>(defaultFilterState);
+  const [reset, setReset] = useState(false);
   const initialFilterState = useRef(filterState);
   const controller = useRef<AbortController | null>(null);
   const prevPage = useRef<number | null>(null);
@@ -60,6 +61,7 @@ const usePageNation = ({
 
     try {
       const responseItem = await getItemListFn(data, controller.current.signal);
+      console.log(responseItem);
       changeItemListFn(responseItem);
     } catch (error) {
       if (
@@ -85,6 +87,13 @@ const usePageNation = ({
     }
 
     prevPage.current = null;
+
+    if (reset && firstPageIndex > 0) {
+      filterState.currentPage = firstPageIndex;
+      filterState.targetPage = firstPageIndex;
+
+      setReset(false);
+    }
   };
 
   const updateFilter = (key: string, value: any) => {
@@ -102,6 +111,8 @@ const usePageNation = ({
   };
 
   const resetFilter = (key: string, value: any) => {
+    setReset(true);
+
     setItemId({
       firstItemId: 0,
       lastItemId: 0,
@@ -109,6 +120,8 @@ const usePageNation = ({
 
     setFilterState({
       ...defaultFilterState,
+      currentPage: 0,
+      targetPage: 0,
       [key]: value,
     });
   };
@@ -121,7 +134,7 @@ const usePageNation = ({
     setFilterState((prevState) => ({
       ...prevState,
       currentPage: prevPage.current ?? filterState.targetPage,
-      targetPage: selected + pageIndex,
+      targetPage: selected + firstPageIndex,
     }));
   };
 
