@@ -158,17 +158,16 @@ const InstructorDetailPage = async ({
       </div>
 
       {/* 인스타그램 섹션 */}
-      <section className="flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
-        {lecturerInstagramPostUrl.map((insta, index) => (
-          <InstagramIframe key={index} link={insta.url} />
-        ))}
-      </section>
+      {lecturerInstagramPostUrl.length > 0 && (
+        <section className="mb-20 flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
+          {lecturerInstagramPostUrl.map((insta, index) => (
+            <InstagramIframe key={index} link={insta.url} />
+          ))}
+        </section>
+      )}
 
       {/* 강사소개 섹션 */}
-      <section
-        id="introduction-section"
-        className="w-full max-w-[51.1rem] pt-20"
-      >
+      <section id="introduction-section" className="w-full max-w-[51.1rem]">
         <h2 className={h2Style}>강사소개</h2>
         <div
           dangerouslySetInnerHTML={{ __html: sanitizeHtmlString(introduction) }}
