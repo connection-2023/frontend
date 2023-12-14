@@ -25,10 +25,15 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const data = await getInstructorPost(id);
-  const classListsResponse = await getInstructorClassLists(id);
+  const profile = getInstructorPost(id);
+  const classLists = getInstructorClassLists(id);
 
-  if (data instanceof Error || classListsResponse instanceof Error) {
+  const [profileData, classListsResponse] = await Promise.all([
+    profile,
+    classLists,
+  ]);
+
+  if (profileData instanceof Error || classListsResponse instanceof Error) {
     return null;
   }
 
@@ -47,7 +52,7 @@ const InstructorDetailPage = async ({
     affiliation,
     stars,
     reviewCount,
-  } = data;
+  } = profileData;
 
   const classList = transformToCardData(classListsResponse, {
     nickname,
