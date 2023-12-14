@@ -1,5 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import { IUserReview, ReviewOrderType } from '@/types/class';
+import { IUserReview, ReviewOrderType, IClassSchedule } from '@/types/class';
 
 export const getClassReviews = async (
   id: string,
@@ -70,5 +70,19 @@ export const deleteReviewLikes = async (id: number) => {
     return response;
   } catch (error) {
     return new Error('리뷰 좋아요 취소 요청 오류!');
+  }
+};
+
+export const getClassSchedules = async (
+  id: string,
+): Promise<IClassSchedule[] | Error> => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/schedules?id=${id}`).then(
+      (data) => data.json(),
+    );
+
+    return response.data.schedule;
+  } catch (error) {
+    return new Error('강의 스케쥴 조회 요청 오류!');
   }
 };
