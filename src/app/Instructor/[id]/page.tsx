@@ -11,6 +11,8 @@ import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { dummyInstructor } from '@/constants/dummy';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
+import { getInstructorClassLists } from '@/lib/apis/serverApis/instructorPostApis';
+import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
   formatLocationToString,
   formatGenreToString,
@@ -25,13 +27,14 @@ const InstructorDetailPage = async ({
   params: { id: string };
 }) => {
   const data = await getInstructorPost(id);
+  const classListsResponse = await getInstructorClassLists(id);
 
-  if (data instanceof Error) {
-    console.error(data.message);
+  if (data instanceof Error || classListsResponse instanceof Error) {
     return null;
   }
 
   const {
+    profileCardImageUrl,
     lecturerProfileImageUrl,
     lecturerInstagramPostUrl,
     introduction,
@@ -45,7 +48,12 @@ const InstructorDetailPage = async ({
     affiliation,
   } = data;
 
-  const { review, classList } = dummyInstructor;
+  const classList = transformToCardData(classListsResponse, {
+    nickname,
+    img: profileCardImageUrl,
+  });
+
+  const { review } = dummyInstructor;
 
   return (
     <main className="flex w-screen flex-col items-center">
@@ -184,7 +192,7 @@ const InstructorDetailPage = async ({
         className="flex w-full flex-col items-center pt-20"
       >
         <div className="w-full max-w-[51.1rem] ">
-          <h2 className={h2Style}>진행중인 강의 </h2>
+          <h2 className={h2Style}>진행중인 강의 {classList.length}개</h2>
         </div>
         <ClassList classList={classList} />
       </section>
