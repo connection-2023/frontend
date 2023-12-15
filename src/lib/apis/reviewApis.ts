@@ -63,7 +63,7 @@ export const getMyLecturersReviews = async (
     }
 
     const resData = await response.json();
-    return resData.data.review;
+    return { count: resData.data.count, item: resData.data.review };
   } catch (error) {
     console.error('강사 내 리뷰 불러오기', error);
     throw error;

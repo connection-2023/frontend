@@ -82,7 +82,8 @@ export interface GetMyLecturersReviews {
 }
 
 export interface GetMyLecturersReviewsData {
-  review: MyLecturersReviewsData[];
+  count: number;
+  item: MyLecturersReviewsData[];
 }
 
 export interface MyLecturersReviewsData {

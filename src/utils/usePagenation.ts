@@ -8,6 +8,7 @@ interface usePageNationProps {
   itemList: any[]; // 아이템 state
   changeItemListFn: (data: any) => void; // 아이템 setState
   getItemListFn: (data: any, signal: AbortSignal) => any; // 아이템 받아오는 비동기 함수
+  totalItemCount: number;
   firstPageIndex?: number;
 }
 
@@ -16,9 +17,10 @@ const usePageNation = ({
   itemList,
   changeItemListFn,
   getItemListFn,
+  totalItemCount: itemCount,
   firstPageIndex = 0,
 }: usePageNationProps) => {
-  const [totalItemCount, setTotalItemCount] = useState(itemList.length);
+  const [totalItemCount, setTotalItemCount] = useState(itemCount);
   const [itemId, setItemId] = useState({
     firstItemId: itemList[0]?.id ?? 0,
     lastItemId: itemList[itemList.length - 1]?.id ?? 0,
@@ -35,8 +37,6 @@ const usePageNation = ({
       firstItemId: itemList[0]?.id ?? 0,
       lastItemId: itemList[itemList.length - 1]?.id ?? 0,
     });
-
-    setTotalItemCount(itemList.length);
   }, [itemList]);
 
   useEffect(() => {
@@ -57,12 +57,16 @@ const usePageNation = ({
       ...itemId,
     };
 
-    console.log(data);
-
     try {
-      const responseItem = await getItemListFn(data, controller.current.signal);
-      console.log(responseItem);
-      changeItemListFn(responseItem);
+      const { count, item } = await getItemListFn(
+        data,
+        controller.current.signal,
+      );
+
+      changeItemListFn(item);
+      if (itemId.firstItemId === 0 && itemId.lastItemId === 0) {
+        setTotalItemCount(count ?? 0);
+      }
     } catch (error) {
       if (
         !(error instanceof DOMException && error.name === 'AbortError') &&
@@ -72,15 +76,19 @@ const usePageNation = ({
         if (fetchError.status === 401) {
           try {
             await accessTokenReissuance();
-            const responseItem = await getItemListFn(
+            const { count, item } = await getItemListFn(
               data,
               controller.current.signal,
             );
-            changeItemListFn(responseItem);
+            changeItemListFn(item);
+            if (itemId.firstItemId === 0 && itemId.lastItemId === 0) {
+              setTotalItemCount(count ?? 0);
+            }
           } catch (error) {
             console.error(error);
           }
         } else {
+          console.error(error);
           toast.error('잘못된 요청입니다!');
         }
       }

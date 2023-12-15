@@ -12,14 +12,14 @@ const page = async () => {
     orderBy: '최신순',
   };
 
-  let resReview: GetMyLecturersReviewsData = { review: [] };
+  let resReview: GetMyLecturersReviewsData = { count: 0, item: [] };
 
   try {
     const [responseReviews, resLectureLists] = await Promise.all([
       getMyLecturersReviews(firstRender),
       getMyLecture(),
     ]);
-    if (Array.isArray(responseReviews.review)) {
+    if (Array.isArray(responseReviews.item)) {
       resReview = responseReviews;
     }
 
@@ -41,7 +41,7 @@ const page = async () => {
 
   return (
     <MyReview
-      reviewList={resReview.review}
+      reviewList={resReview.item}
       myClassListsOption={myClassListsOption ?? []}
     />
   );

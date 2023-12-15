@@ -19,7 +19,7 @@ export const getWriteReviews = async (
   };
 
   const response = await fetch(
-    END_POINT + `/lecture-reviews/my-reviews?orderBy=${orderBy}`,
+    END_POINT + `/lecture-reviews/my-reviews/users?orderBy=${orderBy}`,
     {
       method: 'GET',
       credentials: 'include',
@@ -93,5 +93,5 @@ export const getMyLecturersReviews = async (
   }
 
   const resData = await response.json();
-  return resData.data;
+  return { count: resData.data.count, item: resData.data.review };
 };
