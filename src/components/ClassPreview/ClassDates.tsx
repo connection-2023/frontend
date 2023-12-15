@@ -1,21 +1,43 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, MouseEvent } from 'react';
 import { useClickAway } from 'react-use';
 import { CalendarSVG } from '@/icons/svg';
+import { getClassSchedules } from '@/lib/apis/classApis';
 import BasicCalendar from '../Calendar/BasicCalendar';
 
-const ClassDates = ({ selectedDates }: { selectedDates: Date[] }) => {
+const ClassDates = ({ id }: { id: string | number }) => {
   const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const calendarRef = useRef(null);
+
+  useEffect(() => {
+    const getSchedules = async () => {
+      if (showCalendar) {
+        const schedules = await getClassSchedules(String(id));
+        if (schedules instanceof Error) return null;
+        const formattedSchedules = schedules.map(
+          (schedule) => new Date(schedule.startDateTime),
+        );
+        setSelectedDates(formattedSchedules);
+      }
+    };
+
+    getSchedules();
+  }, [id, showCalendar]);
 
   useClickAway(calendarRef, () => {
     setShowCalendar(false);
   });
 
+  const handleCalendarView = (event: MouseEvent) => {
+    event.stopPropagation();
+    setShowCalendar((prev) => !prev);
+  };
+
   return (
     <div ref={calendarRef}>
       <CalendarSVG
-        onClick={() => setShowCalendar((prev) => !prev)}
+        onClick={handleCalendarView}
         width="1.875rem"
         className={`ml-2 mr-1.5 cursor-pointer ${
           showCalendar ? 'fill-main-color' : 'fill-gray-500'

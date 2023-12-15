@@ -25,8 +25,7 @@ const ClassSchedule = () => {
   const classDates = useClassScheduleStore((state) => state.filteredDates);
   const classNum = classDates?.length;
   const maxCapacitity = watch('max')?.value || classData?.max;
-  const classSchedules =
-    useClassScheduleStore((state) => state.classSchedules) || [];
+  const filteredDates = useClassScheduleStore((state) => state.filteredDates);
 
   useEffect(() => {
     setClassDuration(duration);
@@ -193,7 +192,7 @@ const ClassSchedule = () => {
             <ScheduleView
               maxCapacity={maxCapacitity}
               duration={duration}
-              lectureSchedule={classSchedules}
+              lectureSchedule={filteredDates || []}
             />
           )}
         </div>

@@ -4,9 +4,10 @@ import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
-import { IUserReview, ReviewOrderType } from '@/types/class';
+import { ReviewOrderType } from '@/types/class';
+import { IInstructorReviewList } from '@/types/instructor';
 import { StarSVG, ArrowUpSVG } from '@/icons/svg';
-import { getClassReviews } from '@/lib/apis/classApis';
+import { getReviews } from '@/lib/apis/instructorPostApis';
 
 const filterOption: ReviewOrderType[] = [
   '최신순',
@@ -15,40 +16,66 @@ const filterOption: ReviewOrderType[] = [
   '평점 낮은순',
 ];
 
-interface ClassReviewSectionProps {
+interface ReviewSectionProps {
   id: string;
-  reviewCount: number;
   stars: number;
+  totalReviewCount: number;
 }
 
-const ClassReviewSection = ({
-  id,
-  reviewCount,
-  stars,
-}: ClassReviewSectionProps) => {
+const ReviewSection = ({ id, stars, totalReviewCount }: ReviewSectionProps) => {
   const [isListOpened, setIsListOpened] = useState(false);
   const [selectedOption, setSelectedOption] =
     useState<ReviewOrderType>('최신순');
-  const [userReviews, setUserReviews] = useState<IUserReview[]>([]);
+  const [userReviews, setUserReviews] = useState<IInstructorReviewList[]>([]);
   const modalRef = useRef(null);
+  // 페이지네이션 처리 구현 예정
+  const [displayCount, setDisplayCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemId, setItemId] = useState({
+    firstItemId: 0,
+    lastItemId: 0,
+  });
+  const pageCount = Math.round(displayCount / totalReviewCount);
+
+  const fetchData = async (
+    displayCount: number,
+    currentPage: number,
+    targetPage: number,
+    firstItemId: number,
+    lastItemId: number,
+    option: string,
+  ) => {
+    const data = await getReviews(
+      id,
+      displayCount,
+      currentPage,
+      targetPage,
+      firstItemId,
+      lastItemId,
+      option,
+    );
+    if (data instanceof Error) {
+      return;
+    }
+    setUserReviews(data.review);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getClassReviews(id, selectedOption);
-      if (data instanceof Error) {
-        return;
-      }
-
-      setUserReviews(data);
-    };
-
-    fetchData();
+    fetchData(
+      displayCount,
+      currentPage,
+      currentPage,
+      itemId.firstItemId,
+      itemId.lastItemId,
+      selectedOption,
+    );
   }, [selectedOption]);
 
   useClickAway(modalRef, () => {
     setIsListOpened(false);
   });
 
+  if (!userReviews) return null;
   const openList = () => {
     setIsListOpened(!isListOpened);
   };
@@ -62,11 +89,11 @@ const ClassReviewSection = ({
     <section
       id="review-section"
       ref={modalRef}
-      className="relative mb-20 scroll-mt-16"
+      className="relative mb-20 mt-14 w-full max-w-[51.1rem] scroll-mt-16"
     >
       <div className="mb-4 flex w-full items-center justify-between">
-        <h2 className="flex items-center scroll-smooth text-lg font-bold">
-          클래스 후기 {reviewCount}건
+        <div className="flex items-center scroll-smooth text-lg font-bold">
+          <h2> 강사 리뷰 {totalReviewCount}건</h2>
           <div className="ml-3 hidden md:block">
             <Review average={stars} />
           </div>
@@ -76,7 +103,7 @@ const ClassReviewSection = ({
             className="ml-3 fill-sub-color1 sm:block md:hidden"
           />
           <span className="ml-1 text-gray-500">({stars})</span>
-        </h2>
+        </div>
 
         <button
           onClick={openList}
@@ -112,15 +139,17 @@ const ClassReviewSection = ({
           <UserReview
             key={review.id}
             reviewId={review.id}
-            src={review.user.userProfileImage}
-            nickname={review.user.nickname}
+            src={review.users.userProfileImage.imageUrl}
+            nickname={review.users.nickname}
             average={review.stars}
             content={review.description}
-            date={format(parseISO(review.startDateTime), 'yy.MM.dd')}
-            title={review.lectureTitle}
-            isLike={review.isLike}
-            count={review.count}
-            link={`/report?lectureReviewId=${review.id}`}
+            date={format(
+              parseISO(review.reservation.lectureSchedule.startDateTime),
+              'yy.MM.dd',
+            )}
+            title={review.reservation.lectureSchedule.lecture.title}
+            isLike={review.likedLectureReview?.[0] ? true : false}
+            count={review._count.likedLectureReview}
           />
         ))}
       </div>
@@ -128,4 +157,4 @@ const ClassReviewSection = ({
   );
 };
 
-export default ClassReviewSection;
+export default ReviewSection;

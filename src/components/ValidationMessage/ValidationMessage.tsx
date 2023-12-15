@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect } from 'react';
-import Modal from 'react-modal';
+import Modal from '@/components/Modal/Modal';
 import ProgressBar from './ProgressBar';
 import { ErrorMessage } from '@/types/types';
 
@@ -34,14 +34,8 @@ const ValidationMessage = ({
   };
 
   return (
-    <Modal
-      isOpen={!!invalidData}
-      ariaHideApp={false}
-      style={customModalStyles}
-      shouldCloseOnOverlayClick={true}
-      onRequestClose={closeModal}
-    >
-      <div className="relative flex h-36 w-full max-w-[31rem] flex-col justify-evenly rounded-md border border-solid border-black bg-white shadow-float">
+    <Modal isOpened={!!invalidData} handleClosed={closeModal}>
+      <div className="relative flex h-36 w-full max-w-[31rem] flex-col justify-evenly overflow-hidden rounded-md border border-solid border-black bg-white px-6 shadow-float">
         <div className="flex flex-col items-center gap-2">
           <p className="text-sm font-semibold text-main-color">
             모두 작성하면 다음페이지로 넘어갈 수 있어요.
@@ -82,24 +76,3 @@ const ReminderText = ({ children }: { children: ReactNode }) => (
 );
 
 export default ValidationMessage;
-
-const customModalStyles: ReactModal.Styles = {
-  overlay: {
-    backgroundColor: 'transparent',
-  },
-  content: {
-    width: '100%',
-    height: 'fit-content',
-    maxWidth: '31rem',
-    zIndex: '10',
-    padding: '0px',
-    boxSizing: 'border-box',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-};

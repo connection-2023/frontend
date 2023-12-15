@@ -144,7 +144,6 @@ const MyReview = ({ reviewList, myClassListsOption }: MyReview) => {
                           content={description}
                           disabled={true}
                         />
-                        {/* <div>{id}</div> */}
                         <div className="h-1 bg-sub-color1-transparent" />
                       </Fragment>
                     ),

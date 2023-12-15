@@ -4,18 +4,17 @@ import { IRegion, IGenre } from './types';
 import { Juso } from '@/types/address';
 
 export interface ClassCardType {
-  status: '모집중' | '마감임박' | '마감';
+  id: number;
+  status: '모집중' | '마감';
   date: string;
   title: string;
   imgURL: string[];
   location: string[];
   genre: string[];
-  type: string[];
-  time: string[];
-  review?: { average: number; count: number };
-  price: string;
-  profile: { src?: string; nickname: string };
-  selectedDates: Date[];
+  type: string;
+  review: { average: number; count: number };
+  price: number;
+  profile: { src: string | null; nickname: string };
 }
 
 export interface Space {
@@ -31,8 +30,9 @@ export interface IDateTime {
   space: Space;
 }
 
+type day = '일' | '월' | '화' | '수' | '목' | '금' | '토';
 export interface DayTimeList {
-  day: string[];
+  day: day[];
   startDateTime: string[];
 }
 

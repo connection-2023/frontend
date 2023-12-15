@@ -1,3 +1,4 @@
+import { parseISO, format } from 'date-fns';
 import {
   CITY_ABBREVIATION_NAME,
   CITY_FULL_NAME,
@@ -10,8 +11,18 @@ import {
   postMultipleImage,
   postSingleImage,
 } from '@/lib/apis/imageApi';
-import { IprocessedDraft, classCreateData } from '@/types/class';
+import {
+  IprocessedDraft,
+  classCreateData,
+  IClassPostResponse,
+  ClassCardType,
+} from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
+import {
+  formatLocationToString,
+  formatGenreToString,
+} from '@/utils/parseUtils';
+import { calculateFinalDates } from './parseUtils';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -250,9 +261,11 @@ export const classOutputDataProcess = async (
   }
 };
 
-export const classCreate = async (id: number) => {
+export const classCreate = async (
+  id: number,
+  finalSchedule: Date[] | undefined,
+) => {
   const { location, temporaryLecture, schedules } = await getClassDraft(id);
-
   const {
     temporaryLectureToRegion,
     lectureMethod,
@@ -276,6 +289,19 @@ export const classCreate = async (id: number) => {
     locationDescription,
     temporaryLectureCouponTarget,
   } = temporaryLecture;
+
+  const allClassDates = finalSchedule
+    ? finalSchedule
+    : startDate &&
+      endDate &&
+      schedules &&
+      temporaryLectureHoliday &&
+      calculateFinalDates(
+        startDate,
+        endDate,
+        schedules,
+        temporaryLectureHoliday,
+      );
 
   const isLocationConfirmed = temporaryLectureToRegion.length > 0;
 
@@ -324,20 +350,11 @@ export const classCreate = async (id: number) => {
     coupons: temporaryLectureCouponTarget.map(
       ({ lectureCouponId }) => lectureCouponId,
     ),
-    schedules: schedules?.map((schedule) => {
-      if ('date' in schedule) {
-        return {
-          ...schedule,
-          date: new Date(schedule.date),
-        };
-      }
-      return schedule;
-    }),
+    schedules: allClassDates,
   };
 
-  console.log(data);
-
-  await createClass(data);
+  const newClassId = await createClass(data);
+  return newClassId;
 };
 
 export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
@@ -362,3 +379,49 @@ export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
     return item;
   }
 };
+
+export const transformToCardData = (
+  data: IClassPostResponse[],
+  lecturer: { nickname: string; img: string | null },
+): ClassCardType[] =>
+  data.map((item) => {
+    const {
+      id,
+      title,
+      price,
+      isGroup,
+      startDate,
+      endDate,
+      isActive,
+      stars,
+      reviewCount,
+      lectureToRegion,
+      lectureToDanceGenre,
+      lectureImage,
+    } = item;
+    const date = `${format(parseISO(startDate), 'MM/dd')}~${format(
+      parseISO(endDate),
+      'MM/dd',
+    )}`;
+    const status = isActive ? '모집중' : '마감';
+    const review = { average: stars, count: reviewCount };
+    const type = isGroup ? '그룹레슨' : '개인레슨';
+    const profile = { src: lecturer.img, nickname: lecturer.nickname };
+    const location = formatLocationToString(lectureToRegion).split(', ');
+    const genre = lectureToDanceGenre.map((genre) => genre.danceCategory.genre);
+    const imgURL = lectureImage.map((img) => img.imageUrl);
+
+    return {
+      id,
+      title,
+      imgURL,
+      date,
+      status,
+      review,
+      type,
+      profile,
+      price,
+      location,
+      genre,
+    };
+  });

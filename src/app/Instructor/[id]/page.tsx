@@ -1,21 +1,22 @@
 import Link from 'next/link';
+import ClassList from './_components/ClassList';
+import InstructorCarousel from './_components/InstructorCarousel';
+import ManagementButton from './_components/ManagementButton';
+import ReviewSection from './_components/ReviewSection';
+import Like from '@/components/Like/Like';
+import Nav from '@/components/Nav/Nav';
+import Review from '@/components/Review/Review';
+import Sharing from '@/components/Sharing/Sharing';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import { dummyInstructor } from '@/constants/dummy';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
+import { getInstructorClassLists } from '@/lib/apis/serverApis/instructorPostApis';
+import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
   formatLocationToString,
   formatGenreToString,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
-import ClassList from './_components/ClassList';
-import InstructorCarousel from './_components/InstructorCarousel';
-import ManagementButton from './_components/ManagementButton';
-import Like from '@/components/Like/Like';
-import Nav from '@/components/Nav/Nav';
-import Review from '@/components/Review/Review';
-import UserReview from '@/components/Review/UserReview';
-import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -24,14 +25,20 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const data = await getInstructorPost(id);
+  const profile = getInstructorPost(id);
+  const classLists = getInstructorClassLists(id);
 
-  if (data instanceof Error) {
-    console.error(data.message);
-    return <></>;
+  const [profileData, classListsResponse] = await Promise.all([
+    profile,
+    classLists,
+  ]);
+
+  if (profileData instanceof Error || classListsResponse instanceof Error) {
+    return null;
   }
 
   const {
+    profileCardImageUrl,
     lecturerProfileImageUrl,
     lecturerInstagramPostUrl,
     introduction,
@@ -43,9 +50,14 @@ const InstructorDetailPage = async ({
     instagramUrl,
     homepageUrl,
     affiliation,
-  } = data;
+    stars,
+    reviewCount,
+  } = profileData;
 
-  const { review, classList } = dummyInstructor;
+  const classList = transformToCardData(classListsResponse, {
+    nickname,
+    img: profileCardImageUrl,
+  });
 
   return (
     <main className="flex w-screen flex-col items-center">
@@ -72,9 +84,9 @@ const InstructorDetailPage = async ({
 
           {/* 리뷰 */}
           <div className="mb-4 mt-2 box-border flex h-4 gap-1 pl-4">
-            <Review average={review.average} />
+            <Review average={stars} />
             <span className="text-sm font-bold text-gray-500">
-              ({review.average})
+              ({reviewCount})
             </span>
           </div>
 
@@ -150,17 +162,16 @@ const InstructorDetailPage = async ({
       </div>
 
       {/* 인스타그램 섹션 */}
-      <section className="flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
-        {lecturerInstagramPostUrl.map((insta, index) => (
-          <InstagramIframe key={index} link={insta.url} />
-        ))}
-      </section>
+      {lecturerInstagramPostUrl.length > 0 && (
+        <section className="mb-20 flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
+          {lecturerInstagramPostUrl.map((insta, index) => (
+            <InstagramIframe key={index} link={insta.url} />
+          ))}
+        </section>
+      )}
 
       {/* 강사소개 섹션 */}
-      <section
-        id="introduction-section"
-        className="w-full max-w-[51.1rem] pt-20"
-      >
+      <section id="introduction-section" className="w-full max-w-[51.1rem]">
         <h2 className={h2Style}>강사소개</h2>
         <div
           dangerouslySetInnerHTML={{ __html: sanitizeHtmlString(introduction) }}
@@ -184,32 +195,12 @@ const InstructorDetailPage = async ({
         className="flex w-full flex-col items-center pt-20"
       >
         <div className="w-full max-w-[51.1rem] ">
-          <h2 className={h2Style}>진행중인 강의 </h2>
+          <h2 className={h2Style}>진행중인 강의 {classList.length}개</h2>
         </div>
         <ClassList classList={classList} />
       </section>
 
-      {/* 강사 후기 */}
-      <section id="review-section" className="w-full max-w-[51.1rem] py-20">
-        <h2 className={`flex items-center ${h2Style}`}>
-          강사 후기 {review.count}건 <span className="ml-3" />
-          <Review average={review.average} />
-          <span className="ml-1 text-gray-500">({review.average})</span>
-        </h2>
-        <div className="flex flex-col gap-6">
-          {review.reviewer.map((review) => (
-            <UserReview
-              key={review.nickname}
-              src={review.src}
-              nickname={review.nickname}
-              average={review.average}
-              content={review.content}
-              date={review.date}
-              title={review.title}
-            />
-          ))}
-        </div>
-      </section>
+      <ReviewSection id={id} stars={stars} totalReviewCount={reviewCount} />
     </main>
   );
 };
