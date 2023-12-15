@@ -22,7 +22,8 @@ const ReviewStatistics = ({ reviewList }: ReviewStatisticsProps) => {
   return (
     <dl className="flex w-full flex-col gap-2 rounded-md bg-white p-5 shadow-vertical">
       <dt className="text-2xl font-bold">
-        {averageScore} <span className="text-gray-500">/ 5.0</span>
+        {reviewList.length > 0 ? averageScore : 0}
+        <span className="text-gray-500">/ 5.0</span>
       </dt>
       <dd className="mb-4">
         <Rating

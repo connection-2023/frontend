@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import { EditSVG } from '@/icons/svg';
+import { EditSVG, NotFoundSVG } from '@/icons/svg';
 import { getWriteReviews } from '@/lib/apis/reviewApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
@@ -84,22 +84,29 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
               </Button>
             </Link>
           </nav>
-          <ul className="flex flex-col gap-2">
-            {reviewList.map(({ id, stars, lecture, _count, description }) => (
-              <UserReview
-                key={id}
-                src={profile}
-                nickname={nickname}
-                average={stars}
-                date={formatDate(lecture.startDate)}
-                title={lecture.title}
-                count={_count.likedLectureReview}
-                isLike={true} //백엔드 api isLike 받을 예정
-                reviewId={id}
-                content={description}
-              />
-            ))}
-          </ul>
+          {reviewList.length > 0 ? (
+            <ul className="flex flex-col gap-2">
+              {reviewList.map(({ id, stars, lecture, _count, description }) => (
+                <UserReview
+                  key={id}
+                  src={profile}
+                  nickname={nickname}
+                  average={stars}
+                  date={formatDate(lecture.startDate)}
+                  title={lecture.title}
+                  count={_count.likedLectureReview}
+                  isLike={true} //백엔드 api isLike 받을 예정
+                  reviewId={id}
+                  content={description}
+                />
+              ))}
+            </ul>
+          ) : (
+            <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
+              <NotFoundSVG />
+              <p>작성 하신 리뷰가 없습니다!</p>
+            </div>
+          )}
         </div>
         <div className="w-full self-start sm:w-56 md:w-72 lg:w-80">
           <ReviewStatistics reviewList={writeReviews} />

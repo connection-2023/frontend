@@ -1,6 +1,7 @@
 'use client';
 import { Fragment, useState } from 'react';
 import ClassFilterSelect from '@/app/my/[userType]/coupon-pass/_components/ClassFilterSelect';
+import { NotFoundSVG } from '@/icons/svg';
 import { getMyLecturersReviews } from '@/lib/apis/reviewApis';
 import formatDate from '@/utils/formatDate';
 import usePageNation from '@/utils/usePagenation';
@@ -123,38 +124,51 @@ const MyReview = ({ reviewList, myClassListsOption }: MyReview) => {
               </select>
               {totalItemCount}개의 리뷰
             </div>
-            <ul className="flex flex-col">
-              {reviews.map(({ id, stars, users, description, reservation }) => (
-                <Fragment key={id}>
-                  <UserReview
-                    src={users.userProfileImage.imageUrl}
-                    nickname={users.nickname}
-                    average={stars}
-                    date={formatDate(reservation.lectureSchedule.startDateTime)}
-                    title={reservation.lectureSchedule.lecture.title}
-                    count={3}
-                    isLike={false}
-                    reviewId={id}
-                    content={description}
-                    disabled={true}
+            {totalItemCount > 0 ? (
+              <>
+                <ul className="flex flex-col">
+                  {reviews.map(
+                    ({ id, stars, users, description, reservation }) => (
+                      <Fragment key={id}>
+                        <UserReview
+                          src={users.userProfileImage.imageUrl}
+                          nickname={users.nickname}
+                          average={stars}
+                          date={formatDate(
+                            reservation.lectureSchedule.startDateTime,
+                          )}
+                          title={reservation.lectureSchedule.lecture.title}
+                          count={3}
+                          isLike={false}
+                          reviewId={id}
+                          content={description}
+                          disabled={true}
+                        />
+                        {/* <div>{id}</div> */}
+                        <div className="h-1 bg-sub-color1-transparent" />
+                      </Fragment>
+                    ),
+                  )}
+                </ul>
+                <nav className="z-10">
+                  <Pagination
+                    pageCount={Math.ceil(totalItemCount / 2)}
+                    currentPage={
+                      filterState.targetPage !== undefined &&
+                      filterState.targetPage > 0
+                        ? filterState.targetPage - 1
+                        : 0
+                    }
+                    onPageChange={handleChangePage}
                   />
-                  {/* <div>{id}</div> */}
-                  <div className="h-1 bg-sub-color1-transparent" />
-                </Fragment>
-              ))}
-            </ul>
-            <nav className="z-10">
-              <Pagination
-                pageCount={Math.ceil(totalItemCount / 2)}
-                currentPage={
-                  filterState.targetPage !== undefined &&
-                  filterState.targetPage > 0
-                    ? filterState.targetPage - 1
-                    : 0
-                }
-                onPageChange={handleChangePage}
-              />
-            </nav>
+                </nav>
+              </>
+            ) : (
+              <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
+                <NotFoundSVG />
+                <p>작성 된 리뷰가 없습니다!</p>
+              </div>
+            )}
           </div>
         </section>
         <section className="w-full self-start sm:w-56 md:w-72 lg:w-80">
