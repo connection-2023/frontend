@@ -57,7 +57,10 @@ const OptionButton = ({ lecturerId, postId, isLike }: OptionButtonProps) => {
               수정하기
             </li>
           ) : (
-            <Link href="/report" className={styles}>
+            <Link
+              href={`/report?targetLecturerId=${lecturerId}`}
+              className={styles}
+            >
               <ReportSVG
                 width="15px"
                 height="15px"
