@@ -15,6 +15,7 @@ interface UserReviewProps {
   count: number;
   isLike: boolean;
   reviewId: number;
+  disabled?: boolean;
 }
 
 const UserReview = ({
@@ -27,6 +28,7 @@ const UserReview = ({
   count,
   isLike,
   reviewId,
+  disabled = false,
 }: UserReviewProps) => {
   const [liked, setLiked] = useState(isLike);
   const [likeCount, setLikeCount] = useState(count);
@@ -49,7 +51,7 @@ const UserReview = ({
   };
 
   return (
-    <div className="w-full rounded-md border-b border-solid border-gray-700 text-sm shadow-float">
+    <div className="w-full rounded-md border-b border-solid border-gray-700 bg-white text-sm ">
       <div className="flex w-full justify-between p-[0.8rem]">
         <div className="mr-1.5 flex w-[34px] items-center">
           <Profile size="small" nickname={nickname} src={src} label={false} />
@@ -75,8 +77,15 @@ const UserReview = ({
             liked ? 'text-main-color' : 'text-gray-500'
           }`}
         >
-          <button onClick={handleLike}>
-            <LikeSVG width="15" height="14" className={style} />
+          <button
+            onClick={disabled ? undefined : handleLike}
+            className={`${disabled && 'cursor-default'}`}
+          >
+            <LikeSVG
+              width="15"
+              height="14"
+              className={disabled ? 'fill-gray-500' : style}
+            />
           </button>
           {likeCount}
         </p>
