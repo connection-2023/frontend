@@ -98,6 +98,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
                   isLike={true} //백엔드 api isLike 받을 예정
                   reviewId={id}
                   content={description}
+                  link={`/report?lectureReviewId=${id}`}
                 />
               ))}
             </ul>

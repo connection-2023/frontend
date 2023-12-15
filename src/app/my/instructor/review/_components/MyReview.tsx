@@ -143,6 +143,7 @@ const MyReview = ({ reviewList, myClassListsOption }: MyReview) => {
                           reviewId={id}
                           content={description}
                           disabled={true}
+                          link={`/report?lectureReviewId=${id}`}
                         />
                         <div className="h-1 bg-sub-color1-transparent" />
                       </Fragment>
