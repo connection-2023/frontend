@@ -39,13 +39,13 @@ const Header = ({ children }: { children: React.ReactNode }) => {
     const baseStyle = `${
       isScrollingUp
         ? 'translate-y-0'
-        : pathname.startsWith('/my') && userType === 'lecturer'
+        : pathname.startsWith('/mypage') && userType === 'lecturer'
         ? '-translate-y-full xl:translate-y-0'
         : '-translate-y-full'
     } ${
-      pathname.startsWith('/my') &&
+      pathname.startsWith('/mypage') &&
       userType === 'lecturer' &&
-      'sticky xl:bg-sub-color1-transparent xl:px-16 xl:pb-0 xl:pt-12 xl:relative'
+      'sticky xl:bg-sub-color1-transparent xl:px-9 xl:pb-0 xl:pt-12 xl:relative'
     } z-header top-0 duration-[300ms] mx-auto w-full`;
     return isStickyHeader ? `${baseStyle} relative ` : `${baseStyle} sticky`;
   };
@@ -60,7 +60,7 @@ const Header = ({ children }: { children: React.ReactNode }) => {
     <header className={getHeaderStyle(isStickyHeader)}>
       <div
         className={` ${
-          pathname.startsWith('/my') &&
+          pathname.startsWith('/mypage') &&
           userType === 'lecturer' &&
           'xl:relative xl:h-[6rem] xl:w-full xl:items-center xl:rounded-lg xl:bg-white xl:px-4 xl:pb-0'
         } flex h-[5.6rem] items-end justify-between whitespace-nowrap bg-white/[.95] px-4 pb-3 backdrop-blur-sm md:h-[7.6rem] md:px-16 md:pb-5`}

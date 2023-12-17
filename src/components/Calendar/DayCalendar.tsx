@@ -12,8 +12,8 @@ import {
   ToolbarProps,
 } from 'react-big-calendar';
 import ResponsiveScheduleView from '@/app/dashboard/_components/ResponsiveScheduleView';
-import CalendarDetail from '@/app/my/manage/schedule/_components/CalendarDetail';
-import eventList from '@/app/my/manage/schedule/_components/Event';
+import CalendarDetail from '@/app/mypage/instructor/manage/schedule/_components/CalendarDetail';
+import eventList from '@/app/mypage/instructor/manage/schedule/_components/Event';
 import { ArrowRightSVG } from '@/icons/svg';
 import { dashboardStore } from '@/store';
 import {
