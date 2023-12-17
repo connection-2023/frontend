@@ -24,6 +24,7 @@ interface useCouponPassHookProps {
     itemList: any[];
   }>;
   type: 'user' | 'lecturer';
+  isInterested: 'COUPON' | 'PASS';
 }
 
 const useCouponPassHook = ({
@@ -33,6 +34,7 @@ const useCouponPassHook = ({
   onChange,
   getFunction,
   type,
+  isInterested,
 }: useCouponPassHookProps) => {
   const [totalItemCount, setTotalItemCount] = useState(defaultItemCount);
   const [itemId, setItemId] = useState({
@@ -40,7 +42,7 @@ const useCouponPassHook = ({
     lastItemId: itemList[itemList.length - 1]?.id ?? 0,
   });
   const [filterState, setFilterState] = useState<IFilterState>({
-    isInterested: 'COUPON',
+    isInterested,
     passStatusOptions: 'AVAILABLE',
     filterOption: 'LATEST',
     selectedClass:
