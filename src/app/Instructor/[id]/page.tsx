@@ -3,6 +3,7 @@ import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
 import { getInstructorClassLists } from '@/lib/apis/serverApis/instructorPostApis';
+import { getLecturerPassList } from '@/lib/apis/serverApis/passApis';
 import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
   formatLocationToString,
@@ -27,10 +28,12 @@ const InstructorDetailPage = async ({
 }) => {
   const profile = getInstructorPost(id);
   const classLists = getInstructorClassLists(id);
+  const passLists = getLecturerPassList(id);
 
-  const [profileData, classListsResponse] = await Promise.all([
+  const [profileData, classListsResponse, passListData] = await Promise.all([
     profile,
     classLists,
+    passLists,
   ]);
 
   if (profileData instanceof Error || classListsResponse instanceof Error) {
@@ -165,7 +168,6 @@ const InstructorDetailPage = async ({
         </div>
       </div>
       {/* 인스타그램 섹션 */}
-
       {lecturerInstagramPostUrl.length > 0 &&
         lecturerInstagramPostUrl.some(({ url }) => url) && (
           <div className="flex w-full overflow-x-auto px-5 sm:justify-center">
@@ -178,7 +180,6 @@ const InstructorDetailPage = async ({
             </section>
           </div>
         )}
-
       {/* 강사소개 섹션 */}
       <section
         id="introduction-section"
@@ -207,7 +208,14 @@ const InstructorDetailPage = async ({
         <div className="w-full max-w-[51.1rem] ">
           <h2 className={h2Style}>진행중인 강의 {classList.length}개</h2>
         </div>
-        <ClassList classList={classList} />
+        {classList.length > 0 && <ClassList classList={classList} />}
+      </section>
+
+      <section className="flex w-full flex-col items-center pt-20 ">
+        <div className="w-full max-w-[51.1rem] ">
+          <h2 className={h2Style}>패스권 {passListData.length}개</h2>
+        </div>
+        {passListData.length > 0 && <div>asdasd</div>}
       </section>
       <ReviewSection id={id} stars={stars} totalReviewCount={reviewCount} />
     </main>

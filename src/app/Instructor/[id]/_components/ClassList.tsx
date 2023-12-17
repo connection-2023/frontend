@@ -27,12 +27,16 @@ const ClassList = ({ classList }: { classList: ClassCardType[] }) => {
             move={true}
             showCurrentElement={false}
             carouselMoveIntervalTime={3000}
-            priority={2}
+            priority={3}
             gap={2}
             movePause={focus}
           >
-            {classList.map((state, index) => {
-              return <ClassCard key={state.title + index} {...state} />;
+            {classList.map((state) => {
+              return (
+                <div key={state.id} className="ml-2">
+                  <ClassCard {...state} />
+                </div>
+              );
             })}
           </Carousel>
         </div>

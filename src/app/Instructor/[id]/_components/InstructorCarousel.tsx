@@ -19,9 +19,9 @@ const InstructorCarousel = ({ imgURL }: { imgURL: string[] }) => {
           </div>
         </div>
       ) : (
-        imgURL.map((imgURL) => (
+        imgURL.map((imgURL, index) => (
           <div
-            key={imgURL}
+            key={imgURL + index}
             className="relative h-full w-[18.875rem] sm:w-[28rem]"
           >
             <Image
