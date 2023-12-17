@@ -74,10 +74,10 @@ export const CLASS_SECTIONS = [
 ];
 
 export const INSTRUCTOR_SECTIONS = [
-  { id: 'introduction-section', label: 'introduction' },
-  { id: 'work-experience-section', label: 'Work Experience' },
-  { id: 'class-section', label: '강의' },
-  { id: 'review-section', label: '후기' },
+  { id: 'introduction-section', label: '강사 소개' },
+  { id: 'work-experience-section', label: '강사 경력' },
+  { id: 'class-section', label: '클래스/패스권' },
+  { id: 'review-section', label: '클래스 리뷰' },
 ];
 
 export const DANCE_GENRE = [

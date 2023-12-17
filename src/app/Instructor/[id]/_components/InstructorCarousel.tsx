@@ -3,21 +3,27 @@ import Carousel from '@/components/Carousel/Carousel';
 
 const InstructorCarousel = ({ imgURL }: { imgURL: string[] }) => {
   return (
-    <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
+    <div className="mb-5 flex h-[12rem] w-full justify-center overflow-hidden px-5 sm:h-[18rem]">
       {imgURL.length > 2 ? (
-        <div className="relative h-full w-full overflow-hidden">
-          <div className="h-full w-1/3">
-            <Carousel
-              imgURL={imgURL}
-              move={true}
-              priority={3}
-              showCurrentElementBackGround={false}
-            />
+        <div className="relative">
+          <div className="h-full w-[56.625rem] overflow-hidden sm:w-[84rem]">
+            <div className="h-full w-[18.875rem] min-w-0 sm:w-[28rem]">
+              <Carousel
+                imgURL={imgURL}
+                move={true}
+                priority={3}
+                showCurrentElementBackGround={false}
+                gap={0.2}
+              />
+            </div>
           </div>
         </div>
       ) : (
         imgURL.map((imgURL) => (
-          <div key={imgURL} className="relative h-full w-1/3">
+          <div
+            key={imgURL}
+            className="relative h-full w-[18.875rem] sm:w-[28rem]"
+          >
             <Image
               src={imgURL}
               alt="Connection 댄스 춤 이미지"

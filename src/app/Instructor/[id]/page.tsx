@@ -1,12 +1,4 @@
 import Link from 'next/link';
-import ClassList from './_components/ClassList';
-import InstructorCarousel from './_components/InstructorCarousel';
-import ManagementButton from './_components/ManagementButton';
-import ReviewSection from './_components/ReviewSection';
-import Like from '@/components/Like/Like';
-import Nav from '@/components/Nav/Nav';
-import Review from '@/components/Review/Review';
-import Sharing from '@/components/Sharing/Sharing';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
@@ -17,6 +9,14 @@ import {
   formatGenreToString,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import ClassList from './_components/ClassList';
+import InstructorCarousel from './_components/InstructorCarousel';
+import ManagementButton from './_components/ManagementButton';
+import ReviewSection from './_components/ReviewSection';
+import Like from '@/components/Like/Like';
+import Nav from '@/components/Nav/Nav';
+import Review from '@/components/Review/Review';
+import Sharing from '@/components/Sharing/Sharing';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -60,7 +60,7 @@ const InstructorDetailPage = async ({
   });
 
   return (
-    <main className="flex w-screen flex-col items-center">
+    <main className="flex w-full flex-col items-center">
       {/* 강의 상세 헤더 섹션 */}
       <section className="flex w-full flex-col items-center ">
         <InstructorCarousel
@@ -94,7 +94,9 @@ const InstructorDetailPage = async ({
           <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-gray-700 py-5">
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">지역</dt>
-              <dd>{formatLocationToString(lecturerRegion)}</dd>
+              <dd className="max-w-xs truncate">
+                {formatLocationToString(lecturerRegion)}
+              </dd>
             </div>
             <div className="flex gap-3">
               <dt className="text-sub-color1">
@@ -104,12 +106,14 @@ const InstructorDetailPage = async ({
                   }`}
                 />
               </dt>
-              <dd>{instagramUrl}</dd>
+              <dd className="max-w-xs truncate">{instagramUrl}</dd>
             </div>
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">장르</dt>
               {/* 추후 데이터 반환 타입 변경 시 변경 예정 */}
-              <dd>{formatGenreToString(lecturerDanceGenre)}</dd>
+              <dd className="max-w-xs truncate">
+                {formatGenreToString(lecturerDanceGenre)}
+              </dd>
             </div>
             <Link
               href={youtubeUrl || ''}
@@ -125,13 +129,13 @@ const InstructorDetailPage = async ({
                   }`}
                 />
               </dt>
-              <dd className={`${youtubeUrl && 'underline'}`}>
+              <dd className={`${youtubeUrl && 'underline'} max-w-xs truncate`}>
                 {youtubeUrl.replace('https://', '')}
               </dd>
             </Link>
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">소속</dt>
-              <dd>{affiliation}</dd>
+              <dd className="max-w-xs truncate">{affiliation}</dd>
             </div>
             <Link
               href={homepageUrl || ''}
@@ -145,31 +149,29 @@ const InstructorDetailPage = async ({
                   }`}
                 />
               </dt>
-              <dd className={`${homepageUrl && 'underline'}`}>
+              <dd className={`${homepageUrl && 'underline'} max-w-xs truncate`}>
                 {homepageUrl.replace('https://', '')}
               </dd>
             </Link>
           </dl>
         </div>
       </section>
-
       <hr className="mb-2 h-[1px] w-screen bg-gray-700 shadow-float" />
-
       <div className="sticky -top-[1px] z-20 flex w-full items-center justify-center bg-white">
         <div className="w-1/2 min-w-[23rem] max-w-5xl">
           <Nav sections={INSTRUCTOR_SECTIONS} />
         </div>
       </div>
-
       {/* 인스타그램 섹션 */}
-      {lecturerInstagramPostUrl.length > 0 && (
-        <section className="mb-20 flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
-          {lecturerInstagramPostUrl.map((insta, index) => (
-            <InstagramIframe key={index} link={insta.url} />
-          ))}
-        </section>
-      )}
 
+      {lecturerInstagramPostUrl.length > 0 &&
+        lecturerInstagramPostUrl.some(({ url }) => url) && (
+          <section className="mb-20 flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
+            {lecturerInstagramPostUrl.map((insta, index) => (
+              <InstagramIframe key={index} link={insta.url} />
+            ))}
+          </section>
+        )}
       {/* 강사소개 섹션 */}
       <section id="introduction-section" className="w-full max-w-[51.1rem]">
         <h2 className={h2Style}>강사소개</h2>
@@ -177,7 +179,6 @@ const InstructorDetailPage = async ({
           dangerouslySetInnerHTML={{ __html: sanitizeHtmlString(introduction) }}
         />
       </section>
-
       {/* 강사 경력 섹션 */}
       <section
         id="work-experience-section"
@@ -188,7 +189,6 @@ const InstructorDetailPage = async ({
           dangerouslySetInnerHTML={{ __html: sanitizeHtmlString(experience) }}
         />
       </section>
-
       {/* 진행중인 강의 섹션 */}
       <section
         id="class-section"
@@ -199,7 +199,6 @@ const InstructorDetailPage = async ({
         </div>
         <ClassList classList={classList} />
       </section>
-
       <ReviewSection id={id} stars={stars} totalReviewCount={reviewCount} />
     </main>
   );
