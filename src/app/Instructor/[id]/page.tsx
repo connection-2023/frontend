@@ -205,17 +205,18 @@ const InstructorDetailPage = async ({
         id="class-section"
         className="flex w-full flex-col items-center pt-20 "
       >
-        <div className="w-full max-w-[51.1rem] ">
+        <div className="w-full max-w-[51.1rem] px-5 sm:px-0">
           <h2 className={h2Style}>진행중인 강의 {classList.length}개</h2>
         </div>
         {classList.length > 0 && <ClassList classList={classList} />}
       </section>
 
-      <section className="flex w-full flex-col items-center pt-20 ">
+      <section className="flex w-full flex-col items-center px-5 pt-20 sm:px-0">
         <div className="w-full max-w-[51.1rem] ">
           <h2 className={h2Style}>패스권 {passListData.length}개</h2>
         </div>
         {passListData.length > 0 && <div>asdasd</div>}
+        {/* 추후 패스권 컴포넌트 연결 */}
       </section>
       <ReviewSection id={id} stars={stars} totalReviewCount={reviewCount} />
     </main>
