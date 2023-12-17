@@ -125,7 +125,7 @@ const PaymentHistory = () => {
   };
 
   return (
-    <section className="col-span-2 mt-7 w-full max-w-[40rem]">
+    <section className="mx-auto mt-3 w-full max-w-[40rem] xl:mx-0">
       <h1 className="mb-2.5 border-b border-solid border-gray-700 pb-2.5 text-2xl font-bold text-gray-100">
         결제내역
       </h1>

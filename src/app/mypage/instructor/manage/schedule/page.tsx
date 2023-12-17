@@ -20,13 +20,18 @@ const progrss = [
 
 const SchedulePage = () => {
   return (
-    <section className="col-span-2 flex w-full flex-col gap-4">
-      <div className="col-span-2 rounded-lg bg-white px-5 shadow-float">
+    <section className="flex w-full flex-col gap-4 md:px-9 xl:px-0">
+      <div className="hidden w-full rounded-lg bg-white px-5 shadow-float md:block">
         <FullCalendar />
       </div>
-      <div className="mx-auto flex h-[4.25rem] w-full max-w-[60.67rem] items-center justify-between whitespace-nowrap rounded-lg bg-white px-5 text-gray-100 shadow-float">
+
+      <div className="mx-4 flex flex-col gap-y-2.5 whitespace-nowrap rounded-lg bg-white p-4 text-gray-100 shadow-float md:mx-auto md:w-full md:flex-row md:items-center md:px-0 md:px-5 md:py-6">
         <h1 className="mr-12 text-lg font-bold">이번달 진행 현황</h1>
-        <ul className="flex w-full list-outside list-disc gap-11 text-base font-semibold">
+
+        <ul
+          role="list"
+          className="flex list-inside list-disc gap-4 text-base font-semibold marker:mr-1 md:list-outside md:gap-11"
+        >
           {progrss.map((item, i) => (
             <ListItem
               key={i}
@@ -51,7 +56,7 @@ interface IListItem {
 
 const ListItem = ({ text, count, color }: IListItem) => (
   <li className={color}>
-    {text}
-    <span className="ml-2 text-gray-100">{count}회</span>
+    <span className="relative -left-3 md:static"> {text}</span>
+    <span className="-ml-1 text-gray-100 md:ml-2">{count}회</span>
   </li>
 );
