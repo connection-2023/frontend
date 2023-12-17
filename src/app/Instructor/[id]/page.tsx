@@ -62,43 +62,41 @@ const InstructorDetailPage = async ({
   return (
     <main className="flex w-full flex-col items-center">
       {/* 강의 상세 헤더 섹션 */}
-      <section className="flex w-full flex-col items-center ">
+      <section className="flex w-full flex-col items-center">
         <InstructorCarousel
           imgURL={lecturerProfileImageUrl.map((img) => img.url)}
         />
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col px-5 sm:items-center sm:px-0">
           {/* 강사 이름 및 이벤트 */}
-          <div className=" relative flex w-full min-w-[23rem] items-center justify-center ">
-            <h1 className="box-border flex items-center gap-1 pl-6 text-lg font-bold">
+          <div className=" relative flex w-full min-w-[23rem] items-center sm:justify-center">
+            <h1 className="box-border flex items-center gap-1 text-lg font-bold sm:pl-6">
               {nickname}
               <Like type="instructor" id={id} />
             </h1>
-            <div className="absolute right-0 flex gap-3">
+            {/* <div className="absolute right-0 flex gap-3">
               <Sharing header={nickname} mode="instructor" />
               <ManagementButton>
                 <OptionSVG />
               </ManagementButton>
-            </div>
+            </div> */}
           </div>
-
           {/* 리뷰 */}
-          <div className="mb-4 mt-2 box-border flex h-4 gap-1 pl-4">
+          <div className="mb-4 mt-2 box-border flex h-4 gap-1 sm:pl-4">
             <Review average={stars} />
             <span className="text-sm font-bold text-gray-500">
               ({reviewCount})
             </span>
           </div>
-
           {/* 강사 여러 정보 */}
-          <dl className="inline-grid min-w-[40rem] grid-cols-2 gap-2 whitespace-nowrap border-t-2 border-solid border-gray-700 py-5">
+          <dl className="inline-grid grid-rows-6 gap-2 whitespace-nowrap border-t-2 border-solid border-gray-700 py-5 sm:min-w-[40rem] sm:grid-cols-2 sm:grid-rows-none">
             <div className="flex gap-3">
               <dt className="font-bold text-sub-color1">지역</dt>
               <dd className="max-w-xs truncate">
                 {formatLocationToString(lecturerRegion)}
               </dd>
             </div>
-            <div className="flex gap-3">
+            <div className="row-start-4 flex gap-3 sm:row-start-auto">
               <dt className="text-sub-color1">
                 <InstagramSVG
                   className={`${
@@ -118,7 +116,9 @@ const InstructorDetailPage = async ({
             <Link
               href={youtubeUrl || ''}
               target="_blank"
-              className={`${youtubeUrl ?? 'pointer-events-none'} flex gap-3`}
+              className={`${
+                youtubeUrl ?? 'pointer-events-none'
+              } row-start-5 flex gap-3 sm:row-start-auto`}
             >
               <dt className="text-sub-color1">
                 <YoutubeSVG
@@ -139,7 +139,9 @@ const InstructorDetailPage = async ({
             </div>
             <Link
               href={homepageUrl || ''}
-              className={`${homepageUrl ?? 'pointer-events-none'} flex gap-3`}
+              className={`${
+                homepageUrl ?? 'pointer-events-none'
+              } row-start-6 flex gap-3 sm:row-start-auto`}
               target="_blank"
             >
               <dt className="text-sub-color1">
@@ -166,14 +168,22 @@ const InstructorDetailPage = async ({
 
       {lecturerInstagramPostUrl.length > 0 &&
         lecturerInstagramPostUrl.some(({ url }) => url) && (
-          <section className="mb-20 flex h-[387px] w-full max-w-[51.1rem] justify-center gap-3">
-            {lecturerInstagramPostUrl.map((insta, index) => (
-              <InstagramIframe key={index} link={insta.url} />
-            ))}
-          </section>
+          <div className="flex w-full overflow-x-auto px-5 sm:justify-center">
+            <section className="inline-flex flex-nowrap gap-3 ">
+              {lecturerInstagramPostUrl
+                .filter(({ url }) => url)
+                .map((insta, index) => (
+                  <InstagramIframe key={index} link={insta.url} />
+                ))}
+            </section>
+          </div>
         )}
+
       {/* 강사소개 섹션 */}
-      <section id="introduction-section" className="w-full max-w-[51.1rem]">
+      <section
+        id="introduction-section"
+        className="w-full max-w-[51.1rem] px-5 pt-10 sm:px-0"
+      >
         <h2 className={h2Style}>강사소개</h2>
         <div
           dangerouslySetInnerHTML={{ __html: sanitizeHtmlString(introduction) }}
@@ -182,7 +192,7 @@ const InstructorDetailPage = async ({
       {/* 강사 경력 섹션 */}
       <section
         id="work-experience-section"
-        className=" w-full max-w-[51.1rem] pt-20"
+        className=" w-full max-w-[51.1rem] px-5 pt-20 sm:px-0"
       >
         <h2 className={h2Style}>강사 경력</h2>
         <div
@@ -192,7 +202,7 @@ const InstructorDetailPage = async ({
       {/* 진행중인 강의 섹션 */}
       <section
         id="class-section"
-        className="flex w-full flex-col items-center pt-20"
+        className="flex w-full flex-col items-center pt-20 "
       >
         <div className="w-full max-w-[51.1rem] ">
           <h2 className={h2Style}>진행중인 강의 {classList.length}개</h2>
@@ -212,9 +222,9 @@ const InstagramIframe = ({ link }: { link: string }) => {
   urlObj.hash = '';
 
   return (
-    <div className="h-[387px] w-[16.6875rem] overflow-hidden">
+    <div className="h-[535px] w-[16.6875rem] overflow-hidden">
       <iframe
-        height="387"
+        height="535"
         width="363"
         src={`${urlObj.toString()}embed/`}
         scrolling="no"

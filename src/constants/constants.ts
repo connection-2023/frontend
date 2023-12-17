@@ -74,8 +74,8 @@ export const CLASS_SECTIONS = [
 ];
 
 export const INSTRUCTOR_SECTIONS = [
-  { id: 'introduction-section', label: '강사 소개' },
-  { id: 'work-experience-section', label: '강사 경력' },
+  { id: 'introduction-section', label: '소개' },
+  { id: 'work-experience-section', label: '경력' },
   { id: 'class-section', label: '클래스/패스권' },
   { id: 'review-section', label: '클래스 리뷰' },
 ];
