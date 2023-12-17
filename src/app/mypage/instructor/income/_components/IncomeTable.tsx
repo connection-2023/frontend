@@ -126,7 +126,7 @@ const IncomeTable = ({ selectedOption }: { selectedOption: string }) => {
         </div>
       </div>
 
-      <table className="mx-auto mb-5 box-border w-full max-w-[38rem] border-collapse border border-solid border-gray-500">
+      <table className="mb-5 box-border w-full w-full border-collapse border border-solid border-gray-500">
         <thead className="flex w-full border-collapse  text-left text-sm font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr

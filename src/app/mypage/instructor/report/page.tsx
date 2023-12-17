@@ -20,7 +20,7 @@ const ReportHistoryPage = () => {
   }, []);
 
   return (
-    <section className="col-span-2 flex w-full flex-col rounded-lg bg-white p-5 text-sm text-gray-100 shadow-float">
+    <section className="flex w-full flex-col rounded-lg bg-white p-5 text-sm text-gray-100 shadow-float">
       <h1 className="mb-[1.81rem] text-2xl font-bold">신고내역</h1>
 
       <table className="w-full border-collapse px-4 py-2">
