@@ -365,6 +365,7 @@ export interface IClassEditRequest {
 }
 
 export interface IRegisterLists {
+  enrollmentCount?: number;
   nickname: string;
   userProfileImage: {
     userId: number;
@@ -406,4 +407,35 @@ interface ResponseData {
 export interface ApiResponse {
   statusCode: number;
   data: ResponseData;
+}
+
+export interface ILearner {
+  id: number;
+  enrollmentCount: number;
+  memo: string;
+  user: {
+    id: number;
+    nickname: string;
+    userProfileImage: {
+      imageUrl: string;
+    };
+  };
+  reservation: {
+    id: number;
+    representative: string;
+    phoneNumber: string;
+    participants: number;
+    requests: string;
+    lectureSchedule: {
+      id: number;
+      startDateTime: string;
+      endDateTime: string;
+      numberOfParticipants: number;
+      lecture: {
+        createdAt: string;
+        id: number;
+        title: string;
+      };
+    };
+  };
 }
