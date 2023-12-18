@@ -29,13 +29,13 @@ const ClassList = ({
   };
 
   const handleManageDetailClick = () => {
-    router.push(`/my/manage/myclass/${id}`);
+    router.push(`/mypage/instructor/manage/myclass/${id}`);
   };
 
   return (
     <li
       onClick={handleManageDetailClick}
-      className="flex w-full cursor-pointer flex-col whitespace-nowrap rounded-md py-[0.88rem] shadow-vertical"
+      className="flex w-full cursor-pointer flex-col whitespace-nowrap rounded-md border border-solid border-gray-700 py-3.5"
     >
       <div className="mb-[0.81rem] flex items-center px-[1.37rem]">
         <p className="mr-2 flex h-[1.5625rem] w-[3.5625rem] items-center justify-center border-2 border-solid border-gray-500 text-sm font-bold text-gray-100">
