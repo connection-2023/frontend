@@ -23,12 +23,14 @@ interface CouponViewProps {
   myLectureList: SelectClassType[];
   totalItemCount: number;
   couponList: couponGET[];
+  passCount: number;
 }
 
 const CouponView = ({
   myLectureList,
   totalItemCount: defaultItemCount,
   couponList,
+  passCount,
 }: CouponViewProps) => {
   const router = useRouter();
   const [couponLists, setCouponLists] = useState(couponList);
@@ -103,7 +105,9 @@ const CouponView = ({
             className={`flex text-xl font-bold sm:text-2xl ${
               filterState.isInterested === 'PASS' && 'text-gray-500'
             }`}
-            onClick={() => router.push('/my/lecturer/coupon-pass?state=coupon')}
+            onClick={() =>
+              router.push('/mypage/instructor/coupon-pass?state=coupon')
+            }
           >
             쿠폰({totalItemCount ?? 0})
           </button>
@@ -111,9 +115,11 @@ const CouponView = ({
             className={`text-xl font-bold sm:text-2xl ${
               filterState.isInterested === 'COUPON' && 'text-gray-500'
             }`}
-            onClick={() => router.push('/my/lecturer/coupon-pass?state=pass')}
+            onClick={() =>
+              router.push('/mypage/instructor/coupon-pass?state=pass')
+            }
           >
-            패스권
+            패스권({passCount ?? 0})
           </button>
         </div>
 
