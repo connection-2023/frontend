@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { CommentSVG } from '@/icons/svg';
+import { getAllRegisterLists, getRegisterLists } from '@/lib/apis/classApis';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import { IRegisterLists } from '@/types/class';
-import { CommentSVG } from '@/icons/svg';
-import { getRegisterLists } from '@/lib/apis/classApis';
 
 interface ClassOverViewProps {
   totalClassNum: number;
@@ -27,8 +27,10 @@ const ClassOverview = ({
           lectureId,
           selectedClass.id,
         );
-        console.log(registerData);
         setRegisterList(registerData);
+      } else {
+        const allLearnersData = await getAllRegisterLists(lectureId, 100, 0);
+        setRegisterList(allLearnersData);
       }
     };
 
@@ -77,15 +79,11 @@ const ClassOverview = ({
 
 export default ClassOverview;
 
-interface IClassRoster extends IRegisterLists {
-  applyCount?: number;
-}
-
 const ClassRoster = ({
   nickname,
   userProfileImage,
-  applyCount,
-}: IClassRoster) => {
+  enrollmentCount,
+}: IRegisterLists) => {
   const { userId, imageUrl } = userProfileImage;
 
   return (
@@ -95,7 +93,7 @@ const ClassRoster = ({
         <span className="w-25 ml-2.5 truncate">{nickname}</span>
       </div>
       <div className="flex items-center gap-4 text-sub-color1">
-        {applyCount && <span>{applyCount}회 신청</span>}
+        {enrollmentCount && <span>{enrollmentCount}회 신청</span>}
 
         <Link href={`/chat/${userId}`} aria-label="개인 채팅">
           <CommentSVG
