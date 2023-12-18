@@ -114,7 +114,7 @@ const CouponView = ({
   ];
 
   return (
-    <section className="z-0 col-span-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
+    <section className="z-0 col-start-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
       <nav className="flex justify-between pb-2">
         <div className="flex items-center gap-2 sm:gap-6">
           <button

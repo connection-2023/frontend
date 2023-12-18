@@ -91,8 +91,8 @@ const Coupon = ({
   return (
     <dl
       className={`relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] ${
-        pathname.startsWith('/my') || pathname.startsWith('/class/create')
-          ? 'lg:w-[20.5rem]'
+        pathname.startsWith('/mypage') || pathname.startsWith('/class/create')
+          ? 'lg:w-[20.5rem] xl:w-[19rem]'
           : 'md:w-[20.5rem] lg:w-[17rem]'
       }`}
       ref={lastItemElementRef}
@@ -128,7 +128,7 @@ const Coupon = ({
         ) : type === 'lecturer' ? (
           <Link
             href={{
-              pathname: '/my/lecturer/coupon-pass/management',
+              pathname: '/mypage/instructor/coupon-pass/management',
               query: {
                 type: 'UPDATE',
                 state: 'coupon',
