@@ -22,7 +22,6 @@ const RegisterPage = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [userRegistrationForm, setUserRegistrationForm] =
     useState<IRegisterForm>();
-  const [userConsents, setUserConsents] = useState<IRegisterConsents>();
 
   if (!token || !userEmail || !signUpType) return;
 
@@ -47,13 +46,8 @@ const RegisterPage = () => {
     handleNextStep();
   };
 
-  const handleUserAgree = (data: IRegisterConsents) => {
-    setUserConsents(data);
-    handleNextStep();
-  };
-
-  const handleUserRegister = async () => {
-    if (!userRegistrationForm) return;
+  const handleUserRegister = async (registerConsents: IRegisterConsents) => {
+    if (!userRegistrationForm || !registerConsents) return;
 
     const { name, nickname, phoneNumber } = userRegistrationForm;
 
@@ -64,6 +58,7 @@ const RegisterPage = () => {
       name,
       nickname,
       ...(phoneNumber ? { phoneNumber } : {}),
+      registerConsents,
     };
 
     const response = await postUserRegister(userInfo);
@@ -91,8 +86,7 @@ const RegisterPage = () => {
           handleUserInfo(data as IRegisterForm);
           break;
         case 1:
-          handleUserAgree(data as IRegisterConsents);
-          handleUserRegister();
+          handleUserRegister(data as IRegisterConsents);
           break;
         default:
           console.error('Invalid step');

@@ -41,8 +41,8 @@ const Review = ({ average, count, size = 'regular' }: ReviewProps) => {
           ),
         )}
       </div>
-      {count && (
-        <span className="ml-[9px] text-sm text-inherit">후기 {count}</span>
+      {count === undefined ? null : (
+        <span className="ml-2 text-sm text-inherit">리뷰 {count}</span>
       )}
     </div>
   );

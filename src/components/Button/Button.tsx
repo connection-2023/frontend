@@ -15,7 +15,7 @@ const Button = ({
   type = 'button',
   onClick,
 }: ButtonProps) => {
-  const styles = `h-[${ButtonSizes[size]}px] ${ButtonStyles[color]}`;
+  const styles = `group h-[${ButtonSizes[size]}px] ${ButtonStyles[color]}`;
 
   return (
     <button type={type} onClick={onClick} className={styles}>

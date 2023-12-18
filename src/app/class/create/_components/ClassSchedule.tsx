@@ -25,8 +25,7 @@ const ClassSchedule = () => {
   const classDates = useClassScheduleStore((state) => state.filteredDates);
   const classNum = classDates?.length;
   const maxCapacitity = watch('max')?.value || classData?.max;
-  const classSchedules =
-    useClassScheduleStore((state) => state.classSchedules) || [];
+  const filteredDates = useClassScheduleStore((state) => state.filteredDates);
 
   useEffect(() => {
     setClassDuration(duration);
@@ -75,7 +74,7 @@ const ClassSchedule = () => {
       <Controller
         name="duration"
         control={control}
-        defaultValue={classData?.duration}
+        defaultValue={classData?.duration || ''}
         rules={{
           required: '진행시간',
           max: { value: 999, message: '올바른 진행시간' },
@@ -193,7 +192,7 @@ const ClassSchedule = () => {
             <ScheduleView
               maxCapacity={maxCapacitity}
               duration={duration}
-              lectureSchedule={classSchedules}
+              lectureSchedule={filteredDates || []}
             />
           )}
         </div>

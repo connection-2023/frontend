@@ -92,6 +92,6 @@ const dataProcess = (data: IGetClassDraft) => {
       detailAddress: data.location?.detailAddress,
     },
     schedules: data.schedules ? data.schedules : [],
-    totalClasses: data.schedules?.length, // 이거 왜 필요하지...?
+    totalClasses: data.schedules?.length,
   };
 };

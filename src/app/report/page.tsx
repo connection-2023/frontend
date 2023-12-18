@@ -1,34 +1,66 @@
 'use client';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { postLecturerReport, postUserReport } from '@/lib/apis/reportApis';
+import { useUserStore } from '@/store';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
-import { ReportFormData, reportTypes } from '../../types/form.d';
+import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
 
 const ReportPage = () => {
+  const loggedInUserType = useUserStore((state) => state.userType);
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { register, handleSubmit } = useForm<ReportFormData>();
 
-  const onSubmit = (data: ReportFormData) => {
-    const checkedItems: string[] = [];
+  const onSubmit = async (data: ReportFormData) => {
+    const reportTypes: ReportType[] = [];
 
     for (const [key, value] of Object.entries(data)) {
       if (value === true) {
-        checkedItems.push(key);
+        const reportTypeKey = Object.keys(ReportType).find(
+          (type) => ReportType[type as keyof typeof ReportType] === key,
+        ) as ReportType;
+        reportTypes.push(reportTypeKey);
       }
     }
 
-    if (checkedItems.length === 0) {
+    if (reportTypes.length === 0) {
       toast.error('신고 유형을 한개 이상 입력해주세요!');
       return;
     }
 
-    const newData = {
-      checkedItems,
-      reportDetail: data.reportDetail,
+    const requestData: IReportRequest = {
+      reportTypes,
+      reason: data.reportDetail,
     };
 
-    // --- api 연결하기 ---
-    console.log(newData);
+    for (const [key, value] of searchParams.entries()) {
+      if (
+        ['targetUserId', 'targetLecturerId', 'lectureReviewId'].includes(key)
+      ) {
+        requestData[
+          key as 'targetUserId' | 'targetLecturerId' | 'lectureReviewId'
+        ] = Number(value);
+      }
+    }
+
+    if (!requestData) return;
+
+    const response =
+      loggedInUserType === 'user'
+        ? await postUserReport(requestData)
+        : await postLecturerReport(requestData);
+
+    if (response === 201) {
+      toast.success('신고가 성공적으로 접수되었습니다!');
+      router.back();
+    } else if (response === 400) {
+      toast.error('이미 신고가 접수되었습니다!');
+    } else {
+      toast.error(`신고 접수에 실패하였습니다. ${(<br />)}다시 시도해주세요!`);
+    }
   };
 
   return (
@@ -40,8 +72,8 @@ const ReportPage = () => {
         신고하기
       </h1>
       <ul className="mb-7 mt-6 grid w-full grid-cols-2 gap-y-3 px-6">
-        {reportTypes.map((reason) => (
-          <ReportCheckBox label={reason} register={register} />
+        {Object.values(ReportType).map((reason, i) => (
+          <ReportCheckBox key={i} label={reason} register={register} />
         ))}
       </ul>
 

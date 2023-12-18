@@ -10,7 +10,7 @@ export const POST = async (request: NextRequest) => {
     });
   }
 
-  const tokenValue = request.headers.get('cookie')?.split('=')[1]?.trim();
+  const tokenValue = request.cookies.get('userAccessToken')?.value;
 
   if (!tokenValue) {
     return NextResponse.json({

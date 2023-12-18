@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -15,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   ).then((data) => data.json());
 
   if (serverResponse.statusCode !== 200) {
-    throw new Error('강의 일정 조회 요청 에러!');
+    throw new Error('클래스 일정 조회 요청 에러!');
   }
 
   return NextResponse.json(serverResponse);

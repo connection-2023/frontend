@@ -3,6 +3,11 @@ export interface IReservationInfo {
   participants: number;
 }
 
+export interface IApplyClassList extends IReservationInfo {
+  dateTime: string;
+  remain: number;
+}
+
 export interface IPaymentInfo extends IApplicantInfo {
   lectureId: string;
   orderName: string;

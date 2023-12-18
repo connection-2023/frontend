@@ -1,12 +1,7 @@
 import { useRef } from 'react';
 import Cropper, { ReactCropperElement } from 'react-cropper';
-import Modal from 'react-modal';
-import {
-  CloseSVG,
-  ResetSVG,
-  ZoomInSVG,
-  ZoomOutSVG,
-} from '@/../public/icons/svg';
+import Modal from '@/components/Modal/Modal';
+import { ResetSVG, ZoomInSVG, ZoomOutSVG } from '@/../public/icons/svg';
 import 'cropperjs/dist/cropper.css';
 import '@/styles/cropper.css';
 
@@ -57,24 +52,10 @@ const CropperModal = ({
   };
 
   return (
-    <Modal
-      onRequestClose={closeModal}
-      isOpen={isOpen}
-      style={customModalStyles}
-      ariaHideApp={false}
-      shouldCloseOnOverlayClick={false}
-    >
-      <div className="relative flex h-16 w-full items-center bg-white">
-        <h2 className="flex w-full justify-center text-2xl font-bold">
-          사진 편집
-        </h2>
-        <CloseSVG
-          width={24}
-          height={24}
-          onClick={closeModal}
-          className="absolute right-2 cursor-pointer stroke-gray-500 stroke-2"
-        />
-      </div>
+    <Modal handleClosed={closeModal} isOpened={isOpen}>
+      <h2 className="flex h-16 w-full items-center justify-center text-2xl font-bold">
+        사진 편집
+      </h2>
 
       <Cropper
         ref={cropperRef}
@@ -87,7 +68,7 @@ const CropperModal = ({
         minContainerWidth={370}
         dragMode="move"
         restore={false}
-        className="h-[420px] overflow-hidden"
+        className="h-[420px] overflow-hidden bg-black/[0.7]"
       />
 
       {/* 하단 버튼 */}
@@ -118,26 +99,3 @@ const CropperModal = ({
 };
 
 export default CropperModal;
-
-const customModalStyles: ReactModal.Styles = {
-  content: {
-    width: '80%',
-    height: 'fit-content',
-    maxWidth: '675px',
-    maxHeight: '550px',
-    padding: '0px',
-    zIndex: '10',
-    boxSizing: 'border-box',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    boxShadow: '0 2px 5px 1px rgba(0, 0, 0, 0.25)',
-    backgroundColor: 'rgb(40, 43, 45)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-};

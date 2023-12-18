@@ -75,10 +75,10 @@ export const CLASS_SECTIONS = [
 ];
 
 export const INSTRUCTOR_SECTIONS = [
-  { id: 'introduction-section', label: 'introduction' },
-  { id: 'work-experience-section', label: 'Work Experience' },
-  { id: 'class-section', label: '강의' },
-  { id: 'review-section', label: '후기' },
+  { id: 'introduction-section', label: '소개' },
+  { id: 'work-experience-section', label: '경력' },
+  { id: 'class-section', label: '클래스/패스권' },
+  { id: 'review-section', label: '클래스 리뷰' },
 ];
 
 export const DANCE_GENRE = [
@@ -204,7 +204,11 @@ export const NON_STICKY_HEADER_PATHS = [
   '/my',
 ];
 
-export const NO_HEADER_FOOTER_PATHS = ['/search', '/class/create/address'];
+export const NO_HEADER_FOOTER_PATHS = [
+  '/search',
+  '/class/create/address',
+  '/coupon',
+];
 
 export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
 
@@ -278,3 +282,7 @@ export const LECTURER_NO_ACCESS = ['/instructor/apply'];
 export const USER_NO_ACCESS = ['/class/create'];
 
 export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];
+
+export const LECTURE_COUPON_TAKE = 8;
+
+export const USER_COUPON_CLASS_LIST_TAKE = 6;

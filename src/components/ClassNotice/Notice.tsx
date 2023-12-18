@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { NoticeSVG } from '@/icons/svg';
 import UniqueButton from '../Button/UniqueButton';

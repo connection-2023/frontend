@@ -43,7 +43,7 @@ const GenreListAddition = ({
         />
         {showAddButton && (
           <button className="absolute right-1 top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-sub-color1">
-            <PlusesSVG />
+            <PlusesSVG className="fill-white" />
           </button>
         )}
       </form>

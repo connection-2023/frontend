@@ -1,20 +1,20 @@
 import { fileInfo } from 'suneditor/src/lib/core';
+import { couponGET } from './coupon';
 import { IRegion, IGenre } from './types';
 import { Juso } from '@/types/address';
 
 export interface ClassCardType {
-  status: '모집중' | '마감임박' | '마감';
+  id: number;
+  status: '모집중' | '마감';
   date: string;
   title: string;
   imgURL: string[];
   location: string[];
   genre: string[];
-  type: string[];
-  time: string[];
-  review?: { average: number; count: number };
-  price: string;
-  profile: { src?: string; nickname: string };
-  selectedDates: Date[];
+  type: string;
+  review: { average: number; count: number };
+  price: number;
+  profile: { src: string | null; nickname: string };
 }
 
 export interface Space {
@@ -30,8 +30,9 @@ export interface IDateTime {
   space: Space;
 }
 
+type day = '일' | '월' | '화' | '수' | '목' | '금' | '토';
 export interface DayTimeList {
-  day: string[];
+  day: day[];
   startDateTime: string[];
 }
 
@@ -81,7 +82,9 @@ export interface IGetClassDraft {
     deletedAt: null | string;
     temporaryLecturenotification: { notification: string };
     temporaryLectureImage: { imageUrl: string }[];
-    temporaryLectureCouponTarget: any[];
+    temporaryLectureCouponTarget: {
+      lectureCouponId: number;
+    }[];
     temporaryLectureToRegion: {
       region: {
         administrativeDistrict: string;
@@ -110,7 +113,7 @@ export interface IGetClassDraft {
 
 export interface IUpdateClassDraft {
   lectureId: number | string;
-  step: number;
+  step?: number;
   regions?: string[];
   lectureType?: string;
   lectureMethod?: string;
@@ -138,7 +141,7 @@ export interface IUpdateClassDraft {
 export interface IprocessedDraft {
   id?: number;
   lecturerId?: number;
-  step: number | null;
+  step?: number | null;
   classRange?: {
     startDate?: string | null;
     endDate?: string | null;
@@ -216,6 +219,7 @@ export interface classCreateData {
   locationDescription: string;
   classPrice: string | number;
   schedules: DayTimeList[] | DateTimeList[];
+  coupons: { value: couponGET; label: string }[];
 }
 
 export type ReviewOrderType =
@@ -366,4 +370,40 @@ export interface IRegisterLists {
     userId: number;
     imageUrl: string;
   };
+}
+export interface Lecture {
+  id: number;
+  lecturerId: number;
+  lectureTypeId: number;
+  lectureMethodId: number;
+  isGroup: boolean;
+  startDate: string;
+  endDate: string;
+  title: string;
+  introduction: string;
+  curriculum: string;
+  duration: number;
+  difficultyLevel: string;
+  minCapacity: number;
+  maxCapacity: number;
+  reservationDeadline: number;
+  reservationComment: string;
+  price: number;
+  noShowDeposit: number;
+  reviewCount: number;
+  stars: number;
+  isActive: boolean;
+  locationDescription: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: null | string;
+}
+
+interface ResponseData {
+  lecture: Lecture[];
+}
+
+export interface ApiResponse {
+  statusCode: number;
+  data: ResponseData;
 }

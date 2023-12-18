@@ -6,6 +6,7 @@ import {
   ILecturerClassDetailResonse,
   IClassEditRequest,
   IRegisterLists,
+  IClassSchedule,
 } from '@/types/class';
 
 export const getClassReviews = async (
@@ -160,5 +161,19 @@ export const getRegisterLists = async (lectureId: string, id: number) => {
     );
   } catch (error) {
     return new Error('강사 관리 클래스 수강생 조회 요청 오류!');
+  }
+};
+
+export const getClassSchedules = async (
+  id: string,
+): Promise<IClassSchedule[] | Error> => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/schedules?id=${id}`).then(
+      (data) => data.json(),
+    );
+
+    return response.data.schedule;
+  } catch (error) {
+    return new Error('강의 스케쥴 조회 요청 오류!');
   }
 };

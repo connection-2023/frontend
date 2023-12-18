@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
 import { updateClassDraft } from '@/lib/apis/classApi';
+import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
@@ -31,7 +32,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
 
   const { classData, setClassData, setProcessedClassData } =
     useClassCreateStore();
-
+  const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
   const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
@@ -86,8 +87,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   };
 
   const onValid = async (data: classCreateData) => {
-    await updateDraft(data); //to은서:다음 버튼 눌렀을때 임시저장 메시지 나타나는 거 마음에 안들면 2번째 매개변수 false 나는 개인적으로 지금 마음에 듬
-
+    await updateDraft(data);
     nextStep();
   };
 
@@ -112,7 +112,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
 
     if (classData && classData.id) {
       try {
-        if (classData.step === null || classData.step < activeStep) {
+        if (classData.step === null || classData.step! < activeStep) {
           setProcessedClassData({ ...classData, step: activeStep });
         }
 
@@ -125,7 +125,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
         await updateClassDraft({
           lectureId: classData.id,
           step:
-            classData.step === null || classData.step < activeStep
+            classData.step === null || classData.step! < activeStep
               ? activeStep
               : classData.step,
           ...processData,
@@ -158,9 +158,12 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     try {
       if (classData && classData.id) {
         await updateDraft(data, false);
-        const lecturerId = await classCreate(classData.id);
-        toast.success('클래스 등록 완료');
-        router.push(`/class/${lecturerId}`);
+        const newLectureId = await classCreate(classData.id, finalSchedule);
+
+        if (newLectureId) {
+          toast.success('클래스 등록 완료');
+          router.replace(`/class/${newLectureId}`);
+        }
       }
     } catch (error) {
       console.error(error);

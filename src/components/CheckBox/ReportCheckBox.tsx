@@ -8,7 +8,7 @@ interface ReportCheckBoxProps {
 
 const ReportCheckBox = ({ label, register }: ReportCheckBoxProps) => {
   return (
-    <li key={label} className="flex items-center gap-1.5">
+    <li className="flex items-center gap-1.5">
       <input
         {...register(label)}
         type="checkbox"

@@ -1,3 +1,5 @@
+'use client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LikeSVG } from '@/icons/svg';
 import { postReviewLikes, deleteReviewLikes } from '@/lib/apis/classApis';
@@ -14,6 +16,7 @@ interface UserReviewProps {
   count: number;
   isLike: boolean;
   reviewId: number;
+  link: string;
 }
 
 const UserReview = ({
@@ -26,9 +29,11 @@ const UserReview = ({
   count,
   isLike,
   reviewId,
+  link,
 }: UserReviewProps) => {
   const [liked, setLiked] = useState(isLike);
   const [likeCount, setLikeCount] = useState(count);
+  const router = useRouter();
 
   const style = liked
     ? 'fill-sub-color1'
@@ -47,6 +52,10 @@ const UserReview = ({
     setLiked(!liked);
   };
 
+  const handleReport = () => {
+    router.push(link);
+  };
+
   return (
     <div className="w-full rounded-md border-b border-solid border-gray-700 text-sm shadow-float">
       <div className="flex w-full justify-between p-[0.8rem]">
@@ -60,7 +69,10 @@ const UserReview = ({
 
         <div className="flex h-fit w-full flex-nowrap items-baseline items-baseline justify-end whitespace-nowrap text-gray-500">
           <span className="gray-300">수강일 {date}</span>
-          <button className="ml-3 box-border h-6 cursor-pointer rounded-md border border-solid border-gray-700 px-1.5 text-sm font-normal hover:text-gray-100">
+          <button
+            onClick={handleReport}
+            className="ml-3 box-border h-6 cursor-pointer rounded-md border border-solid border-gray-700 px-1.5 text-sm font-normal hover:text-gray-100"
+          >
             신고
           </button>
         </div>

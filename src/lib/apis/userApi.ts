@@ -135,7 +135,7 @@ export const accessTokenReissuance = async () => {
     });
 
     if (response.type === 'opaqueredirect') {
-      window.location.replace(response.url);
+      window.location.href = response.url;
     }
 
     return response;

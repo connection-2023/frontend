@@ -1,5 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
 import {
+  ApiResponse,
   IGetClassDraft,
   IGetClassDrafts,
   IUpdateClassDraft,
@@ -159,9 +160,29 @@ export const createClass = async (data: any) => {
 
     const res = await response.json();
 
-    return res.data.newLecture.lecturerId;
+    return res.data.newLecture.id;
   } catch (error) {
     console.error('강의생성 오류', error);
+    throw error;
+  }
+};
+
+export const getMyLecture = async (): Promise<ApiResponse> => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/myLecture`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || '');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('내 보유 강의 조회 오류', error);
     throw error;
   }
 };
