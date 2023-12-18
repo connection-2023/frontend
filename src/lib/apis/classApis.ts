@@ -7,6 +7,7 @@ import {
   IClassEditRequest,
   IRegisterLists,
   IClassSchedule,
+  ILearner,
 } from '@/types/class';
 
 export const getClassReviews = async (
@@ -160,7 +161,33 @@ export const getRegisterLists = async (lectureId: string, id: number) => {
       (item: { user: IRegisterLists }) => item.user,
     );
   } catch (error) {
-    return new Error('강사 관리 클래스 수강생 조회 요청 오류!');
+    return new Error('강사 클래스 관리 수강생 조회 요청 오류!');
+  }
+};
+
+export const getAllRegisterLists = async (
+  lectureId: string,
+  displayCount: number,
+  lastItemId: number,
+) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/class/myclass/learners?lectureId=${lectureId}&displayCount=${displayCount}&lastItemId=${lastItemId}`,
+    ).then((data) => data.json());
+
+    return response.data.lectureLearnerList.map((item: ILearner) => {
+      const { enrollmentCount, user } = item;
+      return {
+        enrollmentCount,
+        nickname: user.nickname,
+        userProfileImage: {
+          userId: user.id,
+          imageUrl: user.userProfileImage.imageUrl,
+        },
+      };
+    });
+  } catch (error) {
+    return new Error('강사 클래스 관리 전체 수강생 조회 요청 오류!');
   }
 };
 
