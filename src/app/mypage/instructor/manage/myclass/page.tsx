@@ -27,7 +27,7 @@ const MyClassPage = () => {
   };
 
   return (
-    <section className="h-full w-full flex-col rounded-lg bg-white p-6 shadow-float">
+    <section className="mx-4 h-full rounded-lg bg-white p-6 shadow-float md:mx-9 xl:mx-0">
       <div className="mb-8 flex gap-[2.13rem] text-2xl text-gray-500">
         <h1
           onClick={handleOptions}
