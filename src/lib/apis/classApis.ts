@@ -204,3 +204,24 @@ export const getClassSchedules = async (
     return new Error('강의 스케쥴 조회 요청 오류!');
   }
 };
+
+export const getOriginalClassInfo = async (id: string) => {
+  try {
+    const [classInfoResponse, ScheduleResponse] = await Promise.all([
+      fetch(`${DOMAIN}/api/class/info?id=${id}`, {
+        credentials: 'include',
+        method: 'GET',
+      }).then((data) => data.json()),
+      fetch(`${DOMAIN}/api/class/schedules?id=${id}`, {
+        method: 'GET',
+      }).then((data) => data.json()),
+    ]);
+
+    return {
+      ...classInfoResponse.data,
+      ...ScheduleResponse.data,
+    };
+  } catch (error) {
+    return new Error('클래스 수정 기본 정보 요청 에러!');
+  }
+};
