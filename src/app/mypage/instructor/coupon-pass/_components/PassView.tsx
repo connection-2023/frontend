@@ -1,9 +1,12 @@
 'use client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { CouponSVG, PassSVG } from '@/icons/svg';
 import { getIssuedPassLists } from '@/lib/apis/passApis';
 import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from './ClassFilterSelect';
+import Button from '@/components/Button/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
 import Spinner from '@/components/Spinner/Spinner';
 import {
@@ -114,7 +117,20 @@ const PassView = ({
               패스권({totalItemCount ?? 0})
             </button>
           </div>
-          <div>패스권 생성</div>
+          <div className="w-[8rem]">
+            <Button>
+              <Link
+                href={{
+                  pathname: '/mypage/instructor/coupon-pass/pass',
+                  query: { type: 'CREATE', state: 'coupon' },
+                }}
+                className="flex"
+              >
+                <PassSVG className="mr-1 fill-sub-color1 group-active:fill-white" />
+                패스권 생성
+              </Link>
+            </Button>
+          </div>
         </nav>
 
         <nav className="flex flex-wrap items-center gap-2 border-y border-solid border-gray-500 py-5">

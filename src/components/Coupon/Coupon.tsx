@@ -128,7 +128,7 @@ const Coupon = ({
         ) : type === 'lecturer' ? (
           <Link
             href={{
-              pathname: '/mypage/instructor/coupon-pass/management',
+              pathname: '/mypage/instructor/coupon-pass/coupon',
               query: {
                 type: 'UPDATE',
                 state: 'coupon',
