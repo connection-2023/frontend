@@ -48,7 +48,7 @@ const CouponPassPage = async ({
       myLectureList={myClassListsOption ?? []}
       passList={passList ?? []}
       totalItemCount={passCount}
-      couponCount={passCount}
+      couponCount={couponCount}
     />
   );
 };
