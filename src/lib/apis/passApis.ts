@@ -43,7 +43,7 @@ export const getIssuedPassLists = async (
 
     const resData = await response.json();
 
-    const { couponList: itemList, totalItemCount } = resData.data;
+    const { passList: itemList, totalItemCount } = resData.data;
 
     return { itemList, totalItemCount };
   } catch (error) {
