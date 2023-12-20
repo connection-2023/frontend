@@ -28,3 +28,14 @@ export interface IpassData {
     };
   }[];
 }
+
+export interface IcreatePass {
+  title: string;
+  plectureIds: Array<{
+    label: string;
+    value: number;
+  }>;
+  availableMonths: string;
+  maxUsageCount: string;
+  price: string;
+}
