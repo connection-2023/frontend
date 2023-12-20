@@ -15,19 +15,22 @@ const PassCreateModal = () => {
           </div>
         </header>
         <form>
-          <section className="grid w-[40rem] grid-cols-[1fr,5fr] gap-x-11 gap-y-5 border-b border-solid border-sub-color1 px-5 pb-4">
-            <label className="whitespace-nowrap font-semibold">
+          <section className="grid w-screen grid-cols-[1fr,5fr] gap-x-7 gap-y-4 border-b border-solid border-sub-color1 px-5 pb-4 sm:w-[40rem] sm:gap-x-11 sm:gap-y-5">
+            <label className="col-span-2 whitespace-nowrap font-semibold sm:col-auto">
               패스권 이름
             </label>
             <input
               type="text"
-              className="h-7 w-96 rounded-md border border-solid border-gray-500 px-3 focus:outline-none"
+              className="col-span-2 h-7 rounded-md border border-solid border-gray-500 px-3 focus:outline-none sm:col-auto sm:w-96"
             />
 
-            <label className="whitespace-nowrap font-semibold">
-              클래스 선택
-            </label>
-            <div className="flex w-96 flex-col gap-2">
+            <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
+
+            <div className="col-span-2 grid grid-cols-[1fr,5fr] items-center gap-x-11 gap-y-1 sm:gap-x-14 sm:gap-y-2">
+              <label className="whitespace-nowrap font-semibold">
+                클래스 선택
+              </label>
+
               <div className="flex items-center gap-1">
                 <input
                   id="lectureIds"
@@ -40,19 +43,21 @@ const PassCreateModal = () => {
                   htmlFor="lectureIds"
                   className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
                 >
-                  전체 클래스 적용
+                  전체 클래스
                 </label>
               </div>
-              <div className="h-7">
+              <div className="col-span-2 mb-1 h-7 sm:col-auto sm:col-start-2 sm:mb-0 sm:w-96">
                 <SelectClass options={[]} />
               </div>
-              <div className="flex max-h-48 flex-col gap-1 overflow-y-auto ">
+              <div className="col-span-2 flex max-h-48 flex-col gap-1 overflow-y-auto sm:col-auto sm:col-start-2 sm:w-96">
                 <p className="flex items-center justify-between text-sm text-sub-color1">
                   sadasd
                   <CloseSVG className="h-4 w-4 stroke-gray-500 group-hover:stroke-sub-color1" />
                 </p>
               </div>
             </div>
+
+            <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
 
             <label className="whitespace-nowrap font-semibold">
               사용가능 기간
@@ -65,6 +70,8 @@ const PassCreateModal = () => {
               개월
             </div>
 
+            <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
+
             <label className="whitespace-nowrap font-semibold">횟수</label>
             <div className="flex items-center gap-1">
               <input
@@ -73,6 +80,8 @@ const PassCreateModal = () => {
               />
               회
             </div>
+
+            <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
 
             <label className="whitespace-nowrap font-semibold">판매 가격</label>
             <div className="flex items-center gap-1">
