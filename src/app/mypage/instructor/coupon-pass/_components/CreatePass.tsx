@@ -15,7 +15,7 @@ const CreatePass = () => {
     formState: { errors },
   } = useFormContext();
 
-  const selectClass = watch('plectureIds');
+  const selectClass = watch('lectureIds');
 
   useEffect(() => {
     getMyLecture()
@@ -59,7 +59,7 @@ const CreatePass = () => {
       <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
 
       <Controller
-        name="plectureIds"
+        name="lectureIds"
         control={control}
         defaultValue={[]}
         rules={{
@@ -68,10 +68,10 @@ const CreatePass = () => {
         render={({ field }) => {
           const classSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
             if (e.target.checked) {
-              setValue('plectureIds', options);
+              setValue('lectureIds', options);
               field.onChange(options);
             } else {
-              setValue('plectureIds', []);
+              setValue('lectureIds', []);
               field.onChange([]);
             }
           };
@@ -127,7 +127,7 @@ const CreatePass = () => {
         <Controller
           name="availableMonths"
           control={control}
-          defaultValue={undefined}
+          defaultValue=""
           rules={{
             required: '사용가능 기간을 입력해주세요.',
           }}
@@ -150,7 +150,7 @@ const CreatePass = () => {
         <Controller
           name="maxUsageCount"
           control={control}
-          defaultValue={undefined}
+          defaultValue=""
           rules={{
             required: '사용가능 횟수를 입력해주세요.',
           }}
@@ -173,7 +173,7 @@ const CreatePass = () => {
         <Controller
           name="price"
           control={control}
-          defaultValue={undefined}
+          defaultValue=""
           rules={{
             required: '판매가격을 입력 해주세요.',
           }}

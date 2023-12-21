@@ -1,6 +1,10 @@
 import { DOMAIN } from '@/constants/constants';
 import { IgetFunction } from '@/types/coupon';
-import { IgetPassFunction, IresponsePassData } from '@/types/pass';
+import {
+  IcreatePassReqData,
+  IgetPassFunction,
+  IresponsePassData,
+} from '@/types/pass';
 import { FetchError } from '@/types/types';
 
 export const getIssuedPassLists = async (
@@ -48,6 +52,34 @@ export const getIssuedPassLists = async (
     return { itemList, totalItemCount };
   } catch (error) {
     console.error('발급한 패스권 조회 오류', error);
+    throw error;
+  }
+};
+
+export const createNewPass = async (data: IcreatePassReqData) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/pass/new`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `패스권 생성 오류: ${errorData.message || ''}, status: ${
+          response.status
+        }`,
+      );
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error('패스권 생성 오류', error);
     throw error;
   }
 };

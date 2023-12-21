@@ -2,6 +2,8 @@
 import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { PassSVG } from '@/icons/svg';
+import { createNewPass } from '@/lib/apis/passApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import CreatePass from '../../_components/CreatePass';
 import Button from '@/components/Button/Button';
 import RouterModal from '@/components/Modal/RouterModal';
@@ -12,7 +14,31 @@ const PassCreateModal = () => {
   const { handleSubmit } = formMethods;
 
   const onValid = async (data: IcreatePass) => {
-    console.log(data);
+    const { lectureIds } = data;
+
+    const reqData = {
+      ...data,
+      lectureIds: lectureIds.map(({ value }) => value),
+    };
+    try {
+      if (!window.confirm('패스권을 생성하시겠습니까?')) {
+        return;
+      }
+
+      await createNewPass(reqData);
+
+      toast.success('패스권 생성 완료');
+
+      window.location.reload();
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('401')) {
+        await accessTokenReissuance();
+        await createNewPass(reqData);
+      } else {
+        toast.error('패스권 생성 실패, 잠시후 다시 시도해주세요.');
+        console.error(error);
+      }
+    }
   };
 
   const invalid = (data: FieldErrors<IcreatePass>) => {
