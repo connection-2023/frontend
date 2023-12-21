@@ -35,7 +35,11 @@ const CreatePass = () => {
 
   return (
     <section className="grid w-screen grid-cols-[1fr,5fr] gap-x-7 gap-y-4 border-b border-solid border-sub-color1 px-5 pb-4 sm:w-[40rem] sm:gap-x-11 sm:gap-y-5">
-      <label className="col-span-2 whitespace-nowrap font-semibold sm:col-auto">
+      <label
+        className={`${
+          errors.title && 'animate-vibration text-main-color'
+        } col-span-2 whitespace-nowrap font-semibold sm:col-auto`}
+      >
         패스권 이름
       </label>
 
@@ -78,7 +82,11 @@ const CreatePass = () => {
 
           return (
             <div className="col-span-2 grid grid-cols-[1fr,5fr] items-center gap-x-11 gap-y-1 sm:gap-x-14 sm:gap-y-2">
-              <label className="whitespace-nowrap font-semibold">
+              <label
+                className={`${
+                  errors.lectureIds && 'animate-vibration text-main-color'
+                } whitespace-nowrap font-semibold`}
+              >
                 클래스 선택
               </label>
 
@@ -122,7 +130,13 @@ const CreatePass = () => {
       />
       <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
 
-      <label className="whitespace-nowrap font-semibold">사용가능 기간</label>
+      <label
+        className={`${
+          errors.availableMonths && 'animate-vibration text-main-color'
+        } whitespace-nowrap font-semibold`}
+      >
+        사용가능 기간
+      </label>
       <div className="flex items-center gap-1">
         <Controller
           name="availableMonths"
@@ -145,7 +159,13 @@ const CreatePass = () => {
 
       <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
 
-      <label className="whitespace-nowrap font-semibold">횟수</label>
+      <label
+        className={`${
+          errors.availableMonths && 'animate-vibration text-main-color'
+        } whitespace-nowrap font-semibold`}
+      >
+        횟수
+      </label>
       <div className="flex items-center gap-1">
         <Controller
           name="maxUsageCount"
@@ -168,7 +188,13 @@ const CreatePass = () => {
 
       <hr className="col-span-2 border-t border-solid border-gray-500 sm:hidden" />
 
-      <label className="whitespace-nowrap font-semibold">판매 가격</label>
+      <label
+        className={`${
+          errors.availableMonths && 'animate-vibration text-main-color'
+        } whitespace-nowrap font-semibold`}
+      >
+        판매 가격
+      </label>
       <div className="flex items-center gap-1">
         <Controller
           name="price"

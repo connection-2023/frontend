@@ -106,9 +106,7 @@ const CouponView = ({
               className={`flex text-xl font-bold sm:text-2xl ${
                 filterState.isInterested === 'PASS' && 'text-gray-500'
               }`}
-              onClick={() =>
-                router.push('/mypage/instructor/coupon-pass?state=coupon')
-              }
+              disabled={true}
             >
               쿠폰({totalItemCount ?? 0})
             </button>
@@ -117,7 +115,9 @@ const CouponView = ({
                 filterState.isInterested === 'COUPON' && 'text-gray-500'
               }`}
               onClick={() =>
-                router.push('/mypage/instructor/coupon-pass?state=pass')
+                window.location.replace(
+                  '/mypage/instructor/coupon-pass?state=pass',
+                )
               }
             >
               패스권({passCount ?? 0})

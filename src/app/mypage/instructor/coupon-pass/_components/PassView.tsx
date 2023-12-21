@@ -101,7 +101,9 @@ const PassView = ({
                 filterState.isInterested === 'PASS' && 'text-gray-500'
               }`}
               onClick={() =>
-                router.push('/mypage/instructor/coupon-pass?state=coupon')
+                window.location.replace(
+                  '/mypage/instructor/coupon-pass?state=coupon',
+                )
               }
             >
               쿠폰({couponCount ?? 0})
@@ -110,9 +112,7 @@ const PassView = ({
               className={`text-xl font-bold sm:text-2xl ${
                 filterState.isInterested === 'COUPON' && 'text-gray-500'
               }`}
-              onClick={() =>
-                router.push('/mypage/instructor/coupon-pass?state=pass')
-              }
+              disabled={true}
             >
               패스권({totalItemCount ?? 0})
             </button>
@@ -122,7 +122,6 @@ const PassView = ({
               <Link
                 href={{
                   pathname: '/mypage/instructor/coupon-pass/pass',
-                  query: { type: 'CREATE', state: 'coupon' },
                 }}
                 className="flex"
               >
