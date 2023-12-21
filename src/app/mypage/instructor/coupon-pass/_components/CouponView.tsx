@@ -210,9 +210,7 @@ const CouponView = ({
         ) : (
           <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
             <NotFoundSVG />
-            <p>{`해당 ${
-              filterState.isInterested ? '쿠폰' : '패스권'
-            }이 없습니다!`}</p>
+            <p>해당 쿠폰이 없습니다!</p>
           </div>
         )}
       </div>

@@ -2,11 +2,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { CouponSVG, PassSVG } from '@/icons/svg';
+import { LECTURE_COUPON_TAKE } from '@/constants/constants';
+import { CouponSVG, NotFoundSVG, PassSVG } from '@/icons/svg';
 import { getIssuedPassLists } from '@/lib/apis/passApis';
 import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from './ClassFilterSelect';
 import Button from '@/components/Button/Button';
+import Pagination from '@/components/Pagination/Pagination';
 import InstructorPass from '@/components/Pass/InstructorPass';
 import Spinner from '@/components/Spinner/Spinner';
 import {
@@ -175,13 +177,40 @@ const PassView = ({
         </nav>
 
         <div className="flex flex-wrap justify-center gap-4 pb-4 sm:justify-normal">
-          {passLists.map((pass) => (
-            <InstructorPass key={pass.id} passInfo={pass} />
+          {passLists.map((pass, index) => (
+            <InstructorPass
+              key={pass.id}
+              passInfo={pass}
+              lastItemElementRef={
+                passLists.length === index + 1 &&
+                passLists.length < totalItemCount &&
+                width < 640
+                  ? lastItemElementRef
+                  : undefined
+              }
+            />
           ))}
         </div>
         {loading && width < 640 && (
           <div className="mb-5 flex justify-center">
             <Spinner />
+          </div>
+        )}
+
+        {!!totalItemCount ? (
+          <nav className="my-8 hidden sm:block">
+            <Pagination
+              pageCount={Math.ceil(totalItemCount / LECTURE_COUPON_TAKE)}
+              currentPage={
+                filterState.targetPage === 0 ? 0 : filterState.targetPage - 1
+              }
+              onPageChange={handleChangePage}
+            />
+          </nav>
+        ) : (
+          <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
+            <NotFoundSVG />
+            <p>해당 패스권이 없습니다!</p>
           </div>
         )}
       </div>
