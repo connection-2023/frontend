@@ -77,9 +77,8 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
       >
         <ul className="mb-6 flex flex-col gap-y-8">
           {sections.map(({ id, label }) => (
-            <li>
+            <li key={id}>
               <Link
-                key={id}
                 href={`#${id}`}
                 ref={(ref) => (sectionRefs.current[id] = ref)}
                 className={`${
