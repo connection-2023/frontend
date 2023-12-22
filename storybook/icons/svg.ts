@@ -1,11 +1,11 @@
 import AddImageSVG from './addimage.svg';
-import AuthIconSVG from './authIcon.svg';
 import AlarmSVG from './alarm.svg';
 import ApplySuccessSVG from './applySuccess.svg';
 import Arrow from './arrow.svg';
 import ArrowDownSVG from './ArrowDown.svg';
 import ArrowRightSVG from './ArrowRight.svg';
 import ArrowUpSVG from './ArrowUp.svg';
+import AuthIconSVG from './authIcon.svg';
 import AuthWelcomeSVG from './authWelcome.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import BigArrowSVG from './bigArrow.svg';
@@ -21,6 +21,7 @@ import ClearSVG from './clear.svg';
 import CloseSVG from './close.svg';
 import CommentSVG from './comment.svg';
 import ConnectionLogoSVG from './connectionLogo.svg';
+import CopySVG from './copy.svg';
 import CouponSVG from './coupon.svg';
 import CropSVG from './crop.svg';
 import DashboardSVG from './dashboard.svg';
@@ -30,9 +31,11 @@ import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
+import FilterSVG from './filter.svg';
 import GenreSVG from './genre.svg';
 import GoogleSVG from './googleIcon.svg';
 import GroupSVG from './group.svg';
+import HamburgerSVG from './hamburgerMenu.svg';
 import HeartSVG from './heart.svg';
 import ImageSVG from './image.svg';
 import InstagramSVG from './instagram.svg';
@@ -76,8 +79,11 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  FilterSVG,
   TrashcanSVG,
+  CopySVG,
   ApplySuccessSVG,
+  HamburgerSVG,
   AuthIconSVG,
   ScrollTopSVG,
   GenreSVG,
