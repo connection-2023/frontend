@@ -8,6 +8,11 @@ import LargeSplitIcon from '@/components/InstructorCard/LargeSplitIcon';
 
 const InstructorPage = () => {
   const [isInterested, setIsInterested] = useState(true);
+  const [largeImg, setLargeImg] = useState(true);
+
+  const imgStateHandler = (state: boolean) => {
+    setLargeImg(state);
+  };
 
   return (
     <section className="col-span-1 mx-auto flex w-full flex-col p-4">
@@ -28,14 +33,25 @@ const InstructorPage = () => {
             차단 강사
           </button>
         </div>
-        <div className="flex gap-3">
-          <LargeSplitIcon />
-          <FineSplitIcon />
-        </div>
+        {isInterested && (
+          <div className="flex gap-3 sm:hidden">
+            <LargeSplitIcon
+              activated={largeImg}
+              imgStateHandler={imgStateHandler}
+            />
+            <FineSplitIcon
+              activated={!largeImg}
+              imgStateHandler={imgStateHandler}
+            />
+          </div>
+        )}
       </nav>
 
       {isInterested ? (
-        <InterestedInstructors instructors={dummyInterestedInstructor} />
+        <InterestedInstructors
+          instructors={dummyInterestedInstructor}
+          largeImg={largeImg}
+        />
       ) : (
         <section className="flex flex-col gap-4">
           <h3 className="font-semibold">

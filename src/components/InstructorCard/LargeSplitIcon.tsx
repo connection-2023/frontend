@@ -1,4 +1,10 @@
-const LargeSplitIcon = ({ activated }: { activated: boolean }) => {
+const LargeSplitIcon = ({
+  activated,
+  imgStateHandler,
+}: {
+  activated: boolean;
+  imgStateHandler: (state: boolean) => void;
+}) => {
   const splitDivs = Array(2)
     .fill('')
     .map((_, index) => (
@@ -9,9 +15,11 @@ const LargeSplitIcon = ({ activated }: { activated: boolean }) => {
     ));
 
   return (
-    <div className="grid h-[1.375rem] w-[1.4375rem] grid-rows-2 gap-y-[0.15rem]">
-      {splitDivs}
-    </div>
+    <button onClick={() => imgStateHandler(true)}>
+      <div className="grid h-[1.375rem] w-[1.4375rem] grid-rows-2 gap-y-[0.15rem]">
+        {splitDivs}
+      </div>
+    </button>
   );
 };
 

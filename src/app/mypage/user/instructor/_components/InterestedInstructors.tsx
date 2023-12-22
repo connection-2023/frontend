@@ -3,16 +3,26 @@ import { Instructors } from '@/types/types';
 
 interface InterestedInstructorsProps {
   instructors: Instructors[];
+  largeImg: boolean;
 }
 
-const InterestedInstructors = ({ instructors }: InterestedInstructorsProps) => (
-  <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+const InterestedInstructors = ({
+  instructors,
+  largeImg,
+}: InterestedInstructorsProps) => (
+  <section
+    className={`grid ${
+      largeImg ? 'grid-cols-1' : 'grid-cols-2'
+    } gap-4 sm:grid-cols-2 md:grid-cols-3`}
+  >
     {instructors.map((info, i) => (
       <div
         key={info.name + i}
-        className="h-[15.5rem] w-full md:h-52 lg:h-60 xl:h-[15.2rem]"
+        className={`${
+          largeImg ? 'h-64' : 'h-[12.5rem]'
+        } w-full sm:h-[15.5rem] md:h-52 lg:h-60 xl:h-[15.2rem]`}
       >
-        <InstructorCard {...info} />
+        <InstructorCard {...info} largeImg={largeImg} />
       </div>
     ))}
   </section>

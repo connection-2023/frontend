@@ -8,6 +8,10 @@ import Rating from '../Review/Rating';
 import Review from '../Review/Review';
 import { Instructors } from '@/types/types';
 
+interface InstructorCardProps extends Instructors {
+  largeImg: boolean;
+}
+
 const InstructorCard = ({
   name,
   address,
@@ -16,7 +20,8 @@ const InstructorCard = ({
   average,
   teamAffiliation,
   href,
-}: Instructors) => {
+  largeImg,
+}: InstructorCardProps) => {
   const [focus, setFocus] = useState(false);
 
   const onFocus = () => {
@@ -53,7 +58,7 @@ const InstructorCard = ({
 
       {!focus && (
         <>
-          <div className="absolute bottom-[5rem] flex w-full justify-center">
+          <div className="absolute bottom-24 flex w-full justify-center xl:bottom-[5rem]">
             {imgURL.map((img, index) => {
               return (
                 <span
@@ -66,11 +71,15 @@ const InstructorCard = ({
             })}
           </div>
 
-          <figcaption className="pointer-events-none absolute bottom-0 z-10 flex h-[4.625rem] w-full flex-col justify-center bg-white/[.75] px-2 xl:items-center">
+          <figcaption
+            className={`${
+              largeImg ? 'bg-white/[.9]' : 'bg-white sm:bg-white/[.8]'
+            } pointer-events-none absolute bottom-0 z-10 flex h-[5.3125rem] w-full flex-col justify-center px-2 xl:h-[4.625rem] xl:items-center`}
+          >
             <div className="hidden pb-2 pt-1 xl:block">
               <Review average={average} />
             </div>
-            <div className="flex w-full justify-between xl:hidden">
+            <div className="flex w-full justify-between pb-1 xl:hidden">
               <p className="text-lg font-semibold">{name}</p>
               <div className="flex gap-1">
                 <StarSVG
@@ -81,11 +90,19 @@ const InstructorCard = ({
                 5.0
               </div>
             </div>
-            <div className="flex gap-x-2 text-sm xl:grid xl:grid-cols-2">
+            <div
+              className={`${
+                largeImg ? 'text-sm' : 'text-xs text-gray-500 sm:text-sm'
+              } flex gap-x-2 xl:grid xl:grid-cols-2`}
+            >
               <h2 className="whitespace-nowrap text-right">{address}</h2>
               <h2 className="flex-grow truncate">{teamAffiliation}</h2>
             </div>
-            <div className="flex w-full gap-2 truncate text-sm xl:justify-center">
+            <div
+              className={`${
+                largeImg ? 'text-sm' : 'text-xs text-gray-500 sm:text-sm'
+              } flex w-full gap-2 truncate xl:justify-center`}
+            >
               {genres.map((genre, index) => (
                 <p key={genre + index}>{genre}</p>
               ))}
