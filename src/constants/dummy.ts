@@ -522,41 +522,6 @@ const dummyUserInfo = {
   commentCount: 10,
 };
 
-const dummyCouponList: couponGET[] = [
-  {
-    discount: 1000,
-    unit: '원',
-    title: '초특가로 춤춰보자',
-    startAt: '2023-01-19',
-    endAt: '2024-01-19',
-    isStackable: true,
-  },
-  {
-    discount: 30,
-    unit: '%',
-    title: '지금까지',
-    startAt: '2023-01-19',
-    endAt: '2024-01-19',
-    isStackable: false,
-  },
-  {
-    discount: 30,
-    unit: '원',
-    title: '지금까지 이런 쿠폰원',
-    startAt: '2023-01-19',
-    endAt: '2024-01-19',
-    isStackable: false,
-  },
-  {
-    discount: 1000,
-    unit: '원',
-    title: '초특가로 춤춰보자',
-    startAt: '2023-01-19',
-    endAt: '2024-01-19',
-    isStackable: true,
-  },
-];
-
 const dummyClasstableData = [
   {
     classInfo: '1회차',
@@ -1030,7 +995,6 @@ export {
   dummyClassSelect,
   dummyNotify,
   dummyInterestedInstructor,
-  dummyCouponList,
   dummyUserInfo,
   dummyMain,
   dummyClass,
