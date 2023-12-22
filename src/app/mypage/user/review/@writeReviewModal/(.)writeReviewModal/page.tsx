@@ -14,7 +14,7 @@ const writeReviewModal = async () => {
 
   return (
     <RouterModal>
-      <main className="flex h-screen flex-col overflow-x-hidden sm:h-fit">
+      <main className="flex h-screen w-screen flex-col overflow-x-hidden sm:h-fit sm:w-[40rem]">
         <h1 className="flex items-center justify-center gap-2 border-b border-solid border-gray-700 px-7 py-4 text-lg font-semibold text-sub-color1 sm:justify-normal sm:pb-4">
           <EditSVG width="15px" height="15px" className="fill-sub-color1" />
           리뷰 작성하기({classLists.length})

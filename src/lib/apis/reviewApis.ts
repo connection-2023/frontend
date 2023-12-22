@@ -2,6 +2,7 @@ import { DOMAIN } from '@/constants/constants';
 import {
   GetMyLecturersReviews,
   GetMyLecturersReviewsData,
+  NewReviews,
   WriteReview,
 } from '@/types/review';
 import { FetchError } from '@/types/types';
@@ -66,6 +67,34 @@ export const getMyLecturersReviews = async (
     return { count: resData.data.count, item: resData.data.review };
   } catch (error) {
     console.error('강사 내 리뷰 불러오기', error);
+    throw error;
+  }
+};
+
+export const writeReview = async (data: NewReviews) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/review/new`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `리뷰 작성 오류: ${errorData.message || ''}, status: ${
+          response.status
+        }`,
+      );
+    }
+
+    const responseData = await response.json();
+    return responseData.data.coupon;
+  } catch (error) {
+    console.error('리뷰 작성 오류', error);
     throw error;
   }
 };

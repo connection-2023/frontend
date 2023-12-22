@@ -1,10 +1,13 @@
 'use client';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { writeReview } from '@/lib/apis/reviewApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import ClassSelect from './ClassSelect';
 import Button from '@/components/Button/Button';
 import Rating from '@/components/Review/Rating';
 import { SelectClassType, WriteReviewData } from '@/types/review';
+import { FetchError } from '@/types/types';
 
 interface WriteReview {
   options: SelectClassType[];
@@ -20,13 +23,35 @@ const WriteReview = ({ options }: WriteReview) => {
   } = useForm<WriteReviewData>();
 
   const onValid = async (data: WriteReviewData) => {
+    const { classInfo } = data;
+
+    const reqData = {
+      lectureId: classInfo!.value.lectureSchedule.lecture.id,
+      reservationId: classInfo!.value.id,
+      stars: data.stars,
+      description: data.description,
+    };
+
     try {
+      await writeReview(reqData);
       toast.success('리뷰 작성 완료');
 
-      console.log(data);
-
-      // window.location.reload();
-    } catch (error) {}
+      window.location.reload();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await writeReview(reqData);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
   };
 
   const invalid = (data: FieldErrors<WriteReviewData>) => {

@@ -55,6 +55,7 @@ export interface ReservationDetails {
   isEnabled: boolean;
   lectureSchedule: {
     lecture: {
+      id: number;
       title: string;
     };
     startDateTime: string;
@@ -68,7 +69,7 @@ export interface SelectClassType {
 
 export interface WriteReviewData {
   classInfo: SelectClassType | null;
-  description?: string;
+  description: string;
   stars: number;
 }
 
@@ -108,4 +109,11 @@ export interface MyLecturersReviewsData {
       imageUrl: string;
     };
   };
+}
+
+export interface NewReviews {
+  lectureId: number;
+  reservationId: number;
+  stars: number;
+  description: string;
 }

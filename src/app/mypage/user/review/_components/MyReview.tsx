@@ -49,7 +49,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
   };
 
   return (
-    <section className="z-0 col-span-2 flex w-full flex-col ">
+    <section className="z-0 col-span-1 flex w-full flex-col px-2 sm:px-6">
       <h1 className="col-span-2 mb-4 h-auto border-b border-solid border-gray-700 pb-4 text-center text-lg font-semibold sm:mb-0 sm:border-none sm:pb-0 sm:text-start sm:text-2xl sm:font-bold">
         작성한 리뷰
       </h1>
@@ -69,7 +69,7 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
               </select>
               {writeReviews.length}개의 리뷰
             </div>
-            <Link href="/my/user/review/writeReviewModal">
+            <Link href="/mypage/user/review/writeReviewModal">
               <Button>
                 <div className="flex items-center gap-1 whitespace-nowrap px-2 text-sm sm:px-4 sm:text-base">
                   <EditSVG

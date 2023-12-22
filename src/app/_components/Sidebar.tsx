@@ -35,7 +35,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
   const { nickname } = authUser;
   const profileImg =
     'userProfileImage' in authUser
-      ? authUser.userProfileImage.imageUrl
+      ? authUser.userProfileImage?.imageUrl
       : authUser.profileCardImageUrl;
 
   const getTextColorClass = (path: string) =>
