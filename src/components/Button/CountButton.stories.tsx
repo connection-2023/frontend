@@ -18,32 +18,64 @@ const meta: Meta<typeof CountButton> = {
 export default meta;
 type Story = StoryObj<typeof CountButton>;
 
-export const Default: Story = {
-  render: () => {
-    const [count, setCount] = useState(0);
-    const onClickUp = () => {
-      setCount((prev) => prev + 1);
-    };
+const CountButtonWithState = () => {
+  const [count, setCount] = useState(0);
+  const onClickUp = () => {
+    setCount((prev) => prev + 1);
+  };
 
-    const onClickDown = () => {
-      if (count > 1) {
-        setCount((prev) => prev - 1);
-      }
-    };
+  const onClickDown = () => {
+    if (count > 1) {
+      setCount((prev) => prev - 1);
+    }
+  };
 
-    return (
-      <div className="flex items-center text-sm text-gray-100">
-        <CountButton onClick={onClickDown} aria-label="인원 감소">
-          -
-        </CountButton>
-        <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-gray-500">
-          {count}
-        </span>
-        <CountButton onClick={onClickUp} aria-label="인원 증가">
-          +
-        </CountButton>
-        <span className="ml-1.5">명</span>
-      </div>
-    );
-  },
+  return (
+    <div className="flex items-center text-sm text-gray-100">
+      <CountButton onClick={onClickDown} aria-label="인원 감소">
+        -
+      </CountButton>
+      <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-gray-500">
+        {count}
+      </span>
+      <CountButton onClick={onClickUp} aria-label="인원 증가">
+        +
+      </CountButton>
+      <span className="ml-1.5">명</span>
+    </div>
+  );
 };
+
+export const Default: Story = {
+  render: () => <CountButtonWithState />,
+};
+
+// export const Default: Story = {
+//   render: () => {
+//     const [count, setCount] = useState(0);
+//     const onClickUp = () => {
+//       setCount((prev) => prev + 1);
+//     };
+
+//     const onClickDown = () => {
+//       if (count > 1) {
+//         setCount((prev) => prev - 1);
+//       }
+//     };
+
+//     return (
+//       <div className="flex items-center text-sm text-gray-100">
+//         <CountButton onClick={onClickDown} aria-label="인원 감소">
+//           -
+//         </CountButton>
+//         <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-gray-500">
+//           {count}
+//         </span>
+//         <CountButton onClick={onClickUp} aria-label="인원 증가">
+//           +
+//         </CountButton>
+//         <span className="ml-1.5">명</span>
+//       </div>
+//     );
+//   },
+// };

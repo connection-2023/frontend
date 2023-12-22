@@ -1,5 +1,6 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
+import { day } from '@/types/class';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
@@ -116,7 +117,7 @@ export const PROGRESS_METHOD = [
   '다회차',
 ];
 
-export const FILTER_WEEK = ['월', '화', '수', '목', '금', '토', '일'];
+export const FILTER_WEEK: day[] = ['월', '화', '수', '목', '금', '토', '일'];
 
 export const FILTER_TIME = [
   '오전(6시-11시)',
