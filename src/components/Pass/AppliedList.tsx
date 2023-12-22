@@ -24,7 +24,10 @@ const AppliedList = ({
   return (
     <button
       ref={classListRef}
-      onClick={() => setClassListsView((prev) => !prev)}
+      onClick={(event) => {
+        event.stopPropagation();
+        setClassListsView((prev) => !prev);
+      }}
     >
       <span className="relative underline underline-offset-4">
         적용가능한 클래스({appliedList.length})

@@ -5,7 +5,7 @@ import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import { getIssuedPassList } from '@/lib/apis/serverApis/passApis';
 import { mapItemToCoupon } from '@/utils/apiDataProcessor';
 import CouponView from './_components/CouponView';
-import PassView from './_components/PassView';
+import PassContainer from './_components/PassContainer';
 import { OptionType, couponGET } from '@/types/coupon';
 import { IpassData } from '@/types/pass';
 
@@ -44,7 +44,7 @@ const CouponPassPage = async ({
   }
 
   return (
-    <PassView
+    <PassContainer
       myLectureList={myClassListsOption ?? []}
       passList={passList ?? []}
       totalItemCount={passCount}

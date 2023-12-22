@@ -47,3 +47,14 @@ export interface IcreatePassReqData {
   maxUsageCount: string;
   price: string;
 }
+
+export interface IpassTable {
+  user: {
+    nickname: string;
+    img: string;
+  };
+  classList: string[];
+  count: number;
+  purchase_date: string;
+  expiration_date: string;
+}
