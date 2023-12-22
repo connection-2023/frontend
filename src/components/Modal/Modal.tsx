@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import { CloseSVG } from '@/icons/svg';
+import MobileModal from './MobileModal';
 
 interface ModalProps {
   children: React.ReactNode;
@@ -30,7 +31,7 @@ const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
         handleClosed();
       }}
     >
-      <div className="absolute left-1/2 top-1/2 h-auto w-auto -translate-x-1/2 -translate-y-1/2 rounded-md bg-white shadow-float">
+      <div className="absolute left-1/2 top-1/2 hidden h-auto w-auto -translate-x-1/2 -translate-y-1/2 rounded-md bg-white shadow-float sm:block">
         <button onClick={handleClosed} className="absolute right-2 top-2">
           <CloseSVG
             width="24"
@@ -41,6 +42,8 @@ const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
 
         {children}
       </div>
+
+      <MobileModal>{children}</MobileModal>
     </div>
   ) : null;
 };
