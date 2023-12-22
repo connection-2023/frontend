@@ -57,4 +57,5 @@ export interface IpassTable {
   count: number;
   purchase_date: string;
   expiration_date: string;
+  expiration_date_sm: string;
 }

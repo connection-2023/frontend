@@ -1031,6 +1031,7 @@ const dummyPassTableData = [
     count: 3,
     purchase_date: 'Fri Dec 22 2023 10:07:09 GMT+0900 (한국 표준시)',
     expiration_date: 'Fri Dec 26 2023 10:07:09 GMT+0900 (한국 표준시)',
+    expiration_date_sm: 'Fri Dec 26 2023 10:07:09 GMT+0900 (한국 표준시)',
   },
 ];
 

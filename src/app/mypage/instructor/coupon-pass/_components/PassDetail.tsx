@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { dummyPassTableData } from '@/constants/dummy';
-import { Arrow, ArrowRightSVG } from '@/icons/svg';
+import { ArrowRightSVG } from '@/icons/svg';
 import formatDate from '@/utils/formatDate';
 import Button from '@/components/Button/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
@@ -79,9 +79,21 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
           const remainingDays = Math.ceil(diff / (24 * 60 * 60 * 1000));
 
           return (
-            <div className="flex justify-center gap-4 sm:block">
+            <div className="hidden gap-1 sm:flex">
               {formatDate(date)}
-              <p>{remainingDays}</p>
+              <p>({remainingDays})일</p>
+            </div>
+          );
+        },
+      }),
+      columnHelper.accessor('expiration_date_sm', {
+        header: '만료일',
+        cell: ({ getValue }) => {
+          const date = getValue();
+
+          return (
+            <div className="flex justify-center sm:hidden">
+              {formatDate(date)}
             </div>
           );
         },
@@ -110,10 +122,10 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
         </div>
       </header>
 
-      <div className="flex justify-between px-5 py-2">
-        <dl className="grid flex-grow grid-cols-[1fr,5fr] gap-x-11 gap-y-2 text-sm">
+      <div className="flex flex-col-reverse items-center gap-5 px-5 pb-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 sm:py-2">
+        <dl className="grid flex-grow grid-cols-[1fr,5fr] gap-x-6 gap-y-2 truncate text-sm sm:gap-x-11">
           <dt className="font-semibold text-gray-300">패스권 명칭</dt>
-          <dd>{passInfo.title}</dd>
+          <dd className="truncate">{passInfo.title}</dd>
           <dt className="font-semibold text-gray-300">적용된 클래스</dt>
           <dd>
             {passInfo.lecturePassTarget.map(({ lecture }) => (
@@ -135,11 +147,13 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
 
       <hr className="h-2 bg-sub-color1-transparent" />
 
-      <div className="flex flex-col px-2 sm:p-5">
+      <div className="flex flex-col px-2 py-5 sm:p-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            총 판매량
-            <p className="ml-2">20 회</p>
+          <div className="flex items-center whitespace-nowrap">
+            <p className="font-semibold">총 판매량</p>
+            <p className="ml-2 font-semibold sm:text-lg sm:text-main-color">
+              20매
+            </p>
             <div className="ml-4 flex items-center gap-1">
               <input
                 id="inUse"
@@ -148,7 +162,7 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
               />
               <label
                 htmlFor="inUse"
-                className="cursor-pointer select-none font-semibold text-gray-500 peer-checked:text-black"
+                className="cursor-pointer select-none text-gray-500 peer-checked:text-black"
               >
                 현재 이용중
               </label>
@@ -156,7 +170,7 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
           </div>
 
           <select className="h-7 w-[5.75rem] border border-solid border-gray-500">
-            <option value="최신순">최신순</option>
+            <option value={10}>10개</option>
           </select>
         </div>
 
@@ -168,8 +182,10 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
                   <th
                     key={header.id}
                     className={`py-2 text-sm text-gray-300 sm:text-left ${
-                      index === 1 && 'hidden sm:block'
-                    } ${index === 0 && 'text-left'}`}
+                      (index === 1 || index === 4) && 'hidden sm:table-cell'
+                    } ${index === 0 && 'text-left'} ${
+                      index === 5 && 'table-cell sm:hidden'
+                    }`}
                   >
                     {header.isPlaceholder
                       ? null
@@ -191,7 +207,10 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
                 {row.getVisibleCells().map((cell, index) => (
                   <td
                     key={cell.id}
-                    className={`${index === 1 && 'hidden py-4 sm:table-cell'}`}
+                    className={`${
+                      (index === 1 || index === 4) &&
+                      'hidden py-4 sm:table-cell'
+                    }`}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
