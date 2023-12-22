@@ -232,13 +232,19 @@ export interface IClassSchedule {
   id: number;
   lectureId: number;
   startDateTime: string;
+  endDateTime: string;
   numberOfParticipants: number;
-  team: null | string;
 }
 
 export interface IClassScheduleResponse {
   schedule: IClassSchedule[];
   holidayArr: string[];
+}
+
+export interface IProcessedSchedules extends IClassSchedule {
+  index: number;
+  date: Date;
+  isPastClass: boolean;
 }
 
 export interface IClassInfoResponse {
@@ -324,6 +330,48 @@ export interface IUserReview {
   count: number;
 }
 
+export interface ILecturerClassListResonse {
+  id: number;
+  allSchedule: number;
+  completedSchedule: number;
+  startDate: string;
+  endDate: string;
+  title: string;
+  [key: string]: any;
+}
+
+export interface ILecturerClassDetailResonse {
+  title: string;
+  notification: IClassNotification;
+  reservationComment: string;
+  maxCapacity: number;
+  reservationDeadline: number;
+  schedule: IClassSchedule[];
+  holidays: string[];
+}
+
+export interface IClassEditRequest {
+  images?: string[];
+  minCapacity?: number;
+  maxCapacity?: number;
+  introduction?: string;
+  curriculum?: string;
+  reservationDeadline?: number;
+  reservationComment?: string;
+  price?: number;
+  coupons?: number[];
+  notification?: string;
+  holidays?: Date[];
+}
+
+export interface IRegisterLists {
+  enrollmentCount?: number;
+  nickname: string;
+  userProfileImage: {
+    userId: number;
+    imageUrl: string;
+  };
+}
 export interface Lecture {
   id: number;
   lecturerId: number;
@@ -359,4 +407,35 @@ interface ResponseData {
 export interface ApiResponse {
   statusCode: number;
   data: ResponseData;
+}
+
+export interface ILearner {
+  id: number;
+  enrollmentCount: number;
+  memo: string;
+  user: {
+    id: number;
+    nickname: string;
+    userProfileImage: {
+      imageUrl: string;
+    };
+  };
+  reservation: {
+    id: number;
+    representative: string;
+    phoneNumber: string;
+    participants: number;
+    requests: string;
+    lectureSchedule: {
+      id: number;
+      startDateTime: string;
+      endDateTime: string;
+      numberOfParticipants: number;
+      lecture: {
+        createdAt: string;
+        id: number;
+        title: string;
+      };
+    };
+  };
 }

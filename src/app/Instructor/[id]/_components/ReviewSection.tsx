@@ -2,12 +2,12 @@
 import { parseISO, format } from 'date-fns';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
+import { StarSVG, ArrowUpSVG } from '@/icons/svg';
+import { getReviews } from '@/lib/apis/instructorPostApis';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
 import { ReviewOrderType } from '@/types/class';
 import { IInstructorReviewList } from '@/types/instructor';
-import { StarSVG, ArrowUpSVG } from '@/icons/svg';
-import { getReviews } from '@/lib/apis/instructorPostApis';
 
 const filterOption: ReviewOrderType[] = [
   '최신순',
@@ -57,7 +57,7 @@ const ReviewSection = ({ id, stars, totalReviewCount }: ReviewSectionProps) => {
     if (data instanceof Error) {
       return;
     }
-    setUserReviews(data.review);
+    setUserReviews(data?.review ?? []);
   };
 
   useEffect(() => {

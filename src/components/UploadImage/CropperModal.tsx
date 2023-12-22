@@ -1,12 +1,7 @@
 import { useRef } from 'react';
 import Cropper, { ReactCropperElement } from 'react-cropper';
 import Modal from '@/components/Modal/Modal';
-import {
-  CloseSVG,
-  ResetSVG,
-  ZoomInSVG,
-  ZoomOutSVG,
-} from '@/../public/icons/svg';
+import { ResetSVG, ZoomInSVG, ZoomOutSVG } from '@/../public/icons/svg';
 import 'cropperjs/dist/cropper.css';
 import '@/styles/cropper.css';
 

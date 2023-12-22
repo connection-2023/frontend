@@ -81,6 +81,11 @@ export const applyScheduleFilter = (
   return [...spaceNotFull, ...spaceFull];
 };
 
+export const getUniqueDates = (dates: Date[]) =>
+  dates.filter(
+    (date, index, self) => index === self.findIndex((d) => isSameDay(date, d)),
+  );
+
 export const calculateFinalDates = (
   startDate: string,
   endDate: string,

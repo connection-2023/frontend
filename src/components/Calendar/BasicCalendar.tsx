@@ -14,17 +14,19 @@ import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 interface ICalendarProps {
   mode: 'preview' | 'filter' | 'dayoff';
+  selectableDates?: Date[];
   selectedDates?: Date[];
   handleSelected?: (value: Date[]) => void;
 }
 
 const BasicCalendar = ({
   mode,
-  selectedDates = [],
+  selectableDates = [],
+  selectedDates = selectableDates,
   handleSelected,
 }: ICalendarProps) => {
   const [selected, setSelected] = useState<Date[] | undefined>(selectedDates);
-  const initialSelectedDates = selectedDates;
+  const initialSelectedDates = selectableDates;
 
   useEffect(() => {
     if (handleSelected !== undefined && selected) {
@@ -47,7 +49,7 @@ const BasicCalendar = ({
   const disabledDays = (date: Date) =>
     !selectedDates.some((clickableDate) => isSameDay(clickableDate, date));
 
-  const modifiers = getBasicCalendarModifiers(mode, selectedDates);
+  const modifiers = getBasicCalendarModifiers(mode, selectableDates);
   const modifiersClassNames = getBasicCalendarModifiersClassNames(mode);
   const classNames = mode === 'dayoff' ? DAY_OFF_ClassNames : undefined;
   const className = mode === 'dayoff' ? '' : '';
