@@ -35,7 +35,7 @@ const DateFilter = ({ filterOption, updateFilterOption }: IDateFilterProps) => {
     <FilterModal label={label} onReset={onReset} onApply={onApply}>
       <BasicCalendar
         mode="filter"
-        selectedDates={selected}
+        selectableDates={selected}
         handleSelected={handleSelected}
       />
     </FilterModal>

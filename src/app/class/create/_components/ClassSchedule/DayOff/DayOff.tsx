@@ -88,7 +88,7 @@ const DayOff = ({
                 <div className="w-fit">
                   <DayOffCalendar
                     mode="dayoff"
-                    selectedDates={initDates}
+                    selectableDates={initDates}
                     handleSelected={handleUnselected}
                   />
                 </div>
