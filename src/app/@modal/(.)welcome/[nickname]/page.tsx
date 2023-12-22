@@ -1,6 +1,5 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { ButtonStyles } from '@/constants/constants';
 import { AuthWelcomeSVG, DoubleRightSVG } from '@/icons/svg';
 import Button from '@/components/Button/Button';
 import RouterModal from '@/components/Modal/RouterModal';
@@ -14,7 +13,7 @@ const WelcomeModal = ({ params }: { params: { nickname: string } }) => {
 
   return (
     <RouterModal path="/">
-      <section className="flex h-full w-full max-w-[25.5rem] flex-col items-center justify-center rounded-md bg-white px-6 py-10 py-4 text-lg font-semibold">
+      <section className="flex h-full w-full min-w-[25rem] flex-col items-center justify-center rounded-md bg-white px-6 py-10 py-4 text-lg font-semibold">
         <AuthWelcomeSVG className="mt-[4.5rem]" />
 
         <h2 className="mt-[2.75rem] text-[2rem] text-sub-color1 md:text-2xl">

@@ -42,7 +42,7 @@ const ClassPreview = (props: ClassCardType) => {
       <div
         onMouseLeave={() => setFocus(false)}
         onMouseOver={() => setFocus(true)}
-        className="hidden max-h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] xl:flex"
+        className="hidden max-h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] sm:flex"
       >
         <div className="relative -z-10 mr-4 h-[188px] w-full overflow-hidden">
           {imgURL.length > 1 ? (
@@ -112,7 +112,7 @@ const ClassPreview = (props: ClassCardType) => {
         </div>
       </div>
 
-      <div className="h-full w-full xl:hidden">
+      <div className="h-full w-full sm:hidden">
         <ResponsiveClassPreview {...props} />
       </div>
     </>

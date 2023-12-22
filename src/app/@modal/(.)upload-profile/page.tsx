@@ -76,8 +76,8 @@ const UploadProfileModal = () => {
 
   return (
     <RouterModal path="/">
-      <section className="mt-2 flex h-[37.5rem] h-max w-full max-w-[25.5rem] flex-grow flex-grow flex-col items-center rounded-md bg-white px-4 py-10">
-        <h1 className="mb-3 mt-[4.5rem] text-2xl font-semibold">프로필 설정</h1>
+      <section className="mt-2 flex h-[37.5rem] w-full min-w-[25rem] flex-grow flex-grow flex-col items-center rounded-md bg-white px-4 pt-10">
+        <h1 className="mb-3 mt-20 text-2xl font-semibold">프로필 설정</h1>
         <p className="mb-9 text-sm">나중에 언제든지 변경할 수 있습니다.</p>
 
         <input
@@ -91,8 +91,9 @@ const UploadProfileModal = () => {
 
         <label htmlFor="upload-button" className="group">
           <div
-            className={`group mb-[2.37rem] mr-6 flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-full 
-          ${imgSrc ? `bg-none` : `bg-gray-700`}
+            className={`group mb-[2.37rem] mr-6 flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-full ${
+              imgSrc ? `bg-none` : `bg-gray-700`
+            }
           `}
             style={
               imgSrc

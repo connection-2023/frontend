@@ -46,7 +46,7 @@ const ClassDates = ({ id }: { id: string | number }) => {
 
       {showCalendar && (
         <div className="absolute z-10 overflow-hidden rounded-lg bg-white p-3.5 shadow-horizontal">
-          <BasicCalendar mode="preview" selectedDates={selectedDates} />
+          <BasicCalendar mode="preview" selectableDates={selectedDates} />
         </div>
       )}
     </div>
