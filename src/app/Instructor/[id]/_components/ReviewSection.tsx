@@ -150,6 +150,7 @@ const ReviewSection = ({ id, stars, totalReviewCount }: ReviewSectionProps) => {
             title={review.reservation.lectureSchedule.lecture.title}
             isLike={review.likedLectureReview?.[0] ? true : false}
             count={review._count.likedLectureReview}
+            link={`/report?lectureReviewId=${review.id}`}
           />
         ))}
       </div>
