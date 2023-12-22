@@ -1,14 +1,13 @@
 import { UseFormRegister } from 'react-hook-form';
-import { ReportFormData } from '@/types/form';
-
+import { ReportType, ReportFormData } from '@/types/report';
 interface ReportCheckBoxProps {
-  label: keyof ReportFormData;
+  label: ReportType;
   register: UseFormRegister<ReportFormData>;
 }
 
 const ReportCheckBox = ({ label, register }: ReportCheckBoxProps) => {
   return (
-    <li key={label} className="flex items-center gap-1.5">
+    <li className="flex items-center gap-1.5">
       <input
         {...register(label)}
         type="checkbox"

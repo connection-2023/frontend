@@ -4,18 +4,17 @@ import { IRegion, IGenre } from './types';
 import { Juso } from '@/types/address';
 
 export interface ClassCardType {
-  status: '모집중' | '마감임박' | '마감';
+  id: number;
+  status: '모집중' | '마감';
   date: string;
   title: string;
   imgURL: string[];
   location: string[];
   genre: string[];
-  type: string[];
-  time: string[];
-  review?: { average: number; count: number };
-  price: string;
-  profile: { src?: string; nickname: string };
-  selectedDates: Date[];
+  type: string;
+  review: { average: number; count: number };
+  price: number;
+  profile: { src: string | null; nickname: string };
 }
 
 export interface Space {
@@ -31,8 +30,9 @@ export interface IDateTime {
   space: Space;
 }
 
+type day = '일' | '월' | '화' | '수' | '목' | '금' | '토';
 export interface DayTimeList {
-  day: string[];
+  day: day[];
   startDateTime: string[];
 }
 
@@ -232,13 +232,19 @@ export interface IClassSchedule {
   id: number;
   lectureId: number;
   startDateTime: string;
+  endDateTime: string;
   numberOfParticipants: number;
-  team: null | string;
 }
 
 export interface IClassScheduleResponse {
   schedule: IClassSchedule[];
   holidayArr: string[];
+}
+
+export interface IProcessedSchedules extends IClassSchedule {
+  index: number;
+  date: Date;
+  isPastClass: boolean;
 }
 
 export interface IClassInfoResponse {
@@ -324,6 +330,48 @@ export interface IUserReview {
   count: number;
 }
 
+export interface ILecturerClassListResonse {
+  id: number;
+  allSchedule: number;
+  completedSchedule: number;
+  startDate: string;
+  endDate: string;
+  title: string;
+  [key: string]: any;
+}
+
+export interface ILecturerClassDetailResonse {
+  title: string;
+  notification: IClassNotification;
+  reservationComment: string;
+  maxCapacity: number;
+  reservationDeadline: number;
+  schedule: IClassSchedule[];
+  holidays: string[];
+}
+
+export interface IClassEditRequest {
+  images?: string[];
+  minCapacity?: number;
+  maxCapacity?: number;
+  introduction?: string;
+  curriculum?: string;
+  reservationDeadline?: number;
+  reservationComment?: string;
+  price?: number;
+  coupons?: number[];
+  notification?: string;
+  holidays?: Date[];
+}
+
+export interface IRegisterLists {
+  enrollmentCount?: number;
+  nickname: string;
+  userProfileImage: {
+    userId: number;
+    imageUrl: string;
+  };
+}
 export interface Lecture {
   id: number;
   lecturerId: number;
@@ -359,4 +407,35 @@ interface ResponseData {
 export interface ApiResponse {
   statusCode: number;
   data: ResponseData;
+}
+
+export interface ILearner {
+  id: number;
+  enrollmentCount: number;
+  memo: string;
+  user: {
+    id: number;
+    nickname: string;
+    userProfileImage: {
+      imageUrl: string;
+    };
+  };
+  reservation: {
+    id: number;
+    representative: string;
+    phoneNumber: string;
+    participants: number;
+    requests: string;
+    lectureSchedule: {
+      id: number;
+      startDateTime: string;
+      endDateTime: string;
+      numberOfParticipants: number;
+      lecture: {
+        createdAt: string;
+        id: number;
+        title: string;
+      };
+    };
+  };
 }

@@ -21,7 +21,6 @@ const RegisterModal = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [userRegistrationForm, setUserRegistrationForm] =
     useState<IRegisterForm>();
-  const [userConsents, setUserConsents] = useState<IRegisterConsents>();
 
   if (!token || !userEmail || !signUpType) return;
 
@@ -46,13 +45,8 @@ const RegisterModal = () => {
     handleNextStep();
   };
 
-  const handleUserAgree = (data: IRegisterConsents) => {
-    setUserConsents(data);
-    handleNextStep();
-  };
-
-  const handleUserRegister = async () => {
-    if (!userRegistrationForm) return;
+  const handleUserRegister = async (registerConsents: IRegisterConsents) => {
+    if (!userRegistrationForm || !registerConsents) return;
 
     const { name, nickname, phoneNumber } = userRegistrationForm;
 
@@ -63,6 +57,7 @@ const RegisterModal = () => {
       name,
       nickname,
       ...(phoneNumber ? { phoneNumber } : {}),
+      registerConsents,
     };
 
     const response = await postUserRegister(userInfo);
@@ -90,8 +85,7 @@ const RegisterModal = () => {
           handleUserInfo(data as IRegisterForm);
           break;
         case 1:
-          handleUserAgree(data as IRegisterConsents);
-          handleUserRegister();
+          handleUserRegister(data as IRegisterConsents);
           break;
         default:
           console.error('Invalid step');
@@ -130,7 +124,7 @@ const RegisterModal = () => {
 
   return (
     <RouterModal>
-      <section className="mb-2 flex h-[37.5rem] w-full flex-col rounded-md bg-white px-6">
+      <section className="mb-2 flex h-[37.5rem] w-full min-w-[25rem] flex-col rounded-md bg-white px-6">
         <ul className="mb-6 mt-[3.5rem] flex h-[35px] shrink-0 items-center justify-between whitespace-nowrap rounded-[3.13rem] text-base font-semibold shadow-float">
           {steps.map((step, index) => (
             <li

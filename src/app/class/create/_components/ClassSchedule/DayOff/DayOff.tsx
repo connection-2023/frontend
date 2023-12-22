@@ -3,6 +3,7 @@ import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useState } from 'react';
 import { useClassScheduleStore } from '@/store';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
+import { isSameDay } from 'date-fns';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
@@ -24,6 +25,7 @@ const DayOff = ({
   const store = useClassScheduleStore();
   const [unselectedDates, setUnselectedDates] = useState<Date[]>(initialValue);
   const classDates = store.filteredDates;
+  const classSchedules = useClassScheduleStore((state) => state.classSchedules);
   const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
   const classType = store.classType;
   const initDates = store.classDates;
@@ -33,10 +35,14 @@ const DayOff = ({
     !(classRange && classTime && initDates) || classType === '특정 날짜';
 
   useEffect(() => {
-    if (classDates && initDates) {
-      const newClassDates = initDates.filter(
-        (date) => !unselectedDates.includes(date),
-      );
+    if (classDates && classSchedules) {
+      const newClassDates = classSchedules.filter((date) => {
+        const hasSameDay = unselectedDates.some((date2) =>
+          isSameDay(date, date2),
+        );
+
+        return !hasSameDay;
+      });
       setClassDates(newClassDates);
     }
   }, [unselectedDates]);
@@ -82,7 +88,7 @@ const DayOff = ({
                 <div className="w-fit">
                   <DayOffCalendar
                     mode="dayoff"
-                    selectedDates={initDates}
+                    selectableDates={initDates}
                     handleSelected={handleUnselected}
                   />
                 </div>

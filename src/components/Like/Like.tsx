@@ -4,10 +4,11 @@ import { HeartSVG } from '@/../public/icons/svg';
 import { postClassLikes, deleteClassLikes } from '@/lib/apis/classApis';
 
 interface LikeProps {
-  id: string;
+  id: string | number;
   type: 'class' | 'instructor';
   isLiked?: boolean;
 }
+
 const Like = ({ id, type, isLiked }: LikeProps) => {
   const [liked, setLiked] = useState(isLiked);
   const style = liked
@@ -17,9 +18,9 @@ const Like = ({ id, type, isLiked }: LikeProps) => {
   const handleLike = async () => {
     if (type === 'class') {
       if (liked) {
-        await deleteClassLikes(id);
+        await deleteClassLikes(String(id));
       } else {
-        await postClassLikes(id);
+        await postClassLikes(String(id));
       }
       setLiked(!liked);
     }
@@ -27,11 +28,7 @@ const Like = ({ id, type, isLiked }: LikeProps) => {
 
   return (
     <button onClick={handleLike}>
-      <HeartSVG
-        width="29"
-        height="30"
-        className={style}
-      />
+      <HeartSVG width="29" height="30" className={style} />
     </button>
   );
 };

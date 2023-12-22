@@ -17,14 +17,12 @@ const filterOption: ReviewOrderType[] = [
 
 interface ClassReviewSectionProps {
   id: string;
-  classTitle: string;
   reviewCount: number;
   stars: number;
 }
 
 const ClassReviewSection = ({
   id,
-  classTitle,
   reviewCount,
   stars,
 }: ClassReviewSectionProps) => {
@@ -122,6 +120,7 @@ const ClassReviewSection = ({
             title={review.lectureTitle}
             isLike={review.isLike}
             count={review.count}
+            link={`/report?lectureReviewId=${review.id}`}
           />
         ))}
       </div>

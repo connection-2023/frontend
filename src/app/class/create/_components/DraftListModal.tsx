@@ -1,7 +1,8 @@
+import { format } from 'date-fns';
 import Link from 'next/link';
-import Modal from 'react-modal';
 import { toast } from 'react-toastify';
-import { CloseSVG, TrashcanSVG } from '@/icons/svg';
+import { TrashcanSVG } from '@/icons/svg';
+import Modal from '@/components/Modal/Modal';
 import { IGetClassDrafts } from '@/types/class';
 
 interface IDraftListModal {
@@ -35,27 +36,18 @@ const DraftListModal = ({
   };
 
   return (
-    <Modal
-      onRequestClose={closeWithoutSelection}
-      isOpen={isOpen}
-      style={customModalStyles}
-      ariaHideApp={false}
-    >
-      <h1 className="relative flex justify-center border-b border-solid border-sub-color2 py-3 text-lg">
-        임시저장 불러오기({classDraftList.length})
-        <button
-          className="absolute right-5 top-3.5"
-          onClick={closeWithoutSelection}
-        >
-          <CloseSVG className="h-6 w-6 stroke-sub-color2" />
-        </button>
-      </h1>
+    <Modal handleClosed={closeWithoutSelection} isOpened={isOpen}>
+      <section className="w-[40rem]">
+        <h1 className="flex justify-center border-b border-solid border-gray-700 py-3 text-lg">
+          임시저장 불러오기({classDraftList.length})
+        </h1>
 
-      <DraftList
-        classDraftList={classDraftList}
-        closeModal={closeModal}
-        deleteClassDraftList={deleteClassDraftList}
-      />
+        <DraftList
+          classDraftList={classDraftList}
+          closeModal={closeModal}
+          deleteClassDraftList={deleteClassDraftList}
+        />
+      </section>
     </Modal>
   );
 };
@@ -75,11 +67,7 @@ const DraftList = ({
   return (
     <ul className="flex flex-col gap-4 px-4 py-6">
       {classDraftList.map(({ id, updatedAt, title, step }) => {
-        const date = new Date(updatedAt);
-        const formattedDate = `${date.getFullYear()}.${
-          date.getMonth() + 1
-        }.${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
-
+        const formattedDate = format(new Date(updatedAt), 'yy.MM.dd HH:mm');
         return (
           <li key={id} className="flex justify-between gap-2">
             <Link
@@ -92,11 +80,11 @@ const DraftList = ({
             </Link>
 
             <div className="flex gap-3">
-              <data className="whitespace-nowrap text-sub-color2">
+              <data className="whitespace-nowrap text-gray-300">
                 {formattedDate}
               </data>
               <button onClick={() => deleteClassDraftList(id)}>
-                <TrashcanSVG className="h-6 w-6 stroke-sub-color2" />
+                <TrashcanSVG className="h-6 w-6 stroke-gray-500" />
               </button>
             </div>
           </li>
@@ -104,25 +92,4 @@ const DraftList = ({
       })}
     </ul>
   );
-};
-
-const customModalStyles: ReactModal.Styles = {
-  content: {
-    width: '50%',
-    maxWidth: '40.0625rem',
-    height: '18rem',
-    padding: '0',
-    zIndex: '10',
-    boxSizing: 'border-box',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    borderColor: 'black',
-    boxShadow: '0 1px 4px 1px rgba(0, 0, 0, 0.25)',
-    backgroundColor: 'white',
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-  },
 };

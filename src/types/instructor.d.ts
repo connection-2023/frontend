@@ -1,5 +1,5 @@
 export interface instructorPostResponse {
-  profileCardImageUrl: string;
+  profileCardImageUrl: string | null;
   nickname: string;
   email: string;
   phoneNumber: string;
@@ -13,6 +13,8 @@ export interface instructorPostResponse {
   lecturerDanceGenre: any; // 추후 변경 예정
   lecturerInstagramPostUrl: Url[]; // 추후 변경 예정
   lecturerProfileImageUrl: Url[]; // 추후 변경 예정
+  stars: number;
+  reviewCount: number;
 }
 
 interface Url {
@@ -71,4 +73,30 @@ export interface IInstructorRegister {
   genres: string[];
   instagramPostUrls?: string[];
   etcGenres?: string[];
+}
+
+export interface IInstructorReviewList {
+  id: number;
+  lectureId: number;
+  userId: number;
+  reservationId: number;
+  stars: number;
+  description: string;
+  createdAt: string;
+  reservation: {
+    lectureSchedule: {
+      startDateTime: string;
+      lecture: {
+        title: string;
+      };
+    };
+  };
+  users: {
+    nickname: string;
+    userProfileImage: { imageUrl: string };
+  };
+  likedLectureReview?: {}[];
+  _count: {
+    likedLectureReview: number;
+  };
 }

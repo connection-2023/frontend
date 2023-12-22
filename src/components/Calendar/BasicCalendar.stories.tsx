@@ -15,7 +15,7 @@ type Story = StoryObj<typeof BasicCalendar>;
 export const PreviewCalendar: Story = {
   args: {
     mode: 'preview',
-    selectedDates: [
+    selectableDates: [
       new Date(2023, 8, 4),
       new Date(2023, 8, 6),
       new Date(2023, 8, 8),

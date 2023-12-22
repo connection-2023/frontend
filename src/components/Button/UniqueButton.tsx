@@ -1,7 +1,7 @@
 import { ButtonSizes } from '../../constants/constants';
 
 interface UniqueButtonProps {
-  size?: 'small' | 'medium' | 'large';
+  size?: 'xsmall' | 'small' | 'medium' | 'large';
   color?: 'primary' | 'secondary';
   children?: React.ReactNode;
   type?: 'button' | 'submit';

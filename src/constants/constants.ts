@@ -1,5 +1,6 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
+import { day } from '@/types/class';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
@@ -12,6 +13,7 @@ export const ProfileImgSize = {
 };
 
 export const ButtonSizes = {
+  xsmall: 22,
   small: 28,
   medium: 35,
   large: 45,
@@ -74,10 +76,10 @@ export const CLASS_SECTIONS = [
 ];
 
 export const INSTRUCTOR_SECTIONS = [
-  { id: 'introduction-section', label: 'introduction' },
-  { id: 'work-experience-section', label: 'Work Experience' },
-  { id: 'class-section', label: '강의' },
-  { id: 'review-section', label: '후기' },
+  { id: 'introduction-section', label: '소개' },
+  { id: 'work-experience-section', label: '경력' },
+  { id: 'class-section', label: '클래스/패스권' },
+  { id: 'review-section', label: '클래스 리뷰' },
 ];
 
 export const DANCE_GENRE = [
@@ -115,7 +117,7 @@ export const PROGRESS_METHOD = [
   '다회차',
 ];
 
-export const FILTER_WEEK = ['월', '화', '수', '목', '금', '토', '일'];
+export const FILTER_WEEK: day[] = ['월', '화', '수', '목', '금', '토', '일'];
 
 export const FILTER_TIME = [
   '오전(6시-11시)',

@@ -44,7 +44,7 @@ const InstructorCard = ({
       </figcaption>
 
       <div className="pointer-events-auto absolute right-1 top-1 z-10">
-        <Like />
+        <Like id="" type="instructor" />
       </div>
 
       <Link href={href}>

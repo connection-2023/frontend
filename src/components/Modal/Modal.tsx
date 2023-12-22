@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { CloseSVG } from '@/icons/svg';
+import { CloseSVG } from '../../../public/icons/svg';
 
 interface ModalProps {
   children: React.ReactNode;

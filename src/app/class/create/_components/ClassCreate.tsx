@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
 import { updateClassDraft } from '@/lib/apis/classApi';
+import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
@@ -31,7 +32,7 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
 
   const { classData, setClassData, setProcessedClassData } =
     useClassCreateStore();
-
+  const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
   const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
@@ -157,9 +158,12 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     try {
       if (classData && classData.id) {
         await updateDraft(data, false);
-        const lecturerId = await classCreate(classData.id);
-        toast.success('클래스 등록 완료');
-        router.push(`/class/${lecturerId}`);
+        const newLectureId = await classCreate(classData.id, finalSchedule);
+
+        if (newLectureId) {
+          toast.success('클래스 등록 완료');
+          router.replace(`/class/${newLectureId}`);
+        }
       }
     } catch (error) {
       console.error(error);
