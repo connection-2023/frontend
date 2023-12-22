@@ -9,7 +9,7 @@ if (!END_POINT) {
 
 export const GET = async (request: NextRequest) => {
   const token = request.cookies.get('lecturerAccessToken')?.value;
-  if (!token) return;
+  if (!token) return new Response('강사 권한 없음!', { status: 401 });
 
   const lectureId = request.nextUrl.searchParams.get('lectureId');
   const searchParams = request.nextUrl.searchParams;
@@ -29,7 +29,9 @@ export const GET = async (request: NextRequest) => {
   ).then((data) => data.json());
 
   if (serverResponse.statusCode !== 200) {
-    throw new Error('강사 클래스 관리 전체 수강생 조회 요청 에러!');
+    return new Response('강사 클래스 관리 전체 수강생 조회 요청 에러!', {
+      status: serverResponse.statusCode,
+    });
   }
 
   return NextResponse.json(serverResponse);
