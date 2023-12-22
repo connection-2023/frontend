@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { CloseSVG } from '@/icons/svg';
 import MobileModal from './MobileModal';
+import { CloseSVG } from '../../../public/icons/svg';
 
 interface ModalProps {
   children: React.ReactNode;
