@@ -32,7 +32,10 @@ const PassContainer = ({
         } shadow-float`}
       >
         {selectPass ? (
-          <PassDetail passInfo={selectPass} />
+          <PassDetail
+            passInfo={selectPass}
+            selectPassHandler={selectPassHandler}
+          />
         ) : (
           <PassListView
             myLectureList={myLectureList}

@@ -17,9 +17,10 @@ import { IpassData, IpassTable } from '@/types/pass';
 
 interface PassDetailProps {
   passInfo: IpassData;
+  selectPassHandler: (data: IpassData | null) => void;
 }
 
-const PassDetail = ({ passInfo }: PassDetailProps) => {
+const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
   const [data, setData] = useState(dummyPassTableData);
 
   const columnHelper = createColumnHelper<IpassTable>();
@@ -112,7 +113,9 @@ const PassDetail = ({ passInfo }: PassDetailProps) => {
     <>
       <header className="mb-4 flex items-center justify-between border-b border-solid border-gray-700 p-5">
         <div className="flex text-2xl font-bold">
-          <ArrowRightSVG className="h-8 w-8 rotate-180 stroke-black " />
+          <button onClick={() => selectPassHandler(null)}>
+            <ArrowRightSVG className="h-8 w-8 rotate-180 stroke-black " />
+          </button>
           패스권 현황
         </div>
         <div className="w-28">
