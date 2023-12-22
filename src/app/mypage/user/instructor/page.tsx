@@ -3,13 +3,15 @@ import { useState } from 'react';
 import { dummyInterestedInstructor } from '@/constants/dummy';
 import BlockedInstructors from './_components/BlockedInstructors';
 import InterestedInstructors from './_components/InterestedInstructors';
+import FineSplitIcon from '@/components/InstructorCard/FineSplitIcon';
+import LargeSplitIcon from '@/components/InstructorCard/LargeSplitIcon';
 
 const InstructorPage = () => {
   const [isInterested, setIsInterested] = useState(true);
 
   return (
     <section className="col-span-1 mx-auto flex w-full flex-col p-4">
-      <nav className="mb-8 flex justify-between whitespace-nowrap">
+      <nav className="mb-8 flex items-center justify-between whitespace-nowrap">
         <div className="flex gap-6">
           <button
             className={`flex text-2xl font-bold ${
@@ -25,6 +27,10 @@ const InstructorPage = () => {
           >
             차단 강사
           </button>
+        </div>
+        <div className="flex gap-3">
+          <LargeSplitIcon />
+          <FineSplitIcon />
         </div>
       </nav>
 
