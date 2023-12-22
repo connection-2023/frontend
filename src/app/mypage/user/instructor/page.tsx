@@ -8,22 +8,24 @@ const InstructorPage = () => {
   const [isInterested, setIsInterested] = useState(true);
 
   return (
-    <section className="col-span-2 mx-auto flex w-full flex-col p-4">
-      <nav className="mb-8 flex gap-6">
-        <button
-          className={`flex text-2xl font-bold ${
-            !isInterested && 'text-gray-500'
-          }`}
-          onClick={() => setIsInterested(true)}
-        >
-          관심 강사<p>({dummyInterestedInstructor.length})</p>
-        </button>
-        <button
-          className={`text-2xl font-bold ${isInterested && 'text-gray-500'}`}
-          onClick={() => setIsInterested(false)}
-        >
-          차단 강사
-        </button>
+    <section className="col-span-1 mx-auto flex w-full flex-col p-4">
+      <nav className="mb-8 flex justify-between whitespace-nowrap">
+        <div className="flex gap-6">
+          <button
+            className={`flex text-2xl font-bold ${
+              !isInterested && 'text-gray-500'
+            }`}
+            onClick={() => setIsInterested(true)}
+          >
+            관심 강사<p>({dummyInterestedInstructor.length})</p>
+          </button>
+          <button
+            className={`text-2xl font-bold ${isInterested && 'text-gray-500'}`}
+            onClick={() => setIsInterested(false)}
+          >
+            차단 강사
+          </button>
+        </div>
       </nav>
 
       {isInterested ? (

@@ -777,7 +777,20 @@ const dummyInterestedInstructor = [
     name: '이바다',
     address: '서울 마포구',
     teamAffiliation: '원밀리언즈',
-    genres: ['방송댄스', '힙합', '방송댄스'],
+    genres: [
+      '방송댄스',
+      '힙합',
+      '방송댄스',
+      '방송댄스',
+      '힙합',
+      '방송댄스',
+      '방송댄스',
+      '힙합',
+      '방송댄스',
+      '방송댄스',
+      '힙합',
+      '방송댄스',
+    ],
     imgURL: [
       'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
       'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
@@ -791,7 +804,7 @@ const dummyInterestedInstructor = [
   {
     name: '이수근',
     address: '서울 마포구',
-    teamAffiliation: '원밀리언즈',
+    teamAffiliation: '원밀리언즈qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
     genres: ['방송댄스', '힙합', '방송댄스'],
     imgURL: [
       'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
@@ -807,7 +820,7 @@ const dummyInterestedInstructor = [
     name: '강호동',
     address: '서울 마포구',
     teamAffiliation: '원밀리언즈',
-    genres: ['방송댄스', '힙합', '방송댄스'],
+    genres: ['qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'],
     imgURL: [
       'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
       'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',

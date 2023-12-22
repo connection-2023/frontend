@@ -53,7 +53,7 @@ const InstructorCard = ({
 
       {!focus && (
         <>
-          <div className="display: absolute bottom-[4.2rem] flex w-full justify-center">
+          <div className="absolute bottom-[5rem] flex w-full justify-center">
             {imgURL.map((img, index) => {
               return (
                 <span
@@ -66,8 +66,8 @@ const InstructorCard = ({
             })}
           </div>
 
-          <figcaption className="pointer-events-none absolute bottom-0 z-10 flex h-16 w-full flex-col justify-evenly bg-white/[.75] px-1 xl:items-center">
-            <div className="hidden xl:block">
+          <figcaption className="pointer-events-none absolute bottom-0 z-10 flex h-[4.625rem] w-full flex-col justify-center bg-white/[.75] px-2 xl:items-center">
+            <div className="hidden pb-2 pt-1 xl:block">
               <Review average={average} />
             </div>
             <div className="flex w-full justify-between xl:hidden">
@@ -81,21 +81,14 @@ const InstructorCard = ({
                 5.0
               </div>
             </div>
-            <div className="flex w-full gap-3 whitespace-nowrap sm:text-sm lg:text-base">
-              <h2 className="xl:w-1/3">{address}</h2>
-              <h2 className="max-w-[30%] truncate xl:w-1/3">
-                {teamAffiliation}
-              </h2>
-              {genres.length > 1 ? (
-                <>
-                  <h2 className="xl:w-1/3">
-                    {genres[0]} 외{genres.length - 1}
-                  </h2>
-                  <h2 className="" />
-                </>
-              ) : (
-                <h2 className="xl:w-1/3">{genres[0]}</h2>
-              )}
+            <div className="flex gap-x-2 text-sm xl:grid xl:grid-cols-2">
+              <h2 className="whitespace-nowrap text-right">{address}</h2>
+              <h2 className="flex-grow truncate">{teamAffiliation}</h2>
+            </div>
+            <div className="flex w-full gap-2 truncate text-sm xl:justify-center">
+              {genres.map((genre, index) => (
+                <p key={genre + index}>{genre}</p>
+              ))}
             </div>
           </figcaption>
         </>

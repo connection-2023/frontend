@@ -8,7 +8,10 @@ interface InterestedInstructorsProps {
 const InterestedInstructors = ({ instructors }: InterestedInstructorsProps) => (
   <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
     {instructors.map((info, i) => (
-      <div key={info.name + i} className="h-60 w-full">
+      <div
+        key={info.name + i}
+        className="h-[15.5rem] w-full md:h-52 lg:h-60 xl:h-[15.2rem]"
+      >
         <InstructorCard {...info} />
       </div>
     ))}
