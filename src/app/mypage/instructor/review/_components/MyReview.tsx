@@ -1,10 +1,10 @@
 'use client';
 import { Fragment, useState } from 'react';
-import ClassFilterSelect from '@/app/my/[userType]/coupon-pass/_components/ClassFilterSelect';
 import { NotFoundSVG } from '@/icons/svg';
 import { getMyLecturersReviews } from '@/lib/apis/reviewApis';
 import formatDate from '@/utils/formatDate';
 import usePageNation from '@/utils/usePagenation';
+import ClassFilterSelect from './ClassFilterSelect';
 import Pagination from '@/components/Pagination/Pagination';
 import ReviewStatistics from '@/components/Review/ReviewStatistics';
 import UserReview from '@/components/Review/UserReview';
@@ -67,7 +67,7 @@ const MyReview = ({ reviewList, myClassListsOption }: MyReview) => {
   ];
 
   return (
-    <main className="col-span-2 flex w-full flex-col ">
+    <main className="col-span-1 flex w-full flex-col px-2 sm:px-6">
       <div className="flex flex-col-reverse gap-5 sm:flex-row">
         <section className="flex flex-grow flex-col bg-white pt-5 shadow-vertical">
           <h1 className="px-5 pb-5 text-2xl font-bold">리뷰 관리</h1>

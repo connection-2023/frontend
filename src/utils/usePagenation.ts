@@ -105,6 +105,8 @@ const usePageNation = ({
   };
 
   const updateFilter = (key: string, value: any) => {
+    setReset(true);
+
     setItemId({
       firstItemId: 0,
       lastItemId: 0,
