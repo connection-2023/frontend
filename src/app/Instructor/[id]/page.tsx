@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import { OptionSVG, InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
+import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
 import { getInstructorClassLists } from '@/lib/apis/serverApis/instructorPostApis';
 import { getLecturerPassList } from '@/lib/apis/serverApis/passApis';
@@ -12,12 +12,11 @@ import {
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import ClassList from './_components/ClassList';
 import InstructorCarousel from './_components/InstructorCarousel';
-import ManagementButton from './_components/ManagementButton';
 import ReviewSection from './_components/ReviewSection';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
-import Sharing from '@/components/Sharing/Sharing';
+import OptionButtons from '@/components/Button/OptionButtons';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -77,12 +76,13 @@ const InstructorDetailPage = async ({
               {nickname}
               <Like type="instructor" id={id} />
             </h1>
-            {/* <div className="absolute right-0 flex gap-3">
-              <Sharing header={nickname} mode="instructor" />
-              <ManagementButton>
-                <OptionSVG />
-              </ManagementButton>
-            </div> */}
+            <div className="absolute right-0 flex gap-3">
+              <OptionButtons
+                mode="instructor"
+                title={nickname}
+                lecturerId={id}
+              />
+            </div>
           </div>
           {/* 리뷰 */}
           <div className="mb-4 mt-2 box-border flex h-4 gap-1 sm:pl-4">
