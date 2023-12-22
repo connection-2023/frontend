@@ -86,21 +86,30 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
           </nav>
           {reviewList.length > 0 ? (
             <ul className="flex flex-col gap-2">
-              {reviewList.map(({ id, stars, lecture, _count, description }) => (
-                <UserReview
-                  key={id}
-                  src={profile}
-                  nickname={nickname}
-                  average={stars}
-                  date={formatDate(lecture.startDate)}
-                  title={lecture.title}
-                  count={_count.likedLectureReview}
-                  isLike={true} //백엔드 api isLike 받을 예정
-                  reviewId={id}
-                  content={description}
-                  link={`/report?lectureReviewId=${id}`}
-                />
-              ))}
+              {reviewList.map(
+                ({
+                  id,
+                  stars,
+                  lecture,
+                  _count,
+                  description,
+                  likedLectureReview,
+                }) => (
+                  <UserReview
+                    key={id}
+                    src={profile}
+                    nickname={nickname}
+                    average={stars}
+                    date={formatDate(lecture.startDate)}
+                    title={lecture.title}
+                    count={_count.likedLectureReview}
+                    isLike={likedLectureReview.length > 0}
+                    reviewId={id}
+                    content={description}
+                    link={`/report?lectureReviewId=${id}`}
+                  />
+                ),
+              )}
             </ul>
           ) : (
             <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">

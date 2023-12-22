@@ -35,6 +35,7 @@ export interface WriteReview {
     updatedAt: string;
     deletedAt: string | null;
   };
+  likedLectureReview: [];
   reservation: {
     lectureSchedule: string;
   };
