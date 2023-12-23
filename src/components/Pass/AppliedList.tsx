@@ -3,17 +3,11 @@
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
+import { IpassData } from '@/types/pass';
 
-const AppliedList = ({
-  appliedList,
-}: {
-  appliedList: {
-    lecture: {
-      id: number;
-      title: string;
-    };
-  }[];
-}) => {
+type LecturePassTarget = IpassData['lecturePassTarget'];
+
+const AppliedList = ({ appliedList }: { appliedList: LecturePassTarget }) => {
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
 

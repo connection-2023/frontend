@@ -31,10 +31,10 @@ export interface IpassData {
 
 export interface IcreatePass {
   title: string;
-  lectureIds: Array<{
+  lectureIds: {
     label: string;
     value: number;
-  }>;
+  }[];
   availableMonths: string;
   maxUsageCount: string;
   price: string;
