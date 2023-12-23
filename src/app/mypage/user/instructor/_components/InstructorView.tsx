@@ -63,7 +63,7 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
 
       {isInterested ? (
         <InterestedInstructors
-          instructors={dummyInterestedInstructor}
+          instructors={likesList.lecturerLike}
           largeImg={largeImg}
         />
       ) : (

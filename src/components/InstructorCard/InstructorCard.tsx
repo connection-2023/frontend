@@ -32,6 +32,15 @@ const InstructorCard = ({
     setFocus(false);
   };
 
+  const genresWithSpace = genres.reduce(
+    (acc, genre) => (acc += ` ${genre}`),
+    '',
+  );
+  const genresWithSlash = genres.reduce(
+    (acc, genre, index) =>
+      (acc += index !== genres.length - 1 ? `/${genre}` : genre),
+  );
+
   return (
     <div
       onMouseOver={onFocus}
@@ -79,15 +88,11 @@ const InstructorCard = ({
             <div className="hidden pb-2 pt-1 xl:block">
               <Review average={average} />
             </div>
-            <div className="flex w-full justify-between pb-1 xl:hidden">
+            <div className="flex w-full items-center justify-between pb-1 xl:hidden">
               <p className="text-lg font-semibold">{name}</p>
-              <div className="flex gap-1">
-                <StarSVG
-                  width={16}
-                  height={15}
-                  className="translate-y-1 fill-sub-color1"
-                />
-                5.0
+              <div className="flex items-center gap-1">
+                <StarSVG width={16} height={15} className="fill-sub-color1" />
+                <p className="pb-0.5">{average}</p>
               </div>
             </div>
             <div
@@ -95,9 +100,12 @@ const InstructorCard = ({
                 largeImg
                   ? 'text-sm'
                   : 'text-xs text-gray-500 sm:text-sm sm:text-black'
-              } flex gap-x-2 xl:grid xl:grid-cols-2`}
+              } mb-0.5 flex gap-x-2 xl:grid xl:grid-cols-2`}
             >
-              <h2 className="whitespace-nowrap text-right">{address}</h2>
+              <h2 className="whitespace-nowrap text-right">
+                {address[0] +
+                  (address.length > 1 ? ` 외 ${address.length - 1} |` : '')}
+              </h2>
               <h2 className="flex-grow truncate">{teamAffiliation}</h2>
             </div>
             <div
@@ -105,16 +113,18 @@ const InstructorCard = ({
                 largeImg
                   ? 'gap-2 text-sm'
                   : 'text-xs text-gray-500 sm:gap-2 sm:text-sm sm:text-black'
-              } flex w-full truncate xl:justify-center`}
+              } xl:mx-auto xl:w-fit`}
             >
-              {genres.map((genre, index) => (
-                <p key={genre + index}>
-                  {genre}
-                  {index !== genres.length - 1 && !largeImg && (
-                    <span className="sm:hidden">/</span>
-                  )}
-                </p>
-              ))}
+              <p className={`${!largeImg && 'hidden'} truncate sm:block`}>
+                {genresWithSpace}
+              </p>
+              <p
+                className={`${
+                  largeImg ? 'hidden' : 'block'
+                } truncate sm:hidden`}
+              >
+                {genresWithSlash}
+              </p>
             </div>
           </figcaption>
         </>
@@ -124,4 +134,3 @@ const InstructorCard = ({
 };
 
 export default InstructorCard;
-//수정 할 부분 map key, 마진
