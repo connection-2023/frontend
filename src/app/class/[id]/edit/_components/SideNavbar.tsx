@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 import Button from '@/components/Button/Button';
 
 const SideNavbar = ({ onClick }: { onClick: () => void }) => {
@@ -70,10 +70,10 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
   };
 
   return (
-    <aside className="w-fit justify-self-center pt-16 text-lg font-bold">
+    <aside className="sticky top-0 z-20 h-fit w-fit justify-self-center pt-16 text-lg font-bold">
       <nav
         onClick={handleNavLinkClick}
-        className="sticky top-0 z-20 whitespace-nowrap text-lg font-bold"
+        className="whitespace-nowrap text-lg font-bold"
       >
         <ul className="mb-6 flex flex-col gap-y-8">
           {sections.map(({ id, label }) => (
