@@ -100,3 +100,50 @@ export interface IInstructorReviewList {
     likedLectureReview: number;
   };
 }
+
+export interface ILecturerLike {
+  count: number;
+  lecturerLike: LecturerLike[];
+}
+
+interface Region {
+  id: number;
+  administrativeDistrict: string;
+  district: string;
+}
+
+interface LecturerRegion {
+  region: Region;
+}
+
+interface DanceCategory {
+  genre: string;
+}
+
+interface LecturerDanceGenre {
+  id: number;
+  danceCategoryId: number;
+  lecturerId: number;
+  name: string | null;
+  danceCategory: DanceCategory;
+}
+
+interface LecturerProfileImageUrl {
+  url: string;
+}
+
+interface Lecturer {
+  nickname: string;
+  affiliation: string;
+  stars: number;
+  lecturerRegion: LecturerRegion[];
+  lecturerDanceGenre: LecturerDanceGenre[];
+  lecturerProfileImageUrl: LecturerProfileImageUrl[];
+}
+
+interface LecturerLike {
+  id: number;
+  lecturerId: number;
+  userId: number;
+  lecturer: Lecturer;
+}
