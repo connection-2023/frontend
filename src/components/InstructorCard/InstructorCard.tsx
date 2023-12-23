@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { StarSVG } from '@/icons/svg';
 import ImagesViewer from './ImagesViewer';
 import Like from '../Like/Like';
@@ -92,7 +92,9 @@ const InstructorCard = ({
             </div>
             <div
               className={`${
-                largeImg ? 'text-sm' : 'text-xs text-gray-500 sm:text-sm'
+                largeImg
+                  ? 'text-sm'
+                  : 'text-xs text-gray-500 sm:text-sm sm:text-black'
               } flex gap-x-2 xl:grid xl:grid-cols-2`}
             >
               <h2 className="whitespace-nowrap text-right">{address}</h2>
@@ -100,11 +102,18 @@ const InstructorCard = ({
             </div>
             <div
               className={`${
-                largeImg ? 'text-sm' : 'text-xs text-gray-500 sm:text-sm'
-              } flex w-full gap-2 truncate xl:justify-center`}
+                largeImg
+                  ? 'gap-2 text-sm'
+                  : 'text-xs text-gray-500 sm:gap-2 sm:text-sm sm:text-black'
+              } flex w-full truncate xl:justify-center`}
             >
               {genres.map((genre, index) => (
-                <p key={genre + index}>{genre}</p>
+                <p key={genre + index}>
+                  {genre}
+                  {index !== genres.length - 1 && !largeImg && (
+                    <span className="sm:hidden">/</span>
+                  )}
+                </p>
               ))}
             </div>
           </figcaption>

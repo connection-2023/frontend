@@ -7,7 +7,7 @@ interface BlockedInstructorsProps {
 }
 
 const BlockedInstructors = ({ instructors }: BlockedInstructorsProps) => (
-  <ul className="flex w-5/12 min-w-[18.75rem] flex-col">
+  <ul className="flex w-full min-w-[18.75rem] flex-col sm:w-5/12">
     {instructors.map(({ name, imgURL }, index) => {
       return (
         <li
@@ -21,7 +21,7 @@ const BlockedInstructors = ({ instructors }: BlockedInstructorsProps) => (
             marginLeft={2}
           />
 
-          <div className="flex gap-16 text-gray-100">
+          <div className="flex gap-8 text-gray-100 sm:gap-16">
             <button>차단취소</button>
             <button>신고</button>
           </div>
