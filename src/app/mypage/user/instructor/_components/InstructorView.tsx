@@ -6,8 +6,15 @@ import BlockedInstructors from './BlockedInstructors';
 import InterestedInstructors from './InterestedInstructors';
 import FineSplitIcon from '@/components/InstructorCard/FineSplitIcon';
 import LargeSplitIcon from '@/components/InstructorCard/LargeSplitIcon';
+import { InstructorBlock } from '@/types/instructor';
+import { Instructors } from '@/types/types';
 
-const InstructorView = () => {
+interface InstructorViewProps {
+  likesList: { count: number; lecturerLike: Instructors[] };
+  blockedList: { count: number; lecturerBlock: InstructorBlock[] };
+}
+
+const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
   const [isInterested, setIsInterested] = useState(true);
   const [largeImg, setLargeImg] = useState(true);
   const [accordion, setAccordion] = useState(false);
@@ -29,7 +36,7 @@ const InstructorView = () => {
             }`}
             onClick={() => setIsInterested(true)}
           >
-            관심 강사<p>({dummyInterestedInstructor.length})</p>
+            관심 강사<p>({likesList.count})</p>
           </button>
           <button
             className={`text-lg font-bold sm:text-2xl ${

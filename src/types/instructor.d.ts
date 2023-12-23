@@ -106,44 +106,53 @@ export interface ILecturerLike {
   lecturerLike: LecturerLike[];
 }
 
-interface Region {
-  id: number;
-  administrativeDistrict: string;
-  district: string;
-}
-
-interface LecturerRegion {
-  region: Region;
-}
-
-interface DanceCategory {
-  genre: string;
-}
-
-interface LecturerDanceGenre {
-  id: number;
-  danceCategoryId: number;
-  lecturerId: number;
-  name: string | null;
-  danceCategory: DanceCategory;
-}
-
-interface LecturerProfileImageUrl {
-  url: string;
-}
-
-interface Lecturer {
-  nickname: string;
-  affiliation: string;
-  stars: number;
-  lecturerRegion: LecturerRegion[];
-  lecturerDanceGenre: LecturerDanceGenre[];
-  lecturerProfileImageUrl: LecturerProfileImageUrl[];
-}
-
-interface LecturerLike {
+export interface LecturerLike {
   id: number;
   lecturerId: number;
   userId: number;
-  lecturer: Lecturer;
+  lecturer: {
+    nickname: string;
+    affiliation: string;
+    stars: number;
+    lecturerRegion: {
+      region: {
+        id: number;
+        administrativeDistrict: string;
+        district: string;
+      };
+    }[];
+    lecturerDanceGenre: {
+      id: number;
+      danceCategoryId: number;
+      lecturerId: number;
+      name: string | null;
+      danceCategory: {
+        genre: string;
+      };
+    }[];
+    lecturerProfileImageUrl: {
+      url: string;
+    }[];
+  };
+}
+
+export interface ILecturerBlock {
+  count: number;
+  lecturerBlock: LecturerBlock[];
+}
+
+export interface LecturerBlock {
+  id: number;
+  lecturerId: number;
+  userId: number;
+  lecturer: {
+    nickname: string;
+    lecturerProfileImageUrl: LecturerProfileImageUrl[];
+  };
+}
+
+export interface InstructorBlock {
+  id: number;
+  nickname: string;
+  imgURL: string[];
 }
