@@ -19,6 +19,11 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
   const [accordion, setAccordion] = useState(false);
 
   const [blockLists, setBlockLists] = useState(blockedList.lecturerBlock);
+  const [likesLists, setLikesLists] = useState(likesList.lecturerLike);
+
+  const likesListHandler = (cancelId: string | number) => {
+    setLikesLists((list) => list.filter(({ id }) => id !== cancelId));
+  };
 
   const blockListHandler = (cancelId: number) => {
     setBlockLists((list) => list.filter(({ id }) => id !== cancelId));
@@ -41,7 +46,7 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
             }`}
             onClick={() => setIsInterested(true)}
           >
-            관심 강사<p>({likesList.count})</p>
+            관심 강사<p>({likesLists.length})</p>
           </button>
           <button
             className={`text-lg font-bold sm:text-2xl ${
@@ -68,8 +73,9 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
 
       {isInterested ? (
         <InterestedInstructors
-          instructors={likesList.lecturerLike}
+          instructors={likesLists}
           largeImg={largeImg}
+          likesListHandler={likesListHandler}
         />
       ) : (
         <section className="flex flex-col gap-4">

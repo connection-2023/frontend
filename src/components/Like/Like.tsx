@@ -14,9 +14,10 @@ interface LikeProps {
   id: string | number;
   type: 'class' | 'instructor';
   isLiked?: boolean;
+  likeEvent?: (id: string | number) => void;
 }
 
-const Like = ({ id, type, isLiked }: LikeProps) => {
+const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
   const [liked, setLiked] = useState(isLiked);
   const style = liked
     ? 'fill-main-color stroke-main-color hover:fill-none hover:stroke-none'
@@ -34,7 +35,10 @@ const Like = ({ id, type, isLiked }: LikeProps) => {
         setLiked(!liked);
       } else {
         retryFunc = liked
-          ? () => instructorsLikeCancel(id)
+          ? async () => {
+              await instructorsLikeCancel(id);
+              if (likeEvent) likeEvent(id);
+            }
           : () => instructorsLikes(id);
         await retryFunc();
       }
