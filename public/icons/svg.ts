@@ -9,6 +9,7 @@ import AuthIconSVG from './authIcon.svg';
 import AuthWelcomeSVG from './authWelcome.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import BigArrowSVG from './bigArrow.svg';
+import BigStar from './bigStar.svg';
 import BillSVG from './bill.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
@@ -80,6 +81,7 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  BigStar,
   PassSVG,
   FilterSVG,
   TrashcanSVG,
