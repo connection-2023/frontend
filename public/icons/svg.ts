@@ -55,6 +55,7 @@ import NoteSVG from './note.svg';
 import NotFoundSVG from './notFound.svg';
 import NoticeSVG from './notice.svg';
 import OptionSVG from './option.svg';
+import PassSVG from './pass.svg';
 import PlusesSVG from './pluses.svg';
 import ProfileSVG from './profile_default.svg';
 import ReadMessageSVG from './readMessage.svg';
@@ -81,6 +82,7 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   BigStar,
+  PassSVG,
   FilterSVG,
   TrashcanSVG,
   CopySVG,
