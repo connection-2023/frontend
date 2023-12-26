@@ -439,3 +439,7 @@ export interface ILearner {
     };
   };
 }
+
+export interface IClassEditData
+  extends IClassScheduleResponse,
+    IClassInfoResponse {}
