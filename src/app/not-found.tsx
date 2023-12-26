@@ -18,7 +18,7 @@ const NotFound = () => (
     </div>
 
     <h2 className="mb-5 text-lg font-extrabold sm:text-2xl">
-      죄송합니다. 찾을 수 없는 페이지를 요청하셨습니다.
+      찾을 수 없는 페이지를 요청하셨습니다.
     </h2>
     <p className="mb-12 text-center text-sm font-medium sm:text-base">
       찾으려는 페이지의 주소가 잘못 입력되었거나,
