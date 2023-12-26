@@ -1,18 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { NoteSVG } from '@/icons/svg';
-import { getUserReport } from '@/lib/apis/reportApis';
+import { getInstructorReport } from '@/lib/apis/reportApis';
 import ReportModal from './ReportModal';
-import { IUserReportResponse } from '@/types/report';
+import { IReportResponse } from '@/types/report';
 
 const ReportHistoryPage = () => {
-  const [userReportData, setUserReportData] = useState<IUserReportResponse[]>(
-    [],
-  );
+  const [userReportData, setUserReportData] = useState<IReportResponse[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const reportData = await getUserReport(100, 0, 0, 0, 0, 'ALL');
+      const reportData = await getInstructorReport(100, 0, 0, 0, 0, 'ALL');
       setUserReportData(reportData.reportList);
     };
 
@@ -20,14 +18,14 @@ const ReportHistoryPage = () => {
   }, []);
 
   return (
-    <section className="flex w-full flex-col rounded-lg bg-white p-5 text-sm text-gray-100 shadow-float">
+    <section className="mx-4 box-border flex flex-col rounded-lg bg-white px-3.5 py-5 text-sm text-gray-100 md:mx-9 md:px-5">
       <h1 className="mb-[1.81rem] text-2xl font-bold">신고내역</h1>
 
-      <table className="w-full border-collapse px-4 py-2">
+      <table className="w-full max-w-[40rem] border-collapse px-4 py-2">
         <thead>
-          <tr className="flex items-center gap-10 border-y border-solid border-black px-4 py-2 text-left font-semibold">
-            <th className="w-24">신고대상</th>
-            <th className="w-36 flex-1">신고사유</th>
+          <tr className="flex items-center gap-4 border-y border-solid border-black px-4 py-2 text-left font-semibold md:gap-10">
+            <th className="w-20 md:w-24">신고대상</th>
+            <th className="w-32 flex-1 md:w-36">신고사유</th>
             <th className="w-12 whitespace-nowrap">상태</th>
           </tr>
         </thead>
@@ -50,7 +48,7 @@ const TableList = ({
   userReportType,
   isAnswered,
   userReportResponse,
-}: IUserReportResponse) => {
+}: IReportResponse) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -74,9 +72,9 @@ const TableList = ({
   const response = userReportResponse?.description;
 
   return (
-    <tr className="flex items-start gap-10 border-b border-solid border-gray-700 px-4 text-left font-medium">
-      <th className="h-full w-24 py-2">{target}</th>
-      <th className="flex w-36 flex-1 flex-col items-center gap-[0.31rem] py-2">
+    <tr className="flex items-start gap-4 border-b border-solid border-gray-700 px-4 text-left font-medium md:gap-10">
+      <th className="h-full w-20 py-2 md:w-24">{target}</th>
+      <th className="flex w-32 flex-1 flex-col items-center gap-[0.31rem] py-2 md:w-36">
         <p className="flex w-full items-center">
           {reportTypes[0] + str}
 
