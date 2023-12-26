@@ -148,6 +148,7 @@ export interface IgetFunction {
   targetPage?: number;
   firstItemId?: number;
   lastItemId?: number;
+  passStatusOptions?: 'AVAILABLE' | 'DISABLED' | 'USED' | 'EXPIRED';
   couponStatusOption?: 'AVAILABLE' | 'DISABLED' | 'USED' | 'EXPIRED';
   filterOption: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
   lectureId?: string | number;
