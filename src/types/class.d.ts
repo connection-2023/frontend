@@ -31,6 +31,7 @@ export interface IDateTime {
 }
 
 type day = '일' | '월' | '화' | '수' | '목' | '금' | '토';
+
 export interface DayTimeList {
   day: day[];
   startDateTime: string[];
@@ -372,6 +373,7 @@ export interface IRegisterLists {
     imageUrl: string;
   };
 }
+
 export interface Lecture {
   id: number;
   lecturerId: number;
@@ -439,3 +441,7 @@ export interface ILearner {
     };
   };
 }
+
+export interface IClassEditData
+  extends IClassScheduleResponse,
+    IClassInfoResponse {}

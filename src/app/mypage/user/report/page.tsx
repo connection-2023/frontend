@@ -3,12 +3,10 @@ import { useEffect, useState } from 'react';
 import { NoteSVG } from '@/icons/svg';
 import { getUserReport } from '@/lib/apis/reportApis';
 import ReportModal from './ReportModal';
-import { IUserReportResponse } from '@/types/report';
+import { IReportResponse } from '@/types/report';
 
 const ReportHistoryPage = () => {
-  const [userReportData, setUserReportData] = useState<IUserReportResponse[]>(
-    [],
-  );
+  const [userReportData, setUserReportData] = useState<IReportResponse[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +48,7 @@ const TableList = ({
   userReportType,
   isAnswered,
   userReportResponse,
-}: IUserReportResponse) => {
+}: IReportResponse) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
