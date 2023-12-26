@@ -2,7 +2,10 @@ import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
-import { getInstructorClassLists } from '@/lib/apis/serverApis/instructorPostApis';
+import {
+  getInstructor,
+  getInstructorClassLists,
+} from '@/lib/apis/serverApis/instructorPostApis';
 import { getLecturerPassList } from '@/lib/apis/serverApis/passApis';
 import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
@@ -25,7 +28,7 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const profile = getInstructorPost(id);
+  const profile = getInstructor(id);
   const classLists = getInstructorClassLists(id);
   const passLists = getLecturerPassList(id);
 
@@ -35,7 +38,7 @@ const InstructorDetailPage = async ({
     passLists,
   ]);
 
-  if (profileData instanceof Error || classListsResponse instanceof Error) {
+  if (profileData === undefined || classListsResponse instanceof Error) {
     return null;
   }
 
@@ -54,6 +57,7 @@ const InstructorDetailPage = async ({
     affiliation,
     stars,
     reviewCount,
+    isLiked,
   } = profileData;
 
   const classList = transformToCardData(classListsResponse, {
@@ -74,7 +78,7 @@ const InstructorDetailPage = async ({
           <div className=" relative flex w-full min-w-[23rem] items-center sm:justify-center">
             <h1 className="box-border flex items-center gap-1 text-lg font-bold sm:pl-6">
               {nickname}
-              <Like type="instructor" id={id} />
+              <Like type="instructor" id={id} isLiked={isLiked} />
             </h1>
             <div className="absolute right-0 flex gap-3">
               <OptionButtons

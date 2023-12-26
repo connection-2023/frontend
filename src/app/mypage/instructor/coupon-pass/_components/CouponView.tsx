@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { CouponSVG, NotFoundSVG } from '@/icons/svg';
@@ -32,7 +31,6 @@ const CouponView = ({
   couponList,
   passCount,
 }: CouponViewProps) => {
-  const router = useRouter();
   const [couponLists, setCouponLists] = useState(couponList);
 
   const onChangeItemList = ({ itemList, prevPage }: IonChangeItemList) => {

@@ -15,6 +15,7 @@ export interface instructorPostResponse {
   lecturerProfileImageUrl: Url[]; // 추후 변경 예정
   stars: number;
   reviewCount: number;
+  isLiked: boolean;
 }
 
 interface Url {
