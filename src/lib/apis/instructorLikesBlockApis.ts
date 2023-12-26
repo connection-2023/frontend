@@ -84,3 +84,31 @@ export const instructorsLikes = async (lectureId: string | number) => {
     throw error;
   }
 };
+
+export const instructorsBlock = async (lectureId: string | number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/users/instructors/block?lectureId=${encodeURIComponent(
+        lectureId,
+      )}`,
+      {
+        method: 'POST',
+        credentials: 'include',
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('강사 차단 오류', error);
+    throw error;
+  }
+};

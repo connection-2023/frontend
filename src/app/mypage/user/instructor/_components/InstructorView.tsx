@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { ArrowDownSVG } from '@/icons/svg';
+import { ArrowDownSVG, NotFoundSVG } from '@/icons/svg';
 import BlockedInstructors from './BlockedInstructors';
 import InterestedInstructors from './InterestedInstructors';
 import FineSplitIcon from '@/components/InstructorCard/FineSplitIcon';
@@ -72,11 +72,18 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
       </nav>
 
       {isInterested ? (
-        <InterestedInstructors
-          instructors={likesLists}
-          largeImg={largeImg}
-          likesListHandler={likesListHandler}
-        />
+        likesLists.length > 0 ? (
+          <InterestedInstructors
+            instructors={likesLists}
+            largeImg={largeImg}
+            likesListHandler={likesListHandler}
+          />
+        ) : (
+          <div className="mt-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
+            <NotFoundSVG />
+            <p>관심 강사가 없습니다!</p>
+          </div>
+        )
       ) : (
         <section className="flex flex-col gap-4">
           <h3 className="hidden font-semibold sm:block">
