@@ -24,6 +24,7 @@ interface useCouponPassHookProps {
     itemList: any[];
   }>;
   type: 'user' | 'lecturer';
+  isInterested: 'COUPON' | 'PASS';
 }
 
 const useCouponPassHook = ({
@@ -33,6 +34,7 @@ const useCouponPassHook = ({
   onChange,
   getFunction,
   type,
+  isInterested,
 }: useCouponPassHookProps) => {
   const [totalItemCount, setTotalItemCount] = useState(defaultItemCount);
   const [itemId, setItemId] = useState({
@@ -40,7 +42,7 @@ const useCouponPassHook = ({
     lastItemId: itemList[itemList.length - 1]?.id ?? 0,
   });
   const [filterState, setFilterState] = useState<IFilterState>({
-    isInterested: 'COUPON',
+    isInterested,
     passStatusOptions: 'AVAILABLE',
     filterOption: 'LATEST',
     selectedClass:
@@ -113,62 +115,80 @@ const useCouponPassHook = ({
     controller.current = new AbortController();
 
     setLoading(true);
+    let data;
+
     if (filterState.isInterested === 'COUPON') {
-      try {
-        const { selectedClass } = filterState;
+      const { selectedClass } = filterState;
 
-        const data = {
-          take: LECTURE_COUPON_TAKE,
-          currentPage: filterState.currentPage,
-          targetPage: filterState.targetPage,
-          firstItemId: itemId.firstItemId,
-          lastItemId: itemId.lastItemId,
-          couponStatusOption: filterState.passStatusOptions, //s 빼야합니다. 나중에
-          filterOption: filterState.filterOption,
-          [type === 'user' ? 'lectureIds' : 'lectureId']:
-            selectedClass?.value === 'select-all'
-              ? undefined
-              : selectedClass?.value,
-        };
+      data = {
+        take: LECTURE_COUPON_TAKE,
+        currentPage: filterState.currentPage,
+        targetPage: filterState.targetPage,
+        firstItemId: itemId.firstItemId,
+        lastItemId: itemId.lastItemId,
+        couponStatusOption: filterState.passStatusOptions,
+        filterOption: filterState.filterOption,
+        [type === 'user' ? 'lectureIds' : 'lectureId']:
+          selectedClass?.value === 'select-all'
+            ? undefined
+            : selectedClass?.value,
+      };
+    } else {
+      const { selectedClass } = filterState;
 
-        const resData = await getFunction({
-          data,
-          signal: controller.current.signal,
-          type: filterState.isInterested,
-        });
+      data = {
+        take: LECTURE_COUPON_TAKE,
+        currentPage: filterState.currentPage,
+        targetPage: filterState.targetPage,
+        firstItemId: itemId.firstItemId,
+        lastItemId: itemId.lastItemId,
+        passStatusOptions: filterState.passStatusOptions,
+        filterOption: filterState.filterOption,
+        [type === 'user' ? 'lectureIds' : 'lectureId']:
+          selectedClass?.value === 'select-all'
+            ? undefined
+            : selectedClass?.value,
+      };
+    }
 
-        onChange({
-          itemList: resData.itemList ?? [],
-          prevPage: width < 640 ? prevPage.current !== null : false,
-          type: filterState.isInterested,
-        });
+    try {
+      const resData = await getFunction({
+        data,
+        signal: controller.current.signal,
+        type: filterState.isInterested,
+      });
 
-        setItemId({
-          firstItemId:
-            resData.itemList && resData.itemList.length > 0
-              ? resData.itemList[0].id
-              : 0,
-          lastItemId:
-            resData.itemList && resData.itemList.length > 0
-              ? resData.itemList[resData.itemList.length - 1].id
-              : 0,
-        });
+      onChange({
+        itemList: resData.itemList ?? [],
+        prevPage: width < 640 ? prevPage.current !== null : false,
+        type: filterState.isInterested,
+      });
 
-        setTotalItemCount(resData.totalItemCount);
-      } catch (error) {
-        if (error instanceof Error) {
-          const fetchError = error as FetchError;
-          if (fetchError.status === 401) {
-            try {
-              await accessTokenReissuance();
-              setLoading(false);
-              await handleGetList();
-            } catch (error) {
-              console.error(error);
-            }
-          } else {
-            // toast.error('잘못된 요청입니다!');
+      setItemId({
+        firstItemId:
+          resData.itemList && resData.itemList.length > 0
+            ? resData.itemList[0].id
+            : 0,
+        lastItemId:
+          resData.itemList && resData.itemList.length > 0
+            ? resData.itemList[resData.itemList.length - 1].id
+            : 0,
+      });
+
+      setTotalItemCount(resData.totalItemCount);
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            setLoading(false);
+            await handleGetList();
+          } catch (error) {
+            console.error(error);
           }
+        } else {
+          // toast.error('잘못된 요청입니다!');
         }
       }
     }

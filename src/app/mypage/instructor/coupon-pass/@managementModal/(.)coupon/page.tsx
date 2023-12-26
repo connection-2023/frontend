@@ -1,8 +1,7 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { CloseSVG, CouponSVG } from '@/icons/svg';
+import { CouponSVG } from '@/icons/svg';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/createCoupon';
 import Button from '@/components/Button/Button';

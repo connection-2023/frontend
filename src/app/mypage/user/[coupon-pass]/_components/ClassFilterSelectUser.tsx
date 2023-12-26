@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FilterSVG, ResetSVG } from '@/icons/svg';
 
 interface ClassFilterSelectUserProps {

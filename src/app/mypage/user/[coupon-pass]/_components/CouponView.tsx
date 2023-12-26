@@ -1,17 +1,14 @@
 'use client';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
-import { CouponSVG, NotFoundSVG } from '@/icons/svg';
+import { NotFoundSVG } from '@/icons/svg';
 import { getCouponLists } from '@/lib/apis/couponApis';
 import { mapItemToCoupon } from '@/utils/apiDataProcessor';
 import useCouponPassHook from '@/utils/useCouponPassHook';
-import ClassFilterSelect from './ClassFilterSelect';
 import ClassFilterSelectListsUser from './ClassFilterSelectListsUser';
 import ClassFilterSelectUser from './ClassFilterSelectUser';
-import CouponComponent from './CouponComponent';
-import Button from '@/components/Button/Button';
+import CouponContainer from '@/components/Coupon/CouponContainer';
 import Pagination from '@/components/Pagination/Pagination';
 import Spinner from '@/components/Spinner/Spinner';
 import {
@@ -25,14 +22,12 @@ interface CouponViewProps {
   myLectureList: SelectClassType[];
   totalItemCount: number;
   couponList: couponGET[];
-  userType: 'user' | 'lecturer';
 }
 
 const CouponView = ({
   myLectureList,
   totalItemCount: defaultItemCount,
   couponList,
-  userType,
 }: CouponViewProps) => {
   const router = useRouter();
   const [userClassFilterView, setUserClassFilterView] = useState(false);
@@ -69,7 +64,7 @@ const CouponView = ({
     data,
     signal,
   }: IgetListFunctionHandler) => {
-    return await getCouponLists(data, userType, signal);
+    return await getCouponLists(data, 'user', signal);
   };
 
   const {
@@ -88,38 +83,27 @@ const CouponView = ({
     itemList: couponList,
     onChange: onChangeItemList,
     getFunction: getListFunctionHandler,
-    type: userType,
+    type: 'user',
+    isInterested: 'COUPON',
   });
 
   const options: {
     id: 'AVAILABLE' | 'DISABLED' | 'USED' | 'EXPIRED';
     label: string;
-  }[] =
-    userType === 'lecturer'
-      ? [
-          {
-            id: 'AVAILABLE',
-            label: '활성화 쿠폰',
-          },
-          {
-            id: 'DISABLED',
-            label: '만료 쿠폰',
-          },
-        ]
-      : [
-          {
-            id: 'AVAILABLE',
-            label: '사용가능 쿠폰',
-          },
-          {
-            id: 'USED',
-            label: '사용한 쿠폰',
-          },
-          {
-            id: 'EXPIRED',
-            label: '만료 쿠폰',
-          },
-        ];
+  }[] = [
+    {
+      id: 'AVAILABLE',
+      label: '사용가능 쿠폰',
+    },
+    {
+      id: 'USED',
+      label: '사용한 쿠폰',
+    },
+    {
+      id: 'EXPIRED',
+      label: '만료 쿠폰',
+    },
+  ];
 
   const sortOptions: {
     id: 'LATEST' | 'UPCOMING' | 'HIGHEST_PRICE' | 'BEST_SELLING';
@@ -130,14 +114,14 @@ const CouponView = ({
   ];
 
   return (
-    <section className="z-0 col-span-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
+    <section className="z-0 col-start-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
       <nav className="flex justify-between pb-2">
         <div className="flex items-center gap-2 sm:gap-6">
           <button
             className={`flex text-xl font-bold sm:text-2xl ${
               filterState.isInterested === 'PASS' && 'text-gray-500'
             }`}
-            onClick={() => router.push('/my/lecturer/coupon-pass?state=coupon')}
+            onClick={() => router.push('/mypage/user/coupon')}
           >
             쿠폰({totalItemCount ?? 0})
           </button>
@@ -145,27 +129,11 @@ const CouponView = ({
             className={`text-xl font-bold sm:text-2xl ${
               filterState.isInterested === 'COUPON' && 'text-gray-500'
             }`}
-            onClick={() => router.push('/my/lecturer/coupon-pass?state=pass')}
+            onClick={() => router.push('/mypage/user/pass')}
           >
             패스권
           </button>
         </div>
-        {userType === 'lecturer' && (
-          <div className="w-[7.3rem]">
-            <Button>
-              <Link
-                href={{
-                  pathname: '/my/lecturer/coupon-pass/management',
-                  query: { type: 'CREATE', state: 'coupon' },
-                }}
-                className="flex"
-              >
-                <CouponSVG className="mr-1 h-6 w-6 fill-sub-color1 group-active:fill-white" />
-                쿠폰 생성
-              </Link>
-            </Button>
-          </div>
-        )}
       </nav>
 
       <nav className="flex flex-wrap items-center gap-2 border-y border-solid border-gray-500 py-5">
@@ -174,9 +142,7 @@ const CouponView = ({
             <input
               id={option.id}
               type="checkbox"
-              className={`peer h-[18px] w-[18px] ${
-                userType === 'user' ? 'accent-sub-color1' : 'accent-black'
-              } `}
+              className="peer h-[18px] w-[18px] accent-sub-color1"
               checked={filterState.passStatusOptions === option.id}
               onChange={() => handleChangeOptions(option.id)}
             />
@@ -188,34 +154,25 @@ const CouponView = ({
             </label>
           </button>
         ))}
-        <div className={`${userType === 'user' ? '' : 'w-80'}`}>
-          {userType === 'user' ? (
-            <ClassFilterSelectUser
-              filterState={filterState.passStatusOptions}
-              userClassFilterView={userClassFilterView}
-              changeUserClassFilterView={changeUserClassFilterView}
-              refreshBtnView={refreshBtnView}
-              triggerClassListRefresh={triggerClassListRefresh}
-            />
-          ) : (
-            <ClassFilterSelect
-              options={myLectureList}
-              value={filterState.selectedClass}
-              onChange={handleChangeSelectedClass}
-            />
-          )}
+        <div>
+          <ClassFilterSelectUser
+            filterState={filterState.passStatusOptions}
+            userClassFilterView={userClassFilterView}
+            changeUserClassFilterView={changeUserClassFilterView}
+            refreshBtnView={refreshBtnView}
+            triggerClassListRefresh={triggerClassListRefresh}
+          />
         </div>
-        {userType === 'user' &&
-          filterState.passStatusOptions === 'AVAILABLE' && (
-            <ClassFilterSelectListsUser
-              userClassFilterView={userClassFilterView}
-              myLectureList={myLectureList}
-              selectedClass={filterState.selectedClass}
-              handleChangeSelectedClass={handleChangeSelectedClass}
-              changeRefreshBtnView={changeRefreshBtnView}
-              refreshTrigger={refreshTrigger}
-            />
-          )}
+        {filterState.passStatusOptions === 'AVAILABLE' && (
+          <ClassFilterSelectListsUser
+            userClassFilterView={userClassFilterView}
+            myLectureList={myLectureList}
+            selectedClass={filterState.selectedClass}
+            handleChangeSelectedClass={handleChangeSelectedClass}
+            changeRefreshBtnView={changeRefreshBtnView}
+            refreshTrigger={refreshTrigger}
+          />
+        )}
       </nav>
 
       <nav className="flex gap-2.5 py-4">
@@ -234,11 +191,11 @@ const CouponView = ({
       </nav>
 
       <div className="flex flex-wrap justify-center gap-4 pb-4 sm:justify-normal">
-        <CouponComponent
+        <CouponContainer
           couponList={couponLists}
           lastItemElementRef={lastItemElementRef}
           totalItemCount={totalItemCount}
-          type={userType}
+          type="user"
           expiration={filterState.passStatusOptions}
         />
       </div>
