@@ -1,26 +1,27 @@
-import Image from 'next/image';
+import Link from 'next/link';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import { Instructors } from '@/types/types';
+import { InstructorBlock } from '@/types/instructor';
 
 interface BlockedInstructorsProps {
-  instructors: Instructors[];
+  instructors: InstructorBlock[];
 }
 
 const BlockedInstructors = ({ instructors }: BlockedInstructorsProps) => (
   <ul className="flex w-full min-w-[18.75rem] flex-col sm:w-5/12">
-    {instructors.map(({ name, imgURL }, index) => {
+    {instructors.map(({ nickname, imgURL, id }, index) => {
       return (
         <li
-          key={name + index}
+          key={nickname + index}
           className="flex justify-between border-y border-solid border-gray-700 py-4"
         >
-          <ProfileImage
-            size="small"
-            src={imgURL[0]}
-            nickname={name}
-            marginLeft={2}
-          />
-
+          <Link href={`/instructor/${id}`}>
+            <ProfileImage
+              size="small"
+              src={imgURL[0]}
+              nickname={nickname}
+              marginLeft={2}
+            />
+          </Link>
           <div className="flex gap-8 text-gray-100 sm:gap-16">
             <button>차단취소</button>
             <button>신고</button>
