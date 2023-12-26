@@ -13,6 +13,7 @@ interface InstructorCardProps extends Instructors {
 }
 
 const InstructorCard = ({
+  id,
   name,
   address,
   genres,
@@ -58,7 +59,7 @@ const InstructorCard = ({
       </figcaption>
 
       <div className="pointer-events-auto absolute right-1 top-1 z-10">
-        <Like id="" type="instructor" />
+        <Like id={id} type="instructor" isLiked={true} />
       </div>
 
       <Link href={href}>

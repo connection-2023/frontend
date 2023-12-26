@@ -18,6 +18,12 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
   const [largeImg, setLargeImg] = useState(true);
   const [accordion, setAccordion] = useState(false);
 
+  const [blockLists, setBlockLists] = useState(blockedList.lecturerBlock);
+
+  const blockListHandler = (cancelId: number) => {
+    setBlockLists((list) => list.filter(({ id }) => id !== cancelId));
+  };
+
   const imgStateHandler = (state: boolean) => {
     setLargeImg(state);
   };
@@ -68,13 +74,18 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
       ) : (
         <section className="flex flex-col gap-4">
           <h3 className="hidden font-semibold sm:block">
-            차단한 강사 ({blockedList.lecturerBlock.length})명
+            차단한 강사 ({blockLists.length})명
           </h3>
           <div className="flex flex-col-reverse gap-4 sm:flex-row">
-            <BlockedInstructors instructors={blockedList.lecturerBlock} />
+            {blockLists.length > 0 && (
+              <BlockedInstructors
+                instructors={blockLists}
+                blockListHandler={blockListHandler}
+              />
+            )}
 
             <h3 className="font-semibold sm:hidden">
-              차단한 강사 ({blockedList.lecturerBlock.length})명
+              차단한 강사 ({blockLists.length})명
             </h3>
 
             <article className="h-fit w-full border border-solid border-gray-700 bg-white shadow-float sm:w-fit">
