@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React, { Fragment, useState } from 'react';
 import { StarSVG } from '@/icons/svg';
 import ImagesViewer from './ImagesViewer';
@@ -10,6 +11,7 @@ import { Instructors } from '@/types/types';
 
 interface InstructorCardProps extends Instructors {
   largeImg: boolean;
+  isLiked: boolean;
 }
 
 const InstructorCard = ({
@@ -22,6 +24,7 @@ const InstructorCard = ({
   teamAffiliation,
   href,
   largeImg,
+  isLiked,
 }: InstructorCardProps) => {
   const [focus, setFocus] = useState(false);
 
@@ -59,7 +62,7 @@ const InstructorCard = ({
       </figcaption>
 
       <div className="pointer-events-auto absolute right-1 top-1 z-10">
-        <Like id={id} type="instructor" isLiked={true} />
+        <Like id={id} type="instructor" isLiked={isLiked} />
       </div>
 
       <Link href={href}>

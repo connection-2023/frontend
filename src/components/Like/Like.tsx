@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { HeartSVG } from '@/../public/icons/svg';
 import { postClassLikes, deleteClassLikes } from '@/lib/apis/classApis';
-import { instructorsLikeCancel } from '@/lib/apis/instructorLikesBlockApis';
+import {
+  instructorsLikeCancel,
+  instructorsLikes,
+} from '@/lib/apis/instructorLikesBlockApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { FetchError } from '@/types/types';
 
@@ -16,7 +19,7 @@ interface LikeProps {
 const Like = ({ id, type, isLiked }: LikeProps) => {
   const [liked, setLiked] = useState(isLiked);
   const style = liked
-    ? 'fill-main-color stroke-main-color'
+    ? 'fill-main-color stroke-main-color hover:fill-none hover:stroke-none'
     : 'hover:fill-main-color hover:stroke-main-color';
 
   const handleLike = async () => {
@@ -32,7 +35,7 @@ const Like = ({ id, type, isLiked }: LikeProps) => {
       } else {
         retryFunc = liked
           ? () => instructorsLikeCancel(id)
-          : () => instructorsLikeCancel(id);
+          : () => instructorsLikes(id);
         await retryFunc();
       }
     } catch (error) {

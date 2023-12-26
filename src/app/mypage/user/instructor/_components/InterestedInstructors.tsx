@@ -22,7 +22,7 @@ const InterestedInstructors = ({
           largeImg ? 'h-64' : 'h-[12.5rem]'
         } w-full sm:h-[15.5rem] md:h-52 lg:h-60 xl:h-[15.2rem]`}
       >
-        <InstructorCard {...info} largeImg={largeImg} />
+        <InstructorCard {...info} largeImg={largeImg} isLiked={true} />
       </div>
     ))}
   </section>
