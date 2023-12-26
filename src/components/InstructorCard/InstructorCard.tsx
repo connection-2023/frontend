@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
 import React, { Fragment, useState } from 'react';
-import { StarSVG } from '@/icons/svg';
 import ImagesViewer from './ImagesViewer';
+import { StarSVG } from '../../../public/icons/svg';
 import Like from '../Like/Like';
 import Review from '../Review/Review';
 import { Instructors } from '@/types/types';

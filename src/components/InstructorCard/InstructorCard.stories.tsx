@@ -37,7 +37,7 @@ const meta: Meta<typeof InstructorCard> = {
       'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
     ],
     name: '이바다',
-    address: '서울 마포구',
+    address: ['서울 마포구'],
     teamAffiliation: '원밀리언즈',
     genres: ['방송댄스', '힙합', '탱고'],
     average: 3,

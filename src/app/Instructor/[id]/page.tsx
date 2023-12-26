@@ -7,6 +7,7 @@ import {
   getInstructorClassLists,
 } from '@/lib/apis/serverApis/instructorPostApis';
 import { getLecturerPassList } from '@/lib/apis/serverApis/passApis';
+import { useUserStore } from '@/store/userStore';
 import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
   formatLocationToString,
@@ -28,7 +29,9 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const profile = getInstructor(id);
+  const userStoreState = useUserStore.getState();
+
+  const profile = getInstructor(id, !!userStoreState.authUser);
   const classLists = getInstructorClassLists(id);
   const passLists = getLecturerPassList(id);
 
