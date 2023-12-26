@@ -1,7 +1,11 @@
 'use client';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { HeartSVG } from '@/../public/icons/svg';
 import { postClassLikes, deleteClassLikes } from '@/lib/apis/classApis';
+import { instructorsLikeCancel } from '@/lib/apis/instructorLikesBlockApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
+import { FetchError } from '@/types/types';
 
 interface LikeProps {
   id: string | number;
@@ -16,13 +20,35 @@ const Like = ({ id, type, isLiked }: LikeProps) => {
     : 'hover:fill-main-color hover:stroke-main-color';
 
   const handleLike = async () => {
-    if (type === 'class') {
-      if (liked) {
-        await deleteClassLikes(String(id));
+    let retryFunc: () => Promise<any> = async () => {};
+
+    try {
+      if (type === 'class') {
+        retryFunc = liked
+          ? () => deleteClassLikes(String(id))
+          : () => postClassLikes(String(id));
+        await retryFunc();
+        setLiked(!liked);
       } else {
-        await postClassLikes(String(id));
+        retryFunc = liked
+          ? () => instructorsLikeCancel(id)
+          : () => instructorsLikeCancel(id);
+        await retryFunc();
       }
-      setLiked(!liked);
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            if (retryFunc) await retryFunc();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
     }
   };
 
