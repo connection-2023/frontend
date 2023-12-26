@@ -13,10 +13,10 @@ import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import ClassList from './_components/ClassList';
 import InstructorCarousel from './_components/InstructorCarousel';
 import ReviewSection from './_components/ReviewSection';
+import OptionButtons from '@/components/Button/OptionButtons';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
-import OptionButtons from '@/components/Button/OptionButtons';
 
 const h2Style = 'mb-2 text-lg font-bold';
 

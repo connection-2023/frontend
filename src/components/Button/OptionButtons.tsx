@@ -77,7 +77,7 @@ const OptionButtons = ({
       />
 
       {isOptionMenuOpened && (
-        <ul className="absolute top-6 w-[5.3rem] overflow-hidden whitespace-nowrap rounded-md bg-white text-sm font-medium text-black shadow-float">
+        <ul className="absolute right-0 top-6 w-24 overflow-hidden whitespace-nowrap rounded-md bg-white text-sm font-medium text-black shadow-float">
           <li
             onClick={() => {
               setIsSharingMenuOpened(!isSharingMenuOpened);

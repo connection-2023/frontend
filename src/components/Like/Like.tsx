@@ -41,6 +41,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
             }
           : () => instructorsLikes(id);
         await retryFunc();
+        setLiked(!liked);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -49,6 +50,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
           try {
             await accessTokenReissuance();
             if (retryFunc) await retryFunc();
+            setLiked(!liked);
           } catch (error) {
             console.error(error);
           }
