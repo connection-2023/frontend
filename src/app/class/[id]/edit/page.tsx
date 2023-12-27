@@ -17,6 +17,7 @@ import {
 } from '@/icons/svg';
 import { getOriginalClassInfo } from '@/lib/apis/classApis';
 import { useUserStore } from '@/store/userStore';
+import createOptions from '@/utils/generateStudentCountOptions';
 import {
   formatLocationToString,
   formatGenreToString,
@@ -24,6 +25,7 @@ import {
 import EditClassRange from './_components/EditClassRange';
 import EditDayoff from './_components/EditDayoff';
 import SideNavbar from './_components/SideNavbar';
+import NumberSelect from '../../create/_components/NumberSelect';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
@@ -322,18 +324,36 @@ const ClassEditPage = () => {
               )}
             />
           </section>
-          {/* 진행 장소 */}
 
           {/* 가격 설정 */}
-          <section id="price" className="text-lg font-semibold">
+          <section
+            id="price"
+            className="whitespace-nowrap text-lg font-semibold"
+          >
             <div className={`flex ${borderStyle} py-4`}>
               <p className="mr-10 w-28">총 클래스 횟수</p>
               <p>{initData.schedule.length}회</p>
             </div>
 
-            <div className={`flex ${borderStyle} py-4`}>
+            <div className={`flex ${borderStyle} items-center py-4`}>
               <p className="mr-10 w-28">1회 최대 수강생</p>
-              <div>명</div>
+              <Controller
+                name="maxCapacity"
+                control={control}
+                defaultValue={{ value: maxCapacity, label: maxCapacity }}
+                rules={{
+                  required: '최대 수강생',
+                }}
+                render={({ field }) => (
+                  <NumberSelect
+                    instanceId="maxCapacity"
+                    defaultValue={field.value}
+                    onChange={field.onChange}
+                    options={createOptions(maxCapacity, 100)}
+                  />
+                )}
+              />
+              <div className="ml-1">명</div>
             </div>
 
             <div className="mb-10 flex py-4">
