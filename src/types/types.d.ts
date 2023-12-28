@@ -34,6 +34,9 @@ export interface IFullCalendarEvent {
   start: Date;
   end: Date;
   title: string;
+  numberOfParticipants: number;
+  maxCapacity: number;
+  isGroup: boolean;
 }
 
 export interface ErrorMessage {
