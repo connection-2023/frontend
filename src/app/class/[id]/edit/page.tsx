@@ -30,7 +30,9 @@ import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import UploadImage from '@/components/UploadImage/UploadImage';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { IClassEditData } from '@/types/class';
+import { ErrorMessage } from '@/types/types';
 
 const borderStyle = 'border-b border-solid border-gray-700';
 const h2Style = 'mb-4 flex items-center text-lg font-bold';
@@ -38,10 +40,16 @@ const h3Style = 'flex gap-1.5 text-sm';
 
 const ClassEditPage = () => {
   const [initData, setInitData] = useState<IClassEditData | undefined>();
+  const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const path = usePathname();
   const postId = path.split('/')[2];
   const formMethods = useForm();
-  const { control, watch, handleSubmit } = formMethods;
+  const {
+    control,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = formMethods;
   const watchClassRange = watch('classRange');
   const authUser = useUserStore((state) => state.authUser);
   const userType = useUserStore((state) => state.userType);
@@ -60,8 +68,23 @@ const ClassEditPage = () => {
   //   if (userType !== 'lecturer' && authUser?.id !== initData.lecturer.id)
   //     return null;
 
+  const closeValidationMessage = () => {
+    setInvalidData(null);
+  };
+
   const onSubmit = (data: any) => {
     console.log(data);
+  };
+
+  const invalid = (data: Record<string, any>) => {
+    const invalidList = Object.entries(data).map(([key, value]) => ({
+      key,
+      ...value,
+    }));
+
+    console.log(invalidList);
+
+    setInvalidData(invalidList);
   };
 
   const {
@@ -77,7 +100,6 @@ const ClassEditPage = () => {
     endDate,
     locationDescription,
     lectureToRegion,
-    detailAddress,
     reservationDeadline,
     lectureToDanceGenre,
     lectureNotification,
@@ -99,7 +121,10 @@ const ClassEditPage = () => {
     <main className="border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 px-4 md:grid-cols-[1fr_3fr] md:gap-x-5 xl:grid-cols-[1fr_2fr_1fr] xl:px-0">
       <section className="mb-4 flex w-full flex-col items-center border-b border-solid border-gray-500 md:col-span-2 xl:col-span-3">
         {/* 클래스 이미지 */}
-        <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
+        <div
+          id="images"
+          className="mb-5 flex h-[18rem] w-full justify-center px-10"
+        >
           <Controller
             name="images"
             control={control}
@@ -111,7 +136,7 @@ const ClassEditPage = () => {
               <UploadImage
                 onChange={field.onChange}
                 defaultImg={field.value}
-                //errors={errors.images}
+                errors={errors.images}
               />
             )}
           />
@@ -152,7 +177,7 @@ const ClassEditPage = () => {
       </section>
 
       {/* navbar */}
-      <SideNavbar onClick={handleSubmit(onSubmit)} />
+      <SideNavbar onClick={handleSubmit(onSubmit, invalid)} />
 
       <div>
         <FormProvider {...formMethods}>
@@ -181,7 +206,6 @@ const ClassEditPage = () => {
               title="커리큘럼"
               dataName="curriculum"
               defaultValue={curriculum}
-              placeholder={QUILL_DEFAULT_VALUE}
               height="652px"
               maxLength={3000}
               minLength={200}
@@ -227,7 +251,14 @@ const ClassEditPage = () => {
               }}
               render={({ field }) => (
                 <div className={`${borderStyle} py-6`}>
-                  <h2 className={h2Style}>전체 클래스 기간을 설정해주세요</h2>
+                  <h2
+                    id="classRange"
+                    className={`${h2Style} ${
+                      errors.classRange && 'animate-vibration text-main-color'
+                    }`}
+                  >
+                    전체 클래스 기간을 설정해주세요
+                  </h2>
                   <div className="flex gap-x-4">
                     <EditClassRange
                       defaultValue={field.value}
@@ -286,7 +317,15 @@ const ClassEditPage = () => {
               }}
               render={({ field }) => (
                 <div className={`${borderStyle} py-6`}>
-                  <h2 className={h2Style}>신청 마감 시간을 설정해주세요</h2>
+                  <h2
+                    id="reservationDeadline"
+                    className={`${h2Style} ${
+                      errors.reservationDeadline &&
+                      'animate-vibration text-main-color'
+                    }`}
+                  >
+                    신청 마감 시간을 설정해주세요
+                  </h2>
                   <div className="ml-[0.38rem] text-sm font-medium text-gray-100">
                     <span>수업 시작</span>
                     <input
@@ -313,7 +352,15 @@ const ClassEditPage = () => {
               }}
               render={({ field }) => (
                 <div className={`${borderStyle} py-6`}>
-                  <h2 className={h2Style}>예약시 유의사항</h2>
+                  <h2
+                    id="reservationComment"
+                    className={`${h2Style} ${
+                      errors.reservationComment &&
+                      'animate-vibration text-main-color'
+                    }`}
+                  >
+                    예약시 유의사항
+                  </h2>
                   <textarea
                     defaultValue={field.value}
                     onChange={field.onChange}
@@ -323,6 +370,24 @@ const ClassEditPage = () => {
                 </div>
               )}
             />
+
+            {/* 진행 장소 설명 */}
+            <div className="felx flex-col py-6">
+              <Controller
+                name="locationDescription"
+                control={control}
+                defaultValue={locationDescription}
+                render={({ field }) => (
+                  <TextAreaSection
+                    placeholder="수업장소까지 가는 방법, 추천 교통편, 주차시설 유무 등에 대한 정보를 입력해주세요."
+                    maxLength={500}
+                    dataName="locationDescription"
+                    defaultValue={field.value}
+                    title="진행 장소 추가 설명"
+                  />
+                )}
+              />
+            </div>
           </section>
 
           {/* 가격 설정 */}
@@ -357,7 +422,14 @@ const ClassEditPage = () => {
             </div>
 
             <div className="mb-10 flex py-4">
-              <p className="mr-10 w-28">가격 설정</p>
+              <p
+                id="price"
+                className={`mr-10 w-28 ${
+                  errors.price && 'animate-vibration text-main-color'
+                }`}
+              >
+                가격 설정
+              </p>
 
               <Controller
                 name="price"
@@ -365,6 +437,7 @@ const ClassEditPage = () => {
                 defaultValue={price}
                 rules={{
                   required: '가격',
+                  min: { value: 1, message: '올바른 가격' },
                 }}
                 render={({ field }) => (
                   <div className="ml-[0.38rem] text-gray-100">
@@ -383,6 +456,13 @@ const ClassEditPage = () => {
           </section>
         </FormProvider>
       </div>
+
+      {/* 유효성 토스트 메세지 */}
+      <ValidationMessage
+        title="하기 값(들)을 확인해 주세요."
+        closeModal={closeValidationMessage}
+        invalidData={invalidData}
+      />
     </main>
   );
 };

@@ -1,9 +1,10 @@
 import React, { ReactNode, useEffect } from 'react';
-import Modal from '@/components/Modal/Modal';
 import ProgressBar from './ProgressBar';
+import Modal from '@/components/Modal/Modal';
 import { ErrorMessage } from '@/types/types';
 
 interface ValidationMessageProps {
+  title?: string;
   invalidData: ErrorMessage[] | null;
   closeModal: () => void;
 }
@@ -11,6 +12,7 @@ interface ValidationMessageProps {
 const ValidationMessage = ({
   invalidData,
   closeModal,
+  title = '모두 작성하면 다음페이지로 넘어갈 수 있어요.',
 }: ValidationMessageProps) => {
   let timeID: NodeJS.Timeout;
 
@@ -37,9 +39,7 @@ const ValidationMessage = ({
     <Modal isOpened={!!invalidData} handleClosed={closeModal}>
       <div className="relative flex h-36 w-full max-w-[31rem] flex-col justify-evenly overflow-hidden rounded-md border border-solid border-black bg-white px-6 shadow-float">
         <div className="flex flex-col items-center gap-2">
-          <p className="text-sm font-semibold text-main-color">
-            모두 작성하면 다음페이지로 넘어갈 수 있어요.
-          </p>
+          <p className="text-sm font-semibold text-main-color">{title}</p>
           <ReminderText>
             {[...new Set(invalidData?.map(({ message }) => message))].join(
               ', ',
