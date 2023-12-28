@@ -3,6 +3,7 @@ import { parse, format, parseISO } from 'date-fns';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import {
   ANNOUNCEMENT,
   CLASS_OPERATION_PLAN,
@@ -15,8 +16,11 @@ import {
   LevelSVG,
   GenreSVG,
 } from '@/icons/svg';
-import { getOriginalClassInfo } from '@/lib/apis/classApis';
+import { getOriginalClassInfo, updateClassData } from '@/lib/apis/classApis';
+import { deleteImage } from '@/lib/apis/imageApi';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store/userStore';
+import { uploadImageFilesWithFallback } from '@/utils/apiDataProcessor';
 import createOptions from '@/utils/generateStudentCountOptions';
 import {
   formatLocationToString,
@@ -31,8 +35,12 @@ import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import UploadImage from '@/components/UploadImage/UploadImage';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { IClassEditData } from '@/types/class';
-import { ErrorMessage } from '@/types/types';
+import {
+  IClassEditData,
+  IClassEditFormData,
+  IClassEditRequest,
+} from '@/types/class';
+import { ErrorMessage, FetchError } from '@/types/types';
 
 const borderStyle = 'border-b border-solid border-gray-700';
 const h2Style = 'mb-4 flex items-center text-lg font-bold';
@@ -43,7 +51,7 @@ const ClassEditPage = () => {
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const path = usePathname();
   const postId = path.split('/')[2];
-  const formMethods = useForm();
+  const formMethods = useForm<IClassEditFormData>();
   const {
     control,
     watch,
@@ -72,8 +80,40 @@ const ClassEditPage = () => {
     setInvalidData(null);
   };
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: IClassEditFormData) => {
+    let reqData: IClassEditRequest;
+    try {
+      const { images, curriculum, maxCapacity } = data;
+
+      curriculum.deletedImages.forEach(
+        async ({ src }) => await deleteImage({ imageUrl: src }),
+      );
+
+      reqData = {
+        //...data,
+        images: await uploadImageFilesWithFallback(images, 'lectures'),
+        curriculum: curriculum.content,
+        // maxCapacity: maxCapacity.value, 백엔드 500 오류 수정되면 주석 해제
+      };
+
+      await updateClassData(postId, reqData);
+
+      toast.success('수정 완료');
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await updateClassData(postId, reqData!);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
   };
 
   const invalid = (data: Record<string, any>) => {
@@ -81,8 +121,6 @@ const ClassEditPage = () => {
       key,
       ...value,
     }));
-
-    console.log(invalidList);
 
     setInvalidData(invalidList);
   };

@@ -9,6 +9,7 @@ import {
   IClassSchedule,
   ILearner,
 } from '@/types/class';
+import { FetchError } from '@/types/types';
 
 export const getClassReviews = async (
   id: string,
@@ -143,11 +144,21 @@ export const updateClassData = async (id: string, data: IClassEditRequest) => {
       credentials: 'include',
       method: 'PATCH',
       body: JSON.stringify(data),
-    }).then((data) => data.json());
+    });
 
-    return response;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData;
   } catch (error) {
-    return new Error('클래스 수정 요청 오류!');
+    console.error('클래스 수정 오류', error);
+    throw error;
   }
 };
 

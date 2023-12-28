@@ -12,17 +12,17 @@ import {
   postSingleImage,
 } from '@/lib/apis/imageApi';
 import {
+  formatLocationToString,
+  formatGenreToString,
+} from '@/utils/parseUtils';
+import { calculateFinalDates } from './parseUtils';
+import {
   IprocessedDraft,
   classCreateData,
   IClassPostResponse,
   ClassCardType,
 } from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
-import {
-  formatLocationToString,
-  formatGenreToString,
-} from '@/utils/parseUtils';
-import { calculateFinalDates } from './parseUtils';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
