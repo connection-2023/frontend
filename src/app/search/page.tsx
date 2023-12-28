@@ -1,3 +1,4 @@
+import Results from './_components/Results';
 import Search from './_components/Search';
 
 const SearchPage = async ({
@@ -5,7 +6,11 @@ const SearchPage = async ({
 }: {
   searchParams: { query: string };
 }) => {
-  return searchParams.query ? <div>sss</div> : <Search />;
+  return searchParams.query ? (
+    <Results query={searchParams.query} />
+  ) : (
+    <Search />
+  );
 };
 
 export default SearchPage;

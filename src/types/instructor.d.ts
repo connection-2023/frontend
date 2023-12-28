@@ -100,3 +100,15 @@ export interface IInstructorReviewList {
     likedLectureReview: number;
   };
 }
+
+export interface searchInstructor {
+  searchAfter: number[];
+  id: number;
+  nickname: string;
+  profileCardImageUrl: string;
+  stars: number;
+  reviewCount: number;
+  lecturerImages: string[];
+  regions: { id: number; administrativeDistrict: string; district: string }[];
+  genres: { id: number; genre: string }[];
+}
