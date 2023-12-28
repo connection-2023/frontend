@@ -9,7 +9,7 @@ const SearchInput = () => {
   const router = useRouter();
 
   const searchKeyword = () => {
-    router.push(`search?query=${keyword}`);
+    router.push(`/search?query=${keyword}`);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
