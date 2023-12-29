@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -12,9 +11,9 @@ export const DELETE = async (request: NextRequest) => {
   }
 
   const searchParams = request.nextUrl.searchParams;
-  const id = searchParams.get('id');
+  const lectureId = searchParams.get('lectureId');
 
-  if (!id) {
+  if (!lectureId) {
     return NextResponse.json(
       {
         status: 401,
@@ -41,7 +40,7 @@ export const DELETE = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + `/lecture-likes/${id}`, {
+  const response = await fetch(END_POINT + '/lecturer-block/' + lectureId, {
     method: 'DELETE',
     credentials: 'include',
     headers,
