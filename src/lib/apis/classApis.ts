@@ -9,6 +9,7 @@ import {
   IClassSchedule,
   ILearner,
 } from '@/types/class';
+import { FetchError } from '@/types/types';
 
 export const getClassReviews = async (
   id: string,
@@ -32,11 +33,22 @@ export const postClassLikes = async (id: string) => {
   try {
     const response = await fetch(`${DOMAIN}/api/class/likes/add?id=${id}`, {
       method: 'POST',
+      credentials: 'include',
     });
 
-    return response;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const data = await response.json();
+
+    return data;
   } catch (error) {
-    return new Error('클래스 좋아요 요청 오류!');
+    console.error('클래스 좋아요 요청 오류', error);
+    throw error;
   }
 };
 
@@ -44,11 +56,22 @@ export const deleteClassLikes = async (id: string) => {
   try {
     const response = await fetch(`${DOMAIN}/api/class/likes/delete?id=${id}`, {
       method: 'DELETE',
+      credentials: 'include',
     });
 
-    return response;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const data = await response.json();
+
+    return data;
   } catch (error) {
-    return new Error('클래스 좋아요 취소 요청 오류!');
+    console.error('클래스 좋아요 취소 요청 오류', error);
+    throw error;
   }
 };
 

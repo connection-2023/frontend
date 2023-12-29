@@ -87,13 +87,16 @@ const Carousel = ({
 
   const extendForCarousel = useCallback(
     (elementArr: React.ReactNode[] | string[]) => {
-      const newElementArr = [...elementArr, elementArr[0]];
-      newElementArr.shift();
-      return [
-        newElementArr.at(-1),
-        ...newElementArr,
-        ...newElementArr.slice(0, priority - 1),
-      ];
+      if (elementArr.length > 1) {
+        const newElementArr = [...elementArr, elementArr[0]];
+        newElementArr.shift();
+        return [
+          newElementArr.at(-1),
+          ...newElementArr,
+          ...newElementArr.slice(0, priority - 1),
+        ];
+      }
+      return [...elementArr];
     },
     [priority],
   );
@@ -137,7 +140,7 @@ const Carousel = ({
     if (movePause && intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
     } else {
-      if (move) {
+      if (move && carouselLength > 1) {
         setIsAnimating(true);
         if (priority === 1) {
           timeoutIdRef.current = setTimeout(() => updateImageIndex(), 100);
@@ -245,7 +248,7 @@ const Carousel = ({
         </div>
       )}
 
-      {arrow && (
+      {arrow && carouselLength > 1 && (
         <>
           <Arrow
             onClick={(e: React.MouseEvent) => changeImage(e, 'BACKWARD')}

@@ -3,17 +3,33 @@ import type { NextRequest } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-if (!END_POINT) {
-  throw new Error('환경 변수 누락');
-}
-
 export const POST = async (request: NextRequest) => {
+  if (!END_POINT) {
+    return NextResponse.json({
+      status: 500,
+      message: '환경 변수가 설정되지 않았습니다.',
+    });
+  }
+
   const searchParams = request.nextUrl.searchParams;
   const id = searchParams.get('id');
   const token = request.cookies.get('userAccessToken')?.value;
 
   if (!token) {
-    return;
+    return NextResponse.json({
+      status: 401,
+      message: '토큰이 존재하지 않습니다.',
+    });
+  }
+
+  if (!id) {
+    return NextResponse.json(
+      {
+        status: 401,
+        message: 'id값이 존재하지 않습니다.',
+      },
+      { status: 401 },
+    );
   }
 
   const serverResponse = await fetch(END_POINT + `/lecture-likes/${id}`, {
@@ -22,11 +38,20 @@ export const POST = async (request: NextRequest) => {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-  }).then((data) => data.json());
+  });
 
-  if (serverResponse.statusCode !== 201) {
-    throw new Error('강의 좋아요 요청 에러!');
+  if (!serverResponse.ok) {
+    const errorData = await serverResponse.json();
+    return NextResponse.json(
+      {
+        status: serverResponse.status,
+        message: errorData.message || '서버 요청 오류',
+      },
+      { status: serverResponse.status },
+    );
   }
 
-  return NextResponse.json(serverResponse);
+  const result = await serverResponse.json();
+
+  return NextResponse.json(result);
 };

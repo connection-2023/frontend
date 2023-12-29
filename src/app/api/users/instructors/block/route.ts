@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const DELETE = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   if (!END_POINT) {
     return NextResponse.json({
       status: 500,
@@ -12,9 +12,9 @@ export const DELETE = async (request: NextRequest) => {
   }
 
   const searchParams = request.nextUrl.searchParams;
-  const id = searchParams.get('id');
+  const lectureId = searchParams.get('lectureId');
 
-  if (!id) {
+  if (!lectureId) {
     return NextResponse.json(
       {
         status: 401,
@@ -41,24 +41,27 @@ export const DELETE = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + `/lecture-likes/${id}`, {
-    method: 'DELETE',
-    credentials: 'include',
-    headers,
-  });
+  const serverResponse = await fetch(
+    END_POINT + `/lecturer-block/${lectureId}`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers,
+    },
+  );
 
-  if (!response.ok) {
-    const errorData = await response.json();
+  if (!serverResponse.ok) {
+    const errorData = await serverResponse.json();
     return NextResponse.json(
       {
-        status: response.status,
+        status: serverResponse.status,
         message: errorData.message || '서버 요청 오류',
       },
-      { status: response.status },
+      { status: serverResponse.status },
     );
   }
 
-  const result = await response.json();
+  const result = await serverResponse.json();
 
   return NextResponse.json(result);
 };

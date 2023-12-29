@@ -2,8 +2,12 @@ import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import { getInstructorPost } from '@/lib/apis/instructorPostApis';
-import { getInstructorClassLists } from '@/lib/apis/serverApis/instructorPostApis';
+import {
+  getInstructor,
+  getInstructorClassLists,
+} from '@/lib/apis/serverApis/instructorPostApis';
 import { getLecturerPassList } from '@/lib/apis/serverApis/passApis';
+import { useUserStore } from '@/store/userStore';
 import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
   formatLocationToString,
@@ -13,10 +17,10 @@ import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import ClassList from './_components/ClassList';
 import InstructorCarousel from './_components/InstructorCarousel';
 import ReviewSection from './_components/ReviewSection';
+import OptionButtons from '@/components/Button/OptionButtons';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
-import OptionButtons from '@/components/Button/OptionButtons';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -25,7 +29,9 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const profile = getInstructorPost(id);
+  const userStoreState = useUserStore.getState();
+
+  const profile = getInstructor(id, !!userStoreState.authUser);
   const classLists = getInstructorClassLists(id);
   const passLists = getLecturerPassList(id);
 
@@ -35,7 +41,7 @@ const InstructorDetailPage = async ({
     passLists,
   ]);
 
-  if (profileData instanceof Error || classListsResponse instanceof Error) {
+  if (profileData === undefined || classListsResponse instanceof Error) {
     return null;
   }
 
@@ -54,6 +60,7 @@ const InstructorDetailPage = async ({
     affiliation,
     stars,
     reviewCount,
+    isLiked,
   } = profileData;
 
   const classList = transformToCardData(classListsResponse, {
@@ -74,7 +81,7 @@ const InstructorDetailPage = async ({
           <div className=" relative flex w-full min-w-[23rem] items-center sm:justify-center">
             <h1 className="box-border flex items-center gap-1 text-lg font-bold sm:pl-6">
               {nickname}
-              <Like type="instructor" id={id} />
+              <Like type="instructor" id={id} isLiked={isLiked} />
             </h1>
             <div className="absolute right-0 flex gap-3">
               <OptionButtons
