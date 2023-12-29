@@ -1,9 +1,10 @@
 import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
 import { CITY_ABBREVIATION_NAME } from '@/constants/administrativeDistrict';
-import { SearchSVG } from '@/icons/svg';
+import { NotFoundSVG, SearchSVG } from '@/icons/svg';
 import { searchAll } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
+import ListSection from './results/ListSection';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
 import { ClassCardType } from '@/types/class';
@@ -78,7 +79,7 @@ const Results = async ({ query }: { query: string }) => {
             `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
         ),
         genre: genres.map(({ genre }) => genre),
-        type: isGroup ? '그룹레슨' : '개인레슨' + ' ' + lectureMethod,
+        type: isGroup ? '그룹레슨' : '개인레슨',
         review: { average: stars, count: reviewCount },
         price,
         profile: {
@@ -100,13 +101,7 @@ const Results = async ({ query }: { query: string }) => {
         </button>
       </div>
 
-      <div className="flex flex-col">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold ">강사</h2>
-          <Link href="/" className="text-gray-300 underline underline-offset-1">
-            강사 더보기
-          </Link>
-        </div>
+      <ListSection title="강사" link="/" hasResults={instructorList.length > 0}>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-x-4">
           {instructorList.map((info) => (
             <div key={info.id} className="h-60">
@@ -114,21 +109,15 @@ const Results = async ({ query }: { query: string }) => {
             </div>
           ))}
         </div>
-      </div>
+      </ListSection>
 
-      <div className="flex flex-col">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold">클래스</h2>
-          <Link href="/" className="text-gray-300 underline underline-offset-1">
-            클래스 더보기
-          </Link>
-        </div>
+      <ListSection title="클래스" link="/" hasResults={classList.length > 0}>
         <div className="grid gap-y-6 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-9 md:grid-cols-3 lg:gap-x-4 xl:grid-cols-2 xl:gap-5">
           {classList.map((info) => (
             <ClassPreview key={info.id} {...info} />
           ))}
         </div>
-      </div>
+      </ListSection>
     </section>
   );
 };
