@@ -106,8 +106,10 @@ export interface searchInstructor {
   searchAfter: number[];
   id: number;
   nickname: string;
+  affiliation: string;
   profileCardImageUrl: string;
   stars: number;
+  isLiked: boolean;
   reviewCount: number;
   lecturerImages: string[];
   regions: { id: number; administrativeDistrict: string; district: string }[];

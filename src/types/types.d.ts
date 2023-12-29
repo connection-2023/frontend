@@ -80,6 +80,12 @@ export interface Instructors {
   href: string;
 }
 
+export interface InstructorCardProps extends Instructors {
+  largeImg: boolean;
+  isLiked: boolean;
+  likeEvent?: (id: string | number) => void;
+}
+
 export interface INoticeMessage {
   message: string;
   date: string;
