@@ -1,5 +1,4 @@
 import { ClassCardType } from '@/types/class';
-import { couponGET } from '@/types/coupon';
 import { INotice, IPaymentList } from '@/types/types';
 
 const dummyUserInputSuggestion = [
@@ -358,6 +357,7 @@ const dummyMain: MainProps = {
       status: '모집중',
       date: '2023-10-01',
       title: '요리 클래스',
+      isLiked: false,
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
       ],
@@ -377,6 +377,7 @@ const dummyMain: MainProps = {
       status: '마감',
       date: '2023-10-03',
       title: '피아노 클래스',
+      isLiked: false,
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
       ],
@@ -397,6 +398,7 @@ const dummyMain: MainProps = {
       status: '마감',
       date: '2023-10-05',
       title: '미술 클래스 ',
+      isLiked: true,
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
       ],
@@ -416,6 +418,7 @@ const dummyMain: MainProps = {
       id: 6,
       status: '모집중',
       date: '2023_11_07',
+      isLiked: true,
       title: '사진 촬영 클래스 ',
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
@@ -437,6 +440,7 @@ const dummyMain: MainProps = {
       status: '마감',
       date: '2023-12-10',
       title: '코딩 클래스 ',
+      isLiked: true,
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
       ],
@@ -456,6 +460,7 @@ const dummyMain: MainProps = {
       id: 7,
       status: '모집중',
       date: '2024-01-15',
+      isLiked: true,
       title: '영어회화 클래스',
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
@@ -476,6 +481,7 @@ const dummyMain: MainProps = {
       id: 9,
       status: '모집중',
       date: '2024_02_20',
+      isLiked: true,
       title: '체육 클래스',
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
@@ -496,6 +502,7 @@ const dummyMain: MainProps = {
       id: 10,
       status: '모집중',
       date: '2024_03_25',
+      isLiked: true,
       title: '과학 실험 클래스 ',
       imgURL: [
         'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',

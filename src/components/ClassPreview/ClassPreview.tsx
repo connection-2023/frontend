@@ -23,6 +23,7 @@ const ClassPreview = (props: ClassCardType) => {
     review,
     price,
     profile,
+    isLiked,
   } = props;
   const [focus, setFocus] = useState(false);
   const router = useRouter();
@@ -64,7 +65,7 @@ const ClassPreview = (props: ClassCardType) => {
 
             <span className="text-sm">{date}</span>
             <div className="ml-auto">
-              <Like type="class" id={id} />
+              <Like type="class" id={id} isLiked={isLiked} />
             </div>
           </div>
 

@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { Lecture, searchClass } from '@/types/class';
+import { searchClass } from '@/types/class';
 import { searchInstructor } from '@/types/instructor';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
@@ -37,7 +37,6 @@ export const searchAll = async (
     }
 
     const resData = await response.json();
-
     return resData.data;
   } catch (error) {
     console.error(error);

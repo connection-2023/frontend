@@ -20,6 +20,8 @@ const Results = async ({ query }: { query: string }) => {
       !!userStoreState.authUser,
     );
 
+    console.log(searchedLectures);
+
     instructorList = searchedLecturers
       .map(
         ({
@@ -59,6 +61,7 @@ const Results = async ({ query }: { query: string }) => {
         regions,
         genres,
         reviewCount,
+        isLiked,
         lectureMethod, // 원데이, 정기 표시 안하나?
         isGroup,
         stars,
@@ -85,6 +88,7 @@ const Results = async ({ query }: { query: string }) => {
           src: lecturer.profileCardImageUrl,
           nickname: lecturer.nickname,
         },
+        isLiked,
       }),
     );
   } catch (error) {

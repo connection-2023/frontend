@@ -11,6 +11,7 @@ export interface ClassCardType {
   imgURL: string[];
   location: string[];
   genre: string[];
+  isLiked: boolean;
   type: string;
   review: { average: number; count: number };
   price: number;
@@ -455,6 +456,7 @@ export interface searchClass {
   startDate: string;
   endDate: string;
   isGroup: boolean;
+  isLiked: boolean;
   lectureMethod: string;
   stars: number;
   reviewCount: number;
