@@ -17,11 +17,9 @@ const SchedulePage = () => {
       const year = date.getFullYear();
       const month = date.getMonth() + 1;
       const data = await getMonthlyClassPlan(year, month);
-
-      console.log(data);
-      setScheduleData(data);
-
       const progress = getLectureProgress(data);
+
+      setScheduleData(data);
       setProgress(progress);
     };
 
