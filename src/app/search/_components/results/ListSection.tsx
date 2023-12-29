@@ -25,7 +25,7 @@ function ListSection({ title, link, hasResults, children }: ListSectionProps) {
       ) : (
         <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
           <NotFoundSVG />
-          <p>{title}</p>
+          <p>검색 된 {title}가 존재하지 않습니다</p>
         </div>
       )}
     </div>
