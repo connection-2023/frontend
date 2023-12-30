@@ -18,6 +18,7 @@ const ResultInput = ({ query }: { query: string }) => {
   return (
     <div className="relative">
       <input
+        type="text"
         value={keyword}
         onChange={handleInputChange}
         className="h-12 w-full rounded-xl p-4 text-lg shadow-vertical focus:shadow-sub-color1 focus:outline-none"

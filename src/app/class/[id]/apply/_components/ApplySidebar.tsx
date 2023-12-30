@@ -171,7 +171,9 @@ const Agreement = ({ title, detail }: AgreementProps) => {
         <p className="flex-1">{title}</p>
         <button onClick={() => setIsOpen(!isOpen)} aria-label="자세히보기">
           <ArrowDownSVG
-            className={`fill-gray-500 ${isOpen ? 'rotate-180' : ''}`}
+            className={`h-[34px] w-[34px] fill-gray-500 ${
+              isOpen ? 'rotate-180' : ''
+            }`}
           />
         </button>
       </li>

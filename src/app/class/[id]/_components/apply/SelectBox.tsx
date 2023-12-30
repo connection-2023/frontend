@@ -30,7 +30,9 @@ const SelectBox = ({ lists, selected, onSelect }: SelectBoxProps) => {
       >
         <span className="flex-1">{selected}</span>
         <ArrowDownSVG
-          className={`fill-gray-100 ${isListOpened && 'rotate-180'}`}
+          className={`h-[34px] w-[34px] fill-gray-100 ${
+            isListOpened && 'rotate-180'
+          }`}
         />
       </div>
       <ul

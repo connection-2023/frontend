@@ -112,7 +112,7 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
                     className="sm:hidden"
                   >
                     <ArrowDownSVG
-                      className={`fill-main-color duration-200 ${
+                      className={`h-[34px] w-[34px] fill-main-color duration-200 ${
                         accordion && '-rotate-180'
                       }`}
                     />
