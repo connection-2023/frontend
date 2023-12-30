@@ -23,7 +23,11 @@ const INIT_FILTER_OPTIONS: IFilterOptions = {
   daytime: [],
 };
 
-const Filters = ({ type }: { type: string }) => {
+interface FiltersProps {
+  type: 'instructor' | 'class';
+}
+
+const Filters = ({ type }: FiltersProps) => {
   const [filterOption, setFilterOption] = useState(INIT_FILTER_OPTIONS);
   const [options, setOptions] = useState<{ type: string; value: string }[]>([]);
 
@@ -124,43 +128,62 @@ const Filters = ({ type }: { type: string }) => {
     }
   };
 
-  const filterComponents = [
-    <LocationFilter
-      filterOption={filterOption.location}
-      updateFilterOption={updateFilterOption}
-      key="location"
-    />,
-    <GenreFilter
-      filterOption={filterOption.genre}
-      updateFilterOption={updateFilterOption}
-      key="genre"
-    />,
-    <ReviewFilter
-      filterOption={filterOption.review}
-      updateFilterOption={updateFilterOption}
-      key="review"
-    />,
-    <PriceFilter
-      filterOption={filterOption.price}
-      updateFilterOption={updateFilterOption}
-      key="price"
-    />,
-    <ProgressMethodFilter
-      filterOption={filterOption.method}
-      updateFilterOption={updateFilterOption}
-      key="method"
-    />,
-    <DayTimeFilter
-      filterOption={filterOption.daytime}
-      updateFilterOption={updateFilterOption}
-      key="daytime"
-    />,
-    <DateFilter
-      filterOption={filterOption.date}
-      updateFilterOption={updateFilterOption}
-      key="date"
-    />,
-  ];
+  const filterComponents =
+    type === 'class'
+      ? [
+          <LocationFilter
+            filterOption={filterOption.location}
+            updateFilterOption={updateFilterOption}
+            key="location"
+          />,
+          <GenreFilter
+            filterOption={filterOption.genre}
+            updateFilterOption={updateFilterOption}
+            key="genre"
+          />,
+          <ReviewFilter
+            filterOption={filterOption.review}
+            updateFilterOption={updateFilterOption}
+            key="review"
+          />,
+          <PriceFilter
+            filterOption={filterOption.price}
+            updateFilterOption={updateFilterOption}
+            key="price"
+          />,
+          <ProgressMethodFilter
+            filterOption={filterOption.method}
+            updateFilterOption={updateFilterOption}
+            key="method"
+          />,
+          <DayTimeFilter
+            filterOption={filterOption.daytime}
+            updateFilterOption={updateFilterOption}
+            key="daytime"
+          />,
+          <DateFilter
+            filterOption={filterOption.date}
+            updateFilterOption={updateFilterOption}
+            key="date"
+          />,
+        ]
+      : [
+          <LocationFilter
+            filterOption={filterOption.location}
+            updateFilterOption={updateFilterOption}
+            key="location"
+          />,
+          <GenreFilter
+            filterOption={filterOption.genre}
+            updateFilterOption={updateFilterOption}
+            key="genre"
+          />,
+          <ReviewFilter
+            filterOption={filterOption.review}
+            updateFilterOption={updateFilterOption}
+            key="review"
+          />,
+        ];
 
   const onClickDelete = (optionToRemove: { type: string; value: string }) => {
     // options 업데이트
@@ -230,12 +253,6 @@ const Filters = ({ type }: { type: string }) => {
 
   return (
     <>
-      <div className="mb-3 flex w-full flex-wrap items-center gap-2">
-        {filterComponents.map((filter) => filter)}
-        <ResetButton onClick={onClickReset}>
-          <span className="text-sm font-bold">초기화</span>
-        </ResetButton>
-      </div>
       <ul className="flex w-full flex-wrap gap-x-5 gap-y-1">
         {options.map(
           (option) =>
@@ -249,6 +266,12 @@ const Filters = ({ type }: { type: string }) => {
             ),
         )}
       </ul>
+      <div className="mb-3 flex w-full flex-wrap items-center gap-2">
+        {filterComponents.map((filter) => filter)}
+        <ResetButton onClick={onClickReset}>
+          <span className="text-sm font-bold">초기화</span>
+        </ResetButton>
+      </div>
     </>
   );
 };

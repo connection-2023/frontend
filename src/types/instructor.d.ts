@@ -171,3 +171,13 @@ export interface InstructorBlock {
   nickname: string;
   imgURL: string[];
 }
+
+export interface searchInstructorParameters {
+  take: number;
+  sortOption: 'LATEST' | 'STARS';
+  value?: string;
+  searchAfter?: [number, number];
+  genres?: string[];
+  regions?: string[];
+  stars?: number;
+}

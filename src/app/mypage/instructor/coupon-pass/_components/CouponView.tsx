@@ -140,7 +140,7 @@ const CouponView = ({
 
         <nav className="flex flex-wrap items-center gap-2 border-y border-solid border-gray-500 py-5">
           {options.map((option) => (
-            <button key={option.id} className="flex items-center gap-1">
+            <div key={option.id} className="flex items-center gap-1">
               <input
                 id={option.id}
                 type="checkbox"
@@ -154,7 +154,7 @@ const CouponView = ({
               >
                 {option.label}
               </label>
-            </button>
+            </div>
           ))}
           <div className="w-80">
             <ClassFilterSelect
