@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowDownSVG } from '@/icons/svg';
 import Carousel from '../../../components/Carousel/Carousel';
+import Accordion from '@/components/Accordion/Accordion';
 
 interface BestInstructorsProps {
   list: { id: number; image: string; nickname: string }[];
@@ -19,15 +20,15 @@ const BestInstructors = ({ list }: BestInstructorsProps) => {
     >
       <h1 className="flex items-center px-4 font-semibold text-white sm:px-9 lg:text-lg xl:px-16">
         오늘의 인기 강사
-        <button>
+        <button onClick={() => setView((prev) => !prev)}>
           <ArrowDownSVG
-            className={`h-6 w-6 fill-white sm:h-9 sm:w-9 ${
-              view && 'rotate-180'
+            className={`h-6 w-6 fill-white duration-300 sm:h-9 sm:w-9 ${
+              view && '-rotate-180'
             }`}
           />
         </button>
       </h1>
-      {view && (
+      <Accordion isOpen={view}>
         <div className="relative px-4 sm:px-9 xl:px-16">
           <div className="overflow-hidden">
             <ul className="h-[4.75rem] w-[4.75rem] lg:h-[9.375rem] lg:w-[9.25rem]">
@@ -69,7 +70,7 @@ const BestInstructors = ({ list }: BestInstructorsProps) => {
             </ul>
           </div>
         </div>
-      )}
+      </Accordion>
     </article>
   );
 };
