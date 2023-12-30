@@ -2,6 +2,10 @@ import { format, parseISO } from 'date-fns';
 import { CITY_ABBREVIATION_NAME } from '@/constants/administrativeDistrict';
 import { searchAll } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
+import {
+  transformSearchClass,
+  transformSearchInstructor,
+} from '@/utils/apiDataProcessor';
 import ListSection from './results/ListSection';
 import ResultInput from './results/ResultInput';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
@@ -21,75 +25,9 @@ const Results = async ({ query }: { query: string }) => {
       !!userStoreState.authUser,
     );
 
-    instructorList = searchedLecturers
-      .map(
-        ({
-          id,
-          nickname,
-          regions,
-          genres,
-          lecturerImages,
-          stars,
-          affiliation,
-          isLiked,
-        }) => ({
-          id,
-          isLiked,
-          largeImg: false,
-          name: nickname,
-          teamAffiliation: affiliation,
-          address: regions.map(
-            ({ administrativeDistrict, district }) =>
-              `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
-          ),
-          genres: genres.map(({ genre }) => genre),
-          imgURL: lecturerImages,
-          average: stars,
-          href: `instructor/${id}`,
-        }),
-      )
-      .slice(0, 4);
+    instructorList = transformSearchInstructor(searchedLecturers).slice(0, 4);
 
-    classList = searchedLectures.map(
-      ({
-        id,
-        title,
-        startDate,
-        endDate,
-        lectureImages,
-        regions,
-        genres,
-        reviewCount,
-        isLiked,
-        lectureMethod, // 원데이, 정기 표시 안하나?
-        isGroup,
-        stars,
-        price,
-        lecturer,
-      }) => ({
-        id,
-        title,
-        date: `${format(parseISO(startDate), 'MM/dd')}~${format(
-          parseISO(endDate),
-          'MM/dd',
-        )} `,
-        status: '모집중', //수정 예정
-        imgURL: lectureImages,
-        location: regions.map(
-          ({ administrativeDistrict, district }) =>
-            `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
-        ),
-        genre: genres.map(({ genre }) => genre),
-        type: isGroup ? '그룹레슨' : '개인레슨',
-        review: { average: stars, count: reviewCount },
-        price,
-        profile: {
-          src: lecturer.profileCardImageUrl,
-          nickname: lecturer.nickname,
-        },
-        isLiked,
-      }),
-    );
+    classList = transformSearchClass(searchedLectures);
   } catch (error) {
     console.error(error);
   }

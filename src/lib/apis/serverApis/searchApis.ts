@@ -85,7 +85,7 @@ export const searchInstructors = async (
     }
 
     const resData = await response.json();
-    return resData.data.lecturerList;
+    return resData.data.lecturerList ?? [];
   } catch (error) {
     console.error(error);
     throw error;

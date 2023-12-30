@@ -18,8 +18,10 @@ import {
   classCreateData,
   IClassPostResponse,
   ClassCardType,
+  searchClass,
 } from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
+import { searchInstructor } from '@/types/instructor';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -424,3 +426,75 @@ export const transformToCardData = (
       genre,
     };
   });
+
+export const transformSearchInstructor = (lecturers: searchInstructor[]) => {
+  return lecturers.map(
+    ({
+      id,
+      nickname,
+      regions,
+      genres,
+      lecturerImages,
+      stars,
+      affiliation,
+      isLiked,
+    }) => ({
+      id,
+      isLiked,
+      largeImg: false,
+      name: nickname,
+      teamAffiliation: affiliation,
+      address: regions.map(
+        ({ administrativeDistrict, district }) =>
+          `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
+      ),
+      genres: genres.map(({ genre }) => genre),
+      imgURL: lecturerImages,
+      average: stars,
+      href: `instructor/${id}`,
+    }),
+  );
+};
+
+export const transformSearchClass = (classList: searchClass[]) => {
+  return classList.map(
+    ({
+      id,
+      title,
+      startDate,
+      endDate,
+      lectureImages,
+      regions,
+      genres,
+      reviewCount,
+      isLiked,
+      lectureMethod, // 원데이, 정기 표시 안하나?
+      isGroup,
+      stars,
+      price,
+      lecturer,
+    }) => ({
+      id,
+      title,
+      date: `${format(parseISO(startDate), 'MM/dd')}~${format(
+        parseISO(endDate),
+        'MM/dd',
+      )} `,
+      status: '모집중' as '모집중' | '마감', //수정 예정
+      imgURL: lectureImages,
+      location: regions.map(
+        ({ administrativeDistrict, district }) =>
+          `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
+      ),
+      genre: genres.map(({ genre }) => genre),
+      type: isGroup ? '그룹레슨' : '개인레슨',
+      review: { average: stars, count: reviewCount },
+      price,
+      profile: {
+        src: lecturer.profileCardImageUrl,
+        nickname: lecturer.nickname,
+      },
+      isLiked,
+    }),
+  );
+};

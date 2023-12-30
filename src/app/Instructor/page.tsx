@@ -1,11 +1,11 @@
-import Link from 'next/link';
 import BestInstructors from '@/app/instructor/_components/BestInstructors';
 import { INSTRUCTOR_TAKE } from '@/constants/constants';
 import { dummyMain } from '@/constants/dummy';
 import { searchInstructors } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
+import { transformSearchInstructor } from '@/utils/apiDataProcessor';
 import InstructorListView from './_components/InstructorListView';
-import { searchInstructor } from '@/types/instructor';
+import { Instructors } from '@/types/types';
 
 const instructorPage = async ({
   searchParams,
@@ -20,7 +20,7 @@ const instructorPage = async ({
 }) => {
   const { authUser } = useUserStore.getState();
 
-  let instructorList: searchInstructor[] = [];
+  let instructorList: Instructors[] = [];
 
   const searchData = {
     take: INSTRUCTOR_TAKE,
@@ -33,6 +33,8 @@ const instructorPage = async ({
 
   try {
     const instructors = await searchInstructors(searchData, !!authUser);
+
+    instructorList = transformSearchInstructor(instructors);
   } catch (error) {
     console.error(error);
   }
