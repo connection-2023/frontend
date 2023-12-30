@@ -1,45 +1,38 @@
 'use client';
 import { useState } from 'react';
-import Filters from '@/components/Filter/Filters';
+import FilterComponent from './FilterComponent';
+import InstructorCard from '@/components/InstructorCard/InstructorCard';
+import { InstructorCardProps } from '@/types/types';
 
-const InstructorListView = () => {
-  const sortOptions: {
-    id: 'LATEST' | 'STARS';
-    label: string;
-  }[] = [
-    {
-      id: 'LATEST',
-      label: '최신순',
-    },
-    {
-      id: 'STARS',
-      label: '별점순',
-    },
-  ];
+const InstructorListView = ({
+  instructorList,
+}: {
+  instructorList: InstructorCardProps[];
+}) => {
+  const [largeImg, setLargeImg] = useState(true);
+
+  const imgStateHandler = (state: boolean) => {
+    setLargeImg(state);
+  };
 
   return (
     <div className="px-4 sm:px-9 xl:px-14">
-      <nav className="mt-4 flex flex-col gap-1">
-        <Filters type="instructor" />
+      <FilterComponent largeImg={largeImg} imgStateHandler={imgStateHandler} />
 
-        <div className="flex gap-2">
-          {sortOptions.map((option) => (
-            <div key={option.id} className="flex items-center gap-1">
-              <input
-                id={option.id}
-                type="checkbox"
-                className="peer h-[18px] w-[18px] accent-black"
-              />
-              <label
-                htmlFor={option.id}
-                className="cursor-pointer text-gray-500 peer-checked:text-black"
-              >
-                {option.label}
-              </label>
+      <div
+        className={`mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 ${
+          largeImg ? 'grid-cols-1' : 'grid-cols-2'
+        }`}
+      >
+        {instructorList.map((info, index) => {
+          const newInfo = { ...info, largeImg };
+          return (
+            <div key={info.id + index} className="h-60">
+              <InstructorCard {...newInfo} />
             </div>
-          ))}
-        </div>
-      </nav>
+          );
+        })}
+      </div>
     </div>
   );
 };

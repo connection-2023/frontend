@@ -41,7 +41,7 @@ const FilterModal = ({ label, children, onReset, onApply }: IFilterModal) => {
   };
 
   return (
-    <div ref={ref} className="relative whitespace-nowrap text-sm">
+    <div ref={ref} className="relative z-modal whitespace-nowrap text-sm">
       <button
         className="box-border flex items-center rounded-[0.625rem] border border-solid border-sub-color1 py-1 pl-3 pr-1 font-medium"
         onClick={onClickLabel}

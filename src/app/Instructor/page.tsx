@@ -5,7 +5,7 @@ import { searchInstructors } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
 import { transformSearchInstructor } from '@/utils/apiDataProcessor';
 import InstructorListView from './_components/InstructorListView';
-import { Instructors } from '@/types/types';
+import { InstructorCardProps } from '@/types/types';
 
 const instructorPage = async ({
   searchParams,
@@ -20,7 +20,7 @@ const instructorPage = async ({
 }) => {
   const { authUser } = useUserStore.getState();
 
-  let instructorList: Instructors[] = [];
+  let instructorList: InstructorCardProps[] = [];
 
   const searchData = {
     take: INSTRUCTOR_TAKE,
@@ -35,6 +35,10 @@ const instructorPage = async ({
     const instructors = await searchInstructors(searchData, !!authUser);
 
     instructorList = transformSearchInstructor(instructors);
+
+    for (let i = 0; i < 11; i++) {
+      instructorList.push(instructorList[0]);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -43,7 +47,7 @@ const instructorPage = async ({
     <section className="flex flex-col">
       <BestInstructors list={dummyMain.topInstructorList} />
 
-      <InstructorListView />
+      <InstructorListView instructorList={instructorList} />
     </section>
   );
 };
