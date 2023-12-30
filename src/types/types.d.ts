@@ -168,3 +168,11 @@ export interface PagenationFilterState {
   targetPage?: number;
   [key: string]: any | undefined;
 }
+
+export interface SearchParams {
+  query?: string;
+  sortOption?: 'LATEST' | 'STARS';
+  genres?: string[];
+  regions?: string[];
+  stars?: number;
+}

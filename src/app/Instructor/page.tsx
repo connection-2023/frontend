@@ -5,18 +5,12 @@ import { searchInstructors } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
 import { transformSearchInstructor } from '@/utils/apiDataProcessor';
 import InstructorListView from './_components/InstructorListView';
-import { InstructorCardProps } from '@/types/types';
+import { InstructorCardProps, SearchParams } from '@/types/types';
 
 const instructorPage = async ({
   searchParams,
 }: {
-  searchParams: {
-    query?: string;
-    sortOption?: 'LATEST' | 'STARS';
-    genres?: string[];
-    regions?: string[];
-    stars?: number;
-  };
+  searchParams: SearchParams;
 }) => {
   const { authUser } = useUserStore.getState();
 
