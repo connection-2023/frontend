@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowDownSVG, NotFoundSVG } from '@/icons/svg';
 import BlockedInstructors from './BlockedInstructors';
 import InterestedInstructors from './InterestedInstructors';
@@ -21,6 +21,13 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
   const [blockLists, setBlockLists] = useState(blockedList.lecturerBlock);
   const [likesLists, setLikesLists] = useState(likesList.lecturerLike);
 
+  useEffect(() => {
+    const storedValue = localStorage.getItem('cardState');
+    if (storedValue !== null) {
+      setLargeImg(storedValue === 'large');
+    }
+  }, []);
+
   const likesListHandler = (cancelId: string | number) => {
     setLikesLists((list) => list.filter(({ id }) => id !== cancelId));
   };
@@ -31,6 +38,7 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
 
   const imgStateHandler = (state: boolean) => {
     setLargeImg(state);
+    localStorage.setItem('cardState', state ? 'large' : 'small');
   };
 
   return (

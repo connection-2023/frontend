@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FilterComponent from './FilterComponent';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
 import { InstructorCardProps } from '@/types/types';
@@ -11,8 +11,16 @@ const InstructorListView = ({
 }) => {
   const [largeImg, setLargeImg] = useState(true);
 
+  useEffect(() => {
+    const storedValue = localStorage.getItem('cardState');
+    if (storedValue !== null) {
+      setLargeImg(storedValue === 'large');
+    }
+  }, []);
+
   const imgStateHandler = (state: boolean) => {
     setLargeImg(state);
+    localStorage.setItem('cardState', state ? 'large' : 'small');
   };
 
   return (
