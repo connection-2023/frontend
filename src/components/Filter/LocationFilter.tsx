@@ -3,7 +3,14 @@ import { useEffect, useState } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { reqRegions } from '@/utils/apiDataProcessor';
 import FilterModal from './FilterModal';
-import { CITY_LIST, WARD_LIST } from '../../constants/administrativeDistrict';
+import {
+  CITY_ABBREVIATION_NAME,
+  CITY_CODE,
+  CITY_LIST,
+  LOCATION_CODE,
+  WARD_CODE,
+  WARD_LIST,
+} from '../../constants/administrativeDistrict';
 import { Regions } from '@/types/instructor';
 import { CityList } from '@/types/locationFilter';
 
@@ -69,7 +76,20 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
   };
 
   const onApply = () => {
-    changeParams({ name: 'regions', value: reqRegions(filterList) });
+    const regionsCode = Object.entries(filterList)
+      .flatMap(([city, wards]) => {
+        const cityCode = CITY_CODE[city];
+        return (
+          cityCode +
+          '_' +
+          (wards.length === WARD_LIST[city].length
+            ? '1'
+            : wards.map((ward) => WARD_CODE[cityCode][ward]).join('%'))
+        );
+      })
+      .join(',');
+
+    changeParams({ name: 'regions', value: regionsCode });
   };
 
   const onClose = () => {

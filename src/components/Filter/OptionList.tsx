@@ -7,8 +7,6 @@ const OptionList = ({
 }: {
   option: { type: string; value: string };
 }) => {
-  console.log(option.type);
-  console.log(option.value);
   const {} = useChangeSearchParams();
   const displayValue = calculateDisplayValue(option);
 

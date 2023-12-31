@@ -39,6 +39,9 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
     } else if (typeof value === 'object') {
       // location일 경우
       for (const city in value) {
+        if (!WARD_LIST[city]) {
+          return acc;
+        }
         const allWards = WARD_LIST[city].length;
         if (value[city].length === allWards) {
           acc.push({ type: key, value: `${city} > 전지역` });
@@ -58,7 +61,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
   const filterComponents =
     type === 'class'
       ? [
-          <LocationFilter filterOption={filterOption.location} />,
+          <LocationFilter filterOption={filterOption.regions} />,
           // <GenreFilter filterOption={filterOption.genre} key="genre" />,
           // <ReviewFilter filterOption={filterOption.review} key="review" />,
           // <PriceFilter filterOption={filterOption.price} key="price" />,
@@ -70,10 +73,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
           // <DateFilter filterOption={filterOption.date} key="date" />,
         ]
       : [
-          <LocationFilter
-            filterOption={filterOption.location}
-            key="location"
-          />,
+          <LocationFilter filterOption={filterOption.regions} key="location" />,
           // <GenreFilter filterOption={filterOption.genre} key="genre" />,
           // <ReviewFilter filterOption={filterOption.review} key="review" />,
         ];

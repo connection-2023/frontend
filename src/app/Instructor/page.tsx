@@ -24,21 +24,19 @@ const instructorPage = async ({
 
   let instructorList: InstructorCardProps[] = [];
 
+  console.log(searchParams.regions);
+
   const searchData = {
     take: INSTRUCTOR_TAKE,
     sortOption: searchParams.sortOption ?? 'LATEST',
     value: searchParams.query,
     genres: searchParams.genres,
-    regions: searchParams.regions
-      ? Array.isArray(searchParams.regions)
-        ? searchParams.regions
-        : [searchParams.regions]
-      : undefined,
+    regions: searchParams.regions,
     stars: searchParams.stars,
   };
 
   const filterOptions: IFilterOptions = {
-    location: transformSearchParamsLocation(searchData.regions ?? []),
+    regions: transformSearchParamsLocation(searchData.regions ?? []),
     genre: [],
     review: 0,
     price: [],

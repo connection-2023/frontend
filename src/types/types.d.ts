@@ -15,7 +15,7 @@ export interface IFilterButton {
 }
 
 export interface IFilterOptions {
-  location: Record<string, string[]>;
+  regions: Record<string, string[]>;
   genre: string[];
   review: number;
   price: number[];
