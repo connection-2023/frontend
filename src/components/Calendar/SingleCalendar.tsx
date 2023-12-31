@@ -34,16 +34,13 @@ const SingleCalendar = ({
   const [selected, setSelected] = useState<Date | undefined>(initSelected);
 
   useEffect(() => {
-    if (selected && mode === 'dashboard') {
-      store.setSelectedDate(selected);
-    }
-    if (mode === 'schedule' && handleClickDate) {
+    if (selected && handleClickDate) {
+      if (mode === 'dashboard') {
+        store.setSelectedDate(selected);
+      }
       handleClickDate(selected);
     }
-    if (mode === 'specific' && selected && handleClickDate) {
-      handleClickDate(selected);
-    }
-  }, [selected]);
+  }, [selected, handleClickDate]);
 
   useEffect(() => {
     if (mode === 'dashboard') {
@@ -81,7 +78,7 @@ const SingleCalendar = ({
       ? 'w-fit rounded-[0.625rem] px-5 py-4 md:shadow-horizontal'
       : mode === 'specific'
       ? 'flex w-fit rounded-[0.625rem] px-4 py-6 shadow-horizontal'
-      : 'h-[15.5rem] w-full px-5 py-6';
+      : 'h-fit w-fit flex justify-center px-5 py-4';
 
   return (
     <DayPicker
