@@ -8,6 +8,7 @@ import {
   transformSearchParamsLocation,
 } from '@/utils/apiDataProcessor';
 import InstructorListView from './_components/InstructorListView';
+import Filters from '@/components/Filter/Filters';
 import {
   IFilterOptions,
   InstructorCardProps,
@@ -66,9 +67,10 @@ const instructorPage = async ({
 
       <InstructorListView
         instructorList={instructorList}
-        filterOptions={filterOptions}
         searchData={searchData}
-      />
+      >
+        <Filters type="instructor" filterOption={filterOptions} />
+      </InstructorListView>
     </section>
   );
 };

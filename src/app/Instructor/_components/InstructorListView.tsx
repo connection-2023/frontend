@@ -1,22 +1,20 @@
 'use client';
 import { useEffect, useState } from 'react';
-import FilterComponent from './FilterComponent';
+import NavComponent from './NavComponent';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
-import {
-  IFilterOptions,
-  InstructorCardProps,
-  instructorSearchData,
-} from '@/types/types';
+import { InstructorCardProps, instructorSearchData } from '@/types/types';
+
+interface InstructorListViewProps {
+  instructorList: InstructorCardProps[];
+  searchData: instructorSearchData;
+  children: React.ReactNode;
+}
 
 const InstructorListView = ({
   instructorList,
-  filterOptions,
   searchData,
-}: {
-  instructorList: InstructorCardProps[];
-  filterOptions: IFilterOptions;
-  searchData: instructorSearchData;
-}) => {
+  children,
+}: InstructorListViewProps) => {
   const [largeImg, setLargeImg] = useState(true);
 
   useEffect(() => {
@@ -33,12 +31,13 @@ const InstructorListView = ({
 
   return (
     <div className="px-4 sm:px-9 xl:px-14">
-      <FilterComponent
+      <NavComponent
         largeImg={largeImg}
         imgStateHandler={imgStateHandler}
-        filterOptions={filterOptions}
         sortOption={searchData.sortOption}
-      />
+      >
+        {children}
+      </NavComponent>
 
       <div
         className={`my-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 ${

@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 const useChangeSearchParams = () => {
   const router = useRouter();
@@ -11,7 +11,10 @@ const useChangeSearchParams = () => {
       const params = new URLSearchParams(searchParams);
 
       if (Array.isArray(value)) {
-        value.forEach((v) => params.append(name, v));
+        params.delete(name);
+        if (value.length > 0) {
+          value.forEach((v) => params.append(name, v));
+        }
       } else {
         params.set(name, value);
       }
@@ -21,6 +24,13 @@ const useChangeSearchParams = () => {
     [searchParams],
   );
 
+  const removeParams = (name: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.delete(name);
+
+    router.push(pathname + '?' + params.toString());
+  };
+
   const changeParams = ({
     name,
     value,
@@ -28,10 +38,23 @@ const useChangeSearchParams = () => {
     name: string;
     value: string | string[];
   }) => {
-    router.push(pathname + '?' + createQueryString(name, value));
+    const isArrayWithValue = Array.isArray(value) && value.length > 0;
+    const isStringWithValue = !Array.isArray(value) && value;
+
+    let newQueryString = '';
+
+    if (isArrayWithValue || isStringWithValue) {
+      newQueryString = createQueryString(name, value);
+    }
+
+    if (newQueryString) {
+      router.push(pathname + '?' + newQueryString);
+    } else {
+      removeParams(name);
+    }
   };
 
-  return { router, pathname, searchParams, changeParams };
+  return { router, pathname, searchParams, changeParams, removeParams };
 };
 
 export default useChangeSearchParams;

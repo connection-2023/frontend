@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+'use client';
+import { useEffect, useState } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { reqRegions } from '@/utils/apiDataProcessor';
 import FilterModal from './FilterModal';
@@ -8,13 +9,9 @@ import { CityList } from '@/types/locationFilter';
 
 interface ILocationFilterProps {
   filterOption: {};
-  updateFilterOption: (label: string, option: Regions) => void;
 }
 
-const LocationFilter = ({
-  filterOption,
-  updateFilterOption,
-}: ILocationFilterProps) => {
+const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
   const [selectedCity, setSelectedCity] = useState<CityList>('서울');
   const [filterList, setFilterList] = useState<Regions>(filterOption);
   const { changeParams } = useChangeSearchParams();
@@ -22,10 +19,6 @@ const LocationFilter = ({
   useEffect(() => {
     setFilterList(filterOption);
   }, [filterOption]);
-
-  useEffect(() => {
-    console.log('asdasd');
-  }, []);
 
   const changeFilterList = (ward: string) => {
     const currentWards = filterList[selectedCity] || [];
@@ -73,17 +66,24 @@ const LocationFilter = ({
   const label = '지역';
   const onReset = () => {
     setFilterList({});
-    updateFilterOption(label, {});
   };
 
   const onApply = () => {
-    console.log(filterList);
-    // changeParams({ name: 'regions', value: reqRegions(filterList) });
-    // updateFilterOption(label, filterList);
+    changeParams({ name: 'regions', value: reqRegions(filterList) });
+  };
+
+  const onClose = () => {
+    setSelectedCity('서울');
+    setFilterList(filterOption);
   };
 
   return (
-    <FilterModal label={label} onReset={onReset} onApply={onApply}>
+    <FilterModal
+      label={label}
+      onClose={onClose}
+      onReset={onReset}
+      onApply={onApply}
+    >
       <div className="flex max-h-[17rem] w-[16.8rem] select-none text-sm">
         <ul className="flex w-4/12 flex-col overflow-y-auto pt-1 scrollbar scrollbar-track-gray-900 scrollbar-thumb-gray-500 scrollbar-thumb-rounded-lg scrollbar-w-1">
           {CITY_LIST.map((city) => (

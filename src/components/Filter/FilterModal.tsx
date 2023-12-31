@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useClickAway } from 'react-use';
 import { ArrowUpSVG, ArrowDownSVG } from '@/icons/svg';
 import Button from '../Button/Button';
 import ResetButton from '../Button/ResetButton';
@@ -8,28 +9,25 @@ interface IFilterModal {
   children: React.ReactNode;
   onReset: () => void;
   onApply: () => void;
+  onClose?: () => void;
 }
 
-const FilterModal = ({ label, children, onReset, onApply }: IFilterModal) => {
+const FilterModal = ({
+  label,
+  children,
+  onReset,
+  onApply,
+  onClose,
+}: IFilterModal) => {
   const [isOpened, setIsOpened] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        ref.current &&
-        event.target instanceof Node &&
-        !ref.current.contains(event.target)
-      )
-        setIsOpened(false);
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref]);
+  useClickAway(ref, () => {
+    setIsOpened(false);
+    if (onClose) {
+      onClose();
+    }
+  });
 
   const onClickLabel = () => {
     setIsOpened(!isOpened);
