@@ -1,13 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { reqRegions } from '@/utils/apiDataProcessor';
 import FilterModal from './FilterModal';
 import {
-  CITY_ABBREVIATION_NAME,
   CITY_CODE,
   CITY_LIST,
-  LOCATION_CODE,
   WARD_CODE,
   WARD_LIST,
 } from '../../constants/administrativeDistrict';

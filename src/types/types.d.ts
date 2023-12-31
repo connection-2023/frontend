@@ -173,7 +173,7 @@ export interface SearchParams {
   query?: string;
   sortOption?: 'LATEST' | 'STARS';
   genres?: string[];
-  regions?: string[];
+  regions?: string;
   stars?: number;
 }
 

@@ -7,6 +7,7 @@ import {
   transformSearchInstructor,
   transformSearchParamsLocation,
 } from '@/utils/apiDataProcessor';
+import { regionsDecryption } from '@/utils/searchDecryptions';
 import InstructorListView from './_components/InstructorListView';
 import Filters from '@/components/Filter/Filters';
 import {
@@ -23,20 +24,17 @@ const instructorPage = async ({
   const { authUser } = useUserStore.getState();
 
   let instructorList: InstructorCardProps[] = [];
-
-  console.log(searchParams.regions);
-
   const searchData = {
     take: INSTRUCTOR_TAKE,
     sortOption: searchParams.sortOption ?? 'LATEST',
     value: searchParams.query,
     genres: searchParams.genres,
-    regions: searchParams.regions,
+    regions: regionsDecryption(searchParams.regions),
     stars: searchParams.stars,
   };
 
   const filterOptions: IFilterOptions = {
-    regions: transformSearchParamsLocation(searchData.regions ?? []),
+    regions: transformSearchParamsLocation(searchData.regions),
     genre: [],
     review: 0,
     price: [],

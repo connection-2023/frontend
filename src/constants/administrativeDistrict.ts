@@ -625,7 +625,11 @@ export const WARD_CODE: {
   },
 };
 
-export const LOCATION_CODE = {
+export const LOCATION_CODE: {
+  [key: string]: {
+    [code: string]: string;
+  };
+} = {
   S: {
     1: '서울특별시 전 지역',
     2: '서울특별시 종로구',
