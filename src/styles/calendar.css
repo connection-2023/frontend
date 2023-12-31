@@ -121,7 +121,7 @@
 
 .rbc-time-view {
   border-radius: 0.31rem;
-  @media (max-width: 1024px) {
+  @media (max-width: 1299px) {
     display: none !important;
   }
 }
