@@ -2,12 +2,20 @@
 import { useEffect, useState } from 'react';
 import FilterComponent from './FilterComponent';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
-import { InstructorCardProps } from '@/types/types';
+import {
+  IFilterOptions,
+  InstructorCardProps,
+  instructorSearchData,
+} from '@/types/types';
 
 const InstructorListView = ({
   instructorList,
+  filterOptions,
+  searchData,
 }: {
   instructorList: InstructorCardProps[];
+  filterOptions: IFilterOptions;
+  searchData: instructorSearchData;
 }) => {
   const [largeImg, setLargeImg] = useState(true);
 
@@ -25,10 +33,15 @@ const InstructorListView = ({
 
   return (
     <div className="px-4 sm:px-9 xl:px-14">
-      <FilterComponent largeImg={largeImg} imgStateHandler={imgStateHandler} />
+      <FilterComponent
+        largeImg={largeImg}
+        imgStateHandler={imgStateHandler}
+        filterOptions={filterOptions}
+        sortOption={searchData.sortOption}
+      />
 
       <div
-        className={`mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 ${
+        className={`my-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 ${
           largeImg ? 'grid-cols-1' : 'grid-cols-2'
         }`}
       >

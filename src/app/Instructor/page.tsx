@@ -3,9 +3,16 @@ import { INSTRUCTOR_TAKE } from '@/constants/constants';
 import { dummyMain } from '@/constants/dummy';
 import { searchInstructors } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
-import { transformSearchInstructor } from '@/utils/apiDataProcessor';
+import {
+  transformSearchInstructor,
+  transformSearchParamsLocation,
+} from '@/utils/apiDataProcessor';
 import InstructorListView from './_components/InstructorListView';
-import { InstructorCardProps, SearchParams } from '@/types/types';
+import {
+  IFilterOptions,
+  InstructorCardProps,
+  SearchParams,
+} from '@/types/types';
 
 const instructorPage = async ({
   searchParams,
@@ -21,8 +28,22 @@ const instructorPage = async ({
     sortOption: searchParams.sortOption ?? 'LATEST',
     value: searchParams.query,
     genres: searchParams.genres,
-    regions: searchParams.regions,
+    regions: searchParams.regions
+      ? Array.isArray(searchParams.regions)
+        ? searchParams.regions
+        : [searchParams.regions]
+      : undefined,
     stars: searchParams.stars,
+  };
+
+  const filterOptions: IFilterOptions = {
+    location: transformSearchParamsLocation(searchData.regions ?? []),
+    genre: [],
+    review: 0,
+    price: [],
+    date: [],
+    method: [],
+    daytime: [],
   };
 
   try {
@@ -30,8 +51,10 @@ const instructorPage = async ({
 
     instructorList = transformSearchInstructor(instructors);
 
-    for (let i = 0; i < 11; i++) {
-      instructorList.push(instructorList[0]);
+    if (searchParams.sortOption === 'STARS') {
+      for (let i = 0; i < 11; i++) {
+        instructorList.push(instructorList[0]);
+      }
     }
   } catch (error) {
     console.error(error);
@@ -41,7 +64,11 @@ const instructorPage = async ({
     <section className="flex flex-col">
       <BestInstructors list={dummyMain.topInstructorList} />
 
-      <InstructorListView instructorList={instructorList} />
+      <InstructorListView
+        instructorList={instructorList}
+        filterOptions={filterOptions}
+        searchData={searchData}
+      />
     </section>
   );
 };

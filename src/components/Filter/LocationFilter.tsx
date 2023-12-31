@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
+import { reqRegions } from '@/utils/apiDataProcessor';
 import FilterModal from './FilterModal';
 import { CITY_LIST, WARD_LIST } from '../../constants/administrativeDistrict';
-import { CityList, LocationFilterList } from '@/types/locationFilter';
+import { Regions } from '@/types/instructor';
+import { CityList } from '@/types/locationFilter';
 
 interface ILocationFilterProps {
   filterOption: {};
-  updateFilterOption: (label: string, option: LocationFilterList) => void;
+  updateFilterOption: (label: string, option: Regions) => void;
 }
 
 const LocationFilter = ({
@@ -13,12 +16,16 @@ const LocationFilter = ({
   updateFilterOption,
 }: ILocationFilterProps) => {
   const [selectedCity, setSelectedCity] = useState<CityList>('서울');
-  const [filterList, setFilterList] =
-    useState<LocationFilterList>(filterOption);
+  const [filterList, setFilterList] = useState<Regions>(filterOption);
+  const { changeParams } = useChangeSearchParams();
 
   useEffect(() => {
     setFilterList(filterOption);
   }, [filterOption]);
+
+  useEffect(() => {
+    console.log('asdasd');
+  }, []);
 
   const changeFilterList = (ward: string) => {
     const currentWards = filterList[selectedCity] || [];
@@ -70,7 +77,9 @@ const LocationFilter = ({
   };
 
   const onApply = () => {
-    updateFilterOption(label, filterList);
+    console.log(filterList);
+    // changeParams({ name: 'regions', value: reqRegions(filterList) });
+    // updateFilterOption(label, filterList);
   };
 
   return (

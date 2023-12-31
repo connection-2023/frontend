@@ -10,8 +10,8 @@ import ProgressMethodFilter from './ProgressMethodFilter';
 import ReviewFilter from './ReviewFilter';
 import { WARD_LIST } from '../../constants/administrativeDistrict';
 import ResetButton from '../Button/ResetButton';
-import { LocationFilterList } from '@/types/locationFilter';
-import { IFilterOptions } from '@/types/types';
+import { Regions } from '@/types/instructor';
+import { IFilterOptions, SearchParams } from '@/types/types';
 
 const INIT_FILTER_OPTIONS: IFilterOptions = {
   location: {},
@@ -25,10 +25,11 @@ const INIT_FILTER_OPTIONS: IFilterOptions = {
 
 interface FiltersProps {
   type: 'instructor' | 'class';
+  defaultOption: IFilterOptions;
 }
 
-const Filters = ({ type }: FiltersProps) => {
-  const [filterOption, setFilterOption] = useState(INIT_FILTER_OPTIONS);
+const Filters = ({ type, defaultOption }: FiltersProps) => {
+  const [filterOption, setFilterOption] = useState(defaultOption);
   const [options, setOptions] = useState<{ type: string; value: string }[]>([]);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const Filters = ({ type }: FiltersProps) => {
       | IFilterOptions['review']
       | IFilterOptions['price']
       | IFilterOptions['date']
-      | LocationFilterList,
+      | Regions,
   ) => {
     const updateFunction = (
       key: string,
@@ -90,7 +91,7 @@ const Filters = ({ type }: FiltersProps) => {
         | IFilterOptions['review']
         | IFilterOptions['price']
         | IFilterOptions['date']
-        | LocationFilterList,
+        | Regions,
     ) => {
       setFilterOption((prev) => ({ ...prev, [key]: value }));
     };

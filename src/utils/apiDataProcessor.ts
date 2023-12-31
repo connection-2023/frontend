@@ -498,3 +498,22 @@ export const transformSearchClass = (classList: searchClass[]) => {
     }),
   );
 };
+
+export const transformSearchParamsLocation = (data: string[]) => {
+  const result: { [key: string]: string[] } = {};
+
+  data.forEach((item) => {
+    const spaceIndex = item.indexOf(' ');
+    const region = CITY_ABBREVIATION_NAME[item.substring(0, spaceIndex)];
+    const subRegion = item.substring(spaceIndex + 1);
+
+    if (!result[region]) {
+      result[region] =
+        subRegion === '전 지역' ? WARD_LIST[region] : [subRegion];
+    } else {
+      result[region].push(subRegion);
+    }
+  });
+
+  return result;
+};

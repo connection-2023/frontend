@@ -7,16 +7,27 @@ const useChangeSearchParams = () => {
   const searchParams = useSearchParams();
 
   const createQueryString = useCallback(
-    (name: string, value: string) => {
+    (name: string, value: string | string[]) => {
       const params = new URLSearchParams(searchParams);
-      params.set(name, value);
+
+      if (Array.isArray(value)) {
+        value.forEach((v) => params.append(name, v));
+      } else {
+        params.set(name, value);
+      }
 
       return params.toString();
     },
     [searchParams],
   );
 
-  const changeParams = ({ name, value }: { name: string; value: string }) => {
+  const changeParams = ({
+    name,
+    value,
+  }: {
+    name: string;
+    value: string | string[];
+  }) => {
     router.push(pathname + '?' + createQueryString(name, value));
   };
 
