@@ -1,4 +1,5 @@
-import { CloseSVG } from '@/icons/svg';
+import Link from 'next/link';
+import { CloseSVG, ResetSVG } from '@/icons/svg';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
 import GenreFilter from './GenreFilter';
@@ -101,9 +102,13 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
       </ul>
       <div className="mb-3 flex w-full flex-wrap items-center gap-2">
         {filterComponents.map((filter) => filter)}
-        <ResetButton>
-          <span className="text-sm font-bold">초기화</span>
-        </ResetButton>
+        <Link
+          href={type === 'instructor' ? '/instructor' : '/class'}
+          className="flex items-center whitespace-nowrap text-sm font-bold text-gray-300"
+        >
+          초기화
+          <ResetSVG className="ml-1" />
+        </Link>
       </div>
     </>
   );
