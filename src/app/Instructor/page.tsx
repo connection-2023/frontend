@@ -7,7 +7,7 @@ import {
   transformSearchInstructor,
   transformSearchParamsLocation,
 } from '@/utils/apiDataProcessor';
-import { regionsDecryption } from '@/utils/searchDecryptions';
+import { regionsDecryption } from '@/utils/searchFilterFn';
 import InstructorListView from './_components/InstructorListView';
 import Filters from '@/components/Filter/Filters';
 import {
@@ -52,7 +52,7 @@ const instructorPage = async ({
       for (let i = 0; i < 11; i++) {
         instructorList.push(instructorList[0]);
       }
-    }
+    } // 삭제 (테스트용)
   } catch (error) {
     console.error(error);
   }

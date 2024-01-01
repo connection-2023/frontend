@@ -44,7 +44,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
         }
         const allWards = WARD_LIST[city].length;
         if (value[city].length === allWards) {
-          acc.push({ type: key, value: `${city} > 전지역` });
+          acc.push({ type: key, value: `${city} > 전 지역` });
         } else {
           for (const district of value[city]) {
             // "도시명 > 구명" 형태로 추가
@@ -160,65 +160,4 @@ export default Filters;
 //       updateFunction('daytime', option);
 //       break;
 //   }
-// };
-
-// const onClickDelete = (optionToRemove: { type: string; value: string }) => {
-//   // options 업데이트
-//   const newOptions = options.filter(
-//     (option) =>
-//       option.value !== optionToRemove.value ||
-//       option.type !== optionToRemove.type,
-//   );
-//   setOptions(newOptions);
-
-//   // filterOption 업데이트
-//   const updatedFilterOption = { ...filterOption };
-
-//   switch (optionToRemove.type) {
-//     case 'location':
-//       const [city, district] = optionToRemove.value.split(' > ');
-//       if (district === '전지역') {
-//         const { [city]: _, ...rest } = updatedFilterOption.location;
-//         updatedFilterOption.location = rest;
-//       } else {
-//         updatedFilterOption.location[city] = updatedFilterOption.location[
-//           city
-//         ].filter((d) => d !== district);
-
-//         if (updatedFilterOption.location[city].length === 0) {
-//           delete updatedFilterOption.location[city];
-//         }
-//       }
-//       break;
-//     case 'genre':
-//       updatedFilterOption.genre = updatedFilterOption.genre.filter(
-//         (value) => value !== optionToRemove.value,
-//       );
-//       break;
-//     case 'review':
-//       updatedFilterOption.review = 0;
-//       break;
-//     case 'price':
-//       updatedFilterOption.price = [];
-//       break;
-//     case 'date':
-//       updatedFilterOption.date = updatedFilterOption.date.filter(
-//         (value) => value !== optionToRemove.value,
-//       );
-//       break;
-//     case 'method':
-//       updatedFilterOption.method = updatedFilterOption.method.filter(
-//         (value) => value !== optionToRemove.value,
-//       );
-//       break;
-//     case 'daytime':
-//       updatedFilterOption.daytime = updatedFilterOption.daytime.filter(
-//         (value) => value !== optionToRemove.value,
-//       );
-//       break;
-//     default:
-//       break;
-//   }
-
-//   setFilterOption(updatedFilterOption);
 // };

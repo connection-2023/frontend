@@ -1,19 +1,28 @@
 'use client';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { CloseSVG } from '@/icons/svg';
+import { onClickDelete } from '@/utils/searchFilterFn';
 
 const OptionList = ({
   option,
 }: {
   option: { type: string; value: string };
 }) => {
-  const {} = useChangeSearchParams();
+  const { changeParams, searchParams } = useChangeSearchParams();
   const displayValue = calculateDisplayValue(option);
 
   return option.type && displayValue ? (
     <li className="flex items-center text-sm font-medium">
       {displayValue}
-      <button>
+      <button
+        onClick={() =>
+          onClickDelete({
+            ...option,
+            changeParams,
+            searchParams,
+          })
+        }
+      >
         <CloseSVG
           width={14}
           height={14}
