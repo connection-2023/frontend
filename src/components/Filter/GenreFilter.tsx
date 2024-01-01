@@ -17,7 +17,9 @@ const GenreFilter = ({ filterOption }: IGenreFilterProps) => {
     setFilterList((prev) =>
       prev.includes(genre)
         ? prev.filter((listGenre) => listGenre !== genre)
-        : [...prev, genre],
+        : DANCE_GENRE.length - 1 > prev.length
+        ? [...prev, genre]
+        : prev,
     );
   };
 
