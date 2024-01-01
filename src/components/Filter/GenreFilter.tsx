@@ -1,18 +1,16 @@
+'use client';
 import { useEffect, useState } from 'react';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import FilterModal from './FilterModal';
 import { DANCE_GENRE, DANCE_GENRE_ENGLISH } from '../../constants/constants';
-import { IFilterOptions } from '@/types/types';
 
 interface IGenreFilterProps {
-  updateFilterOption: (label: string, option: IFilterOptions['genre']) => void;
   filterOption: string[];
 }
 
-const GenreFilter = ({
-  updateFilterOption,
-  filterOption,
-}: IGenreFilterProps) => {
+const GenreFilter = ({ filterOption }: IGenreFilterProps) => {
   const [filterList, setFilterList] = useState<string[]>(filterOption);
+  const { changeParams } = useChangeSearchParams();
   const label = '장르';
 
   const changeFilterList = (genre: string) => {
@@ -29,15 +27,23 @@ const GenreFilter = ({
 
   const onReset = () => {
     setFilterList([]);
-    updateFilterOption(label, []);
   };
 
   const onApply = () => {
-    updateFilterOption(label, filterList);
+    changeParams({ name: 'genre', value: filterList });
+  };
+
+  const onClose = () => {
+    setFilterList(filterOption);
   };
 
   return (
-    <FilterModal label={label} onReset={onReset} onApply={onApply}>
+    <FilterModal
+      label={label}
+      onReset={onReset}
+      onApply={onApply}
+      onClose={onClose}
+    >
       <ul className="flex max-h-80 w-72 select-none flex-col gap-3 overflow-y-auto py-3 pr-2.5 scrollbar scrollbar-track-gray-900 scrollbar-thumb-gray-500  scrollbar-thumb-rounded-lg scrollbar-w-1">
         {DANCE_GENRE.map((genre, index) => {
           const isGenreIncluded = filterList.includes(genre);

@@ -172,7 +172,7 @@ export interface PagenationFilterState {
 export interface SearchParams {
   query?: string;
   sortOption?: 'LATEST' | 'STARS';
-  genres?: string[];
+  genre?: string[];
   regions?: string;
   stars?: number;
 }

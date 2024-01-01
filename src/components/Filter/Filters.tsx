@@ -62,8 +62,8 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
   const filterComponents =
     type === 'class'
       ? [
-          <LocationFilter filterOption={filterOption.regions} />,
-          // <GenreFilter filterOption={filterOption.genre} key="genre" />,
+          <LocationFilter filterOption={filterOption.regions} key="location" />,
+          <GenreFilter filterOption={filterOption.genre} key="genre" />,
           // <ReviewFilter filterOption={filterOption.review} key="review" />,
           // <PriceFilter filterOption={filterOption.price} key="price" />,
           // <ProgressMethodFilter
@@ -75,7 +75,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
         ]
       : [
           <LocationFilter filterOption={filterOption.regions} key="location" />,
-          // <GenreFilter filterOption={filterOption.genre} key="genre" />,
+          <GenreFilter filterOption={filterOption.genre} key="genre" />,
           // <ReviewFilter filterOption={filterOption.review} key="review" />,
         ];
 

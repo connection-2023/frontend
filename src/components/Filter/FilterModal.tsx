@@ -9,7 +9,7 @@ interface IFilterModal {
   children: React.ReactNode;
   onReset: () => void;
   onApply: () => void;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
 const FilterModal = ({

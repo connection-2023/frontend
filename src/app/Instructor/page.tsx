@@ -28,14 +28,14 @@ const instructorPage = async ({
     take: INSTRUCTOR_TAKE,
     sortOption: searchParams.sortOption ?? 'LATEST',
     value: searchParams.query,
-    genres: searchParams.genres,
+    genres: searchParams.genre ?? [],
     regions: regionsDecryption(searchParams.regions),
     stars: searchParams.stars,
   };
 
   const filterOptions: IFilterOptions = {
     regions: transformSearchParamsLocation(searchData.regions),
-    genre: [],
+    genre: searchData.genres,
     review: 0,
     price: [],
     date: [],

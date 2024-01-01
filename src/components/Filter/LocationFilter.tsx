@@ -19,6 +19,7 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
   const [selectedCity, setSelectedCity] = useState<CityList>('서울');
   const [filterList, setFilterList] = useState<Regions>(filterOption);
   const { changeParams } = useChangeSearchParams();
+  const label = '지역';
 
   useEffect(() => {
     setFilterList(filterOption);
@@ -67,7 +68,6 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
     setFilterList(newFilterList);
   };
 
-  const label = '지역';
   const onReset = () => {
     setFilterList({});
   };
