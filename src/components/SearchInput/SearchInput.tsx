@@ -1,14 +1,14 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { SearchSVG } from '@/icons/svg';
 
-const ResultInput = ({ query }: { query: string }) => {
-  const router = useRouter();
+const SearchInput = ({ query }: { query: string }) => {
   const [keyword, setKeyword] = useState(query);
+  const { changeParams } = useChangeSearchParams();
 
   const searchKeyword = () => {
-    router.push(`/search?query=${keyword}`);
+    changeParams({ name: 'query', value: keyword });
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,12 +16,13 @@ const ResultInput = ({ query }: { query: string }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative flex">
+      <button className="relative">선택된 거</button>
       <input
         type="text"
         value={keyword}
         onChange={handleInputChange}
-        className="h-12 w-full rounded-xl p-4 text-lg shadow-vertical focus:shadow-sub-color1 focus:outline-none"
+        className="h-12 w-full rounded-xl p-4 text-lg shadow-vertical focus:outline-none"
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
             searchKeyword();
@@ -35,4 +36,4 @@ const ResultInput = ({ query }: { query: string }) => {
   );
 };
 
-export default ResultInput;
+export default SearchInput;

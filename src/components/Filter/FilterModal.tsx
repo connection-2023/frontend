@@ -56,9 +56,11 @@ const FilterModal = ({
           {children}
           <div className="box-border flex justify-between border-t border-solid border-gray-500 px-[0.94rem] py-[0.69rem] font-bold">
             <ResetButton onClick={onReset}>초기화</ResetButton>
-            <Button color="primary" size="small" onClick={onClickApply}>
-              적용
-            </Button>
+            <div className="w-14">
+              <Button color="primary" size="small" onClick={onClickApply}>
+                적용
+              </Button>
+            </div>
           </div>
         </div>
       )}

@@ -44,7 +44,9 @@ const ReviewFilter = ({ filterOption }: IReviewFilterProps) => {
       onApply={onApply}
       onClose={onClose}
     >
-      <Rating rate={rate} handleRate={handleRate} />
+      <div className="p-4">
+        <Rating rate={rate} handleRate={handleRate} bigStar={true} />
+      </div>
     </FilterModal>
   );
 };

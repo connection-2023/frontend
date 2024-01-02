@@ -7,7 +7,7 @@ import {
   transformSearchInstructor,
 } from '@/utils/apiDataProcessor';
 import ListSection from './results/ListSection';
-import ResultInput from './results/ResultInput';
+import ResultInput from '../../../components/SearchInput/SearchInput';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
 import { ClassCardType } from '@/types/class';

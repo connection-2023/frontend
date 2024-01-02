@@ -32,7 +32,12 @@ const instructorPage = async ({
 
   const searchData = {
     take: INSTRUCTOR_TAKE,
-    sortOption: searchParams.sortOption ?? 'LATEST',
+    sortOption:
+      searchParams.sortOption &&
+      (searchParams.sortOption === 'LATEST' ||
+        searchParams.sortOption === 'STARS')
+        ? searchParams.sortOption
+        : 'LATEST',
     value: searchParams.query,
     genres: [...new Set(searchParams.genre ?? [])].filter((genre) =>
       DANCE_GENRE.includes(genre),
@@ -58,12 +63,6 @@ const instructorPage = async ({
     const instructors = await searchInstructors(searchData, !!authUser);
 
     instructorList = transformSearchInstructor(instructors);
-
-    if (searchParams.sortOption === 'STARS') {
-      for (let i = 0; i < 11; i++) {
-        instructorList.push(instructorList[0]);
-      }
-    } // 삭제 (테스트용)
   } catch (error) {
     console.error(error);
   }

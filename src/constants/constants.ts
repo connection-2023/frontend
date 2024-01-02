@@ -21,7 +21,7 @@ export const ButtonSizes = {
 
 export const ButtonStyles = {
   primary:
-    'hover:bg-main-color-transparent group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-white text-main-color active:bg-main-color active:text-white',
+    'hover:bg-white hover:text-main-color group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-main-color text-white active:bg-white active:text-main-color',
   default:
     'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 active:bg-sub-color1 active:text-white',
   secondary:
