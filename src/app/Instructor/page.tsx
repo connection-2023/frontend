@@ -1,6 +1,10 @@
 import { redirect } from 'next/navigation';
 import BestInstructors from '@/app/instructor/_components/BestInstructors';
-import { INSTRUCTOR_TAKE, REGIONS_SELECT_MAX } from '@/constants/constants';
+import {
+  DANCE_GENRE,
+  INSTRUCTOR_TAKE,
+  REGIONS_SELECT_MAX,
+} from '@/constants/constants';
 import { dummyMain } from '@/constants/dummy';
 import { searchInstructors } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
@@ -30,18 +34,20 @@ const instructorPage = async ({
     take: INSTRUCTOR_TAKE,
     sortOption: searchParams.sortOption ?? 'LATEST',
     value: searchParams.query,
-    genres: [...new Set(searchParams.genre ?? [])],
+    genres: [...new Set(searchParams.genre ?? [])].filter((genre) =>
+      DANCE_GENRE.includes(genre),
+    ),
     regions: [...new Set(regionsDecryption(searchParams.regions))].slice(
       0,
       REGIONS_SELECT_MAX,
     ),
-    stars: searchParams.stars,
+    stars: searchParams.stars ?? 0,
   };
 
   const filterOptions: IFilterOptions = {
     regions: transformSearchParamsLocation(searchData.regions),
     genre: searchData.genres,
-    review: 0,
+    review: searchData.stars,
     price: [],
     date: [],
     method: [],

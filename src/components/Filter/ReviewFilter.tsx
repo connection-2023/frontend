@@ -1,17 +1,16 @@
+'use client';
 import { useState, useEffect } from 'react';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import FilterModal from './FilterModal';
 import Rating from '../Review/Rating';
 
 interface IReviewFilterProps {
-  updateFilterOption: (label: string, option: number) => void;
   filterOption: number;
 }
 
-const ReviewFilter = ({
-  filterOption,
-  updateFilterOption,
-}: IReviewFilterProps) => {
+const ReviewFilter = ({ filterOption }: IReviewFilterProps) => {
   const [rate, setRate] = useState<number>(filterOption);
+  const { changeParams, removeParams } = useChangeSearchParams();
   const label = '평점';
 
   useEffect(() => {
@@ -24,15 +23,27 @@ const ReviewFilter = ({
 
   const onReset = () => {
     setRate(0);
-    updateFilterOption(label, 0);
   };
 
   const onApply = () => {
-    updateFilterOption(label, rate);
+    if (rate === 0) {
+      removeParams('stars');
+    } else {
+      changeParams({ name: 'stars', value: String(rate) });
+    }
+  };
+
+  const onClose = () => {
+    setRate(filterOption);
   };
 
   return (
-    <FilterModal label={label} onReset={onReset} onApply={onApply}>
+    <FilterModal
+      label={label}
+      onReset={onReset}
+      onApply={onApply}
+      onClose={onClose}
+    >
       <Rating rate={rate} handleRate={handleRate} />
     </FilterModal>
   );

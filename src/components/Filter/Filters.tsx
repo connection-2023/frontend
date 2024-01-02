@@ -65,9 +65,9 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
       ? [
           <LocationFilter filterOption={filterOption.regions} key="location" />,
           <GenreFilter filterOption={filterOption.genre} key="genre" />,
+          <ReviewFilter filterOption={filterOption.review} key="review" />,
           // <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
           // <DateFilter filterOption={filterOption.date} key="date" />,
-          // <ReviewFilter filterOption={filterOption.review} key="review" />,
           // <PriceFilter filterOption={filterOption.price} key="price" />,
           // <ProgressMethodFilter
           //   filterOption={filterOption.method}
@@ -77,7 +77,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
       : [
           <LocationFilter filterOption={filterOption.regions} key="location" />,
           <GenreFilter filterOption={filterOption.genre} key="genre" />,
-          // <ReviewFilter filterOption={filterOption.review} key="review" />,
+          <ReviewFilter filterOption={filterOption.review} key="review" />,
         ];
 
   //   const [options, setOptions] = useState<{ type: string; value: string }[]>([]);
