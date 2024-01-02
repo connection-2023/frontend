@@ -70,7 +70,7 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
   };
 
   return (
-    <aside className="sticky top-0 z-20 h-fit w-fit justify-self-center pt-16 text-lg font-bold">
+    <aside className="sticky top-0 z-20 hidden h-fit w-fit justify-self-center pt-16 text-lg font-bold md:block">
       <nav
         onClick={handleNavLinkClick}
         className="whitespace-nowrap text-lg font-bold"
