@@ -57,7 +57,13 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
     if (selectLength > REGIONS_SELECT_MAX) {
       toast.error(`지역은 ${REGIONS_SELECT_MAX}개까지 선택 가능합니다.`);
     } else {
-      setFilterList({ ...changeList });
+      for (let [city, ward] of Object.entries(changeList)) {
+        if (WARD_LIST[city].length !== ward.length) {
+          return setFilterList({ ...changeList });
+        }
+      }
+
+      return setFilterList({});
     }
   };
 
@@ -92,7 +98,11 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
       if (selectLength > REGIONS_SELECT_MAX) {
         toast.error(`지역은 ${REGIONS_SELECT_MAX}개까지 선택 가능합니다.`);
       } else {
-        setFilterList({ ...changeList });
+        setFilterList(
+          Object.keys(changeList).length === Object.keys(WARD_LIST).length
+            ? {}
+            : { ...changeList },
+        );
       }
     } else {
       deleteFilterCity(city);

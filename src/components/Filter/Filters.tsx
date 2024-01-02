@@ -18,6 +18,7 @@ interface FiltersProps {
 }
 
 const Filters = async ({ type, filterOption }: FiltersProps) => {
+  // console.log(filterOption);
   const options = Object.entries(filterOption).reduce<
     { type: string; value: string }[]
   >((acc, [key, value]) => {
@@ -58,6 +59,8 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
     }
     return acc;
   }, []);
+
+  console.log(options);
 
   const filterComponents =
     type === 'class'
