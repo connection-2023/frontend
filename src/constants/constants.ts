@@ -290,6 +290,24 @@ export const LECTURE_PASS_TAKE = 8;
 
 export const USER_COUPON_CLASS_LIST_TAKE = 6;
 
+export const INITIAL_SCHEDULE_PROGRESS = [
+  {
+    text: '수업 완료',
+    count: 0,
+    color: 'text-main-color',
+  },
+  {
+    text: '수업 예정',
+    count: 0,
+    color: 'text-sub-color1',
+  },
+  {
+    text: '총 수업',
+    count: 0,
+    color: '',
+  },
+]
+
 export const filterOption: ReviewOrderType[] = [
   '최신순',
   '좋아요순',

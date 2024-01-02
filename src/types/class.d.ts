@@ -445,3 +445,11 @@ export interface ILearner {
 export interface IClassEditData
   extends IClassScheduleResponse,
     IClassInfoResponse {}
+
+export interface IMonthlyClassSchedules extends IClassSchedule {
+  lecture: {
+    title: string;
+    isGroup: boolean;
+    maxCapacity: number;
+  };
+}

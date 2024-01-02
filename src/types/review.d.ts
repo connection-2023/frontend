@@ -81,6 +81,7 @@ export interface GetMyLecturersReviews {
   targetPage?: number;
   firstItemId?: number;
   lastItemId?: number;
+  orderBy: string;
 }
 
 export interface GetMyLecturersReviewsData {
