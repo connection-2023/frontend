@@ -1,6 +1,6 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
-import { day } from '@/types/class';
+import { day, ReviewOrderType } from '@/types/class';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
@@ -289,3 +289,10 @@ export const LECTURE_COUPON_TAKE = 8;
 export const LECTURE_PASS_TAKE = 8;
 
 export const USER_COUPON_CLASS_LIST_TAKE = 6;
+
+export const filterOption: ReviewOrderType[] = [
+  '최신순',
+  '좋아요순',
+  '평점 높은순',
+  '평점 낮은순',
+];

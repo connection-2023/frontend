@@ -25,7 +25,10 @@ export const GET = async (request: NextRequest) => {
       };
 
   const serverResponse = await fetch(
-    END_POINT + `/lecture-reviews/${id + path}?orderBy=${order}`,
+    END_POINT +
+      `/lecture-reviews/lecturers/${
+        id + path
+      }?lecturerReviewType=${order}&take=8`,
     {
       headers,
     },
