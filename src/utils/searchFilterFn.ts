@@ -6,7 +6,7 @@ import {
 } from '@/constants/administrativeDistrict';
 
 export const regionsDecryption = (regionsCode: string | undefined) => {
-  if (!regionsCode) {
+  if (!regionsCode || typeof regionsCode !== 'string') {
     return [];
   }
 

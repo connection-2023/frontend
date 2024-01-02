@@ -1,5 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { REGIONS_SELECT_MAX } from '@/constants/constants';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import FilterModal from './FilterModal';
 import {
@@ -29,23 +31,48 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
     const currentWards = filterList[selectedCity] || [];
     const isWardSelected = currentWards.includes(ward);
 
+    let changeList: Regions = {};
+
     if (isWardSelected) {
       if (currentWards.length === 1) {
         deleteFilterCity(selectedCity);
+        return;
       } else {
-        setFilterList({
+        changeList = {
           ...filterList,
           [selectedCity]: currentWards.filter(
             (currentWard) => currentWard !== ward,
           ),
-        });
+        };
       }
     } else {
-      setFilterList({
+      changeList = {
         ...filterList,
         [selectedCity]: [...currentWards, ward],
-      });
+      };
     }
+
+    const selectLength = countSelectList(changeList);
+
+    if (selectLength > REGIONS_SELECT_MAX) {
+      toast.error(`지역은 ${REGIONS_SELECT_MAX}개까지 선택 가능합니다.`);
+    } else {
+      setFilterList({ ...changeList });
+    }
+  };
+
+  const countSelectList = (list: Regions) => {
+    let selectCount = 0;
+
+    Object.entries(list).forEach(([key, wards]) => {
+      if (WARD_LIST[key].length === wards.length) {
+        selectCount++;
+      } else {
+        selectCount += wards.length;
+      }
+    });
+
+    return selectCount;
   };
 
   const changeCheckBox = (
@@ -53,10 +80,20 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
     city: CityList,
   ) => {
     if (event.target.checked) {
-      setFilterList({
+      let changeList: Regions = {};
+
+      changeList = {
         ...filterList,
         [city]: [...WARD_LIST[city]],
-      });
+      };
+
+      const selectLength = countSelectList(changeList);
+
+      if (selectLength > REGIONS_SELECT_MAX) {
+        toast.error(`지역은 ${REGIONS_SELECT_MAX}개까지 선택 가능합니다.`);
+      } else {
+        setFilterList({ ...changeList });
+      }
     } else {
       deleteFilterCity(city);
     }
@@ -65,6 +102,7 @@ const LocationFilter = ({ filterOption }: ILocationFilterProps) => {
   const deleteFilterCity = (city: CityList) => {
     const newFilterList = { ...filterList };
     delete newFilterList[city];
+
     setFilterList(newFilterList);
   };
 

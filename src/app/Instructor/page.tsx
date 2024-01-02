@@ -1,5 +1,6 @@
+import { redirect } from 'next/navigation';
 import BestInstructors from '@/app/instructor/_components/BestInstructors';
-import { INSTRUCTOR_TAKE } from '@/constants/constants';
+import { INSTRUCTOR_TAKE, REGIONS_SELECT_MAX } from '@/constants/constants';
 import { dummyMain } from '@/constants/dummy';
 import { searchInstructors } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
@@ -24,12 +25,16 @@ const instructorPage = async ({
   const { authUser } = useUserStore.getState();
 
   let instructorList: InstructorCardProps[] = [];
+
   const searchData = {
     take: INSTRUCTOR_TAKE,
     sortOption: searchParams.sortOption ?? 'LATEST',
     value: searchParams.query,
-    genres: searchParams.genre ?? [],
-    regions: regionsDecryption(searchParams.regions),
+    genres: [...new Set(searchParams.genre ?? [])],
+    regions: [...new Set(regionsDecryption(searchParams.regions))].slice(
+      0,
+      REGIONS_SELECT_MAX,
+    ),
     stars: searchParams.stars,
   };
 

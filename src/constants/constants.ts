@@ -293,3 +293,5 @@ export const LECTURE_PASS_TAKE = 8;
 export const USER_COUPON_CLASS_LIST_TAKE = 6;
 
 export const INSTRUCTOR_TAKE = 12;
+
+export const REGIONS_SELECT_MAX = 30;
