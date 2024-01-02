@@ -60,8 +60,6 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
     return acc;
   }, []);
 
-  console.log(options);
-
   const filterComponents =
     type === 'class'
       ? [

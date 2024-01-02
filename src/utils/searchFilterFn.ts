@@ -90,11 +90,12 @@ export const onClickDelete = ({
       );
       changeParams({ name: 'regions', value: changeValue });
       break;
-    // case 'genre':
-    //   updatedFilterOption.genre = updatedFilterOption.genre.filter(
-    //     (value) => value !== optionToRemove.value,
-    //   );
-    //   break;
+    case 'genre':
+      changeParams({
+        name: 'genre',
+        value: searchParams.getAll('genre').filter((genre) => genre !== value),
+      });
+      break;
     // case 'review':
     //   updatedFilterOption.review = 0;
     //   break;
