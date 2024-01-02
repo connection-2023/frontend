@@ -64,14 +64,14 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
       ? [
           <LocationFilter filterOption={filterOption.regions} key="location" />,
           <GenreFilter filterOption={filterOption.genre} key="genre" />,
+          // <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
+          // <DateFilter filterOption={filterOption.date} key="date" />,
           // <ReviewFilter filterOption={filterOption.review} key="review" />,
           // <PriceFilter filterOption={filterOption.price} key="price" />,
           // <ProgressMethodFilter
           //   filterOption={filterOption.method}
           //   key="method"
           // />,
-          // <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
-          // <DateFilter filterOption={filterOption.date} key="date" />,
         ]
       : [
           <LocationFilter filterOption={filterOption.regions} key="location" />,

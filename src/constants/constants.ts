@@ -83,6 +83,7 @@ export const INSTRUCTOR_SECTIONS = [
 ];
 
 export const DANCE_GENRE = [
+  '전체',
   'K-pop',
   '브레이킹',
   '팝핑',
@@ -97,6 +98,7 @@ export const DANCE_GENRE = [
 ];
 
 export const DANCE_GENRE_ENGLISH = [
+  '',
   '',
   '(Breaking)',
   '(Popping)',

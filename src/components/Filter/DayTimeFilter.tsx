@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import FilterModal from './FilterModal';
 import { FILTER_TIME, FILTER_WEEK } from '../../constants/constants';
