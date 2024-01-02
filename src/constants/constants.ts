@@ -1,6 +1,6 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
-import { day } from '@/types/class';
+import { day, ReviewOrderType } from '@/types/class';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
@@ -306,4 +306,11 @@ export const INITIAL_SCHEDULE_PROGRESS = [
     count: 0,
     color: '',
   },
+]
+
+export const filterOption: ReviewOrderType[] = [
+  '최신순',
+  '좋아요순',
+  '평점 높은순',
+  '평점 낮은순',
 ];

@@ -74,8 +74,9 @@ export interface IReportList {
 export type paymentType = 'card' | 'deposit' | null;
 
 export interface Instructors {
+  id: number;
   name: string;
-  address: string;
+  address: string[];
   teamAffiliation: string;
   genres: string[];
   imgURL: string[];
