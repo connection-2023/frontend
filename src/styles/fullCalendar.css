@@ -1,3 +1,5 @@
+@import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 .rbc-header:nth-child(1),
 .rbc-date-cell:nth-child(1) {
   color: #e92c2c;

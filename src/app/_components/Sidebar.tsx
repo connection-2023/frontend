@@ -46,7 +46,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
   return (
     <aside
       className={`hidden w-full rounded-lg bg-white ${
-        !isUser && 'shadow-float'
+        !isUser && view === 'my' && 'shadow-float'
       } xl:block`}
     >
       <nav

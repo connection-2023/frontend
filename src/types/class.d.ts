@@ -468,3 +468,11 @@ export interface searchClass {
   regions: { id: number; administrativeDistrict: string; district: string }[];
   genres: { id: number; genre: string }[];
 }
+
+export interface IMonthlyClassSchedules extends IClassSchedule {
+  lecture: {
+    title: string;
+    isGroup: boolean;
+    maxCapacity: number;
+  };
+}
