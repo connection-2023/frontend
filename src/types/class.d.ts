@@ -466,3 +466,10 @@ export interface IClassEditFormData {
   reservationComment: string;
   reservationDeadline: number;
 }
+export interface IMonthlyClassSchedules extends IClassSchedule {
+  lecture: {
+    title: string;
+    isGroup: boolean;
+    maxCapacity: number;
+  };
+}

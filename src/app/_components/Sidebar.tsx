@@ -35,7 +35,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
   const { nickname } = authUser;
   const profileImg =
     'userProfileImage' in authUser
-      ? authUser.userProfileImage.imageUrl
+      ? authUser.userProfileImage?.imageUrl
       : authUser.profileCardImageUrl;
 
   const getTextColorClass = (path: string) =>
@@ -46,7 +46,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
   return (
     <aside
       className={`hidden w-full rounded-lg bg-white ${
-        !isUser && 'shadow-float'
+        !isUser && view === 'my' && 'shadow-float'
       } xl:block`}
     >
       <nav
@@ -152,7 +152,7 @@ const instructorLinks = [
     ],
   },
   {
-    path: '/mypage/lecturer/coupon-pass?state=coupon',
+    path: '/mypage/instructor/coupon-pass?state=coupon',
     text: '패스권/쿠폰',
     icon: <CouponSVG width="21" height="21" className={iconStyle} />,
   },
@@ -196,7 +196,7 @@ const userLinks = [
     icon: <HeartSVG width="21" height="21" className={iconStyle} />,
   },
   {
-    path: '/mypage/user/coupon-pass?state=coupon',
+    path: '/mypage/user/coupon',
     text: '패스권/쿠폰',
     icon: <CouponSVG width="21" height="21" className={iconStyle} />,
   },

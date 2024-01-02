@@ -12,16 +12,10 @@ const meta: Meta<typeof ClassPreview> = {
     title: '가비쌤과 함께하는 왁킹 클래스',
     location: ['서울 마포구'],
     genre: ['락킹', '락킹'],
-    type: ['개인레슨', '단체레슨'],
-    time: ['오전', '오후'],
+    type: '개인레슨',
     review: { average: 4.5, count: 14 },
-    price: '80,000',
-    profile: { src: undefined, nickname: 'nickname' },
-    selectedDates: [
-      new Date(2023, 8, 4),
-      new Date(2023, 8, 6),
-      new Date(2023, 8, 8),
-    ],
+    price: 80000,
+    profile: { src: null, nickname: 'nickname' },
     imgURL: [
       'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
       'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
@@ -39,22 +33,6 @@ export const 모집중: Story = {
   render: (args) => <ClassPreview {...args} />,
 };
 
-export const 마감임박: Story = {
-  args: {
-    status: '마감임박' as const,
-    date: '08/04~09/25',
-    title: '가비쌤과 함께하는 왁킹 클래스',
-    location: ['서울 마포구', '서울 동작구'],
-    genre: ['락킹', '락킹'],
-    type: ['개인레슨'],
-    time: ['오전'],
-    review: { average: 4.5, count: 14 },
-    price: '80,000',
-    profile: { src: undefined, nickname: 'nickname' },
-    selectedDates: [new Date()],
-  },
-};
-
 export const 마감: Story = {
   args: {
     status: '마감' as const,
@@ -62,11 +40,9 @@ export const 마감: Story = {
     title: '가비쌤과 함께하는 왁킹 클래스',
     location: ['서울 마포구', '서울 성동구'],
     genre: ['락킹'],
-    type: ['개인레슨', '단체레슨'],
-    time: ['오전'],
+    type: '개인레슨',
     review: { average: 4, count: 12 },
-    price: '80,000',
-    profile: { src: undefined, nickname: 'nickname' },
-    selectedDates: [new Date()],
+    price: 80000,
+    profile: { src: null, nickname: 'nickname' },
   },
 };

@@ -2,19 +2,13 @@
 import { parseISO, format } from 'date-fns';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
-import { StarSVG, ArrowUpSVG } from '@/icons/svg';
-import { getReviews } from '@/lib/apis/instructorPostApis';
+import SortDropdown from '@/components/Dropdown/SortDropdown';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
 import { ReviewOrderType } from '@/types/class';
 import { IInstructorReviewList } from '@/types/instructor';
-
-const filterOption: ReviewOrderType[] = [
-  '최신순',
-  '좋아요순',
-  '평점 높은순',
-  '평점 낮은순',
-];
+import { StarSVG, ArrowUpSVG } from '@/icons/svg';
+import { getReviews } from '@/lib/apis/instructorPostApis';
 
 interface ReviewSectionProps {
   id: string;
@@ -35,7 +29,6 @@ const ReviewSection = ({ id, stars, totalReviewCount }: ReviewSectionProps) => {
     firstItemId: 0,
     lastItemId: 0,
   });
-  const pageCount = Math.round(displayCount / totalReviewCount);
 
   const fetchData = async (
     displayCount: number,
@@ -113,26 +106,17 @@ const ReviewSection = ({ id, stars, totalReviewCount }: ReviewSectionProps) => {
           <ArrowUpSVG
             width="27"
             height="27"
-            className="origin-center rotate-180 fill-black"
+            className={`origin-center fill-black ${
+              isListOpened ? '' : 'rotate-180'
+            }`}
           />
         </button>
-        <ul
-          className={`${
-            isListOpened ? 'flex flex-col' : 'hidden'
-          } absolute right-0 top-8 cursor-pointer divide-y divide-solid divide-gray-700 border border-solid border-black bg-white text-sm font-medium text-gray-300`}
-        >
-          {filterOption.map((list: ReviewOrderType) => (
-            <li
-              key={list}
-              className={`flex h-7 items-center gap-2 px-2 hover:bg-gray-900 ${
-                selectedOption === list && 'text-black'
-              }`}
-              onClick={() => onClickList(list)}
-            >
-              {list}
-            </li>
-          ))}
-        </ul>
+        {isListOpened && (
+          <SortDropdown
+            selectedOption={selectedOption}
+            onClickList={onClickList}
+          />
+        )}
       </div>
       <div className="flex flex-col gap-6">
         {userReviews.map((review) => (
@@ -150,6 +134,7 @@ const ReviewSection = ({ id, stars, totalReviewCount }: ReviewSectionProps) => {
             title={review.reservation.lectureSchedule.lecture.title}
             isLike={review.likedLectureReview?.[0] ? true : false}
             count={review._count.likedLectureReview}
+            link={`/report?lectureReviewId=${review.id}`}
           />
         ))}
       </div>

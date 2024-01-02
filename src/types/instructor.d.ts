@@ -15,6 +15,7 @@ export interface instructorPostResponse {
   lecturerProfileImageUrl: Url[]; // 추후 변경 예정
   stars: number;
   reviewCount: number;
+  isLiked: boolean;
 }
 
 interface Url {
@@ -99,4 +100,60 @@ export interface IInstructorReviewList {
   _count: {
     likedLectureReview: number;
   };
+}
+
+export interface ILecturerLike {
+  count: number;
+  lecturerLike: LecturerLike[];
+}
+
+export interface LecturerLike {
+  id: number;
+  lecturerId: number;
+  userId: number;
+  lecturer: {
+    nickname: string;
+    affiliation: string;
+    stars: number;
+    lecturerRegion: {
+      region: {
+        id: number;
+        administrativeDistrict: string;
+        district: string;
+      };
+    }[];
+    lecturerDanceGenre: {
+      id: number;
+      danceCategoryId: number;
+      lecturerId: number;
+      name: string | null;
+      danceCategory: {
+        genre: string;
+      };
+    }[];
+    lecturerProfileImageUrl: {
+      url: string;
+    }[];
+  };
+}
+
+export interface ILecturerBlock {
+  count: number;
+  lecturerBlock: LecturerBlock[];
+}
+
+export interface LecturerBlock {
+  id: number;
+  lecturerId: number;
+  userId: number;
+  lecturer: {
+    nickname: string;
+    lecturerProfileImageUrl: LecturerProfileImageUrl[];
+  };
+}
+
+export interface InstructorBlock {
+  id: number;
+  nickname: string;
+  imgURL: string[];
 }

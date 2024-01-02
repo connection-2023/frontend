@@ -1,5 +1,6 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
+import { day, ReviewOrderType } from '@/types/class';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
@@ -116,7 +117,7 @@ export const PROGRESS_METHOD = [
   '다회차',
 ];
 
-export const FILTER_WEEK = ['월', '화', '수', '목', '금', '토', '일'];
+export const FILTER_WEEK: day[] = ['월', '화', '수', '목', '금', '토', '일'];
 
 export const FILTER_TIME = [
   '오전(6시-11시)',
@@ -285,4 +286,31 @@ export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];
 
 export const LECTURE_COUPON_TAKE = 8;
 
+export const LECTURE_PASS_TAKE = 8;
+
 export const USER_COUPON_CLASS_LIST_TAKE = 6;
+
+export const INITIAL_SCHEDULE_PROGRESS = [
+  {
+    text: '수업 완료',
+    count: 0,
+    color: 'text-main-color',
+  },
+  {
+    text: '수업 예정',
+    count: 0,
+    color: 'text-sub-color1',
+  },
+  {
+    text: '총 수업',
+    count: 0,
+    color: '',
+  },
+]
+
+export const filterOption: ReviewOrderType[] = [
+  '최신순',
+  '좋아요순',
+  '평점 높은순',
+  '평점 낮은순',
+];

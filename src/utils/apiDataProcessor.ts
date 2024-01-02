@@ -11,10 +11,7 @@ import {
   postMultipleImage,
   postSingleImage,
 } from '@/lib/apis/imageApi';
-import {
-  formatLocationToString,
-  formatGenreToString,
-} from '@/utils/parseUtils';
+import { formatLocationToString } from '@/utils/parseUtils';
 import { calculateFinalDates } from './parseUtils';
 import {
   IprocessedDraft,

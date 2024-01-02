@@ -18,7 +18,7 @@ export interface IReportRequest {
   reason?: string;
 }
 
-export interface IUserReportResponse {
+export interface IReportResponse {
   id: number;
   targetUser: {
     nickname: string;

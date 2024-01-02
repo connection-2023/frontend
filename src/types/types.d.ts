@@ -34,6 +34,10 @@ export interface IFullCalendarEvent {
   start: Date;
   end: Date;
   title: string;
+  numberOfParticipants: number;
+  maxCapacity: number;
+  isGroup: boolean;
+  lectureId: number;
 }
 
 export interface ErrorMessage {
@@ -70,8 +74,9 @@ export interface IReportList {
 export type paymentType = 'card' | 'deposit' | null;
 
 export interface Instructors {
+  id: number;
   name: string;
-  address: string;
+  address: string[];
   teamAffiliation: string;
   genres: string[];
   imgURL: string[];
@@ -151,4 +156,13 @@ export interface IMyPaymentResponse {
 
 export interface FetchError extends Error {
   status?: number;
+}
+
+export interface PagenationFilterState {
+  take: number | undefined;
+  firstItemId?: number;
+  lastItemId?: number;
+  currentPage?: number;
+  targetPage?: number;
+  [key: string]: any | undefined;
 }

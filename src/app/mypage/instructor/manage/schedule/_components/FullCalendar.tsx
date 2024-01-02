@@ -1,69 +1,77 @@
 'use client';
 import 'moment/locale/ko';
-import { isSameDay } from 'date-fns';
-import format from 'date-fns/format';
-import koLocale from 'date-fns/locale/ko';
-import { useState, useCallback } from 'react';
+import { isSameDay, parseISO } from 'date-fns';
+import { useState, useMemo } from 'react';
 import { Calendar, View, Views, SlotInfo } from 'react-big-calendar';
+import ScheduleEventModal from '@/app/dashboard/_components/ScheduleEventModal';
 import {
   localizer,
   formats,
   eventStyleGetter,
   messages,
 } from '@/utils/fullCalendarUtils';
-import CalendarDetail from './CalendarDetail';
-import eventList from './Event';
 import ToolBar from './ToolBar';
+import { IMonthlyClassSchedules } from '@/types/class';
 import { IFullCalendarEvent } from '@/types/types';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/fullCalendar.css';
 
-const FullCalendar = () => {
-  const [date, setDate] = useState(new Date());
+interface FullCalendarProps {
+  date: Date;
+  handleDateChange: (newDate: Date) => void;
+  scheduleData: IMonthlyClassSchedules[] | undefined;
+}
+
+const FullCalendar = ({
+  date,
+  handleDateChange,
+  scheduleData,
+}: FullCalendarProps) => {
   const [view, setView] = useState<View>(Views.MONTH);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<IFullCalendarEvent[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const onNavigate = useCallback(
-    (newDate: Date) => setDate(newDate),
-    [setDate],
-  );
-  const onView = useCallback(
-    (newView: View) => {
-      setView(newView);
-    },
-    [setView],
-  );
+  const eventLists = useMemo(() => {
+    if (!scheduleData) return [];
+    return scheduleData.map((data) => ({
+      id: data.id,
+      title: data.lecture.title,
+      lectureId: data.lectureId,
+      start: parseISO(data.startDateTime),
+      end: parseISO(data.endDateTime),
+      numberOfParticipants: data.numberOfParticipants,
+      maxCapacity: data.lecture.maxCapacity,
+      isGroup: data.lecture.isGroup,
+    }));
+  }, [scheduleData]);
+
+  const onNavigate = (newDate: Date) => handleDateChange(newDate);
+
+  const onView = (newView: View) => {
+    setView(newView);
+  };
 
   const closeModal = () => {
     setModalIsOpen(false);
   };
 
-  const handleSelect = (eventOrSlotInfo: IFullCalendarEvent | SlotInfo) => {
-    const date =
-      (eventOrSlotInfo as IFullCalendarEvent).id !== undefined
-        ? eventOrSlotInfo.start
-        : eventOrSlotInfo.start;
-
-    setSelectedDate(date);
-
-    const eventsOnSelectedDate = eventList.filter((event) =>
-      isSameDay(date, event.start),
+  const handleSelectSlotEvent = (slotInfo: SlotInfo | IFullCalendarEvent) => {
+    setSelectedDate(slotInfo.start);
+    const eventsOnSelectedDate = eventLists.filter((event) =>
+      isSameDay(slotInfo.start, event.start),
     );
-
     setSelectedEvent(eventsOnSelectedDate);
     setModalIsOpen(true);
   };
 
   return (
-    <div className="relative mx-auto mb-[0.88rem] mt-[1.47rem] w-full max-w-[60.67rem] pr-8">
+    <>
       <Calendar
         localizer={localizer}
         formats={formats}
-        events={eventList}
-        onSelectSlot={handleSelect}
-        onSelectEvent={handleSelect}
+        events={eventLists}
+        onSelectSlot={handleSelectSlotEvent}
+        onSelectEvent={handleSelectSlotEvent}
         selectable={true}
         views={['month', 'week', 'day']}
         defaultView={Views.MONTH}
@@ -82,18 +90,18 @@ const FullCalendar = () => {
           toolbar: ToolBar,
         }}
         style={{ minHeight: '375px', minWidth: '425px', height: 637 }}
+        className="relative mx-auto mb-3.5 mt-6 w-full pr-8"
       />
 
       {modalIsOpen && selectedEvent && selectedDate && (
-        <CalendarDetail
+        <ScheduleEventModal
+          modalIsOpen={modalIsOpen}
           closeModal={closeModal}
-          events={selectedEvent}
-          selectedDate={format(selectedDate, 'yyyy년 MM월 dd일 eeee', {
-            locale: koLocale,
-          })}
+          selectedDate={selectedDate}
+          selectedEvent={selectedEvent}
         />
       )}
-    </div>
+    </>
   );
 };
 
