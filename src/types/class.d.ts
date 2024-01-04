@@ -240,6 +240,14 @@ export interface IClassSchedule {
 export interface IClassScheduleResponse {
   schedule: IClassSchedule[];
   holidayArr: string[];
+  daySchedule?: IDaySchedule[];
+}
+
+export interface IDaySchedule {
+  id: number;
+  lectureId: number;
+  day: day[];
+  dateTime: string[];
 }
 
 export interface IProcessedSchedules extends IClassSchedule {
