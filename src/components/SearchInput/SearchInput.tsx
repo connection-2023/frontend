@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { ArrowDownSVG, SearchSVG } from '@/icons/svg';
@@ -9,6 +9,11 @@ const SearchInput = ({ query }: { query: string }) => {
   const [navView, setNavView] = useState(false);
   const [keyword, setKeyword] = useState(query);
   const navRef = useRef(null);
+
+  useEffect(() => {
+    setKeyword(query);
+  }, [query]);
+
   const { pathname, changeParams, getCurrentParamsToObject } =
     useChangeSearchParams();
 

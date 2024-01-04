@@ -5,7 +5,10 @@ import {
   REGIONS_SELECT_MAX,
 } from '@/constants/constants';
 import { dummyMain } from '@/constants/dummy';
-import { searchInstructors } from '@/lib/apis/serverApis/searchApis';
+import {
+  searchBestInstructor,
+  searchInstructors,
+} from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
 import {
   transformSearchInstructor,
@@ -29,6 +32,8 @@ const instructorPage = async ({
 }) => {
   const { userType } = useUserStore.getState();
   let instructorList: InstructorCardProps[] = [];
+  let bestInstructorList: { id: number; image: string; nickname: string }[] =
+    [];
 
   const searchData: instructorSearchData = {
     take: 1,
@@ -66,12 +71,25 @@ const instructorPage = async ({
   };
 
   try {
-    const instructors = await searchInstructors(
-      searchData,
-      userType === 'user',
-    );
+    const [instructors, bestInstructors] = await Promise.all([
+      searchInstructors(searchData, userType === 'user'),
+      searchBestInstructor(userType === 'user'),
+    ]);
 
     searchData.searchAfter = instructors.at(-1)?.searchAfter;
+
+    bestInstructorList = bestInstructors.map((instructor) => ({
+      ...instructor,
+      image: instructor.lecturerProfileImageUrl[0].url,
+    }));
+
+    bestInstructorList =
+      bestInstructorList.length < 10
+        ? [
+            ...bestInstructorList,
+            ...bestInstructorList.slice(0, 10 - bestInstructorList.length),
+          ]
+        : bestInstructorList;
 
     instructorList = transformSearchInstructor(instructors);
   } catch (error) {
@@ -83,7 +101,9 @@ const instructorPage = async ({
       <div className="my-4 px-4 sm:px-9 xl:px-14">
         <SearchInput query={searchData.value ?? ''} />
       </div>
-      <BestInstructors list={dummyMain.topInstructorList} />
+      {bestInstructorList.length > 0 && (
+        <BestInstructors list={bestInstructorList} />
+      )}
 
       <div>
         <InstructorListView

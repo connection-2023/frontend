@@ -96,9 +96,12 @@ export const onClickDelete = ({
         value: searchParams.getAll('genre').filter((genre) => genre !== value),
       });
       break;
-    // case 'review':
-    //   updatedFilterOption.review = 0;
-    //   break;
+    case 'review':
+      changeParams({
+        name: 'stars',
+        value: '',
+      });
+      break;
     // case 'price':
     //   updatedFilterOption.price = [];
     //   break;

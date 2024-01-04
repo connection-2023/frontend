@@ -22,16 +22,16 @@ const InstructorListView = ({
 }: InstructorListViewProps) => {
   const [largeImg, setLargeImg] = useState(true);
   const [instructors, setInstructors] = useState(instructorList);
+  const [searchState, setSearchState] = useState({ ...searchData });
   const { userType } = useUserStore.getState();
-  const searchDataRef = useRef(searchData);
 
   useEffect(() => {
     setInstructors([...instructorList]);
 
-    searchDataRef.current = {
+    setSearchState({
       ...searchData,
       searchAfter: instructorList.at(-1)?.searchAfter,
-    };
+    });
   }, [instructorList, searchData]);
 
   useEffect(() => {
@@ -49,11 +49,14 @@ const InstructorListView = ({
 
   const searchInstructorsHandler = async () => {
     const instructors = await searchInstructors(
-      searchDataRef.current,
+      searchState,
       userType === 'user',
     );
 
-    searchDataRef.current.searchAfter = instructors.at(-1)?.searchAfter;
+    setSearchState((state) => ({
+      ...state,
+      searchAfter: instructors.at(-1)?.searchAfter,
+    }));
     instructorList = transformSearchInstructor(instructors);
     setInstructors((prev) => [...prev, ...instructorList]);
   };
@@ -85,8 +88,7 @@ const InstructorListView = ({
           return (
             <div
               ref={
-                index === instructors.length - 1 &&
-                searchDataRef.current.searchAfter
+                index === instructors.length - 1 && searchState.searchAfter
                   ? ref
                   : undefined
               }

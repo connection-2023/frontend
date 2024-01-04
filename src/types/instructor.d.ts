@@ -181,3 +181,12 @@ export interface searchInstructorParameters {
   regions?: string[];
   stars?: number;
 }
+
+export interface searchBestInstructorNonMembers {
+  id: number;
+  nickname: string;
+  profileCardImageUrl: null | string;
+  lecturerProfileImageUrl: {
+    url: string;
+  }[];
+}
