@@ -240,7 +240,7 @@ export const getClassSchedules = async (
 
 export const getOriginalClassInfo = async (id: string) => {
   try {
-    const [classInfoResponse, ScheduleResponse] = await Promise.all([
+    const [classInfoResponse, scheduleResponse] = await Promise.all([
       fetch(`${DOMAIN}/api/class/info?id=${id}`, {
         credentials: 'include',
         method: 'GET',
@@ -249,10 +249,15 @@ export const getOriginalClassInfo = async (id: string) => {
         method: 'GET',
       }).then((data) => data.json()),
     ]);
+    const { schedule, holidayArr } = scheduleResponse.data;
+    const formatSchedule = schedule.map((item) => new Date(item.startDateTime));
+    const formatHoliday = holidayArr.map((holiday) => new Date(holiday));
 
     return {
       ...classInfoResponse.data,
-      ...ScheduleResponse.data,
+      ...scheduleResponse.data,
+      schedule: formatSchedule,
+      holidayArr: formatHoliday,
     };
   } catch (error) {
     return new Error('클래스 수정 기본 정보 요청 에러!');
