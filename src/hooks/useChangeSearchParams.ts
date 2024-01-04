@@ -54,7 +54,28 @@ const useChangeSearchParams = () => {
     }
   };
 
-  return { router, pathname, searchParams, changeParams, removeParams };
+  const getCurrentParamsToObject = () => {
+    const result: { [key: string]: any } = {};
+
+    for (const [key, value] of searchParams.entries()) {
+      if (Object.hasOwnProperty.call(result, key)) {
+        result[key] = [...result[key], value];
+      } else {
+        result[key] = value;
+      }
+    }
+
+    return result;
+  };
+
+  return {
+    router,
+    pathname,
+    searchParams,
+    changeParams,
+    removeParams,
+    getCurrentParamsToObject,
+  };
 };
 
 export default useChangeSearchParams;
