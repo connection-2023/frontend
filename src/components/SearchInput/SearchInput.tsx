@@ -49,7 +49,7 @@ const SearchInput = ({ query }: { query: string }) => {
     <div className="relative flex h-12">
       <nav ref={navRef} className="relative mr-2 h-full w-[5.6rem]">
         {navView && (
-          <ul className="peer absolute top-12 z-10 flex w-full flex-col">
+          <ul className="peer absolute top-12 z-30 flex w-full flex-col">
             {options.map(({ path, label }, index) => {
               if (label === selectedOption?.label) {
                 return;

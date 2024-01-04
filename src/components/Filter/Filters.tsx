@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CloseSVG, ResetSVG } from '@/icons/svg';
+import { ResetSVG } from '@/icons/svg';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
 import GenreFilter from './GenreFilter';
@@ -101,7 +101,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
             ),
         )}
       </ul>
-      <div className="mb-3 flex w-full flex-wrap items-center gap-2">
+      <div className="z-20 mb-3 flex w-full flex-wrap items-center gap-2">
         {filterComponents.map((filter) => filter)}
         <Link
           href={type === 'instructor' ? '/instructor' : '/class'}

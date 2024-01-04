@@ -180,13 +180,15 @@ export interface SearchParams {
   genre?: string[];
   regions?: string;
   stars?: number;
+  searchAfter?: [number, number];
 }
 
 export interface instructorSearchData {
   take: number;
   sortOption: 'LATEST' | 'STARS';
   value: string | undefined;
-  genres: string[] | undefined;
-  regions: string[] | undefined;
-  stars: number | undefined;
+  genres: string[];
+  regions: string[];
+  stars: number;
+  searchAfter?: [number, number];
 }

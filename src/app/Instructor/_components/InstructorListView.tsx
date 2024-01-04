@@ -1,7 +1,12 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import useIntersect from '@/hooks/useIntersect';
+import { searchInstructors } from '@/lib/apis/searchApis';
+import { useUserStore } from '@/store/userStore';
+import { transformSearchInstructor } from '@/utils/apiDataProcessor';
 import NavComponent from './NavComponent';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
+import Spinner from '@/components/Spinner/Spinner';
 import { InstructorCardProps, instructorSearchData } from '@/types/types';
 
 interface InstructorListViewProps {
@@ -16,6 +21,14 @@ const InstructorListView = ({
   children,
 }: InstructorListViewProps) => {
   const [largeImg, setLargeImg] = useState(true);
+  const [instructors, setInstructors] = useState(instructorList);
+  const { userType } = useUserStore.getState();
+  const searchDataRef = useRef(searchData);
+
+  // useEffect(() => {
+  //   setInstructors(instructorList);
+  //   searchDataRef.current = searchData;
+  // }, [instructorList]);
 
   useEffect(() => {
     const storedValue = localStorage.getItem('cardState');
@@ -23,6 +36,25 @@ const InstructorListView = ({
       setLargeImg(storedValue === 'large');
     }
   }, []);
+
+  const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1,
+  };
+
+  const searchInstructorsHandler = async () => {
+    const instructors = await searchInstructors(
+      searchDataRef.current,
+      userType === 'user',
+    );
+
+    searchDataRef.current.searchAfter = instructors.at(-1)?.searchAfter;
+    instructorList = transformSearchInstructor(instructors);
+    setInstructors((prev) => [...prev, ...instructorList]);
+  };
+
+  const { ref, loading } = useIntersect(searchInstructorsHandler, options);
 
   const imgStateHandler = (state: boolean) => {
     setLargeImg(state);
@@ -44,15 +76,30 @@ const InstructorListView = ({
           largeImg ? 'grid-cols-1' : 'grid-cols-2'
         }`}
       >
-        {instructorList.map((info, index) => {
+        {instructors.map((info, index) => {
           const newInfo = { ...info, largeImg };
           return (
-            <div key={info.id + index} className="h-60">
+            <div
+              ref={
+                index === instructors.length - 1 &&
+                searchDataRef.current.searchAfter
+                  ? ref
+                  : undefined
+              }
+              key={info.id + index}
+              className="h-60"
+            >
               <InstructorCard {...newInfo} />
             </div>
           );
         })}
       </div>
+
+      {loading && (
+        <div className="mb-5 flex justify-center">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
 };

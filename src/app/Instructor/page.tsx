@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { randomUUID } from 'crypto';
 import BestInstructors from '@/app/instructor/_components/BestInstructors';
 import {
   DANCE_GENRE,
@@ -15,10 +15,12 @@ import {
 import { regionsDecryption } from '@/utils/searchFilterFn';
 import InstructorListView from './_components/InstructorListView';
 import Filters from '@/components/Filter/Filters';
+import SearchInput from '@/components/SearchInput/SearchInput';
 import {
   IFilterOptions,
   InstructorCardProps,
   SearchParams,
+  instructorSearchData,
 } from '@/types/types';
 
 const instructorPage = async ({
@@ -26,12 +28,11 @@ const instructorPage = async ({
 }: {
   searchParams: SearchParams;
 }) => {
-  const { authUser } = useUserStore.getState();
-
+  const { userType } = useUserStore.getState();
   let instructorList: InstructorCardProps[] = [];
 
-  const searchData = {
-    take: INSTRUCTOR_TAKE,
+  const searchData: instructorSearchData = {
+    take: 1,
     sortOption:
       searchParams.sortOption &&
       (searchParams.sortOption === 'LATEST' ||
@@ -39,9 +40,15 @@ const instructorPage = async ({
         ? searchParams.sortOption
         : 'LATEST',
     value: searchParams.query,
-    genres: [...new Set(searchParams.genre ?? [])].filter((genre) =>
-      DANCE_GENRE.includes(genre),
-    ),
+    genres: [
+      ...new Set(
+        Array.isArray(searchParams.genre)
+          ? searchParams.genre
+          : searchParams.genre
+          ? [searchParams.genre]
+          : [],
+      ),
+    ].filter((genre) => DANCE_GENRE.includes(genre)),
     regions: [...new Set(regionsDecryption(searchParams.regions))].slice(
       0,
       REGIONS_SELECT_MAX,
@@ -60,7 +67,11 @@ const instructorPage = async ({
   };
 
   try {
-    const instructors = await searchInstructors(searchData, !!authUser);
+    const instructors = await searchInstructors(
+      searchData,
+      userType === 'user',
+    );
+    searchData.searchAfter = instructors.at(-1)?.searchAfter;
 
     instructorList = transformSearchInstructor(instructors);
   } catch (error) {
@@ -69,14 +80,19 @@ const instructorPage = async ({
 
   return (
     <section className="flex flex-col">
+      <div className="my-4 px-4 sm:px-9 xl:px-14">
+        <SearchInput query={searchData.value ?? ''} />
+      </div>
       <BestInstructors list={dummyMain.topInstructorList} />
 
-      <InstructorListView
-        instructorList={instructorList}
-        searchData={searchData}
-      >
-        <Filters type="instructor" filterOption={filterOptions} />
-      </InstructorListView>
+      <div key={randomUUID()}>
+        <InstructorListView
+          instructorList={instructorList}
+          searchData={searchData}
+        >
+          <Filters type="instructor" filterOption={filterOptions} />
+        </InstructorListView>
+      </div>
     </section>
   );
 };

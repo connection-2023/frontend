@@ -103,7 +103,7 @@ export interface IInstructorReviewList {
 }
 
 export interface searchInstructor {
-  searchAfter: number[];
+  searchAfter: [number, number];
   id: number;
   nickname: string;
   affiliation: string;
