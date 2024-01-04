@@ -25,10 +25,14 @@ const InstructorListView = ({
   const { userType } = useUserStore.getState();
   const searchDataRef = useRef(searchData);
 
-  // useEffect(() => {
-  //   setInstructors(instructorList);
-  //   searchDataRef.current = searchData;
-  // }, [instructorList]);
+  useEffect(() => {
+    setInstructors([...instructorList]);
+
+    searchDataRef.current = {
+      ...searchData,
+      searchAfter: instructorList.at(-1)?.searchAfter,
+    };
+  }, [instructorList, searchData]);
 
   useEffect(() => {
     const storedValue = localStorage.getItem('cardState');

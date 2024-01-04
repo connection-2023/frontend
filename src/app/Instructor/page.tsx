@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import BestInstructors from '@/app/instructor/_components/BestInstructors';
 import {
   DANCE_GENRE,
@@ -71,6 +70,7 @@ const instructorPage = async ({
       searchData,
       userType === 'user',
     );
+
     searchData.searchAfter = instructors.at(-1)?.searchAfter;
 
     instructorList = transformSearchInstructor(instructors);
@@ -85,7 +85,7 @@ const instructorPage = async ({
       </div>
       <BestInstructors list={dummyMain.topInstructorList} />
 
-      <div key={randomUUID()}>
+      <div>
         <InstructorListView
           instructorList={instructorList}
           searchData={searchData}

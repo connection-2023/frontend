@@ -438,8 +438,10 @@ export const transformSearchInstructor = (lecturers: searchInstructor[]) => {
       stars,
       affiliation,
       isLiked,
+      searchAfter,
     }) => ({
       id,
+      searchAfter,
       isLiked,
       largeImg: false,
       name: nickname,
