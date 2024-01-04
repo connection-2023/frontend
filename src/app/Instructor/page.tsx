@@ -4,7 +4,6 @@ import {
   INSTRUCTOR_TAKE,
   REGIONS_SELECT_MAX,
 } from '@/constants/constants';
-import { dummyMain } from '@/constants/dummy';
 import {
   searchBestInstructor,
   searchInstructors,
@@ -36,7 +35,7 @@ const instructorPage = async ({
     [];
 
   const searchData: instructorSearchData = {
-    take: 1,
+    take: INSTRUCTOR_TAKE,
     sortOption:
       searchParams.sortOption &&
       (searchParams.sortOption === 'LATEST' ||

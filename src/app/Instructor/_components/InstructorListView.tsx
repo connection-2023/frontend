@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import useIntersect from '@/hooks/useIntersect';
+import { NotFoundSVG } from '@/icons/svg';
 import { searchInstructors } from '@/lib/apis/searchApis';
 import { useUserStore } from '@/store/userStore';
 import { transformSearchInstructor } from '@/utils/apiDataProcessor';
@@ -79,9 +80,9 @@ const InstructorListView = ({
       </NavComponent>
 
       <div
-        className={`my-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 ${
+        className={`my-4 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 ${
           largeImg ? 'grid-cols-1' : 'grid-cols-2'
-        }`}
+        } ${instructors.length > 0 ? 'grid' : 'hidden'}`}
       >
         {instructors.map((info, index) => {
           const newInfo = { ...info, largeImg };
@@ -99,6 +100,15 @@ const InstructorListView = ({
             </div>
           );
         })}
+      </div>
+
+      <div
+        className={`my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100 ${
+          instructors.length > 0 ? 'hidden' : 'block'
+        }`}
+      >
+        <NotFoundSVG />
+        <p>검색된 결과가 없습니다</p>
       </div>
 
       {loading && (

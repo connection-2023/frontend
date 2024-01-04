@@ -111,12 +111,11 @@ export const searchBestInstructor = async (
     //     }
     //   : 백엔드 500 에러 인기강사 유저용
 
+    //    userState
+    // ? '/popular-lecturers/users'
+    // :
     const response = await fetch(
-      `${END_POINT}${
-        userState
-          ? '/popular-lecturers/users'
-          : '/popular-lecturers/non-members'
-      }`,
+      `${END_POINT}${'/popular-lecturers/non-members'}`,
       {
         method: 'GET',
         credentials: 'include',
