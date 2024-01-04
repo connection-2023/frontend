@@ -174,6 +174,7 @@ export interface PagenationFilterState {
 }
 
 export interface SearchParams {
+  [key: string]: string | 'LATEST' | 'STARS' | string[] | number | undefined;
   query?: string;
   sortOption?: 'LATEST' | 'STARS';
   genre?: string[];

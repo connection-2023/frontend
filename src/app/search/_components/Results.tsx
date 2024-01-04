@@ -11,12 +11,13 @@ import ResultInput from '../../../components/SearchInput/SearchInput';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
 import { ClassCardType } from '@/types/class';
-import { InstructorCardProps } from '@/types/types';
+import { InstructorCardProps, SearchParams } from '@/types/types';
 
-const Results = async ({ query }: { query: string }) => {
+const Results = async ({ searchParams }: { searchParams: SearchParams }) => {
   const userStoreState = useUserStore.getState();
   let instructorList: InstructorCardProps[] = [];
   let classList: ClassCardType[] = [];
+  const query = searchParams.query ?? '';
 
   try {
     const { searchedLecturers, searchedLectures } = await searchAll(
@@ -38,8 +39,9 @@ const Results = async ({ query }: { query: string }) => {
 
       <ListSection
         title="강사"
-        link={`/instructor?query=${query}`}
+        link="/instructor"
         hasResults={instructorList.length > 0}
+        searchParams={searchParams}
       >
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-x-4">
           {instructorList.map((info) => (
@@ -52,8 +54,9 @@ const Results = async ({ query }: { query: string }) => {
 
       <ListSection
         title="클래스"
-        link={`/class?query=${query}`}
+        link="/class"
         hasResults={classList.length > 0}
+        searchParams={searchParams}
       >
         <div className="grid gap-y-6 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-9 md:grid-cols-3 lg:gap-x-4 xl:grid-cols-2 xl:gap-5">
           {classList.map((info) => (
