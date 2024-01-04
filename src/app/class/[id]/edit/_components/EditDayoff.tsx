@@ -3,7 +3,6 @@ import { compareAsc, isSameDay } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
-import { IClassSchedule } from '@/types/class';
 import { getUniqueDates } from '@/utils/parseUtils';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
@@ -11,41 +10,29 @@ const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없�
 interface EditDayoffProps {
   onChange: (value: Date[]) => void;
   defaultValue: {
-    schedules: IClassSchedule[];
-    holidays: string[];
+    schedules: Date[];
+    holidays: Date[];
   };
 }
 
 const EditDayoff = ({ onChange, defaultValue }: EditDayoffProps) => {
-  const initialValues = useRef(defaultValue);
-  const parsedSchedules = useMemo(
-    () =>
-      initialValues.current.schedules?.map(
-        (schedule) => new Date(schedule.startDateTime),
-      ) || [],
-    [initialValues.current.schedules],
-  );
-  const parsedHolidays = useMemo(
-    () =>
-      initialValues.current.holidays?.map((holiday) => new Date(holiday)) || [],
-    [initialValues.current.holidays],
-  );
   const allDays = useMemo(
-    () => [...parsedSchedules, ...parsedHolidays],
-    [parsedSchedules, parsedHolidays],
+    () => [...defaultValue.schedules, ...defaultValue.holidays],
+    [defaultValue.schedules, defaultValue.holidays],
   );
-  const initialUnselectedDates = useRef(parsedHolidays);
+  const initialUnselectedDates = useRef(defaultValue.holidays);
 
   const defultOption = defaultValue.holidays?.length ? 0 : null;
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
     defultOption,
   );
-  const [unselectedDates, setUnselectedDates] =
-    useState<Date[]>(parsedHolidays);
+  const [unselectedDates, setUnselectedDates] = useState<Date[]>(
+    defaultValue.holidays,
+  );
 
   useEffect(() => {
-    initialUnselectedDates.current = parsedHolidays;
-  }, [parsedHolidays]);
+    initialUnselectedDates.current = defaultValue.holidays;
+  }, [defaultValue.holidays]);
 
   const uniqueSelectableDates = useMemo(
     () => getUniqueDates(allDays),
@@ -53,8 +40,8 @@ const EditDayoff = ({ onChange, defaultValue }: EditDayoffProps) => {
   );
 
   const uniqueScheduleDates = useMemo(
-    () => getUniqueDates(parsedSchedules),
-    [parsedSchedules],
+    () => getUniqueDates(defaultValue.schedules),
+    [defaultValue.schedules],
   );
 
   const uniqueUnselectedDates = useMemo(
