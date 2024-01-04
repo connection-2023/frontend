@@ -166,7 +166,7 @@ export const formatScheduleDays = (
     const days = schedule.day.join(',');
     const times = schedule.dateTime
       .map((time) => {
-        const [hour, minute] = time.split(':');
+        const [hour, minute] = time.split(':').map(Number);
         const startTime = new Date();
         startTime.setHours(hour, minute);
         const endTime = addMinutes(startTime, duration);
