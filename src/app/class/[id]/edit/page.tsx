@@ -9,6 +9,8 @@ import EditClassRange from './_components/EditClassRange';
 import EditDayoff from './_components/EditDayoff';
 import SideNavbar from './_components/SideNavbar';
 import NumberSelect from '../../create/_components/NumberSelect';
+import Button from '@/components/Button/Button';
+import UniqueButton from '@/components/Button/UniqueButton';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
@@ -57,8 +59,6 @@ const ClassEditPage = () => {
     control,
     watch,
     handleSubmit,
-    setValue,
-    reset,
     formState: { errors },
   } = formMethods;
 
@@ -72,7 +72,7 @@ const ClassEditPage = () => {
       setInitData(data);
     };
     classOriginalData();
-  }, []);
+  }, [postId]);
 
   const formatSchedules = useMemo(() => {
     // 전체 기간에 맞게 클래스 일정 조정
@@ -90,7 +90,7 @@ const ClassEditPage = () => {
         ),
       ];
     } else return initData.schedule;
-  }, [newEndDate, initData, newSchedules?.length]);
+  }, [newEndDate, initData]);
 
   //   강사 id랑 글 강사 Id 확인하기
   //   if (userType !== 'lecturer' && authUser?.id !== initData.lecturer.id)
@@ -130,7 +130,7 @@ const ClassEditPage = () => {
     let reqData: IClassEditRequest;
 
     try {
-      const { images, curriculum, maxCapacity, endDate, schedules } = data;
+      const { images, curriculum, maxCapacity, endDate } = data;
 
       curriculum.deletedImages.forEach(
         async ({ src }) => await deleteImage({ imageUrl: src }),
@@ -197,6 +197,13 @@ const ClassEditPage = () => {
     }));
 
     setInvalidData(invalidList);
+  };
+
+  const handleEditCancel = () => {
+    const confirm = window.confirm('클래스 수정을 취소하겠습니까?');
+    if (confirm) {
+      router.push(`/class/${postId}`);
+    }
   };
 
   return (
@@ -588,6 +595,20 @@ const ClassEditPage = () => {
         </FormProvider>
       </div>
 
+      <div className="mb-11 mt-20 flex flex-col gap-2 text-lg font-semibold md:hidden">
+        <Button
+          type="submit"
+          onClick={handleSubmit(onSubmit, invalid)}
+          color="secondary"
+          size="large"
+        >
+          수정 완료
+        </Button>
+
+        <UniqueButton onClick={handleEditCancel} color="secondary" size="large">
+          수정 취소
+        </UniqueButton>
+      </div>
       {/* 유효성 토스트 메세지 */}
       <ValidationMessage
         title="하기 값(들)을 확인해 주세요."
