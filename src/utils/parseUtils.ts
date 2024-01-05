@@ -217,3 +217,34 @@ export const generateDatesFromNewEndDate = (
     return acc;
   }, []);
 };
+
+export const calculateEndTime = (start: string, duration: number) => {
+  if (!start || start.trim() === '') {
+    return '--:-- --';
+  }
+
+  const timeParts = start.split(':');
+  const dateObj = new Date();
+  dateObj.setHours(parseInt(timeParts[0]));
+  dateObj.setMinutes(parseInt(timeParts[1]));
+
+  // runningTime 은 분 단위
+  dateObj.setMinutes(dateObj.getMinutes() + duration);
+
+  let hours = dateObj.getHours();
+
+  const period = hours >= 12 ? 'PM' : 'AM';
+
+  if (hours > 12) {
+    hours -= 12;
+  } else if (hours === 0) {
+    // midnight
+    hours = 12;
+  }
+
+  // 항상 두 자릿수로 유지
+  const strHours = ('0' + hours).slice(-2);
+  const minutes = ('0' + dateObj.getMinutes()).slice(-2);
+
+  return `${strHours}:${minutes} ${period}`;
+};
