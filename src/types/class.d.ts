@@ -481,3 +481,13 @@ export interface IMonthlyClassSchedules extends IClassSchedule {
     maxCapacity: number;
   };
 }
+
+export interface IEditSpecificDateType {
+  date: Date;
+  startDateTime: IEditStartDateTime[];
+}
+
+export interface IEditStartDateTime {
+  time: string;
+  editable: boolean;
+}
