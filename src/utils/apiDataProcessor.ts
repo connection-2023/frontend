@@ -154,8 +154,8 @@ export const classOutputDataProcess = async (
         difficultyLevel === '상급'
           ? '상'
           : difficultyLevel === '중급'
-          ? '중'
-          : '하';
+            ? '중'
+            : '하';
 
       const newLectureMethod =
         lectureMethod === '원데이 레슨' ? '원데이' : '정기';
@@ -497,7 +497,7 @@ export const transformSearchClass = (classList: searchClass[]) => {
         src: lecturer.profileCardImageUrl,
         nickname: lecturer.nickname,
       },
-      isLiked,
+      isLiked: isLiked ? isLiked : false,
     }),
   );
 };

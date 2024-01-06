@@ -550,4 +550,5 @@ export interface searchClass {
   regions: { id: number; administrativeDistrict: string; district: string }[];
   genres: { id: number; genre: string }[];
   days: null | { day: [day]; dateTime: string[] };
+  isLiked?: boolean;
 }

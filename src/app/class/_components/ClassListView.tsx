@@ -1,14 +1,21 @@
 'use client';
 
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
+import ClassPreview from '@/components/ClassPreview/ClassPreview';
+import { ClassCardType } from '@/types/class';
 import { classSearchData } from '@/types/types';
 
 interface ClassListViewProps {
   searchData: classSearchData;
   children: React.ReactNode;
+  classList: ClassCardType[];
 }
 
-const ClassListView = ({ children, searchData }: ClassListViewProps) => {
+const ClassListView = ({
+  children,
+  searchData,
+  classList,
+}: ClassListViewProps) => {
   const { changeParams } = useChangeSearchParams();
 
   const sortOptionList: {
@@ -54,6 +61,12 @@ const ClassListView = ({ children, searchData }: ClassListViewProps) => {
           </div>
         </div>
       </nav>
+
+      <div className="my-4 grid gap-x-4 gap-y-6 sm:grid-cols-3 sm:gap-y-12 lg:grid-cols-4 xl:grid-cols-2 xl:gap-x-5 xl:gap-y-4">
+        {classList.map((classData) => (
+          <ClassPreview key={classData.id} {...classData} />
+        ))}
+      </div>
     </div>
   );
 };

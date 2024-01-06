@@ -4,7 +4,10 @@ import {
   searchClasses,
 } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
-import { transformBestClassSearch } from '@/utils/apiDataProcessor';
+import {
+  transformBestClassSearch,
+  transformSearchClass,
+} from '@/utils/apiDataProcessor';
 import { regionsDecryption } from '@/utils/searchFilterFn';
 import BestlCasses from './_components/BestlCasses';
 import ClassListView from './_components/ClassListView';
@@ -15,6 +18,7 @@ import { SearchParams, classSearchData } from '@/types/types';
 const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   const { userType } = useUserStore.getState();
   let bestClassList: ClassCardType[] = [];
+  let classList: ClassCardType[] = [];
 
   const searchData: classSearchData = {
     take: 8,
@@ -47,8 +51,9 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       await searchBestClass(userType === 'user'),
     );
 
-    const test = await searchClasses(searchData, userType === 'user');
-    console.log(test[1].days);
+    classList = transformSearchClass(
+      await searchClasses(searchData, userType === 'user'),
+    );
   } catch (error) {
     console.error(error);
   }
@@ -60,7 +65,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       </div>
       <BestlCasses bestClassList={bestClassList} />
 
-      <ClassListView searchData={searchData}>
+      <ClassListView searchData={searchData} classList={classList}>
         <div>a</div>
       </ClassListView>
     </section>
