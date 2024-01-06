@@ -164,6 +164,7 @@ export const searchBestClass = async (
     }
 
     const resData = await response.json();
+
     return resData.data.lectures;
   } catch (error) {
     console.error(error);

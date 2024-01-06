@@ -19,6 +19,7 @@ import {
   IClassPostResponse,
   ClassCardType,
   searchClass,
+  searchBestClassData,
 } from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
 import { searchInstructor } from '@/types/instructor';
@@ -518,4 +519,51 @@ export const transformSearchParamsLocation = (data: string[]) => {
   });
 
   return result;
+};
+
+export const transformBestClassSearch = (classList: searchBestClassData[]) => {
+  return classList.map(
+    ({
+      id,
+      title,
+      startDate,
+      endDate,
+      lectureImage,
+      lectureToRegion,
+      lectureToDanceGenre,
+      reviewCount,
+      likedLecture, // 수정 예정
+      lectureMethod, // 원데이, 정기 표시 안하나?
+      isGroup,
+      stars,
+      price,
+      lecturer,
+    }) => ({
+      id,
+      title,
+      date: `${format(parseISO(startDate), 'MM/dd')}~${format(
+        parseISO(endDate),
+        'MM/dd',
+      )} `,
+      status: '모집중' as '모집중' | '마감', //수정 예정
+      imgURL: [
+        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
+      ], // lectureImage, //수정 예정
+      location: lectureToRegion.map(({ region }) => {
+        const { administrativeDistrict, district } = region;
+        return `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`;
+      }),
+      genre: lectureToDanceGenre.map(
+        ({ danceCategory }) => danceCategory.genre,
+      ),
+      type: isGroup ? '그룹레슨' : '개인레슨',
+      review: { average: stars, count: reviewCount },
+      price,
+      profile: {
+        src: lecturer.profileCardImageUrl,
+        nickname: lecturer.nickname,
+      },
+      isLiked: !!likedLecture ? !!likedLecture.id : false,
+    }),
+  );
 };

@@ -5,13 +5,16 @@ import {
 } from '@/constants/constants';
 import { searchBestClass } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
+import { transformBestClassSearch } from '@/utils/apiDataProcessor';
 import { regionsDecryption } from '@/utils/searchFilterFn';
+import BestlCasses from './_components/BestlCasses';
 import SearchInput from '@/components/SearchInput/SearchInput';
+import { ClassCardType } from '@/types/class';
 import { SearchParams } from '@/types/types';
 
 const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   const { userType } = useUserStore.getState();
-  let bestClassList = [];
+  let bestClassList: ClassCardType[] = [];
 
   const searchData = {
     take: INSTRUCTOR_TAKE,
@@ -39,14 +42,19 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   };
 
   try {
-    bestClassList = await searchBestClass(userType === 'user');
-  } catch (error) {}
+    bestClassList = transformBestClassSearch(
+      await searchBestClass(userType === 'user'),
+    );
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <section className="flex flex-col">
       <div className="my-4 px-4 sm:px-9 xl:px-14">
         <SearchInput query={searchData.value ?? ''} />
       </div>
+      <BestlCasses bestClassList={bestClassList} />
     </section>
   );
 };

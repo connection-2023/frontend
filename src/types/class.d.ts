@@ -480,7 +480,7 @@ export interface IMonthlyClassSchedules extends IClassSchedule {
 export interface searchBestClassData {
   id: number;
   title: string;
-  lectureImage: null;
+  lectureImage: string[];
   startDate: string;
   endDate: string;
   isActive: boolean;
@@ -501,5 +501,12 @@ export interface searchBestClassData {
     nickname: string;
     profileCardImageUrl: null | string;
     lecturerProfileImageUrl: null | string;
+  };
+  likedLecture?: {
+    id: number;
+  };
+  lectureMethod?: {
+    id: number;
+    name: string;
   };
 }
