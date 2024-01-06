@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import FilterModal from './FilterModal';
@@ -38,7 +39,12 @@ const PriceFilter = ({
   };
 
   return (
-    <FilterModal label={label} onReset={onReset} onApply={onApply}>
+    <FilterModal
+      label={label}
+      onReset={onReset}
+      onApply={onApply}
+      onClose={() => console.log('a')}
+    >
       <div className="flex flex-col px-[0.87rem]">
         <div className="mb-[0.75rem] mt-[1.25rem]">
           <Range
@@ -49,43 +55,49 @@ const PriceFilter = ({
             values={values}
             onChange={(values) => setValues(values)}
             onFinalChange={() => setDraggingThumbIndex(null)}
-            renderTrack={({ props, children }) => (
-              <div {...props} className="h-1 max-w-[13rem]">
+            renderTrack={({ props, children }) => {
+              return (
+                <div {...props} className="h-1">
+                  <div
+                    ref={props.ref}
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      background: getTrackBackground({
+                        values,
+                        colors: [
+                          'var(--gray4)',
+                          'var(--sub-color1)',
+                          'var(--gray4)',
+                        ],
+                        min: MIN,
+                        max: MAX,
+                      }),
+                    }}
+                  />
+                  {children}
+                </div>
+              );
+            }}
+            renderThumb={({ props, index }) => {
+              const { key, ...rest } = props;
+              return (
                 <div
-                  ref={props.ref}
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    background: getTrackBackground({
-                      values,
-                      colors: [
-                        'var(--gray-700)',
-                        'var(--sub-color1)',
-                        'var(--gray-700)',
-                      ],
-                      min: MIN,
-                      max: MAX,
-                    }),
-                  }}
-                />
-                {children}
-              </div>
-            )}
-            renderThumb={({ props, index }) => (
-              <div
-                {...props}
-                onMouseDown={() => setDraggingThumbIndex(index)}
-                onTouchStart={() => setDraggingThumbIndex(index)}
-                onBlur={() => setDraggingThumbIndex(null)}
-                className="relative h-5 w-5 rounded-full bg-white drop-shadow-[0_0_3px_rgba(0,0,0,0.50)] focus:outline-none"
-              >
-                {draggingThumbIndex === index && (
-                  <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-full transform whitespace-nowrap bg-sub-color1 px-1 text-xs text-white">
-                    {values[index]}
-                  </span>
-                )}
-              </div>
-            )}
+                  key={key}
+                  {...rest}
+                  onMouseDown={() => setDraggingThumbIndex(index)}
+                  onTouchStart={() => setDraggingThumbIndex(index)}
+                  onBlur={() => setDraggingThumbIndex(null)}
+                  className="relative top-0 h-5 w-5 rounded-full bg-white drop-shadow-[0_0_3px_rgba(0,0,0,0.50)] focus:outline-none"
+                >
+                  {draggingThumbIndex === index && (
+                    <span className="whitespace-nowrappx-1 absolute left-1/2 top-0 -translate-x-1/2 -translate-y-full transform bg-sub-color1 text-xs text-white">
+                      {values[index]}
+                    </span>
+                  )}
+                </div>
+              );
+            }}
           />
         </div>
         <div className="mb-[0.5rem] flex items-center gap-[0.5rem]">

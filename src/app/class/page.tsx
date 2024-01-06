@@ -7,13 +7,15 @@ import { useUserStore } from '@/store/userStore';
 import {
   transformBestClassSearch,
   transformSearchClass,
+  transformSearchParamsLocation,
 } from '@/utils/apiDataProcessor';
 import { regionsDecryption } from '@/utils/searchFilterFn';
 import BestlCasses from './_components/BestlCasses';
 import ClassListView from './_components/ClassListView';
+import Filters from '@/components/Filter/Filters';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import { ClassCardType } from '@/types/class';
-import { SearchParams, classSearchData } from '@/types/types';
+import { IFilterOptions, SearchParams, classSearchData } from '@/types/types';
 
 const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   const { userType } = useUserStore.getState();
@@ -46,6 +48,16 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
     isGroup: searchParams.isGroup === 'false' ? false : true,
   };
 
+  const filterOptions: IFilterOptions = {
+    regions: transformSearchParamsLocation(searchData.regions),
+    genre: searchData.genres,
+    review: searchData.stars,
+    price: [],
+    date: [],
+    method: [],
+    daytime: [],
+  };
+
   try {
     bestClassList = transformBestClassSearch(
       await searchBestClass(userType === 'user'),
@@ -66,7 +78,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       <BestlCasses bestClassList={bestClassList} />
 
       <ClassListView searchData={searchData} classList={classList}>
-        <div>a</div>
+        <Filters type="class" filterOption={filterOptions} />
       </ClassListView>
     </section>
   );
