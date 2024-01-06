@@ -31,6 +31,16 @@ const useChangeSearchParams = () => {
     router.push(pathname + '?' + params.toString());
   };
 
+  const removeMultipleParams = (names: string[]) => {
+    const params = new URLSearchParams(searchParams);
+
+    names.forEach((name) => {
+      params.delete(name);
+    });
+
+    router.push(pathname + '?' + params.toString());
+  };
+
   const changeParams = ({
     name,
     value,
@@ -51,6 +61,38 @@ const useChangeSearchParams = () => {
       router.push(pathname + '?' + newQueryString);
     } else {
       removeParams(name);
+    }
+  };
+
+  const changeMultipleParams = (
+    paramsArray: { name: string; value: string | string[] }[],
+  ) => {
+    const params = new URLSearchParams(searchParams);
+
+    paramsArray.forEach(({ name, value }) => {
+      const isArrayWithValue = Array.isArray(value) && value.length > 0;
+      const isStringWithValue = !Array.isArray(value) && value;
+
+      if (isArrayWithValue || isStringWithValue) {
+        if (Array.isArray(value)) {
+          params.delete(name);
+          if (value.length > 0) {
+            value.forEach((v) => params.append(name, v));
+          }
+        } else {
+          params.set(name, value);
+        }
+      } else {
+        params.delete(name);
+      }
+    });
+
+    const newQueryString = params.toString();
+
+    if (newQueryString) {
+      router.push(pathname + '?' + newQueryString);
+    } else {
+      router.push(pathname);
     }
   };
 
@@ -75,6 +117,8 @@ const useChangeSearchParams = () => {
     changeParams,
     removeParams,
     getCurrentParamsToObject,
+    changeMultipleParams,
+    removeMultipleParams,
   };
 };
 
