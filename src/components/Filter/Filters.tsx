@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
 import { ResetSVG } from '@/icons/svg';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
@@ -34,6 +35,10 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
     }
     if (Array.isArray(value)) {
       if (key === 'price') {
+        const [min, max] = value;
+        if (max === PRICE_FILTER_MAX && min === PRICE_FILTER_MIN) {
+          return acc;
+        }
         acc.push({ type: key, value: value.join(', ') });
       } else {
         acc.push(...value.map((v) => ({ type: key, value: v })));

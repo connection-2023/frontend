@@ -320,3 +320,7 @@ export const filterOption: ReviewOrderType[] = [
   '평점 높은순',
   '평점 낮은순',
 ];
+
+export const PRICE_FILTER_MIN = 0;
+
+export const PRICE_FILTER_MAX = 1000000;

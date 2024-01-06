@@ -1,4 +1,9 @@
-import { DANCE_GENRE, REGIONS_SELECT_MAX } from '@/constants/constants';
+import {
+  DANCE_GENRE,
+  PRICE_FILTER_MAX,
+  PRICE_FILTER_MIN,
+  REGIONS_SELECT_MAX,
+} from '@/constants/constants';
 import {
   searchBestClass,
   searchClasses,
@@ -44,15 +49,26 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       0,
       REGIONS_SELECT_MAX,
     ),
-    stars: searchParams.stars ?? 0,
+    stars:
+      searchParams.stars && Number.isInteger(Number(searchParams.stars))
+        ? Number(searchParams.stars)
+        : 0,
     isGroup: searchParams.isGroup === 'false' ? false : true,
+    gtePrice:
+      searchParams.gtePrice && Number.isInteger(Number(searchParams.gtePrice))
+        ? Number(searchParams.gtePrice)
+        : PRICE_FILTER_MIN,
+    ltePrice:
+      searchParams.ltePrice && Number.isInteger(Number(searchParams.ltePrice))
+        ? Number(searchParams.ltePrice)
+        : PRICE_FILTER_MAX,
   };
 
   const filterOptions: IFilterOptions = {
     regions: transformSearchParamsLocation(searchData.regions),
     genre: searchData.genres,
     review: searchData.stars,
-    price: [],
+    price: [searchData.gtePrice, searchData.ltePrice],
     date: [],
     method: [],
     daytime: [],

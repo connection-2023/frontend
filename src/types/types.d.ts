@@ -18,7 +18,7 @@ export interface IFilterOptions {
   regions: Record<string, string[]>;
   genre: string[];
   review: number;
-  price: number[];
+  price: [number, number];
   date: string[];
   method: string[];
   daytime: string[];
@@ -180,8 +180,10 @@ export interface SearchParams {
   sortOption?: 'LATEST' | 'STARS';
   genre?: string[];
   regions?: string;
-  stars?: number;
+  stars?: string;
   isGroup?: string;
+  gtePrice?: string;
+  ltePrice?: string;
 }
 
 export interface instructorSearchData {
@@ -202,5 +204,7 @@ export interface classSearchData {
   regions: string[];
   stars: number;
   isGroup: boolean;
+  gtePrice: number;
+  ltePrice: number;
   searchAfter?: [number, number];
 }

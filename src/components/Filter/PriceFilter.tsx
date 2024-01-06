@@ -1,41 +1,39 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Range, getTrackBackground } from 'react-range';
+import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import FilterModal from './FilterModal';
-import { IFilterOptions } from '@/types/types';
 
-const MIN = 0;
-const MAX = 1000000;
 interface IPriceFilterProps {
   filterOption: number[];
-  updateFilterOption: (label: string, option: IFilterOptions['price']) => void;
 }
 
-const PriceFilter = ({
-  filterOption,
-  updateFilterOption,
-}: IPriceFilterProps) => {
-  const [values, setValues] = useState([MIN, MAX]);
+const PriceFilter = ({ filterOption }: IPriceFilterProps) => {
+  const [values, setValues] = useState(filterOption);
   const [draggingThumbIndex, setDraggingThumbIndex] = useState<number | null>(
     null,
   );
+  const { changeParams, removeParams } = useChangeSearchParams();
   const label = '가격';
 
   useEffect(() => {
-    if (filterOption.length === 2) {
-      setValues(filterOption);
-    } else {
-      setValues([MIN, MAX]);
-    }
+    setValues(filterOption);
   }, [filterOption]);
 
   const onReset = () => {
-    setValues([MIN, MAX]);
-    updateFilterOption(label, []);
+    setValues([PRICE_FILTER_MIN, PRICE_FILTER_MAX]);
   };
 
   const onApply = () => {
-    updateFilterOption(label, values);
+    changeParams([
+      { name: 'gtePrice', value: String(values[0]) },
+      { name: 'ltePrice', value: String(values[1]) },
+    ]);
+  };
+
+  const onClose = () => {
+    setValues(filterOption);
   };
 
   return (
@@ -43,15 +41,15 @@ const PriceFilter = ({
       label={label}
       onReset={onReset}
       onApply={onApply}
-      onClose={() => console.log('a')}
+      onClose={onClose}
     >
       <div className="flex flex-col px-[0.87rem]">
         <div className="mb-[0.75rem] mt-[1.25rem]">
           <Range
             draggableTrack
             step={1000}
-            min={MIN}
-            max={MAX}
+            min={PRICE_FILTER_MIN}
+            max={PRICE_FILTER_MAX}
             values={values}
             onChange={(values) => setValues(values)}
             onFinalChange={() => setDraggingThumbIndex(null)}
@@ -70,8 +68,8 @@ const PriceFilter = ({
                           'var(--sub-color1)',
                           'var(--gray4)',
                         ],
-                        min: MIN,
-                        max: MAX,
+                        min: PRICE_FILTER_MIN,
+                        max: PRICE_FILTER_MAX,
                       }),
                     }}
                   />
@@ -107,8 +105,8 @@ const PriceFilter = ({
               <label>₩</label>
               <input
                 type="number"
-                min={MIN}
-                max={MAX}
+                min={PRICE_FILTER_MIN}
+                max={PRICE_FILTER_MAX}
                 value={values[0]}
                 onChange={(e) => setValues([Number(e.target.value), values[1]])}
                 className="focus:outline-none"
@@ -122,8 +120,8 @@ const PriceFilter = ({
               <label>₩</label>
               <input
                 type="number"
-                min={MIN}
-                max={MAX}
+                min={PRICE_FILTER_MIN}
+                max={PRICE_FILTER_MAX}
                 value={values[1]}
                 onChange={(e) => setValues([values[0], Number(e.target.value)])}
                 className="focus:outline-none"
