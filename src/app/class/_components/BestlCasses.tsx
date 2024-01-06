@@ -36,16 +36,19 @@ const BestlCasses = ({ bestClassList }: { bestClassList: ClassCardType[] }) => {
                 showCurrentElement={false}
                 movePause={focus}
               >
-                {bestClassList.map((classData) => (
-                  <li
-                    key={classData.id}
-                    onMouseOver={() => setFocus(true)}
-                    onMouseLeave={() => setFocus(false)}
-                    className="w-full max-w-[13rem] xl:max-w-[33.7rem]"
-                  >
-                    <ClassPreview {...classData} />
-                  </li>
-                ))}
+                {bestClassList.map((classData) => {
+                  const data = { ...classData, darkMode: true };
+                  return (
+                    <li
+                      key={classData.id}
+                      onMouseOver={() => setFocus(true)}
+                      onMouseLeave={() => setFocus(false)}
+                      className="w-full max-w-[13rem] xl:max-w-[33.7rem]"
+                    >
+                      <ClassPreview {...data} />
+                    </li>
+                  );
+                })}
               </Carousel>
             </ul>
           </div>

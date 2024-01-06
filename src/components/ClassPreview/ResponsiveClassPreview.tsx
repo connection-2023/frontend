@@ -7,16 +7,32 @@ import ProfileImage from '../ProfileImage/ProfileImage';
 import { ClassCardType } from '@/types/class';
 
 const ResponsiveClassPreview = (props: ClassCardType) => {
-  const { status, date, title, genre, review, price, profile, imgURL } = props;
+  const {
+    status,
+    date,
+    title,
+    genre,
+    review,
+    price,
+    profile,
+    imgURL,
+    darkMode = false,
+  } = props;
   const [focus, setFocus] = useState(false);
 
   return (
     <div
       onMouseLeave={() => setFocus(false)}
       onMouseOver={() => setFocus(true)}
-      className="flex h-full w-full flex-col font-medium"
+      className={`text-whi flex h-full w-full flex-col font-medium ${
+        darkMode && 'text-white'
+      }`}
     >
-      <div className="relative aspect-[328/212] w-full overflow-hidden rounded-lg">
+      <div
+        className={`relative aspect-[328/212] w-full overflow-hidden rounded-lg ${
+          darkMode && 'border border-solid border-white'
+        }`}
+      >
         <Carousel
           imgURL={imgURL}
           move={focus}
@@ -46,7 +62,11 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
       <span className="mt-1 text-xs text-gray-500">
         {genre.length > 1 ? genre[0] + ' 외 ' + (genre.length - 1) : genre[0]}
       </span>
-      <div className="mt-0.5 flex items-center justify-between text-base text-gray-100">
+      <div
+        className={`mt-0.5 flex items-center justify-between text-base  ${
+          darkMode ? 'text-white' : 'text-gray-100'
+        }`}
+      >
         <p className="text-lg font-bold">{price.toLocaleString()}원</p>
 
         <ProfileImage

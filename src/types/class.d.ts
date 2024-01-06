@@ -16,6 +16,7 @@ export interface ClassCardType {
   review: { average: number; count: number };
   price: number;
   profile: { src: string | null; nickname: string };
+  darkMode?: boolean;
 }
 
 export interface Space {

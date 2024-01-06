@@ -24,6 +24,7 @@ const ClassPreview = (props: ClassCardType) => {
     price,
     profile,
     isLiked,
+    darkMode = false,
   } = props;
   const [focus, setFocus] = useState(false);
   const router = useRouter();
@@ -42,9 +43,11 @@ const ClassPreview = (props: ClassCardType) => {
       <div
         onMouseLeave={() => setFocus(false)}
         onMouseOver={() => setFocus(true)}
-        className="hidden h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] xl:flex"
+        className={`hidden h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] xl:flex ${
+          darkMode && 'bg-white'
+        }`}
       >
-        <div className="relative -z-10 mr-4 h-full w-[18.6rem] overflow-hidden lg:w-full">
+        <div className="relative mr-4 h-full w-[18.6rem] overflow-hidden lg:w-full">
           <Carousel
             imgURL={imgURL}
             move={focus}
