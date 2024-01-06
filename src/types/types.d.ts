@@ -193,3 +193,13 @@ export interface instructorSearchData {
   stars: number;
   searchAfter?: [number, number];
 }
+
+export interface classSearchData {
+  take: number;
+  sortOption: 'LATEST' | 'STARS';
+  value: string | undefined;
+  genres: string[];
+  regions: string[];
+  stars: number;
+  searchAfter?: [number, number];
+}

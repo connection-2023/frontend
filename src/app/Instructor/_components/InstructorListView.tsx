@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useIntersect from '@/hooks/useIntersect';
 import { NotFoundSVG } from '@/icons/svg';
 import { searchInstructors } from '@/lib/apis/searchApis';

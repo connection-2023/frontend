@@ -8,15 +8,16 @@ import { useUserStore } from '@/store/userStore';
 import { transformBestClassSearch } from '@/utils/apiDataProcessor';
 import { regionsDecryption } from '@/utils/searchFilterFn';
 import BestlCasses from './_components/BestlCasses';
+import ClassListView from './_components/ClassListView';
 import SearchInput from '@/components/SearchInput/SearchInput';
 import { ClassCardType } from '@/types/class';
-import { SearchParams } from '@/types/types';
+import { SearchParams, classSearchData } from '@/types/types';
 
 const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   const { userType } = useUserStore.getState();
   let bestClassList: ClassCardType[] = [];
 
-  const searchData = {
+  const searchData: classSearchData = {
     take: INSTRUCTOR_TAKE,
     sortOption:
       searchParams.sortOption &&
@@ -30,8 +31,8 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
         Array.isArray(searchParams.genre)
           ? searchParams.genre
           : searchParams.genre
-          ? [searchParams.genre]
-          : [],
+            ? [searchParams.genre]
+            : [],
       ),
     ].filter((genre) => DANCE_GENRE.includes(genre)),
     regions: [...new Set(regionsDecryption(searchParams.regions))].slice(
@@ -55,6 +56,10 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
         <SearchInput query={searchData.value ?? ''} />
       </div>
       <BestlCasses bestClassList={bestClassList} />
+
+      <ClassListView searchData={searchData}>
+        <div>a</div>
+      </ClassListView>
     </section>
   );
 };

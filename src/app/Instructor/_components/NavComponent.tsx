@@ -1,7 +1,6 @@
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import FineSplitIcon from '@/components/InstructorCard/FineSplitIcon';
 import LargeSplitIcon from '@/components/InstructorCard/LargeSplitIcon';
-import { IFilterOptions } from '@/types/types';
 
 interface NavComponentProps {
   largeImg: boolean;

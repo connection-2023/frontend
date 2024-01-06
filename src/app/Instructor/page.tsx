@@ -48,8 +48,8 @@ const instructorPage = async ({
         Array.isArray(searchParams.genre)
           ? searchParams.genre
           : searchParams.genre
-          ? [searchParams.genre]
-          : [],
+            ? [searchParams.genre]
+            : [],
       ),
     ].filter((genre) => DANCE_GENRE.includes(genre)),
     regions: [...new Set(regionsDecryption(searchParams.regions))].slice(
@@ -104,14 +104,12 @@ const instructorPage = async ({
         <BestInstructors list={bestInstructorList} />
       )}
 
-      <div>
-        <InstructorListView
-          instructorList={instructorList}
-          searchData={searchData}
-        >
-          <Filters type="instructor" filterOption={filterOptions} />
-        </InstructorListView>
-      </div>
+      <InstructorListView
+        instructorList={instructorList}
+        searchData={searchData}
+      >
+        <Filters type="instructor" filterOption={filterOptions} />
+      </InstructorListView>
     </section>
   );
 };
