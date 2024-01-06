@@ -1,5 +1,9 @@
 import { cookies } from 'next/headers';
-import { searchBestClassData, searchClass } from '@/types/class';
+import {
+  searchBestClassData,
+  searchClass,
+  searchClassParameters,
+} from '@/types/class';
 import {
   searchBestInstructorData,
   searchInstructor,
@@ -166,6 +170,52 @@ export const searchBestClass = async (
     const resData = await response.json();
 
     return resData.data.lectures;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const searchClasses = async (
+  data: searchClassParameters,
+  userState: boolean,
+): Promise<searchClass[]> => {
+  try {
+    const cookieStroe = cookies();
+    const authorization = cookieStroe.get('userAccessToken')?.value;
+
+    const params = new URLSearchParams();
+
+    Object.entries(data)
+      .filter(([_, v]) => v !== undefined)
+      .forEach(([k, v]) => {
+        if (Array.isArray(v)) {
+          v.forEach((value) => params.append(`${k}[]`, value));
+        } else {
+          params.append(k, String(v));
+        }
+      });
+
+    const headers: Record<string, string> = userState
+      ? {
+          Authorization: `Bearer ${authorization}`,
+          'Content-Type': 'application/json',
+        }
+      : { 'Content-Type': 'application/json' };
+
+    const response = await fetch(`${END_POINT}/search/lecture?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`강의 검색 오류: ${response.status}`);
+    }
+
+    const resData = await response.json();
+
+    return resData.data.lectureList ?? [];
   } catch (error) {
     console.error(error);
     throw error;

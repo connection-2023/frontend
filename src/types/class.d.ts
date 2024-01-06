@@ -511,3 +511,43 @@ export interface searchBestClassData {
     name: string;
   };
 }
+
+export interface searchClassParameters {
+  take: number;
+  sortOption: 'LATEST' | 'STARS';
+  isGroup: boolean;
+  value?: string;
+  searchAfter?: [number, number];
+  genres?: string[];
+  regions?: string[];
+  stars?: number;
+  days?: [day];
+  timeOfDay?: ['MORNING' | 'AFTERNOON' | 'NIGHT' | 'DAWN'];
+  gtePrice?: number;
+  ltePrice?: number;
+  lectureMethod?: '원데이' | '정기';
+  getDate?: string;
+  lteDate?: string;
+}
+
+export interface searchClass {
+  searchAfter: [number, number];
+  id: number;
+  title: string;
+  price: number;
+  lectureImages: string[];
+  startDate: string;
+  endDate: string;
+  isGroup: boolean;
+  lectureMethod: string;
+  stars: number;
+  reviewCount: number;
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string;
+  };
+  regions: { id: number; administrativeDistrict: string; district: string }[];
+  genres: { id: number; genre: string }[];
+  days: null | { day: [day]; dateTime: string[] };
+}

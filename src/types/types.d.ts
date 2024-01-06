@@ -181,7 +181,7 @@ export interface SearchParams {
   genre?: string[];
   regions?: string;
   stars?: number;
-  searchAfter?: [number, number];
+  isGroup?: string;
 }
 
 export interface instructorSearchData {
@@ -201,5 +201,6 @@ export interface classSearchData {
   genres: string[];
   regions: string[];
   stars: number;
+  isGroup: boolean;
   searchAfter?: [number, number];
 }

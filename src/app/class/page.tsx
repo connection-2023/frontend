@@ -1,9 +1,8 @@
+import { DANCE_GENRE, REGIONS_SELECT_MAX } from '@/constants/constants';
 import {
-  DANCE_GENRE,
-  INSTRUCTOR_TAKE,
-  REGIONS_SELECT_MAX,
-} from '@/constants/constants';
-import { searchBestClass } from '@/lib/apis/serverApis/searchApis';
+  searchBestClass,
+  searchClasses,
+} from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
 import { transformBestClassSearch } from '@/utils/apiDataProcessor';
 import { regionsDecryption } from '@/utils/searchFilterFn';
@@ -18,7 +17,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   let bestClassList: ClassCardType[] = [];
 
   const searchData: classSearchData = {
-    take: INSTRUCTOR_TAKE,
+    take: 8,
     sortOption:
       searchParams.sortOption &&
       (searchParams.sortOption === 'LATEST' ||
@@ -40,12 +39,16 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       REGIONS_SELECT_MAX,
     ),
     stars: searchParams.stars ?? 0,
+    isGroup: searchParams.isGroup === 'false' ? false : true,
   };
 
   try {
     bestClassList = transformBestClassSearch(
       await searchBestClass(userType === 'user'),
     );
+
+    const test = await searchClasses(searchData, userType === 'user');
+    console.log(test[1].days);
   } catch (error) {
     console.error(error);
   }
