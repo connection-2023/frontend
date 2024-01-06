@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
-import { searchClass } from '@/types/class';
+import { searchBestClassData, searchClass } from '@/types/class';
 import {
-  searchBestInstructorNonMembers,
+  searchBestInstructorData,
   searchInstructor,
   searchInstructorParameters,
 } from '@/types/instructor';
@@ -95,27 +95,24 @@ export const searchInstructors = async (
 
 export const searchBestInstructor = async (
   userState: boolean,
-): Promise<searchBestInstructorNonMembers[]> => {
+): Promise<searchBestInstructorData[]> => {
   try {
     const cookieStroe = cookies();
     const authorization = cookieStroe.get('userAccessToken')?.value;
 
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
+    const headers: Record<string, string> = userState
+      ? {
+          Authorization: `Bearer ${authorization}`,
+          'Content-Type': 'application/json',
+        }
+      : {
+          'Content-Type': 'application/json',
+        };
 
-    // userState
-    //   ? {
-    //       Authorization: `Bearer ${authorization}`,
-    //       'Content-Type': 'application/json',
-    //     }
-    //   : 백엔드 500 에러 인기강사 유저용
-
-    //    userState
-    // ? '/popular-lecturers/users'
-    // :
     const response = await fetch(
-      `${END_POINT}${'/popular-lecturers/non-members'}`,
+      userState
+        ? `${END_POINT}/popular-lecturers/users`
+        : `${END_POINT}/popular-lecturers/non-members`,
       {
         method: 'GET',
         credentials: 'include',
@@ -129,6 +126,45 @@ export const searchBestInstructor = async (
 
     const resData = await response.json();
     return resData.data.lecturers;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const searchBestClass = async (
+  userState: boolean,
+): Promise<searchBestClassData[]> => {
+  try {
+    const cookieStroe = cookies();
+    const authorization = cookieStroe.get('userAccessToken')?.value;
+
+    const headers: Record<string, string> = userState
+      ? {
+          Authorization: `Bearer ${authorization}`,
+          'Content-Type': 'application/json',
+        }
+      : {
+          'Content-Type': 'application/json',
+        };
+
+    const response = await fetch(
+      userState
+        ? `${END_POINT}/popular-lectures/users`
+        : `${END_POINT}/popular-lectures/non-members`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers,
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`인기 강의 검색 오류: ${response.status}`);
+    }
+
+    const resData = await response.json();
+    return resData.data.lectures;
   } catch (error) {
     console.error(error);
     throw error;

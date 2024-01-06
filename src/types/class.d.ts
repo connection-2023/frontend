@@ -476,3 +476,30 @@ export interface IMonthlyClassSchedules extends IClassSchedule {
     maxCapacity: number;
   };
 }
+
+export interface searchBestClassData {
+  id: number;
+  title: string;
+  lectureImage: null;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  price: number;
+  stars: number;
+  reviewCount: number;
+  isGroup: boolean;
+  lectureToDanceGenre: {
+    danceCategoryId: number;
+    name: null | string;
+    danceCategory: { id: number; genre: string };
+  }[];
+  lectureToRegion: {
+    region: { administrativeDistrict: string; district: string };
+  }[];
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: null | string;
+    lecturerProfileImageUrl: null | string;
+  };
+}

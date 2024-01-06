@@ -93,7 +93,7 @@ const InstructorListView = ({
                   ? ref
                   : undefined
               }
-              key={info.id + index}
+              key={info.id}
               className="h-60"
             >
               <InstructorCard {...newInfo} />

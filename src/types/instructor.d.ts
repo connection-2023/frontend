@@ -182,7 +182,7 @@ export interface searchInstructorParameters {
   stars?: number;
 }
 
-export interface searchBestInstructorNonMembers {
+export interface searchBestInstructorData {
   id: number;
   nickname: string;
   profileCardImageUrl: null | string;
