@@ -3,17 +3,19 @@ import { format } from 'date-fns';
 import { parse } from 'date-fns';
 import { useState, useEffect } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import FilterModal from './FilterModal';
 import RangeCalendar from '../Calendar/RangeCalendar';
-import { IFilterOptions } from '@/types/types';
 
 interface IDateFilterProps {
   filterOption: string[];
 }
 
 const DateFilter = ({ filterOption }: IDateFilterProps) => {
-  const [fromValue, setFromValue] = useState<string | undefined>(undefined);
-  const [toValue, setToValue] = useState<string | undefined>(undefined);
+  const [gteDate, lteDate] = filterOption;
+  const [fromValue, setFromValue] = useState<string | undefined>(gteDate);
+  const [toValue, setToValue] = useState<string | undefined>(lteDate);
+  const { changeMultipleParams } = useChangeSearchParams();
 
   const classRange = {
     from: fromValue ? parse(fromValue, 'y-MM-dd', new Date()) : undefined,
@@ -39,7 +41,9 @@ const DateFilter = ({ filterOption }: IDateFilterProps) => {
   const label = '지정날짜';
 
   useEffect(() => {
-    // const dateVal = filterOption.map((date) => new Date(date));
+    const [gteDate, lteDate] = filterOption;
+    setFromValue(gteDate);
+    setToValue(lteDate);
   }, [filterOption]);
 
   const onReset = () => {
@@ -48,12 +52,24 @@ const DateFilter = ({ filterOption }: IDateFilterProps) => {
   };
 
   const onApply = () => {
-    console.log(fromValue);
-    console.log(toValue);
+    changeMultipleParams([
+      { name: 'gteDate', value: fromValue ? fromValue : '' },
+      { name: 'lteDate', value: toValue ? toValue : '' },
+    ]);
+  };
+
+  const onClose = () => {
+    setFromValue(gteDate);
+    setToValue(lteDate);
   };
 
   return (
-    <FilterModal label={label} onReset={onReset} onApply={onApply}>
+    <FilterModal
+      label={label}
+      onReset={onReset}
+      onApply={onApply}
+      onClose={onClose}
+    >
       <RangeCalendar
         mode="class"
         selectedRange={classRange}

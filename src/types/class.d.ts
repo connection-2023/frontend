@@ -526,8 +526,8 @@ export interface searchClassParameters {
   gtePrice?: number;
   ltePrice?: number;
   lectureMethod?: '원데이' | '정기';
-  getDate?: string;
-  lteDate?: string;
+  getDate?: Date;
+  lteDate?: Date;
 }
 
 export interface searchClass {

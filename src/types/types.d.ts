@@ -19,7 +19,7 @@ export interface IFilterOptions {
   genre: string[];
   review: number;
   price: [number, number];
-  date: string[];
+  date: [string, string];
   method: string[];
   daytime: string[];
 }
@@ -184,6 +184,8 @@ export interface SearchParams {
   isGroup?: string;
   gtePrice?: string;
   ltePrice?: string;
+  gteDate?: string;
+  lteDate?: string;
 }
 
 export interface instructorSearchData {
@@ -206,5 +208,7 @@ export interface classSearchData {
   isGroup: boolean;
   gtePrice: number;
   ltePrice: number;
+  gteDate: Date | undefined;
+  lteDate: Date | undefined;
   searchAfter?: [number, number];
 }

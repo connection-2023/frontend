@@ -40,6 +40,8 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
           return acc;
         }
         acc.push({ type: key, value: value.join(', ') });
+      } else if (key === 'date') {
+        acc.push({ type: key, value: value.join(', ') });
       } else {
         acc.push(...value.map((v) => ({ type: key, value: v })));
       }

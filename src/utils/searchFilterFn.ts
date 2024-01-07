@@ -73,6 +73,12 @@ interface OnClickDelete {
     name: string;
     value: string | string[];
   }) => void;
+  changeMultipleParams: (
+    paramsArray: {
+      name: string;
+      value: string | string[];
+    }[],
+  ) => void;
   searchParams: ReadonlyURLSearchParams;
 }
 
@@ -80,6 +86,7 @@ export const onClickDelete = ({
   type,
   value,
   changeParams,
+  changeMultipleParams,
   searchParams,
 }: OnClickDelete) => {
   switch (type) {
@@ -102,14 +109,18 @@ export const onClickDelete = ({
         value: '',
       });
       break;
-    // case 'price':
-    //   updatedFilterOption.price = [];
-    //   break;
-    // case 'date':
-    //   updatedFilterOption.date = updatedFilterOption.date.filter(
-    //     (value) => value !== optionToRemove.value,
-    //   );
-    //   break;
+    case 'price':
+      changeMultipleParams([
+        { name: 'gtePrice', value: '' },
+        { name: 'ltePrice', value: '' },
+      ]);
+      break;
+    case 'date':
+      changeMultipleParams([
+        { name: 'gteDate', value: '' },
+        { name: 'lteDate', value: '' },
+      ]);
+      break;
     // case 'method':
     //   updatedFilterOption.method = updatedFilterOption.method.filter(
     //     (value) => value !== optionToRemove.value,

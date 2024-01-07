@@ -62,6 +62,16 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       searchParams.ltePrice && Number.isInteger(Number(searchParams.ltePrice))
         ? Number(searchParams.ltePrice)
         : PRICE_FILTER_MAX,
+    gteDate:
+      searchParams.gteDate && isValidDate(searchParams.gteDate)
+        ? new Date(searchParams.gteDate)
+        : undefined,
+    lteDate:
+      searchParams.gteDate &&
+      searchParams.lteDate &&
+      isValidDate(searchParams.lteDate)
+        ? new Date(searchParams.lteDate)
+        : undefined,
   };
 
   const filterOptions: IFilterOptions = {
@@ -69,7 +79,10 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
     genre: searchData.genres,
     review: searchData.stars,
     price: [searchData.gtePrice, searchData.ltePrice],
-    date: [],
+    date: [
+      searchData.gteDate ? searchParams.gteDate! : '',
+      searchData.lteDate ? searchParams.lteDate! : '',
+    ],
     method: [],
     daytime: [],
   };
@@ -101,3 +114,12 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
 };
 
 export default classPage;
+
+const isValidDate = (dateString: string) => {
+  const regEx = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateString.match(regEx)) return false;
+  const d = new Date(dateString);
+  const dNum = d.getTime();
+  if (!dNum && dNum !== 0) return false;
+  return d.toISOString().slice(0, 10) === dateString;
+};

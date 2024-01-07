@@ -8,7 +8,8 @@ const OptionList = ({
 }: {
   option: { type: string; value: string };
 }) => {
-  const { changeParams, searchParams } = useChangeSearchParams();
+  const { changeParams, searchParams, changeMultipleParams } =
+    useChangeSearchParams();
   const displayValue = calculateDisplayValue(option);
 
   return option.type && displayValue ? (
@@ -19,6 +20,7 @@ const OptionList = ({
           onClickDelete({
             ...option,
             changeParams,
+            changeMultipleParams,
             searchParams,
           })
         }
@@ -52,6 +54,14 @@ const calculateDisplayValue = (option: { type: string; value: string }) => {
     }
   } else if (option.type === 'review') {
     return `${option.value}.0 이상`;
+  } else if (option.type === 'date') {
+    const values = option.value.split(', ').map((value) => value);
+    const [gteDate, lteDate] = values;
+    if (gteDate && lteDate) {
+      return `${gteDate} ~ ${lteDate}`;
+    } else {
+      return gteDate;
+    }
   } else {
     return option.value;
   }
