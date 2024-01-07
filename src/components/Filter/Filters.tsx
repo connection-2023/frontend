@@ -72,8 +72,8 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
           <GenreFilter filterOption={filterOption.genre} key="genre" />,
           <ReviewFilter filterOption={filterOption.review} key="review" />,
           <PriceFilter filterOption={filterOption.price} key="price" />,
+          <DateFilter filterOption={filterOption.date} key="date" />,
           // <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
-          // <DateFilter filterOption={filterOption.date} key="date" />,
           // <ProgressMethodFilter
           //   filterOption={filterOption.method}
           //   key="method"

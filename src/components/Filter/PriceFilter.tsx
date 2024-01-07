@@ -14,7 +14,7 @@ const PriceFilter = ({ filterOption }: IPriceFilterProps) => {
   const [draggingThumbIndex, setDraggingThumbIndex] = useState<number | null>(
     null,
   );
-  const { changeMultipleParams, removeParams } = useChangeSearchParams();
+  const { changeMultipleParams } = useChangeSearchParams();
   const label = '가격';
 
   useEffect(() => {
@@ -27,17 +27,11 @@ const PriceFilter = ({ filterOption }: IPriceFilterProps) => {
 
   const onApply = () => {
     const [min, max] = values;
-    if (max === PRICE_FILTER_MAX && min === PRICE_FILTER_MIN) {
-      changeMultipleParams([
-        { name: 'gtePrice', value: '' },
-        { name: 'ltePrice', value: '' },
-      ]);
-    } else {
-      changeMultipleParams([
-        { name: 'gtePrice', value: String(min) },
-        { name: 'ltePrice', value: String(max) },
-      ]);
-    }
+
+    changeMultipleParams([
+      { name: 'gtePrice', value: min === PRICE_FILTER_MIN ? '' : String(min) },
+      { name: 'ltePrice', value: max === PRICE_FILTER_MAX ? '' : String(max) },
+    ]);
   };
 
   const onClose = () => {
