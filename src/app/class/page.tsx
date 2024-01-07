@@ -84,10 +84,15 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       searchData.gtePrice >= searchData.ltePrice
         ? [0, searchData.ltePrice]
         : [searchData.gtePrice, searchData.ltePrice],
-    date: [
-      searchData.gteDate ? searchParams.gteDate! : '',
-      searchData.lteDate ? searchParams.lteDate! : '',
-    ],
+    date:
+      searchData.gteDate &&
+      searchData.lteDate &&
+      searchData.gteDate >= searchData.lteDate
+        ? [searchParams.gteDate!, '']
+        : [
+            searchData.gteDate ? searchParams.gteDate! : '',
+            searchData.lteDate ? searchParams.lteDate! : '',
+          ],
     method: [],
     daytime: [],
   };
