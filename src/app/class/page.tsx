@@ -59,7 +59,9 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
         ? Number(searchParams.gtePrice)
         : PRICE_FILTER_MIN,
     ltePrice:
-      searchParams.ltePrice && Number.isInteger(Number(searchParams.ltePrice))
+      searchParams.ltePrice &&
+      Number.isInteger(Number(searchParams.ltePrice)) &&
+      Number(searchParams.ltePrice) < PRICE_FILTER_MAX
         ? Number(searchParams.ltePrice)
         : PRICE_FILTER_MAX,
     gteDate:
@@ -78,7 +80,10 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
     regions: transformSearchParamsLocation(searchData.regions),
     genre: searchData.genres,
     review: searchData.stars,
-    price: [searchData.gtePrice, searchData.ltePrice],
+    price:
+      searchData.gtePrice >= searchData.ltePrice
+        ? [0, searchData.ltePrice]
+        : [searchData.gtePrice, searchData.ltePrice],
     date: [
       searchData.gteDate ? searchParams.gteDate! : '',
       searchData.lteDate ? searchParams.lteDate! : '',
