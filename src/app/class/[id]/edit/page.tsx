@@ -64,7 +64,7 @@ const ClassEditPage = () => {
 
   const authUser = useUserStore((state) => state.authUser);
   const userType = useUserStore((state) => state.userType);
-  const newSchedules = watch('schedules', []);
+  const newSchedules = watch('schedules') || [];
 
   useEffect(() => {
     const classOriginalData = async () => {
