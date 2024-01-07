@@ -121,6 +121,12 @@ export const onClickDelete = ({
         { name: 'lteDate', value: '' },
       ]);
       break;
+    case 'group':
+      changeParams({
+        name: 'group',
+        value: '',
+      });
+      break;
     // case 'method':
     //   updatedFilterOption.method = updatedFilterOption.method.filter(
     //     (value) => value !== optionToRemove.value,

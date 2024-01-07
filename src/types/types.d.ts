@@ -22,6 +22,7 @@ export interface IFilterOptions {
   date: [string, string];
   method: string[];
   daytime: string[];
+  group: string;
 }
 
 export interface dateTimes {
@@ -181,7 +182,7 @@ export interface SearchParams {
   genre?: string[];
   regions?: string;
   stars?: string;
-  isGroup?: string;
+  group?: string;
   gtePrice?: string;
   ltePrice?: string;
   gteDate?: string;

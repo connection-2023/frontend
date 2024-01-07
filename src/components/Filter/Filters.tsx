@@ -1,9 +1,15 @@
 import Link from 'next/link';
-import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
+import {
+  GROUP_FILTER_DEFAULT,
+  GROUP_FILTER_LIST,
+  PRICE_FILTER_MAX,
+  PRICE_FILTER_MIN,
+} from '@/constants/constants';
 import { ResetSVG } from '@/icons/svg';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
 import GenreFilter from './GenreFilter';
+import GroupFilter from './GroupFilter';
 import LocationFilter from './LocationFilter';
 import OptionList from './OptionList';
 import PriceFilter from './PriceFilter';
@@ -61,6 +67,8 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
           }
         }
       }
+    } else if (key === 'group' && value === GROUP_FILTER_DEFAULT) {
+      return acc;
     } else {
       acc.push({ type: key, value });
     }
@@ -75,6 +83,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
           <ReviewFilter filterOption={filterOption.review} key="review" />,
           <PriceFilter filterOption={filterOption.price} key="price" />,
           <DateFilter filterOption={filterOption.date} key="date" />,
+          <GroupFilter filterOption={filterOption.group} key="group" />,
           // <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
           // <ProgressMethodFilter
           //   filterOption={filterOption.method}
