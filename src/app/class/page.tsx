@@ -1,6 +1,7 @@
 import {
   DANCE_GENRE,
   GROUP_FILTER_LIST,
+  METHOD_FILTER_LIST,
   PRICE_FILTER_MAX,
   PRICE_FILTER_MIN,
   REGIONS_SELECT_MAX,
@@ -75,6 +76,12 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       isValidDate(searchParams.lteDate)
         ? new Date(searchParams.lteDate)
         : undefined,
+    lectureMethod:
+      searchParams.method &&
+      METHOD_FILTER_LIST.includes(searchParams.method) &&
+      searchParams.method !== '전체'
+        ? searchParams.method.replace(/ 클래스/g, '')
+        : undefined,
   };
 
   const filterOptions: IFilterOptions = {
@@ -94,7 +101,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
             searchData.gteDate ? searchParams.gteDate! : '',
             searchData.lteDate ? searchParams.lteDate! : '',
           ],
-    method: [],
+    method: searchData.lectureMethod ? searchParams.method! : '전체',
     daytime: [],
     group:
       searchParams.group && GROUP_FILTER_LIST.includes(searchParams.group)

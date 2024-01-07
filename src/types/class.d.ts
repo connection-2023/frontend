@@ -525,7 +525,7 @@ export interface searchClassParameters {
   timeOfDay?: ['MORNING' | 'AFTERNOON' | 'NIGHT' | 'DAWN'];
   gtePrice?: number;
   ltePrice?: number;
-  lectureMethod?: '원데이' | '정기';
+  lectureMethod?: string | undefined;
   getDate?: Date;
   lteDate?: Date;
 }

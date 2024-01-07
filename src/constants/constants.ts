@@ -328,3 +328,5 @@ export const PRICE_FILTER_MAX = 1000000;
 export const GROUP_FILTER_LIST = ['그룹레슨', '프라이빗 레슨(1:1)'];
 
 export const GROUP_FILTER_DEFAULT = '그룹레슨';
+
+export const METHOD_FILTER_LIST = ['전체', '원데이 클래스', '정기 클래스'];

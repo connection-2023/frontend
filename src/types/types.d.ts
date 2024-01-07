@@ -20,7 +20,7 @@ export interface IFilterOptions {
   review: number;
   price: [number, number];
   date: [string, string];
-  method: string[];
+  method: string;
   daytime: string[];
   group: string;
 }
@@ -187,6 +187,7 @@ export interface SearchParams {
   ltePrice?: string;
   gteDate?: string;
   lteDate?: string;
+  method?: string;
 }
 
 export interface instructorSearchData {
@@ -211,5 +212,6 @@ export interface classSearchData {
   ltePrice: number;
   gteDate: Date | undefined;
   lteDate: Date | undefined;
+  lectureMethod: string | undefined;
   searchAfter?: [number, number];
 }

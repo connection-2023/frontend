@@ -11,6 +11,7 @@ import DayTimeFilter from './DayTimeFilter';
 import GenreFilter from './GenreFilter';
 import GroupFilter from './GroupFilter';
 import LocationFilter from './LocationFilter';
+import MethodFilter from './MethodFilter';
 import OptionList from './OptionList';
 import PriceFilter from './PriceFilter';
 import ProgressMethodFilter from './ProgressMethodFilter';
@@ -69,6 +70,8 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
       }
     } else if (key === 'group' && value === GROUP_FILTER_DEFAULT) {
       return acc;
+    } else if (key === 'method' && value === '전체') {
+      return acc;
     } else {
       acc.push({ type: key, value });
     }
@@ -84,6 +87,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
           <PriceFilter filterOption={filterOption.price} key="price" />,
           <DateFilter filterOption={filterOption.date} key="date" />,
           <GroupFilter filterOption={filterOption.group} key="group" />,
+          <MethodFilter filterOption={filterOption.method} key="method" />,
           // <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
           // <ProgressMethodFilter
           //   filterOption={filterOption.method}

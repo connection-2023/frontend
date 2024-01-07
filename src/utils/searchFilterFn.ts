@@ -127,11 +127,12 @@ export const onClickDelete = ({
         value: '',
       });
       break;
-    // case 'method':
-    //   updatedFilterOption.method = updatedFilterOption.method.filter(
-    //     (value) => value !== optionToRemove.value,
-    //   );
-    //   break;
+    case 'method':
+      changeParams({
+        name: 'method',
+        value: '',
+      });
+      break;
     // case 'daytime':
     //   updatedFilterOption.daytime = updatedFilterOption.daytime.filter(
     //     (value) => value !== optionToRemove.value,

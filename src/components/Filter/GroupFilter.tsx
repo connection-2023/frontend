@@ -38,7 +38,7 @@ const GroupFilter = ({ filterOption }: IGroupFilterProps) => {
       onApply={onApply}
       onClose={onClose}
     >
-      <ul className="flex max-h-80 w-72 select-none flex-col gap-3 overflow-y-auto py-3 pr-2.5 scrollbar scrollbar-track-gray-900 scrollbar-thumb-gray-500  scrollbar-thumb-rounded-lg scrollbar-w-1">
+      <ul className="flex max-h-80 w-56 select-none flex-col gap-3 overflow-y-auto py-3 pr-2.5 scrollbar scrollbar-track-gray-900 scrollbar-thumb-gray-500  scrollbar-thumb-rounded-lg scrollbar-w-1">
         {GROUP_FILTER_LIST.map((group) => (
           <li key={group} className="ml-4 flex items-center">
             <input
