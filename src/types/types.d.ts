@@ -1,3 +1,5 @@
+import { day } from './class';
+
 export interface IBootOption {
   pluginKey: string;
   language: string;
@@ -21,7 +23,10 @@ export interface IFilterOptions {
   price: [number, number];
   date: [string, string];
   method: string;
-  daytime: string[];
+  daytime: {
+    week: day[];
+    time: string[];
+  };
   group: string;
 }
 
@@ -175,8 +180,18 @@ export interface PagenationFilterState {
   [key: string]: any | undefined;
 }
 
+export type TimeOfDay = 'MORNING' | 'AFTERNOON' | 'NIGHT' | 'DAWN';
+
 export interface SearchParams {
-  [key: string]: string | 'LATEST' | 'STARS' | string[] | number | undefined;
+  [key: string]:
+    | string
+    | 'LATEST'
+    | 'STARS'
+    | string[]
+    | number
+    | undefined
+    | TimeOfDay[]
+    | day[];
   query?: string;
   sortOption?: 'LATEST' | 'STARS';
   genre?: string[];
@@ -188,6 +203,8 @@ export interface SearchParams {
   gteDate?: string;
   lteDate?: string;
   method?: string;
+  days?: day[];
+  timeOfDay?: TimeOfDay[];
 }
 
 export interface instructorSearchData {
@@ -213,5 +230,7 @@ export interface classSearchData {
   gteDate: Date | undefined;
   lteDate: Date | undefined;
   lectureMethod: string | undefined;
+  days: day[];
+  timeOfDay: TimeOfDay[];
   searchAfter?: [number, number];
 }

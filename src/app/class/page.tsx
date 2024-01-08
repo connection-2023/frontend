@@ -1,5 +1,7 @@
 import {
   DANCE_GENRE,
+  FILTER_TIME,
+  FILTER_WEEK,
   GROUP_FILTER_LIST,
   METHOD_FILTER_LIST,
   PRICE_FILTER_MAX,
@@ -82,6 +84,24 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       searchParams.method !== '전체'
         ? searchParams.method.replace(/ 클래스/g, '')
         : undefined,
+    days: [
+      ...new Set(
+        Array.isArray(searchParams.days)
+          ? searchParams.days
+          : searchParams.days
+            ? [searchParams.days]
+            : [],
+      ),
+    ].filter((day) => FILTER_WEEK.includes(day)),
+    timeOfDay: [
+      ...new Set(
+        Array.isArray(searchParams.timeOfDay)
+          ? searchParams.timeOfDay
+          : searchParams.timeOfDay
+            ? [searchParams.timeOfDay]
+            : [],
+      ),
+    ].filter((select) => FILTER_TIME.some(({ value }) => value === select)),
   };
 
   const filterOptions: IFilterOptions = {
@@ -102,7 +122,13 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
             searchData.lteDate ? searchParams.lteDate! : '',
           ],
     method: searchData.lectureMethod ? searchParams.method! : '전체',
-    daytime: [],
+    daytime: {
+      week: searchData.days,
+      time: searchData.timeOfDay.map((time) => {
+        const found = FILTER_TIME.find(({ value }) => value === time);
+        return found ? found.label : '';
+      }),
+    },
     group:
       searchParams.group && GROUP_FILTER_LIST.includes(searchParams.group)
         ? searchParams.group

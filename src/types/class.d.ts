@@ -521,8 +521,8 @@ export interface searchClassParameters {
   genres?: string[];
   regions?: string[];
   stars?: number;
-  days?: [day];
-  timeOfDay?: ['MORNING' | 'AFTERNOON' | 'NIGHT' | 'DAWN'];
+  days?: day[];
+  timeOfDay?: TimeOfDay[];
   gtePrice?: number;
   ltePrice?: number;
   lectureMethod?: string | undefined;

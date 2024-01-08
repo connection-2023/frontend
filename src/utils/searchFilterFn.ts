@@ -4,6 +4,7 @@ import {
   LOCATION_CODE,
   WARD_CODE,
 } from '@/constants/administrativeDistrict';
+import { FILTER_TIME } from '@/constants/constants';
 
 export const regionsDecryption = (regionsCode: string | undefined) => {
   if (!regionsCode || typeof regionsCode !== 'string') {
@@ -133,12 +134,24 @@ export const onClickDelete = ({
         value: '',
       });
       break;
-    // case 'daytime':
-    //   updatedFilterOption.daytime = updatedFilterOption.daytime.filter(
-    //     (value) => value !== optionToRemove.value,
-    //   );
-    //   break;
-    // default:
-    //   break;
+    case 'week':
+      changeParams({
+        name: 'days',
+        value: searchParams.getAll('days').filter((week) => week !== value),
+      });
+      break;
+    case 'time':
+      changeParams({
+        name: 'timeOfDay',
+        value: searchParams
+          .getAll('timeOfDay')
+          .filter(
+            (time) =>
+              FILTER_TIME.find(({ value }) => value === time)?.label !== value,
+          ),
+      });
+      break;
+    default:
+      break;
   }
 };

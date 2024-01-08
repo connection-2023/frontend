@@ -1,6 +1,7 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
 import { day, ReviewOrderType } from '@/types/class';
+import { TimeOfDay } from '@/types/types';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
@@ -112,20 +113,13 @@ export const DANCE_GENRE_ENGLISH = [
   '(kids dance)',
 ];
 
-export const PROGRESS_METHOD = [
-  '개인(1:1)레슨',
-  '그룹레슨',
-  '원데이 레슨',
-  '다회차',
-];
-
 export const FILTER_WEEK: day[] = ['월', '화', '수', '목', '금', '토', '일'];
 
-export const FILTER_TIME = [
-  '오전(6시-11시)',
-  '오후(12시-17시)',
-  '저녁(18시-23시)',
-  '새벽(00시-05시)',
+export const FILTER_TIME: { label: string; value: TimeOfDay }[] = [
+  { label: '오전(6시-11시)', value: 'MORNING' },
+  { label: '오후(12시-17시)', value: 'AFTERNOON' },
+  { label: '저녁(18시-23시)', value: 'NIGHT' },
+  { label: '새벽(00시-05시)', value: 'DAWN' },
 ];
 
 export const ANNOUNCEMENT = `클래스 소개 페이지 가장 상단에 보여집니다.
@@ -214,8 +208,6 @@ export const NO_HEADER_FOOTER_PATHS = [
 ];
 
 export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
-
-export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
 
 export const CATEGORY_DIFFICULTY_LEVEL = ['초급(입문)', '중급', '상급'];
 

@@ -1,43 +1,66 @@
 'use client';
 import { useState, useEffect } from 'react';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import FilterModal from './FilterModal';
 import { FILTER_TIME, FILTER_WEEK } from '../../constants/constants';
+import { day } from '@/types/class';
 
 interface IDayTimeFilterProps {
-  updateFilterOption: (label: string, option: string[]) => void;
-  filterOption: string[];
+  filterOption: {
+    week: day[];
+    time: string[];
+  };
 }
 
-const DayTimeFilter = ({
-  filterOption,
-  updateFilterOption,
-}: IDayTimeFilterProps) => {
-  const [filterList, setFilterList] = useState<string[]>(filterOption);
-  const label = '시간';
+const DayTimeFilter = ({ filterOption }: IDayTimeFilterProps) => {
+  const [filterList, setFilterList] = useState(filterOption);
+  const { changeMultipleParams } = useChangeSearchParams();
+  const label = '요일/시간대';
 
   useEffect(() => {
     setFilterList(filterOption);
   }, [filterOption]);
 
-  const changeFilterList = (element: string) => {
-    setFilterList((prev) =>
-      prev.includes(element)
-        ? prev.filter((listGenre) => listGenre !== element)
-        : [...prev, element],
-    );
+  const changeFilterList = (element: day | string, filter: 'week' | 'time') => {
+    setFilterList((prev) => {
+      const filterList = (prev[filter] as Array<string>).includes(element)
+        ? prev[filter].filter((listGenre) => listGenre !== element)
+        : [...prev[filter], element];
+
+      return { ...prev, [filter]: filterList };
+    });
   };
 
   const onReset = () => {
-    setFilterList([]);
-    updateFilterOption(label, []);
+    setFilterList({
+      week: [],
+      time: [],
+    });
   };
 
   const onApply = () => {
-    updateFilterOption(label, filterList);
+    changeMultipleParams([
+      { name: 'days', value: filterList.week },
+      {
+        name: 'timeOfDay',
+        value: filterList.time.map(
+          (time) => FILTER_TIME.find(({ label }) => label === time)!.value,
+        ),
+      },
+    ]);
+  };
+
+  const onClose = () => {
+    setFilterList(filterOption);
   };
 
   return (
-    <FilterModal label={label} onReset={onReset} onApply={onApply}>
+    <FilterModal
+      label={label}
+      onReset={onReset}
+      onApply={onApply}
+      onClose={onClose}
+    >
       <div className="flex max-h-[17rem] w-[16.8rem] select-none text-sm">
         <ul className="flex w-[32%] flex-col justify-center gap-2 border-r border-solid border-slate-300 py-3">
           {FILTER_WEEK.map((week) => (
@@ -45,17 +68,17 @@ const DayTimeFilter = ({
               key={week}
               label={week}
               changeFilterList={changeFilterList}
-              filterList={filterList}
+              filterList={filterList.week}
             />
           ))}
         </ul>
         <ul className="flex w-[68%] flex-col gap-2 py-3">
-          {FILTER_TIME.map((time) => (
+          {FILTER_TIME.map(({ label }) => (
             <CheckboxItem
-              key={time}
-              label={time}
+              key={label}
+              label={label}
               changeFilterList={changeFilterList}
-              filterList={filterList}
+              filterList={filterList.time}
             />
           ))}
         </ul>
@@ -65,8 +88,8 @@ const DayTimeFilter = ({
 };
 
 interface CheckboxItemProps {
-  label: (typeof FILTER_WEEK)[number] | (typeof FILTER_TIME)[number];
-  changeFilterList: (element: string) => void;
+  label: string;
+  changeFilterList: (element: day | string, filter: 'week' | 'time') => void;
   filterList: string[];
 }
 
@@ -75,7 +98,10 @@ const CheckboxItem = ({
   changeFilterList,
   filterList,
 }: CheckboxItemProps) => {
-  const isdateIncluded = filterList.includes(label);
+  const isdateIncluded = filterList.some((item) => item === label);
+  const filter = FILTER_TIME.some((item) => item.label === label)
+    ? 'time'
+    : 'week';
 
   return (
     <li className="ml-4">
@@ -87,7 +113,7 @@ const CheckboxItem = ({
         <input
           type="checkbox"
           checked={isdateIncluded}
-          onChange={() => changeFilterList(label)}
+          onChange={() => changeFilterList(label, filter)}
           className="mr-2 h-[1.12rem] w-[1.12rem] accent-sub-color1"
         />
         {label}

@@ -14,10 +14,10 @@ import LocationFilter from './LocationFilter';
 import MethodFilter from './MethodFilter';
 import OptionList from './OptionList';
 import PriceFilter from './PriceFilter';
-import ProgressMethodFilter from './ProgressMethodFilter';
 import ReviewFilter from './ReviewFilter';
 import { WARD_LIST } from '../../constants/administrativeDistrict';
 import ResetButton from '../Button/ResetButton';
+import { day } from '@/types/class';
 import { IFilterOptions } from '@/types/types';
 
 interface FiltersProps {
@@ -53,20 +53,33 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
         acc.push(...value.map((v) => ({ type: key, value: v })));
       }
     } else if (typeof value === 'object') {
-      // location일 경우
-      for (const city in value) {
-        if (!WARD_LIST[city]) {
-          return acc;
-        }
-        const allWards = WARD_LIST[city].length;
-        if (value[city].length === allWards) {
-          acc.push({ type: key, value: `${city} > 전 지역` });
-        } else {
-          for (const district of value[city]) {
-            // "도시명 > 구명" 형태로 추가
-            acc.push({ type: key, value: `${city} > ${district}` });
+      if (key === 'regions') {
+        for (const city in value) {
+          if (!WARD_LIST[city]) {
+            return acc;
+          }
+          const allWards = WARD_LIST[city].length;
+          if (value[city].length === allWards) {
+            acc.push({ type: key, value: `${city} > 전 지역` });
+          } else {
+            for (const district of value[city]) {
+              acc.push({ type: key, value: `${city} > ${district}` });
+            }
           }
         }
+      } else {
+        const { week, time } = value;
+
+        const weekItems = week.map((day: day) => ({
+          type: 'week',
+          value: day,
+        }));
+        const timeItems = time.map((time: string) => ({
+          type: 'time',
+          value: time,
+        }));
+
+        acc.push(...weekItems, ...timeItems);
       }
     } else if (key === 'group' && value === GROUP_FILTER_DEFAULT) {
       return acc;
@@ -88,24 +101,13 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
           <DateFilter filterOption={filterOption.date} key="date" />,
           <GroupFilter filterOption={filterOption.group} key="group" />,
           <MethodFilter filterOption={filterOption.method} key="method" />,
-          // <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
-          // <ProgressMethodFilter
-          //   filterOption={filterOption.method}
-          //   key="method"
-          // />,
+          <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
         ]
       : [
           <LocationFilter filterOption={filterOption.regions} key="location" />,
           <GenreFilter filterOption={filterOption.genre} key="genre" />,
           <ReviewFilter filterOption={filterOption.review} key="review" />,
         ];
-
-  //   const [options, setOptions] = useState<{ type: string; value: string }[]>([]);
-  //   useEffect(() => {
-
-  //       setOptions(values);
-  //     }
-  //   }, [filterOption]);
 
   return (
     <>
@@ -136,54 +138,3 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
 };
 
 export default Filters;
-// const updateFilterOption = (
-//   label: string,
-//   option:
-//     | IFilterOptions['review']
-//     | IFilterOptions['price']
-//     | IFilterOptions['date']
-//     | Regions,
-// ) => {
-//   const updateFunction = (
-//     key: string,
-//     value:
-//       | IFilterOptions['review']
-//       | IFilterOptions['price']
-//       | IFilterOptions['date']
-//       | Regions,
-//   ) => {
-//     setFilterOption((prev) => ({ ...prev, [key]: value }));
-//   };
-
-//   switch (label) {
-//     case '지역':
-//       updateFunction('location', option);
-//       break;
-//     case '장르':
-//       updateFunction('genre', option);
-
-//       setOptions((prev) => [
-//         ...prev,
-//         ...(Array.isArray(option)
-//           ? option.map((item) => ({ type: '장르', value: item.toString() }))
-//           : [{ type: '장르', value: option.toString() }]),
-//       ]);
-
-//       break;
-//     case '평점':
-//       updateFunction('review', option);
-//       break;
-//     case '가격':
-//       updateFunction('price', option);
-//       break;
-//     case '지정날짜':
-//       updateFunction('date', option);
-//       break;
-//     case '진행방식':
-//       updateFunction('method', option);
-//       break;
-//     case '시간':
-//       updateFunction('daytime', option);
-//       break;
-//   }
-// };

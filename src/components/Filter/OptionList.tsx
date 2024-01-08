@@ -38,6 +38,7 @@ const OptionList = ({
 export default OptionList;
 
 const calculateDisplayValue = (option: { type: string; value: string }) => {
+  console.log(option);
   if (option.type === 'price') {
     const values = option.value.split(', ').map(Number);
     if (values.length < 2) {
