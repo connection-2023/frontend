@@ -22,7 +22,7 @@ const Footer = () => {
           <ConnectionLogoSVG className="h-[0.875rem] w-[8.1875rem]" />
         </Link>
 
-        <nav className="flex gap-12 text-sm font-bold">
+        <nav className="flex flex-wrap gap-12 text-sm font-bold">
           <Link href="/notice">공지사항</Link>
           <Link href="/help">이용약관</Link>
           <Link href="/help">개인정보처리방침</Link>

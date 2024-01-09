@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+import { useWindowSize } from 'react-use';
 import { useClickAway } from 'react-use';
 import { ArrowUpSVG, ArrowDownSVG } from '@/icons/svg';
-import { usefilterPositionnStore } from '@/store/filterPositionnStore';
-import { useScrollStore } from '@/store/scrollStore';
+import { usefilterStore } from '@/store/filterPositionnStore';
 import Button from '../Button/Button';
 import ResetButton from '../Button/ResetButton';
 
@@ -21,7 +21,8 @@ const FilterModal = ({
   onApply,
   onClose,
 }: IFilterModal) => {
-  const { isScrolling } = usefilterPositionnStore();
+  const { isScrolling, setIsfilterModalOpen } = usefilterStore();
+  const { width } = useWindowSize();
   const [isOpened, setIsOpened] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -42,7 +43,11 @@ const FilterModal = ({
         window.removeEventListener('scroll', handleScroll);
       };
     }
-  }, [isScrolling]);
+  }, []);
+
+  useEffect(() => {
+    setIsOpened(false);
+  }, [isScrolling, width]);
 
   useClickAway(ref, () => {
     setIsOpened(false);
@@ -73,7 +78,7 @@ const FilterModal = ({
     <div ref={ref} className="whitespace-nowrap text-sm">
       <button
         ref={buttonRef}
-        className="box-border flex items-center rounded-[0.625rem] border border-solid border-sub-color1 py-1 pl-3 pr-1 font-medium"
+        className="box-border hidden items-center rounded-[0.625rem] border border-solid border-sub-color1 py-1 pl-3 pr-1 font-medium sm:flex"
         onClick={onClickLabel}
       >
         {label}
@@ -82,6 +87,13 @@ const FilterModal = ({
         ) : (
           <ArrowDownSVG className="h-[34px] w-[34px] fill-sub-color1" />
         )}
+      </button>
+      <button
+        className="box-border flex items-center rounded-[0.625rem] border border-solid border-sub-color1 py-1 pl-3 pr-1 font-medium sm:hidden "
+        onClick={() => setIsfilterModalOpen(true)}
+      >
+        {label}
+        <ArrowDownSVG className="h-[34px] w-[34px] fill-sub-color1" />
       </button>
       {isOpened && (
         <div

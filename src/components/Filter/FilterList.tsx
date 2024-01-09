@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
 import useTouchScroll from '@/hooks/useTouchScroll';
-import { FilterSVG, ResetSVG } from '@/icons/svg';
-import { usefilterPositionnStore } from '@/store/filterPositionnStore';
+import { ResetSVG } from '@/icons/svg';
+import { usefilterStore } from '@/store/filterPositionnStore';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
 import GenreFilter from './GenreFilter';
@@ -11,6 +11,7 @@ import LocationFilter from './LocationFilter';
 import MethodFilter from './MethodFilter';
 import PriceFilter from './PriceFilter';
 import ReviewFilter from './ReviewFilter';
+import FilterMobileModal from '../Modal/FilterMobileModal';
 import { IFilterOptions } from '@/types/types';
 
 interface FilterListProps {
@@ -19,10 +20,15 @@ interface FilterListProps {
 }
 
 const FilterList = ({ filterOption, type }: FilterListProps) => {
-  const { setIsScrolling } = usefilterPositionnStore();
+  const { setIsScrolling, isfilterModalOpen, setIsfilterModalOpen } =
+    usefilterStore();
   const { scrollContainerRef } = useTouchScroll({
     onChangeFn: () => setIsScrolling((prev) => !prev),
   });
+
+  const modalCloseHandler = () => {
+    setIsfilterModalOpen(false);
+  };
 
   const filterComponents =
     type === 'class'
@@ -43,27 +49,32 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
         ];
 
   return (
-    <div className="relative">
-      <div
-        className="z-20 mb-3 flex w-full items-center gap-2 overflow-x-auto pb-2 pr-28"
-        ref={scrollContainerRef}
-      >
-        {filterComponents.map((FilterComponent) => FilterComponent)}
-        <Link
-          href={type === 'instructor' ? '/instructor' : '/class'}
-          className="hidden items-center whitespace-nowrap text-sm font-bold text-gray-300 lg:flex"
+    <>
+      <div className="relative ">
+        <div
+          className="z-20 mb-3 flex w-full items-center gap-2 overflow-x-auto pb-2 pr-28"
+          ref={scrollContainerRef}
         >
-          초기화
-          <ResetSVG className="ml-1 h-[14px] w-[14px]" />
-        </Link>
-        <Link
-          href={type === 'instructor' ? '/instructor' : '/class'}
-          className="absolute right-0 flex h-full items-center justify-center bg-white px-2 lg:hidden"
-        >
-          <ResetSVG className="ml-1 h-5 w-5" />
-        </Link>
+          {filterComponents.map((FilterComponent) => FilterComponent)}
+          <Link
+            href={type === 'instructor' ? '/instructor' : '/class'}
+            className="hidden items-center whitespace-nowrap text-sm font-bold text-gray-300 lg:flex"
+          >
+            초기화
+            <ResetSVG className="ml-1 h-[14px] w-[14px]" />
+          </Link>
+          <Link
+            href={type === 'instructor' ? '/instructor' : '/class'}
+            className="absolute right-0 flex h-full items-center justify-center bg-white px-2 lg:hidden"
+          >
+            <ResetSVG className="ml-1 h-5 w-5" />
+          </Link>
+        </div>
       </div>
-    </div>
+      {isfilterModalOpen && (
+        <FilterMobileModal handleClosed={modalCloseHandler} />
+      )}
+    </>
   );
 };
 
