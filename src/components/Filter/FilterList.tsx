@@ -45,20 +45,23 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
   return (
     <div className="relative">
       <div
-        className="z-20 mb-3 flex w-full items-center gap-2 overflow-x-auto pb-2"
+        className="z-20 mb-3 flex w-full items-center gap-2 overflow-x-auto pb-2 pr-28"
         ref={scrollContainerRef}
       >
         {filterComponents.map((FilterComponent) => FilterComponent)}
         <Link
           href={type === 'instructor' ? '/instructor' : '/class'}
-          className="mr-20 flex items-center whitespace-nowrap text-sm font-bold text-gray-300"
+          className="hidden items-center whitespace-nowrap text-sm font-bold text-gray-300 lg:flex"
         >
           초기화
-          <ResetSVG className="ml-1" />
+          <ResetSVG className="ml-1 h-[14px] w-[14px]" />
         </Link>
-        <button className="absolute right-0 flex h-full items-center justify-center bg-white px-2">
-          <FilterSVG className="h-6 w-6 fill-gray-500" />
-        </button>
+        <Link
+          href={type === 'instructor' ? '/instructor' : '/class'}
+          className="absolute right-0 flex h-full items-center justify-center bg-white px-2 lg:hidden"
+        >
+          <ResetSVG className="ml-1 h-5 w-5" />
+        </Link>
       </div>
     </div>
   );
