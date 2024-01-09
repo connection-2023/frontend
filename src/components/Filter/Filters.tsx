@@ -1,22 +1,11 @@
-import Link from 'next/link';
 import {
   GROUP_FILTER_DEFAULT,
-  GROUP_FILTER_LIST,
   PRICE_FILTER_MAX,
   PRICE_FILTER_MIN,
 } from '@/constants/constants';
-import { ResetSVG } from '@/icons/svg';
-import DateFilter from './DateFilter';
-import DayTimeFilter from './DayTimeFilter';
-import GenreFilter from './GenreFilter';
-import GroupFilter from './GroupFilter';
-import LocationFilter from './LocationFilter';
-import MethodFilter from './MethodFilter';
+import FilterList from './FilterList';
 import OptionList from './OptionList';
-import PriceFilter from './PriceFilter';
-import ReviewFilter from './ReviewFilter';
 import { WARD_LIST } from '../../constants/administrativeDistrict';
-import ResetButton from '../Button/ResetButton';
 import { day } from '@/types/class';
 import { IFilterOptions } from '@/types/types';
 
@@ -91,24 +80,6 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
     return acc;
   }, []);
 
-  const filterComponents =
-    type === 'class'
-      ? [
-          <LocationFilter filterOption={filterOption.regions} key="location" />,
-          <GenreFilter filterOption={filterOption.genre} key="genre" />,
-          <ReviewFilter filterOption={filterOption.review} key="review" />,
-          <PriceFilter filterOption={filterOption.price} key="price" />,
-          <DateFilter filterOption={filterOption.date} key="date" />,
-          <GroupFilter filterOption={filterOption.group} key="group" />,
-          <MethodFilter filterOption={filterOption.method} key="method" />,
-          <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
-        ]
-      : [
-          <LocationFilter filterOption={filterOption.regions} key="location" />,
-          <GenreFilter filterOption={filterOption.genre} key="genre" />,
-          <ReviewFilter filterOption={filterOption.review} key="review" />,
-        ];
-
   return (
     <>
       <ul className="flex w-full flex-wrap gap-x-5 gap-y-1">
@@ -123,16 +94,7 @@ const Filters = async ({ type, filterOption }: FiltersProps) => {
             ),
         )}
       </ul>
-      <div className="z-20 mb-3 flex w-full flex-wrap items-center gap-2">
-        {filterComponents.map((filter) => filter)}
-        <Link
-          href={type === 'instructor' ? '/instructor' : '/class'}
-          className="flex items-center whitespace-nowrap text-sm font-bold text-gray-300"
-        >
-          초기화
-          <ResetSVG className="ml-1" />
-        </Link>
-      </div>
+      <FilterList filterOption={filterOption} type={type} />
     </>
   );
 };

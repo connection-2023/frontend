@@ -1,7 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const useTouchScroll = () => {
+interface useTouchScrollProps {
+  scrollFast?: number;
+  onChangeFn?: () => void;
+}
+
+const useTouchScroll = ({
+  scrollFast = 1,
+  onChangeFn,
+}: useTouchScrollProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -12,6 +21,10 @@ const useTouchScroll = () => {
     let scrollLeft: number;
 
     const mouseDownHandler = (e: MouseEvent) => {
+      const element = e.target as Element;
+      if (element.closest('[data-no-drag]')) {
+        return;
+      }
       isDown = true;
       startX = e.pageX - scrollContainer.offsetLeft;
       scrollLeft = scrollContainer.scrollLeft;
@@ -29,8 +42,12 @@ const useTouchScroll = () => {
       if (!isDown) return;
       e.preventDefault();
       const x = e.pageX - scrollContainer.offsetLeft;
-      const walk = (x - startX) * 1;
+      const walk = (x - startX) * scrollFast;
       scrollContainer.scrollLeft = scrollLeft - walk;
+      setScrollLeft(scrollLeft - walk);
+      if (onChangeFn) {
+        onChangeFn();
+      }
     };
 
     scrollContainer.addEventListener('mousedown', mouseDownHandler);
@@ -46,7 +63,7 @@ const useTouchScroll = () => {
     };
   }, []);
 
-  return { scrollContainerRef };
+  return { scrollContainerRef, scrollLeft };
 };
 
 export default useTouchScroll;
