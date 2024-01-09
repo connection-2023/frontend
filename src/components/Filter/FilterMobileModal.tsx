@@ -3,9 +3,13 @@ import { CloseSVG } from '@/icons/svg';
 
 interface MobileFullModalProps {
   handleClosed: () => void;
+  filterComponents: JSX.Element[];
 }
 
-const FilterMobileModal = ({ handleClosed }: MobileFullModalProps) => {
+const FilterMobileModal = ({
+  handleClosed,
+  filterComponents,
+}: MobileFullModalProps) => {
   const overlayRef = useRef(null);
 
   const handleKeyUp = (e: KeyboardEvent) => {
@@ -28,7 +32,7 @@ const FilterMobileModal = ({ handleClosed }: MobileFullModalProps) => {
       ref={overlayRef}
       className="fixed bottom-0 left-0 right-0 top-0 z-modal sm:hidden"
     >
-      <section className="flex h-full w-screen flex-col bg-white">
+      <section className="flex h-screen w-screen flex-col overflow-y-auto bg-white">
         <header className="relative flex h-24 items-center justify-center border-b border-solid border-gray-300">
           <h1 className="mt-4 text-xl font-semibold">필터</h1>
           <button className="absolute right-4 top-9" onClick={handleClosed}>
@@ -39,6 +43,9 @@ const FilterMobileModal = ({ handleClosed }: MobileFullModalProps) => {
             />
           </button>
         </header>
+        <div className="flex flex-shrink-0 flex-col px-5">
+          {filterComponents[0]}
+        </div>
       </section>
     </div>
   );

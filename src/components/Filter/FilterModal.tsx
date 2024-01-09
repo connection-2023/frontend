@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useWindowSize } from 'react-use';
 import { useClickAway } from 'react-use';
 import { ArrowUpSVG, ArrowDownSVG } from '@/icons/svg';
-import { usefilterStore } from '@/store/filterPositionnStore';
+import { usefilterStore } from '@/store/filterStore';
 import Button from '../Button/Button';
 import ResetButton from '../Button/ResetButton';
 
@@ -47,6 +47,8 @@ const FilterModal = ({
 
   useEffect(() => {
     setIsOpened(false);
+    setIsfilterModalOpen(false);
+    onClose();
   }, [isScrolling, width]);
 
   useClickAway(ref, () => {

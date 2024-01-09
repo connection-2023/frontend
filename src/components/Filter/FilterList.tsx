@@ -2,16 +2,16 @@
 import Link from 'next/link';
 import useTouchScroll from '@/hooks/useTouchScroll';
 import { ResetSVG } from '@/icons/svg';
-import { usefilterStore } from '@/store/filterPositionnStore';
+import { usefilterStore } from '@/store/filterStore';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
+import FilterMobileModal from './FilterMobileModal';
 import GenreFilter from './GenreFilter';
 import GroupFilter from './GroupFilter';
 import LocationFilter from './LocationFilter';
 import MethodFilter from './MethodFilter';
 import PriceFilter from './PriceFilter';
 import ReviewFilter from './ReviewFilter';
-import FilterMobileModal from '../Modal/FilterMobileModal';
 import { IFilterOptions } from '@/types/types';
 
 interface FilterListProps {
@@ -72,7 +72,10 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
         </div>
       </div>
       {isfilterModalOpen && (
-        <FilterMobileModal handleClosed={modalCloseHandler} />
+        <FilterMobileModal
+          filterComponents={filterComponents}
+          handleClosed={modalCloseHandler}
+        />
       )}
     </>
   );
