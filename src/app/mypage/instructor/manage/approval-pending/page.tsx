@@ -6,8 +6,8 @@ const ApprovalPendingPage = () => {
   const [selectedClass, setSelectedClass] = useState<string>();
 
   return (
-    <section className="mx-4 h-full rounded-lg bg-white p-6 shadow-float md:mx-9 xl:mx-0">
-      <div className="mb-4 flex gap-x-4">
+    <section className="mx-4 h-full rounded-lg bg-white shadow-float md:mx-9 md:p-6 xl:mx-0">
+      <div className="mb-4 flex flex-col gap-x-4 gap-y-3.5 px-3.5 pt-6 md:flex-row md:p-0">
         <h1 className="text-2xl font-bold">승인대기(10)</h1>
         <select
           name="selectedClass"
@@ -22,7 +22,7 @@ const ApprovalPendingPage = () => {
         </select>
       </div>
 
-      <p className="text-base">
+      <p className="whitespace-pre-line break-keep px-3.5 text-base md:p-0">
         *노쇼위약금 혹은 신청금액의 입금이 확인된 수강생에 한하여 하단의
         신청승인 버튼을 클릭하셔야 해당 수강생의 수강 신청이 완료됩니다. <br />{' '}
         <span className="text-main-color">
