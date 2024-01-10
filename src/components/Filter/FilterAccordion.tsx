@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { WARD_LIST } from '@/constants/administrativeDistrict';
 import { ArrowDownSVG, ArrowUpSVG } from '@/icons/svg';
 import { usefilterStore } from '@/store/filterStore';
 import Accordion from '../Accordion/Accordion';
@@ -6,7 +7,7 @@ import ResetButton from '../Button/ResetButton';
 import { Regions } from '@/types/instructor';
 
 interface FilterAccordionProps {
-  filterList: any; // Regions;
+  filterList: Regions | string[];
   label: string;
   children: React.ReactNode;
   onReset: () => void;
@@ -28,30 +29,66 @@ const FilterAccordion = ({
     return setOpenFilterLabel(label);
   };
 
-  console.log(filterList);
+  const selectList = filterPreview(label, filterList);
 
   return (
-    <div className="flex flex-col whitespace-nowrap">
-      <div className="flex h-[4.8rem] items-center justify-between">
-        <div className="flex items-center">
-          <p className="text-lg font-semibold">{label}</p>
-          <button onClick={accordionOpenHandler}>
-            {isOpened ? (
-              <ArrowUpSVG className="h-[34px] w-[34px] fill-black" />
-            ) : (
-              <ArrowDownSVG className="h-[34px] w-[34px] fill-black" />
-            )}
-          </button>
+    <div>
+      <div
+        className={`flex flex-col whitespace-nowrap px-5 ${
+          isOpened ? 'mb-5' : ''
+        }`}
+      >
+        <div className="flex h-[4.8rem] items-center justify-between">
+          <div className="mr-4 flex items-center">
+            <p className="text-lg font-semibold">{label}</p>
+            <button onClick={accordionOpenHandler}>
+              {isOpened ? (
+                <ArrowUpSVG className="h-[34px] w-[34px] fill-black" />
+              ) : (
+                <ArrowDownSVG className="h-[34px] w-[34px] fill-black" />
+              )}
+            </button>
+          </div>
+          {isOpened ? (
+            <ResetButton onClick={onReset}>초기화</ResetButton>
+          ) : (
+            <div className="flex-grow truncate text-right text-gray-300">
+              {selectList}
+            </div>
+          )}
         </div>
-        {isOpened ? (
-          <ResetButton onClick={onReset}>초기화</ResetButton>
-        ) : (
-          <div className="flex-grow truncate text-right text-gray-300">a</div>
-        )}
+        <Accordion isOpen={isOpened}>{children}</Accordion>
       </div>
-      <Accordion isOpen={isOpened}>{children}</Accordion>
+      <hr className="border border-solid border-gray-900" />
     </div>
   );
 };
 
 export default FilterAccordion;
+
+const filterPreview = (label: string, filter: Regions | string[]) => {
+  switch (label) {
+    case '지역': {
+      if (typeof filter === 'object') {
+        const selectFilter = Object.entries(filter);
+
+        return selectFilter.flatMap(
+          ([region, subRegions]: [string, string[]], index) =>
+            region +
+            (WARD_LIST[region].length === subRegions.length
+              ? index !== selectFilter.length - 1
+                ? ' 전 지역, '
+                : ' 전 지역'
+              : subRegions.reduce(
+                  (acc, region, index) =>
+                    (acc +=
+                      index !== subRegions.length - 1
+                        ? ` ${region},`
+                        : ` ${region}`),
+                  '',
+                )),
+        );
+      }
+    }
+  }
+};

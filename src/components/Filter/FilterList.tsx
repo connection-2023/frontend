@@ -8,7 +8,7 @@ import DayTimeFilter from './DayTimeFilter';
 import FilterMobileModal from './FilterMobileModal';
 import GenreFilter from './GenreFilter';
 import GroupFilter from './GroupFilter';
-import LocationFilter from './LocationFilter';
+import LocationFilter from './Location/LocationFilterContainer';
 import MethodFilter from './MethodFilter';
 import PriceFilter from './PriceFilter';
 import ReviewFilter from './ReviewFilter';

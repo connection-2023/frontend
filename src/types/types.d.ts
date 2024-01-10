@@ -234,3 +234,22 @@ export interface classSearchData {
   timeOfDay: TimeOfDay[];
   searchAfter?: [number, number];
 }
+
+export type CityList =
+  | '서울'
+  | '경기'
+  | '부산'
+  | '대구'
+  | '인천'
+  | '광주'
+  | '대전'
+  | '울산'
+  | '세종'
+  | '강원'
+  | '충북'
+  | '충남'
+  | '전북'
+  | '전남'
+  | '경북'
+  | '경남'
+  | '제주';
