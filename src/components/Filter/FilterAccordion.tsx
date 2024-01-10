@@ -7,7 +7,7 @@ import ResetButton from '../Button/ResetButton';
 import { Regions } from '@/types/instructor';
 
 interface FilterAccordionProps {
-  filterList: Regions | string[];
+  filterList: Regions | string[] | number;
   label: string;
   children: React.ReactNode;
   onReset: () => void;
@@ -66,7 +66,7 @@ const FilterAccordion = ({
 
 export default FilterAccordion;
 
-const filterPreview = (label: string, filter: Regions | string[]) => {
+const filterPreview = (label: string, filter: Regions | string[] | number) => {
   switch (label) {
     case '지역': {
       const selectFilter = Object.entries(filter);
@@ -91,6 +91,10 @@ const filterPreview = (label: string, filter: Regions | string[]) => {
     case '장르': {
       const genreList = filter as string[];
       return genreList.length > 0 ? genreList.join(', ') : '전체';
+    }
+    case '평점': {
+      const star = filter as number;
+      return star > 0 ? `${star} 이상` : '';
     }
   }
 };

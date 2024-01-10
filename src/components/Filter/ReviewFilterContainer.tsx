@@ -1,14 +1,19 @@
 'use client';
 import { useState, useEffect } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
+import { usefilterStore } from '@/store/filterStore';
+import FilterAccordion from './FilterAccordion';
 import FilterModal from './FilterModal';
-import Rating from '../Review/Rating';
+import ReviewFilter from './Review/ReviewFilter';
 
-interface IReviewFilterProps {
+interface IReviewFilterContainerProps {
   filterOption: number;
 }
 
-const ReviewFilter = ({ filterOption }: IReviewFilterProps) => {
+const ReviewFilterContainer = ({
+  filterOption,
+}: IReviewFilterContainerProps) => {
+  const { isfilterModalOpen } = usefilterStore();
   const [rate, setRate] = useState<number>(filterOption);
   const { changeParams, removeParams } = useChangeSearchParams();
   const label = '평점';
@@ -37,18 +42,20 @@ const ReviewFilter = ({ filterOption }: IReviewFilterProps) => {
     setRate(filterOption);
   };
 
-  return (
+  return isfilterModalOpen ? (
+    <FilterAccordion label={label} filterList={rate} onReset={onReset}>
+      <ReviewFilter rate={rate} handleRate={handleRate} />
+    </FilterAccordion>
+  ) : (
     <FilterModal
       label={label}
       onReset={onReset}
       onApply={onApply}
       onClose={onClose}
     >
-      <div className="p-4">
-        <Rating rate={rate} handleRate={handleRate} bigStar={true} />
-      </div>
+      <ReviewFilter rate={rate} handleRate={handleRate} />
     </FilterModal>
   );
 };
 
-export default ReviewFilter;
+export default ReviewFilterContainer;
