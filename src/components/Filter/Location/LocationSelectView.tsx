@@ -1,21 +1,13 @@
 import { WARD_LIST } from '@/constants/administrativeDistrict';
 import { ArrowRightSVG, CloseSVG } from '@/icons/svg';
 import { Regions } from '@/types/instructor';
-import { CityList } from '@/types/locationFilter';
+import { CityList } from '@/types/types';
 
 interface LocationSelectViewProps {
   filterList: Regions;
   deleteFilterCity: (city: CityList) => void;
-  changeFilterList: (ward: string) => void;
+  changeFilterList: (ward: string, city?: CityList) => void;
 }
-
-// CloseSVG 컴포넌트를 재사용하기 위한 별도 컴포넌트
-const CloseButton = ({ onClick, children }) => (
-  <button className="flex items-center justify-center gap-1" onClick={onClick}>
-    {children}
-    <CloseSVG width="14" height="14" className="stroke-gray-300 stroke-2" />
-  </button>
-);
 
 const LocationSelectView = ({
   filterList,
@@ -48,7 +40,9 @@ const LocationSelectView = ({
               key={`${city}-${ward}`}
               className="rounded-full border border-solid border-black px-3 py-2"
             >
-              <CloseButton onClick={() => changeFilterList(ward, city)}>
+              <CloseButton
+                onClick={() => changeFilterList(ward, city as CityList)}
+              >
                 {ward}
               </CloseButton>
             </div>
@@ -60,3 +54,15 @@ const LocationSelectView = ({
 };
 
 export default LocationSelectView;
+
+interface CloseButtonProps {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  children: React.ReactNode;
+}
+
+const CloseButton = ({ onClick, children }: CloseButtonProps) => (
+  <button className="flex items-center justify-center gap-1" onClick={onClick}>
+    {children}
+    <CloseSVG width="14" height="14" className="stroke-gray-300 stroke-2" />
+  </button>
+);

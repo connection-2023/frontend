@@ -6,9 +6,9 @@ import { usefilterStore } from '@/store/filterStore';
 import DateFilter from './DateFilter';
 import DayTimeFilter from './DayTimeFilter';
 import FilterMobileModal from './FilterMobileModal';
-import GenreFilter from './GenreFilter';
+import GenreFilterContainer from './Genre/GenreFilterContainer';
 import GroupFilter from './GroupFilter';
-import LocationFilter from './Location/LocationFilterContainer';
+import LocationFilterContainer from './Location/LocationFilterContainer';
 import MethodFilter from './MethodFilter';
 import PriceFilter from './PriceFilter';
 import ReviewFilter from './ReviewFilter';
@@ -33,8 +33,14 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
   const filterComponents =
     type === 'class'
       ? [
-          <LocationFilter filterOption={filterOption.regions} key="location" />,
-          <GenreFilter filterOption={filterOption.genre} key="genre" />,
+          <LocationFilterContainer
+            filterOption={filterOption.regions}
+            key="location"
+          />,
+          <GenreFilterContainer
+            filterOption={filterOption.genre}
+            key="genre"
+          />,
           <ReviewFilter filterOption={filterOption.review} key="review" />,
           <PriceFilter filterOption={filterOption.price} key="price" />,
           <DateFilter filterOption={filterOption.date} key="date" />,
@@ -43,8 +49,14 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
           <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
         ]
       : [
-          <LocationFilter filterOption={filterOption.regions} key="location" />,
-          <GenreFilter filterOption={filterOption.genre} key="genre" />,
+          <LocationFilterContainer
+            filterOption={filterOption.regions}
+            key="location"
+          />,
+          <GenreFilterContainer
+            filterOption={filterOption.genre}
+            key="genre"
+          />,
           <ReviewFilter filterOption={filterOption.review} key="review" />,
         ];
 
@@ -55,7 +67,8 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
           className="z-20 mb-3 flex w-full items-center gap-2 overflow-x-auto pb-2 pr-28"
           ref={scrollContainerRef}
         >
-          {filterComponents.map((FilterComponent) => FilterComponent)}
+          {!isfilterModalOpen &&
+            filterComponents.map((FilterComponent) => FilterComponent)}
           <Link
             href={type === 'instructor' ? '/instructor' : '/class'}
             className="hidden items-center whitespace-nowrap text-sm font-bold text-gray-300 lg:flex"

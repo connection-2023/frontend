@@ -69,26 +69,28 @@ export default FilterAccordion;
 const filterPreview = (label: string, filter: Regions | string[]) => {
   switch (label) {
     case '지역': {
-      if (typeof filter === 'object') {
-        const selectFilter = Object.entries(filter);
+      const selectFilter = Object.entries(filter);
 
-        return selectFilter.flatMap(
-          ([region, subRegions]: [string, string[]], index) =>
-            region +
-            (WARD_LIST[region].length === subRegions.length
-              ? index !== selectFilter.length - 1
-                ? ' 전 지역, '
-                : ' 전 지역'
-              : subRegions.reduce(
-                  (acc, region, index) =>
-                    (acc +=
-                      index !== subRegions.length - 1
-                        ? ` ${region},`
-                        : ` ${region}`),
-                  '',
-                )),
-        );
-      }
+      return selectFilter.flatMap(
+        ([region, subRegions]: [string, string[]], index) =>
+          region +
+          (WARD_LIST[region].length === subRegions.length
+            ? index !== selectFilter.length - 1
+              ? ' 전 지역, '
+              : ' 전 지역'
+            : subRegions.reduce(
+                (acc, region, index) =>
+                  (acc +=
+                    index !== subRegions.length - 1
+                      ? ` ${region},`
+                      : ` ${region}`),
+                '',
+              )),
+      );
+    }
+    case '장르': {
+      const genreList = filter as string[];
+      return genreList.length > 0 ? genreList.join(', ') : '전체';
     }
   }
 };
