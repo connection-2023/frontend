@@ -3,7 +3,7 @@ import Link from 'next/link';
 import useTouchScroll from '@/hooks/useTouchScroll';
 import { ResetSVG } from '@/icons/svg';
 import { usefilterStore } from '@/store/filterStore';
-import DateFilter from './DateFilter';
+import DateFilter from './Date/DateFilterContainer';
 import DayTimeFilter from './DayTimeFilter';
 import FilterMobileModal from './FilterMobileModal';
 import GenreFilterContainer from './Genre/GenreFilterContainer';

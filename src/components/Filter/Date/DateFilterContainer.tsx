@@ -4,14 +4,17 @@ import { parse } from 'date-fns';
 import { useState, useEffect } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import FilterModal from './FilterModal';
-import RangeCalendar from '../Calendar/RangeCalendar';
+import { usefilterStore } from '@/store/filterStore';
+import RangeCalendar from '../../Calendar/RangeCalendar';
+import FilterAccordion from '../FilterAccordion';
+import FilterModal from '../FilterModal';
 
-interface IDateFilterProps {
+interface DateFilterContainerProps {
   filterOption: string[];
 }
 
-const DateFilter = ({ filterOption }: IDateFilterProps) => {
+const DateFilterContainer = ({ filterOption }: DateFilterContainerProps) => {
+  const { isfilterModalOpen } = usefilterStore();
   const [gteDate, lteDate] = filterOption;
   const [fromValue, setFromValue] = useState<string | undefined>(gteDate);
   const [toValue, setToValue] = useState<string | undefined>(lteDate);
@@ -63,7 +66,24 @@ const DateFilter = ({ filterOption }: IDateFilterProps) => {
     setToValue(lteDate);
   };
 
-  return (
+  return isfilterModalOpen ? (
+    <FilterAccordion
+      label={label}
+      filterList={[fromValue, toValue]}
+      onReset={onReset}
+    >
+      <div className="relative h-[214px]">
+        <div className="absolute left-1/2 -translate-x-1/2 transform">
+          <RangeCalendar
+            mode="class"
+            selectedRange={classRange}
+            handleRangeSelect={handleRangeSelect}
+            numberOfMonths={1}
+          />
+        </div>
+      </div>
+    </FilterAccordion>
+  ) : (
     <FilterModal
       label={label}
       onReset={onReset}
@@ -80,4 +100,4 @@ const DateFilter = ({ filterOption }: IDateFilterProps) => {
   );
 };
 
-export default DateFilter;
+export default DateFilterContainer;

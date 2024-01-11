@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
 import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
 import { ArrowDownSVG, ArrowUpSVG } from '@/icons/svg';
@@ -8,7 +7,12 @@ import ResetButton from '../Button/ResetButton';
 import { Regions } from '@/types/instructor';
 
 interface FilterAccordionProps {
-  filterList: Regions | string[] | number | number[];
+  filterList:
+    | Regions
+    | string[]
+    | number
+    | number[]
+    | [string | undefined, string | undefined];
   label: string;
   children: React.ReactNode;
   onReset: () => void;
@@ -69,7 +73,12 @@ export default FilterAccordion;
 
 const filterPreview = (
   label: string,
-  filter: Regions | string[] | number | number[],
+  filter:
+    | Regions
+    | string[]
+    | number
+    | number[]
+    | [string | undefined, string | undefined],
 ) => {
   switch (label) {
     case '지역': {
@@ -108,6 +117,17 @@ const filterPreview = (
         return `${min.toLocaleString()}원 ~ ${max.toLocaleString()}원`;
       } else {
         return '';
+      }
+    }
+    case '지정날짜': {
+      const [gteDate, lteDate] = filter as [
+        string | undefined,
+        string | undefined,
+      ];
+      if (gteDate && lteDate) {
+        return `${gteDate} ~ ${lteDate}`;
+      } else {
+        return gteDate;
       }
     }
   }
