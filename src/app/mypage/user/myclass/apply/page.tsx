@@ -7,7 +7,7 @@ import PageSizeSelector from '@/components/Selector/PageSizeSelector';
 import { IUserClassResponse } from '@/types/class';
 
 const ClassListView = () => {
-  const [isProgress, setIsProgress] = useState(true);
+  const [activeTab, setActiveTab] = useState('진행중');
   const [displayCount, setDisplayCount] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsId, setItemsId] = useState({
@@ -17,13 +17,13 @@ const ClassListView = () => {
   const [classListData, setClassListData] = useState<IUserClassResponse[]>([]);
 
   useEffect(() => {
-    fetchClassData(
-      displayCount,
-      0,
-      itemsId.firstItemId,
-      itemsId.lastItemId,
-      isProgress,
-    );
+    // fetchClassData(
+    //   displayCount,
+    //   0,
+    //   itemsId.firstItemId,
+    //   itemsId.lastItemId,
+    //   activeTab,
+    // );
   }, []);
 
   const fetchClassData = async (
@@ -56,16 +56,16 @@ const ClassListView = () => {
     }
   };
 
-  const handleActiveTab = () => {
-    setIsProgress((prev) => !prev);
+  const handleActiveTab = (newStatus: string) => {
+    setActiveTab(newStatus);
 
-    fetchClassData(
-      displayCount,
-      currentPage,
-      itemsId.firstItemId,
-      itemsId.lastItemId,
-      !isProgress,
-    );
+    // fetchClassData(
+    //   displayCount,
+    //   currentPage,
+    //   itemsId.firstItemId,
+    //   itemsId.lastItemId,
+    //   !isProgress,
+    // );
   };
 
   const handleDisplayCount = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -73,61 +73,59 @@ const ClassListView = () => {
 
     setDisplayCount(newDisplayCount);
 
-    fetchClassData(
-      newDisplayCount,
-      currentPage,
-      itemsId.firstItemId,
-      itemsId.lastItemId,
-      isProgress,
-    );
+    // fetchClassData(
+    //   newDisplayCount,
+    //   currentPage,
+    //   itemsId.firstItemId,
+    //   itemsId.lastItemId,
+    //   activeTab,
+    // );
   };
 
   const handlePageChange = async ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
 
-    fetchClassData(
-      displayCount,
-      selected,
-      itemsId.firstItemId,
-      itemsId.lastItemId,
-      isProgress,
-    );
+    // fetchClassData(
+    //   displayCount,
+    //   selected,
+    //   itemsId.firstItemId,
+    //   itemsId.lastItemId,
+    //   activeTab,
+    // );
   };
 
   return (
     <section className="mx-auto flex w-full max-w-[40rem] flex-col bg-white px-4 py-5 text-sm text-gray-100 md:px-9 xl:mx-0 xl:px-0">
-      <div className="flex gap-6 border-b border-solid pb-2 text-2xl text-gray-500">
-        <h1
-          onClick={handleActiveTab}
-          className={`${
-            isProgress
-              ? 'cursor-pointer font-bold text-black'
-              : 'cursor-pointer font-medium'
-          }`}
-        >
-          진행중/예정
-        </h1>
-        <h1
-          onClick={handleActiveTab}
-          className={`${
-            isProgress
-              ? 'cursor-pointer font-medium'
-              : 'cursor-pointer font-bold text-black'
-          }`}
-        >
-          수강완료
-        </h1>
-      </div>
+      <h1 className="mb-4 border-b border-solid border-gray-700 pb-2.5 text-2xl font-bold">
+        신청한 클래스
+      </h1>
 
-      <div className="mb-3.5 mt-2 flex w-full justify-end">
+      <div className="mb-4 flex w-full items-center justify-between">
+        <ul className="flex gap-4 whitespace-nowrap text-base font-medium text-gray-300">
+          {['진행중', '대기', '수강 완료', '취소/거절'].map((item) => (
+            <li
+              key={item}
+              onClick={() => handleActiveTab(item)}
+              className={`${
+                activeTab === item
+                  ? 'cursor-pointer font-bold text-black'
+                  : 'cursor-pointer'
+              }`}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+
         <PageSizeSelector value={displayCount} onChange={handleDisplayCount} />
       </div>
 
       <ul className="mb-9 flex flex-col gap-4">
         {classListData.map((item) => (
-          <ClassList key={item.id} {...item} isProgress={isProgress} />
+          <ClassList key={item.id} {...item} activeTab={activeTab} />
         ))}
       </ul>
+
       <div className="w-full">
         <Pagination
           pageCount={5} // 추후 계산 필요
