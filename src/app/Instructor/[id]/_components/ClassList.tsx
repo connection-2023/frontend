@@ -19,7 +19,7 @@ const ClassList = ({ classList }: { classList: ClassCardType[] }) => {
     <div className="relative flex h-60 w-full max-w-[56.2rem] justify-center ">
       <div className="flex h-full w-11/12 items-center overflow-hidden">
         <div
-          className="w-[30rem]"
+          className="w-[13rem] sm:w-[30rem]"
           onMouseOver={onFocus}
           onMouseLeave={offFocus}
         >
@@ -31,8 +31,12 @@ const ClassList = ({ classList }: { classList: ClassCardType[] }) => {
             gap={2}
             movePause={focus}
           >
-            {classList.map((state, index) => {
-              return <ClassCard key={state.title + index} {...state} />;
+            {classList.map((state) => {
+              return (
+                <div key={state.id} className="ml-2">
+                  <ClassCard {...state} />
+                </div>
+              );
             })}
           </Carousel>
         </div>

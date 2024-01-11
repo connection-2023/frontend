@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { FILTER_WEEK } from '@/constants/constants';
 import { useClassScheduleStore } from '@/store';
 import TimeList from './TimeList';
-import { DayTimeList } from '@/types/class';
+import { day, DayTimeList } from '@/types/class';
 
 interface DayByDayProps {
   lectureMethod?: string;
@@ -91,9 +91,9 @@ const DayByDay = ({
   const toggleDaySelection = (day: string, listIndex: number) => {
     const newDaytimeLists = dayTimeLists.map((list, index) =>
       index === listIndex
-        ? list.day.includes(day)
-          ? { ...list, day: list.day.filter((d) => d !== day) }
-          : { ...list, day: [...list.day, day] }
+        ? list.day.includes(day as day)
+          ? { ...list, day: list.day.filter((d) => d !== (day as day)) }
+          : { ...list, day: [...list.day, day as day] }
         : list,
     );
 
@@ -101,7 +101,7 @@ const DayByDay = ({
     onChange(newDaytimeLists);
   };
 
-  const handleDayClick = (day: string, listIndex: number) => {
+  const handleDayClick = (day: day, listIndex: number) => {
     if (
       !allSelectedDays.includes(day) ||
       (allSelectedDays.includes(day) &&
@@ -194,9 +194,12 @@ const DayByDay = ({
 
     let styleKey: keyof typeof styles;
 
-    if (list.day.includes(day)) {
+    if (list.day.includes(day as day)) {
       styleKey = 'selected';
-    } else if (!allSelectedDays.includes(day) || list.day.includes(day)) {
+    } else if (
+      !allSelectedDays.includes(day as day) ||
+      list.day.includes(day as day)
+    ) {
       styleKey = 'clickable';
     } else {
       styleKey = 'default';

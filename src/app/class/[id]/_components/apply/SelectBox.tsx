@@ -43,7 +43,7 @@ const SelectBox = ({ lists, selected, onSelect }: SelectBoxProps) => {
           const dateTime = parts.slice(0, parts.length - 1).join(' ');
           const participants = parts[parts.length - 1];
           const textColor = participants.includes('마감')
-            ? 'text-gray-500'
+            ? 'text-gray-500 pointer-events-none'
             : 'text-gray-100';
 
           return (

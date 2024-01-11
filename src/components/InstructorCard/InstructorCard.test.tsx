@@ -4,8 +4,10 @@ import InstructorCard from './InstructorCard';
 describe('InstructorCard', () => {
   it('renders without crashing', () => {
     const mockdata = {
+      id: 23,
+      largeImg: true,
       name: '이바다',
-      address: '서울 마포구',
+      address: ['서울 마포구'],
       teamAffiliation: '원밀리언즈',
       genres: ['방송댄스', '힙합', '방송댄스'],
       imgURL: [
@@ -17,14 +19,17 @@ describe('InstructorCard', () => {
       ],
       average: 3,
       href: '/',
+      isLiked: true,
     };
     render(<InstructorCard {...mockdata} />);
   });
 
   it('img test', () => {
     const mockdata = {
+      id: 23,
+      largeImg: true,
       name: '이바다',
-      address: '서울 마포구',
+      address: ['서울 마포구'],
       teamAffiliation: '원밀리언즈',
       genres: ['방송댄스', '힙합', '방송댄스'],
       imgURL: [
@@ -36,6 +41,7 @@ describe('InstructorCard', () => {
       ],
       average: 3,
       href: '/',
+      isLiked: true,
     };
 
     render(<InstructorCard {...mockdata} />);

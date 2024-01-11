@@ -1,5 +1,4 @@
 import FilterButton from './FilterButton';
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof FilterButton> = {

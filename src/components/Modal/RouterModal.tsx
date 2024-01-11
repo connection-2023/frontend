@@ -35,7 +35,7 @@ const RouterModal = ({ path, children }: RouterModalProps) => {
         handleRouter();
       }}
     >
-      <div className="absolute left-1/2 top-1/2 w-full max-w-[25.5rem] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white py-4 shadow-float">
+      <div className="absolute left-1/2 top-1/2 max-w-[40rem] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-md bg-white py-4 shadow-float">
         <button onClick={handleRouter} className="absolute right-6 top-5">
           <CloseSVG
             width="24"

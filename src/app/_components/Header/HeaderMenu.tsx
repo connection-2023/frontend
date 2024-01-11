@@ -1,15 +1,15 @@
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import {
   ConnectionLogoSVG,
   MapSVG,
   SmallLogoSVG,
   HamburgerSVG,
 } from '@/icons/svg';
-import { usePathname } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
-import { useState } from 'react';
-import SidebarModal from '@/components/Modal/SidebarModal';
 import Sidebar from '../Sidebar';
+import SidebarModal from '@/components/Modal/SidebarModal';
 
 const USER_MENU = [
   { href: '/intructor', menu: '강사' },

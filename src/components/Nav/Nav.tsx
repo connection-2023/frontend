@@ -59,7 +59,7 @@ const Nav = ({ sections }: { sections: NavSection[] }) => {
   return (
     <nav
       onClick={handleNavLinkClick}
-      className="sticky top-0 z-20 mb-[0.87rem] flex h-[64px] w-full items-center justify-between whitespace-nowrap bg-white text-lg font-bold"
+      className="sticky top-0 z-20 mb-[0.87rem] flex h-[64px] w-full items-center justify-between gap-5 whitespace-nowrap bg-white text-lg font-bold sm:gap-0"
     >
       {sections.map(({ id, label }) => (
         <Link

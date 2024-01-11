@@ -1,6 +1,6 @@
 import { DOMAIN } from '@/constants/constants';
-import { IPaymentInfo, IPaymentConfirm } from '@/types/payment';
-const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT; // 추후 파일 이동 예정
+import { IPaymentInfo, IVirtualAccountInfo } from '@/types/payment';
+import { IMyPaymentResponse } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {
@@ -25,29 +25,61 @@ export const postPaymentInfo = async (data: IPaymentInfo) => {
   }
 };
 
-// 추후 파일 이동 예정
-export const patchPaymentConfirm = async (
-  token: string,
-  data: IPaymentConfirm,
-) => {
+export const postPaymentCancel = async (id: string) => {
   try {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
-    const response = await fetch(END_POINT + '/payments/lecture/confirm', {
-      method: 'PATCH',
+    const response = await fetch(`${DOMAIN}/api/payment/cancel?id=${id}`, {
+      method: 'POST',
       credentials: 'include',
-      headers,
-      body: JSON.stringify(data),
-    }).then((data) => data.json());
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-    const responseData = await response.json();
-
-    return responseData.data.paymentResult;
+    return response;
   } catch (error) {
-    console.error('결제 승인 오류', error);
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+  }
+};
+
+export const getPaymentHistory = async (
+  displayCount: number,
+  currentPage: number,
+  targetPage: number,
+  firstItemId: number,
+  lastItemId: number,
+  option: string,
+): Promise<IMyPaymentResponse | Error> => {
+  const query = `displayCount=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&option=${option}`;
+
+  try {
+    const response = await fetch(`${DOMAIN}/api/payment/history?${query}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAccountInfo = async (
+  id: number,
+): Promise<IVirtualAccountInfo | Error> => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/payment/accountInfo?id=${id}`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json());
+
+    return response.data.virtualAccountPaymentInfo;
+  } catch (error) {
     throw error;
   }
 };

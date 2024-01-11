@@ -1,5 +1,5 @@
+import { getClassInfo } from '@/lib/apis/serverApis/classPostApis';
 import type { Metadata } from 'next';
-import { getClassPost } from '@/lib/apis/classApis';
 
 export const generateMetadata = async ({
   params,
@@ -8,7 +8,7 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { id } = params;
 
-  const classData = await getClassPost(id);
+  const classData = await getClassInfo(id);
   if (classData instanceof Error) {
     return {
       title: 'Connection | 강의 상세페이지',

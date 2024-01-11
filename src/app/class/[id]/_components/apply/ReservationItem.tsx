@@ -1,5 +1,6 @@
-import { IDateTime } from '@/types/class';
 import { ClearSVG } from '@/icons/svg';
+import CountButton from '@/components/Button/CountButton';
+import { IDateTime } from '@/types/class';
 
 interface ReservationItemProps extends IDateTime {
   lectureScheduleId: number;
@@ -58,20 +59,5 @@ const ReservationItem = ({
     </div>
   );
 };
-
-const CountButton = ({
-  onClick,
-  children,
-}: {
-  onClick: () => void;
-  children: React.ReactNode;
-}) => (
-  <button
-    className="h-[31px] w-[35px] border border-solid border-gray-500 bg-gray-900 text-gray-500"
-    onClick={onClick}
-  >
-    {children}
-  </button>
-);
 
 export default ReservationItem;

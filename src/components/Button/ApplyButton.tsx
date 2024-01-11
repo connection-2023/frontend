@@ -1,5 +1,5 @@
 interface ApplyButtonProps {
-  label: string;
+  label: React.ReactNode;
   onClick: () => void;
 }
 

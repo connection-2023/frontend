@@ -1,6 +1,6 @@
+import { revalidateTag } from 'next/cache';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { revalidateTag } from 'next/cache';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -20,7 +20,7 @@ export const POST = async (request: NextRequest) => {
     const data = await request.json();
 
     try {
-      const serverResponse = await fetch(END_POINT + '/payments/lecture', {
+      const serverResponse = await fetch(END_POINT + '/payments/toss/lecture', {
         method: 'POST',
         credentials: 'include',
         headers,

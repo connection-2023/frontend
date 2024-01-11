@@ -1,18 +1,6 @@
-export const dynamic = 'force-dynamic';
+import { revalidateTag } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
-import Apply from './_components/Apply';
-import ClassReviewSection from './_components/ClassReviewSection';
-import DiscountCouponBanner from './_components/DiscountCouponBanner';
-import OptionButton from './_components/OptionButton';
-import ReadMore from './_components/ReadMore';
-import Carousel from '@/components/Carousel/Carousel';
-import Notice from '@/components/ClassNotice/Notice';
-import Map from '@/components/Map/Map';
-import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import Review from '@/components/Review/Review';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
 import { dummyClass } from '@/constants/dummy';
 import {
@@ -24,14 +12,33 @@ import {
   ChatSVG,
   GenreSVG,
 } from '@/icons/svg';
-import { getClassPost, getClassSchedules } from '@/lib/apis/classApis';
+import {
+  getClassInfo,
+  getClassSchedules,
+  getUserReservation,
+} from '@/lib/apis/serverApis/classPostApis';
+import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
 import {
   formatLocationToString,
   formatGenreToString,
   formatDate,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
-import { revalidateTag } from 'next/cache';
+import Apply from './_components/Apply';
+import ClassReviewSection from './_components/ClassReviewSection';
+import DiscountCouponBanner from './_components/DiscountCouponBanner';
+import OptionButton from './_components/OptionButton';
+import ReadMore from './_components/ReadMore';
+import UserReservation from './_components/UserReservation';
+import Carousel from '@/components/Carousel/Carousel';
+import Notice from '@/components/ClassNotice/Notice';
+import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import Review from '@/components/Review/Review';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+
+export const dynamic = 'force-dynamic';
 
 const h2Style = 'mb-2 text-lg font-bold';
 const h3Style = 'flex gap-[0.38rem] text-sm';
@@ -43,13 +50,18 @@ const ClassDetailPage = async ({
 }) => {
   revalidateTag('schedules');
   // parallel requests
-  const classData = getClassPost(id);
+  const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
+  const userReservationData = getUserReservation(id);
+  const couponLists = getClassCouponList(id);
 
-  const [classInfo, classSchedule] = await Promise.all([
-    classData,
-    classSchedules,
-  ]);
+  const [classInfo, classSchedule, userReservation, couponList] =
+    await Promise.all([
+      classData,
+      classSchedules,
+      userReservationData,
+      couponLists,
+    ]);
 
   if (classInfo instanceof Error || classSchedule instanceof Error) {
     return <></>;
@@ -77,6 +89,7 @@ const ClassDetailPage = async ({
     lectureNotification,
     lectureImage,
     reviewCount,
+    isLike,
   } = lecture;
 
   const { schedule, holidayArr } = classSchedule;
@@ -91,8 +104,8 @@ const ClassDetailPage = async ({
   });
 
   return (
-    <main className="grid-auto-rows-2 border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 md:grid-cols-[1fr_1.37fr_1fr]">
-      <section className="mb-4 flex w-full flex-col items-center border-b border-solid border-gray-500 md:col-span-3">
+    <main className="border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 md:grid-cols-[3fr_1fr] md:gap-x-5 xl:grid-cols-[1fr_2fr_1fr]">
+      <section className="mb-4 flex w-full flex-col items-center border-b border-solid border-gray-500 md:col-span-2 xl:col-span-3">
         {/* 클래스 이미지 */}
         <div className="mb-5 flex h-[18rem] w-full justify-center px-10">
           {lectureImage.length > 2 ? (
@@ -123,7 +136,12 @@ const ClassDetailPage = async ({
         <h1 className="relative flex w-full max-w-[40rem] px-4 text-lg font-bold md:justify-center">
           <p className="w-11/12 md:text-center">{title}</p>
           <div className="absolute right-4 flex flex-col-reverse items-center gap-2 md:right-0 md:flex-row">
-            <OptionButton lecturerId={lecturerId} />
+            <OptionButton
+              lecturerId={lecturerId}
+              title={title}
+              postId={id}
+              isLike={isLike}
+            />
           </div>
         </h1>
         {/* Review */}
@@ -132,9 +150,11 @@ const ClassDetailPage = async ({
           <span className="text-sm font-bold text-gray-500">({stars})</span>
         </div>
         {/* 쿠폰 배너 */}
-        <div className="w-full max-w-[40rem] border-b border-solid border-gray-700 px-4 pb-3">
-          <DiscountCouponBanner discountPrice="10,000" />
-        </div>
+        {couponList && couponList.length > 0 && (
+          <div className="w-full max-w-[40rem] border-b border-solid border-gray-700 px-4 pb-3">
+            <DiscountCouponBanner couponList={couponList} price={price} />
+          </div>
+        )}
 
         <hr className="mb-4 h-1 w-full max-w-[40rem] md:mb-6" />
         {/* Class Info */}
@@ -164,10 +184,14 @@ const ClassDetailPage = async ({
           </h3>
         </div>
       </section>
-      {/* 임시 빈 공간 */}
-      <div className="" />
+      <div className="fixed bottom-[6rem] z-modal flex w-full justify-center px-4 xl:bottom-6 ">
+        <UserReservation userReservation={userReservation} />
+      </div>
 
-      <section className="flex flex-col px-4">
+      {/* 임시 빈 공간 */}
+      <div className="hidden xl:block" />
+
+      <section className="flex flex-col px-4 md:px-10">
         <Nav sections={CLASS_SECTIONS} />
 
         <Notice
@@ -243,7 +267,7 @@ const ClassDetailPage = async ({
           />
         </section>
 
-        <section id="location-section" className="mb-14 scroll-mt-16">
+        {/* <section id="location-section" className="mb-14 scroll-mt-16">
           <h2 className={h2Style}>진행 장소</h2>
           <span className="mb-[0.62rem] mt-2 flex items-center gap-[0.13rem]">
             <LocationSVG /> {detailAddress}
@@ -252,15 +276,10 @@ const ClassDetailPage = async ({
             <Map address={locationDetail} studioName={studioName} />
           </div>
           <p className="text-sm font-normal">{locationDescription}</p>
-        </section>
+        </section> */}
 
         {/* 클래스 후기 */}
-        <ClassReviewSection
-          id={id}
-          classTitle={title}
-          reviewCount={reviewCount}
-          stars={stars}
-        />
+        <ClassReviewSection id={id} reviewCount={reviewCount} stars={stars} />
       </section>
 
       <section className="fixed bottom-0 w-full md:static md:w-auto md:max-w-[17rem]">

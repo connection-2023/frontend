@@ -54,3 +54,16 @@ export const instructorRegister = async (data: IInstructorRegister) => {
     throw error;
   }
 };
+
+export const getMonthlyClassPlan = async (year: number, month: number) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/instructors/monthly-schedules?year=${year}&month=${month}`,
+    ).then((data) => data.json());
+
+    return response.data.schedules;
+  } catch (error) {
+    console.error('월별 강의 스케쥴 조회 오류', error);
+    throw error;
+  }
+};

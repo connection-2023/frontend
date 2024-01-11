@@ -12,12 +12,25 @@ export const GET = async (request: NextRequest) => {
   const id = searchParams.get('id');
   const order = searchParams.get('orderBy');
 
-  const serverResponse = await fetch(
-    END_POINT + `/lecture-reviews/${id}?orderBy=${order}`,
-    {
-      headers: {
+  const token = request.cookies.get('userAccessToken')?.value;
+  const path = token ? '/users' : '/non-members';
+
+  const headers: Record<string, string> = token
+    ? {
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-      },
+      }
+    : {
+        'Content-Type': 'application/json',
+      };
+
+  const serverResponse = await fetch(
+    END_POINT +
+      `/lecture-reviews/lecturers/${
+        id + path
+      }?lecturerReviewType=${order}&take=8`,
+    {
+      headers,
     },
   ).then((data) => data.json());
 

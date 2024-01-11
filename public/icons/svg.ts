@@ -9,6 +9,7 @@ import AuthIconSVG from './authIcon.svg';
 import AuthWelcomeSVG from './authWelcome.svg';
 import BasicCalendarSVG from './BasicCalendar.svg';
 import BigArrowSVG from './bigArrow.svg';
+import BigStar from './bigStar.svg';
 import BillSVG from './bill.svg';
 import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
@@ -21,6 +22,7 @@ import ClearSVG from './clear.svg';
 import CloseSVG from './close.svg';
 import CommentSVG from './comment.svg';
 import ConnectionLogoSVG from './connectionLogo.svg';
+import CopySVG from './copy.svg';
 import CouponSVG from './coupon.svg';
 import CropSVG from './crop.svg';
 import DashboardSVG from './dashboard.svg';
@@ -30,6 +32,7 @@ import DownloadSVG from './download.svg';
 import EditSVG from './edit.svg';
 import ExcelSVG from './excel.svg';
 import FacebookSVG from './facebook.svg';
+import FilterSVG from './filter.svg';
 import GenreSVG from './genre.svg';
 import GoogleSVG from './googleIcon.svg';
 import GroupSVG from './group.svg';
@@ -52,6 +55,7 @@ import NoteSVG from './note.svg';
 import NotFoundSVG from './notFound.svg';
 import NoticeSVG from './notice.svg';
 import OptionSVG from './option.svg';
+import PassSVG from './pass.svg';
 import PlusesSVG from './pluses.svg';
 import ProfileSVG from './profile_default.svg';
 import ReadMessageSVG from './readMessage.svg';
@@ -77,7 +81,11 @@ import ZoomInSVG from './zoomIn.svg';
 import ZoomOutSVG from './zoomOut.svg';
 
 export {
+  BigStar,
+  PassSVG,
+  FilterSVG,
   TrashcanSVG,
+  CopySVG,
   ApplySuccessSVG,
   HamburgerSVG,
   AuthIconSVG,

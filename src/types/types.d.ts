@@ -8,6 +8,7 @@ export interface IBootOption {
     userType: 'user' | 'lecturer';
   };
 }
+
 export interface IFilterButton {
   label: '지역' | '장르' | '평점' | '가격' | '지정날짜' | '진행방식' | '시간';
   content: React.JSX.Element;
@@ -33,6 +34,10 @@ export interface IFullCalendarEvent {
   start: Date;
   end: Date;
   title: string;
+  numberOfParticipants: number;
+  maxCapacity: number;
+  isGroup: boolean;
+  lectureId: number;
 }
 
 export interface ErrorMessage {
@@ -69,8 +74,9 @@ export interface IReportList {
 export type paymentType = 'card' | 'deposit' | null;
 
 export interface Instructors {
+  id: number;
   name: string;
-  address: string;
+  address: string[];
   teamAffiliation: string;
   genres: string[];
   imgURL: string[];
@@ -110,15 +116,53 @@ export interface IGenre {
   danceCategory: { genre: string };
 }
 
-export interface IMyPaymentInfo {
-  orderId: number;
+export interface IMyPayment {
   id: number;
-  type: 'class' | 'pass';
-  status: '입금대기' | '결제완료';
-  image: string;
-  paymentDate: string;
-  count: number;
-  title: string;
-  classTime?: string;
-  price: number;
+  orderId: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+  paymentProductType: {
+    name: '클래스' | '패스권';
+  };
+  paymentMethod: {
+    name: '카드' | '가상계좌';
+  };
+  paymentStatus: {
+    name: 'WAITING_FOR_DEPOSIT' | 'DONE' | 'CANCELED';
+  };
+  updatedAt: string;
+  reservation: {
+    participants: number;
+    requests: string;
+    lectureSchedule: {
+      lectureId: number;
+      startDateTime: string;
+      lecture: {
+        lectureImage: {
+          imageUrl: string;
+        }[];
+      };
+    };
+  }[];
+
+  userPass: string[];
+}
+
+export interface IMyPaymentResponse {
+  totalItemCount: number;
+  paymentHistory: IMyPayment[];
+}
+
+export interface FetchError extends Error {
+  status?: number;
+}
+
+export interface PagenationFilterState {
+  take: number | undefined;
+  firstItemId?: number;
+  lastItemId?: number;
+  currentPage?: number;
+  targetPage?: number;
+  [key: string]: any | undefined;
 }

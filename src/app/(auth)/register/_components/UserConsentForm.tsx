@@ -104,7 +104,7 @@ const UserConsentForm = ({
   };
 
   return (
-    <section className="flex flex-col">
+    <section className="flex h-full flex-col">
       <h1 className="mb-2.5 text-lg font-semibold">마지막 단계입니다!</h1>
       <h1 className="mb-4 text-sm font-medium">
         커넥션 서비스 이용을 위해 필수 약관에 동의해주세요.
@@ -213,7 +213,7 @@ const UserConsentForm = ({
         ))}
       </ul>
 
-      <div className="mt-[11.75rem] flex gap-3 md:mt-[3.35rem]">
+      <div className="mt-auto flex gap-3">
         <StatusButton disabled={false} onClick={handlePrev}>
           이전
         </StatusButton>

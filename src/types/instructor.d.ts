@@ -1,5 +1,5 @@
 export interface instructorPostResponse {
-  profileCardImageUrl: string;
+  profileCardImageUrl: string | null;
   nickname: string;
   email: string;
   phoneNumber: string;
@@ -13,6 +13,9 @@ export interface instructorPostResponse {
   lecturerDanceGenre: any; // 추후 변경 예정
   lecturerInstagramPostUrl: Url[]; // 추후 변경 예정
   lecturerProfileImageUrl: Url[]; // 추후 변경 예정
+  stars: number;
+  reviewCount: number;
+  isLiked: boolean;
 }
 
 interface Url {
@@ -47,8 +50,12 @@ export interface InstructorApplyData {
   instagramUrl: string;
   youtubeUrl: string;
   homepageUrl: string;
-  introduction: string;
-  experience: string;
+  introduction: {
+    content: string;
+  };
+  experience: {
+    content: string;
+  };
 }
 
 export interface IInstructorRegister {
@@ -67,4 +74,86 @@ export interface IInstructorRegister {
   genres: string[];
   instagramPostUrls?: string[];
   etcGenres?: string[];
+}
+
+export interface IInstructorReviewList {
+  id: number;
+  lectureId: number;
+  userId: number;
+  reservationId: number;
+  stars: number;
+  description: string;
+  createdAt: string;
+  reservation: {
+    lectureSchedule: {
+      startDateTime: string;
+      lecture: {
+        title: string;
+      };
+    };
+  };
+  users: {
+    nickname: string;
+    userProfileImage: { imageUrl: string };
+  };
+  likedLectureReview?: {}[];
+  _count: {
+    likedLectureReview: number;
+  };
+}
+
+export interface ILecturerLike {
+  count: number;
+  lecturerLike: LecturerLike[];
+}
+
+export interface LecturerLike {
+  id: number;
+  lecturerId: number;
+  userId: number;
+  lecturer: {
+    nickname: string;
+    affiliation: string;
+    stars: number;
+    lecturerRegion: {
+      region: {
+        id: number;
+        administrativeDistrict: string;
+        district: string;
+      };
+    }[];
+    lecturerDanceGenre: {
+      id: number;
+      danceCategoryId: number;
+      lecturerId: number;
+      name: string | null;
+      danceCategory: {
+        genre: string;
+      };
+    }[];
+    lecturerProfileImageUrl: {
+      url: string;
+    }[];
+  };
+}
+
+export interface ILecturerBlock {
+  count: number;
+  lecturerBlock: LecturerBlock[];
+}
+
+export interface LecturerBlock {
+  id: number;
+  lecturerId: number;
+  userId: number;
+  lecturer: {
+    nickname: string;
+    lecturerProfileImageUrl: LecturerProfileImageUrl[];
+  };
+}
+
+export interface InstructorBlock {
+  id: number;
+  nickname: string;
+  imgURL: string[];
 }

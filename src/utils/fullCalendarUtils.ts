@@ -35,13 +35,13 @@ export const eventStyleGetter: EventPropGetter<IFullCalendarEvent> = (
   event,
 ) => {
   if (!event || !event.id) return {};
-  const colors = ['#8338EC', '#FF3E9A', '#FF961B'];
+  const color = getEventColor(event);
   const transparency = '2A';
 
   const style = {
-    background: colors[event.id % colors.length] + transparency,
+    background: color + transparency,
     borderRadius: '3px',
-    color: colors[event.id % colors.length],
+    color,
     border: 'none',
     display: 'block',
   };
@@ -49,6 +49,16 @@ export const eventStyleGetter: EventPropGetter<IFullCalendarEvent> = (
   return {
     style,
   };
+};
+
+export const getEventColor = (event: IFullCalendarEvent) => {
+  if (event.maxCapacity === event.numberOfParticipants) {
+    return '#FF961B';
+  } else if (event.isGroup) {
+    return '#8338EC';
+  } else {
+    return '#FF3E9A';
+  }
 };
 
 export const messages = {

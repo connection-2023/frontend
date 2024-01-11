@@ -1,6 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { DOMAIN } from '@/constants/constants';
 import { KaKaoTalkSVG, FacebookSVG, TwitterSVG, LinkSVG } from '@/icons/svg';
 import {
@@ -18,7 +19,7 @@ const shareOptions = [
   {
     label: '카카오톡',
     button: (
-      <button className="bg-kakao flex h-[35px] w-[35px] items-center justify-center rounded-full">
+      <button className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-kakao">
         <KaKaoTalkSVG width="17" height="16" />
       </button>
     ),
@@ -107,7 +108,7 @@ const ShareButton = ({
         navigator.clipboard
           .writeText(pageUrl)
           .then(() => {
-            console.log('클립보드 url 복사'); // 토스트 메세지로 바꿀 예정
+            toast.success('클립보드에 복사되었습니다!');
           })
           .catch((err) => {
             console.error('Could not copy text: ', err);
