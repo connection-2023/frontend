@@ -4,7 +4,7 @@ import useTouchScroll from '@/hooks/useTouchScroll';
 import { ResetSVG } from '@/icons/svg';
 import { usefilterStore } from '@/store/filterStore';
 import DateFilterContainer from './Date/DateFilterContainer';
-import DayTimeFilter from './DayTimeFilter';
+import DayTimeFilter from './DayTime/DayTimeFilterContainer';
 import FilterMobileModal from './FilterMobileModal';
 import GenreFilterContainer from './Genre/GenreFilterContainer';
 import GroupFilterContainer from './Group/GroupFilterContainer';

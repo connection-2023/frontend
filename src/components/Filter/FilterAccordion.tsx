@@ -5,6 +5,7 @@ import { usefilterStore } from '@/store/filterStore';
 import Accordion from '../Accordion/Accordion';
 import ResetButton from '../Button/ResetButton';
 import { Regions } from '@/types/instructor';
+import { DayTimeFilterOption } from '@/types/types';
 
 interface FilterAccordionProps {
   filterList:
@@ -13,7 +14,8 @@ interface FilterAccordionProps {
     | number
     | number[]
     | [string | undefined, string | undefined]
-    | string;
+    | string
+    | DayTimeFilterOption;
   label: string;
   children: React.ReactNode;
   onReset: () => void;
@@ -80,7 +82,8 @@ const filterPreview = (
     | number
     | number[]
     | [string | undefined, string | undefined]
-    | string,
+    | string
+    | DayTimeFilterOption,
 ) => {
   switch (label) {
     case '지역': {
@@ -139,6 +142,11 @@ const filterPreview = (
     case '진행 방식': {
       const method = filter as string;
       return method;
+    }
+    case '요일/시간대': {
+      const { week, time } = filter as DayTimeFilterOption;
+
+      return [...week, ...time.map((time) => time.split('(')[0])].join(', ');
     }
   }
 };

@@ -45,7 +45,7 @@ const FilterMobileModal = ({
         </header>
         <div className="flex flex-shrink-0 flex-col">
           {filterComponents
-            .slice(0, 7)
+            .slice(0, 8)
             .map((FilterComponent) => FilterComponent)}
         </div>
       </section>

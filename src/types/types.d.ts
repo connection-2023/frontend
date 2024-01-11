@@ -253,3 +253,8 @@ export type CityList =
   | '경북'
   | '경남'
   | '제주';
+
+export interface DayTimeFilterOption {
+  week: day[];
+  time: string[];
+}
