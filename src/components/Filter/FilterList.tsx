@@ -3,11 +3,11 @@ import Link from 'next/link';
 import useTouchScroll from '@/hooks/useTouchScroll';
 import { ResetSVG } from '@/icons/svg';
 import { usefilterStore } from '@/store/filterStore';
-import DateFilter from './Date/DateFilterContainer';
+import DateFilterContainer from './Date/DateFilterContainer';
 import DayTimeFilter from './DayTimeFilter';
 import FilterMobileModal from './FilterMobileModal';
 import GenreFilterContainer from './Genre/GenreFilterContainer';
-import GroupFilter from './GroupFilter';
+import GroupFilterContainer from './Group/GroupFilterContainer';
 import LocationFilterContainer from './Location/LocationFilterContainer';
 import MethodFilter from './MethodFilter';
 import PriceFilterContainer from './Price/PriceFilterContainer';
@@ -49,8 +49,11 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
             filterOption={filterOption.price}
             key="price"
           />,
-          <DateFilter filterOption={filterOption.date} key="date" />,
-          <GroupFilter filterOption={filterOption.group} key="group" />,
+          <DateFilterContainer filterOption={filterOption.date} key="date" />,
+          <GroupFilterContainer
+            filterOption={filterOption.group}
+            key="group"
+          />,
           <MethodFilter filterOption={filterOption.method} key="method" />,
           <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
         ]

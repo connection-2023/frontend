@@ -13,7 +13,7 @@ const GenreFilter = ({ filterList, changeFilterList }: GenreFilter) => {
           genre === '전체' ? !filterList.length : filterList.includes(genre);
 
         return (
-          <li key={genre} className="ml-4 flex items-center">
+          <li key={genre} className="flex items-center sm:ml-4">
             <input
               id={genre}
               type="checkbox"

@@ -12,7 +12,8 @@ interface FilterAccordionProps {
     | string[]
     | number
     | number[]
-    | [string | undefined, string | undefined];
+    | [string | undefined, string | undefined]
+    | string;
   label: string;
   children: React.ReactNode;
   onReset: () => void;
@@ -78,7 +79,8 @@ const filterPreview = (
     | string[]
     | number
     | number[]
-    | [string | undefined, string | undefined],
+    | [string | undefined, string | undefined]
+    | string,
 ) => {
   switch (label) {
     case '지역': {
@@ -129,6 +131,10 @@ const filterPreview = (
       } else {
         return gteDate;
       }
+    }
+    case '인원': {
+      const group = filter as string;
+      return group;
     }
   }
 };
