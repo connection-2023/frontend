@@ -9,7 +9,7 @@ import FilterMobileModal from './FilterMobileModal';
 import GenreFilterContainer from './Genre/GenreFilterContainer';
 import GroupFilterContainer from './Group/GroupFilterContainer';
 import LocationFilterContainer from './Location/LocationFilterContainer';
-import MethodFilter from './MethodFilter';
+import MethodFilter from './Method/MethodFilterContainer';
 import PriceFilterContainer from './Price/PriceFilterContainer';
 import ReviewFilterContainer from './Review/ReviewFilterContainer';
 import { IFilterOptions } from '@/types/types';

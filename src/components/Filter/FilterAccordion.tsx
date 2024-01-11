@@ -136,5 +136,9 @@ const filterPreview = (
       const group = filter as string;
       return group;
     }
+    case '진행 방식': {
+      const method = filter as string;
+      return method;
+    }
   }
 };
