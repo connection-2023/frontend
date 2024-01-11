@@ -95,7 +95,7 @@ const ClassListView = () => {
   };
 
   return (
-    <section className="col-span-2 mt-3.5 h-full w-full min-w-[22rem] max-w-[40rem] flex-col rounded-lg bg-white p-6 shadow-float">
+    <section className="mx-auto flex w-full max-w-[40rem] flex-col bg-white px-4 py-5 text-sm text-gray-100 md:px-9 xl:mx-0 xl:px-0">
       <div className="flex gap-6 border-b border-solid pb-2 text-2xl text-gray-500">
         <h1
           onClick={handleActiveTab}

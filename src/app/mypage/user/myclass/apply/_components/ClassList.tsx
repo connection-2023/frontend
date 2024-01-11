@@ -31,7 +31,7 @@ const ClassList = ({ isProgress, reservation, lecturer }: IClassList) => {
   return (
     <li
       onClick={handleListClick}
-      className="grid h-full max-h-[13.6rem] w-full cursor-pointer auto-rows-max grid-cols-2 gap-x-2.5 gap-y-3.5 rounded-md p-[0.88rem] shadow-vertical md:gap-4"
+      className="grid h-full max-h-[13.6rem] w-full cursor-pointer auto-rows-max grid-cols-2 gap-x-2.5 gap-y-3.5 rounded-md p-3.5 shadow-vertical md:gap-4"
     >
       <figure className="flex aspect-[297/188] h-full max-h-[188px] w-full md:row-span-2">
         <Image
