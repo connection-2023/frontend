@@ -10,8 +10,8 @@ import GenreFilterContainer from './Genre/GenreFilterContainer';
 import GroupFilter from './GroupFilter';
 import LocationFilterContainer from './Location/LocationFilterContainer';
 import MethodFilter from './MethodFilter';
-import PriceFilter from './PriceFilter';
-import ReviewFilterContainer from './ReviewFilterContainer';
+import PriceFilterContainer from './Price/PriceFilterContainer';
+import ReviewFilterContainer from './Review/ReviewFilterContainer';
 import { IFilterOptions } from '@/types/types';
 
 interface FilterListProps {
@@ -45,7 +45,10 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
             filterOption={filterOption.review}
             key="review"
           />,
-          <PriceFilter filterOption={filterOption.price} key="price" />,
+          <PriceFilterContainer
+            filterOption={filterOption.price}
+            key="price"
+          />,
           <DateFilter filterOption={filterOption.date} key="date" />,
           <GroupFilter filterOption={filterOption.group} key="group" />,
           <MethodFilter filterOption={filterOption.method} key="method" />,

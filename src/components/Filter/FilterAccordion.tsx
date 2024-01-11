@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
+import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
 import { ArrowDownSVG, ArrowUpSVG } from '@/icons/svg';
 import { usefilterStore } from '@/store/filterStore';
 import Accordion from '../Accordion/Accordion';
@@ -7,7 +8,7 @@ import ResetButton from '../Button/ResetButton';
 import { Regions } from '@/types/instructor';
 
 interface FilterAccordionProps {
-  filterList: Regions | string[] | number;
+  filterList: Regions | string[] | number | number[];
   label: string;
   children: React.ReactNode;
   onReset: () => void;
@@ -66,7 +67,10 @@ const FilterAccordion = ({
 
 export default FilterAccordion;
 
-const filterPreview = (label: string, filter: Regions | string[] | number) => {
+const filterPreview = (
+  label: string,
+  filter: Regions | string[] | number | number[],
+) => {
   switch (label) {
     case '지역': {
       const selectFilter = Object.entries(filter);
@@ -95,6 +99,16 @@ const filterPreview = (label: string, filter: Regions | string[] | number) => {
     case '평점': {
       const star = filter as number;
       return star > 0 ? `${star} 이상` : '';
+    }
+    case '가격': {
+      const [min, max] = filter as number[];
+      if (min === PRICE_FILTER_MIN && max !== PRICE_FILTER_MAX) {
+        return `~ ${max.toLocaleString()}원`;
+      } else if (min !== 0 && max !== 0) {
+        return `${min.toLocaleString()}원 ~ ${max.toLocaleString()}원`;
+      } else {
+        return '';
+      }
     }
   }
 };

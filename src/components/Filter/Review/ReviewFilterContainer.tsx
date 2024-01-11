@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { usefilterStore } from '@/store/filterStore';
-import FilterAccordion from './FilterAccordion';
-import FilterModal from './FilterModal';
-import ReviewFilter from './Review/ReviewFilter';
+import ReviewFilter from './ReviewFilter';
+import FilterAccordion from '../FilterAccordion';
+import FilterModal from '../FilterModal';
 
 interface IReviewFilterContainerProps {
   filterOption: number;
