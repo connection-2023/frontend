@@ -11,6 +11,7 @@ import {
   ReportSVG,
   MoneySVG,
   HeartSVG,
+  CheckCircleSVG,
 } from '@/icons/svg';
 import { useUserStore } from '@/store/userStore';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
@@ -44,11 +45,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
       : 'text-gray-500 hover:text-gray-100';
 
   return (
-    <aside
-      className={`hidden w-full rounded-lg bg-white ${
-        !isUser && view === 'my' && 'shadow-float'
-      } xl:block`}
-    >
+    <>
       <nav
         className={`flex h-full flex-col items-start whitespace-nowrap rounded-lg bg-white ${
           view === 'my' ? 'max-w-[19.5rem] px-9 py-5' : 'w-full'
@@ -83,11 +80,19 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
                 <Link href={link.path} className="group flex items-center">
                   {link.icon}
                   {link.text}
+                  {link.text === '환불 요청' && (
+                    <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
+                      4
+                    </span>
+                  )}
                 </Link>
 
                 {link.submenuItems &&
                   (isOpen ? (
-                    <button onClick={() => setIsOpen(!isOpen)}>
+                    <button
+                      onClick={() => setIsOpen(!isOpen)}
+                      aria-label="내 클래스 메뉴 닫기"
+                    >
                       <ArrowUpSVG
                         width="34"
                         height="34"
@@ -95,7 +100,10 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
                       />
                     </button>
                   ) : (
-                    <button onClick={() => setIsOpen(!isOpen)}>
+                    <button
+                      onClick={() => setIsOpen(!isOpen)}
+                      aria-label="내 클래스 메뉴 열기"
+                    >
                       <ArrowUpSVG
                         width="34"
                         height="34"
@@ -108,7 +116,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
               {link.submenuItems && (
                 <ul
                   className={`${
-                    isOpen ? 'mt-2 max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                    isOpen ? 'mt-2 max-h-48 opacity-100' : 'max-h-0 opacity-0'
                   } ml-8 flex flex-col gap-2.5 transition-all duration-300 ease-linear`}
                 >
                   {link.submenuItems.map((item) => (
@@ -116,7 +124,15 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
                       key={item.path}
                       className={getTextColorClass(item.path)}
                     >
-                      <Link href={item.path}>{item.text}</Link>
+                      <Link href={item.path} className="flex items-center">
+                        {item.text}
+
+                        {item.text === '승인 대기' && (
+                          <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
+                            4
+                          </span>
+                        )}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -125,7 +141,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
           ))}
         </ul>
       </nav>
-    </aside>
+    </>
   );
 };
 
@@ -141,10 +157,11 @@ const instructorLinks = [
     icon: <DashboardSVG width="21" height="21" className={iconStyle} />,
   },
   {
-    path: '/mypage/instructor/manage/schedule',
-    text: '클래스 관리',
+    path: '/mypage/instructor/manage/approval-pending',
+    text: '내 클래스',
     icon: <BookmarkSVG width="21" height="21" className={iconStyle} />,
     submenuItems: [
+      { path: '/mypage/instructor/manage/approval-pending', text: '승인 대기' },
       { path: '/mypage/instructor/manage/schedule', text: '수업 일정' },
       { path: '/mypage/instructor/manage/myclass', text: '내 클래스' },
       { path: '/mypage/instructor/manage/member', text: '회원 관리' },
@@ -160,6 +177,11 @@ const instructorLinks = [
     path: '/mypage/instructor/income',
     text: '수익 관리',
     icon: <MoneySVG width="19" height="19" className={iconStyle} />,
+  },
+  {
+    path: '/mypage/instructor/refund',
+    text: '환불 요청',
+    icon: <CheckCircleSVG width="21" height="21" className={iconStyle} />,
   },
   {
     path: '/mypage/instructor/report',
