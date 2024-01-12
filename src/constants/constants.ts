@@ -306,11 +306,22 @@ export const INITIAL_SCHEDULE_PROGRESS = [
     count: 0,
     color: '',
   },
-]
+];
 
 export const filterOption: ReviewOrderType[] = [
   '최신순',
   '좋아요순',
   '평점 높은순',
   '평점 낮은순',
+];
+
+export const PAYMENT_ORDER_LIST = [
+  [
+    '노쇼위약금 무통장 입금(없을 경우 생략)',
+    '강사 입금 확인',
+    '신청 승인',
+    '신청 완료',
+    '현장에서 차액 결제 (카드결제 여부는 강사에게 문의)',
+  ],
+  ['무통장 선입금', '강사 입금 확인', '신청 승인', '신청 완료'],
 ];
