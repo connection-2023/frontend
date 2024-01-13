@@ -14,7 +14,7 @@ const DayTimeFilter = ({
   changeFilterList,
 }: DayTimeFilterProps) => {
   return (
-    <div className="flex select-none text-sm sm:max-h-[17rem] sm:w-[16.8rem]">
+    <div className="flex select-none sm:max-h-[17rem] sm:w-[16.8rem] sm:text-sm">
       <ul className="flex w-[32%] flex-col justify-center gap-2 border-solid border-slate-300 py-3 sm:border-r">
         {FILTER_WEEK.map((week) => (
           <CheckboxItem

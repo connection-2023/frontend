@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
 import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
 import { ArrowDownSVG, ArrowUpSVG } from '@/icons/svg';
@@ -27,11 +28,24 @@ const FilterAccordion = ({
   filterList,
   onReset,
 }: FilterAccordionProps) => {
-  const { openFilterLabel, setOpenFilterLabel } = usefilterStore();
+  const { openFilterLabel, setOpenFilterLabel, addResetFunction } =
+    usefilterStore((state) => ({
+      openFilterLabel: state.openFilterLabel,
+      setOpenFilterLabel: state.setOpenFilterLabel,
+      addResetFunction: state.addResetFunction,
+    }));
   const isOpened = openFilterLabel === label;
 
+  useEffect(() => {
+    addResetFunction(onReset);
+  }, []);
+
+  useEffect(() => {
+    console.log(filterList);
+  }, [filterList]);
+
   const accordionOpenHandler = () => {
-    if (openFilterLabel === label) {
+    if (isOpened) {
       return setOpenFilterLabel(null);
     }
     return setOpenFilterLabel(label);
@@ -47,16 +61,17 @@ const FilterAccordion = ({
         }`}
       >
         <div className="flex h-[4.8rem] items-center justify-between">
-          <div className="mr-4 flex items-center">
+          <button
+            onClick={accordionOpenHandler}
+            className="mr-4 flex items-center"
+          >
             <p className="text-lg font-semibold">{label}</p>
-            <button onClick={accordionOpenHandler}>
-              {isOpened ? (
-                <ArrowUpSVG className="h-[34px] w-[34px] fill-black" />
-              ) : (
-                <ArrowDownSVG className="h-[34px] w-[34px] fill-black" />
-              )}
-            </button>
-          </div>
+            {isOpened ? (
+              <ArrowUpSVG className="h-[34px] w-[34px] fill-black" />
+            ) : (
+              <ArrowDownSVG className="h-[34px] w-[34px] fill-black" />
+            )}
+          </button>
           {isOpened ? (
             <ResetButton onClick={onReset}>초기화</ResetButton>
           ) : (

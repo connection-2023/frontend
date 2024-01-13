@@ -7,12 +7,16 @@ interface usefilterStore {
   setIsfilterModalOpen: (value: boolean | ((prev: boolean) => boolean)) => void;
   openFilterLabel: string | null;
   setOpenFilterLabel: (label: string | null) => void;
+  resetFunctions: (() => void)[];
+  addResetFunction: (func: () => void) => void;
+  executeAllResets: () => void;
 }
 
-export const usefilterStore = create<usefilterStore>((set) => ({
+export const usefilterStore = create<usefilterStore>((set, get) => ({
   isScrolling: false,
   isfilterModalOpen: false,
   openFilterLabel: null,
+  resetFunctions: [],
   setIsScrolling: (value) =>
     set((state) => ({ isScrolling: value(state.isScrolling) })),
   setIsfilterModalOpen: (value) =>
@@ -21,4 +25,10 @@ export const usefilterStore = create<usefilterStore>((set) => ({
         typeof value === 'function' ? value(state.isfilterModalOpen) : value,
     })),
   setOpenFilterLabel: (label) => set({ openFilterLabel: label }),
+  addResetFunction: (func) =>
+    set((state) => ({ resetFunctions: [...state.resetFunctions, func] })),
+  executeAllResets: () => {
+    const { resetFunctions } = get();
+    resetFunctions.forEach((func: () => void) => func());
+  },
 }));
