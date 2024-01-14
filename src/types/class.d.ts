@@ -17,6 +17,7 @@ export interface ClassCardType {
   price: number;
   profile: { src: string | null; nickname: string };
   darkMode?: boolean;
+  searchAfter?: [number, number];
 }
 
 export interface Space {
@@ -449,7 +450,7 @@ export interface IClassEditData
     IClassInfoResponse {}
 
 export interface searchClass {
-  searchAfter: number[];
+  searchAfter: [number, number];
   id: number;
   title: string;
   price: number;

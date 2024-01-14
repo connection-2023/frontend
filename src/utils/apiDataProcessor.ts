@@ -477,6 +477,7 @@ export const transformSearchClass = (classList: searchClass[]) => {
       price,
       lecturer,
       isActive,
+      searchAfter,
     }) => {
       let status: '모집중' | '마감';
       status = isActive ? '모집중' : '마감';
@@ -503,6 +504,7 @@ export const transformSearchClass = (classList: searchClass[]) => {
           nickname: lecturer.nickname,
         },
         isLiked: isLiked ? isLiked : false,
+        searchAfter,
       };
     },
   );
