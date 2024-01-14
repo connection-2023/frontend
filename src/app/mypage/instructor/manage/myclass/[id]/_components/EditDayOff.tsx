@@ -1,11 +1,11 @@
 import { format, isSameDay, compareAsc } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { getUniqueDates } from '@/utils/parseUtils';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 import { IClassSchedule } from '@/types/class';
-import { getUniqueDates } from '@/utils/parseUtils';
 
 interface EditDayOffProps {
   schedules: IClassSchedule[];

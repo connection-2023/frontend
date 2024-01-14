@@ -324,3 +324,16 @@ export const GROUP_FILTER_LIST = ['그룹레슨', '프라이빗 레슨(1:1)'];
 export const GROUP_FILTER_DEFAULT = '그룹레슨';
 
 export const METHOD_FILTER_LIST = ['전체', '원데이 클래스', '정기 클래스'];
+
+export const PAYMENT_ORDER_LIST = [
+  [
+    '노쇼위약금 무통장 입금(없을 경우 생략)',
+    '강사 입금 확인',
+    '신청 승인',
+    '신청 완료',
+    '현장에서 차액 결제 (카드결제 여부는 강사에게 문의)',
+  ],
+  ['무통장 선입금', '강사 입금 확인', '신청 승인', '신청 완료'],
+];
+
+export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];

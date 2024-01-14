@@ -141,6 +141,7 @@ const classCardData = [
     time: ['오전', '오후'],
     review: { average: 4.5, count: 14 },
     price: 80000,
+    isLiked: true,
     profile: { src: null, nickname: 'nickname' },
     selectedDates: [
       new Date(2023, 8, 4),
@@ -163,6 +164,7 @@ const classCardData = [
     location: ['서울 마포구', '서울 동작구'],
     genre: ['락킹', '락킹'],
     type: '개인레슨',
+    isLiked: false,
     time: ['오전'],
     review: { average: 4.5, count: 14 },
     price: 80000,
@@ -185,6 +187,7 @@ const classCardData = [
     genre: ['락킹'],
     type: '개인레슨',
     time: ['오전'],
+    isLiked: false,
     review: { average: 4, count: 12 },
     price: 80000,
     profile: { src: null, nickname: 'nickname' },

@@ -91,9 +91,9 @@ export interface Instructors {
 }
 
 export interface InstructorCardProps extends Instructors {
-  searchAfter: [number, number];
   largeImg: boolean;
   isLiked: boolean;
+  searchAfter?: [number, number];
   likeEvent?: (id: string | number) => void;
 }
 

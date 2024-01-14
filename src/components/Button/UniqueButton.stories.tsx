@@ -1,5 +1,4 @@
 import UniqueButton from './UniqueButton';
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof UniqueButton> = {

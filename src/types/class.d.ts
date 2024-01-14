@@ -480,6 +480,29 @@ export interface IMonthlyClassSchedules extends IClassSchedule {
   };
 }
 
+export interface IUserClassResponse {
+  id: number;
+  orderId: string;
+  orderName: string;
+  reservation: {
+    lectureSchedule: {
+      startDateTime: string;
+      lecture: {
+        id: number;
+        title: string;
+        lectureImage: {
+          imageUrl: string;
+        }[];
+      };
+    };
+  }[];
+
+  lecturer: {
+    nickname: string;
+    profileCardImageUrl: string;
+  };
+}
+
 export interface searchBestClassData {
   id: number;
   title: string;

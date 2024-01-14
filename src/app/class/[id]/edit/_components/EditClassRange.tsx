@@ -2,8 +2,8 @@ import { format, isValid, parse } from 'date-fns';
 import React, { useState, useRef, useEffect } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
-import RangeCalendar from '@/components/Calendar/RangeCalendar';
 import { BasicCalendarSVG } from '@/icons/svg';
+import RangeCalendar from '@/components/Calendar/RangeCalendar';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
 

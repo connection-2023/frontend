@@ -27,7 +27,8 @@ const LECTURER_MENU = [
 const HeaderMenu = () => {
   const pathname = usePathname();
   const { userType } = useUserStore();
-  const mySidebar = pathname.startsWith('/my');
+  const mySidebar =
+    pathname.startsWith('/mypage') || pathname.startsWith('/dashboard');
   const [isOpened, setIsOpened] = useState(false);
 
   const handleOpened = () => {
@@ -40,26 +41,28 @@ const HeaderMenu = () => {
         <button
           onClick={handleOpened}
           className={mySidebar ? 'hidden md:block xl:hidden' : 'hidden'}
+          aria-label="마이페이지 사이드바"
         >
           <HamburgerSVG
             width="28"
             height="28"
-            className="mr-[0.69rem] cursor-pointer fill-gray-100"
+            className="mr-2.5 cursor-pointer fill-gray-100"
           />
         </button>
 
-        <Link href="/" className="mr-6">
+        <Link href="/" className="mr-6" aria-label="홈으로 이동">
           <ConnectionLogoSVG className="block h-4 w-36 translate-y-1 sm:hidden md:block md:h-[1.375rem] md:w-[12.6875rem] md:translate-y-0" />
           <SmallLogoSVG className="hidden h-5 w-11 translate-x-5 translate-y-1 sm:block md:hidden" />
         </Link>
+
         <h1 className="text-0 overflow-hidden indent-[-9999px]">
           Connection 댄스 플랫폼
         </h1>
 
+        <h2 className="text-0 overflow-hidden indent-[-9999px]">
+          Connection 서비스 주요 메뉴
+        </h2>
         <ul className="hidden gap-6 text-lg sm:flex">
-          <h2 className="text-0 overflow-hidden indent-[-9999px]">
-            Connection 서비스 주요 메뉴
-          </h2>
           {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
             ({ href, menu }, index) => (
               <li

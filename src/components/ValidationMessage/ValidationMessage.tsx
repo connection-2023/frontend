@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
-import Modal from '@/components/Modal/Modal';
 import ProgressBar from './ProgressBar';
+import Modal from '@/components/Modal/Modal';
 import { ErrorMessage } from '@/types/types';
 
 interface ValidationMessageProps {

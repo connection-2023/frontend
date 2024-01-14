@@ -11,8 +11,8 @@ import {
   isSameDay,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { IGenre, IRegion } from '@/types/types';
 import { IClassSchedule, DayTimeList, DateTimeList } from '@/types/class';
+import { IGenre, IRegion } from '@/types/types';
 
 // 서울 특별시 -> 서울 충청북도 -> 충북
 export const formatLocationToString = (

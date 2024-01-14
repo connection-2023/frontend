@@ -1,4 +1,3 @@
-import BestInstructors from '@/app/instructor/_components/BestInstructors';
 import {
   DANCE_GENRE,
   INSTRUCTOR_TAKE,
@@ -14,6 +13,7 @@ import {
   transformSearchParamsLocation,
 } from '@/utils/apiDataProcessor';
 import { regionsDecryption } from '@/utils/searchFilterFn';
+import BestInstructors from './_components/BestInstructors';
 import InstructorListView from './_components/InstructorListView';
 import Filters from '@/components/Filter/Filters';
 import SearchInput from '@/components/SearchInput/SearchInput';
@@ -48,8 +48,8 @@ const instructorPage = async ({
         Array.isArray(searchParams.genre)
           ? searchParams.genre
           : searchParams.genre
-            ? [searchParams.genre]
-            : [],
+          ? [searchParams.genre]
+          : [],
       ),
     ].filter((genre) => DANCE_GENRE.includes(genre)),
     regions: [...new Set(regionsDecryption(searchParams.regions))].slice(

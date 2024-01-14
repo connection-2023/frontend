@@ -1,4 +1,4 @@
-import { CityList } from '@/types/locationFilter';
+import { CityList } from '@/types/types';
 
 export const CITY_LIST: CityList[] = [
   '서울',

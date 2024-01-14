@@ -1,4 +1,5 @@
 'use client';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { DoubleRightSVG } from '@/icons/svg';
 
@@ -22,25 +23,42 @@ const SidebarModal = ({ children, isOpened, handleClosed }: ModalProps) => {
     return () => window.removeEventListener('keyup', handleKeyUp);
   }, []);
 
-  return isOpened ? (
-    <div
-      ref={overlayRef}
-      className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto h-screen bg-black/60 backdrop-blur-sm"
-      onClick={(e) => {
-        if (overlayRef.current !== e.target) return;
-        handleClosed();
-      }}
-    >
-      {/* 애니메이션 추후 추가 예정 */}
-      <div className="border-box absolute left-0 top-0 h-screen w-1/4 rounded-md bg-white px-9 py-[4.81rem] shadow-float">
-        <button onClick={handleClosed} className="absolute right-2 top-2">
-          <DoubleRightSVG width="28" height="28" className="rotate-180" />
-        </button>
+  return (
+    <AnimatePresence>
+      {isOpened ? (
+        <motion.div
+          key="sidebar"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          ref={overlayRef}
+          className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto h-screen bg-black/60 backdrop-blur-sm"
+          onClick={(e) => {
+            if (overlayRef.current !== e.target) return;
+            handleClosed();
+          }}
+        >
+          <motion.div
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ duration: 0.5 }}
+            className="border-box absolute left-0 top-0 h-screen w-1/4 rounded-md bg-white px-9 py-[4.81rem] shadow-float"
+          >
+            <button
+              onClick={handleClosed}
+              className="absolute right-2 top-2"
+              aria-label="사이드바 닫기"
+            >
+              <DoubleRightSVG width="28" height="28" className="rotate-180" />
+            </button>
 
-        {children}
-      </div>
-    </div>
-  ) : null;
+            {children}
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+  );
 };
 
 export default SidebarModal;

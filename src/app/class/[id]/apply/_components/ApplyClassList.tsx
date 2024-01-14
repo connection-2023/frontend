@@ -3,6 +3,7 @@ import CountButton from '@/components/Button/CountButton';
 import { IApplyClassList } from '@/types/payment';
 
 interface ApplyClassListProps extends IApplyClassList {
+  // eslint-disable-next-line no-unused-vars
   updateParticipants: (id: number, value: number) => void;
 }
 
@@ -53,12 +54,19 @@ const ApplyClassList = ({
         />
         <div className="flex flex-wrap gap-1">
           <p>{date}</p>
-          <p>{time}</p>
+          <p>
+            {time}
+            <span className="ml-1 whitespace-nowrap text-gray-500 md:hidden">
+              잔여자리: {remain}명
+            </span>
+          </p>
         </div>
       </label>
 
       <div className="flex items-center whitespace-nowrap">
-        <span className="mr-[1.31rem] text-gray-500">잔여자리: {remain}명</span>
+        <span className="mr-[1.31rem] hidden text-gray-500 md:block">
+          잔여자리: {remain}명
+        </span>
         <div className="flex items-center text-sm text-gray-100">
           <CountButton onClick={onClickDown}>-</CountButton>
           <span className="flex h-[31px] w-[34px] items-center justify-center border-y border-solid border-gray-500">
