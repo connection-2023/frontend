@@ -68,6 +68,7 @@ import ScrollTopSVG from './scrollTop.svg';
 import SearchSVG from './search.svg';
 import ShareSVG from './share.svg';
 import SmallLogoSVG from './smallLogo.svg';
+import SpinnerSVG from './spinner.svg';
 import StarSVG from './star.svg';
 import TimeSVG from './time.svg';
 import TooltipSVG from './tooltip.svg';
@@ -83,6 +84,7 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   BigStar,
+  SpinnerSVG,
   PassSVG,
   FilterSVG,
   CheckCircleSVG,
