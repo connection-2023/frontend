@@ -1,4 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
+import { LecturerLike } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
 export const instructorsBlockCancel = async (lectureId: string | number) => {
@@ -109,6 +110,32 @@ export const instructorsBlock = async (lectureId: string | number) => {
     return data;
   } catch (error) {
     console.error('강사 차단 오류', error);
+    throw error;
+  }
+};
+
+export const getLikesInstructorList = async (): Promise<LecturerLike[]> => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/users/instructors/get-like`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.lecturerLike;
+  } catch (error) {
+    console.error('좋아요 강의 목록 불러오기:', error);
     throw error;
   }
 };

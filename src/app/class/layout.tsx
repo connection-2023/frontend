@@ -1,3 +1,4 @@
+import UserLikesClassInitializer from './_components/UserLikesClassInitializer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,5 +11,10 @@ export default async function MyPageLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <UserLikesClassInitializer />
+      {children}
+    </>
+  );
 }

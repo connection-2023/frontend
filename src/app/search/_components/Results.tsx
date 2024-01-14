@@ -1,5 +1,3 @@
-import { format, parseISO } from 'date-fns';
-import { CITY_ABBREVIATION_NAME } from '@/constants/administrativeDistrict';
 import { searchAll } from '@/lib/apis/serverApis/searchApis';
 import { useUserStore } from '@/store/userStore';
 import {
@@ -14,7 +12,7 @@ import { ClassCardType } from '@/types/class';
 import { InstructorCardProps, SearchParams } from '@/types/types';
 
 const Results = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const userStoreState = useUserStore.getState();
+  const { userType } = useUserStore.getState();
   let instructorList: InstructorCardProps[] = [];
   let classList: ClassCardType[] = [];
   const query = searchParams.query ?? '';
@@ -23,7 +21,7 @@ const Results = async ({ searchParams }: { searchParams: SearchParams }) => {
     const { searchedLecturers, searchedLectures } = await searchAll(
       query,
       8,
-      !!userStoreState.authUser,
+      userType === 'user',
     );
 
     instructorList = transformSearchInstructor(searchedLecturers).slice(0, 4);

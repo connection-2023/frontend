@@ -556,3 +556,36 @@ export interface searchClass {
   days: null | { day: [day]; dateTime: string[] };
   isLiked?: boolean;
 }
+
+export interface LikedLecture {
+  id: number;
+  lectureId: number;
+  userId: number;
+  lecture: {
+    id: number;
+    lecturerId: number;
+    lectureTypeId: number;
+    lectureMethodId: number;
+    isGroup: boolean;
+    startDate: string;
+    endDate: string;
+    title: string;
+    introduction: string;
+    curriculum: string;
+    duration: number;
+    difficultyLevel: string;
+    minCapacity: number;
+    maxCapacity: number;
+    reservationDeadline: number;
+    reservationComment: string;
+    price: number;
+    noShowDeposit: null | number;
+    reviewCount: number;
+    stars: number;
+    isActive: boolean;
+    locationDescription: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null | string;
+  };
+}

@@ -4,7 +4,9 @@ import {
   IGetClassDraft,
   IGetClassDrafts,
   IUpdateClassDraft,
+  LikedLecture,
 } from '@/types/class';
+import { FetchError } from '@/types/types';
 
 export const getClassDraft = async (
   lectureId: number | string,
@@ -183,6 +185,32 @@ export const getMyLecture = async (): Promise<ApiResponse> => {
     return data;
   } catch (error) {
     console.error('내 보유 강의 조회 오류', error);
+    throw error;
+  }
+};
+
+export const getLikesClassList = async (): Promise<LikedLecture[]> => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/class/likes/get`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.likedLecture;
+  } catch (error) {
+    console.error('좋아요 강의 목록 불러오기:', error);
     throw error;
   }
 };
