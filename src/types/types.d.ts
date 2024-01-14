@@ -258,3 +258,13 @@ export interface DayTimeFilterOption {
   week: day[];
   time: string[];
 }
+
+export type FilterKey =
+  | '지역'
+  | '장르'
+  | '평점'
+  | '가격'
+  | '지정날짜'
+  | '인원'
+  | '진행 방식'
+  | '요일/시간대';

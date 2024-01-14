@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { parse } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { usefilterStore } from '@/store/filterStore';
@@ -24,6 +24,7 @@ const DateFilterContainer = ({ filterOption }: DateFilterContainerProps) => {
     from: fromValue ? parse(fromValue, 'y-MM-dd', new Date()) : undefined,
     to: toValue ? parse(toValue, 'y-MM-dd', new Date()) : undefined,
   };
+  const filterList = useMemo(() => [fromValue, toValue], [fromValue, toValue]);
 
   const handleRangeSelect: SelectRangeEventHandler = (
     range: DateRange | undefined,
@@ -67,11 +68,7 @@ const DateFilterContainer = ({ filterOption }: DateFilterContainerProps) => {
   };
 
   return isfilterModalOpen ? (
-    <FilterAccordion
-      label={label}
-      filterList={[fromValue, toValue]}
-      onReset={onReset}
-    >
+    <FilterAccordion label={label} filterList={filterList} onReset={onReset}>
       <div className="relative h-[214px]">
         <div className="absolute left-1/2 -translate-x-1/2 transform">
           <RangeCalendar

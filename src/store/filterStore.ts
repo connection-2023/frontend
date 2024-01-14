@@ -10,9 +10,14 @@ interface usefilterStore {
   resetFunctions: (() => void)[];
   addResetFunction: (func: () => void) => void;
   executeAllResets: () => void;
+  filterList: {
+    [key: string]: any;
+  };
+  filterListUpdate: (key: string, value: any) => void;
 }
 
 export const usefilterStore = create<usefilterStore>((set, get) => ({
+  filterList: {},
   isScrolling: false,
   isfilterModalOpen: false,
   openFilterLabel: null,
@@ -30,5 +35,13 @@ export const usefilterStore = create<usefilterStore>((set, get) => ({
   executeAllResets: () => {
     const { resetFunctions } = get();
     resetFunctions.forEach((func: () => void) => func());
+  },
+  filterListUpdate: (key, value) => {
+    set((state) => ({
+      filterList: {
+        ...state.filterList,
+        [key]: value,
+      },
+    }));
   },
 }));

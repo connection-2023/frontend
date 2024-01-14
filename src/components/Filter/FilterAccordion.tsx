@@ -14,7 +14,7 @@ interface FilterAccordionProps {
     | string[]
     | number
     | number[]
-    | [string | undefined, string | undefined]
+    | (string | undefined)[]
     | string
     | DayTimeFilterOption;
   label: string;
@@ -28,12 +28,17 @@ const FilterAccordion = ({
   filterList,
   onReset,
 }: FilterAccordionProps) => {
-  const { openFilterLabel, setOpenFilterLabel, addResetFunction } =
-    usefilterStore((state) => ({
-      openFilterLabel: state.openFilterLabel,
-      setOpenFilterLabel: state.setOpenFilterLabel,
-      addResetFunction: state.addResetFunction,
-    }));
+  const {
+    openFilterLabel,
+    setOpenFilterLabel,
+    addResetFunction,
+    filterListUpdate,
+  } = usefilterStore((state) => ({
+    openFilterLabel: state.openFilterLabel,
+    setOpenFilterLabel: state.setOpenFilterLabel,
+    addResetFunction: state.addResetFunction,
+    filterListUpdate: state.filterListUpdate,
+  }));
   const isOpened = openFilterLabel === label;
 
   useEffect(() => {
@@ -41,7 +46,7 @@ const FilterAccordion = ({
   }, []);
 
   useEffect(() => {
-    console.log(filterList);
+    filterListUpdate(label, filterList);
   }, [filterList]);
 
   const accordionOpenHandler = () => {
@@ -96,7 +101,7 @@ const filterPreview = (
     | string[]
     | number
     | number[]
-    | [string | undefined, string | undefined]
+    | (string | undefined)[]
     | string
     | DayTimeFilterOption,
 ) => {
