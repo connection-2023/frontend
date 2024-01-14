@@ -1,5 +1,4 @@
 import ResetButton from './ResetButton';
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ResetButton> = {

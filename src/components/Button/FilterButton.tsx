@@ -9,7 +9,7 @@ const FilterButton = ({ label, onClick }: FilterButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="hover:bg-sub-color1-transparent group flex h-[42px] w-20 items-center justify-center rounded-lg border border-solid border-sub-color1 bg-white pl-2 text-sm font-medium text-black"
+      className="group flex h-[42px] w-20 items-center justify-center rounded-lg border border-solid border-sub-color1 bg-white pl-2 text-sm font-medium text-black hover:bg-sub-color1-transparent"
     >
       {label}
       <ArrowUpSVG

@@ -19,7 +19,7 @@ const StatusButton = ({
   const styles = `h-[${ButtonSizes[size]}px] ${
     disabled
       ? 'group flex w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-white text-gray-300 cursor-not-allowed'
-      : ButtonStyles['secondary']
+      : ButtonStyles.secondary
   }`;
 
   return (

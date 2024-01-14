@@ -1,10 +1,10 @@
 import { format, subHours } from 'date-fns';
 import { useState } from 'react';
+import { dummyEnrollmentPerson } from '@/constants/dummy';
+import { CommentSVG } from '@/icons/svg';
 import Modal from '@/components/Modal/Modal';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import { IProcessedSchedules } from '@/types/class';
-import { dummyEnrollmentPerson } from '@/constants/dummy';
-import { CommentSVG } from '@/icons/svg';
 
 interface EnrollmentModalProps {
   isOpen: boolean;

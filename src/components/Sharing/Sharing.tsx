@@ -1,6 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { DOMAIN } from '@/constants/constants';
 import { KaKaoTalkSVG, FacebookSVG, TwitterSVG, LinkSVG } from '@/icons/svg';
 import {
@@ -8,7 +9,6 @@ import {
   shareToFacebook,
   shareToTwitter,
 } from '@/utils/socialShare';
-import { toast } from 'react-toastify';
 
 interface ShareItem {
   label: string;

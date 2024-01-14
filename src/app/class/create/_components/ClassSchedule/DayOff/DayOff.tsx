@@ -1,9 +1,9 @@
 import { format } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useState } from 'react';
 import { useClassScheduleStore } from '@/store';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
-import { isSameDay } from 'date-fns';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
