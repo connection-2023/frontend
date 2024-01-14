@@ -46,8 +46,8 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
         Array.isArray(searchParams.genre)
           ? searchParams.genre
           : searchParams.genre
-            ? [searchParams.genre]
-            : [],
+          ? [searchParams.genre]
+          : [],
       ),
     ].filter((genre) => DANCE_GENRE.includes(genre)),
     regions: [...new Set(regionsDecryption(searchParams.regions))].slice(
@@ -90,8 +90,8 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
         Array.isArray(searchParams.days)
           ? searchParams.days
           : searchParams.days
-            ? [searchParams.days]
-            : [],
+          ? [searchParams.days]
+          : [],
       ),
     ].filter((day) => FILTER_WEEK.includes(day)),
     timeOfDay: [
@@ -99,8 +99,8 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
         Array.isArray(searchParams.timeOfDay)
           ? searchParams.timeOfDay
           : searchParams.timeOfDay
-            ? [searchParams.timeOfDay]
-            : [],
+          ? [searchParams.timeOfDay]
+          : [],
       ),
     ].filter((select) => FILTER_TIME.some(({ value }) => value === select)),
   };

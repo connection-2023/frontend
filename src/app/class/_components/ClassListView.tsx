@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import useIntersect from '@/hooks/useIntersect';
 import { NotFoundSVG } from '@/icons/svg';
 import { searchClasses } from '@/lib/apis/searchApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store/userStore';
 import { transformSearchClass } from '@/utils/apiDataProcessor';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
@@ -57,7 +59,7 @@ const ClassListView = ({
     },
   ];
 
-  const searchInstructorsHandler = async () => {
+  const updateSearchStateAndClassLists = async () => {
     const classLists = await searchClasses(searchState, userType === 'user');
 
     setSearchState((state) => ({
@@ -65,6 +67,20 @@ const ClassListView = ({
       searchAfter: classLists.at(-1)?.searchAfter,
     }));
     setClassLists((prev) => [...prev, ...transformSearchClass(classLists)]);
+  };
+
+  const searchInstructorsHandler = async () => {
+    try {
+      await updateSearchStateAndClassLists();
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('401')) {
+        await accessTokenReissuance();
+        await updateSearchStateAndClassLists();
+      } else {
+        toast.error('클래스 목록 불러오기 실패, 잠시후 다시 시도해주세요.');
+        console.error(error);
+      }
+    }
   };
 
   const { ref, loading } = useIntersect(searchInstructorsHandler, options);

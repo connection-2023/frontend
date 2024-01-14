@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import useIntersect from '@/hooks/useIntersect';
 import { NotFoundSVG } from '@/icons/svg';
 import { searchInstructors } from '@/lib/apis/searchApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store/userStore';
 import { transformSearchInstructor } from '@/utils/apiDataProcessor';
 import NavComponent from './NavComponent';
@@ -48,7 +50,7 @@ const InstructorListView = ({
     threshold: 0.1,
   };
 
-  const searchInstructorsHandler = async () => {
+  const updateSearchStateAndInstructorLists = async () => {
     const instructors = await searchInstructors(
       searchState,
       userType === 'user',
@@ -60,6 +62,20 @@ const InstructorListView = ({
     }));
     instructorList = transformSearchInstructor(instructors);
     setInstructors((prev) => [...prev, ...instructorList]);
+  };
+
+  const searchInstructorsHandler = async () => {
+    try {
+      await updateSearchStateAndInstructorLists();
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('401')) {
+        await accessTokenReissuance();
+        await updateSearchStateAndInstructorLists();
+      } else {
+        toast.error('강사 목록 불러오기 실패, 잠시후 다시 시도해주세요.');
+        console.error(error);
+      }
+    }
   };
 
   const { ref, loading } = useIntersect(searchInstructorsHandler, options);
