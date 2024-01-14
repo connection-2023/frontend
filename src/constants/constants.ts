@@ -286,6 +286,8 @@ export const USER_COUPON_CLASS_LIST_TAKE = 6;
 
 export const INSTRUCTOR_TAKE = 12;
 
+export const CLASS_TAKE = 30;
+
 export const REGIONS_SELECT_MAX = 30;
 
 export const INITIAL_SCHEDULE_PROGRESS = [

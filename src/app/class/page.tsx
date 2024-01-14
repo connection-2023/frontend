@@ -1,4 +1,5 @@
 import {
+  CLASS_TAKE,
   DANCE_GENRE,
   FILTER_TIME,
   FILTER_WEEK,
@@ -32,7 +33,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   let classList: ClassCardType[] = [];
 
   const searchData: classSearchData = {
-    take: 10,
+    take: CLASS_TAKE,
     sortOption:
       searchParams.sortOption &&
       (searchParams.sortOption === 'LATEST' ||

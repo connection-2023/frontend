@@ -1,25 +1,25 @@
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import {
   ConnectionLogoSVG,
   MapSVG,
   SmallLogoSVG,
   HamburgerSVG,
 } from '@/icons/svg';
-import { usePathname } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
-import { useState } from 'react';
-import SidebarModal from '@/components/Modal/SidebarModal';
 import Sidebar from '../Sidebar';
+import SidebarModal from '@/components/Modal/SidebarModal';
 
 const USER_MENU = [
-  { href: '/intructor', menu: '강사' },
+  { href: '/instructor', menu: '강사' },
   { href: '/class', menu: '클래스' },
   { href: '/', menu: '패스권' },
   { href: '/', menu: <MapSVG /> },
 ];
 
 const LECTURER_MENU = [
-  { href: '/intructor', menu: '강사' },
+  { href: '/instructor', menu: '강사' },
   { href: '/class', menu: '클래스' },
   { href: '/class/create', menu: '클래스 등록' },
 ];
@@ -62,7 +62,10 @@ const HeaderMenu = () => {
           </h2>
           {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
             ({ href, menu }, index) => (
-              <li key={href + index}>
+              <li
+                key={href + index}
+                className={pathname === href ? 'font-bold' : ''}
+              >
                 <Link href={href}>{menu}</Link>
               </li>
             ),
