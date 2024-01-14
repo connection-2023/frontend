@@ -32,7 +32,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   let classList: ClassCardType[] = [];
 
   const searchData: classSearchData = {
-    take: 8,
+    take: 200,
     sortOption:
       searchParams.sortOption &&
       (searchParams.sortOption === 'LATEST' ||

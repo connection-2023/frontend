@@ -16,10 +16,13 @@ export const POST = async (request: NextRequest) => {
   const token = request.cookies.get('userAccessToken')?.value;
 
   if (!token) {
-    return NextResponse.json({
-      status: 401,
-      message: '토큰이 존재하지 않습니다.',
-    });
+    return NextResponse.json(
+      {
+        status: 401,
+        message: '토큰이 존재하지 않습니다.',
+      },
+      { status: 401 },
+    );
   }
 
   if (!id) {

@@ -461,6 +461,7 @@ export interface searchClass {
   lectureMethod: string;
   stars: number;
   reviewCount: number;
+  isActive: boolean;
   lecturer: {
     id: number;
     nickname: string;
@@ -481,7 +482,10 @@ export interface IMonthlyClassSchedules extends IClassSchedule {
 export interface searchBestClassData {
   id: number;
   title: string;
-  lectureImage: string[];
+  lectureImage: {
+    id: number;
+    imageUrl: string;
+  }[];
   startDate: string;
   endDate: string;
   isActive: boolean;
@@ -505,7 +509,7 @@ export interface searchBestClassData {
   };
   likedLecture?: {
     id: number;
-  };
+  }[];
   lectureMethod?: {
     id: number;
     name: string;

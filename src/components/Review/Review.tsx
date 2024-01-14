@@ -16,7 +16,7 @@ const Review = ({ average, count, size = 'regular' }: ReviewProps) => {
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center ">
       <div className="flex gap-0.5">
         {starArray.map((star, i) =>
           star === 1 ? (

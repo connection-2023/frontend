@@ -28,7 +28,7 @@ const BestlCasses = ({ bestClassList }: { bestClassList: ClassCardType[] }) => {
       <Accordion isOpen={view}>
         <div className="relative px-4 sm:px-9 xl:px-12">
           <div className="overflow-hidden">
-            <ul className="h-[14rem] w-[13rem] xl:w-[30rem]">
+            <ul className="h-[14rem] w-[13rem]">
               <Carousel
                 move={true}
                 priority={6}

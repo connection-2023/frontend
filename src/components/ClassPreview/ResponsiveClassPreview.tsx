@@ -24,7 +24,7 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
     <div
       onMouseLeave={() => setFocus(false)}
       onMouseOver={() => setFocus(true)}
-      className={`text-whi flex h-full w-full flex-col font-medium ${
+      className={`flex h-full w-full flex-col font-medium ${
         darkMode && 'text-white'
       }`}
     >
@@ -54,7 +54,11 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
         <h1 className="w-5/6 truncate text-base font-semibold leading-5">
           {title}
         </h1>
-        <div className="flex items-center gap-1 text-gray-100">
+        <div
+          className={`flex items-center gap-1 text-gray-100 ${
+            darkMode ? 'text-white' : ''
+          }`}
+        >
           <StarSVG width={13} height={12} className="fill-sub-color1" />
           {review?.average}
         </div>

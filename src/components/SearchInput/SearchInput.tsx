@@ -52,7 +52,7 @@ const SearchInput = ({ query }: { query: string }) => {
 
   return (
     <div className="relative flex h-12">
-      <nav ref={navRef} className="relative mr-2 h-full w-24">
+      <nav ref={navRef} className="relative mr-2 h-full w-24 whitespace-nowrap">
         {navView && (
           <ul className="peer absolute top-12 z-30 flex w-full flex-col">
             {options.map(({ path, label }, index) => {
@@ -70,7 +70,7 @@ const SearchInput = ({ query }: { query: string }) => {
                   }`}
                 >
                   <Link
-                    className="flex h-full w-full items-center pl-2.5"
+                    className="flex h-full w-full items-center pl-2.5 "
                     href={{
                       pathname: path,
                       query: getCurrentParamsToObject(),

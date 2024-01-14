@@ -476,29 +476,35 @@ export const transformSearchClass = (classList: searchClass[]) => {
       stars,
       price,
       lecturer,
-    }) => ({
-      id,
-      title,
-      date: `${format(parseISO(startDate), 'MM/dd')}~${format(
-        parseISO(endDate),
-        'MM/dd',
-      )} `,
-      status: '모집중' as '모집중' | '마감', //수정 예정
-      imgURL: lectureImages,
-      location: regions.map(
-        ({ administrativeDistrict, district }) =>
-          `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
-      ),
-      genre: genres.map(({ genre }) => genre),
-      type: isGroup ? '그룹레슨' : '개인레슨',
-      review: { average: stars, count: reviewCount },
-      price,
-      profile: {
-        src: lecturer.profileCardImageUrl,
-        nickname: lecturer.nickname,
-      },
-      isLiked: isLiked ? isLiked : false,
-    }),
+      isActive,
+    }) => {
+      let status: '모집중' | '마감';
+      status = isActive ? '모집중' : '마감';
+
+      return {
+        id,
+        title,
+        date: `${format(parseISO(startDate), 'MM/dd')}~${format(
+          parseISO(endDate),
+          'MM/dd',
+        )} `,
+        status,
+        imgURL: lectureImages,
+        location: regions.map(
+          ({ administrativeDistrict, district }) =>
+            `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
+        ),
+        genre: genres.map(({ genre }) => genre),
+        type: isGroup ? '그룹레슨' : '개인레슨',
+        review: { average: stars, count: reviewCount },
+        price,
+        profile: {
+          src: lecturer.profileCardImageUrl,
+          nickname: lecturer.nickname,
+        },
+        isLiked: isLiked ? isLiked : false,
+      };
+    },
   );
 };
 
@@ -532,38 +538,42 @@ export const transformBestClassSearch = (classList: searchBestClassData[]) => {
       lectureToRegion,
       lectureToDanceGenre,
       reviewCount,
-      likedLecture, // 수정 예정
-      lectureMethod, // 원데이, 정기 표시 안하나?
+      likedLecture,
+      isActive,
+      lectureMethod,
       isGroup,
       stars,
       price,
       lecturer,
-    }) => ({
-      id,
-      title,
-      date: `${format(parseISO(startDate), 'MM/dd')}~${format(
-        parseISO(endDate),
-        'MM/dd',
-      )} `,
-      status: '모집중' as '모집중' | '마감', //수정 예정
-      imgURL: [
-        'https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg',
-      ], // lectureImage, //수정 예정
-      location: lectureToRegion.map(({ region }) => {
-        const { administrativeDistrict, district } = region;
-        return `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`;
-      }),
-      genre: lectureToDanceGenre.map(
-        ({ danceCategory }) => danceCategory.genre,
-      ),
-      type: isGroup ? '그룹레슨' : '개인레슨',
-      review: { average: stars, count: reviewCount },
-      price,
-      profile: {
-        src: lecturer.profileCardImageUrl,
-        nickname: lecturer.nickname,
-      },
-      isLiked: !!likedLecture ? !!likedLecture.id : false,
-    }),
+    }) => {
+      let status: '모집중' | '마감';
+      status = isActive ? '모집중' : '마감';
+
+      return {
+        id,
+        title,
+        date: `${format(parseISO(startDate), 'MM/dd')}~${format(
+          parseISO(endDate),
+          'MM/dd',
+        )} `,
+        status,
+        imgURL: lectureImage.map(({ imageUrl }) => imageUrl),
+        location: lectureToRegion.map(({ region }) => {
+          const { administrativeDistrict, district } = region;
+          return `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`;
+        }),
+        genre: lectureToDanceGenre.map(
+          ({ danceCategory }) => danceCategory.genre,
+        ),
+        type: isGroup ? '그룹레슨' : '개인레슨',
+        review: { average: stars, count: reviewCount },
+        price,
+        profile: {
+          src: lecturer.profileCardImageUrl,
+          nickname: lecturer.nickname,
+        },
+        isLiked: likedLecture && likedLecture.length > 0 ? true : false,
+      };
+    },
   );
 };
