@@ -20,14 +20,14 @@ export interface IFilterOptions {
   regions: Record<string, string[]>;
   genre: string[];
   review: number;
-  price: [number, number];
-  date: [string, string];
-  method: string;
-  daytime: {
+  price?: [number, number];
+  date?: [string, string];
+  method?: string;
+  daytime?: {
     week: day[];
     time: string[];
   };
-  group: string;
+  group?: string;
 }
 
 export interface dateTimes {

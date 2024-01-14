@@ -46,16 +46,16 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
             key="review"
           />,
           <PriceFilterContainer
-            filterOption={filterOption.price}
+            filterOption={filterOption.price!}
             key="price"
           />,
-          <DateFilterContainer filterOption={filterOption.date} key="date" />,
+          <DateFilterContainer filterOption={filterOption.date!} key="date" />,
           <GroupFilterContainer
-            filterOption={filterOption.group}
+            filterOption={filterOption.group!}
             key="group"
           />,
-          <MethodFilter filterOption={filterOption.method} key="method" />,
-          <DayTimeFilter filterOption={filterOption.daytime} key="daytime" />,
+          <MethodFilter filterOption={filterOption.method!} key="method" />,
+          <DayTimeFilter filterOption={filterOption.daytime!} key="daytime" />,
         ]
       : [
           <LocationFilterContainer

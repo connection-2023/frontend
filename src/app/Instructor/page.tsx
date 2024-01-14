@@ -56,17 +56,16 @@ const instructorPage = async ({
       0,
       REGIONS_SELECT_MAX,
     ),
-    stars: searchParams.stars ?? 0,
+    stars:
+      searchParams.stars && Number.isInteger(Number(searchParams.stars))
+        ? Number(searchParams.stars)
+        : 0,
   };
 
   const filterOptions: IFilterOptions = {
     regions: transformSearchParamsLocation(searchData.regions),
     genre: searchData.genres,
     review: searchData.stars,
-    price: [],
-    date: [],
-    method: [],
-    daytime: [],
   };
 
   try {
