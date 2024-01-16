@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -24,6 +23,8 @@ const ClassPreview = (props: ClassCardType) => {
     review,
     price,
     profile,
+    isLiked,
+    darkMode = false,
   } = props;
   const [focus, setFocus] = useState(false);
   const router = useRouter();
@@ -42,29 +43,17 @@ const ClassPreview = (props: ClassCardType) => {
       <div
         onMouseLeave={() => setFocus(false)}
         onMouseOver={() => setFocus(true)}
-        className="hidden max-h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] sm:flex"
+        className={`hidden h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg bg-white p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] ${
+          darkMode ? '' : 'xl:flex'
+        }`}
       >
-        <div className="relative -z-10 mr-4 h-[188px] w-full overflow-hidden">
-          {imgURL.length > 1 ? (
-            <Carousel
-              imgURL={imgURL}
-              move={focus}
-              arrow={focus}
-              showCurrentElement={focus}
-            />
-          ) : (
-            <Image
-              src={imgURL[0]}
-              alt="Connection 댄스 춤 이미지"
-              width={0}
-              height={0}
-              sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
-              style={{
-                width: '100%',
-                height: 'auto',
-              }}
-            />
-          )}
+        <div className="relative mr-4 h-full w-[18.6rem] overflow-hidden lg:w-full">
+          <Carousel
+            imgURL={imgURL}
+            move={focus}
+            arrow={imgURL.length > 1 && focus}
+            showCurrentElement={focus}
+          />
         </div>
 
         <div className="flex w-full flex-col text-gray-100">
@@ -79,7 +68,7 @@ const ClassPreview = (props: ClassCardType) => {
 
             <span className="text-sm">{date}</span>
             <div className="ml-auto">
-              <Like type="class" id={id} />
+              <Like type="class" id={id} isLiked={isLiked} />
             </div>
           </div>
 
@@ -112,7 +101,7 @@ const ClassPreview = (props: ClassCardType) => {
         </div>
       </div>
 
-      <div className="h-full w-full sm:hidden">
+      <div className={`h-full w-full ${darkMode ? '' : 'xl:hidden'} `}>
         <ResponsiveClassPreview {...props} />
       </div>
     </>

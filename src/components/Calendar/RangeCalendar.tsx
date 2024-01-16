@@ -20,12 +20,14 @@ interface IRangeCalendarProps {
   mode: 'class' | 'income';
   selectedRange: DateRange | undefined;
   handleRangeSelect: SelectRangeEventHandler;
+  numberOfMonths?: number;
 }
 
 const RangeCalendar = ({
   mode,
   selectedRange,
   handleRangeSelect,
+  numberOfMonths = 2,
 }: IRangeCalendarProps) => {
   const modifiers = mode === 'class' ? DISABLED_BEFORE : DISABLED_AFTER;
   const defaultMonth = mode === 'class' ? new Date() : subMonths(new Date(), 1);
@@ -37,7 +39,7 @@ const RangeCalendar = ({
       showOutsideDays
       selected={selectedRange}
       onSelect={handleRangeSelect}
-      numberOfMonths={2}
+      numberOfMonths={numberOfMonths}
       defaultMonth={defaultMonth}
       modifiers={modifiers}
       modifiersClassNames={DAY_MODIFIERS_CLASSNAMES}

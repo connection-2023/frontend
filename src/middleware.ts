@@ -89,5 +89,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/my/:path*', '/', '/instructor/apply', '/class/create'], // '/login', '/api/my/:path*', '/api/auth/logout
+  matcher: ['/my/:path*', '/:path*', '/instructor/apply', '/class/create'], // '/login', '/api/my/:path*', '/api/auth/logout
 };

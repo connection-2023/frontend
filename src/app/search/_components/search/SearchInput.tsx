@@ -1,10 +1,16 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { dummyUserInputSuggestion } from '@/constants/dummy';
 import { SearchSVG, ClearSVG } from '@/icons/svg';
 
 const SearchInput = () => {
   const [keyword, setKeyword] = useState('');
+  const router = useRouter();
+
+  const searchKeyword = () => {
+    router.push(`/search?query=${keyword}`);
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
@@ -26,6 +32,11 @@ const SearchInput = () => {
         value={keyword}
         onChange={handleInputChange}
         placeholder="검색어를 입력하세요"
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            searchKeyword();
+          }
+        }}
       />
       <ClearSVG
         width={21}

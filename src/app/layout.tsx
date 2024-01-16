@@ -82,7 +82,7 @@ export default async function RootLayout({
         <main className="relative flex-1">
           {children}
           {modal}
-          <div className="fixed bottom-24 right-8">
+          <div className="fixed bottom-24 right-8 z-40">
             <ControlOptions />
           </div>
         </main>

@@ -5,13 +5,7 @@ import ImagesViewer from './ImagesViewer';
 import { StarSVG } from '../../../public/icons/svg';
 import Like from '../Like/Like';
 import Review from '../Review/Review';
-import { Instructors } from '@/types/types';
-
-interface InstructorCardProps extends Instructors {
-  largeImg: boolean;
-  isLiked: boolean;
-  likeEvent?: (id: string | number) => void;
-}
+import { InstructorCardProps } from '@/types/types';
 
 const InstructorCard = ({
   id,

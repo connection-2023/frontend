@@ -1,5 +1,5 @@
 'use client';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import {
   NON_STICKY_HEADER_PATHS,
@@ -11,6 +11,7 @@ import HeaderMenu from './HeaderMenu';
 
 const Header = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const lastScrollTopRef = useRef(0);
 
   const { userType } = useUserStore();
@@ -40,8 +41,8 @@ const Header = ({ children }: { children: React.ReactNode }) => {
       isScrollingUp
         ? 'translate-y-0'
         : pathname.startsWith('/mypage') && userType === 'lecturer'
-        ? '-translate-y-full xl:translate-y-0'
-        : '-translate-y-full'
+          ? '-translate-y-full xl:translate-y-0'
+          : '-translate-y-full'
     } ${
       pathname.startsWith('/mypage') &&
       userType === 'lecturer' &&
@@ -51,7 +52,12 @@ const Header = ({ children }: { children: React.ReactNode }) => {
   };
 
   const isPathInList = (pathList: string[]) =>
-    pathList.some((path: string) => pathname.startsWith(path));
+    pathList.some((path: string) => {
+      if (path === '/search') {
+        return pathname === '/search' && !searchParams.get('query');
+      }
+      return pathname.startsWith(path);
+    });
 
   const isStickyHeader = isPathInList(NON_STICKY_HEADER_PATHS);
   const shouldRenderHeader = isPathInList(NO_HEADER_FOOTER_PATHS);

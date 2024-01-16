@@ -13,7 +13,7 @@ const ImagesViewer = ({
       <Carousel
         imgURL={imgURL}
         move={focus}
-        arrow={focus}
+        arrow={imgURL.length > 1 && focus}
         showCurrentElement={focus}
       />
     </figure>
