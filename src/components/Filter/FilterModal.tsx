@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useWindowSize } from 'react-use';
 import { useClickAway } from 'react-use';
 import { ArrowUpSVG, ArrowDownSVG } from '@/icons/svg';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import Button from '../Button/Button';
 import ResetButton from '../Button/ResetButton';
 
@@ -21,7 +21,10 @@ const FilterModal = ({
   onApply,
   onClose,
 }: IFilterModal) => {
-  const { isScrolling, setIsfilterModalOpen } = usefilterStore();
+  const { isScrolling, setIsfilterModalOpen } = usefilterStore((state) => ({
+    isScrolling: state.isScrolling,
+    setIsfilterModalOpen: state.setIsfilterModalOpen,
+  }));
   const { width } = useWindowSize();
   const [isOpened, setIsOpened] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

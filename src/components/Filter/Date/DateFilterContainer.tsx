@@ -4,7 +4,7 @@ import { parse } from 'date-fns';
 import { useState, useEffect, useMemo } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import RangeCalendar from '../../Calendar/RangeCalendar';
 import FilterAccordion from '../FilterAccordion';
 import FilterModal from '../FilterModal';
@@ -14,7 +14,9 @@ interface DateFilterContainerProps {
 }
 
 const DateFilterContainer = ({ filterOption }: DateFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [gteDate, lteDate] = filterOption;
   const [fromValue, setFromValue] = useState<string | undefined>(gteDate);
   const [toValue, setToValue] = useState<string | undefined>(lteDate);

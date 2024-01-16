@@ -11,7 +11,7 @@ import {
 } from '@/constants/constants';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { CloseSVG } from '@/icons/svg';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import Button from '../Button/Button';
 import { Regions } from '@/types/instructor';
 import { FilterKey } from '@/types/types';

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import DayTimeFilter from './DayTimeFilter';
 import { FILTER_TIME } from '../../../constants/constants';
 import FilterAccordion from '../FilterAccordion';
@@ -16,7 +16,9 @@ interface DayTimeFilterContainerProps {
 const DayTimeFilterContainer = ({
   filterOption,
 }: DayTimeFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [filterList, setFilterList] = useState(filterOption);
   const { changeMultipleParams } = useChangeSearchParams();
   const label = '요일/시간대';

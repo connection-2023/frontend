@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
 import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
 import { ArrowDownSVG, ArrowUpSVG } from '@/icons/svg';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import Accordion from '../Accordion/Accordion';
 import ResetButton from '../Button/ResetButton';
 import { Regions } from '@/types/instructor';

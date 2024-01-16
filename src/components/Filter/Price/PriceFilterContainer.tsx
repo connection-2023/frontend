@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import PriceFilter from './PriceFilter';
 import FilterAccordion from '../FilterAccordion';
 import FilterModal from '../FilterModal';
@@ -12,7 +12,9 @@ interface IPriceFilterContainerProps {
 }
 
 const PriceFilterContainer = ({ filterOption }: IPriceFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [values, setValues] = useState(filterOption);
   const [draggingThumbIndex, setDraggingThumbIndex] = useState<number | null>(
     null,

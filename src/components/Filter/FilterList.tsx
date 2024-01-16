@@ -21,7 +21,11 @@ interface FilterListProps {
 
 const FilterList = ({ filterOption, type }: FilterListProps) => {
   const { setIsScrolling, isfilterModalOpen, setIsfilterModalOpen } =
-    usefilterStore();
+    usefilterStore((state) => ({
+      setIsScrolling: state.setIsScrolling,
+      isfilterModalOpen: state.isfilterModalOpen,
+      setIsfilterModalOpen: state.setIsfilterModalOpen,
+    }));
   const { scrollContainerRef } = useTouchScroll({
     onChangeFn: () => setIsScrolling((prev) => !prev),
   });

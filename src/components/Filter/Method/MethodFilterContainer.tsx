@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import MethodFilter from './MethodFilter';
 import FilterAccordion from '../FilterAccordion';
 import FilterModal from '../FilterModal';
@@ -13,7 +13,9 @@ interface MethodFilterContainerProps {
 const MethodFilterContainer = ({
   filterOption,
 }: MethodFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [selectFilter, setSelectFilter] = useState(filterOption);
   const { changeParams } = useChangeSearchParams();
   const label = '진행 방식';

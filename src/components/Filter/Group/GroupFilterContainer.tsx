@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { GROUP_FILTER_DEFAULT } from '@/constants/constants';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import GroupFilter from './GroupFilter';
 import FilterAccordion from '../FilterAccordion';
 import FilterModal from '../FilterModal';
@@ -11,7 +11,9 @@ interface GroupFilterContainerProps {
   filterOption: string;
 }
 const GroupFilterContainer = ({ filterOption }: GroupFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [selectFilter, setSelectFilter] = useState(filterOption);
   const { changeParams } = useChangeSearchParams();
   const label = '인원';

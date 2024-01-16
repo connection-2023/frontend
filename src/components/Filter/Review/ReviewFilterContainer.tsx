@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import ReviewFilter from './ReviewFilter';
 import FilterAccordion from '../FilterAccordion';
 import FilterModal from '../FilterModal';
@@ -13,7 +13,9 @@ interface IReviewFilterContainerProps {
 const ReviewFilterContainer = ({
   filterOption,
 }: IReviewFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [rate, setRate] = useState<number>(filterOption);
   const { changeParams, removeParams } = useChangeSearchParams();
   const label = '평점';

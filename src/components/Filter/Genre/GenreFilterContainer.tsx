@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import GenreFilter from './GenreFilter';
 import { DANCE_GENRE } from '../../../constants/constants';
 import FilterAccordion from '../FilterAccordion';
@@ -12,7 +12,9 @@ interface IGenreFilterContainerProps {
 }
 
 const GenreFilterContainer = ({ filterOption }: IGenreFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [filterList, setFilterList] = useState<string[]>(filterOption);
   const { changeParams } = useChangeSearchParams();
   const label = '장르';
@@ -26,8 +28,8 @@ const GenreFilterContainer = ({ filterOption }: IGenreFilterContainerProps) => {
       return prev.includes(genre)
         ? prev.filter((listGenre) => listGenre !== genre)
         : DANCE_GENRE.length - 2 > prev.length
-          ? [...prev, genre]
-          : [];
+        ? [...prev, genre]
+        : [];
     });
   };
 

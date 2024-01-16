@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { REGIONS_SELECT_MAX } from '@/constants/constants';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { usefilterStore } from '@/store/filterStore';
+import { usefilterStore } from '@/store';
 import LocationFilter from './LocationFilter';
 import LocationSelectView from './LocationSelectView';
 import {
@@ -23,7 +23,9 @@ interface ILocationFilterContainerProps {
 const LocationFilterContainer = ({
   filterOption,
 }: ILocationFilterContainerProps) => {
-  const { isfilterModalOpen } = usefilterStore();
+  const { isfilterModalOpen } = usefilterStore((state) => ({
+    isfilterModalOpen: state.isfilterModalOpen,
+  }));
   const [selectedCity, setSelectedCity] = useState<CityList>('서울');
   const [filterList, setFilterList] = useState<Regions>(filterOption);
   const { changeParams } = useChangeSearchParams();
