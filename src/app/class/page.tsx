@@ -20,7 +20,7 @@ import {
   transformSearchParamsLocation,
 } from '@/utils/apiDataProcessor';
 import { regionsDecryption } from '@/utils/searchFilterFn';
-import BestlCasses from './_components/BestlCasses';
+import BestClasses from './_components/BestClasses';
 import ClassListView from './_components/ClassListView';
 import Filters from '@/components/Filter/Filters';
 import SearchInput from '@/components/SearchInput/SearchInput';
@@ -153,7 +153,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       <div className="my-4 px-4 sm:px-9 xl:px-14">
         <SearchInput query={searchData.value ?? ''} />
       </div>
-      <BestlCasses bestClassList={bestClassList} />
+      <BestClasses bestClassList={bestClassList} />
 
       <ClassListView searchData={searchData} classList={classList}>
         <Filters type="class" filterOption={filterOptions} />

@@ -14,7 +14,7 @@ import SidebarModal from '@/components/Modal/SidebarModal';
 const USER_MENU = [
   { href: '/instructor', menu: '강사' },
   { href: '/class', menu: '클래스' },
-  { href: '/', menu: '패스권' },
+  { href: '/pass', menu: '패스권' },
   { href: '/', menu: <MapSVG /> },
 ];
 

@@ -99,7 +99,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
   };
 
   return (
-    <button onClick={handleLike}>
+    <button onClick={handleLike} aria-label="좋아요">
       <HeartSVG width="29" height="30" className={style} />
     </button>
   );
