@@ -1,14 +1,14 @@
 'use client';
 import { useState } from 'react';
-import { DownloadSVG } from '@/icons/svg';
+import { DownloadSVG, NotFoundSVG } from '@/icons/svg';
 import calculateMaxDiscount from '@/utils/calculateMaxDiscount';
 import Button from '@/components/Button/Button';
 import DownloadCoupon from '@/components/Coupon/DownloadCoupon';
 import Modal from '@/components/Modal/Modal';
-import { IclassCoupon, IclassCouponList } from '@/types/coupon';
+import { IclassCoupon } from '@/types/coupon';
 
 interface DiscountCouponBannerProps {
-  couponList: IclassCouponList[];
+  couponList: IclassCoupon[];
   price: number;
 }
 
@@ -23,7 +23,7 @@ const DiscountCouponBanner = ({
 
   const couponListPop = (id: number) => {
     setCouponList((list) =>
-      list.filter(({ lectureCoupon }) => lectureCoupon.id !== id),
+      list.filter(({ id: lectureCouponId }) => lectureCouponId !== id),
     );
   };
 
@@ -43,19 +43,28 @@ const DiscountCouponBanner = ({
               쿠폰
             </h1>
             <ul className="flex max-h-96 flex-col items-center overflow-y-auto py-2">
-              {couponList.map(({ lectureCoupon }) => (
-                <li key={lectureCoupon.id}>
-                  <DownloadCoupon
-                    coupon={lectureCoupon}
-                    couponListPop={couponListPop}
-                  />
-                </li>
-              ))}
+              {couponList.length > 0 ? (
+                couponList.map((coupon) => (
+                  <li key={coupon.id}>
+                    <DownloadCoupon
+                      coupon={coupon}
+                      couponListPop={couponListPop}
+                    />
+                  </li>
+                ))
+              ) : (
+                <div className="mb-5 flex flex-col items-center justify-center gap-5">
+                  <NotFoundSVG />
+                  <p>다운 가능한 쿠폰이 없습니다..</p>
+                </div>
+              )}
             </ul>
-            <div className="flex w-full justify-center px-11 py-5">
-              <Button>모두 다운받기</Button>
-              {/* 추후 백엔드 api 수정 시 모두 다운 로직 추가 */}
-            </div>
+            {couponList.length > 0 ? (
+              <div className="flex w-full justify-center px-11 py-5">
+                <Button>모두 다운받기</Button>
+                {/* 추후 백엔드 api 수정 시 모두 다운 로직 추가 */}
+              </div>
+            ) : null}
           </section>
         </Modal>
       )}

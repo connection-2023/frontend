@@ -1,22 +1,14 @@
-import { IclassCoupon, IclassCouponList, couponGET } from '@/types/coupon';
+import { IclassCoupon, couponGET } from '@/types/coupon';
 
 const calculateMaxDiscount = (
   lecturePrice: number,
-  coupons: IclassCouponList[] | couponGET[],
+  coupons: IclassCoupon[] | couponGET[],
 ) => {
   const normalCoupons = [] as IclassCoupon[];
   const stackableCoupons = [] as IclassCoupon[];
 
   coupons.forEach((coupon) => {
-    if ('lectureCoupon' in coupon) {
-      const lectureCoupon = coupon.lectureCoupon;
-
-      (lectureCoupon.isStackable ? stackableCoupons : normalCoupons).push(
-        lectureCoupon,
-      );
-    } else {
-      (coupon.isStackable ? stackableCoupons : normalCoupons).push(coupon);
-    }
+    (coupon.isStackable ? stackableCoupons : normalCoupons).push(coupon);
   });
 
   const calculateDiscount = (coupon: IclassCoupon, price: number) => {
@@ -104,20 +96,11 @@ const calculateMaxDiscount = (
   let stackableCoupon: any;
 
   coupons.forEach((coupon) => {
-    if ('lectureCoupon' in coupon) {
-      if (coupon.lectureCoupon.id === normalCouponId) {
-        normalCoupon = coupon.lectureCoupon;
-      }
-      if (coupon.lectureCoupon.id === stackableCouponId) {
-        stackableCoupon = coupon.lectureCoupon;
-      }
-    } else {
-      if (coupon.id === normalCouponId) {
-        normalCoupon = coupon;
-      }
-      if (coupon.id === stackableCouponId) {
-        stackableCoupon = coupon;
-      }
+    if (coupon.id === normalCouponId) {
+      normalCoupon = coupon;
+    }
+    if (coupon.id === stackableCouponId) {
+      stackableCoupon = coupon;
     }
   });
 

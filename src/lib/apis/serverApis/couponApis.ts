@@ -46,17 +46,22 @@ export const getCouponList = async (
   return { itemList: itemList ?? [], totalItemCount };
 };
 
-export const getClassCouponList = async (lectureId: string) => {
+export const getClassCouponList = async (
+  lectureId: string,
+  userState: boolean,
+) => {
   try {
     const cookieStroe = cookies();
     const authorization = cookieStroe.get('userAccessToken')?.value;
 
     //추후 백엔드 상의 후 토큰 필요 로직, 필요 없는 로직
 
-    const headers: Record<string, string> = {
-      Authorization: `Bearer ${authorization}`,
-      'Content-Type': 'application/json',
-    };
+    const headers: Record<string, string> = userState
+      ? {
+          Authorization: `Bearer ${authorization}`,
+          'Content-Type': 'application/json',
+        }
+      : { 'Content-Type': 'application/json' };
 
     const response = await fetch(`${END_POINT}/coupons/lectures/${lectureId}`, {
       cache: 'no-store',
@@ -71,7 +76,7 @@ export const getClassCouponList = async (lectureId: string) => {
 
     const resData = await response.json();
 
-    return resData.data.applicableCoupons;
+    return resData.data.couponList;
   } catch (error) {
     console.error(error);
   }
