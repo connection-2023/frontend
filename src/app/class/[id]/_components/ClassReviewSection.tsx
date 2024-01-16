@@ -11,15 +11,10 @@ import { getClassReviews } from '@/lib/apis/classApis';
 
 interface ClassReviewSectionProps {
   id: string;
-  reviewCount: number;
   stars: number;
 }
 
-const ClassReviewSection = ({
-  id,
-  reviewCount,
-  stars,
-}: ClassReviewSectionProps) => {
+const ClassReviewSection = ({ id, stars }: ClassReviewSectionProps) => {
   const [isListOpened, setIsListOpened] = useState(false);
   const [selectedOption, setSelectedOption] =
     useState<ReviewOrderType>('최신순');
@@ -29,7 +24,7 @@ const ClassReviewSection = ({
   useEffect(() => {
     const fetchData = async () => {
       const data = await getClassReviews(id, selectedOption);
-
+      console.log('data: ', data);
       if (data instanceof Error) {
         return;
       }
@@ -61,7 +56,7 @@ const ClassReviewSection = ({
     >
       <div className="mb-4 flex w-full items-center justify-between">
         <h2 className="flex items-center scroll-smooth text-lg font-bold">
-          클래스 후기 {reviewCount}건
+          클래스 후기 {userReviews.length}건
           <div className="ml-3 hidden md:block">
             <Review average={stars} />
           </div>
@@ -76,6 +71,7 @@ const ClassReviewSection = ({
         <button
           onClick={openList}
           className="flex items-center gap-4 text-sm font-medium"
+          aria-label="리뷰 정렬"
         >
           {selectedOption}
           <ArrowUpSVG
