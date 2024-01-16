@@ -43,7 +43,7 @@ const TextAreaSection = ({
   }, []);
 
   return (
-    <section className="relative flex flex-col">
+    <section className="relative flex flex-col ">
       {title && (
         <h2
           id={dataName}
@@ -63,7 +63,7 @@ const TextAreaSection = ({
         placeholder={placeholder}
         maxLength={maxLength}
       />
-      <div className="absolute bottom-2 right-3 text-sub-color2">
+      <div className="absolute bottom-2 right-3 text-gray-500">
         ({length || 0} / {maxLength})
       </div>
     </section>

@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Button from '@/components/Button/Button';
+import UniqueButton from '@/components/Button/UniqueButton';
 
 const SideNavbar = ({ onClick }: { onClick: () => void }) => {
   const sections = [
@@ -23,6 +25,9 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
   ];
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const router = useRouter();
+  const path = usePathname();
+  const postId = path.split('/')[2];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -69,8 +74,15 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
     }
   };
 
+  const handleEditCancel = () => {
+    const confirm = window.confirm('클래스 수정을 취소하겠습니까?');
+    if (confirm) {
+      router.push(`/class/${postId}`);
+    }
+  };
+
   return (
-    <aside className="sticky top-0 z-20 h-fit w-fit justify-self-center pt-16 text-lg font-bold">
+    <aside className="sticky top-0 z-20 hidden h-fit w-fit justify-self-center pt-16 text-lg font-bold md:block">
       <nav
         onClick={handleNavLinkClick}
         className="whitespace-nowrap text-lg font-bold"
@@ -93,8 +105,13 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
       </nav>
       <div className="w-20 text-base font-semibold">
         <Button type="submit" onClick={onClick} color="secondary" size="small">
-          수정완료
+          수정 완료
         </Button>
+      </div>
+      <div className="mt-2 w-20 text-base font-semibold">
+        <UniqueButton onClick={handleEditCancel} color="secondary" size="small">
+          수정 취소
+        </UniqueButton>
       </div>
     </aside>
   );

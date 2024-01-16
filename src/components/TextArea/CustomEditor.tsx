@@ -20,6 +20,7 @@ interface CustomEditorProps {
   dataName: string;
   defaultValue?: string;
   placeholder?: string;
+  requiredMark?: boolean;
 }
 
 const CustomEditor = ({
@@ -30,6 +31,7 @@ const CustomEditor = ({
   dataName,
   defaultValue = '',
   placeholder = '',
+  requiredMark = true,
 }: CustomEditorProps) => {
   const editor = useRef<SunEditorCore>();
   const editorText = useRef<string>(defaultValue);
@@ -131,7 +133,9 @@ const CustomEditor = ({
         >
           {title}
         </h2>
-        {minLength !== 0 && <p className="text-gray-500">(필수)</p>}
+        {minLength !== 0 && requiredMark && (
+          <p className="text-gray-500">(필수)</p>
+        )}
       </label>
 
       <div className="w-full">
