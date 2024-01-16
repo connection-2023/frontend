@@ -5,6 +5,7 @@ import {
   getInstructorProfile,
   getMyProfile,
 } from '@/lib/apis/serverApis/userApi';
+import Providers from '@/lib/provider/providers';
 import { useUserStore } from '@/store/userStore';
 import ControlOptions from './_components/ControlOptions';
 import Footer from './_components/Footer';
@@ -63,30 +64,32 @@ export default async function RootLayout({
       <body
         className={`${inter.className} mx-auto flex min-h-screen max-w-desktop flex-col`}
       >
-        <UserStoreInitializer authUser={authUser} userType={userType} />
-        <Header>
-          <UserProfileLinks />
-        </Header>
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <main className="relative flex-1">
-          {children}
-          {modal}
-          <div className="fixed bottom-24 right-8">
-            <ControlOptions />
-          </div>
-        </main>
-        <Footer />
+        <Providers>
+          <UserStoreInitializer authUser={authUser} userType={userType} />
+          <Header>
+            <UserProfileLinks />
+          </Header>
+          <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          <main className="relative flex-1">
+            {children}
+            {modal}
+            <div className="fixed bottom-24 right-8">
+              <ControlOptions />
+            </div>
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
