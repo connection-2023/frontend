@@ -19,7 +19,11 @@ const UserReservation = ({ userReservation }: { userReservation: boolean }) => {
         더보기
       </Link>
 
-      <button onClick={handleClosed} className="flex flex-1 justify-end">
+      <button
+        onClick={handleClosed}
+        className="flex flex-1 justify-end"
+        aria-label="닫기"
+      >
         <CloseSVG width="21" height="21" className="stroke-white stroke-2" />
       </button>
     </div>

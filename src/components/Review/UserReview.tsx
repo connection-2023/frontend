@@ -59,7 +59,7 @@ const UserReview = ({
   };
 
   return (
-    <div className="w-full rounded-md border-b border-solid border-gray-700 bg-white text-sm ">
+    <div className="w-full rounded-md border-b border-solid border-gray-700 bg-white text-sm shadow-vertical">
       <div className="flex w-full justify-between p-[0.8rem]">
         <div className="mr-1.5 flex w-[34px] items-center">
           <Profile size="small" nickname={nickname} src={src} label={false} />
@@ -74,6 +74,7 @@ const UserReview = ({
           <button
             onClick={handleReport}
             className="ml-3 box-border h-6 cursor-pointer rounded-md border border-solid border-gray-700 px-1.5 text-sm font-normal hover:text-gray-100"
+            aria-label="리뷰 신고"
           >
             신고
           </button>
@@ -91,6 +92,7 @@ const UserReview = ({
           <button
             onClick={disabled ? undefined : handleLike}
             className={`${disabled && 'cursor-default'}`}
+            aria-label="리뷰 좋아요"
           >
             <LikeSVG
               width="15"
