@@ -1,4 +1,3 @@
-import { revalidateTag } from 'next/cache';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
@@ -48,7 +47,6 @@ const ClassDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  revalidateTag('schedules');
   // parallel requests
   const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
@@ -133,8 +131,8 @@ const ClassDetailPage = async ({
           )}
         </div>
 
-        <h1 className="relative flex w-full max-w-[40rem] px-4 text-lg font-bold md:justify-center">
-          <p className="w-11/12 md:text-center">{title}</p>
+        <div className="relative flex w-full max-w-[40rem] px-4 text-lg font-bold md:justify-center">
+          <h1 className="w-11/12 md:text-center">{title}</h1>
           <div className="absolute right-4 flex flex-col-reverse items-center gap-2 md:right-0 md:flex-row">
             <OptionButton
               lecturerId={lecturerId}
@@ -143,7 +141,7 @@ const ClassDetailPage = async ({
               isLike={isLike}
             />
           </div>
-        </h1>
+        </div>
         {/* Review */}
         <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:mb-6 md:justify-center">
           <Review average={stars} />
@@ -158,31 +156,31 @@ const ClassDetailPage = async ({
 
         <hr className="mb-4 h-1 w-full max-w-[40rem] md:mb-6" />
         {/* Class Info */}
-        <div className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 px-4 md:mb-7 md:flex md:flex-wrap md:justify-items-center md:gap-x-10 md:whitespace-nowrap">
-          <h3 className={h3Style}>
+        <ul className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 px-4 md:mb-7 md:flex md:flex-wrap md:justify-items-center md:gap-x-10 md:whitespace-nowrap">
+          <li className={h3Style}>
             <LocationSVG />
             <span className="w-fit break-keep">
               {formatLocationToString(lectureToRegion)}
             </span>
-          </h3>
-          <h3 className={h3Style}>
+          </li>
+          <li className={h3Style}>
             <GenreSVG />
             <span className="w-fit break-keep">
               {formatGenreToString(lectureToDanceGenre)}
             </span>
-          </h3>
+          </li>
 
-          <h3 className={h3Style}>
+          <li className={h3Style}>
             <TimeSVG /> {duration}분
-          </h3>
-          <h3 className={h3Style}>
+          </li>
+          <li className={h3Style}>
             <GroupSVG />
             {isGroup ? `그룹레슨 (${maxCapacity}인)` : '개인레슨'}
-          </h3>
-          <h3 className={h3Style}>
+          </li>
+          <li className={h3Style}>
             <LevelSVG /> {difficultyLevel}
-          </h3>
-        </div>
+          </li>
+        </ul>
       </section>
       <div className="fixed bottom-[6rem] z-modal flex w-full justify-center px-4 xl:bottom-6 ">
         <UserReservation userReservation={userReservation} />
@@ -279,7 +277,7 @@ const ClassDetailPage = async ({
         </section> */}
 
         {/* 클래스 후기 */}
-        <ClassReviewSection id={id} reviewCount={reviewCount} stars={stars} />
+        <ClassReviewSection id={id} stars={stars} />
       </section>
 
       <section className="fixed bottom-0 w-full md:static md:w-auto md:max-w-[17rem]">

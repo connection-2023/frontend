@@ -1,18 +1,19 @@
 'use client';
-import { useState, useEffect } from 'react';
 import { parseISO } from 'date-fns';
-import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getCouponList } from '@/lib/apis/serverApis/couponApis';
-import { formatDateTime } from '@/utils/parseUtils';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import AccountInfo from './_components/AccountInfo';
 import ApplySidebar from './_components/ApplySidebar';
 import CouponContainer from './_components/Coupon/CouponContainer';
 import PaymentMethod from './_components/PaymentMethod';
 import ReservationInfo from './_components/ReservationInfo';
-import AccountInfo from './_components/AccountInfo';
-import { getOriginalClassInfo } from '@/lib/apis/classApis';
+import ApplyLoading from '@/components/Loading/ApplyLoading';
 import { IClassEditData } from '@/types/class';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import { getOriginalClassInfo } from '@/lib/apis/classApis';
+import { getCouponList } from '@/lib/apis/serverApis/couponApis';
+import { formatDateTime } from '@/utils/parseUtils';
 
 const ClassApplyPage = ({
   params: { id },
@@ -39,14 +40,13 @@ const ClassApplyPage = ({
   useEffect(() => {
     const fetchData = async () => {
       const data = await getOriginalClassInfo(id);
-      console.log(data);
       setClassData(data);
     };
     fetchData();
   }, [id]);
 
   if (!classData) {
-    return <></>;
+    return <ApplyLoading />;
   }
 
   const { title, duration, maxCapacity, reservationComment, price } =
