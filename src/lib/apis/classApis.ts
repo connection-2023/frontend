@@ -271,8 +271,12 @@ export const getOriginalClassInfo = async (id: string) => {
       }).then((data) => data.json()),
     ]);
     const { schedule, holidayArr } = scheduleResponse.data;
-    const formatSchedule = schedule.map((item) => new Date(item.startDateTime));
-    const formatHoliday = holidayArr.map((holiday) => new Date(holiday));
+    const formatSchedule = schedule.map(
+      (item: { startDateTime: string }) => new Date(item.startDateTime),
+    );
+    const formatHoliday = holidayArr.map(
+      (holiday: string) => new Date(holiday),
+    );
 
     return {
       ...classInfoResponse.data,

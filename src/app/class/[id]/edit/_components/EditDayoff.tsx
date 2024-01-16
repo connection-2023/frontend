@@ -4,7 +4,6 @@ import { ko } from 'date-fns/esm/locale';
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { getUniqueDates } from '@/utils/parseUtils';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
-import { getUniqueDates } from '@/utils/parseUtils';
 import { IClassSchedule } from '@/types/class';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];

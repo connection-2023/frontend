@@ -4,24 +4,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import AddSchedules from './_components/AddSchedules';
-import EditClassRange from './_components/EditClassRange';
-import EditDayoff from './_components/EditDayoff';
-import SideNavbar from './_components/SideNavbar';
-import NumberSelect from '../../create/_components/NumberSelect';
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import CustomEditor from '@/components/TextArea/CustomEditor';
-import TextAreaSection from '@/components/TextArea/TextAreaSection';
-import UploadImage from '@/components/UploadImage/UploadImage';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import {
-  IClassEditData,
-  IClassEditFormData,
-  IClassEditRequest,
-} from '@/types/class';
-import { ErrorMessage, FetchError } from '@/types/types';
 import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
 import {
   LocationSVG,
@@ -42,27 +24,33 @@ import {
   formatScheduleDays,
   generateDatesFromNewEndDate,
 } from '@/utils/parseUtils';
+import AddSchedules from './_components/AddSchedules';
 import EditClassRange from './_components/EditClassRange';
 import EditDayoff from './_components/EditDayoff';
 import SideNavbar from './_components/SideNavbar';
+import NumberSelect from '../../create/_components/NumberSelect';
+import Button from '@/components/Button/Button';
+import UniqueButton from '@/components/Button/UniqueButton';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import UploadImage from '@/components/UploadImage/UploadImage';
-import { IClassEditData } from '@/types/class';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { IClassEditPageData, IClassEditRequest } from '@/types/class';
+import { ErrorMessage, FetchError } from '@/types/types';
 
 const borderStyle = 'border-b border-solid border-gray-700';
 const h2Style = 'mb-4 flex items-center text-lg font-bold';
 const h3Style = 'flex gap-1.5 text-sm';
 
 const ClassEditPage = () => {
-  const [initData, setInitData] = useState<IClassEditData | undefined>();
+  const [initData, setInitData] = useState<IClassEditPageData | undefined>();
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
-  const [newEndDate, setNewEndDate] = useState<string>();
+  const [newEndDate, setNewEndDate] = useState<string>('');
   const router = useRouter();
   const path = usePathname();
   const postId = path.split('/')[2];
-  const formMethods = useForm<IClassEditFormData>();
+  const formMethods = useForm();
   const {
     control,
     watch,
@@ -72,7 +60,7 @@ const ClassEditPage = () => {
 
   const authUser = useUserStore((state) => state.authUser);
   const userType = useUserStore((state) => state.userType);
-  const newSchedules = watch('schedules') || [];
+  const newSchedules: Date[] = watch('schedules') || [];
 
   useEffect(() => {
     const classOriginalData = async () => {
@@ -100,9 +88,13 @@ const ClassEditPage = () => {
     } else return initData.schedule;
   }, [newEndDate, initData]);
 
-  //   강사 id랑 글 강사 Id 확인하기
-  //   if (userType !== 'lecturer' && authUser?.id !== initData.lecturer.id)
-  //     return null;
+  if (
+    userType !== 'lecturer' &&
+    authUser &&
+    initData &&
+    Number(authUser.id) !== initData.lecturer.id
+  )
+    return null;
 
   if (!initData) return null;
   const {
@@ -134,19 +126,20 @@ const ClassEditPage = () => {
     setInvalidData(null);
   };
 
-  const onSubmit = async (data: IClassEditFormData) => {
+  const onSubmit = async (data: any) => {
     let reqData: IClassEditRequest;
 
     try {
       const { images, curriculum, maxCapacity, endDate } = data;
 
       curriculum.deletedImages.forEach(
-        async ({ src }) => await deleteImage({ imageUrl: src }),
+        async ({ src }: { src: string }) =>
+          await deleteImage({ imageUrl: src }),
       );
 
       // 추가된 스케쥴만 필터링
       const originDates = initData.schedule.map((date) => date.toISOString());
-      const newValDates = newSchedules.reduce((acc, date) => {
+      const newValDates = newSchedules.reduce((acc: string[], date) => {
         if (date !== null) {
           acc.push(date.toISOString());
         }
@@ -158,18 +151,18 @@ const ClassEditPage = () => {
         .map((date) => new Date(date));
 
       const schedulesData = initData?.daySchedule
-        ? newEndDate && isSameDay(parseISO(endDate), parseISO(newEndDate))
+        ? newEndDate &&
+          isSameDay(parseISO(endDate.endDate), parseISO(newEndDate))
           ? {}
           : {
               schedules: generateDatesFromNewEndDate(
-                endDate,
+                endDate.endDate,
                 newEndDate,
                 initData.daySchedule,
               ),
             }
         : { schedules: differenceSchedules };
 
-      // 500 에러 해결 필요
       reqData = {
         ...data,
         images: await uploadImageFilesWithFallback(images, 'lectures'),
@@ -195,6 +188,7 @@ const ClassEditPage = () => {
           }
         }
       }
+      console.error(error);
     }
   };
 

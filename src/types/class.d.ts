@@ -243,6 +243,12 @@ export interface IClassScheduleResponse {
   daySchedule?: IDaySchedule[];
 }
 
+export interface IClassScheduleData {
+  schedule: Date[];
+  holidayArr: Date[];
+  daySchedule?: IDaySchedule[];
+}
+
 export interface IDaySchedule {
   id: number;
   lectureId: number;
@@ -371,6 +377,7 @@ export interface IClassEditRequest {
   coupons?: number[];
   notification?: string;
   holidays?: Date[];
+  endDate?: Date;
 }
 
 export interface IRegisterLists {
@@ -454,6 +461,10 @@ export interface IClassEditData
   extends IClassScheduleResponse,
     IClassInfoResponse {}
 
+export interface IClassEditPageData
+  extends IClassScheduleData,
+    IClassInfoResponse {}
+
 export interface IClassEditFormData {
   classRange: { startDate: string; endDate: string };
   images: {
@@ -473,6 +484,7 @@ export interface IClassEditFormData {
   price: number;
   reservationComment: string;
   reservationDeadline: number;
+  endDate: { startDate: string; endDate: string };
 }
 
 export interface IMonthlyClassSchedules extends IClassSchedule {
