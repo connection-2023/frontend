@@ -453,3 +453,26 @@ export interface IMonthlyClassSchedules extends IClassSchedule {
     maxCapacity: number;
   };
 }
+
+export interface IUserClassResponse {
+  id: number;
+  orderId: string;
+  orderName: string;
+  reservation: {
+    lectureSchedule: {
+      startDateTime: string;
+      lecture: {
+        id: number;
+        title: string;
+        lectureImage: {
+          imageUrl: string;
+        }[];
+      };
+    };
+  }[];
+
+  lecturer: {
+    nickname: string;
+    profileCardImageUrl: string;
+  };
+}

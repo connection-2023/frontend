@@ -13,6 +13,7 @@ enum filterOptions {
 }
 
 const PaymentHistory = () => {
+  const [activeTabIdx, setActiveTabIdx] = useState(0);
   const [selectedOption, setSelectedOption] = useState(filterOptions.All);
   const [displayCount, setDisplayCount] = useState(5);
   const [totalItemCount, setTotalItemCount] = useState(0);
@@ -56,14 +57,19 @@ const PaymentHistory = () => {
 
     const { totalItemCount, paymentHistory } = data;
     setTotalItemCount(totalItemCount);
-    setPaymentData(paymentHistory);
 
-    const itemIds = {
-      firstItemId: paymentHistory[0].id,
-      lastItemId: paymentHistory[displayCount - 1].id,
-    };
+    if (totalItemCount) {
+      setPaymentData(paymentHistory);
 
-    setItemId(itemIds);
+      const itemIds = {
+        firstItemId: paymentHistory[0].id,
+        lastItemId: paymentHistory[displayCount - 1].id,
+      };
+
+      setItemId(itemIds);
+    } else {
+      setPaymentData([]);
+    }
   };
 
   const handleCheckboxChange = async (
@@ -125,12 +131,25 @@ const PaymentHistory = () => {
   };
 
   return (
-    <section className="mx-auto mt-3 w-full max-w-[40rem] xl:mx-0">
-      <h1 className="mb-2.5 border-b border-solid border-gray-700 pb-2.5 text-2xl font-bold text-gray-100">
-        결제내역
-      </h1>
+    <section className="mx-auto mt-3 w-full max-w-[40rem] px-4 xl:mx-0">
+      <div className="mb-2.5 flex gap-6 border-b border-solid border-gray-700 pb-2.5 text-2xl font-medium text-gray-300">
+        <h1
+          onClick={() => setActiveTabIdx(0)}
+          className={activeTabIdx === 0 ? 'font-bold text-gray-100' : ''}
+        >
+          결제내역
+        </h1>
+
+        <h1
+          onClick={() => setActiveTabIdx(1)}
+          className={activeTabIdx === 1 ? 'font-bold text-gray-100' : ''}
+        >
+          환불내역
+        </h1>
+      </div>
+
       <div className="mb-4 flex justify-between gap-4 text-sm">
-        <ul className="flex gap-4 font-medium">
+        <ul className="flex gap-4 whitespace-nowrap font-medium">
           {Object.values(filterOptions).map((option) => (
             <li key={option} className="flex items-center gap-[0.31rem]">
               <input
@@ -159,6 +178,16 @@ const PaymentHistory = () => {
           ))}
         </select>
       </div>
+
+      {activeTabIdx === 1 && (
+        <div className="mb-3.5 flex w-fit items-center gap-1 whitespace-pre-line break-keep border border-solid border-main-color bg-main-color-transparent px-2 py-1.5 text-sm font-medium">
+          <p className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-main-color text-lg font-bold text-white">
+            !
+          </p>
+          강사 채팅 답변이 없을 시 우측 하단의 관리자 챗봇으로 문의 바랍니다.
+        </div>
+      )}
+
       <div className="flex flex-col gap-4">
         {paymentData.map((data) => (
           <PaymentList

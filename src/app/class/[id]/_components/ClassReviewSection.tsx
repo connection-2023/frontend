@@ -2,12 +2,12 @@
 import { parseISO, format } from 'date-fns';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
+import { StarSVG, ArrowUpSVG } from '@/icons/svg';
+import { getClassReviews } from '@/lib/apis/classApis';
 import SortDropdown from '@/components/Dropdown/SortDropdown';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
 import { IUserReview, ReviewOrderType } from '@/types/class';
-import { StarSVG, ArrowUpSVG } from '@/icons/svg';
-import { getClassReviews } from '@/lib/apis/classApis';
 
 interface ClassReviewSectionProps {
   id: string;

@@ -4,15 +4,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { ButtonStyles } from '@/constants/constants';
+import { ArrowUpSVG, EditSVG } from '@/icons/svg';
+import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
 import ClassOverview from './_components/ClassOverview';
 import ClassTable from './_components/ClassTable';
 import EditDayOff from './_components/EditDayOff';
 import EditReservationComment from './_components/EditReservationComment';
 import Notice from '@/components/ClassNotice/Notice';
 import { ILecturerClassDetailResonse } from '@/types/class';
-import { ButtonStyles } from '@/constants/constants';
-import { ArrowUpSVG, EditSVG } from '@/icons/svg';
-import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
 
 const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const router = useRouter();

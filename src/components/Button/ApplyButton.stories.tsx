@@ -1,5 +1,4 @@
 import ApplyButton from './ApplyButton';
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ApplyButton> = {

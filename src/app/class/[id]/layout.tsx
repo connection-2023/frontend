@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import { getClassInfo } from '@/lib/apis/serverApis/classPostApis';
+import type { Metadata } from 'next';
 
 export const generateMetadata = async ({
   params,
