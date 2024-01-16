@@ -5,3 +5,5 @@ export { dashboardStore } from './dashboardStore';
 export { useUserStore } from './userStore';
 
 export { useClassScheduleStore } from './classScheduleStore';
+
+export { usefilterStore } from './filterStore';

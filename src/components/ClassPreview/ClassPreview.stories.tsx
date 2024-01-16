@@ -12,6 +12,7 @@ const meta: Meta<typeof ClassPreview> = {
     title: '가비쌤과 함께하는 왁킹 클래스',
     location: ['서울 마포구'],
     genre: ['락킹', '락킹'],
+    isLiked: true,
     type: '개인레슨',
     review: { average: 4.5, count: 14 },
     price: 80000,
@@ -37,6 +38,7 @@ export const 마감: Story = {
   args: {
     status: '마감' as const,
     date: '08/04~09/25',
+    isLiked: true,
     title: '가비쌤과 함께하는 왁킹 클래스',
     location: ['서울 마포구', '서울 성동구'],
     genre: ['락킹'],

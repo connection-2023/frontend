@@ -42,7 +42,7 @@ const ClassFilterSelectUser = ({
           className="flex items-center gap-1 font-bold text-gray-500"
           onClick={triggerClassListRefresh}
         >
-          초기화 <ResetSVG className="mb-0.5" />
+          초기화 <ResetSVG className="mb-0.5 h-[14px] w-[14px]" />
         </button>
       )}
     </div>

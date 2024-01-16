@@ -11,10 +11,13 @@ export interface ClassCardType {
   imgURL: string[];
   location: string[];
   genre: string[];
+  isLiked: boolean;
   type: string;
   review: { average: number; count: number };
   price: number;
   profile: { src: string | null; nickname: string };
+  darkMode?: boolean;
+  searchAfter?: [number, number];
 }
 
 export interface Space {
@@ -322,10 +325,6 @@ interface IInstructorProfile {
   nickname: string;
 }
 
-interface IHoilday {
-  holiday: string;
-}
-
 interface IImage {
   imageUrl: string;
 }
@@ -487,6 +486,29 @@ export interface IClassEditFormData {
   endDate: { startDate: string; endDate: string };
 }
 
+export interface searchClass {
+  searchAfter: [number, number];
+  id: number;
+  title: string;
+  price: number;
+  lectureImages: string[];
+  startDate: string;
+  endDate: string;
+  isGroup: boolean;
+  isLiked: boolean;
+  lectureMethod: string;
+  stars: number;
+  reviewCount: number;
+  isActive: boolean;
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string;
+  };
+  regions: { id: number; administrativeDistrict: string; district: string }[];
+  genres: { id: number; genre: string }[];
+}
+
 export interface IMonthlyClassSchedules extends IClassSchedule {
   lecture: {
     title: string;
@@ -525,5 +547,116 @@ export interface IUserClassResponse {
   lecturer: {
     nickname: string;
     profileCardImageUrl: string;
+  };
+}
+
+export interface searchBestClassData {
+  id: number;
+  title: string;
+  lectureImage: {
+    id: number;
+    imageUrl: string;
+  }[];
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  price: number;
+  stars: number;
+  reviewCount: number;
+  isGroup: boolean;
+  lectureToDanceGenre: {
+    danceCategoryId: number;
+    name: null | string;
+    danceCategory: { id: number; genre: string };
+  }[];
+  lectureToRegion: {
+    region: { administrativeDistrict: string; district: string };
+  }[];
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: null | string;
+    lecturerProfileImageUrl: null | string;
+  };
+  likedLecture?: {
+    id: number;
+  }[];
+  lectureMethod?: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface searchClassParameters {
+  take: number;
+  sortOption: 'LATEST' | 'STARS';
+  isGroup: boolean;
+  value?: string;
+  searchAfter?: [number, number];
+  genres?: string[];
+  regions?: string[];
+  stars?: number;
+  days?: day[];
+  timeOfDay?: TimeOfDay[];
+  gtePrice?: number;
+  ltePrice?: number;
+  lectureMethod?: string | undefined;
+  getDate?: Date;
+  lteDate?: Date;
+}
+
+export interface searchClass {
+  searchAfter: [number, number];
+  id: number;
+  title: string;
+  price: number;
+  lectureImages: string[];
+  startDate: string;
+  endDate: string;
+  isGroup: boolean;
+  lectureMethod: string;
+  stars: number;
+  reviewCount: number;
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string;
+  };
+  regions: { id: number; administrativeDistrict: string; district: string }[];
+  genres: { id: number; genre: string }[];
+  days: null | { day: [day]; dateTime: string[] };
+  isLiked?: boolean;
+}
+
+export interface LikedLecture {
+  id: number;
+  lectureId: number;
+  userId: number;
+  lecture: {
+    id: number;
+    lecturerId: number;
+    lectureTypeId: number;
+    lectureMethodId: number;
+    isGroup: boolean;
+    startDate: string;
+    endDate: string;
+    title: string;
+    introduction: string;
+    curriculum: string;
+    duration: number;
+    difficultyLevel: string;
+    minCapacity: number;
+    maxCapacity: number;
+    reservationDeadline: number;
+    reservationComment: string;
+    price: number;
+    noShowDeposit: null | number;
+    reviewCount: number;
+    stars: number;
+    isActive: boolean;
+    locationDescription: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null | string;
   };
 }

@@ -78,7 +78,7 @@ const CropperModal = ({
             onClick={handleReset}
             className="mr-5 flex items-center text-lg font-bold text-gray-500"
           >
-            <ResetSVG className="mr-2" /> 되돌리기
+            <ResetSVG className="mr-2 h-[14px] w-[14px]" /> 되돌리기
           </button>
           <button onClick={handleZoomIn} className="mr-2">
             <ZoomInSVG />

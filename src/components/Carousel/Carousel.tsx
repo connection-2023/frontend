@@ -252,11 +252,11 @@ const Carousel = ({
         <>
           <Arrow
             onClick={(e: React.MouseEvent) => changeImage(e, 'BACKWARD')}
-            className="absolute left-3 top-1/2 -translate-y-1/2 -scale-x-100 transform cursor-pointer"
+            className="absolute left-3 top-1/2 hidden -translate-y-1/2 -scale-x-100 transform cursor-pointer sm:block"
           />
           <Arrow
             onClick={(e: React.MouseEvent) => changeImage(e, 'FORWARD')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 transform cursor-pointer"
+            className="absolute right-3 top-1/2 hidden -translate-y-1/2 transform cursor-pointer sm:block"
           />
         </>
       )}

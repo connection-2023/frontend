@@ -12,14 +12,14 @@ import Sidebar from '../Sidebar';
 import SidebarModal from '@/components/Modal/SidebarModal';
 
 const USER_MENU = [
-  { href: '/intructor', menu: '강사' },
+  { href: '/instructor', menu: '강사' },
   { href: '/class', menu: '클래스' },
-  { href: '/', menu: '패스권' },
+  { href: '/pass', menu: '패스권' },
   { href: '/', menu: <MapSVG /> },
 ];
 
 const LECTURER_MENU = [
-  { href: '/intructor', menu: '강사' },
+  { href: '/instructor', menu: '강사' },
   { href: '/class', menu: '클래스' },
   { href: '/class/create', menu: '클래스 등록' },
 ];
@@ -65,7 +65,10 @@ const HeaderMenu = () => {
         <ul className="hidden gap-6 text-lg sm:flex">
           {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
             ({ href, menu }, index) => (
-              <li key={href + index}>
+              <li
+                key={href + index}
+                className={pathname === href ? 'font-bold' : ''}
+              >
                 <Link href={href}>{menu}</Link>
               </li>
             ),

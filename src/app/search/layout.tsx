@@ -1,3 +1,4 @@
+import UserLikesInitializer from './_components/UserLikesInitializer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,5 +11,10 @@ export default function SearchLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <UserLikesInitializer />
+      {children}
+    </>
+  );
 }
