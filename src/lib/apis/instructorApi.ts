@@ -1,5 +1,5 @@
 import { DOMAIN } from '@/constants/constants';
-import { IInstructorRegister } from '@/types/instructor';
+import { IInstructorRegister, IApproveList } from '@/types/instructor';
 
 export const getInstructorProfile = async () => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
@@ -77,6 +77,19 @@ export const getPendingCount = async () => {
     return response.data.requestCount;
   } catch (error) {
     console.error('승인 대기 개수 조회 오류', error);
+    throw error;
+  }
+};
+
+export const getPendingList = async (): Promise<IApproveList[] | Error> => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/instructors/mypage/approve/list`,
+    ).then((data) => data.json());
+
+    return response.data.requestList;
+  } catch (error) {
+    console.error('승인 대기 리스트 조회 오류', error);
     throw error;
   }
 };
