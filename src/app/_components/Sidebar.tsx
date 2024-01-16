@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   ArrowUpSVG,
   BookmarkSVG,
@@ -15,6 +15,7 @@ import {
 } from '@/icons/svg';
 import { useUserStore } from '@/store/userStore';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import { getPendingCount } from '@/lib/apis/instructorApi';
 
 interface SidebarProps {
   view?: 'my' | 'dashboard';
@@ -30,6 +31,18 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
     ),
   );
   const [isOpen, setIsOpen] = useState(isSubmenuActive);
+  const [approveCount, setApproveCount] = useState<number>();
+
+  useEffect(() => {
+    const getAprroveCount = async () => {
+      const approveData = await getPendingCount();
+
+      setApproveCount(approveData);
+    };
+
+    getAprroveCount();
+  }, []);
+
   const { userType, authUser } = useUserStore();
   const isUser = userType === 'user';
   if (!authUser) return null;
@@ -127,11 +140,13 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
                       <Link href={item.path} className="flex items-center">
                         {item.text}
 
-                        {item.text === '승인 대기' && (
-                          <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
-                            4
-                          </span>
-                        )}
+                        {item.text === '승인 대기' &&
+                          approveCount &&
+                          approveCount > 0 && (
+                            <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
+                              {approveCount}
+                            </span>
+                          )}
                       </Link>
                     </li>
                   ))}

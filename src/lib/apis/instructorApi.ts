@@ -67,3 +67,16 @@ export const getMonthlyClassPlan = async (year: number, month: number) => {
     throw error;
   }
 };
+
+export const getPendingCount = async () => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/instructors/mypage/approve/count`,
+    ).then((data) => data.json());
+
+    return response.data.requestCount;
+  } catch (error) {
+    console.error('승인 대기 개수 조회 오류', error);
+    throw error;
+  }
+};
