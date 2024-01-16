@@ -2,12 +2,12 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { postLecturerReport, postUserReport } from '@/lib/apis/reportApis';
+import { useUserStore } from '@/store';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
 import RouterModal from '@/components/Modal/RouterModal';
 import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
-import { postLecturerReport, postUserReport } from '@/lib/apis/reportApis';
-import { useUserStore } from '@/store';
 
 const ReportModalPage = () => {
   const loggedInUserType = useUserStore((state) => state.userType);

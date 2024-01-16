@@ -4,11 +4,11 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
+import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 import ReservationItem from './apply/ReservationItem';
 import SelectBox from './apply/SelectBox';
 import ApplyButton from '@/components/Button/ApplyButton';
 import { IClassSchedule, IDateTime } from '@/types/class';
-import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 
 interface ApplyProps {
   schedule: IClassSchedule[];

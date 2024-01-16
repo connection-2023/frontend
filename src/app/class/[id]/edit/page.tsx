@@ -42,6 +42,14 @@ import {
   formatScheduleDays,
   generateDatesFromNewEndDate,
 } from '@/utils/parseUtils';
+import EditClassRange from './_components/EditClassRange';
+import EditDayoff from './_components/EditDayoff';
+import SideNavbar from './_components/SideNavbar';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import CustomEditor from '@/components/TextArea/CustomEditor';
+import TextAreaSection from '@/components/TextArea/TextAreaSection';
+import UploadImage from '@/components/UploadImage/UploadImage';
+import { IClassEditData } from '@/types/class';
 
 const borderStyle = 'border-b border-solid border-gray-700';
 const h2Style = 'mb-4 flex items-center text-lg font-bold';

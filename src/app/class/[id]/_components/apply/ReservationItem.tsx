@@ -1,6 +1,6 @@
+import { ClearSVG } from '@/icons/svg';
 import CountButton from '@/components/Button/CountButton';
 import { IDateTime } from '@/types/class';
-import { ClearSVG } from '@/icons/svg';
 
 interface ReservationItemProps extends IDateTime {
   lectureScheduleId: number;

@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect, ChangeEvent } from 'react';
+import { useUserStore, usePaymentStore } from '@/store';
 import ApplyClassList from './ApplyClassList';
 import { IReservationInfo, IApplyClassList } from '@/types/payment';
-import { useUserStore, usePaymentStore } from '@/store';
 
 interface ReservationInfoProps {
   initialApplyData: IReservationInfo[];

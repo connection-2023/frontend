@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
 import { DayPicker, CaptionProps } from 'react-day-picker';
 import ResponsiveScheduleView from '@/app/dashboard/_components/ResponsiveScheduleView';
-import DayToolBar from '@/components/Calendar/DayToolBar';
 import { FormattedCaption } from '@/utils/calendarUtils/CalendarCaption';
 import {
   getSingleCalendarModifiers,
@@ -12,6 +11,7 @@ import {
   getSingleCalendarClassNames,
 } from '@/utils/calendarUtils/dateUtils';
 import { localizer, formats } from '@/utils/fullCalendarUtils';
+import DayToolBar from '@/components/Calendar/DayToolBar';
 import { IMonthlyClassSchedules } from '@/types/class';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';

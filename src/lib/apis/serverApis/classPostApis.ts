@@ -1,5 +1,5 @@
-import { IClassInfoResponse, IClassScheduleResponse } from '@/types/class';
 import { cookies } from 'next/headers';
+import { IClassInfoResponse, IClassScheduleResponse } from '@/types/class';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 

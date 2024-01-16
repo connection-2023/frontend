@@ -12,6 +12,7 @@ import {
 } from '../../utils/calendarUtils/dateUtils';
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
+
 interface ICalendarProps {
   mode: 'preview' | 'filter' | 'dayoff';
   selectableDates?: Date[];

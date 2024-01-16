@@ -15,6 +15,7 @@ import BookmarkSVG from './bookmark.svg';
 import CalendarSVG from './calendar.svg';
 import CalendarDetailSVG from './calendarDetail.svg';
 import ChatSVG from './chat.svg';
+import CheckCircleSVG from './check-circle.svg';
 import CheckSVG from './check.svg';
 import CheckMarkSVG from './checkMark.svg';
 import ClassStatusSVG from './classStatus.svg';
@@ -67,6 +68,7 @@ import ScrollTopSVG from './scrollTop.svg';
 import SearchSVG from './search.svg';
 import ShareSVG from './share.svg';
 import SmallLogoSVG from './smallLogo.svg';
+import SpinnerSVG from './spinner.svg';
 import StarSVG from './star.svg';
 import TimeSVG from './time.svg';
 import TooltipSVG from './tooltip.svg';
@@ -82,8 +84,10 @@ import ZoomOutSVG from './zoomOut.svg';
 
 export {
   BigStar,
+  SpinnerSVG,
   PassSVG,
   FilterSVG,
+  CheckCircleSVG,
   TrashcanSVG,
   CopySVG,
   ApplySuccessSVG,
