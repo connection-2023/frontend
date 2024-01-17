@@ -270,9 +270,9 @@ export const BANK_LIST = [
   { value: '한국수출입은행', label: '한국수출입은행' },
 ];
 
-export const LOGIN_REQUIRED_URLS = ['/instructor/apply', '/class/create'];
+export const LOGIN_REQUIRED_URLS = ['/class/create']; // '/instructor/apply',
 
-export const LECTURER_NO_ACCESS = ['/instructor/apply'];
+export const LECTURER_NO_ACCESS = ['/aaa']; // '/instructor/apply'
 
 export const USER_NO_ACCESS = ['/class/create'];
 

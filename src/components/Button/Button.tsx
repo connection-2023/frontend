@@ -6,6 +6,7 @@ interface ButtonProps {
   children?: React.ReactNode;
   type?: 'button' | 'submit';
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -14,11 +15,27 @@ const Button = ({
   children,
   type = 'button',
   onClick,
+  disabled = false,
 }: ButtonProps) => {
-  const styles = `group h-[${ButtonSizes[size]}px] ${ButtonStyles[color]}`;
+  const DisabledStyled = {
+    secondary:
+      'bg-gray-500 text-white group flex w-full items-center justify-center rounded-md ',
+    default: 'hover:bg-white active:text-sub-color1 active:bg-white',
+    primary:
+      'hover:text-white hover:bg-main-color active:text-white active:bg-main-color',
+  };
+
+  const styles = `${
+    disabled ? DisabledStyled[color] : ButtonStyles[color]
+  } group h-[${ButtonSizes[size]}px]`;
 
   return (
-    <button type={type} onClick={onClick} className={styles}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={styles}
+      disabled={disabled}
+    >
       {children}
     </button>
   );
