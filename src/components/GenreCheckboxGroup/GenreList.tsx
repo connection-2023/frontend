@@ -30,7 +30,7 @@ const GenreList = ({
               isSelected
                 ? 'select-shadow-border bg-gray-900 fill-sub-color1 font-bold'
                 : 'shadow-border fill-gray-500 text-gray-500'
-            } flex h-8 w-1/5 cursor-pointer items-center justify-center gap-1 text-sm`}
+            } flex h-8 w-1/4 cursor-pointer items-center justify-center gap-1 text-sm sm:w-1/5`}
             onClick={() => changeSelectGenreList(genre, !isSelected)}
           >
             <div className="h-4 w-4 min-w-[16px]">

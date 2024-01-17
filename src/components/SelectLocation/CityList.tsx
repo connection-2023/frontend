@@ -1,7 +1,5 @@
 import { CITY_LIST } from '@/constants/administrativeDistrict';
 
-const selectList = ['온라인', ...CITY_LIST];
-
 const selectCityStyle = (
   focusLocation: string | null,
   city: string,
@@ -11,8 +9,8 @@ const selectCityStyle = (
     (selectLocationList &&
       selectLocationList[city] &&
       selectLocationList[city].length > 0)
-    ? 'select-shadow-border bg-[#F5F5F5] font-bold flex h-[1.75rem] w-[11.11%] cursor-pointer items-center justify-center'
-    : 'shadow-border text-sub-color2 flex h-[1.75rem] w-[11.11%] cursor-pointer items-center justify-center';
+    ? 'select-shadow-border bg-[#F5F5F5] font-bold flex h-[2.8125rem] sm:h-7 w-[25%] sm:w-[11.11%] cursor-pointer items-center justify-center'
+    : 'shadow-border text-gray-300 flex h-[2.8125rem] sm:h-7 w-[25%] sm:w-[11.11%] cursor-pointer items-center justify-center';
 };
 
 interface CityListProps {
@@ -28,7 +26,7 @@ const CityList = ({
 }: CityListProps) => {
   return (
     <ul className="flex flex-wrap">
-      {selectList.map((city) => (
+      {CITY_LIST.map((city) => (
         <li
           key={city}
           className={selectCityStyle(focusLocation, city, selectLocationList)}

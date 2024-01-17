@@ -72,7 +72,7 @@ const CropperModal = ({
       />
 
       {/* 하단 버튼 */}
-      <div className="flex flex h-16 w-full items-center justify-between bg-white px-4">
+      <div className="flex h-16 w-full items-center justify-between bg-white px-4">
         <div className="flex">
           <button
             onClick={handleReset}

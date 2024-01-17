@@ -93,7 +93,7 @@ const InstructorIntroduction = () => {
         <input
           id="affiliation"
           type="text"
-          className="rounded-md px-4 py-2 outline outline-1 outline-gray-500 focus:outline-sub-color1"
+          className="rounded-md px-4 py-2 text-sm outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:text-base"
           placeholder="현재 속하고 있는 크루, 학원명 등을 적어주세요."
           {...register('affiliation')}
         />
@@ -128,7 +128,7 @@ const InstructorIntroduction = () => {
             key={index}
             id={'link' + index}
             type="text"
-            className="h-6 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1"
+            className="h-9 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-6"
             placeholder="게시물 주소 입력"
             {...register('instagramPostUrls' + index, {
               pattern: {
@@ -226,7 +226,7 @@ const SNSItem = ({
       <input
         id={dataName}
         type="text"
-        className="h-6 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1"
+        className="h-9 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-6"
         placeholder={placeholder}
         {...register(dataName)}
       />

@@ -164,7 +164,7 @@ const UploadImage = ({
       ) : (
         <>
           {/* 이미지 미리보기 */}
-          <div className="h-[17.17rem] w-[26.6rem]">
+          <div className="h-56 w-full sm:h-[17.17rem] sm:w-[26.6rem]">
             {selectedImage && (
               <div className="relative h-full w-full overflow-hidden">
                 <Image
@@ -214,7 +214,7 @@ const UploadImage = ({
                   width={19}
                   aria-label="이미지 삭제"
                   onClick={() => handleRemoveImage(index)}
-                  className="absolute right-0 top-0 cursor-pointer fill-gray-100"
+                  className="absolute right-0 top-0 cursor-pointer fill-gray-100 stroke-white"
                 />
                 {index === 0 && (
                   <div className="absolute bottom-0 right-0 flex h-6 w-9 translate-y-[1px] items-center justify-center bg-sub-color1 text-white">
