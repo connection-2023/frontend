@@ -1,14 +1,19 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { NO_HEADER_FOOTER_PATHS } from '@/constants/constants';
 import { ConnectionLogoSVG } from '@/icons/svg';
 
 const Footer = () => {
   const pathname = usePathname();
-  const shouldRenderFooter = NO_HEADER_FOOTER_PATHS.some((path: string) =>
-    pathname.startsWith(path),
-  );
+  const searchParams = useSearchParams();
+
+  const shouldRenderFooter = NO_HEADER_FOOTER_PATHS.some((path: string) => {
+    if (path === '/search') {
+      return pathname === '/search' && !searchParams.get('query');
+    }
+    return pathname.startsWith(path);
+  });
 
   return !shouldRenderFooter ? (
     <footer className="mx-auto w-full whitespace-pre-line break-keep border-t border-solid border-gray-700 px-[4.37rem] py-8 text-sm">
@@ -17,7 +22,7 @@ const Footer = () => {
           <ConnectionLogoSVG className="h-[0.875rem] w-[8.1875rem]" />
         </Link>
 
-        <nav className="flex gap-12 text-sm font-bold">
+        <nav className="flex flex-wrap gap-12 text-sm font-bold">
           <Link href="/notice">공지사항</Link>
           <Link href="/help">이용약관</Link>
           <Link href="/help">개인정보처리방침</Link>

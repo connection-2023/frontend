@@ -1,6 +1,7 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
 import { day, ReviewOrderType } from '@/types/class';
+import { TimeOfDay } from '@/types/types';
 
 export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
@@ -21,7 +22,7 @@ export const ButtonSizes = {
 
 export const ButtonStyles = {
   primary:
-    'hover:bg-main-color-transparent group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-white text-main-color active:bg-main-color active:text-white',
+    'hover:bg-white hover:text-main-color group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-main-color text-white active:bg-white active:text-main-color',
   default:
     'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 active:bg-sub-color1 active:text-white',
   secondary:
@@ -83,6 +84,7 @@ export const INSTRUCTOR_SECTIONS = [
 ];
 
 export const DANCE_GENRE = [
+  '전체',
   'K-pop',
   '브레이킹',
   '팝핑',
@@ -98,6 +100,7 @@ export const DANCE_GENRE = [
 
 export const DANCE_GENRE_ENGLISH = [
   '',
+  '',
   '(Breaking)',
   '(Popping)',
   '(Rocking)',
@@ -110,20 +113,13 @@ export const DANCE_GENRE_ENGLISH = [
   '(kids dance)',
 ];
 
-export const PROGRESS_METHOD = [
-  '개인(1:1)레슨',
-  '그룹레슨',
-  '원데이 레슨',
-  '다회차',
-];
-
 export const FILTER_WEEK: day[] = ['월', '화', '수', '목', '금', '토', '일'];
 
-export const FILTER_TIME = [
-  '오전(6시-11시)',
-  '오후(12시-17시)',
-  '저녁(18시-23시)',
-  '새벽(00시-05시)',
+export const FILTER_TIME: { label: string; value: TimeOfDay }[] = [
+  { label: '오전(6시-11시)', value: 'MORNING' },
+  { label: '오후(12시-17시)', value: 'AFTERNOON' },
+  { label: '저녁(18시-23시)', value: 'NIGHT' },
+  { label: '새벽(00시-05시)', value: 'DAWN' },
 ];
 
 export const ANNOUNCEMENT = `클래스 소개 페이지 가장 상단에 보여집니다.
@@ -213,8 +209,6 @@ export const NO_HEADER_FOOTER_PATHS = [
 
 export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
 
-export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
-
 export const CATEGORY_DIFFICULTY_LEVEL = ['초급(입문)', '중급', '상급'];
 
 export const ADDRESS_DESCRIPTION = [
@@ -290,6 +284,12 @@ export const LECTURE_PASS_TAKE = 8;
 
 export const USER_COUPON_CLASS_LIST_TAKE = 6;
 
+export const INSTRUCTOR_TAKE = 12;
+
+export const CLASS_TAKE = 30;
+
+export const REGIONS_SELECT_MAX = 30;
+
 export const INITIAL_SCHEDULE_PROGRESS = [
   {
     text: '수업 완료',
@@ -315,6 +315,16 @@ export const filterOption: ReviewOrderType[] = [
   '평점 낮은순',
 ];
 
+export const PRICE_FILTER_MIN = 0;
+
+export const PRICE_FILTER_MAX = 1000000;
+
+export const GROUP_FILTER_LIST = ['그룹레슨', '프라이빗 레슨(1:1)'];
+
+export const GROUP_FILTER_DEFAULT = '그룹레슨';
+
+export const METHOD_FILTER_LIST = ['전체', '원데이 클래스', '정기 클래스'];
+
 export const PAYMENT_ORDER_LIST = [
   [
     '노쇼위약금 무통장 입금(없을 경우 생략)',
@@ -325,3 +335,5 @@ export const PAYMENT_ORDER_LIST = [
   ],
   ['무통장 선입금', '강사 입금 확인', '신청 승인', '신청 완료'],
 ];
+
+export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];

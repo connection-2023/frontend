@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassCreateStore } from '@/store/classCreate';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';

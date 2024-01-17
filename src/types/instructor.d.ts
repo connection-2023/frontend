@@ -104,6 +104,20 @@ export interface IInstructorReviewList {
   };
 }
 
+export interface searchInstructor {
+  searchAfter: [number, number];
+  id: number;
+  nickname: string;
+  affiliation: string;
+  profileCardImageUrl: string;
+  stars: number;
+  isLiked: boolean;
+  reviewCount: number;
+  lecturerImages: string[];
+  regions: { id: number; administrativeDistrict: string; district: string }[];
+  genres: { id: number; genre: string }[];
+}
+
 export interface ILecturerLike {
   count: number;
   lecturerLike: LecturerLike[];
@@ -229,4 +243,22 @@ export interface IUpdatePaymentStatusRequestData {
   cancelAmount?: number;
   refusedReason?: string;
   lectureId?: number;
+}
+export interface searchInstructorParameters {
+  take: number;
+  sortOption: 'LATEST' | 'STARS';
+  value?: string;
+  searchAfter?: [number, number];
+  genres?: string[];
+  regions?: string[];
+  stars?: number;
+}
+
+export interface searchBestInstructorData {
+  id: number;
+  nickname: string;
+  profileCardImageUrl: null | string;
+  lecturerProfileImageUrl: {
+    url: string;
+  }[];
 }

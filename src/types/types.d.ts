@@ -1,3 +1,5 @@
+import { day } from './class';
+
 export interface IBootOption {
   pluginKey: string;
   language: string;
@@ -15,13 +17,17 @@ export interface IFilterButton {
 }
 
 export interface IFilterOptions {
-  location: Record<string, string[]>;
+  regions: Record<string, string[]>;
   genre: string[];
   review: number;
-  price: number[];
-  date: string[];
-  method: string[];
-  daytime: string[];
+  price?: [number, number];
+  date?: [string, string];
+  method?: string;
+  daytime?: {
+    week: day[];
+    time: string[];
+  };
+  group?: string;
 }
 
 export interface dateTimes {
@@ -82,6 +88,13 @@ export interface Instructors {
   imgURL: string[];
   average: number;
   href: string;
+}
+
+export interface InstructorCardProps extends Instructors {
+  largeImg: boolean;
+  isLiked: boolean;
+  searchAfter?: [number, number];
+  likeEvent?: (id: string | number) => void;
 }
 
 export interface INoticeMessage {
@@ -166,3 +179,92 @@ export interface PagenationFilterState {
   targetPage?: number;
   [key: string]: any | undefined;
 }
+
+export type TimeOfDay = 'MORNING' | 'AFTERNOON' | 'NIGHT' | 'DAWN';
+
+export interface SearchParams {
+  [key: string]:
+    | string
+    | 'LATEST'
+    | 'STARS'
+    | string[]
+    | number
+    | undefined
+    | TimeOfDay[]
+    | day[];
+  query?: string;
+  sortOption?: 'LATEST' | 'STARS';
+  genre?: string[];
+  regions?: string;
+  stars?: string;
+  group?: string;
+  gtePrice?: string;
+  ltePrice?: string;
+  gteDate?: string;
+  lteDate?: string;
+  method?: string;
+  days?: day[];
+  timeOfDay?: TimeOfDay[];
+}
+
+export interface instructorSearchData {
+  take: number;
+  sortOption: 'LATEST' | 'STARS';
+  value: string | undefined;
+  genres: string[];
+  regions: string[];
+  stars: number;
+  searchAfter?: [number, number];
+}
+
+export interface classSearchData {
+  take: number;
+  sortOption: 'LATEST' | 'STARS';
+  value: string | undefined;
+  genres: string[];
+  regions: string[];
+  stars: number;
+  isGroup: boolean;
+  gtePrice: number;
+  ltePrice: number;
+  gteDate: Date | undefined;
+  lteDate: Date | undefined;
+  lectureMethod: string | undefined;
+  days: day[];
+  timeOfDay: TimeOfDay[];
+  searchAfter?: [number, number];
+}
+
+export type CityList =
+  | '서울'
+  | '경기'
+  | '부산'
+  | '대구'
+  | '인천'
+  | '광주'
+  | '대전'
+  | '울산'
+  | '세종'
+  | '강원'
+  | '충북'
+  | '충남'
+  | '전북'
+  | '전남'
+  | '경북'
+  | '경남'
+  | '제주';
+
+export interface DayTimeFilterOption {
+  week: day[];
+  time: string[];
+}
+
+export type FilterKey =
+  | '지역'
+  | '장르'
+  | '평점'
+  | '가격'
+  | '지정날짜'
+  | '인원'
+  | '진행 방식'
+  | '요일/시간대';

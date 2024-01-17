@@ -90,6 +90,30 @@ export default async function RootLayout({
           </main>
           <Footer />
         </Providers>
+        <UserStoreInitializer authUser={authUser} userType={userType} />
+        <Header>
+          <UserProfileLinks />
+        </Header>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <main className="relative flex-1">
+          {children}
+          {modal}
+          <div className="fixed bottom-24 right-8 z-40">
+            <ControlOptions />
+          </div>
+        </main>
+        <Footer />
       </body>
     </html>
   );

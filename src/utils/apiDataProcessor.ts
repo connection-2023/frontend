@@ -18,8 +18,11 @@ import {
   classCreateData,
   IClassPostResponse,
   ClassCardType,
+  searchClass,
+  searchBestClassData,
 } from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
+import { searchInstructor } from '@/types/instructor';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -151,8 +154,8 @@ export const classOutputDataProcess = async (
         difficultyLevel === '상급'
           ? '상'
           : difficultyLevel === '중급'
-          ? '중'
-          : '하';
+            ? '중'
+            : '하';
 
       const newLectureMethod =
         lectureMethod === '원데이 레슨' ? '원데이' : '정기';
@@ -388,6 +391,7 @@ export const transformToCardData = (
       price,
       isGroup,
       startDate,
+      isLike,
       endDate,
       isActive,
       stars,
@@ -412,6 +416,7 @@ export const transformToCardData = (
       id,
       title,
       imgURL,
+      isLiked: isLike,
       date,
       status,
       review,
@@ -422,3 +427,155 @@ export const transformToCardData = (
       genre,
     };
   });
+
+export const transformSearchInstructor = (lecturers: searchInstructor[]) => {
+  return lecturers.map(
+    ({
+      id,
+      nickname,
+      regions,
+      genres,
+      lecturerImages,
+      stars,
+      affiliation,
+      isLiked,
+      searchAfter,
+    }) => ({
+      id,
+      searchAfter,
+      isLiked,
+      largeImg: false,
+      name: nickname,
+      teamAffiliation: affiliation,
+      address: regions.map(
+        ({ administrativeDistrict, district }) =>
+          `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
+      ),
+      genres: genres.map(({ genre }) => genre),
+      imgURL: lecturerImages,
+      average: stars,
+      href: `instructor/${id}`,
+    }),
+  );
+};
+
+export const transformSearchClass = (classList: searchClass[]) => {
+  return classList.map(
+    ({
+      id,
+      title,
+      startDate,
+      endDate,
+      lectureImages,
+      regions,
+      genres,
+      reviewCount,
+      isLiked,
+      lectureMethod, // 원데이, 정기 표시 안하나?
+      isGroup,
+      stars,
+      price,
+      lecturer,
+      isActive,
+      searchAfter,
+    }) => {
+      let status: '모집중' | '마감';
+      status = isActive ? '모집중' : '마감';
+
+      return {
+        id,
+        title,
+        date: `${format(parseISO(startDate), 'MM/dd')}~${format(
+          parseISO(endDate),
+          'MM/dd',
+        )} `,
+        status,
+        imgURL: lectureImages,
+        location: regions.map(
+          ({ administrativeDistrict, district }) =>
+            `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`,
+        ),
+        genre: genres.map(({ genre }) => genre),
+        type: isGroup ? '그룹레슨' : '개인레슨',
+        review: { average: stars, count: reviewCount },
+        price,
+        profile: {
+          src: lecturer.profileCardImageUrl,
+          nickname: lecturer.nickname,
+        },
+        isLiked: isLiked ? isLiked : false,
+        searchAfter,
+      };
+    },
+  );
+};
+
+export const transformSearchParamsLocation = (data: string[]) => {
+  const result: { [key: string]: string[] } = {};
+
+  data.forEach((item) => {
+    const spaceIndex = item.indexOf(' ');
+    const region = CITY_ABBREVIATION_NAME[item.substring(0, spaceIndex)];
+    const subRegion = item.substring(spaceIndex + 1);
+
+    if (!result[region]) {
+      result[region] =
+        subRegion === '전 지역' ? WARD_LIST[region] : [subRegion];
+    } else {
+      result[region].push(subRegion);
+    }
+  });
+
+  return result;
+};
+
+export const transformBestClassSearch = (classList: searchBestClassData[]) => {
+  return classList.map(
+    ({
+      id,
+      title,
+      startDate,
+      endDate,
+      lectureImage,
+      lectureToRegion,
+      lectureToDanceGenre,
+      reviewCount,
+      likedLecture,
+      isActive,
+      lectureMethod,
+      isGroup,
+      stars,
+      price,
+      lecturer,
+    }) => {
+      let status: '모집중' | '마감';
+      status = isActive ? '모집중' : '마감';
+
+      return {
+        id,
+        title,
+        date: `${format(parseISO(startDate), 'MM/dd')}~${format(
+          parseISO(endDate),
+          'MM/dd',
+        )} `,
+        status,
+        imgURL: lectureImage.map(({ imageUrl }) => imageUrl),
+        location: lectureToRegion.map(({ region }) => {
+          const { administrativeDistrict, district } = region;
+          return `${CITY_ABBREVIATION_NAME[administrativeDistrict]} ${district}`;
+        }),
+        genre: lectureToDanceGenre.map(
+          ({ danceCategory }) => danceCategory.genre,
+        ),
+        type: isGroup ? '그룹레슨' : '개인레슨',
+        review: { average: stars, count: reviewCount },
+        price,
+        profile: {
+          src: lecturer.profileCardImageUrl,
+          nickname: lecturer.nickname,
+        },
+        isLiked: likedLecture && likedLecture.length > 0 ? true : false,
+      };
+    },
+  );
+};

@@ -52,7 +52,7 @@ const Profile = ({
           />
         </div>
         <ArrowDownSVG
-          className={` fill-black ${
+          className={`h-[34px] w-[34px] fill-black ${
             isProfileMenu ? 'rotate-180 transform' : '-translate-x-0.5'
           } `}
         />

@@ -75,7 +75,7 @@ const SingleCalendar = ({
 
   const className =
     mode === 'schedule'
-      ? 'w-fit rounded-[0.625rem] px-5 py-4 md:shadow-horizontal'
+      ? 'w-fit rounded-lg px-5 py-4 md:shadow-horizontal'
       : mode === 'specific'
       ? 'flex w-fit rounded-[0.625rem] px-4 py-6 shadow-horizontal'
       : 'h-fit w-fit flex justify-center px-5 py-4';
