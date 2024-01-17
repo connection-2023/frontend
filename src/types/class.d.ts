@@ -476,3 +476,18 @@ export interface IUserClassResponse {
     profileCardImageUrl: string;
   };
 }
+
+export interface IReservation {
+  id: number;
+  representative: string;
+  phoneNumber: string;
+  participants: number;
+  requests: string;
+  lectureSchedule: {
+    id: number;
+    lectureId: number;
+    startDateTime: string;
+    endDateTime: string;
+    numberOfParticipants: number;
+  };
+}
