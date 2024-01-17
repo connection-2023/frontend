@@ -96,3 +96,5 @@ interface IPaymentCoupon {
   stackableCouponDiscountPrice: number | null;
   stackableCouponMaxDiscountPrice: number | null;
 }
+
+export type PaymentStatusType = WAITING_FOR_DEPOSIT | DONE | REFUSED;
