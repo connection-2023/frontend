@@ -1,5 +1,9 @@
 import { DOMAIN } from '@/constants/constants';
-import { IInstructorRegister, IApproveList } from '@/types/instructor';
+import {
+  IInstructorRegister,
+  IApproveList,
+  IUpdatePaymentStatusRequestData,
+} from '@/types/instructor';
 
 export const getInstructorProfile = async () => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
@@ -87,9 +91,34 @@ export const getPendingList = async (): Promise<IApproveList[] | Error> => {
       `${DOMAIN}/api/instructors/mypage/approve/list`,
     ).then((data) => data.json());
 
-    return response.data.requestList;
+    return response.data?.requestList;
   } catch (error) {
     console.error('승인 대기 리스트 조회 오류', error);
+    throw error;
+  }
+};
+
+export const patchPendingStatus = async (
+  data: IUpdatePaymentStatusRequestData,
+) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/instructors/mypage/approve/status`,
+      {
+        method: 'PATCH',
+        credentials: 'include',
+        body: JSON.stringify(data),
+      },
+    ).then((data) => data.json());
+
+    if (response.status !== 200) {
+      throw Error(response.message);
+    }
+
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    console.error('승인 대기 상태 변경 오류', error);
     throw error;
   }
 };
