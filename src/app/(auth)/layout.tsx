@@ -5,10 +5,17 @@ export const metadata: Metadata = {
   description: 'Connection 회원가입 페이지',
 };
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+const AuthLayout = ({
+  children,
+  modal,
+}: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) => {
   return (
     <section className="flex h-max flex-grow flex-col bg-gray-900 py-10">
       {children}
+      {modal}
     </section>
   );
 };

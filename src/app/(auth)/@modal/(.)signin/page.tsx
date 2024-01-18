@@ -1,4 +1,4 @@
-import LoginButtons from '@/app/(auth)/login/_components/LoginButtons';
+import LoginButtons from '@/app/(auth)/signin/_components/LoginButtons';
 import { ConnectionLogoSVG, AuthIconSVG } from '@/icons/svg';
 import RouterModal from '@/components/Modal/RouterModal';
 
