@@ -33,7 +33,6 @@ const Home = async () => {
         />
 
         <Suspense fallback={<BestClassLoading />}>
-          {/* @ts-expect-error Async Server Component */}
           <BestClass />
         </Suspense>
       </section>
@@ -59,7 +58,6 @@ const Home = async () => {
         </h2>
 
         <Suspense fallback={<RecentClassLoading />}>
-          {/* @ts-expect-error Async Server Component */}
           <RecentClass />
         </Suspense>
       </section>
