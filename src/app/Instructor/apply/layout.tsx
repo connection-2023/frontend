@@ -1,4 +1,3 @@
-import RecoilProvider from '@/recoil/RecoilProvider';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,5 +10,5 @@ export default function ApplyLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <RecoilProvider>{children}</RecoilProvider>;
+  return <>{children}</>;
 }
