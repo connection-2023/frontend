@@ -58,9 +58,13 @@ export interface InstructorApplyData {
   homepageUrl: string;
   introduction: {
     content: string;
+    deletedImages: { src: string }[];
+    clear: () => void;
   };
   experience: {
     content: string;
+    deletedImages: { src: string }[];
+    clear: () => void;
   };
 }
 
@@ -80,6 +84,21 @@ export interface IInstructorRegister {
   genres: string[];
   instagramPostUrls?: string[];
   etcGenres?: string[];
+}
+
+export interface InstructorUpdate {
+  newProfileImageUrls: string[];
+  etcGenres: string[];
+  genres: string[];
+  regions: string[];
+  profileCardImageUrl: string;
+  youtubeUrl: string;
+  instagramUrl: string;
+  homepageUrl: string;
+  affiliation: string;
+  introduction: string;
+  experience: string;
+  instagramPostUrls: string[];
 }
 
 export interface IInstructorReviewList {

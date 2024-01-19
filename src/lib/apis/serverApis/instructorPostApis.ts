@@ -9,7 +9,7 @@ export const getInstructorClassLists = async (
 ): Promise<IClassPostResponse[] | Error> => {
   try {
     const response = await fetch(
-      `${END_POINT}/lecturers/lectures/${lecturerId}/non-members`,
+      `${END_POINT}/lecturers/lectures/${lecturerId}`,
       {
         method: 'GET',
       },

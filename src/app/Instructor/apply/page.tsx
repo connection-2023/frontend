@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { deleteImage } from '@/lib/apis/imageApi';
 import { instructorRegister } from '@/lib/apis/instructorApi';
 import { useUserStore } from '@/store';
 import {
@@ -80,6 +81,22 @@ const ApplyPage = () => {
       const { newGenres, etcGenres } = categorizeGenres(genres);
 
       const newRegions = reqRegions(regions);
+
+      introduction.deletedImages.forEach(
+        async ({ src }) => await deleteImage({ imageUrl: src }),
+      );
+
+      if (introduction.clear && introduction.deletedImages.length > 0) {
+        introduction.clear();
+      }
+
+      experience.deletedImages.forEach(
+        async ({ src }) => await deleteImage({ imageUrl: src }),
+      );
+
+      if (experience.clear && experience.deletedImages.length > 0) {
+        experience.clear();
+      }
 
       const instructorData = {
         profileImageUrls: uploadImgList,

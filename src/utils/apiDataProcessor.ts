@@ -41,7 +41,7 @@ export const uploadImageFilesWithFallback = async (
     imageUrl: string;
   }[],
   mode: 'lecturers' | 'lectures',
-) => {
+): Promise<string[]> => {
   const updatedUrls = await Promise.all(
     profileImageUrls.map(async ({ file, imageUrl }) => {
       if (file) {

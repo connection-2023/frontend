@@ -138,7 +138,7 @@ const CustomEditor = ({
         )}
       </label>
 
-      <div className="w-full max-w-[calc(100vw)] sm:max-w-[40rem]">
+      <div className="w-full max-w-[calc(95vw)] sm:max-w-[40rem]">
         <Controller
           name={dataName}
           control={control}
