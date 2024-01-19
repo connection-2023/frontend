@@ -8,7 +8,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
   const { authUser } = useUserStore.getState();
 
   if (Number(authUser?.id) !== Number(id)) {
-    // redirect('/404');
+    redirect('/404');
   }
 
   let processData;

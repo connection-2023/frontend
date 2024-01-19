@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import InstructorIntroduction from '@/app/instructor/apply/_components/InstructorIntroduction';
+import { INSTRUCTOR_EDIT_SECTIONS } from '@/constants/constants';
 import { deleteImage } from '@/lib/apis/imageApi';
 import { updateInstructor } from '@/lib/apis/instructorPostApis';
 import {
@@ -109,10 +110,12 @@ const EditInstructor = ({ defaultData }: { defaultData: any }) => {
     setInvalidData(invalidList);
   };
 
-  const INSTRUCTOR_EDIT_SECTIONS = [
-    { id: 'profileImageUrls', label: '사진, 지역, 카테고리 설정' },
-    { id: '강사소개', label: '강사 소개글 작성' },
-  ];
+  const handleEditCancel = () => {
+    const confirm = window.confirm('프로필 수정을 취소하겠습니까?');
+    if (confirm) {
+      router.push(`/instructor/${defaultData.id}`);
+    }
+  };
 
   return (
     <>
@@ -133,7 +136,7 @@ const EditInstructor = ({ defaultData }: { defaultData: any }) => {
           수정 완료
         </Button>
 
-        <UniqueButton color="secondary" size="large">
+        <UniqueButton color="secondary" size="large" onClick={handleEditCancel}>
           수정 취소
         </UniqueButton>
       </form>

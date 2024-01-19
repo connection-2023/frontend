@@ -336,3 +336,8 @@ export const PAYMENT_ORDER_LIST = [
 ];
 
 export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
+
+export const INSTRUCTOR_EDIT_SECTIONS = [
+  { id: 'profileImageUrls', label: '사진, 지역, 카테고리 설정' },
+  { id: '강사소개', label: '강사 소개글 작성' },
+];
