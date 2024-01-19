@@ -1,11 +1,5 @@
 import { ConnectionLogoSVG, AuthIconSVG } from '@/icons/svg';
 import LoginButtons from './_components/LoginButtons';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Connection | 로그인 페이지',
-  description: 'Connection 로그인 페이지',
-};
 
 const LoginPage = () => {
   return (
