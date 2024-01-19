@@ -1,81 +1,98 @@
 'use client';
-import Link from 'next/link';
+import { useMutation } from '@tanstack/react-query';
 import { useState, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
+import { patchPendingStatus } from '@/lib/apis/instructorApi';
+import { formatClassTime } from '@/utils/dateTimeUtils';
+import { formatPhoneNumber } from '@/utils/parseUtils';
+import ApplicantProfile from './ApplicantProfile';
 import DeclineModal from './DeclineModal';
+import { IFormValues } from './DeclineModal';
 import PaymentInfoModal from './PaymentInfoModal';
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
-import Dropdown from '@/components/Dropdown/Dropdown';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import PendingStatusButton from './PendingStatusButton';
+import {
+  IUpdatePaymentStatusRequestData,
+  IApprovePayment,
+} from '@/types/instructor';
 
-const PendingList = () => {
-  const [isProfileMenuOpened, setIsProfileMenuOpened] = useState(false);
+interface PendingListProps {
+  payment: IApprovePayment;
+  lectureId: number;
+  title: string;
+}
+
+const PendingList = ({ payment, lectureId, title }: PendingListProps) => {
+  const [isRequestOpened, setIsRequestOpened] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [isDeclineModalOpened, setIsDeclineModalOpened] = useState(false);
   const [isDeclined, setIsDeclined] = useState(false);
   const [isRequestModalOpened, setIsRequestModalOpened] = useState(false);
-  const listRef = useRef(null);
+  const requestRef = useRef(null);
 
-  useClickAway(listRef, () => {
-    setIsProfileMenuOpened(false);
+  const { id, user, paymentMethod, finalPrice, reservation } = payment;
+  const isRequest = reservation[0].requests.length > 1;
+  const classTime = formatClassTime(
+    reservation[0].lectureSchedule.startDateTime,
+    reservation[0].lectureSchedule.endDateTime,
+  );
+
+  const mutation = useMutation({
+    mutationFn: (requestData: IUpdatePaymentStatusRequestData) => {
+      return patchPendingStatus(requestData);
+    },
   });
 
-  const handleRequestClick = () => {};
+  useClickAway(requestRef, () => {
+    setIsRequestOpened(false);
+  });
 
-  const handleApprove = () => {
-    setIsApproved(true);
+  const handleDeclineModalStatus = (status: boolean) => {
+    setIsDeclineModalOpened(status);
+    if (status) setIsRequestModalOpened(false);
   };
 
-  const handleApproveCancel = () => {
-    setIsApproved(false);
+  const handleApproveStatus = (status: boolean) => {
+    setIsApproved(status);
   };
 
-  const handleSubmitDeclineForm = () => {
-    setIsDeclined(true);
-    setIsApproved(true);
-  };
+  const handleSubmitDeclineForm = (data: IFormValues) => {
+    // 승인 거절
+    const requestStatusData = {
+      paymentId: id,
+      status: 'REFUSED',
+      ...data,
+    };
 
-  const profileOptions = [
-    {
-      component: (
-        <Link href="" className="whitespace-nowrap text-sm">
-          프로필 보러가기
-        </Link>
-      ),
-    },
-    {
-      component: (
-        <Link href="" className="whitespace-nowrap text-sm">
-          채팅하기
-        </Link>
-      ),
-    },
-  ];
+    mutation.mutate(requestStatusData, {
+      onError: (error) => {
+        toast.error(error.message);
+      },
+
+      onSuccess: () => {
+        setIsDeclined(true);
+        setIsApproved(true);
+        toast.success('승인이 거절되었습니다!');
+      },
+    });
+  };
 
   return (
     <>
       <li className="hidden w-full items-center justify-between md:flex">
-        <div className="flex items-center gap-2">
-          <ProfileImg size="small" src={null} label={false} />
-          <div className="relative" ref={listRef}>
-            <button
-              onClick={() => setIsProfileMenuOpened(!isProfileMenuOpened)}
-            >
-              nickname
-            </button>
+        <ApplicantProfile user={user} reservation={reservation} />
 
-            {isProfileMenuOpened && (
-              <Dropdown options={profileOptions} className="left-0 top-6" />
-            )}
-          </div>
-        </div>
-
-        <p>23.08/04 14:00-15:00</p>
-        <p className="hidden lg:block">010-1234-5678</p>
+        <p className="w-44">{classTime}</p>
         <p className="hidden lg:block">
-          <span className="mr-2 w-14 text-sub-color1">현장결제</span>
-          50,000원 (1명)
+          {formatPhoneNumber(reservation[0].phoneNumber)}
+        </p>
+        <p className="hidden lg:block">
+          <span className="mr-2 w-14 text-sub-color1">
+            {paymentMethod.name}
+          </span>
+          {`${finalPrice.toLocaleString()}원 (${
+            reservation[0].participants
+          }명)`}
         </p>
 
         <button
@@ -85,102 +102,55 @@ const PendingList = () => {
           결제정보/요청사항
         </button>
 
-        <button
-          onClick={handleRequestClick}
-          className="hidden text-gray-300 lg:block"
-        >
-          요청사항
-        </button>
+        <div className="relative" ref={requestRef}>
+          <button
+            onClick={() => {
+              setIsRequestOpened(!isRequestOpened);
+            }}
+            className={`hidden ${
+              isRequest
+                ? 'text-sub-color1'
+                : 'pointer-events-none text-gray-300'
+            } lg:block`}
+          >
+            요청사항
+          </button>
 
-        <div className="flex w-32 justify-between whitespace-nowrap text-sm">
-          <div className="w-11">
-            {isApproved ? (
-              <UniqueButton
-                color="secondary"
-                size="medium"
-                onClick={handleApproveCancel}
-              >
-                취소
-              </UniqueButton>
-            ) : (
-              <Button
-                color="secondary"
-                size="medium"
-                onClick={() => setIsDeclineModalOpened(true)}
-              >
-                거절
-              </Button>
-            )}
-          </div>
-
-          <div className="w-[4.5rem]">
-            {isApproved ? (
-              <div className="flex h-[35px] w-full items-center justify-center rounded-md bg-gray-300 text-white">
-                {isDeclined ? '거절' : '승인완료'}
-              </div>
-            ) : (
-              <Button color="default" size="medium" onClick={handleApprove}>
-                승인
-              </Button>
-            )}
-          </div>
+          {isRequest && isRequestOpened && (
+            <div className="absolute right-0 h-[104px] w-[515px] translate-x-[5.5rem] bg-request px-0.5">
+              <p className="mt-4 h-[85px] overflow-y-auto whitespace-pre-line break-keep px-2.5 py-2 text-sm font-normal">
+                {reservation[0].requests}
+              </p>
+            </div>
+          )}
         </div>
+
+        <PendingStatusButton
+          id={id}
+          lectureId={lectureId}
+          isApproved={isApproved}
+          isDeclined={isDeclined}
+          handleDeclineModalStatus={handleDeclineModalStatus}
+          handleApproveStatus={handleApproveStatus}
+        />
       </li>
 
       {/* 반응형 */}
       <li className="px-3.5 pt-2.5 md:hidden">
         <div className="mb-3 flex w-full justify-between">
-          <div className="flex items-center gap-2">
-            <ProfileImg size="small" src={null} label={false} />
-            <div className="relative" ref={listRef}>
-              <button
-                onClick={() => setIsProfileMenuOpened(!isProfileMenuOpened)}
-              >
-                nickname
-              </button>
+          <ApplicantProfile user={user} reservation={reservation} />
 
-              {isProfileMenuOpened && (
-                <Dropdown options={profileOptions} className="left-0 top-6" />
-              )}
-            </div>
-          </div>
-
-          <div className="flex w-32 justify-between whitespace-nowrap text-sm">
-            <div className="w-11">
-              {isApproved ? (
-                <UniqueButton
-                  color="secondary"
-                  size="medium"
-                  onClick={handleApproveCancel}
-                >
-                  취소
-                </UniqueButton>
-              ) : (
-                <Button
-                  color="secondary"
-                  size="medium"
-                  onClick={() => setIsDeclineModalOpened(true)}
-                >
-                  거절
-                </Button>
-              )}
-            </div>
-
-            <div className="w-[4.5rem]">
-              {isApproved ? (
-                <div className="flex h-[35px] w-full items-center justify-center rounded-md bg-gray-300 text-white">
-                  {isDeclined ? '거절' : '승인완료'}
-                </div>
-              ) : (
-                <Button color="default" size="medium" onClick={handleApprove}>
-                  승인
-                </Button>
-              )}
-            </div>
-          </div>
+          <PendingStatusButton
+            id={id}
+            lectureId={lectureId}
+            isApproved={isApproved}
+            isDeclined={isDeclined}
+            handleDeclineModalStatus={handleDeclineModalStatus}
+            handleApproveStatus={handleApproveStatus}
+          />
         </div>
 
-        <p>23.08/04 14:00-15:00</p>
+        <p>{classTime}</p>
 
         <button
           onClick={() => setIsRequestModalOpened(true)}
@@ -190,16 +160,38 @@ const PendingList = () => {
         </button>
       </li>
 
-      <DeclineModal
-        isDeclineModalOpened={isDeclineModalOpened}
-        handleClosed={() => setIsDeclineModalOpened(false)}
-        handleSubmitDeclineForm={handleSubmitDeclineForm}
-      />
+      {isDeclineModalOpened && (
+        <DeclineModal
+          isDeclineModalOpened={isDeclineModalOpened}
+          handleClosed={() => setIsDeclineModalOpened(false)}
+          handleSubmitDeclineForm={handleSubmitDeclineForm}
+          applicant={reservation[0].representative}
+          title={title}
+          applyClass={classTime}
+          amount={finalPrice}
+        />
+      )}
 
-      <PaymentInfoModal
-        isModalOpened={isRequestModalOpened}
-        handleClosed={() => setIsRequestModalOpened(false)}
-      />
+      {isRequestModalOpened && (
+        <PaymentInfoModal
+          isModalOpened={isRequestModalOpened}
+          handleClosed={() => setIsRequestModalOpened(false)}
+          applicant={reservation[0].representative}
+          classTitle={title}
+          applyList={classTime}
+          applyCount={reservation[0].participants}
+          amount={finalPrice}
+          applyTime=""
+          paymentMethod={paymentMethod.name}
+          request={reservation[0].requests}
+          id={id}
+          lectureId={lectureId}
+          isApproved={isApproved}
+          isDeclined={isDeclined}
+          handleDeclineModalStatus={handleDeclineModalStatus}
+          handleApproveStatus={handleApproveStatus}
+        />
+      )}
     </>
   );
 };

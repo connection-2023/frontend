@@ -550,6 +550,21 @@ export interface IUserClassResponse {
   };
 }
 
+export interface IReservation {
+  id: number;
+  representative: string;
+  phoneNumber: string;
+  participants: number;
+  requests: string;
+  lectureSchedule: {
+    id: number;
+    lectureId: number;
+    startDateTime: string;
+    endDateTime: string;
+    numberOfParticipants: number;
+  };
+}
+
 export interface searchBestClassData {
   id: number;
   title: string;

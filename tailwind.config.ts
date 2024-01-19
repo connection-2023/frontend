@@ -32,6 +32,7 @@ const config: Config = {
       },
       backgroundImage: {
         'checkout-receipt': "url('/images/receipt-background.svg')",
+        request: "url('/images/requestBox.svg')",
       },
       borderRadius: {
         md: '0.31rem',
