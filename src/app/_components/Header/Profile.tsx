@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { ArrowDownSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 import { useScrollStore } from '@/store/scrollStore';
 import ProfileMenu from './ProfileMenu';
@@ -51,9 +51,9 @@ const Profile = ({
             label={false}
           />
         </div>
-        <ArrowDownSVG
+        <ArrowUpSVG
           className={`h-[34px] w-[34px] fill-black ${
-            isProfileMenu ? 'rotate-180 transform' : '-translate-x-0.5'
+            isProfileMenu ? 'transform' : '-translate-x-0.5 rotate-180'
           } `}
         />
       </div>

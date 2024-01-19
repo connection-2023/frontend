@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { CommentSVG } from '@/icons/svg';
+import { ChatSVG } from '@/icons/svg';
 import { getAllRegisterLists, getRegisterLists } from '@/lib/apis/classApis';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import { IRegisterLists } from '@/types/class';
@@ -63,7 +63,7 @@ const ClassOverview = ({
             aria-label="전체 채팅"
             className="flex h-[1.75rem] w-[5.5625rem] items-center justify-center gap-[0.13rem] rounded-[0.3125rem] bg-black text-sm text-white"
           >
-            <CommentSVG width="16" height="17" fill="white" />
+            <ChatSVG width="16" height="17" fill="white" />
             전체 채팅
           </button>
         </h3>
@@ -96,7 +96,7 @@ const ClassRoster = ({
         {enrollmentCount && <span>{enrollmentCount}회 신청</span>}
 
         <Link href={`/chat/${userId}`} aria-label="개인 채팅">
-          <CommentSVG
+          <ChatSVG
             width="29"
             height="30"
             fill="black"

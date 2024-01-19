@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { WARD_LIST } from '@/constants/administrativeDistrict';
 import { PRICE_FILTER_MAX, PRICE_FILTER_MIN } from '@/constants/constants';
-import { ArrowDownSVG, ArrowUpSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 import { usefilterStore } from '@/store';
 import Accordion from '../Accordion/Accordion';
 import ResetButton from '../Button/ResetButton';
@@ -74,7 +74,7 @@ const FilterAccordion = ({
             {isOpened ? (
               <ArrowUpSVG className="h-[34px] w-[34px] fill-black" />
             ) : (
-              <ArrowDownSVG className="h-[34px] w-[34px] fill-black" />
+              <ArrowUpSVG className="h-[34px] w-[34px] rotate-180 fill-black" />
             )}
           </button>
           {isOpened ? (
