@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { ArrowDownSVG, SearchSVG } from '@/icons/svg';
+import { ArrowUpSVG, SearchSVG } from '@/icons/svg';
 
 const SearchInput = ({ query }: { query: string }) => {
   const [navView, setNavView] = useState(false);
@@ -92,7 +92,7 @@ const SearchInput = ({ query }: { query: string }) => {
           }`}
         >
           {selectedOption?.label}
-          <ArrowDownSVG className="h-7 w-7  duration-300" />
+          <ArrowUpSVG className="h-7 w-7 rotate-180 duration-300" />
         </button>
       </nav>
       <input

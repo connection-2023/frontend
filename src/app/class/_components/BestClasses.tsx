@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { ArrowDownSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 import Accordion from '@/components/Accordion/Accordion';
 import Carousel from '@/components/Carousel/Carousel';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
@@ -17,9 +17,9 @@ const BestlCasses = ({ bestClassList }: { bestClassList: ClassCardType[] }) => {
       <h1 className="flex items-center px-4 font-semibold text-white sm:px-9 lg:text-lg xl:px-16">
         오늘의 인기 클래스
         <button onClick={() => setView((prev) => !prev)}>
-          <ArrowDownSVG
+          <ArrowUpSVG
             className={`h-6 w-6 fill-white duration-300 sm:h-9 sm:w-9 ${
-              view && '-rotate-180'
+              !view && '-rotate-180'
             }`}
           />
         </button>
