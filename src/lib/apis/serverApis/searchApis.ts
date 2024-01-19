@@ -113,16 +113,11 @@ export const searchBestInstructor = async (
           'Content-Type': 'application/json',
         };
 
-    const response = await fetch(
-      userState
-        ? `${END_POINT}/popular-lecturers/users`
-        : `${END_POINT}/popular-lecturers/non-members`,
-      {
-        method: 'GET',
-        credentials: 'include',
-        headers,
-      },
-    );
+    const response = await fetch(`${END_POINT}/popular-lecturers`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    });
 
     if (!response.ok) {
       throw new Error(`인기 강사 검색 오류: ${response.status}`);
@@ -152,16 +147,11 @@ export const searchBestClass = async (
           'Content-Type': 'application/json',
         };
 
-    const response = await fetch(
-      userState
-        ? `${END_POINT}/popular-lectures/users`
-        : `${END_POINT}/popular-lectures/non-members`,
-      {
-        method: 'GET',
-        credentials: 'include',
-        headers,
-      },
-    );
+    const response = await fetch(`${END_POINT}/popular-lectures`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    });
 
     if (!response.ok) {
       throw new Error(`인기 강의 검색 오류: ${response.status}`);
