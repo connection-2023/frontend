@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useWindowSize } from 'react-use';
 import { useClickAway } from 'react-use';
-import { ArrowUpSVG, ArrowDownSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 import { usefilterStore } from '@/store';
 import Button from '../Button/Button';
 import ResetButton from '../Button/ResetButton';
@@ -90,7 +90,7 @@ const FilterModal = ({
         {isOpened ? (
           <ArrowUpSVG className="h-[34px] w-[34px] fill-sub-color1" />
         ) : (
-          <ArrowDownSVG className="h-[34px] w-[34px] fill-sub-color1" />
+          <ArrowUpSVG className="h-[34px] w-[34px] rotate-180 fill-sub-color1" />
         )}
       </button>
       <button
@@ -98,7 +98,7 @@ const FilterModal = ({
         onClick={() => setIsfilterModalOpen(true)}
       >
         {label}
-        <ArrowDownSVG className="h-[34px] w-[34px] fill-sub-color1" />
+        <ArrowUpSVG className="h-[34px] w-[34px] rotate-180 fill-sub-color1" />
       </button>
       {isOpened && (
         <div

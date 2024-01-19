@@ -2,13 +2,12 @@ import { format, parseISO } from 'date-fns';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { ClassStatusSVG } from '@/icons/svg';
 import { IMonthlyClassSchedules } from '@/types/class';
 
 const statusColor: Record<string, string> = {
-  private: 'fill-sub-color1',
-  group: 'fill-main-color',
-  full: 'fill-sub-color2',
+  private: 'bg-sub-color1',
+  group: 'bg-main-color',
+  full: 'bg-sub-color2',
 };
 
 const ResponsiveScheduleView = ({
@@ -44,10 +43,10 @@ const ResponsiveScheduleView = ({
       {schedules.map((schedule) => (
         <li key={nanoid()} className="flex text-sm">
           <p className="mb-2 flex w-28 items-center gap-1 whitespace-nowrap font-semibold">
-            <ClassStatusSVG
-              width="11"
-              height="11"
-              className={statusColor[schedule.status]}
+            <span
+              className={`h-[11px] w-[11px] rounded-full ${
+                statusColor[schedule.status]
+              }`}
             />
             {schedule.time}
           </p>

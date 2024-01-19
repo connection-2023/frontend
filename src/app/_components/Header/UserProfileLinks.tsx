@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { dummyUserInfo } from '@/constants/dummy';
-import { AlarmSVG, CommentSVG, SearchSVG } from '@/icons/svg';
+import { AlarmSVG, ChatSVG, SearchSVG } from '@/icons/svg';
 import { useUserStore } from '@/store/userStore';
 import Profile from './Profile';
 import { instructorProfile, userProfile } from '@/types/auth';
@@ -35,7 +35,7 @@ const UserProfileLinks = () => {
           </button>
 
           <button className="relative">
-            <CommentSVG fill="black" width="29" height="30" />
+            <ChatSVG fill="black" width="29" height="30" />
             <span className="absolute -right-1.5 top-0 min-w-[1rem] rounded-full bg-main-color px-1 text-xs font-bold text-white">
               {commentCount}
             </span>

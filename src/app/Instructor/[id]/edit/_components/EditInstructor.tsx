@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import InstructorIntroduction from '@/app/instructor/apply/_components/InstructorIntroduction';
 import { INSTRUCTOR_EDIT_SECTIONS } from '@/constants/constants';
 import { deleteImage } from '@/lib/apis/imageApi';
 import { updateInstructor } from '@/lib/apis/instructorPostApis';
@@ -12,6 +11,7 @@ import {
   reqRegions,
   uploadImageFilesWithFallback,
 } from '@/utils/apiDataProcessor';
+import InstructorIntroduction from '../../../apply/_components/InstructorIntroduction';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 import Nav from '@/components/Nav/Nav';

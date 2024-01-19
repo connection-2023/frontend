@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { ArrowDownSVG, NotFoundSVG } from '@/icons/svg';
+import { ArrowUpSVG, NotFoundSVG } from '@/icons/svg';
 import BlockedInstructors from './BlockedInstructors';
 import InterestedInstructors from './InterestedInstructors';
 import FineSplitIcon from '@/components/InstructorCard/FineSplitIcon';
@@ -119,9 +119,9 @@ const InstructorView = ({ likesList, blockedList }: InstructorViewProps) => {
                     onClick={() => setAccordion((state) => !state)}
                     className="sm:hidden"
                   >
-                    <ArrowDownSVG
+                    <ArrowUpSVG
                       className={`h-[34px] w-[34px] fill-main-color duration-200 ${
-                        accordion && '-rotate-180'
+                        !accordion && '-rotate-180'
                       }`}
                     />
                   </button>

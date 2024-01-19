@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { ArrowDownSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 
 interface SelectBoxProps {
   lists: string[];
@@ -29,9 +29,9 @@ const SelectBox = ({ lists, selected, onSelect }: SelectBoxProps) => {
         className={`flex h-8 w-full cursor-pointer items-center pl-2 ${selectBoxBorderStyle}`}
       >
         <span className="flex-1">{selected}</span>
-        <ArrowDownSVG
+        <ArrowUpSVG
           className={`h-[34px] w-[34px] fill-gray-100 ${
-            isListOpened && 'rotate-180'
+            !isListOpened && 'rotate-180'
           }`}
         />
       </div>

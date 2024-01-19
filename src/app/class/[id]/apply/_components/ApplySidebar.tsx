@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import ApplyButton from '@/components/Button/ApplyButton';
-import { ArrowDownSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
 
@@ -165,9 +165,9 @@ const Agreement = ({ title, detail }: AgreementProps) => {
       <li className="flex items-center">
         <p className="flex-1">{title}</p>
         <button onClick={() => setIsOpen(!isOpen)} aria-label="자세히보기">
-          <ArrowDownSVG
+          <ArrowUpSVG
             className={`h-[34px] w-[34px] fill-gray-500 ${
-              isOpen ? 'rotate-180' : ''
+              isOpen ? '' : 'rotate-180'
             }`}
           />
         </button>

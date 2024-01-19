@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import { ArrowDownSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 
 interface SelectProps {
   defaultValue: string;
@@ -42,7 +42,7 @@ const NoborderSelect = ({
       }`}
     >
       {selectedValue}
-      <ArrowDownSVG className="h-7 w-[1.6rem] -translate-x-1.5 -translate-y-1 fill-gray-500" />
+      <ArrowUpSVG className="h-7 w-[1.6rem] -translate-x-1.5 -translate-y-1 rotate-180 fill-gray-500" />
       {isDropdownVisible && (
         <ul className="absolute left-0 right-0 top-full rounded-b-md bg-white shadow-[1px_2px_4px_0px_rgba(0,0,0,0.25)]">
           {selectList.map((value) =>
