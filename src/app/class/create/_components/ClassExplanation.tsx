@@ -1,5 +1,9 @@
 import { useFormContext, Controller } from 'react-hook-form';
-import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
+import {
+  ANNOUNCEMENT,
+  CLASS_OPERATION_PLAN,
+  QUILL_DEFAULT_VALUE,
+} from '@/constants/constants';
 import { useClassCreateStore } from '@/store/classCreate';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
@@ -47,7 +51,7 @@ const ClassExplanation = () => {
       <CustomEditor
         title="커리큘럼"
         dataName="curriculum"
-        defaultValue={classData?.curriculum}
+        defaultValue={classData?.curriculum || QUILL_DEFAULT_VALUE}
         height="652px"
         maxLength={3000}
         minLength={200}

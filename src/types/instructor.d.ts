@@ -9,8 +9,14 @@ export interface instructorPostResponse {
   affiliation: string;
   introduction: string;
   experience: string;
-  lecturerRegion: any; // 추후 변경 예정
-  lecturerDanceGenre: any; // 추후 변경 예정
+  lecturerRegion: {
+    region: { administrativeDistrict: string; district: string };
+  }[];
+  lecturerDanceGenre: {
+    danceCategoryId: number;
+    name: null;
+    danceCategory: { genre: string };
+  }[];
   lecturerInstagramPostUrl: Url[]; // 추후 변경 예정
   lecturerProfileImageUrl: Url[]; // 추후 변경 예정
   stars: number;

@@ -138,7 +138,7 @@ const CustomEditor = ({
         )}
       </label>
 
-      <div className="w-full">
+      <div className="w-full max-w-[calc(100vw)] sm:max-w-[40rem]">
         <Controller
           name={dataName}
           control={control}
@@ -159,7 +159,7 @@ const CustomEditor = ({
                   content,
                   deletedImages: deletedImagesRef.current,
                   clear: () => {
-                    setValue('curriculum', {
+                    setValue(dataName, {
                       content,
                       deletedImages: [],
                     });
@@ -170,7 +170,7 @@ const CustomEditor = ({
               lang="ko"
               width="100%"
               height={height}
-              setContents={field.value.content || QUILL_DEFAULT_VALUE}
+              setContents={field.value.content}
               setOptions={{
                 buttonList: TOOLBAR,
               }}

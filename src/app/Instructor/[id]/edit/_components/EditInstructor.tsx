@@ -2,12 +2,12 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import InstructorIntroduction from '@/app/instructor/apply/_components/InstructorIntroduction';
 
-const EditInstructor = () => {
+const EditInstructor = ({ defaultData }: { defaultData: any }) => {
   const formMethods = useForm({ shouldFocusError: false });
 
   return (
     <FormProvider {...formMethods}>
-      <InstructorIntroduction />;
+      <InstructorIntroduction defaultData={defaultData} />
     </FormProvider>
   );
 };

@@ -26,9 +26,10 @@ const LoginButtons = () => {
 
       store.setAuthUser(profileRes.data.myProfile);
       store.setUserType('user');
-      toast.success('로그인 성공!');
-      router.replace('/');
-      router.refresh();
+      // toast.success('로그인 성공!');
+      // router.replace('/');
+      // router.refresh();
+      window.location.reload();
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
 
