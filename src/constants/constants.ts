@@ -3,7 +3,7 @@ import { ConsentListType } from '@/types/auth';
 import { day, ReviewOrderType } from '@/types/class';
 import { TimeOfDay } from '@/types/types';
 
-export const DOMAIN = 'https://connection-frontend-ityji5y3h-eunseo-jo.vercel.app/'; // 임시 dev 서버
+export const DOMAIN = 'http://localhost:3000'; // 변경 필요
 
 export const ProfileImgSize = {
   xsmall: 22,
