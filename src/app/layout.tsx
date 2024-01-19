@@ -26,10 +26,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  modal,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }) {
   const cookieStore = cookies();
   const user = cookieStore.get('userAccessToken')?.value;
@@ -108,7 +106,6 @@ export default async function RootLayout({
         />
         <main className="relative flex-1">
           {children}
-          {modal}
           <div className="fixed bottom-24 right-8 z-40">
             <ControlOptions />
           </div>
