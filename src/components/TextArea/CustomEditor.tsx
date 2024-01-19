@@ -123,7 +123,7 @@ const CustomEditor = ({
   };
 
   return (
-    <section className="relative z-0 flex w-full flex-col">
+    <section id={title} className="relative flex w-full flex-col">
       <label className="flex text-lg font-bold">
         <h2
           id={dataName}

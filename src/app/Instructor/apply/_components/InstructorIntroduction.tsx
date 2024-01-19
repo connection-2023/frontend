@@ -25,7 +25,7 @@ const InstructorIntroduction = ({
   } = useFormContext();
 
   return (
-    <main className="my-10 flex flex-col gap-10">
+    <div className="mb-10 flex flex-col gap-10">
       <section
         id="profileImageUrls"
         className="flex w-full flex-col border-b border-solid border-gray-500 pb-10"
@@ -179,7 +179,7 @@ const InstructorIntroduction = ({
         minLength={0}
         defaultValue={defaultData.experience}
       />
-    </main>
+    </div>
   );
 };
 

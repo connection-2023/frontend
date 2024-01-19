@@ -13,6 +13,7 @@ import {
 } from '@/utils/apiDataProcessor';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
+import Nav from '@/components/Nav/Nav';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { InstructorApplyData } from '@/types/instructor';
 import { ErrorMessage } from '@/types/types';
@@ -108,8 +109,19 @@ const EditInstructor = ({ defaultData }: { defaultData: any }) => {
     setInvalidData(invalidList);
   };
 
+  const INSTRUCTOR_EDIT_SECTIONS = [
+    { id: 'profileImageUrls', label: '사진, 지역, 카테고리 설정' },
+    { id: '강사소개', label: '강사 소개글 작성' },
+  ];
+
   return (
     <>
+      <h1 className="mb-6 mt-3 text-2xl font-bold">프로필 수정</h1>
+
+      <div className="w-full text-sm font-bold text-gray-500 sm:text-xl [&>*:nth-child(1)]:justify-evenly">
+        <Nav sections={INSTRUCTOR_EDIT_SECTIONS} />
+      </div>
+
       <FormProvider {...formMethods}>
         <InstructorIntroduction defaultData={defaultData} />
       </FormProvider>
