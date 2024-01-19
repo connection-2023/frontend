@@ -89,7 +89,9 @@ const EditInstructor = ({ defaultData }: { defaultData: any }) => {
       };
 
       await updateInstructor(instructorData);
+      toast.success('강사 프로필 수정 완료');
       router.push(`/instructor/${defaultData.id}`);
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         toast.error('잠시 후 다시 시도해 주세요');

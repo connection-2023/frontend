@@ -34,7 +34,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
   }
 
   return (
-    <main className="mx-auto mb-28 flex w-full max-w-[40rem] flex-col items-center px-5 ">
+    <main className="mx-auto mb-28 flex w-full max-w-[40rem] flex-col items-center px-5">
       <EditInstructor defaultData={processData} />
     </main>
   );

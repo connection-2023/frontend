@@ -29,7 +29,6 @@ const InstructorDetailPage = async ({
   params: { id: string };
 }) => {
   const userStoreState = useUserStore.getState();
-  console.log(userStoreState.userType);
 
   const profile = getInstructor(id, userStoreState.userType === 'user');
   const classLists = getInstructorClassLists(id);

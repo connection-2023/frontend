@@ -15,7 +15,7 @@ export const getInstructorClassLists = async (
       },
     ).then((data) => data.json());
 
-    return response.data.lecture;
+    return response.data.lecture.lecture;
   } catch (error) {
     return new Error('잘못된 요청입니다!');
   }
