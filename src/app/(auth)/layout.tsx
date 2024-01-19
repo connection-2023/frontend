@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Connection | 회원가입 페이지',
-  description: 'Connection 회원가입 페이지',
+  title: 'Connection | 로그인',
+  description: 'Connection | 로그인',
 };
 
 const AuthLayout = ({
