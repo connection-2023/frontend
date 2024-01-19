@@ -7,11 +7,24 @@ const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 export const getInstructorClassLists = async (
   lecturerId: string,
 ): Promise<IClassPostResponse[] | Error> => {
+  const cookieStroe = cookies();
+  const userToken = cookieStroe.get('userAccessToken')?.value;
+  const headers: Record<string, string> = userToken
+    ? {
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json',
+      }
+    : {
+        'Content-Type': 'application/json',
+      };
+
   try {
     const response = await fetch(
       `${END_POINT}/lecturers/lectures/${lecturerId}`,
       {
         method: 'GET',
+        credentials: 'include',
+        headers,
       },
     ).then((data) => data.json());
 

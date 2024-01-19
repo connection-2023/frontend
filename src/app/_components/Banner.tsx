@@ -14,7 +14,7 @@ const Banner = () => {
         </p>
 
         <Link
-          href=""
+          href="/class"
           className="flex h-[2.8rem] w-[14.375rem] items-center justify-center rounded-[3.13rem] bg-main-color text-lg font-bold text-white"
         >
           클래스 보러가기

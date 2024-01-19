@@ -13,7 +13,6 @@ export const GET = async (request: NextRequest) => {
   const order = searchParams.get('orderBy');
 
   const token = request.cookies.get('userAccessToken')?.value;
-  const path = token ? '/users' : '/non-members';
 
   const headers: Record<string, string> = token
     ? {
@@ -25,7 +24,7 @@ export const GET = async (request: NextRequest) => {
       };
 
   const serverResponse = await fetch(
-    END_POINT + `/lecture-reviews/lectures/${id + path}?orderBy=${order}`,
+    END_POINT + `/lecture-reviews/lectures/${id}?orderBy=${order}`,
     {
       headers,
     },

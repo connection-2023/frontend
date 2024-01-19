@@ -44,6 +44,10 @@ const config: StorybookConfig = {
       __dirname,
       '../public/images/receipt-background.svg',
     );
+    config.resolve.alias['/images/requestBox.svg'] = path.resolve(
+      __dirname,
+      '../public//images/requestBox.svg',
+    );
 
     config.resolve.plugins.push(
       new TsconfigPathsPlugin({

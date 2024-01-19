@@ -13,7 +13,7 @@ export const GET = async (request: NextRequest) => {
   const order = searchParams.get('orderBy');
 
   const token = request.cookies.get('userAccessToken')?.value;
-  const path = token ? '/users' : '/non-members';
+
   const {
     displayCount,
     currentPage,
@@ -35,7 +35,7 @@ export const GET = async (request: NextRequest) => {
       };
 
   const serverResponse = await fetch(
-    END_POINT + `/lecture-reviews/lecturers/${lecturerId + path}?${query}`,
+    END_POINT + `/lecture-reviews/lecturers/${lecturerId}?${query}`,
     {
       headers,
     },

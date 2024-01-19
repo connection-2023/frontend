@@ -1,3 +1,5 @@
+import { IReservation } from './class';
+import { PaymentStatusType } from './payment';
 export interface instructorPostResponse {
   profileCardImageUrl: string | null;
   nickname: string;
@@ -197,6 +199,76 @@ export interface InstructorBlock {
   imgURL: string[];
 }
 
+export interface IApproveList {
+  lecture: {
+    id: number;
+    title: string;
+    noShowDeposit: number;
+    maxCapacity: number;
+  };
+  payments: IApprovePayment[];
+}
+
+export interface IApprovePayment {
+  id: number;
+  orderId: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+  paymentProductType: {
+    name: string;
+  };
+  paymentStatus: {
+    name: PaymentStatusType;
+  };
+  paymentMethod: {
+    name: string;
+  };
+  reservation: IReservation[];
+  paymentCouponUsage: null;
+  transferPaymentInfo: {
+    id: number;
+    senderName: string;
+    noShowDeposit: number;
+    lecturerBankAccount: {
+      id: number;
+      bankCode: string;
+      holderName: string;
+      accountNumber: string;
+    };
+  };
+  refundPaymentInfo: {
+    id: number;
+    refundStatus: {
+      id: number;
+      name: string;
+    };
+    cancelAmount: null;
+    reason: null;
+    refusedReason: null;
+    refundUserBankAccount: {
+      id: number;
+      bankCode: number;
+      holderName: string;
+      accountNumber: number;
+    };
+  };
+  paymentPassUsage: null;
+  userPass: null;
+  user: {
+    id: number;
+    nickname: string;
+    userProfileImage: null | string;
+  };
+}
+
+export interface IUpdatePaymentStatusRequestData {
+  paymentId: number;
+  status: PaymentStatusType;
+  cancelAmount?: number;
+  refusedReason?: string;
+  lectureId?: number;
+}
 export interface searchInstructorParameters {
   take: number;
   sortOption: 'LATEST' | 'STARS';
