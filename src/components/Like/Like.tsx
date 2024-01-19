@@ -33,7 +33,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
 
   const [liked, setLiked] = useState(isLiked);
   const style = liked
-    ? 'fill-main-color stroke-main-color hover:fill-none hover:stroke-none'
+    ? 'fill-main-color stroke-main-color'
     : 'hover:fill-main-color hover:stroke-main-color';
 
   useEffect(() => {

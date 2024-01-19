@@ -288,3 +288,15 @@ export const getOriginalClassInfo = async (id: string) => {
     return new Error('클래스 수정 기본 정보 요청 에러!');
   }
 };
+
+export const getRecentLists = async () => {
+  const response = await fetch(`${DOMAIN}/api/class/latest`, {
+    method: 'GET',
+  }).then((data) => data.json());
+
+  if (response.statusCode !== 200) {
+    throw new Error('최신 클래스 조회 요청 에러!');
+  }
+
+  return response.data.lectures;
+};
