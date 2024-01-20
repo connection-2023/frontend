@@ -7,6 +7,7 @@ import {
   IRegisterLists,
   IClassSchedule,
   ILearner,
+  IClassEditPageData,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
 
@@ -260,29 +261,34 @@ export const getClassSchedules = async (
   }
 };
 
-export const getOriginalClassInfo = async (id: string) => {
+export const getOriginalClassInfo = async (
+  id: string,
+): Promise<IClassEditPageData | Error> => {
   try {
-    const [classInfoResponse, scheduleResponse] = await Promise.all([
-      fetch(`${DOMAIN}/api/class/info?id=${id}`, {
-        credentials: 'include',
-        method: 'GET',
-      }).then((data) => data.json()),
-      fetch(`${DOMAIN}/api/class/schedules?id=${id}`, {
-        method: 'GET',
-      }).then((data) => data.json()),
-    ]);
+    const [classInfoResponse, classDetailResponse, scheduleResponse] =
+      await Promise.all([
+        fetch(`${DOMAIN}/api/class/info?id=${id}`, {
+          credentials: 'include',
+          method: 'GET',
+        }).then((data) => data.json()),
+        fetch(`${DOMAIN}/api/class/detail?id=${id}`, {
+          method: 'GET',
+        }).then((data) => data.json()),
+        fetch(`${DOMAIN}/api/class/schedules?id=${id}`, {
+          method: 'GET',
+        }).then((data) => data.json()),
+      ]);
     const { schedule, holidayArr } = scheduleResponse.data;
-    const formatSchedule = schedule.map(
-      (item: { startDateTime: string }) => new Date(item.startDateTime),
-    );
+
     const formatHoliday = holidayArr.map(
       (holiday: string) => new Date(holiday),
     );
 
     return {
-      ...classInfoResponse.data,
+      ...classDetailResponse.data.lectureDetail,
+      ...classInfoResponse.data.lecturePreview,
       ...scheduleResponse.data,
-      schedule: formatSchedule,
+      schedule,
       holidayArr: formatHoliday,
     };
   } catch (error) {

@@ -3,6 +3,37 @@ import { couponGET } from './coupon';
 import { IRegion, IGenre } from './types';
 import { Juso } from '@/types/address';
 
+interface IInstructorProfile {
+  id: number;
+  profileCardImageUrl: null | string;
+  nickname: string;
+}
+export interface IClassImageResponse {
+  id: number;
+  imageUrl: string;
+}
+export interface IClassGenreResponse {
+  danceCategoryId: number;
+  name: string | null;
+  danceCategory: {
+    id: number;
+    genre: string;
+  };
+}
+export interface IClassRegionResponse {
+  region: {
+    administrativeDistrict: string;
+    district: string;
+  };
+}
+
+export interface IClassNotification {
+  id: number;
+  lectureId: number;
+  content: string;
+  updatedAt: string;
+  deletedAt: null;
+}
 export interface ClassCardType {
   id: number;
   status: '모집중' | '마감';
@@ -19,7 +50,6 @@ export interface ClassCardType {
   darkMode?: boolean;
   searchAfter?: [number, number];
 }
-
 export interface Space {
   current: number;
   total: number;
@@ -247,7 +277,7 @@ export interface IClassScheduleResponse {
 }
 
 export interface IClassScheduleData {
-  schedule: Date[];
+  schedule: IClassSchedule[];
   holidayArr: Date[];
   daySchedule?: IDaySchedule[];
 }
@@ -265,9 +295,40 @@ export interface IProcessedSchedules extends IClassSchedule {
   isPastClass: boolean;
 }
 
-export interface IClassInfoResponse {
-  lecture: IClassPostResponse;
+export interface IClassPreviewResponse {
+  id: number;
+  lecturerId: number;
+  title: string;
+  lectureImage: IClassImageResponse[];
+  stars: number;
+  isGroup: true;
+  difficultyLevel: string;
+  maxCapacity: number;
+  duration: number;
+  lectureToRegion: IClassRegionResponse[];
+  isLike: boolean;
+  lectureToDanceGenre: IClassGenreResponse[];
+  price: number;
+}
+
+export interface IClassDetailResponse {
+  id: number;
   lecturer: IInstructorProfile;
+  startDate: string;
+  endDate: string;
+  reservationDeadline: number;
+  reservationComment: string;
+  price: number;
+  notification: IClassNotification;
+  introduction: string;
+  curriculum: string;
+  maxCapacity: number;
+  minCapacity: number;
+  reviewCount: number;
+  locationDescription: string | null;
+  location: string | null;
+  duration: number;
+  stars: number;
 }
 
 export interface IClassPostResponse {
@@ -309,20 +370,6 @@ export interface IClassPostResponse {
   lectureToRegion: IRegion[];
   lectureToDanceGenre: IGenre[];
   isLike: boolean;
-}
-
-export interface IClassNotification {
-  id: number;
-  lectureId: number;
-  notification: string;
-  updatedAt: string;
-  deletedAt: null;
-}
-
-interface IInstructorProfile {
-  id: number;
-  profileCardImageUrl: null | string;
-  nickname: string;
 }
 
 interface IImage {
@@ -458,11 +505,13 @@ export interface ILearner {
 
 export interface IClassEditData
   extends IClassScheduleResponse,
-    IClassInfoResponse {}
+    IClassPreviewResponse,
+    IClassDetailResponse {}
 
 export interface IClassEditPageData
   extends IClassScheduleData,
-    IClassInfoResponse {}
+    IClassPreviewResponse,
+    IClassDetailResponse {}
 
 export interface IClassEditFormData {
   classRange: { startDate: string; endDate: string };
