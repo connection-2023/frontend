@@ -1,4 +1,3 @@
-import { DOMAIN } from '@/constants/constants';
 import {
   IUserReview,
   ReviewOrderType,
@@ -10,6 +9,8 @@ import {
   ILearner,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const getClassReviews = async (
   id: string,

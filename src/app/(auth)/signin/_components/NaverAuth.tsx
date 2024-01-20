@@ -2,8 +2,9 @@ import { nanoid } from 'nanoid';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { DOMAIN } from '@/constants/constants';
 import { NaverSVG } from '@/icons/svg';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 const NaverAuth = ({
   onSuccess,

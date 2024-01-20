@@ -1,7 +1,8 @@
 import { toast } from 'react-toastify';
-import { DOMAIN } from '@/constants/constants';
 import { userType } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const checkUserNickname = async (nickname: string) => {
   try {

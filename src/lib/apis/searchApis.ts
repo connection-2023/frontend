@@ -1,10 +1,11 @@
-import { DOMAIN } from '@/constants/constants';
 import { searchClass, searchClassParameters } from '@/types/class';
 import {
   searchInstructor,
   searchInstructorParameters,
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const searchInstructors = async (
   data: searchInstructorParameters,

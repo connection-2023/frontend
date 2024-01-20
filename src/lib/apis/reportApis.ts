@@ -1,5 +1,6 @@
-import { DOMAIN } from '@/constants/constants';
 import { IReportRequest } from '@/types/report';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const postUserReport = async (data: IReportRequest) => {
   try {
