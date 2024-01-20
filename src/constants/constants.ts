@@ -136,7 +136,6 @@ export const TOOLBAR = [
   ['font', 'fontSize', 'formatBlock'],
   ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
   ['removeFormat'],
-  '/',
   ['fontColor', 'hiliteColor'],
   ['outdent', 'indent'],
   ['align', 'horizontalRule', 'list', 'table'],
@@ -270,9 +269,9 @@ export const BANK_LIST = [
   { value: '한국수출입은행', label: '한국수출입은행' },
 ];
 
-export const LOGIN_REQUIRED_URLS = ['/instructor/apply', '/class/create'];
+export const LOGIN_REQUIRED_URLS = ['/class/create']; // '/instructor/apply',
 
-export const LECTURER_NO_ACCESS = ['/instructor/apply'];
+export const LECTURER_NO_ACCESS = ['/aaa']; // '/instructor/apply'
 
 export const USER_NO_ACCESS = ['/class/create'];
 
@@ -337,3 +336,8 @@ export const PAYMENT_ORDER_LIST = [
 ];
 
 export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
+
+export const INSTRUCTOR_EDIT_SECTIONS = [
+  { id: 'profileImageUrls', label: '사진, 지역, 카테고리 설정' },
+  { id: '강사소개', label: '강사 소개글 작성' },
+];

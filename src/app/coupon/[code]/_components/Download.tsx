@@ -4,10 +4,12 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { getPrivateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
+import { useUserStore } from '@/store';
 import Button from '@/components/Button/Button';
 import { FetchError } from '@/types/types';
 
 const Download = ({ code }: { code: string }) => {
+  const { userType } = useUserStore.getState();
   const router = useRouter();
 
   const downloadPrivateCoupon = async () => {
@@ -15,8 +17,17 @@ const Download = ({ code }: { code: string }) => {
       return;
     }
     try {
-      await getPrivateCoupon(code);
-      router.push('/my/user/coupon-pass?state=coupon');
+      if (userType === 'user') {
+        await getPrivateCoupon(code);
+        router.push('/my/user/coupon-pass?state=coupon');
+      } else {
+        if (
+          confirm(`로그인이 필요한 서비스입니다.
+로그인 화면으로 이동하시겠습니까?
+        `)
+        )
+          router.push('/my/user/coupon-pass?state=coupon');
+      }
     } catch (error) {
       if (error instanceof Error) {
         const fetchError = error as FetchError;

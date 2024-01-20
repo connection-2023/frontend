@@ -1,7 +1,6 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { ImgHTMLAttributes } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { RecoilRoot } from 'recoil';
 import UploadImage from './UploadImage';
 
 jest.mock('next/image', () => ({
@@ -16,11 +15,9 @@ describe('UploadImage', () => {
     const Wrapper = () => {
       const methods = useForm();
       return (
-        <RecoilRoot>
-          <FormProvider {...methods}>
-            <UploadImage defaultImg={[]} />
-          </FormProvider>
-        </RecoilRoot>
+        <FormProvider {...methods}>
+          <UploadImage defaultImg={[]} />
+        </FormProvider>
       );
     };
 
@@ -38,11 +35,9 @@ describe('UploadImage', () => {
     const Wrapper = () => {
       const methods = useForm();
       return (
-        <RecoilRoot>
-          <FormProvider {...methods}>
-            <UploadImage defaultImg={[]} />
-          </FormProvider>
-        </RecoilRoot>
+        <FormProvider {...methods}>
+          <UploadImage defaultImg={[]} />
+        </FormProvider>
       );
     };
 

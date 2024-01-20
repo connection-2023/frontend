@@ -63,7 +63,7 @@ const InstructorAuth = () => {
 
   return (
     <section className="mt-2 flex w-full max-w-[40rem] flex-col text-base">
-      <ul className="flex flex-col gap-[1.69rem] border-b border-solid border-gray-700 py-7">
+      <ul className="flex flex-col gap-5 border-b border-solid border-gray-700 py-7 sm:gap-[1.69rem]">
         <Nickname
           changeVerification={changeVerification}
           verification={verification.nickname}

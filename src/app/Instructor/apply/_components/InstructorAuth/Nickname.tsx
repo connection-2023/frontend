@@ -2,6 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { getCheckNickname } from '@/lib/apis/instructorApi';
 import Label from './Label';
+import Button from '@/components/Button/Button';
 import { Verification } from '@/types/types';
 
 interface NicknameProps {
@@ -44,34 +45,38 @@ const Nickname = ({ changeVerification, verification }: NicknameProps) => {
   };
 
   return (
-    <li className="flex items-center">
+    <li className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-0">
       <Label htmlFor="nickname" isNormal={true}>
         강사 닉네임
         <span className="text-sub-color1">*</span>
       </Label>
-      <input
-        type="text"
-        {...register('nickname', {
-          required: '닉네임',
-          validate: {
-            isVerified: () => {
-              if (!verification) return '닉네임';
+
+      <div className="flex w-full items-center">
+        <input
+          type="text"
+          {...register('nickname', {
+            required: '닉네임',
+            validate: {
+              isVerified: () => {
+                if (!verification) return '닉네임';
+              },
             },
-          },
-        })}
-        id="nickname"
-        className={`h-7 w-full max-w-[24.75rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
-    focus:outline-sub-color1`}
-      />
-      <button
-        className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-white  ${
-          verification ? 'bg-gray-500' : 'bg-black'
-        } `}
-        onClick={checkNicknameAvailability}
-        disabled={verification}
-      >
-        중복 확인
-      </button>
+          })}
+          id="nickname"
+          className={`h-8 w-full rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1
+    sm:h-7`}
+        />
+        <div className="ml-4 w-28">
+          <Button
+            type="submit"
+            color="secondary"
+            onClick={checkNicknameAvailability}
+            disabled={verification}
+          >
+            중복 확인
+          </Button>
+        </div>
+      </div>
     </li>
   );
 };

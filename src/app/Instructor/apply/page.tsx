@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { deleteImage } from '@/lib/apis/imageApi';
 import { instructorRegister } from '@/lib/apis/instructorApi';
 import { useUserStore } from '@/store';
 import {
@@ -81,6 +82,22 @@ const ApplyPage = () => {
 
       const newRegions = reqRegions(regions);
 
+      introduction.deletedImages.forEach(
+        async ({ src }) => await deleteImage({ imageUrl: src }),
+      );
+
+      if (introduction.clear && introduction.deletedImages.length > 0) {
+        introduction.clear();
+      }
+
+      experience.deletedImages.forEach(
+        async ({ src }) => await deleteImage({ imageUrl: src }),
+      );
+
+      if (experience.clear && experience.deletedImages.length > 0) {
+        experience.clear();
+      }
+
       const instructorData = {
         profileImageUrls: uploadImgList,
         email,
@@ -140,10 +157,10 @@ const ApplyPage = () => {
   };
 
   return (
-    <main className="mx-auto mb-28 flex w-full max-w-[40rem] flex-col items-center">
+    <main className="mx-auto mb-28 flex w-full max-w-[40rem] flex-col items-center px-5 ">
       <h1 className="my-3 text-2xl font-bold">강사등록</h1>
       {/* 상태 바 */}
-      <ul className="flex h-[45px] w-full items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-float">
+      <ul className="flex h-[35px] w-full items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-float sm:h-[45px]">
         {steps.map((step, index) => (
           <li
             key={index}

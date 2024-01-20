@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import BankSelect from './BankSelect';
 import Label from './Label';
+import Button from '@/components/Button/Button';
 import { Verification } from '@/types/types';
 
 interface AccountListProps {
@@ -24,7 +25,7 @@ const AccountList = ({
           type="text"
           {...register('bankholder', { required: '예금주' })}
           id="bankholder"
-          className={`h-7 w-full max-w-[10rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
+          className={`h-8 w-full max-w-[10rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
     focus:outline-sub-color1`}
         />
       </li>
@@ -37,7 +38,7 @@ const AccountList = ({
           type="number"
           {...register('birth', { required: '생년월일' })}
           id="birth"
-          className={`h-7 w-full max-w-[10rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
+          className={`h-8 w-full max-w-[10rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
     focus:outline-sub-color1`}
         />
       </li>
@@ -75,18 +76,20 @@ const AccountList = ({
             },
           })}
           id="accountNumber"
-          className={`h-7 w-full max-w-[24.75rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
+          className={`h-8 w-full max-w-[24.75rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
     focus:outline-sub-color1`}
         />
-        <button
-          className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-md bg-black px-2 py-1 text-white ${
-            verification ? 'bg-gray-500' : 'bg-black'
-          }`}
-          disabled={verification}
-          onClick={() => changeVerification('accountNumber', true)} //추후 수정 예정
-        >
-          인증하기
-        </button>
+        <div className="ml-4 w-28 whitespace-nowrap">
+          <Button
+            type="submit"
+            color="secondary"
+            disabled={verification}
+            //추후 수정 예정
+            onClick={() => changeVerification('accountNumber', true)}
+          >
+            인증하기
+          </Button>
+        </div>
       </li>
     </>
   );

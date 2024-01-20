@@ -28,7 +28,7 @@ const GenreListAddition = ({
   return (
     <div className="w-full">
       <form
-        className="relative mt-3 w-1/5"
+        className="relative mt-3 w-28 sm:w-1/5"
         onSubmit={(e) => addSubmit(e)}
         ref={formRef}
       >

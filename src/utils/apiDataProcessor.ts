@@ -41,7 +41,7 @@ export const uploadImageFilesWithFallback = async (
     imageUrl: string;
   }[],
   mode: 'lecturers' | 'lectures',
-) => {
+): Promise<string[]> => {
   const updatedUrls = await Promise.all(
     profileImageUrls.map(async ({ file, imageUrl }) => {
       if (file) {
@@ -88,11 +88,15 @@ export const reqRegions = (regions: { [key: string]: string[] }) => {
 };
 
 export const resRegions = (
-  regions: {
-    administrativeDistrict: string;
-    district: string | null;
-  }[],
+  regions:
+    | {
+        administrativeDistrict: string;
+        district: string | null;
+      }[]
+    | undefined,
 ) => {
+  if (!regions) return {};
+
   const result: { [key: string]: string[] } = {};
 
   regions.forEach(({ administrativeDistrict, district }) => {
@@ -154,8 +158,8 @@ export const classOutputDataProcess = async (
         difficultyLevel === '상급'
           ? '상'
           : difficultyLevel === '중급'
-            ? '중'
-            : '하';
+          ? '중'
+          : '하';
 
       const newLectureMethod =
         lectureMethod === '원데이 레슨' ? '원데이' : '정기';

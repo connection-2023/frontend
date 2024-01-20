@@ -16,7 +16,7 @@ const WardList = ({
   selectLocation,
 }: WardListProps) => {
   return (
-    <ul className="shadow-border flex flex-wrap gap-3 px-4 py-6">
+    <ul className="shadow-border flex flex-wrap gap-5 px-4 py-6 sm:gap-3">
       {['전지역', ...WARD_LIST[focusLocation]].map((ward) => {
         const isChecked =
           ward !== '전지역'
@@ -25,7 +25,7 @@ const WardList = ({
               WARD_LIST[focusLocation].length;
 
         return (
-          <li key={ward} className="flex w-24 gap-1">
+          <li key={ward} className="flex w-[5.5rem] gap-1 sm:w-24">
             <input
               id={ward}
               type="checkbox"

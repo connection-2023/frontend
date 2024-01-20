@@ -46,6 +46,7 @@ const ProfileMenu = () => {
       store.setAuthUser(instructorProfile);
       store.setUserType('lecturer');
       router.push('/');
+      router.refresh();
       toast.success('강사로 전환되었습니다!');
     } else {
       const response = await getMyProfile();
@@ -58,6 +59,7 @@ const ProfileMenu = () => {
       store.setAuthUser(userProfile);
       store.setUserType('user');
       router.push('/');
+      router.refresh();
       toast.success('일반 유저로 전환되었습니다!');
     }
   };

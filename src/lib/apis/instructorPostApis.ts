@@ -2,7 +2,10 @@ import { DOMAIN } from '@/constants/constants';
 import {
   instructorPostResponse,
   IInstructorReviewList,
+  IInstructorRegister,
+  InstructorUpdate,
 } from '@/types/instructor';
+import { FetchError } from '@/types/types';
 
 export const getInstructorPost = async (
   id: string,
@@ -43,5 +46,31 @@ export const getReviews = async (
     return response.data;
   } catch (error) {
     return new Error('강사 리뷰 조회 요청 오류!');
+  }
+};
+
+export const updateInstructor = async (data: InstructorUpdate) => {
+  try {
+    const response = await fetch(`${DOMAIN}/api/instructors/update`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

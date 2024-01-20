@@ -20,7 +20,7 @@ export const getInstructorClassLists = async (
 
   try {
     const response = await fetch(
-      `${END_POINT}/lecturers/lectures${lecturerId}`,
+      `${END_POINT}/lecturers/lectures/${lecturerId}`,
       {
         method: 'GET',
         credentials: 'include',
@@ -28,7 +28,7 @@ export const getInstructorClassLists = async (
       },
     ).then((data) => data.json());
 
-    return response.data.lecture;
+    return response.data.lecture.lecture;
   } catch (error) {
     return new Error('잘못된 요청입니다!');
   }

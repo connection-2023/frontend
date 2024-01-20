@@ -17,6 +17,7 @@ import {
   getUserReservation,
 } from '@/lib/apis/serverApis/classPostApis';
 import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
+import { useUserStore } from '@/store';
 import {
   formatLocationToString,
   formatGenreToString,
@@ -48,10 +49,11 @@ const ClassDetailPage = async ({
   params: { id: string };
 }) => {
   // parallel requests
+  const { userType } = useUserStore.getState();
   const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
   const userReservationData = getUserReservation(id);
-  const couponLists = getClassCouponList(id);
+  const couponLists = getClassCouponList(id, userType === 'user');
 
   const [classInfo, classSchedule, userReservation, couponList] =
     await Promise.all([
@@ -142,13 +144,15 @@ const ClassDetailPage = async ({
             />
           </div>
         </div>
+
         {/* Review */}
         <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:mb-6 md:justify-center">
           <Review average={stars} />
           <span className="text-sm font-bold text-gray-500">({stars})</span>
         </div>
+
         {/* 쿠폰 배너 */}
-        {couponList && couponList.length > 0 && (
+        {couponList && (
           <div className="w-full max-w-[40rem] border-b border-solid border-gray-700 px-4 pb-3">
             <DiscountCouponBanner couponList={couponList} price={price} />
           </div>

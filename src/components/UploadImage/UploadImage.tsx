@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 import { ClearSVG, CropSVG, UploadImageSVG } from '@/../public/icons/svg';
+import useTouchScroll from '@/hooks/useTouchScroll';
 import CropperModal from './CropperModal';
 
 interface UploadImageProps {
@@ -28,6 +29,7 @@ const UploadImage = ({
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isFirstRender = useRef(true);
+  const { scrollContainerRef } = useTouchScroll({});
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -164,7 +166,7 @@ const UploadImage = ({
       ) : (
         <>
           {/* 이미지 미리보기 */}
-          <div className="h-[17.17rem] w-[26.6rem]">
+          <div className="h-56 w-full sm:h-[17.17rem] sm:w-[26.6rem]">
             {selectedImage && (
               <div className="relative h-full w-full overflow-hidden">
                 <Image
@@ -186,7 +188,10 @@ const UploadImage = ({
             )}
           </div>
           {/* 추가한 이미지 리스트 */}
-          <div className="mt-2 flex w-full justify-center gap-3">
+          <div
+            ref={scrollContainerRef}
+            className="mt-2 flex w-full max-w-[calc(90vw)] gap-3 overflow-x-auto sm:justify-center"
+          >
             {images.map((image, index) => (
               <div
                 key={index}
@@ -194,7 +199,7 @@ const UploadImage = ({
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDrop={(e) => handleDrop(e, index)}
                 onDragOver={(e) => e.preventDefault()}
-                className={`relative h-[4rem] w-[6.3rem] ${
+                className={`relative h-[4rem] w-[6.3rem] flex-shrink-0 ${
                   image.imageUrl === selectedImage
                     ? 'border-[3px] border-solid border-sub-color1'
                     : ''
@@ -214,7 +219,7 @@ const UploadImage = ({
                   width={19}
                   aria-label="이미지 삭제"
                   onClick={() => handleRemoveImage(index)}
-                  className="absolute right-0 top-0 cursor-pointer fill-gray-100"
+                  className="absolute right-0 top-0 cursor-pointer fill-gray-100 stroke-white"
                 />
                 {index === 0 && (
                   <div className="absolute bottom-0 right-0 flex h-6 w-9 translate-y-[1px] items-center justify-center bg-sub-color1 text-white">
@@ -226,7 +231,10 @@ const UploadImage = ({
             {/* 이미지 추가하기 */}
             {images.length < 5 && (
               <>
-                <label htmlFor="addintional-image-upload">
+                <label
+                  htmlFor="addintional-image-upload"
+                  className="-order-1 sm:order-1"
+                >
                   <div className="flex h-[4rem] w-[6.3rem] cursor-pointer items-center justify-center bg-gray-700">
                     <UploadImageSVG width={52} height={47} fill="white" />
                   </div>

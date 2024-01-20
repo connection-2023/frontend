@@ -11,8 +11,14 @@ export interface instructorPostResponse {
   affiliation: string;
   introduction: string;
   experience: string;
-  lecturerRegion: any; // 추후 변경 예정
-  lecturerDanceGenre: any; // 추후 변경 예정
+  lecturerRegion: {
+    region: { administrativeDistrict: string; district: string };
+  }[];
+  lecturerDanceGenre: {
+    danceCategoryId: number;
+    name: null;
+    danceCategory: { genre: string };
+  }[];
   lecturerInstagramPostUrl: Url[]; // 추후 변경 예정
   lecturerProfileImageUrl: Url[]; // 추후 변경 예정
   stars: number;
@@ -54,9 +60,13 @@ export interface InstructorApplyData {
   homepageUrl: string;
   introduction: {
     content: string;
+    deletedImages: { src: string }[];
+    clear: () => void;
   };
   experience: {
     content: string;
+    deletedImages: { src: string }[];
+    clear: () => void;
   };
 }
 
@@ -76,6 +86,21 @@ export interface IInstructorRegister {
   genres: string[];
   instagramPostUrls?: string[];
   etcGenres?: string[];
+}
+
+export interface InstructorUpdate {
+  newProfileImageUrls: string[];
+  etcGenres: string[];
+  genres: string[];
+  regions: string[];
+  profileCardImageUrl: string;
+  youtubeUrl: string;
+  instagramUrl: string;
+  homepageUrl: string;
+  affiliation: string;
+  introduction: string;
+  experience: string;
+  instagramPostUrls: string[];
 }
 
 export interface IInstructorReviewList {

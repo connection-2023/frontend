@@ -7,6 +7,7 @@ import { useClickAway } from 'react-use';
 import { DownloadSVG } from '@/icons/svg';
 import { getClassCoupon, getPrivateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
+import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
 import { IprivateCoupon, IclassCoupon } from '@/types/coupon';
 import { FetchError } from '@/types/types';
@@ -20,6 +21,7 @@ const DownloadCoupon = ({
   code?: string;
   couponListPop?: (id: number) => void;
 }) => {
+  const { userType } = useUserStore.getState();
   const { title, percentage, discountPrice, isStackable, maxDiscountPrice } =
     coupon;
 
@@ -28,7 +30,9 @@ const DownloadCoupon = ({
   let id: number;
   let lectureCouponTarget;
 
-  if ('lectureCouponTarget' in coupon) {
+  const datePattern = /^\d{2}\.\d{2}\.\d{2}$/;
+
+  if (datePattern.test(coupon.startAt)) {
     startAt = coupon.startAt;
     endAt = coupon.endAt;
     lectureCouponTarget = coupon.lectureCouponTarget;
@@ -51,8 +55,17 @@ const DownloadCoupon = ({
       return;
     }
     try {
-      await getPrivateCoupon(code);
-      router.push('/my/user/coupon-pass?state=coupon');
+      if (userType === 'user') {
+        await getPrivateCoupon(code);
+        router.push('/my/user/coupon-pass?state=coupon');
+      } else {
+        if (
+          confirm(`로그인이 필요한 서비스입니다.
+로그인 화면으로 이동하시겠습니까?
+        `)
+        )
+          router.push('/my/user/coupon-pass?state=coupon');
+      }
     } catch (error) {
       if (error instanceof Error) {
         const fetchError = error as FetchError;
@@ -76,9 +89,20 @@ const DownloadCoupon = ({
     }
 
     try {
-      await getClassCoupon(id);
-      couponListPop(id);
-      toast.success('쿠폰 다운로드 완료');
+      if (userType === 'user') {
+        await getClassCoupon(id);
+        couponListPop(id);
+        toast.success('쿠폰 다운로드 완료');
+      } else if (userType) {
+        toast.error('유저로 전환이 필요한 서비스 입니다.');
+      } else {
+        if (
+          confirm(`로그인이 필요한 서비스입니다.
+로그인 화면으로 이동하시겠습니까?
+        `)
+        )
+          router.push('/my/user/coupon-pass?state=coupon');
+      }
     } catch (error) {
       if (error instanceof Error) {
         const fetchError = error as FetchError;
@@ -119,7 +143,7 @@ const DownloadCoupon = ({
       <dd className="w-3/4 truncate text-sm">{title}</dd>
       <dd className="flex gap-2 text-sm">
         {startAt + '-' + endAt}
-        {maxDiscountPrice.toLocaleString() !== '0' && (
+        {maxDiscountPrice && maxDiscountPrice.toLocaleString() !== '0' && (
           <p className="text-gray-500">
             (최대할인 {maxDiscountPrice.toLocaleString()}원)
           </p>

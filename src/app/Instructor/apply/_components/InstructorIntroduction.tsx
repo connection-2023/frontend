@@ -11,7 +11,13 @@ import SelectLocation from '@/components/SelectLocation/SelectLocation';
 import CustomEditor from '@/components/TextArea/CustomEditor';
 import UploadImage from '@/components/UploadImage/UploadImage';
 
-const InstructorIntroduction = () => {
+interface InstructorIntroductionProps {
+  defaultData?: any;
+}
+
+const InstructorIntroduction = ({
+  defaultData,
+}: InstructorIntroductionProps) => {
   const {
     register,
     control,
@@ -19,7 +25,7 @@ const InstructorIntroduction = () => {
   } = useFormContext();
 
   return (
-    <main className="my-10 flex flex-col gap-10">
+    <div className="mb-10 flex flex-col gap-10">
       <section
         id="profileImageUrls"
         className="flex w-full flex-col border-b border-solid border-gray-500 pb-10"
@@ -27,11 +33,13 @@ const InstructorIntroduction = () => {
         <Controller
           name="profileImageUrls"
           control={control}
+          defaultValue={defaultData.img}
           rules={{
             required: '이미지',
           }}
           render={({ field }) => (
             <UploadImage
+              defaultImg={field.value}
               onChange={field.onChange}
               errors={errors.profileImageUrls}
               situation="강사"
@@ -49,7 +57,7 @@ const InstructorIntroduction = () => {
         <Controller
           name="regions"
           control={control}
-          defaultValue={{}}
+          defaultValue={defaultData.region}
           rules={{
             validate: (value) => {
               if (Object.keys(value).length === 0) {
@@ -78,8 +86,12 @@ const InstructorIntroduction = () => {
           rules={{
             required: '장르',
           }}
+          defaultValue={defaultData.genre}
           render={({ field }) => (
-            <GenreCheckboxGroup onChange={field.onChange} />
+            <GenreCheckboxGroup
+              defaultValue={field.value}
+              onChange={field.onChange}
+            />
           )}
         />
       </IntroductionSection>
@@ -93,17 +105,23 @@ const InstructorIntroduction = () => {
         <input
           id="affiliation"
           type="text"
-          className="rounded-md px-4 py-2 outline outline-1 outline-gray-500 focus:outline-sub-color1"
+          className="rounded-md px-4 py-2 text-sm outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:text-base"
           placeholder="현재 속하고 있는 크루, 학원명 등을 적어주세요."
+          defaultValue={defaultData.affiliation}
           {...register('affiliation')}
         />
       </IntroductionSection>
 
       <IntroductionSection title="SNS" required={false}>
         <ul className="flex flex-col gap-3">
-          {SNS_ITEMS.map((item) => (
-            <SNSItem key={item.title} {...item} />
-          ))}
+          {SNS_ITEMS.map((item) => {
+            const props = {
+              defaultValue: defaultData[item.dataName],
+              ...item,
+            };
+
+            return <SNSItem key={item.title} {...props} />;
+          })}
         </ul>
       </IntroductionSection>
 
@@ -128,8 +146,9 @@ const InstructorIntroduction = () => {
             key={index}
             id={'link' + index}
             type="text"
-            className="h-6 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1"
+            className="h-9 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-6"
             placeholder="게시물 주소 입력"
+            defaultValue={defaultData.lecturerInstagramPostUrl[index].url}
             {...register('instagramPostUrls' + index, {
               pattern: {
                 value: /^(ftp|http|https):\/\/[^ "]+$/,
@@ -148,6 +167,7 @@ const InstructorIntroduction = () => {
         height="471px"
         maxLength={1000}
         minLength={150}
+        defaultValue={defaultData.introduction}
       />
 
       <CustomEditor
@@ -157,8 +177,9 @@ const InstructorIntroduction = () => {
         height="303px"
         maxLength={500}
         minLength={0}
+        defaultValue={defaultData.experience}
       />
-    </main>
+    </div>
   );
 };
 
@@ -198,6 +219,7 @@ interface SNSItemProps {
   title: string;
   placeholder: string;
   dataName: string;
+  defaultValue?: string;
 }
 
 const SNSItem = ({
@@ -205,6 +227,7 @@ const SNSItem = ({
   title,
   placeholder,
   dataName,
+  defaultValue,
 }: SNSItemProps) => {
   const { register } = useFormContext();
 
@@ -226,7 +249,7 @@ const SNSItem = ({
       <input
         id={dataName}
         type="text"
-        className="h-6 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1"
+        className="h-9 flex-grow rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-6"
         placeholder={placeholder}
         {...register(dataName)}
       />

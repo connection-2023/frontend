@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Label from './Label';
+import Button from '@/components/Button/Button';
 import { Verification } from '@/types/types';
 
 interface EmailProps {
@@ -25,52 +26,56 @@ const Email = ({
   }, [defaultValue, setValue]);
 
   return (
-    <li className="flex items-center">
+    <li className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
       <Label htmlFor="emailFront" isNormal={true}>
         이메일
         <span className="text-sub-color1">*</span>
       </Label>
-      <input
-        type="email"
-        defaultValue={emailFront}
-        {...register('emailFront', {
-          required: '이메일',
-          validate: {
-            isVerified: () => {
-              if (!verification) return '이메일';
+      <div className="flex w-full items-center">
+        <input
+          type="email"
+          defaultValue={emailFront}
+          {...register('emailFront', {
+            required: '이메일',
+            validate: {
+              isVerified: () => {
+                if (!verification) return '이메일';
+              },
             },
-          },
-        })}
-        id="emailFront"
-        className={`h-7 w-full max-w-[11.4rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
-focus:outline-sub-color1`}
-      />
-      <span className="mx-2">@</span>
-      <input
-        type="email"
-        defaultValue={emailBack}
-        {...register('emailBack', {
-          required: '이메일',
-          validate: {
-            isVerified: () => {
-              if (!verification) return '이메일';
+          })}
+          id="emailFront"
+          className={`h-8 w-full rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-7
+    sm:w-44`}
+        />
+        <span className="ml-4 w-40 sm:mx-2 sm:w-auto">@</span>
+      </div>
+      <div className="flex w-full items-center">
+        <input
+          type="email"
+          defaultValue={emailBack}
+          {...register('emailBack', {
+            required: '이메일',
+            validate: {
+              isVerified: () => {
+                if (!verification) return '이메일';
+              },
             },
-          },
-        })}
-        id="emailBack"
-        className={`h-7 w-full max-w-[11.4rem] rounded-md px-2 py-1 outline outline-1 outline-gray-500
-focus:outline-sub-color1`}
-      />
-
-      <button
-        className={`ml-4 flex h-7 w-28 items-center justify-center whitespace-nowrap rounded-md px-2 py-1 text-white ${
-          verification ? 'bg-gray-500' : 'bg-black'
-        }`}
-        disabled={verification}
-        onClick={() => changeVerification('email', true)} //추후 수정 예정
-      >
-        이메일 변경
-      </button>
+          })}
+          id="emailBack"
+          className={`h-8 w-full rounded-md px-2 py-1 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-7
+    sm:w-44`}
+        />
+        <div className="ml-4 w-40 whitespace-nowrap sm:w-auto">
+          <Button
+            type="submit"
+            color="secondary"
+            disabled={verification}
+            onClick={() => changeVerification('email', true)} //추후 수정 예정
+          >
+            이메일 변경
+          </Button>
+        </div>
+      </div>
     </li>
   );
 };

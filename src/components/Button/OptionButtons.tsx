@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
@@ -27,13 +28,15 @@ const OptionButtons = ({
   title,
   likes,
 }: OptionButtonProps) => {
+  const pathname = usePathname();
   const loggedInUserType = useUserStore((state) => state.userType);
   const loggedInUser = useUserStore((state) => state.authUser);
   const [isOptionMenuOpened, setIsOptionMenuOpened] = useState(false);
   const [isSharingMenuOpened, setIsSharingMenuOpened] = useState(false);
   const optionButtonRef = useRef(null);
   const isWriter =
-    Number(loggedInUser?.id) === lecturerId && loggedInUserType === 'lecturer';
+    Number(loggedInUser?.id) === Number(lecturerId) &&
+    loggedInUserType === 'lecturer';
 
   useClickAway(optionButtonRef, () => {
     if (isOptionMenuOpened) setIsOptionMenuOpened(false);
@@ -88,9 +91,15 @@ const OptionButtons = ({
             공유하기
           </li>
           {isWriter ? (
-            <li className={liStyles}>
-              <EditSVG width="15px" height="15px" className="fill-sub-color1" />
-              수정하기
+            <li>
+              <Link href={`${pathname}/edit`} className={liStyles}>
+                <EditSVG
+                  width="15px"
+                  height="15px"
+                  className="fill-sub-color1"
+                />
+                수정하기
+              </Link>
             </li>
           ) : (
             <>

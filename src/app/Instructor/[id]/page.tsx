@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
-import { getInstructorPost } from '@/lib/apis/instructorPostApis';
 import {
   getInstructor,
   getInstructorClassLists,
@@ -31,7 +30,7 @@ const InstructorDetailPage = async ({
 }) => {
   const userStoreState = useUserStore.getState();
 
-  const profile = getInstructor(id, !!userStoreState.authUser);
+  const profile = getInstructor(id, userStoreState.userType === 'user');
   const classLists = getInstructorClassLists(id);
   const passLists = getLecturerPassList(id);
 

@@ -72,6 +72,7 @@ export interface couponGET {
 }
 
 export interface IprivateCoupon {
+  id: number;
   title: string;
   percentage: number;
   discountPrice: number;
@@ -189,4 +190,8 @@ export interface IclassCoupon {
   isStackable: boolean;
   startAt: string;
   endAt: string;
+  createdAt: Date;
+  isDisabled: boolean;
+  isPrivate: boolean;
+  lectureCouponTarget: lectureCouponTarget[];
 }
