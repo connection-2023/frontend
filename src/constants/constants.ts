@@ -27,6 +27,11 @@ export const ButtonStyles = {
     'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/10 active:bg-black active:text-white',
 };
 
+export const CLASS_HSTYLE = {
+  h2: 'mb-2 text-lg font-bold',
+  h3: 'flex gap-1.5 text-sm',
+};
+
 export const REGISTER_CONSENT_LIST: ConsentListType = [
   {
     id: 'termsOfService',
