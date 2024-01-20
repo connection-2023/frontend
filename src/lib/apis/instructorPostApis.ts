@@ -1,4 +1,3 @@
-import { DOMAIN } from '@/constants/constants';
 import {
   instructorPostResponse,
   IInstructorReviewList,
@@ -6,6 +5,8 @@ import {
   InstructorUpdate,
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const getInstructorPost = async (
   id: string,

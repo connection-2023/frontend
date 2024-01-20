@@ -1,4 +1,4 @@
-import { DOMAIN } from '@/constants/constants';
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const postSingleImage = async (image: File, folder: string) => {
   try {

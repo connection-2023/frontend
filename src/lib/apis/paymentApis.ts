@@ -1,6 +1,7 @@
-import { DOMAIN } from '@/constants/constants';
 import { IPaymentInfo, IVirtualAccountInfo } from '@/types/payment';
 import { IMyPaymentResponse } from '@/types/types';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {

@@ -1,4 +1,3 @@
-import { DOMAIN } from '@/constants/constants';
 import { IgetFunction } from '@/types/coupon';
 import {
   IcreatePassReqData,
@@ -6,6 +5,8 @@ import {
   IresponsePassData,
 } from '@/types/pass';
 import { FetchError } from '@/types/types';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const getIssuedPassLists = async (
   data: IgetFunction,

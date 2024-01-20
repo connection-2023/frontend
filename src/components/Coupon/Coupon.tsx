@@ -3,7 +3,6 @@ import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
-import { DOMAIN } from '@/constants/constants';
 import { EditSVG, LinkSVG } from '@/icons/svg';
 import { getPrivateCode } from '@/lib/apis/couponApis';
 import { useUserStore } from '@/store';
@@ -12,6 +11,7 @@ import UniqueButton from '../Button/UniqueButton';
 import { instructorProfile } from '@/types/auth';
 import { couponGET } from '@/types/coupon';
 
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 interface CouponProps {
   coupon: couponGET;
   cancelSelectedCoupon?: () => void;

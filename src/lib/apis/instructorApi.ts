@@ -1,9 +1,10 @@
-import { DOMAIN } from '@/constants/constants';
 import {
   IInstructorRegister,
   IApproveList,
   IUpdatePaymentStatusRequestData,
 } from '@/types/instructor';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const getInstructorProfile = async () => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {

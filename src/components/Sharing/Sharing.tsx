@@ -2,7 +2,6 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { DOMAIN } from '@/constants/constants';
 import { KaKaoTalkSVG, FacebookSVG, TwitterSVG, LinkSVG } from '@/icons/svg';
 import {
   shareToKakaoTalk,
@@ -10,6 +9,7 @@ import {
   shareToTwitter,
 } from '@/utils/socialShare';
 
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 interface ShareItem {
   label: string;
   button: JSX.Element;

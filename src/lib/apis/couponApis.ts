@@ -1,6 +1,7 @@
-import { DOMAIN } from '@/constants/constants';
 import { IcouponsData, IgetFunction, createCouponData } from '@/types/coupon';
 import { FetchError } from '@/types/types';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const createNewCoupon = async (data: createCouponData) => {
   try {

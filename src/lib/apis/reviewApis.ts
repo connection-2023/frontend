@@ -1,4 +1,3 @@
-import { DOMAIN } from '@/constants/constants';
 import {
   GetMyLecturersReviews,
   GetMyLecturersReviewsData,
@@ -6,6 +5,8 @@ import {
   WriteReview,
 } from '@/types/review';
 import { FetchError } from '@/types/types';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const getWriteReviews = async (
   orderBy: string,
