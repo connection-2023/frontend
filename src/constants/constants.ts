@@ -32,6 +32,12 @@ export const CLASS_HSTYLE = {
   h3: 'flex gap-1.5 text-sm',
 };
 
+export const CLASS_EDIT_STYLE = {
+  border: 'border-b border-solid border-gray-700',
+  h2: 'mb-4 flex items-center text-lg font-bold',
+  h3: 'flex gap-1.5 text-sm',
+};
+
 export const REGISTER_CONSENT_LIST: ConsentListType = [
   {
     id: 'termsOfService',
