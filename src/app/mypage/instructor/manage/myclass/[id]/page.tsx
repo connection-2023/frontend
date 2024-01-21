@@ -147,7 +147,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
             <div className="mt-4">
               <Notice
                 isEditMode={true}
-                content={classData.notification.notification}
+                content={classData.notification.content}
                 updateDate={notificationUpdateDate}
                 updateNotice={updateData}
               />
