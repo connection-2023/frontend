@@ -17,6 +17,7 @@ export interface ClassCardType {
   price: number;
   profile: { src: string | null; nickname: string };
   darkMode?: boolean;
+  smallView?: boolean;
   searchAfter?: [number, number];
 }
 

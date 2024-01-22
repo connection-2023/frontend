@@ -11,10 +11,10 @@ const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
   const [focus, setFocus] = useState(false);
   const width =
     mode === 'class'
-      ? 'w-[13rem] xl:w-[30rem]'
-      : 'h-[4.75rem] w-[4.75rem] lg:h-[9.375rem] lg:w-[9.25rem]';
-  const height = mode === 'class' ? 'h-[14rem]' : 'h-24 md:h-[9.375rem]';
-  const priority = mode === 'class' ? 5 : 8;
+      ? 'w-[13rem]'
+      : 'h-[4.75rem] w-[4.75rem] md:h-[9.375rem] md:w-[9.25rem]';
+  const height = mode === 'class' ? 'h-[14rem]' : 'h-[4.75rem] md:h-[9.375rem]';
+  const priority = mode === 'class' ? 6 : 8;
 
   const onFocus = () => {
     setFocus(true);
@@ -26,7 +26,7 @@ const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
 
   return (
     <div className={`relative flex ${height} w-full justify-center px-2`}>
-      <div className="flex h-full w-11/12 items-center overflow-hidden">
+      <div className="h-full w-11/12 items-center overflow-hidden">
         <ul className={width} onMouseOver={onFocus} onMouseLeave={offFocus}>
           <Carousel
             move={true}

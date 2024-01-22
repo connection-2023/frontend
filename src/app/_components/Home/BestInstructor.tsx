@@ -5,16 +5,25 @@ import { useUserStore } from '@/store';
 import CarouselTemplate from '../CarouselTemplate';
 
 const BestInstructor = async () => {
-  const { userType } = useUserStore.getState();
-  const resInstructorList = await searchBestInstructor(userType === 'user');
+  let bestInstructorLists = [];
 
-  const bestInstructorLists =
-    resInstructorList.length < 9
-      ? [
-          ...resInstructorList,
-          ...resInstructorList.slice(0, 9 - resInstructorList.length),
-        ]
-      : resInstructorList;
+  try {
+    const { userType } = useUserStore.getState();
+    const resInstructorList = await searchBestInstructor(userType === 'user');
+
+    bestInstructorLists =
+      resInstructorList.length < 9
+        ? [
+            ...resInstructorList,
+            ...resInstructorList.slice(0, 9 - resInstructorList.length),
+          ]
+        : resInstructorList;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+
+  if (bestInstructorLists.length === 0) return null;
 
   return (
     <CarouselTemplate mode="instructor">

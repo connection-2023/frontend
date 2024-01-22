@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { MainPopularSVG, MainTopSVG } from '@/icons/svg';
@@ -12,9 +13,6 @@ import RecentClassLoading from './_components/Home/Loading/RecentClassLoading';
 import RecentClass from './_components/Home/RecentClass';
 
 const Home = async () => {
-  const { userType } = useUserStore.getState();
-  const bestInstructorList = await searchBestInstructor(userType === 'user');
-
   return (
     <div className="relative mx-auto mb-20 w-full">
       <div className="h-[472px]">
@@ -46,7 +44,7 @@ const Home = async () => {
         />
 
         <Suspense fallback={<BestInstructorLoading />}>
-          <BestInstructor bestInstructorList={bestInstructorList} />
+          <BestInstructor />
         </Suspense>
       </section>
 
