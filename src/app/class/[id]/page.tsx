@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
@@ -49,11 +50,12 @@ const ClassDetailPage = async ({
   params: { id: string };
 }) => {
   // parallel requests
-  const { userType } = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
   const classData = getClassInfo(id);
   const classSchedules = getClassSchedules(id);
   const userReservationData = getUserReservation(id);
-  const couponLists = getClassCouponList(id, userType === 'user');
+  const couponLists = getClassCouponList(id, !!user);
 
   const [classInfo, classSchedule, userReservation, couponList] =
     await Promise.all([

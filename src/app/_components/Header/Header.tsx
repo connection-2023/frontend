@@ -1,6 +1,5 @@
 'use client';
-import Cookies from 'js-cookie';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import {
   NON_STICKY_HEADER_PATHS,
