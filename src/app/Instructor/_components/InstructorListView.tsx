@@ -10,7 +10,11 @@ import { transformSearchInstructor } from '@/utils/apiDataProcessor';
 import NavComponent from './NavComponent';
 import InstructorCard from '@/components/InstructorCard/InstructorCard';
 import Spinner from '@/components/Spinner/Spinner';
-import { InstructorCardProps, instructorSearchData } from '@/types/types';
+import {
+  FetchError,
+  InstructorCardProps,
+  instructorSearchData,
+} from '@/types/types';
 
 interface InstructorListViewProps {
   instructorList: InstructorCardProps[];
@@ -70,7 +74,8 @@ const InstructorListView = ({
     try {
       await updateSearchStateAndInstructorLists();
     } catch (error) {
-      if (error instanceof Error && error.message.includes('401')) {
+      const fetchError = error as FetchError;
+      if (fetchError.status === 401) {
         await accessTokenReissuance();
         await updateSearchStateAndInstructorLists();
       } else {

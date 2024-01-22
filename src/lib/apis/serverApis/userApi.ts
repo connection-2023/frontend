@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { instructorProfile, userProfile } from '@/types/auth';
+import { FetchError } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -123,9 +124,10 @@ export const checkAccessToken = async (
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(
-      `토큰 검증 에러: ${errorData.message || ''}, status: ${response.status}`,
-    );
+    const error: FetchError = new Error(errorData.message || '');
+    error.status = response.status;
+    throw error;
   }
+
   return response.json();
 };
