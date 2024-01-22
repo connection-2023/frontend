@@ -21,7 +21,7 @@ export const GET = async (request: NextRequest) => {
       };
 
   const serverResponse = await fetch(
-    `${END_POINT}/lectures/${lectureId}/previews`,
+    `${END_POINT}/lectures/${lectureId}/details`,
     {
       credentials: 'include',
       headers,
@@ -29,7 +29,7 @@ export const GET = async (request: NextRequest) => {
   ).then((data) => data.json());
 
   if (serverResponse.statusCode !== 200) {
-    throw new Error('클래스 상세 조회 상단 데이터 요청 에러!');
+    throw new Error('클래스 세부 데이터 요청 에러!');
   }
 
   return NextResponse.json(serverResponse);

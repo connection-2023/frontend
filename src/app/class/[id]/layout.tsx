@@ -1,27 +1,3 @@
-import { getClassInfo } from '@/lib/apis/serverApis/classPostApis';
-import type { Metadata } from 'next';
-
-export const generateMetadata = async ({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> => {
-  const { id } = params;
-
-  const classData = await getClassInfo(id);
-  if (classData instanceof Error) {
-    return {
-      title: 'Connection | 강의 상세페이지',
-      description: 'Connection 강의 상세페이지',
-    };
-  }
-
-  return {
-    title: `Connection | ${classData.lecture.title}`,
-    description: classData.lecture.introduction,
-  };
-};
-
 export default function ClassDetailLayout({
   children,
   modal,
@@ -31,7 +7,8 @@ export default function ClassDetailLayout({
 }) {
   return (
     <>
-      {children} {modal}
+      {children}
+      {modal}
     </>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
-import { parseISO } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import AccountInfo from './_components/AccountInfo';
@@ -9,11 +9,14 @@ import CouponContainer from './_components/Coupon/CouponContainer';
 import PaymentMethod from './_components/PaymentMethod';
 import ReservationInfo from './_components/ReservationInfo';
 import ApplyLoading from '@/components/Loading/ApplyLoading';
-import { IClassEditData } from '@/types/class';
 import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
 import { getOriginalClassInfo } from '@/lib/apis/classApis';
 import { getCouponList } from '@/lib/apis/serverApis/couponApis';
-import { formatDateTime } from '@/utils/parseUtils';
+import {
+  parseApplyQuery,
+  processSelectedSchedules,
+} from './_lib/applyScheduleUtils';
+import { redirect } from 'next/navigation';
 
 const ClassApplyPage = ({
   params: { id },
@@ -22,9 +25,13 @@ const ClassApplyPage = ({
   params: { id: string };
   searchParams: { [key: string]: string | string[] };
 }) => {
-  const [classData, setClassData] = useState<IClassEditData>();
   const [paymentOption, setPaymentOption] = useState<number>();
   const { register, handleSubmit, getValues } = useForm();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['apply', id],
+    queryFn: () => getOriginalClassInfo(id),
+    refetchOnWindowFocus: 'always',
+  });
 
   const handlePaymentOption = (index: number) => {
     setPaymentOption(index);
@@ -37,56 +44,30 @@ const ClassApplyPage = ({
   };
   const { count } = searchParams;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getOriginalClassInfo(id);
-      setClassData(data);
-    };
-    fetchData();
-  }, [id]);
-
-  if (!classData) {
+  if (isLoading) {
     return <ApplyLoading />;
   }
 
-  const { title, duration, maxCapacity, reservationComment, price } =
-    classData.lecture;
-  const { schedule } = classData;
+  if (error || !data || data instanceof Error) {
+    redirect('/404');
+  }
 
-  // 쿼리 파싱
-  const parseCount = (count: string | string[]) => {
-    const countArray = Array.isArray(count) ? count : [count];
-    return countArray.map((item) => {
-      const [lectureScheduleId, participants] = item.split('-').map(Number);
-      return {
-        lectureScheduleId,
-        participants,
-      };
-    });
-  };
+  const { title, duration, maxCapacity, reservationComment, price, schedule } =
+    data;
 
-  const initialApplyData = parseCount(count);
-  const initialScheduleIds = initialApplyData.map(
-    (selectedLecture) => selectedLecture.lectureScheduleId,
-  );
+  const { data: initialApplyData, ids: initialScheduleIds } =
+    parseApplyQuery(count);
+
   const selectedSchedule = schedule.filter((lecture) =>
     initialScheduleIds.includes(lecture.id),
   );
-  const processedSchedules = selectedSchedule.map((lecture) => {
-    const datetime = parseISO(lecture.startDateTime);
-    const remain = maxCapacity - lecture.numberOfParticipants;
-    const matchedSchedule = initialApplyData.find(
-      (item) => item.lectureScheduleId === lecture.id,
-    );
-    const participants = matchedSchedule ? matchedSchedule.participants : 0;
 
-    return {
-      lectureScheduleId: lecture.id,
-      dateTime: formatDateTime(datetime, duration),
-      remain,
-      participants,
-    };
-  });
+  const processedSchedules = processSelectedSchedules(
+    selectedSchedule,
+    initialApplyData,
+    maxCapacity,
+    duration,
+  );
 
   const onSubmit = async (data: any) => {
     const { depositor, accountHolder, bank, accountNumber } = data;
