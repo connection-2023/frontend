@@ -61,11 +61,15 @@ export const middleware = async (request: NextRequest) => {
 
           return response;
         } catch (error) {
-          const response = LOGIN_REQUIRED_URLS.includes(
+          const includes = LOGIN_REQUIRED_URLS.includes(
             request.nextUrl.pathname,
-          )
+          );
+
+          const response = includes
             ? NextResponse.redirect(new URL('/login', request.url))
             : NextResponse.redirect(request.url);
+
+          if (!includes) response.cookies.set('reload', 'true');
 
           response.cookies.delete('userAccessToken');
           response.cookies.delete('lecturerAccessToken');

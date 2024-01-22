@@ -127,4 +127,5 @@ export const checkAccessToken = async (
       `토큰 검증 에러: ${errorData.message || ''}, status: ${response.status}`,
     );
   }
+  return response.json();
 };

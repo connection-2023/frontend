@@ -26,7 +26,9 @@ const InstructorListView = ({
   const [largeImg, setLargeImg] = useState(true);
   const [instructors, setInstructors] = useState(instructorList);
   const [searchState, setSearchState] = useState({ ...searchData });
-  const { userType } = useUserStore.getState();
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
 
   useEffect(() => {
     setInstructors([...instructorList]);
