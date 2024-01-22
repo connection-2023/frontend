@@ -6,9 +6,17 @@ import ClassCard from '@/components/ClassPreview/ClassPreview';
 
 const BestClass = async () => {
   const { userType } = useUserStore.getState();
-  const bestClassList = transformBestClassSearch(
+  const resBestClassList = transformBestClassSearch(
     await searchBestClass(userType === 'user'),
   );
+
+  const bestClassList =
+    resBestClassList.length < 6
+      ? [
+          ...resBestClassList,
+          ...resBestClassList.slice(0, 6 - resBestClassList.length),
+        ]
+      : resBestClassList;
 
   return (
     <CarouselTemplate mode="class">

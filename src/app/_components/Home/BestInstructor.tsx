@@ -1,19 +1,25 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { searchBestInstructor } from '@/lib/apis/serverApis/searchApis';
+import { useUserStore } from '@/store';
 import CarouselTemplate from '../CarouselTemplate';
-import { searchBestInstructorData } from '@/types/instructor';
 
-const BestInstructor = ({
-  bestInstructorList,
-}: {
-  bestInstructorList: searchBestInstructorData[];
-}) => {
-  if (!bestInstructorList) return null;
+const BestInstructor = async () => {
+  const { userType } = useUserStore.getState();
+  const resInstructorList = await searchBestInstructor(userType === 'user');
+
+  const bestInstructorLists =
+    resInstructorList.length < 9
+      ? [
+          ...resInstructorList,
+          ...resInstructorList.slice(0, 9 - resInstructorList.length),
+        ]
+      : resInstructorList;
 
   return (
     <CarouselTemplate mode="instructor">
-      {bestInstructorList.map((list) => (
-        <li key={list.id} className="h-full w-full overflow-hidden rounded-md">
+      {bestInstructorLists.map((list) => (
+        <li key={list.id} className="h-full w-full">
           <Link
             href={`/instructor/${list.id}`}
             className="flex h-full flex-col"
@@ -28,7 +34,7 @@ const BestInstructor = ({
                 priority={true}
               />
             </div>
-            <div className="flex h-6 items-center justify-center truncate bg-white text-sm lg:h-8 lg:text-base lg:font-bold">
+            <div className="flex h-6 items-center justify-center truncate bg-black text-sm text-white lg:h-8 lg:text-base lg:font-bold">
               {list.nickname}
             </div>
           </Link>
