@@ -37,9 +37,9 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
     : 'hover:fill-main-color hover:stroke-main-color';
 
   useEffect(() => {
-    if (type === 'class' && likeClassList.length > 0) {
+    if (type === 'class') {
       setLiked(likeClassList.includes(Number(id)));
-    } else if (type === 'instructor' && likeInstructorList.length > 0) {
+    } else if (type === 'instructor') {
       setLiked(likeInstructorList.includes(Number(id)));
     }
   }, [likeClassList, likeInstructorList]);
@@ -54,7 +54,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
               await deleteClassLikes(String(id));
 
               setLikeClassList(
-                likeClassList.filter((classId) => id !== classId),
+                likeClassList.filter((classId) => Number(id) !== classId),
               );
             }
           : async () => {
@@ -70,7 +70,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
               if (likeEvent) likeEvent(id);
 
               setLikeInstructorList(
-                likeInstructorList.filter((classId) => id !== classId),
+                likeInstructorList.filter((classId) => Number(id) !== classId),
               );
             }
           : async () => {

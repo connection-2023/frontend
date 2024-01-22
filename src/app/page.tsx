@@ -2,8 +2,6 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { MainPopularSVG, MainTopSVG } from '@/icons/svg';
-import { searchBestInstructor } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import Banner from './_components/Banner';
 import BestClass from './_components/Home/BestClass';
 import BestInstructor from './_components/Home/BestInstructor';

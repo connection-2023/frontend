@@ -5,23 +5,32 @@ import { getLikesInstructorList } from '@/lib/apis/instructorLikesBlockApis';
 import { useUserStore } from '@/store/userStore';
 
 const UserLikesInitializer = () => {
-  const { setLikeInstructorList, setLikeClassList, userType } = useUserStore(
-    (state) => ({
-      setLikeInstructorList: state.setLikeInstructorList,
-      setLikeClassList: state.setLikeClassList,
-      userType: state.userType,
-    }),
-  );
+  const {
+    setLikeInstructorList,
+    setLikeClassList,
+    userType,
+    likeClassList,
+    likeInstructorList,
+  } = useUserStore((state) => ({
+    setLikeInstructorList: state.setLikeInstructorList,
+    setLikeClassList: state.setLikeClassList,
+    userType: state.userType,
+    likeClassList: state.likeClassList,
+    likeInstructorList: state.likeInstructorList,
+  }));
 
   useEffect(() => {
     if (userType === 'user') {
-      getLikesInstructorList().then((data) =>
-        setLikeInstructorList(data.map(({ lecturerId }) => lecturerId)),
-      );
+      if (likeInstructorList.length === 0) {
+        getLikesInstructorList().then((data) =>
+          setLikeInstructorList(data.map(({ lecturerId }) => lecturerId)),
+        );
+      }
 
-      getLikesClassList().then((data) =>
-        setLikeClassList(data.map(({ lectureId }) => lectureId)),
-      );
+      if (likeClassList.length === 0)
+        getLikesClassList().then((data) =>
+          setLikeClassList(data.map(({ lectureId }) => lectureId)),
+        );
     } else {
       setLikeClassList([]);
       setLikeInstructorList([]);
