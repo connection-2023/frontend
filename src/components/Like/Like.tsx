@@ -9,6 +9,7 @@ import {
 } from '@/lib/apis/instructorLikesBlockApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store/userStore';
+import Spinner from '../Loading/Spinner';
 import { FetchError } from '@/types/types';
 
 interface LikeProps {
@@ -31,6 +32,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
     setLikeInstructorList: state.setLikeInstructorList,
   }));
 
+  const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(isLiked);
   const style = liked
     ? 'fill-main-color stroke-main-color'
@@ -61,8 +63,10 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
               await postClassLikes(String(id));
               setLikeClassList([...likeClassList, Number(id)]);
             };
+        setLoading(true);
         await retryFunc();
         setLiked(!liked);
+        setLoading(false);
       } else {
         retryFunc = liked
           ? async () => {
@@ -77,8 +81,10 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
               await instructorsLikes(id);
               setLikeInstructorList([...likeInstructorList, Number(id)]);
             };
+        setLoading(true);
         await retryFunc();
         setLiked(!liked);
+        setLoading(false);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -98,7 +104,9 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
     }
   };
 
-  return (
+  return loading ? (
+    <Spinner size={30} />
+  ) : (
     <button onClick={handleLike} aria-label="좋아요">
       <HeartSVG width="29" height="30" className={style} />
     </button>
