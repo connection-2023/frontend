@@ -1,14 +1,17 @@
 import { cookies } from 'next/headers';
-import { IClassInfoResponse, IClassScheduleResponse } from '@/types/class';
+import {
+  IClassScheduleResponse,
+  IClassPreviewResponse,
+  IClassDetailResponse,
+} from '@/types/class';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const getClassInfo = async (
-  id: string,
-): Promise<IClassInfoResponse | Error> => {
+export const getClassPreview = async (
+  lectureId: string,
+): Promise<IClassPreviewResponse> => {
   const cookieStore = cookies();
   const token = cookieStore.get('userAccessToken')?.value;
-  const path = token ? '/users' : '/non-members';
 
   const headers: Record<string, string> = token
     ? {
@@ -19,17 +22,45 @@ export const getClassInfo = async (
         'Content-Type': 'application/json',
       };
 
-  const response = await fetch(END_POINT + '/lectures/' + id + path, {
+  const response = await fetch(`${END_POINT}/lectures/${lectureId}/previews`, {
     method: 'GET',
     credentials: 'include',
     headers,
   }).then((data) => data.json());
 
   if (response.statusCode !== 200) {
-    throw new Error('클래스 상세 조회 요청 에러!');
+    throw new Error('클래스 상세 조회 상단 데이터 요청 에러!');
   }
 
-  return response.data;
+  return response.data.lecturePreview;
+};
+
+export const getClassDetail = async (
+  lectureId: string,
+): Promise<IClassDetailResponse | Error> => {
+  const cookieStore = cookies();
+  const token = cookieStore.get('userAccessToken')?.value;
+
+  const headers: Record<string, string> = token
+    ? {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    : {
+        'Content-Type': 'application/json',
+      };
+
+  const response = await fetch(`${END_POINT}/lectures/${lectureId}/details`, {
+    method: 'GET',
+    credentials: 'include',
+    headers,
+  }).then((data) => data.json());
+
+  if (response.statusCode !== 200) {
+    throw new Error('클래스 상세 조회 세부 데이터 요청 에러!');
+  }
+
+  return response.data.lectureDetail;
 };
 
 export const getClassSchedules = async (
