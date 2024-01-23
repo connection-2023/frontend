@@ -1,3 +1,4 @@
+import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import { BigArrowSVG } from '@/icons/svg';
 import { getBankAccount } from '@/lib/apis/serverApis/instructorPostApis';
 
@@ -24,12 +25,14 @@ const Account = async () => {
       </header>
       <div className="mt-4 flex flex-col gap-2">
         <dl className="flex px-5 text-sm">
-          <dt className="w-16 font-semibold">은행</dt>
-          <dd>우리은행</dd>
+          <dt className="w-[4.5rem] font-semibold">은행</dt>
+          <dd>
+            {(accountInfo && BANK_CODE_TO_NAME[accountInfo.bankCode]) || ''}
+          </dd>
         </dl>
         <dl className="flex px-5 text-sm">
-          <dt className="w-16 font-semibold">계좌번호</dt>
-          <dd>우리은행</dd>
+          <dt className="w-[4.5rem] font-semibold">계좌번호</dt>
+          <dd>{accountInfo?.accountNumber}</dd>
         </dl>
       </div>
     </section>

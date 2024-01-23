@@ -311,7 +311,7 @@ export const BANK_LIST = [
   { value: 'SD', label: 'SK증권' },
 ];
 
-export const BANK_CODE_TO_NAME = {
+export const BANK_CODE_TO_NAME: { [key: string]: string } = {
   '39': '경남은행',
   '34': '광주은행',
   '12': '단위농협(지역농축협)',

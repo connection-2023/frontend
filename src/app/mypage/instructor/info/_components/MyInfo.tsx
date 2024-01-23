@@ -60,10 +60,7 @@ const MyInfo = async () => {
       <h1 className="mb-7 text-2xl font-bold">내 정보</h1>
       <div className="flex flex-col gap-7 sm:flex-row">
         <button className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0 [&>*:nth-child(1)]:h-44">
-          <ProfileImg
-            src="https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg"
-            size="xlarge"
-          />
+          <ProfileImg src={profileCardImageUrl} size="xlarge" />
           <div className="absolute bottom-0 right-0 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-vertical group-hover:shadow-[inset_0_0px_3px_1px_rgba(0,0,0,0.3)]">
             <ChangeImageSVG className="h-7 w-7" />
           </div>
