@@ -35,9 +35,9 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
 
   useEffect(() => {
     const getAprroveCount = async () => {
-      const approveData = await getPendingCount();
+      // const approveData = await getPendingCount();
 
-      setApproveCount(approveData);
+      setApproveCount(1);
     };
 
     getAprroveCount();

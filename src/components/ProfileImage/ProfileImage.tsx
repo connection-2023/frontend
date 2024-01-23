@@ -22,7 +22,7 @@ const ProfileImg = ({
   const ml = `ml-${marginLeft}`;
 
   return (
-    <div className={`color-inherit flex ${height} items-center`}>
+    <div className={`color-inherit flex items-center ${height}`}>
       {src ? (
         <Image
           src={src}

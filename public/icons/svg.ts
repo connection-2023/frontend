@@ -78,3 +78,4 @@ export { default as WavyLineSVG } from './class/wavyLine.svg';
 export { default as YoutubeSVG } from './logo/sns/youtube.svg';
 export { default as ZoomInSVG } from './common/button/zoomIn.svg';
 export { default as ZoomOutSVG } from './common/button/zoomOut.svg';
+export { default as ChangeImageSVG } from './my/changeImage.svg';
