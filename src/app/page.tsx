@@ -1,8 +1,8 @@
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { MainPopularSVG, MainTopSVG } from '@/icons/svg';
 import { searchBestInstructor } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import Banner from './_components/Banner';
 import BestClass from './_components/Home/BestClass';
 import BestInstructor from './_components/Home/BestInstructor';
@@ -12,8 +12,10 @@ import RecentClassLoading from './_components/Home/Loading/RecentClassLoading';
 import RecentClass from './_components/Home/RecentClass';
 
 const Home = async () => {
-  const { userType } = useUserStore.getState();
-  const bestInstructorList = await searchBestInstructor(userType === 'user');
+  const cookieStore = cookies();
+  const isUser =
+    cookieStore.get('userAccessToken')?.value !== undefined ? true : false;
+  const bestInstructorList = await searchBestInstructor(isUser);
 
   return (
     <div className="relative mx-auto mb-20 w-full">
