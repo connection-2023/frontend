@@ -4,6 +4,7 @@ import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/createCoupon';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import { CouponData, createCoupon } from '@/types/coupon';
+import { FetchError } from '@/types/types';
 
 interface CouponCreatorProps {
   changeCouponList: (couponOption: createCoupon) => void;
@@ -45,7 +46,8 @@ const CouponCreator = ({
       toast.success('쿠폰 생성 완료');
       changeCouponList(resData);
     } catch (error) {
-      if (error instanceof Error && error.message.includes('401')) {
+      const fetchError = error as FetchError;
+      if (fetchError.status === 401) {
         await accessTokenReissuance();
         await onValid(data);
       } else {

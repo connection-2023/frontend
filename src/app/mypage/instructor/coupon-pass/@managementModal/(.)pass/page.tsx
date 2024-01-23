@@ -8,6 +8,7 @@ import CreatePass from '../../_components/CreatePass';
 import Button from '@/components/Button/Button';
 import RouterModal from '@/components/Modal/RouterModal';
 import { IcreatePass } from '@/types/pass';
+import { FetchError } from '@/types/types';
 
 const PassCreateModal = () => {
   const formMethods = useForm<IcreatePass>({ shouldFocusError: false });
@@ -31,7 +32,8 @@ const PassCreateModal = () => {
 
       window.location.reload();
     } catch (error) {
-      if (error instanceof Error && error.message.includes('401')) {
+      const fetchError = error as FetchError;
+      if (fetchError.status === 401) {
         await accessTokenReissuance();
         await createNewPass(reqData);
       } else {

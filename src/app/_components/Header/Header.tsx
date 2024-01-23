@@ -13,8 +13,9 @@ const Header = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const lastScrollTopRef = useRef(0);
-
-  const { userType } = useUserStore();
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
   const { isScrollingUp, setIsScrollingUp } = useScrollStore();
 
   useEffect(() => {
@@ -41,8 +42,8 @@ const Header = ({ children }: { children: React.ReactNode }) => {
       isScrollingUp
         ? 'translate-y-0'
         : pathname.startsWith('/mypage') && userType === 'lecturer'
-          ? '-translate-y-full xl:translate-y-0'
-          : '-translate-y-full'
+        ? '-translate-y-full xl:translate-y-0'
+        : '-translate-y-full'
     } ${
       pathname.startsWith('/mypage') &&
       userType === 'lecturer' &&

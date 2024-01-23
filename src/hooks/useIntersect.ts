@@ -12,6 +12,8 @@ const useIntersect = (
   const ref = useRef<HTMLDivElement>(null);
   const callback = useCallback(
     (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+      if (loading) return;
+
       entries.forEach(async (entry) => {
         if (entry.isIntersecting) {
           setLoading(true);
@@ -25,12 +27,11 @@ const useIntersect = (
 
   useEffect(() => {
     if (!ref.current) return;
-    if (loading) return;
 
     const observer = new IntersectionObserver(callback, options);
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [ref, options, callback]);
+  }, [ref, options, callback, loading]);
 
   return { ref, loading };
 };

@@ -9,6 +9,7 @@ import {
   checkAccessToken,
   accessTokenReissuance,
 } from './lib/apis/serverApis/userApi';
+import { FetchError } from './types/types';
 
 const setCookie = (response: NextResponse, name: string, value: string) => {
   response.cookies.set(name, value, {
@@ -48,33 +49,40 @@ export const middleware = async (request: NextRequest) => {
 
       return NextResponse.next();
     } catch (error) {
-      if (error instanceof Error && error.message.includes('401')) {
-        try {
-          const response = NextResponse.redirect(request.url);
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            const response = NextResponse.redirect(request.url);
 
-          const { accessToken, refreshToken } = await accessTokenReissuance();
+            const { accessToken, refreshToken } = await accessTokenReissuance();
 
-          const tokenName = user ? 'userAccessToken' : 'lecturerAccessToken';
+            const tokenName = user ? 'userAccessToken' : 'lecturerAccessToken';
 
-          setCookie(response, tokenName, accessToken);
-          setCookie(response, 'refreshToken', refreshToken);
+            setCookie(response, tokenName, accessToken);
+            setCookie(response, 'refreshToken', refreshToken);
 
-          return response;
-        } catch (error) {
-          const response = LOGIN_REQUIRED_URLS.includes(
-            request.nextUrl.pathname,
-          )
-            ? NextResponse.redirect(new URL('/login', request.url))
-            : NextResponse.redirect(request.url);
+            return response;
+          } catch (error) {
+            const includes = LOGIN_REQUIRED_URLS.includes(
+              request.nextUrl.pathname,
+            );
 
-          response.cookies.delete('userAccessToken');
-          response.cookies.delete('lecturerAccessToken');
-          response.cookies.delete('refreshToken');
+            const response = includes
+              ? NextResponse.redirect(new URL('/login', request.url))
+              : NextResponse.redirect(request.url);
 
-          return response;
+            if (!includes) response.cookies.set('reload', 'true');
+
+            response.cookies.delete('userAccessToken');
+            response.cookies.delete('lecturerAccessToken');
+            response.cookies.delete('refreshToken');
+
+            return response;
+          }
         }
       }
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/', request.url)); //추후 서버 에러 페이지로 이동
     }
   }
 

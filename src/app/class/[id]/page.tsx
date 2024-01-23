@@ -4,12 +4,12 @@ import {
   getClassDetail,
   getUserReservation,
 } from '@/lib/apis/serverApis/classPostApis';
+import ClassDetail from './_components/ClassDetail';
+import ClassPreview from './_components/ClassPreview';
+import ClassDetailLoading from './_components/Loading/ClassDetailLoading';
+import ClassTopLoading from './_components/Loading/ClassTopLoading';
 import UserReservation from './_components/UserReservation';
 import type { Metadata } from 'next';
-import ClassPreview from './_components/ClassPreview';
-import ClassDetail from './_components/ClassDetail';
-import ClassTopLoading from './_components/Loading/ClassTopLoading';
-import ClassDetailLoading from './_components/Loading/ClassDetailLoading';
 
 export const generateMetadata = async ({
   params,
