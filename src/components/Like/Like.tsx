@@ -9,6 +9,7 @@ import {
 } from '@/lib/apis/instructorLikesBlockApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store/userStore';
+import Spinner from '../Loading/Spinner';
 import { FetchError } from '@/types/types';
 
 interface LikeProps {
@@ -31,15 +32,16 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
     setLikeInstructorList: state.setLikeInstructorList,
   }));
 
+  const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(isLiked);
   const style = liked
     ? 'fill-main-color stroke-main-color'
     : 'hover:fill-main-color hover:stroke-main-color';
 
   useEffect(() => {
-    if (type === 'class' && likeClassList.length > 0) {
+    if (type === 'class') {
       setLiked(likeClassList.includes(Number(id)));
-    } else if (type === 'instructor' && likeInstructorList.length > 0) {
+    } else if (type === 'instructor') {
       setLiked(likeInstructorList.includes(Number(id)));
     }
   }, [likeClassList, likeInstructorList]);
@@ -54,15 +56,17 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
               await deleteClassLikes(String(id));
 
               setLikeClassList(
-                likeClassList.filter((classId) => id !== classId),
+                likeClassList.filter((classId) => Number(id) !== classId),
               );
             }
           : async () => {
               await postClassLikes(String(id));
               setLikeClassList([...likeClassList, Number(id)]);
             };
+        setLoading(true);
         await retryFunc();
         setLiked(!liked);
+        setLoading(false);
       } else {
         retryFunc = liked
           ? async () => {
@@ -70,15 +74,17 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
               if (likeEvent) likeEvent(id);
 
               setLikeInstructorList(
-                likeInstructorList.filter((classId) => id !== classId),
+                likeInstructorList.filter((classId) => Number(id) !== classId),
               );
             }
           : async () => {
               await instructorsLikes(id);
               setLikeInstructorList([...likeInstructorList, Number(id)]);
             };
+        setLoading(true);
         await retryFunc();
         setLiked(!liked);
+        setLoading(false);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -98,7 +104,9 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
     }
   };
 
-  return (
+  return loading ? (
+    <Spinner size={30} />
+  ) : (
     <button onClick={handleLike} aria-label="좋아요">
       <HeartSVG width="29" height="30" className={style} />
     </button>

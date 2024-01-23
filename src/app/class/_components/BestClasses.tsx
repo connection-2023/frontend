@@ -37,7 +37,11 @@ const BestlCasses = ({ bestClassList }: { bestClassList: ClassCardType[] }) => {
                 movePause={focus}
               >
                 {bestClassList.map((classData) => {
-                  const data = { ...classData, darkMode: true };
+                  const data = {
+                    ...classData,
+                    darkMode: true,
+                    smallView: true,
+                  };
                   return (
                     <li
                       key={classData.id}

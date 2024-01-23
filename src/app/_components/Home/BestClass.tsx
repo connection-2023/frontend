@@ -5,21 +5,38 @@ import CarouselTemplate from '../CarouselTemplate';
 import ClassCard from '@/components/ClassPreview/ClassPreview';
 
 const BestClass = async () => {
-  const { userType } = useUserStore.getState();
-  const bestClassList = transformBestClassSearch(
-    await searchBestClass(userType === 'user'),
-  );
+  let bestClassList = [];
+
+  try {
+    const { userType } = useUserStore.getState();
+    const resBestClassList = transformBestClassSearch(
+      await searchBestClass(userType === 'user'),
+    );
+
+    bestClassList =
+      resBestClassList.length < 6
+        ? [
+            ...resBestClassList,
+            ...resBestClassList.slice(0, 6 - resBestClassList.length),
+          ]
+        : resBestClassList;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+
+  if (bestClassList.length === 0) return null;
 
   return (
     <CarouselTemplate mode="class">
-      {bestClassList.map((classList, index) => (
-        <div
-          key={classList.title + index}
-          className="w-full max-w-[13rem] xl:max-w-[33.7rem]"
-        >
-          <ClassCard key={classList.title + index} {...classList} />
-        </div>
-      ))}
+      {bestClassList.map((classList, index) => {
+        const data = { ...classList, smallView: true };
+        return (
+          <li key={classList.title + index} className="w-full max-w-[13rem]">
+            <ClassCard key={classList.title + index} {...data} />
+          </li>
+        );
+      })}
     </CarouselTemplate>
   );
 };

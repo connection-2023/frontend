@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import {
   DANCE_GENRE,
   INSTRUCTOR_TAKE,
@@ -29,7 +30,9 @@ const instructorPage = async ({
 }: {
   searchParams: SearchParams;
 }) => {
-  const { userType } = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
+
   let instructorList: InstructorCardProps[] = [];
   let bestInstructorList: { id: number; image: string; nickname: string }[] =
     [];
@@ -70,8 +73,8 @@ const instructorPage = async ({
 
   try {
     const [instructors, bestInstructors] = await Promise.all([
-      searchInstructors(searchData, userType === 'user'),
-      searchBestInstructor(userType === 'user'),
+      searchInstructors(searchData, !!user),
+      searchBestInstructor(!!user),
     ]);
 
     searchData.searchAfter = instructors.at(-1)?.searchAfter;

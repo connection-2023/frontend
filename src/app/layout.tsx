@@ -12,6 +12,7 @@ import Footer from './_components/Footer';
 import Header from './_components/Header/Header';
 import UserProfileLinks from './_components/Header/UserProfileLinks';
 import UserStoreInitializer from './_components/Header/UserStoreInitializer';
+import { userType } from '@/types/auth';
 import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
@@ -33,7 +34,7 @@ export default async function RootLayout({
   const user = cookieStore.get('userAccessToken')?.value;
   const lecturer = cookieStore.get('lecturerAccessToken')?.value;
   let authUser = null;
-  let userType = null;
+  let userType: userType | null = null;
 
   try {
     if (user) {
