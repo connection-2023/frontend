@@ -158,6 +158,7 @@ export interface instructorProfile {
   nickname: string;
   name: string;
   phoneNumber: string;
+  email: string;
 }
 
 interface IMarketingConsent {

@@ -1,54 +1,13 @@
 import Button from '@/components/Button/Button';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
 import { BigArrowSVG, ChangeImageSVG } from '@/icons/svg';
-import Link from 'next/link';
+import MyInfo from './_components/MyInfo';
 
 const page = () => {
   return (
     <main className="col-span-1 flex w-full flex-col px-4 sm:px-9 xl:px-0">
       <div className="flex flex-col gap-4 lg:flex-row ">
         <div className="flex grow flex-col gap-6">
-          <section className="flex flex-col rounded-md bg-white px-5 py-6 shadow-vertical">
-            <h1 className="mb-7 text-2xl font-bold">내 정보</h1>
-            <div className="flex flex-col gap-7 sm:flex-row">
-              <button className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0 [&>*:nth-child(1)]:h-44">
-                <ProfileImg
-                  src="https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg"
-                  size="xlarge"
-                />
-                <div className="absolute bottom-0 right-0 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-vertical group-hover:shadow-[inset_0_0px_3px_1px_rgba(0,0,0,0.3)]">
-                  <ChangeImageSVG className="h-7 w-7" />
-                </div>
-              </button>
-              <dl className="flex grow flex-col border-t border-solid border-gray-700">
-                <div className="grid grid-cols-6 items-center border-b border-solid border-gray-700 py-1">
-                  <dt className="w-24 font-bold">sss</dt>
-                  <dd className="col-span-4 truncate">
-                    sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-                  </dd>
-                  <button className="justify-self-end">
-                    <BigArrowSVG
-                      width="34"
-                      height="34"
-                      className="fill-gray-700 hover:fill-black"
-                    />
-                  </button>
-                </div>
-              </dl>
-            </div>
-            <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-              <Link href="/" className="w-full sm:w-1/2">
-                <Button size="medium" color="secondary">
-                  강사 프로필 보러가기
-                </Button>
-              </Link>
-              <Link href="/" className="w-full sm:w-1/2">
-                <Button size="medium" color="secondary">
-                  강사 프로필 수정하기
-                </Button>
-              </Link>
-            </div>
-          </section>
+          <MyInfo />
           <section className="flex flex-col rounded-md bg-white py-4 text-[#414141] shadow-vertical">
             <header className="flex items-center justify-between border-b border-solid border-gray-500 px-5 pb-3">
               <h1 className="text-lg font-semibold">계좌 정보</h1>
