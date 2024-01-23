@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useSelectedLayoutSegment } from 'next/navigation';
 import { useState } from 'react';
 import {
   ConnectionLogoSVG,
@@ -12,23 +12,26 @@ import Sidebar from '../Sidebar';
 import SidebarModal from '@/components/Modal/SidebarModal';
 
 const USER_MENU = [
-  { href: '/instructor', menu: '강사' },
-  { href: '/class', menu: '클래스' },
-  { href: '/pass', menu: '패스권' },
-  { href: '/', menu: <MapSVG /> },
+  { href: 'instructor', menu: '강사', label: '강사 페이지로 이동' },
+  { href: 'class', menu: '클래스', label: '클래스 페이지로 이동' },
+  { href: 'pass', menu: '패스권', label: '패스권 페이지로 이동' },
+  { href: '', menu: <MapSVG />, label: '내 주변 클래스 보기' },
 ];
 
 const LECTURER_MENU = [
-  { href: '/instructor', menu: '강사' },
-  { href: '/class', menu: '클래스' },
-  { href: '/class/create', menu: '클래스 등록' },
+  { href: 'instructor', menu: '강사', label: '강사 페이지로 이동' },
+  { href: 'class', menu: '클래스', label: '클래스 페이지로 이동' },
+  {
+    href: 'class/create',
+    menu: '클래스 등록',
+    label: '클래스 등록 페이지로 이동',
+  },
 ];
 
 const HeaderMenu = () => {
-  const pathname = usePathname();
+  const segment = useSelectedLayoutSegment();
   const { userType } = useUserStore();
-  const mySidebar =
-    pathname.startsWith('/mypage') || pathname.startsWith('/dashboard');
+  const mySidebar = segment === 'mypage' || segment === 'dashboard';
   const [isOpened, setIsOpened] = useState(false);
 
   const handleOpened = () => {
@@ -64,12 +67,14 @@ const HeaderMenu = () => {
         </h2>
         <ul className="hidden gap-6 text-lg sm:flex">
           {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
-            ({ href, menu }, index) => (
+            ({ href, menu, label }, index) => (
               <li
                 key={href + index}
-                className={pathname === href ? 'font-bold' : ''}
+                className={segment === href ? 'font-bold' : ''}
               >
-                <Link href={href}>{menu}</Link>
+                <Link href={`/${href}`} aria-label={label}>
+                  {menu}
+                </Link>
               </li>
             ),
           )}
