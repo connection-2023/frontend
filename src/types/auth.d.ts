@@ -156,9 +156,12 @@ export interface instructorProfile {
   id: string;
   profileCardImageUrl: string | null;
   nickname: string;
-  name: string;
   phoneNumber: string;
   email: string;
+  users: {
+    name: string;
+    auth: { email: string; signUpType: 1 | 2 | 3 };
+  };
 }
 
 interface IMarketingConsent {

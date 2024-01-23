@@ -9,48 +9,38 @@ import {
   NaverSVG,
 } from '@/icons/svg';
 import { useUserStore } from '@/store';
-import { cookies } from 'next/headers';
+import { instructorProfile } from '@/types/auth';
 
 const MyInfo = async () => {
   const { authUser } = useUserStore.getState();
-  const cookieStore = cookies();
-  const social = cookieStore.get('social')?.value;
+  const { nickname, users, email, phoneNumber, profileCardImageUrl } =
+    authUser as instructorProfile;
+  const { name, auth } = users;
 
-  const phoneNumber = authUser?.phoneNumber;
   const infoComponents = [
     {
       dt: '이름',
-      dd: authUser?.name,
+      dd: name,
       viewArrow: false,
     },
     {
       dt: '닉네임',
-      dd: authUser?.nickname,
+      dd: nickname,
       viewArrow: true,
     },
     {
       dt: '소셜 로그인',
       dd: (
         <div className="flex w-full gap-2">
-          {social === 'GOOGLE' ? (
-            <GoogleSVG className="h-6 w-6" />
-          ) : social === 'KAKAO' ? (
-            <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-kakao">
-              <KaKaoTalkSVG className="h-4 w-4" />
-            </div>
-          ) : social === 'NAVER' ? (
-            <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-naver">
-              <NaverSVG className="h-3 w-3" />
-            </div>
-          ) : null}
-          <p className="truncate">{authUser?.email}</p>
+          {renderIcon(auth.signUpType)}
+          <p className="truncate">{email}</p>
         </div>
       ),
       viewArrow: true,
     },
     {
       dt: '이메일',
-      dd: authUser?.email,
+      dd: email,
       viewArrow: true,
     },
     {
@@ -121,3 +111,24 @@ const MyInfo = async () => {
 };
 
 export default MyInfo;
+
+const renderIcon = (signUpType: 1 | 2 | 3) => {
+  switch (signUpType) {
+    case 1:
+      return (
+        <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-kakao">
+          <KaKaoTalkSVG className="h-4 w-4" />
+        </div>
+      );
+    case 2:
+      return <GoogleSVG className="h-6 w-6" />;
+    case 3:
+      return (
+        <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-naver">
+          <NaverSVG className="h-3 w-3" />
+        </div>
+      );
+    default:
+      return null;
+  }
+};

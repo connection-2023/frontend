@@ -8,7 +8,6 @@ import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
 import NaverAuth from './NaverAuth';
 import { LoginResponse } from '@/types/auth';
-import Cookies from 'js-cookie';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 const LoginButtons = () => {
@@ -27,7 +26,6 @@ const LoginButtons = () => {
 
       store.setAuthUser(profileRes.data.myProfile);
       store.setUserType('user');
-      Cookies.set('social', social);
       toast.success('로그인 성공!');
       router.replace('/');
       router.refresh();
