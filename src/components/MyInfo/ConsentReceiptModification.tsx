@@ -63,7 +63,7 @@ const ConsentReceiptModification = () => {
           className="w-full sm:ml-auto sm:w-28 lg:w-full"
           onClick={handleSubmit(onSubmit)}
         >
-          <Button type="submit" color="secondary" disabled={true}>
+          <Button color="secondary" disabled={true}>
             적용하기
           </Button>
         </form>

@@ -1,17 +1,12 @@
 import ProfileImg from '@/components/ProfileImage/ProfileImage';
 import Link from 'next/link';
 import Button from '@/components/Button/Button';
-import {
-  BigArrowSVG,
-  ChangeImageSVG,
-  GoogleSVG,
-  KaKaoTalkSVG,
-  NaverSVG,
-} from '@/icons/svg';
+import { ChangeImageSVG, GoogleSVG, KaKaoTalkSVG, NaverSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 import { instructorProfile } from '@/types/auth';
+import UpdateModalViewButton from './InfoUpdateModal/UpdateModalViewButton';
 
-const MyInfo = async () => {
+const Info = async () => {
   const { authUser } = useUserStore.getState();
   const { nickname, users, email, phoneNumber, profileCardImageUrl } =
     authUser as instructorProfile;
@@ -27,9 +22,10 @@ const MyInfo = async () => {
       dt: '닉네임',
       dd: nickname,
       viewArrow: true,
+      updateElemnt: <div>aaaa</div>,
     },
     {
-      dt: '소셜 로그인',
+      dt: '소셜 계정',
       dd: (
         <div className="flex w-full gap-2">
           {renderIcon(auth.signUpType)}
@@ -66,7 +62,7 @@ const MyInfo = async () => {
           </div>
         </button>
         <dl className="flex grow flex-col border-t border-solid border-gray-700">
-          {infoComponents.map(({ dt, dd, viewArrow }) => (
+          {infoComponents.map(({ dt, dd, viewArrow, updateElemnt }) => (
             <div
               key={dt}
               className={`grid grid-cols-[104px_1fr_34px] items-center border-b border-solid border-gray-700 ${
@@ -76,13 +72,9 @@ const MyInfo = async () => {
               <dt className="font-bold">{dt}</dt>
               <dd className="truncate">{dd}</dd>
               {viewArrow && (
-                <button className="justify-self-end">
-                  <BigArrowSVG
-                    width="34"
-                    height="34"
-                    className="fill-gray-700 hover:fill-black"
-                  />
-                </button>
+                <UpdateModalViewButton>
+                  {updateElemnt ? updateElemnt : <></>}
+                </UpdateModalViewButton>
               )}
             </div>
           ))}
@@ -107,7 +99,7 @@ const MyInfo = async () => {
   );
 };
 
-export default MyInfo;
+export default Info;
 
 const renderIcon = (signUpType: 1 | 2 | 3) => {
   switch (signUpType) {
