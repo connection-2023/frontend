@@ -1,14 +1,14 @@
+import { cookies } from 'next/headers';
 import { searchBestClass } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import { transformBestClassSearch } from '@/utils/apiDataProcessor';
 import CarouselTemplate from '../CarouselTemplate';
 import ClassCard from '@/components/ClassPreview/ClassPreview';
 
 const BestClass = async () => {
-  const { userType } = useUserStore.getState();
-  const bestClassList = transformBestClassSearch(
-    await searchBestClass(userType === 'user'),
-  );
+  const cookieStore = cookies();
+  const isUser =
+    cookieStore.get('userAccessToken')?.value !== undefined ? true : false;
+  const bestClassList = transformBestClassSearch(await searchBestClass(isUser));
 
   return (
     <CarouselTemplate mode="class">
