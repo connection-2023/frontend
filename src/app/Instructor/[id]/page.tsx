@@ -20,6 +20,7 @@ import OptionButtons from '@/components/Button/OptionButtons';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
+import { cookies } from 'next/headers';
 
 const h2Style = 'mb-2 text-lg font-bold';
 
@@ -28,9 +29,10 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const userStoreState = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
 
-  const profile = getInstructor(id, userStoreState.userType === 'user');
+  const profile = getInstructor(id, !!user);
   const classLists = getInstructorClassLists(id);
   const passLists = getLecturerPassList(id);
 
