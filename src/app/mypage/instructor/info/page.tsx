@@ -1,18 +1,17 @@
 import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
 import ProfileImg from '@/components/ProfileImage/ProfileImage';
 import { BigArrowSVG, ChangeImageSVG } from '@/icons/svg';
 import Link from 'next/link';
 
 const page = () => {
   return (
-    <main className="col-span-1 flex w-full flex-col ">
-      <div className="flex flex-col gap-5 sm:flex-row">
+    <main className="col-span-1 flex w-full flex-col px-4 sm:px-9 xl:px-0">
+      <div className="flex flex-col gap-4 lg:flex-row ">
         <div className="flex grow flex-col gap-6">
           <section className="flex flex-col rounded-md bg-white px-5 py-6 shadow-vertical">
             <h1 className="mb-7 text-2xl font-bold">내 정보</h1>
-            <div className="flex gap-7">
-              <button className="group relative w-44 flex-shrink-0 self-start [&>*:nth-child(1)]:h-44">
+            <div className="flex flex-col gap-7 sm:flex-row">
+              <button className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0 [&>*:nth-child(1)]:h-44">
                 <ProfileImg
                   src="https://img.freepik.com/free-photo/boy-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9262.jpg?size=626&ext=jpg"
                   size="xlarge"
@@ -37,13 +36,13 @@ const page = () => {
                 </div>
               </dl>
             </div>
-            <div className="mt-6 flex gap-4">
-              <Link href="/" className="w-1/2">
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+              <Link href="/" className="w-full sm:w-1/2">
                 <Button size="medium" color="secondary">
                   강사 프로필 보러가기
                 </Button>
               </Link>
-              <Link href="/" className="w-1/2">
+              <Link href="/" className="w-full sm:w-1/2">
                 <Button size="medium" color="secondary">
                   강사 프로필 수정하기
                 </Button>
@@ -73,8 +72,8 @@ const page = () => {
             </div>
           </section>
         </div>
-        <article className="flex w-80 flex-shrink-0 flex-col self-start whitespace-nowrap rounded-md bg-white p-5 px-5 py-6 shadow-vertical">
-          <ul className="flex flex-col gap-5 px-1">
+        <article className="flex w-full flex-shrink-0 flex-col self-start whitespace-nowrap rounded-md bg-white p-5 px-5 py-6 shadow-vertical lg:w-80">
+          <ul className="mb-5 flex flex-col gap-5 px-1">
             <h1 className="text-xl font-bold">알림/이메일 수신 동의</h1>
             <li className="mb-1 flex items-center gap-3">
               <input
@@ -87,10 +86,12 @@ const page = () => {
               </label>
               <button className="text-gray-500 underline">보기</button>
             </li>
+          </ul>
+          <div className="w-full sm:ml-auto sm:w-28 lg:w-full">
             <Button color="secondary" disabled={true}>
               적용하기
             </Button>
-          </ul>
+          </div>
         </article>
       </div>
     </main>
