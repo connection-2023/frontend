@@ -64,7 +64,7 @@ const Home = async () => {
         </Suspense>
       </section>
 
-      <div className="mt-10 flex w-screen justify-center">
+      <div className="mt-10 flex w-full justify-center">
         <Link
           href="/class"
           className="mx-auto rounded-[3.13rem] bg-main-color px-7 py-3 text-lg font-bold text-white"
