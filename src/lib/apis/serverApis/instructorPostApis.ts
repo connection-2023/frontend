@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { IClassPostResponse } from '@/types/class';
-import { instructorPostResponse } from '@/types/instructor';
+import { bankAccount, instructorPostResponse } from '@/types/instructor';
+import { FetchError } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -67,4 +68,33 @@ export const getInstructor = async (
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getBankAccount = async (): Promise<bankAccount> => {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get('lecturerAccessToken')?.value;
+
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${authorization}`,
+  };
+
+  const response = await fetch(
+    `${END_POINT}/lecturer-payments/recent-bank-account`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error: FetchError = new Error(errorData.message || '');
+    error.status = response.status;
+    throw error;
+  }
+
+  const resData = await response.json();
+
+  return resData.data.lecturerRecentBankAccount;
 };

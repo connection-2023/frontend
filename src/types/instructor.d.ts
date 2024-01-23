@@ -287,3 +287,10 @@ export interface searchBestInstructorData {
     url: string;
   }[];
 }
+
+export interface bankAccount {
+  id: number;
+  bankCode: string;
+  holderName: string;
+  accountNumber: string;
+}
