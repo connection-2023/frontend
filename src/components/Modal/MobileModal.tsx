@@ -14,7 +14,7 @@ const MobileModal = ({
   children,
   handleClosed,
 }: MobileModalProps) => {
-  const { onDragEnd, controls } = useBottomSheet(handleClosed);
+  const { onDragEnd, controls } = useBottomSheet(handleClosed, isOpened);
   const overlayRef = useRef(null);
 
   const handleKeyUp = (e: KeyboardEvent) => {

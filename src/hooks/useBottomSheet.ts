@@ -2,10 +2,9 @@ import { useAnimation, PanInfo } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import usePreviousValue from './usePreviousValue';
 
-const useBottomSheet = (handleClosed: () => void) => {
-  const [isOpen, setIsOpen] = useState(true);
+const useBottomSheet = (handleClosed: () => void, isOpened: boolean) => {
   const controls = useAnimation();
-  const prevIsOpen = usePreviousValue(isOpen);
+  const prevIsOpen = usePreviousValue(isOpened);
 
   const onDragEnd = (
     event: MouseEvent | TouchEvent | PointerEvent,
@@ -16,22 +15,20 @@ const useBottomSheet = (handleClosed: () => void) => {
 
     if (shouldClose) {
       controls.start('hidden').then(handleClosed);
-      setIsOpen(false);
     } else {
       controls.start('visible');
-      setIsOpen(true);
     }
   };
 
   useEffect(() => {
-    if (prevIsOpen && !isOpen) {
+    if (prevIsOpen && !isOpened) {
       controls.start('hidden');
-    } else if (!prevIsOpen && isOpen) {
+    } else if (!prevIsOpen && isOpened) {
       controls.start('visible');
     }
-  }, [controls, isOpen, prevIsOpen]);
+  }, [controls, isOpened, prevIsOpen]);
 
-  return { onDragEnd, controls, setIsOpen, isOpen };
+  return { onDragEnd, controls, isOpened };
 };
 
 export default useBottomSheet;
