@@ -3,7 +3,7 @@ import Modal from '@/components/Modal/Modal';
 import { BigArrowSVG } from '@/icons/svg';
 import { useState } from 'react';
 
-const UpdateModalViewButton = ({ children }: { children: JSX.Element }) => {
+const InfoUpdateModalViewButton = ({ children }: { children: JSX.Element }) => {
   const [modalView, setModalView] = useState(false);
 
   const closeModalHandler = () => {
@@ -19,11 +19,15 @@ const UpdateModalViewButton = ({ children }: { children: JSX.Element }) => {
           className="fill-gray-700 hover:fill-black"
         />
       </button>
-      <Modal isOpened={modalView} handleClosed={closeModalHandler}>
+      <Modal
+        disableModalSwipe={true}
+        isOpened={modalView}
+        handleClosed={closeModalHandler}
+      >
         {children}
       </Modal>
     </>
   );
 };
 
-export default UpdateModalViewButton;
+export default InfoUpdateModalViewButton;

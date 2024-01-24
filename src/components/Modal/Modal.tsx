@@ -46,7 +46,6 @@ const Modal = ({
 
       window.onpopstate = () => {
         handleClosed();
-
         window.onpopstate = null;
       };
     }

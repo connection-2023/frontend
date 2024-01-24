@@ -4,7 +4,8 @@ import Button from '@/components/Button/Button';
 import { ChangeImageSVG, GoogleSVG, KaKaoTalkSVG, NaverSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 import { instructorProfile } from '@/types/auth';
-import UpdateModalViewButton from './InfoUpdateModal/UpdateModalViewButton';
+import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
+import NicknameUpdate from './UpdateModal/NicknameUpdate';
 
 const Info = async () => {
   const { authUser } = useUserStore.getState();
@@ -22,7 +23,7 @@ const Info = async () => {
       dt: '닉네임',
       dd: nickname,
       viewArrow: true,
-      updateElemnt: <div>aaaa</div>,
+      updateElemnt: <NicknameUpdate nickname={nickname} />,
     },
     {
       dt: '소셜 계정',
@@ -72,9 +73,9 @@ const Info = async () => {
               <dt className="font-bold">{dt}</dt>
               <dd className="truncate">{dd}</dd>
               {viewArrow && (
-                <UpdateModalViewButton>
+                <InfoUpdateModalViewButton>
                   {updateElemnt ? updateElemnt : <></>}
-                </UpdateModalViewButton>
+                </InfoUpdateModalViewButton>
               )}
             </div>
           ))}
