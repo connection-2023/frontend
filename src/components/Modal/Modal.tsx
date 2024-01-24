@@ -1,22 +1,25 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import { CloseSVG } from '../../../public/icons/svg';
+import React, { useEffect, useRef } from 'react';
 import useBottomSheet from '@/hooks/useBottomSheet';
-import { motion } from 'framer-motion';
-import useMediaQuery from '@/hooks/useMediaQuery';
+import ModalContent from './ModalContent';
 
 interface ModalProps {
   children: React.ReactNode;
   isOpened: boolean;
   handleClosed: () => void;
+  disableModalSwipe?: boolean;
 }
 
-const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
-  const isSm = useMediaQuery('(min-width: 640px)');
+const Modal = ({
+  children,
+  isOpened,
+  handleClosed,
+  disableModalSwipe = false,
+}: ModalProps) => {
   const { onDragEnd, controls } = useBottomSheet(handleClosed, isOpened);
   const overlayRef = useRef(null);
 
-  const handleKeyUp = (e: KeyboardEvent) => {
+  const handleKeyUp = (e: globalThis.KeyboardEvent) => {
     if (e.key !== 'Escape') return;
     handleClosed();
   };
@@ -38,41 +41,13 @@ const Modal = ({ children, isOpened, handleClosed }: ModalProps) => {
         handleClosed();
       }}
     >
-      <motion.div
-        drag={isSm ? false : 'y'}
-        onDragEnd={isSm ? undefined : onDragEnd}
-        initial={isSm ? false : 'hidden'}
-        animate={isSm ? undefined : controls}
-        transition={{
-          type: 'spring',
-          damping: 40,
-          stiffness: 400,
-        }}
-        variants={{
-          visible: { y: 0 },
-          hidden: { y: '100%' },
-        }}
-        dragConstraints={{ top: 0 }}
-        dragElastic={0.2}
-        className={`absolute bottom-0 z-modal h-[90%] w-screen rounded-t-lg bg-white pt-2.5 sm:left-1/2 sm:top-1/2 sm:h-auto sm:w-auto sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-md sm:pt-0 sm:shadow-float`}
-      >
-        <button
-          onClick={handleClosed}
-          className="absolute right-2 top-2 hidden sm:block"
-        >
-          <CloseSVG
-            width="24"
-            height="24"
-            className="stroke-gray-500 stroke-2"
-          />
-        </button>
-
-        <div className="mb-8 flex w-full justify-center sm:hidden">
-          <button className="h-1.5 w-16 rounded-lg bg-gray-700" />
-        </div>
-
-        {children}
-      </motion.div>
+      <ModalContent
+        children={children}
+        handleClosed={handleClosed}
+        disableModalSwipe={disableModalSwipe}
+        onDragEnd={onDragEnd}
+        controls={controls}
+      />
     </div>
   ) : null;
 };
