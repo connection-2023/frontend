@@ -84,7 +84,7 @@ export const getMyLecture = async (): Promise<Lecture[]> => {
     Authorization: `Bearer ${authorization}`,
   };
 
-  const response = await fetch(END_POINT + '/lectures/lecturers', {
+  const response = await fetch(END_POINT + '/lecturers/lectures', {
     cache: 'no-store',
     method: 'GET',
     credentials: 'include',
