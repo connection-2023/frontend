@@ -13,7 +13,7 @@ const AuthLayout = ({
   modal: React.ReactNode;
 }) => {
   return (
-    <section className="flex h-max flex-grow flex-col bg-gray-900 py-10">
+    <section>
       {children}
       {modal}
     </section>
