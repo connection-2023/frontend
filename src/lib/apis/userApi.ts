@@ -2,18 +2,26 @@ import { toast } from 'react-toastify';
 import { userType } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
 import { social } from '@/types/auth';
+import { FetchError } from '@/types/types';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const checkUserNickname = async (nickname: string) => {
   try {
-    const res = await fetch(
-      `api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+    const response = await fetch(
+      `/api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
     );
 
-    return res;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    return await response.json();
   } catch (error) {
-    throw new Error('유저 닉네임 중복 확인 fetch 요청 오류');
+    throw error;
   }
 };
 
