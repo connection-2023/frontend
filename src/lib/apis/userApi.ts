@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { userType } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
+import { social } from '@/types/auth';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
@@ -16,10 +17,7 @@ export const checkUserNickname = async (nickname: string) => {
   }
 };
 
-export const getAuth = async (
-  social: 'NAVER' | 'KAKAO' | 'GOOGLE',
-  idToken: string,
-) => {
+export const getAuth = async (social: social, idToken: string) => {
   try {
     const response = await fetch(
       DOMAIN +

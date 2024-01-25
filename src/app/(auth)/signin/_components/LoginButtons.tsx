@@ -7,17 +7,14 @@ import { useUserStore } from '@/store';
 import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
 import NaverAuth from './NaverAuth';
-import { LoginResponse } from '@/types/auth';
+import { LoginResponse, social } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 const LoginButtons = () => {
   const store = useUserStore();
   const router = useRouter();
 
-  const handleAuthSuccess = async (
-    social: 'NAVER' | 'KAKAO' | 'GOOGLE',
-    idToken: string,
-  ) => {
+  const handleAuthSuccess = async (social: social, idToken: string) => {
     const response = await getAuth(social, idToken);
     const { status, data } = response;
 

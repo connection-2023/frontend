@@ -4,6 +4,8 @@ interface KakaoError {
   error_description: string;
 }
 
+export type social = 'NAVER' | 'KAKAO' | 'GOOGLE';
+
 interface RequestParams {
   url: string;
   success: (profile: UserProfile) => void;
@@ -75,7 +77,7 @@ interface LogoutResponse {
 
 export interface SignInResponse {
   authEmail: string;
-  signUpType: 'NAVER' | 'KAKAO' | 'GOOGLE';
+  signUpType: social;
   idToken?: string;
 }
 
@@ -148,6 +150,7 @@ export interface userProfile {
   verified: boolean;
   createdAt: string;
   updatedAt: string;
+  auth: { email: string; type: social };
 }
 
 export type userType = 'user' | 'lecturer';
@@ -160,7 +163,7 @@ export interface instructorProfile {
   email: string;
   users: {
     name: string;
-    auth: { email: string; signUpType: 1 | 2 | 3 };
+    auth: { email: string; type: social };
   };
 }
 

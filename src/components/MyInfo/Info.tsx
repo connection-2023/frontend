@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Button from '@/components/Button/Button';
 import { ChangeImageSVG, GoogleSVG, KaKaoTalkSVG, NaverSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
-import { instructorProfile } from '@/types/auth';
+import { instructorProfile, social } from '@/types/auth';
 import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
 import NicknameUpdate from './UpdateModal/NicknameUpdate';
 
@@ -29,7 +29,7 @@ const Info = async () => {
       dt: '소셜 계정',
       dd: (
         <div className="flex w-full gap-2">
-          {renderIcon(auth.signUpType)}
+          {renderIcon(auth.type)}
           <p className="truncate">{email}</p>
         </div>
       ),
@@ -102,17 +102,17 @@ const Info = async () => {
 
 export default Info;
 
-const renderIcon = (signUpType: 1 | 2 | 3) => {
+const renderIcon = (signUpType: social) => {
   switch (signUpType) {
-    case 1:
+    case 'KAKAO':
       return (
         <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-kakao">
           <KaKaoTalkSVG className="h-4 w-4" />
         </div>
       );
-    case 2:
+    case 'GOOGLE':
       return <GoogleSVG className="h-6 w-6" />;
-    case 3:
+    case 'NAVER':
       return (
         <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-naver">
           <NaverSVG className="h-3 w-3" />
