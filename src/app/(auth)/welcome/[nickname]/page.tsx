@@ -1,7 +1,5 @@
 'use client';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ButtonStyles } from '@/constants/constants';
 import { AuthWelcomeSVG, DoubleRightSVG } from '@/icons/svg';
 import Button from '@/components/Button/Button';
 
