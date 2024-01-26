@@ -1,20 +1,17 @@
 import { useState } from 'react';
+import { MYPAGE_FILTER_OPTIONS } from '@/constants/constants';
 import IncomeRange from './IncomeRange';
 import IncomeTable from './IncomeTable';
 
-enum filterOptions {
-  All = '전체',
-  Class = '클래스',
-  Pass = '패스권',
-}
-
 const IncomeDataViewer = () => {
-  const [selectedOption, setSelectedOption] = useState(filterOptions.All);
+  const [selectedOption, setSelectedOption] = useState(
+    MYPAGE_FILTER_OPTIONS.All,
+  );
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const option = event.target.id as filterOptions;
+    const option = event.target.id as MYPAGE_FILTER_OPTIONS;
 
-    if (Object.values(filterOptions).includes(option)) {
+    if (Object.values(MYPAGE_FILTER_OPTIONS).includes(option)) {
       setSelectedOption(option);
     }
   };
@@ -28,7 +25,7 @@ const IncomeDataViewer = () => {
         {/* 전체, 클래스, 패스권 필터링 */}
         <div className="flex gap-4 text-sm">
           <ul className="flex gap-4 font-medium">
-            {Object.values(filterOptions).map((option) => (
+            {Object.values(MYPAGE_FILTER_OPTIONS).map((option) => (
               <li key={option} className="flex items-center gap-[0.31rem]">
                 <input
                   type="checkbox"
