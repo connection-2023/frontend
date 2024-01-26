@@ -1,3 +1,4 @@
+import { IMonthlyClassSchedules } from '@/types/class';
 import {
   IInstructorRegister,
   IApproveList,
@@ -60,7 +61,10 @@ export const instructorRegister = async (data: IInstructorRegister) => {
   }
 };
 
-export const getMonthlyClassPlan = async (year: number, month: number) => {
+export const getMonthlyClassPlan = async (
+  year: number,
+  month: number,
+): Promise<IMonthlyClassSchedules[]> => {
   try {
     const response = await fetch(
       `${DOMAIN}/api/instructors/monthly-schedules?year=${year}&month=${month}`,
