@@ -1,14 +1,17 @@
 'use client';
-import { parseISO, format } from 'date-fns';
+import dynamic from 'next/dynamic';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
 import { StarSVG, ArrowUpSVG } from '@/icons/svg';
 import { getClassReviews } from '@/lib/apis/classApis';
-import SortDropdown from '@/components/Dropdown/SortDropdown';
+import { formatShortDate } from '@/utils/dateTimeUtils';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
 import { IUserReview, ReviewOrderType } from '@/types/class';
 
+const SortDropdown = dynamic(
+  () => import('@/components/Dropdown/SortDropdown'),
+);
 interface ClassReviewSectionProps {
   id: string;
   stars: number;
@@ -24,7 +27,6 @@ const ClassReviewSection = ({ id, stars }: ClassReviewSectionProps) => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getClassReviews(id, selectedOption);
-      console.log('data: ', data);
       if (data instanceof Error) {
         return;
       }
@@ -98,7 +100,7 @@ const ClassReviewSection = ({ id, stars }: ClassReviewSectionProps) => {
             nickname={review.user.nickname}
             average={review.stars}
             content={review.description}
-            date={format(parseISO(review.startDateTime), 'yy.MM.dd')}
+            date={formatShortDate(review.startDateTime)}
             title={review.lectureTitle}
             isLike={review.isLike}
             count={review.count}

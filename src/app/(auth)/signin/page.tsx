@@ -1,5 +1,9 @@
+import dynamic from 'next/dynamic';
 import { ConnectionLogoSVG, AuthIconSVG } from '@/icons/svg';
-import LoginButtons from './_components/LoginButtons';
+
+const LoginButtons = dynamic(() => import('./_components/LoginButtons'), {
+  ssr: false,
+});
 
 const LoginPage = () => {
   return (

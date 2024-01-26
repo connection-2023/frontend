@@ -1,10 +1,14 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { getUserClass } from '@/lib/apis/classApis';
-import ClassList from './_components/ClassList';
 import Pagination from '@/components/Pagination/Pagination';
 import PageSizeSelector from '@/components/Selector/PageSizeSelector';
 import { IUserClassResponse } from '@/types/class';
+
+const ClassList = dynamic(() => import('./_components/ClassList'), {
+  ssr: false,
+});
 
 const ClassListView = () => {
   const [activeTab, setActiveTab] = useState('진행중');

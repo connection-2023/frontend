@@ -1,5 +1,6 @@
 'use client';
-import { parseISO, format, isPast, isFuture } from 'date-fns';
+import { isPast, isFuture } from 'date-fns';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -7,12 +8,28 @@ import { toast } from 'react-toastify';
 import { ButtonStyles } from '@/constants/constants';
 import { ArrowUpSVG, EditSVG } from '@/icons/svg';
 import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
-import ClassOverview from './_components/ClassOverview';
-import ClassTable from './_components/ClassTable';
-import EditDayOff from './_components/EditDayOff';
-import EditReservationComment from './_components/EditReservationComment';
+import { formatShortDate } from '@/utils/dateTimeUtils';
 import Notice from '@/components/ClassNotice/Notice';
 import { ILecturerClassDetailResonse } from '@/types/class';
+
+const EditDayOff = dynamic(() => import('./_components/EditDayOff'), {
+  ssr: false,
+});
+
+const EditReservationComment = dynamic(
+  () => import('./_components/EditReservationComment'),
+  {
+    ssr: false,
+  },
+);
+
+const ClassOverview = dynamic(() => import('./_components/ClassOverview'), {
+  ssr: false,
+});
+
+const ClassTable = dynamic(() => import('./_components/ClassTable'), {
+  ssr: false,
+});
 
 const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const router = useRouter();
@@ -33,7 +50,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
     };
 
     fetchClassDetailData();
-  }, []);
+  }, [id]);
 
   if (!classData) return null;
 
@@ -49,9 +66,8 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
     router.back();
   };
 
-  const notificationUpdateDate = format(
-    parseISO(classData.notification.updatedAt),
-    'yyyy.MM.dd',
+  const notificationUpdateDate = formatShortDate(
+    classData.notification.updatedAt,
   );
 
   const updateData = async (
@@ -172,7 +188,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
               }
             />
 
-            <div className="my-5 w-full ">
+            <div className="my-5 w-full">
               <ClassTable
                 schedules={processedScheduleData}
                 maxCapacity={classData.maxCapacity}

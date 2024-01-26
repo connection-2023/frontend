@@ -1,63 +1,37 @@
 'use client';
-import { isBefore, isAfter, parseISO } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
 import { INITIAL_SCHEDULE_PROGRESS } from '@/constants/constants';
 import { getMonthlyClassPlan } from '@/lib/apis/instructorApi';
-import FullCalendar from './_components/FullCalendar';
-import ResponsiveEventCalendar from './_components/ResponsiveEventCalendar';
-import { IMonthlyClassSchedules } from '@/types/class';
+import { getLectureProgress } from '@/utils/parseUtils';
+
+const FullCalendar = dynamic(() => import('./_components/FullCalendar'), {
+  ssr: false,
+});
+
+const ResponsiveEventCalendar = dynamic(
+  () => import('./_components/ResponsiveEventCalendar'),
+  {
+    ssr: false,
+  },
+);
 
 const SchedulePage = () => {
   const [date, setDate] = useState(new Date());
-  const [progress, setProgress] = useState(INITIAL_SCHEDULE_PROGRESS);
-  const [scheduleData, setScheduleData] = useState<IMonthlyClassSchedules[]>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const data = await getMonthlyClassPlan(year, month);
-      const progress = getLectureProgress(data);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['instructor', 'monthly-Plan'],
+    queryFn: () => getMonthlyClassPlan(date.getFullYear(), date.getMonth() + 1),
+    refetchOnWindowFocus: 'always',
+  });
 
-      setScheduleData(data);
-      setProgress(progress);
-    };
+  if (!data || error) return null;
 
-    fetchData();
-  }, [date]);
+  const progress = getLectureProgress(data);
 
   const handleDateChange = (newDate: Date) => {
     setDate(newDate);
-  };
-
-  const getLectureProgress = (data: IMonthlyClassSchedules[]) => {
-    const today = new Date();
-
-    const pastLectures = data.filter((item: IMonthlyClassSchedules) =>
-      isBefore(parseISO(item.startDateTime), today),
-    );
-
-    const futureLectures = data.filter((item: IMonthlyClassSchedules) =>
-      isAfter(parseISO(item.startDateTime), today),
-    );
-
-    return [
-      {
-        text: '수업 완료',
-        count: pastLectures.length,
-        color: 'text-main-color',
-      },
-      {
-        text: '수업 예정',
-        count: futureLectures.length,
-        color: 'text-sub-color1',
-      },
-      {
-        text: '총 수업',
-        count: data.length,
-        color: '',
-      },
-    ];
   };
 
   return (
@@ -66,7 +40,7 @@ const SchedulePage = () => {
         <FullCalendar
           date={date}
           handleDateChange={handleDateChange}
-          scheduleData={scheduleData}
+          scheduleData={data}
         />
       </div>
 
@@ -74,7 +48,7 @@ const SchedulePage = () => {
         <ResponsiveEventCalendar
           date={date}
           handleDateChange={handleDateChange}
-          scheduleData={scheduleData}
+          scheduleData={data}
         />
       </div>
 
@@ -87,7 +61,7 @@ const SchedulePage = () => {
           role="list"
           className="flex list-inside list-disc gap-4 text-sm font-semibold marker:mr-1 md:list-outside md:gap-11 md:text-base"
         >
-          {progress.map((item, i) => (
+          {(progress ? progress : INITIAL_SCHEDULE_PROGRESS).map((item, i) => (
             <ListItem
               key={i}
               text={item.text}

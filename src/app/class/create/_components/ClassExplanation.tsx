@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { useFormContext, Controller } from 'react-hook-form';
 import {
   ANNOUNCEMENT,
@@ -5,8 +6,20 @@ import {
   QUILL_DEFAULT_VALUE,
 } from '@/constants/constants';
 import { useClassCreateStore } from '@/store/classCreate';
-import CustomEditor from '@/components/TextArea/CustomEditor';
-import TextAreaSection from '@/components/TextArea/TextAreaSection';
+
+const CustomEditor = dynamic(
+  () => import('@/components/TextArea/CustomEditor'),
+  {
+    ssr: false,
+  },
+);
+
+const TextAreaSection = dynamic(
+  () => import('@/components/TextArea/TextAreaSection'),
+  {
+    ssr: false,
+  },
+);
 
 const ClassExplanation = () => {
   const { control } = useFormContext();

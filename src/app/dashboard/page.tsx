@@ -1,31 +1,37 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
 import { getMonthlyClassPlan } from '@/lib/apis/instructorApi';
 import RecentApply from './_components/RecentApply';
 import RecentReview from './_components/RecentReview';
-import DayCalendar from '../../components/Calendar/DayCalendar';
 import Banner from '../_components/Banner';
 import Sidebar from '../_components/Sidebar';
-import DashboardCalendar from '@/components/Calendar/SingleCalendar';
-import { IMonthlyClassSchedules } from '@/types/class';
 
+const DashboardCalendar = dynamic(
+  () => import('@/components/Calendar/SingleCalendar'),
+  {
+    ssr: false,
+  },
+);
+
+const DayCalendar = dynamic(
+  () => import('../../components/Calendar/DayCalendar'),
+  {
+    ssr: false,
+  },
+);
 const DashboardPage = () => {
   const [date, setDate] = useState(new Date());
-  const [scheduleData, setScheduleData] = useState<IMonthlyClassSchedules[]>();
-  const clickableDates = scheduleData?.map(
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['instructor', 'monthly-Plan'],
+    queryFn: () => getMonthlyClassPlan(date.getFullYear(), date.getMonth() + 1),
+    refetchOnWindowFocus: 'always',
+  });
+
+  const clickableDates = data?.map(
     (schedule) => new Date(schedule.startDateTime),
   );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const data = await getMonthlyClassPlan(year, month);
-      setScheduleData(data);
-    };
-
-    fetchData();
-  }, [date]);
 
   const handleDateChange = (newDate: Date | undefined) => {
     if (newDate) {
@@ -61,7 +67,7 @@ const DashboardPage = () => {
       </div>
 
       <div className="col-span-1 mb-4 mt-4 box-border p-3.5 md:order-4 md:my-0 md:rounded-lg md:bg-white md:p-0 md:shadow-float lg:mb-0 lg:px-0">
-        <DayCalendar scheduleData={scheduleData || []} />
+        <DayCalendar scheduleData={data || []} />
       </div>
 
       <div className="col-span-1 mb-4 w-full px-4 md:order-5 md:px-0 lg:mb-0 lg:px-0">

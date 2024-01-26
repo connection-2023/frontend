@@ -1,10 +1,14 @@
 import { eachDayOfInterval, getDay } from 'date-fns';
+import dynamic from 'next/dynamic';
 import { useState, useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { FILTER_WEEK } from '@/constants/constants';
 import { useClassScheduleStore } from '@/store';
-import TimeList from './TimeList';
 import { day, DayTimeList } from '@/types/class';
+
+const TimeList = dynamic(() => import('./TimeList'), {
+  ssr: false,
+});
 
 interface DayByDayProps {
   lectureMethod?: string;
