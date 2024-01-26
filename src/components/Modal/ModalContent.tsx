@@ -1,6 +1,8 @@
 import { AnimationControls, PanInfo, motion } from 'framer-motion';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import { CloseSVG } from '../../../public/icons/svg';
+import { usePathname } from 'next/navigation';
+import { MutableRefObject, useEffect, useRef } from 'react';
 
 interface ModalContentProps {
   children: React.ReactNode;
@@ -11,6 +13,7 @@ interface ModalContentProps {
     info: PanInfo,
   ) => void;
   controls: AnimationControls;
+  skipBackOnUnmount: MutableRefObject<boolean>;
 }
 
 const ModalContent = ({
@@ -19,17 +22,58 @@ const ModalContent = ({
   disableModalSwipe,
   onDragEnd,
   controls,
+  skipBackOnUnmount,
 }: ModalContentProps) => {
+  const initialized = useRef(false);
   const isSm = disableModalSwipe
     ? undefined
     : useMediaQuery('(min-width: 640px)');
+  const pathname = usePathname();
+
+  const closeModalHandler = () => {
+    handleClosed();
+    window.onpopstate = null;
+    window.history.back();
+    skipBackOnUnmount.current = true;
+  };
+
+  const handleKeyUp = (e: globalThis.KeyboardEvent) => {
+    if (e.key !== 'Escape') return;
+    closeModalHandler();
+  };
+
+  useEffect(() => {
+    if (!initialized.current) {
+      window.addEventListener('keyup', handleKeyUp);
+
+      window.history.pushState(null, '', pathname);
+
+      window.onpopstate = () => {
+        handleClosed();
+        window.onpopstate = null;
+        skipBackOnUnmount.current = true;
+      };
+      initialized.current = true;
+      skipBackOnUnmount.current = false;
+      return;
+    }
+
+    return () => {
+      window.removeEventListener('keyup', handleKeyUp);
+      window.onpopstate = null;
+
+      if (!skipBackOnUnmount.current) {
+        window.history.back();
+      }
+    };
+  }, []);
 
   if (disableModalSwipe) {
     return (
       <div
         className={`absolute bottom-0 z-modal h-screen w-screen bg-white sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:h-auto sm:w-auto sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-md sm:pt-0 sm:shadow-float`}
       >
-        <button onClick={handleClosed} className="absolute right-6 top-5">
+        <button onClick={closeModalHandler} className="absolute right-6 top-5">
           <CloseSVG
             width="24"
             height="24"
@@ -61,7 +105,7 @@ const ModalContent = ({
         className={`absolute bottom-0 z-modal h-[90%] w-screen rounded-t-lg bg-white pt-2.5 sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:h-auto sm:w-auto sm:rounded-md sm:pt-0 sm:shadow-float`}
       >
         <button
-          onClick={handleClosed}
+          onClick={closeModalHandler}
           className="absolute right-2 top-2 hidden sm:block"
         >
           <CloseSVG

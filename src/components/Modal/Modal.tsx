@@ -1,8 +1,7 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import useBottomSheet from '@/hooks/useBottomSheet';
 import ModalContent from './ModalContent';
-import { usePathname } from 'next/navigation';
 
 interface ModalProps {
   children: React.ReactNode;
@@ -17,43 +16,17 @@ const Modal = ({
   handleClosed,
   disableModalSwipe = false,
 }: ModalProps) => {
+  const skipBackOnUnmount = useRef(false);
+
   const closeModalHandler = () => {
     handleClosed();
     window.onpopstate = null;
     window.history.back();
+    skipBackOnUnmount.current = true;
   };
 
-  const pathname = usePathname();
   const { onDragEnd, controls } = useBottomSheet(closeModalHandler, isOpened);
   const overlayRef = useRef(null);
-
-  const handleKeyUp = (e: globalThis.KeyboardEvent) => {
-    if (e.key !== 'Escape') return;
-    closeModalHandler();
-  };
-
-  useEffect(() => {
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isOpened) {
-      window.history.pushState(null, '', pathname);
-
-      window.onpopstate = () => {
-        handleClosed();
-        window.onpopstate = null;
-      };
-    }
-
-    return () => {
-      window.onpopstate = null;
-    };
-  }, [isOpened]);
 
   return isOpened ? (
     <div
@@ -66,10 +39,11 @@ const Modal = ({
     >
       <ModalContent
         children={children}
-        handleClosed={closeModalHandler}
+        handleClosed={handleClosed}
         disableModalSwipe={disableModalSwipe}
         onDragEnd={onDragEnd}
         controls={controls}
+        skipBackOnUnmount={skipBackOnUnmount}
       />
     </div>
   ) : null;
