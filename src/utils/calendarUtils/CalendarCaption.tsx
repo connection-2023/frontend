@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
+import ko from 'date-fns/locale/ko';
 import { CaptionProps, useNavigation } from 'react-day-picker';
 import { ArrowUpSVG } from '@/icons/svg';
 

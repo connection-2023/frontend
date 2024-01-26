@@ -1,8 +1,7 @@
 'use client';
-import { isSameDay } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import isSameDay from 'date-fns/isSameDay';
+import ko from 'date-fns/locale/ko';
+import { useEffect, useState, memo } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
 import { useClassScheduleStore } from '@/store';
 import { dashboardStore } from '../../store';
@@ -15,12 +14,14 @@ import {
 import 'react-day-picker/dist/style.css';
 import '../../styles/calendar.css';
 
+/* eslint-disable no-unused-vars */
 interface SingleCalendarProps {
   mode: 'schedule' | 'dashboard' | 'specific';
   clickableDates?: Date[];
   handleClickDate?: (newDate: Date | undefined) => void;
 }
 
+/* eslint-enable no-unused-vars */
 const SingleCalendar = ({
   mode,
   clickableDates = [],
@@ -40,7 +41,7 @@ const SingleCalendar = ({
       }
       handleClickDate(selected);
     }
-  }, [selected, handleClickDate]);
+  }, [selected, handleClickDate, mode, store]);
 
   useEffect(() => {
     if (mode === 'dashboard') {
@@ -49,7 +50,7 @@ const SingleCalendar = ({
         setSelected(selectedDate);
       }
     }
-  }, [store.selectedDate]);
+  }, [store.selectedDate, mode, selected]);
 
   if (!clickableDates.length && mode !== 'dashboard') {
     return null;
@@ -103,4 +104,4 @@ const SingleCalendar = ({
   );
 };
 
-export default React.memo(SingleCalendar);
+export default memo(SingleCalendar);

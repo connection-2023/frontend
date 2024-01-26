@@ -1,5 +1,5 @@
-import { subMonths } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
+import ko from 'date-fns/locale/ko';
+import subMonths from 'date-fns/subMonths';
 import React from 'react';
 import {
   DateRange,
