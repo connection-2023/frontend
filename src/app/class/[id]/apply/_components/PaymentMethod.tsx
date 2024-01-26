@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { ArrowUpSVG } from '@/icons/svg';
 import { PAYMENT_ORDER_LIST } from '@/constants/constants';
+import { ArrowUpSVG } from '@/icons/svg';
 
 const PaymentMethod = ({
   handlePaymentOption,

@@ -2,10 +2,10 @@
 import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import ApplyButton from '@/components/Button/ApplyButton';
 import { ArrowUpSVG } from '@/icons/svg';
 import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
+import ApplyButton from '@/components/Button/ApplyButton';
 
 interface ApplySidebarProps {
   postId: string;
