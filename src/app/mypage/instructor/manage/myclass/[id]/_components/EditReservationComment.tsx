@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import UniqueButton from '@/components/Button/UniqueButton';
 
-const EditReservationComment = ({
-  reservationComment,
-  updateReservation,
-}: {
+/* eslint-disable no-unused-vars */
+interface EditReservationComment {
   reservationComment: string;
   updateReservation: (
     key: 'notification' | 'reservationComment' | 'holidays',
     value: string | Date[],
   ) => void;
-}) => {
+}
+/* eslint-enable no-unused-vars */
+const EditReservationComment = ({
+  reservationComment,
+  updateReservation,
+}: EditReservationComment) => {
   const [comment, setComment] = useState(reservationComment);
   const [isEditMode, setIsEditMode] = useState(false);
 
