@@ -18,6 +18,7 @@ const LoginButtons = () => {
     social: 'NAVER' | 'KAKAO' | 'GOOGLE',
     idToken: string,
   ) => {
+    const toastId = toast.loading('로그인 중...');
     const response = await getAuth(social, idToken);
     const { status, data } = response;
 
@@ -26,15 +27,39 @@ const LoginButtons = () => {
 
       store.setAuthUser(profileRes.data.myProfile);
       store.setUserType('user');
-      toast.success('로그인 성공!');
+      toast.update(toastId, {
+        render: '로그인 성공!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 1500,
+      });
       router.replace('/');
       router.refresh();
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
-
+      toast.update(toastId, {
+        render: (
+          <p>
+            가입되지 않은 회원입니다!
+            <br />
+            회원가입 페이지로 이동합니다.
+          </p>
+        ),
+        type: 'info',
+        isLoading: false,
+        autoClose: 2000,
+      });
       router.replace(
         `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
+        { scroll: false },
       );
+    } else {
+      toast.update(toastId, {
+        render: '로그인에 실패하였습니다.',
+        type: 'error',
+        isLoading: false,
+        autoClose: 1500,
+      });
     }
   };
 
