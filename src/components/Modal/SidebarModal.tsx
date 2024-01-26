@@ -1,5 +1,5 @@
 'use client';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { DoubleRightSVG } from '@/icons/svg';
 
@@ -26,7 +26,7 @@ const SidebarModal = ({ children, isOpened, handleClosed }: ModalProps) => {
   return (
     <AnimatePresence>
       {isOpened ? (
-        <motion.div
+        <m.div
           key="sidebar"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -38,7 +38,7 @@ const SidebarModal = ({ children, isOpened, handleClosed }: ModalProps) => {
             handleClosed();
           }}
         >
-          <motion.div
+          <m.div
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -54,8 +54,8 @@ const SidebarModal = ({ children, isOpened, handleClosed }: ModalProps) => {
             </button>
 
             {children}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       ) : null}
     </AnimatePresence>
   );
