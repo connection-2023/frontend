@@ -1,6 +1,6 @@
-import Nav from '@/components/Nav/Nav';
 import { CLASS_SECTIONS } from '@/constants/constants';
 import { NoticeSVG } from '@/icons/svg';
+import Nav from '@/components/Nav/Nav';
 
 const ClassDetailLoading = () => (
   <>

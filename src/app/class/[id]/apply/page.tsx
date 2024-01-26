@@ -1,22 +1,22 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
+import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import { getOriginalClassInfo } from '@/lib/apis/classApis';
+import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import AccountInfo from './_components/AccountInfo';
 import ApplySidebar from './_components/ApplySidebar';
 import CouponContainer from './_components/Coupon/CouponContainer';
 import PaymentMethod from './_components/PaymentMethod';
 import ReservationInfo from './_components/ReservationInfo';
-import ApplyLoading from '@/components/Loading/ApplyLoading';
-import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getOriginalClassInfo } from '@/lib/apis/classApis';
-import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 import {
   parseApplyQuery,
   processSelectedSchedules,
 } from './_lib/applyScheduleUtils';
-import { redirect } from 'next/navigation';
+import ApplyLoading from '@/components/Loading/ApplyLoading';
 
 const ClassApplyPage = ({
   params: { id },
