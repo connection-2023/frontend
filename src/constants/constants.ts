@@ -1,4 +1,4 @@
-import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/../public/icons/svg';
+import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/icons/svg';
 import { ConsentListType } from '@/types/auth';
 import { day, ReviewOrderType } from '@/types/class';
 import { TimeOfDay } from '@/types/types';
@@ -349,4 +349,29 @@ export const CATEGORY_PROGRESS_METHOD = ['원데이 레슨', '정기클래스'];
 export const INSTRUCTOR_EDIT_SECTIONS = [
   { id: 'profileImageUrls', label: '사진, 지역, 카테고리 설정' },
   { id: '강사소개', label: '강사 소개글 작성' },
+];
+
+export enum MYPAGE_FILTER_OPTIONS {
+  All = '전체',
+  Class = '클래스',
+  Pass = '패스권',
+}
+
+export const CLASS_EDIT_SECTIONS = [
+  {
+    id: 'intro',
+    label: '클래스 소개',
+  },
+  {
+    id: 'plan',
+    label: '일정 및 시간',
+  },
+  {
+    id: 'location',
+    label: '진행 장소',
+  },
+  {
+    id: 'price',
+    label: '가격',
+  },
 ];
