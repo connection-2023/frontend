@@ -1,7 +1,5 @@
-import format from 'date-fns/format';
-import getDay from 'date-fns/getDay';
+import { format, getDay, startOfWeek } from 'date-fns';
 import koLocale from 'date-fns/locale/ko';
-import startOfWeek from 'date-fns/startOfWeek';
 import { dateFnsLocalizer, EventPropGetter } from 'react-big-calendar';
 import { IFullCalendarEvent } from '@/types/types';
 
