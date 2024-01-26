@@ -1,8 +1,11 @@
-import { parse, format } from 'date-fns';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
+import {
+  formatDateWithHyphens,
+  parseHyphenatedDate,
+} from '@/utils/dateTimeUtils';
 import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
@@ -43,15 +46,14 @@ const ClassSchedule = () => {
             const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
             const isValidStartDate = dateFormat.test(startDate);
             const isValidEndDate = dateFormat.test(endDate);
-
-            const parsedStartDate = parse(startDate, 'yyyy-MM-dd', new Date());
-            const parsedEndDate = parse(endDate, 'yyyy-MM-dd', new Date());
+            const parsedStartDate = parseHyphenatedDate(startDate);
+            const parsedEndDate = parseHyphenatedDate(endDate);
 
             if (
               !isValidStartDate ||
               !isValidEndDate ||
-              !format(parsedStartDate, 'yyyy-MM-dd') === startDate ||
-              !format(parsedEndDate, 'yyyy-MM-dd') === endDate
+              !formatDateWithHyphens(parsedStartDate) === startDate ||
+              !formatDateWithHyphens(parsedEndDate) === endDate
             ) {
               return '올바른 클래스 기간';
             }

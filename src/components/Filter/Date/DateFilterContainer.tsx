@@ -1,10 +1,12 @@
 'use client';
-import { format } from 'date-fns';
-import { parse } from 'date-fns';
 import { useState, useEffect, useMemo } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
 import { usefilterStore } from '@/store';
+import {
+  formatDateWithHyphens,
+  parseHyphenatedDate,
+} from '@/utils/dateTimeUtils';
 import RangeCalendar from '../../Calendar/RangeCalendar';
 import FilterAccordion from '../FilterAccordion';
 import FilterModal from '../FilterModal';
@@ -23,8 +25,8 @@ const DateFilterContainer = ({ filterOption }: DateFilterContainerProps) => {
   const { changeMultipleParams } = useChangeSearchParams();
 
   const classRange = {
-    from: fromValue ? parse(fromValue, 'y-MM-dd', new Date()) : undefined,
-    to: toValue ? parse(toValue, 'y-MM-dd', new Date()) : undefined,
+    from: fromValue ? parseHyphenatedDate(fromValue) : undefined,
+    to: toValue ? parseHyphenatedDate(toValue) : undefined,
   };
   const filterList = useMemo(() => [fromValue, toValue], [fromValue, toValue]);
 
@@ -33,12 +35,12 @@ const DateFilterContainer = ({ filterOption }: DateFilterContainerProps) => {
   ) => {
     if (!range) return;
     if (range?.from) {
-      setFromValue(format(range.from, 'y-MM-dd'));
+      setFromValue(formatDateWithHyphens(range.from));
     } else {
       setFromValue('');
     }
     if (range?.to) {
-      setToValue(format(range.to, 'y-MM-dd'));
+      setToValue(formatDateWithHyphens(range.to));
     } else {
       setToValue('');
     }

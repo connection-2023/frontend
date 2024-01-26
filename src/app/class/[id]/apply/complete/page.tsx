@@ -1,10 +1,13 @@
-import { parseISO, format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import React from 'react';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
 import { patchPaymentConfirm } from '@/lib/apis/serverApis/paymentsApis';
+import {
+  formatKoreanDateTime,
+  formatFullDateTime,
+  formatDateTimeNoSec,
+} from '@/utils/dateTimeUtils';
 import { IPaymentConfirmRequest } from '@/types/payment';
 
 const ApplyCompletePage = async ({
@@ -47,13 +50,10 @@ const ApplyCompletePage = async ({
     {
       type: '신청내역',
       content: reservation.map((info) => {
-        const formattedDate = format(
-          parseISO(info.lectureSchedule.startDateTime),
-          'MM월 dd일 (eee) HH:mm',
-          {
-            locale: ko,
-          },
+        const formattedDate = formatKoreanDateTime(
+          info.lectureSchedule.startDateTime,
         );
+
         return `${formattedDate} ${info.participants}명`;
       }),
     },
@@ -63,7 +63,7 @@ const ApplyCompletePage = async ({
     },
     {
       type: '결제일시',
-      content: format(parseISO(updatedAt), 'yyyy.MM.dd HH:mm:ss'),
+      content: formatFullDateTime(updatedAt),
     },
     {
       type: '결제방식',
@@ -88,7 +88,7 @@ const ApplyCompletePage = async ({
       type: '입금기한',
       content: `~${
         virtualAccountPaymentInfo &&
-        format(parseISO(virtualAccountPaymentInfo?.dueDate), 'yyyy.MM.dd HH:mm')
+        formatDateTimeNoSec(virtualAccountPaymentInfo?.dueDate)
       }`,
     },
   ];

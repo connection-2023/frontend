@@ -1,7 +1,7 @@
-import { parseISO, format } from 'date-fns';
 import { cookies } from 'next/headers';
 import React from 'react';
 import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
+import { formatFullDateTime } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/ReceiptModal';
 
 const ReceiptModalPage = async ({
@@ -34,7 +34,7 @@ const ReceiptModalPage = async ({
     },
     {
       type: '승인일시',
-      content: format(parseISO(updatedAt), 'yyyy.MM.dd HH:mm:ss'),
+      content: formatFullDateTime(updatedAt),
     },
     {
       type: '승인번호',

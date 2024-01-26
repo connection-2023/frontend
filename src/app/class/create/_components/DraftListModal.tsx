@@ -1,7 +1,7 @@
-import { format } from 'date-fns';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { TrashcanSVG } from '@/icons/svg';
+import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/Modal';
 import { IGetClassDrafts } from '@/types/class';
 
@@ -67,7 +67,7 @@ const DraftList = ({
   return (
     <ul className="flex flex-col gap-4 px-4 py-6">
       {classDraftList.map(({ id, updatedAt, title, step }) => {
-        const formattedDate = format(new Date(updatedAt), 'yy.MM.dd HH:mm');
+        const formattedDate = formatDateTimeNoSec(updatedAt);
         return (
           <li key={id} className="flex justify-between gap-2">
             <Link

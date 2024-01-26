@@ -1,7 +1,8 @@
-import { format, subHours } from 'date-fns';
+import subHours from 'date-fns/subHours';
 import { useState } from 'react';
 import { dummyEnrollmentPerson } from '@/constants/dummy';
 import { ChatSVG } from '@/icons/svg';
+import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/Modal';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import { IProcessedSchedules } from '@/types/class';
@@ -26,9 +27,8 @@ const EnrollmentModal = ({
   const { id, index, numberOfParticipants, date, startDateTime } =
     selectedClass;
 
-  const deadlineTime = format(
+  const deadlineTime = formatDateTimeNoSec(
     subHours(new Date(startDateTime), reservationDeadline),
-    'yyyy.MM.dd HH:mm',
   );
 
   return (
@@ -43,7 +43,7 @@ const EnrollmentModal = ({
             <li>
               수업일자
               <span className="ml-4 font-normal">
-                {format(date, 'yyyy.MM.dd HH:mm')}
+                {formatDateTimeNoSec(date)}
               </span>
             </li>
             <li>
@@ -88,6 +88,7 @@ const getButtonClass = (request: string | null, isClicked: boolean) => {
     ? 'cursor-pointer text-sub-color1'
     : 'cursor-pointer text-black';
 };
+
 const Person = ({ userId, src, nickname, memo, request }: IPerson) => {
   const [isClicked, setIsClicked] = useState(false);
   const [classStudentMemo, setClassStudentMemo] = useState(memo);

@@ -1,8 +1,8 @@
-import { format } from 'date-fns';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ButtonStyles } from '@/constants/constants';
+import { formatShortDate } from '@/utils/dateTimeUtils';
 import CancelModal from './CancelModal';
 import DeclineModal from './DeclineModal';
 import UniqueButton from '@/components/Button/UniqueButton';
@@ -17,11 +17,9 @@ const ClassList = ({ activeTab, reservation, lecturer }: IClassList) => {
   const [isDeclineModalOpened, setIsDeclineModalOpened] = useState(false);
   const [isCancelModalOpened, setIsCancelModalOpened] = useState(false);
   const router = useRouter();
-  const classDates = reservation.map((info) => {
-    const date = new Date(info.lectureSchedule.startDateTime);
-
-    return format(date, 'yy.MM.dd');
-  });
+  const classDates = reservation.map((info) =>
+    formatShortDate(info.lectureSchedule.startDateTime),
+  );
 
   const uniqueClassDates = new Set(classDates);
 

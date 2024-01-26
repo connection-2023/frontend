@@ -1,8 +1,12 @@
-import { format, subMonths, isValid, parse } from 'date-fns';
+import { subMonths, isValid } from 'date-fns';
 import { useState, useRef } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG } from '@/icons/svg';
+import {
+  formatDateWithHyphens,
+  parseHyphenatedDate,
+} from '@/utils/dateTimeUtils';
 import RangeCalendar from '@/components/Calendar/RangeCalendar';
 
 const IncomeRange = () => {
@@ -12,8 +16,8 @@ const IncomeRange = () => {
   const [activeButton, setActiveButton] = useState<number | null>(null);
   const ref = useRef(null);
   const classRange = {
-    from: fromValue ? parse(fromValue, 'y-MM-dd', new Date()) : undefined,
-    to: toValue ? parse(toValue, 'y-MM-dd', new Date()) : undefined,
+    from: fromValue ? parseHyphenatedDate(fromValue) : undefined,
+    to: toValue ? parseHyphenatedDate(toValue) : undefined,
   };
 
   useClickAway(ref, () => {
@@ -28,19 +32,19 @@ const IncomeRange = () => {
     range: DateRange | undefined,
   ) => {
     if (!fromValue && !toValue && range?.from) {
-      setFromValue(format(range.from, 'y-MM-dd'));
-      setToValue(format(range.from, 'y-MM-dd'));
+      setFromValue(formatDateWithHyphens(range.from));
+      setToValue(formatDateWithHyphens(range.from));
       return;
     }
 
     if (range?.from && isValid(range.from)) {
-      setFromValue(format(range.from, 'y-MM-dd'));
+      setFromValue(formatDateWithHyphens(range.from));
     } else {
       setFromValue('');
     }
 
     if (range?.to && isValid(range.to)) {
-      setToValue(format(range.to, 'y-MM-dd'));
+      setToValue(formatDateWithHyphens(range.to));
     } else {
       setToValue('');
     }
@@ -50,8 +54,8 @@ const IncomeRange = () => {
     const today = new Date();
     const startDate = subMonths(today, months);
 
-    setFromValue(format(startDate, 'y-MM-dd'));
-    setToValue(format(today, 'y-MM-dd'));
+    setFromValue(formatDateWithHyphens(startDate));
+    setToValue(formatDateWithHyphens(today));
     setActiveButton(activeButton === months ? null : months);
   };
   // === 최대 조회 가능 기간이 있나..? ===
