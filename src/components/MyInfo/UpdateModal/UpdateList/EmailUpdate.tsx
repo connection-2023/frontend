@@ -1,16 +1,15 @@
 import Button from '@/components/Button/Button';
-import UpdateModalContainer from './UpdateModalContainer';
-import { ChangeEvent, useEffect, useState } from 'react';
+import UpdateModalContainer from '../UpdateModalContainer';
+import { ChangeEvent, useEffect, useReducer } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { Action, State } from '@/types/info';
 
 //추후 이메일 인증, 이메일 변경 api 연결 필요
-
 interface EmailUpdateProps {
   email: string;
   closeModalHandler?: () => void;
 }
-
 const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
   const { handleSubmit, register, getValues, setFocus, setValue } = useForm({
     defaultValues: {
@@ -20,60 +19,71 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
     },
   });
 
-  const [verification, setVerification] = useState({
+  const initialState = {
     sendAuthenticationCode: false,
     authenticationCodeView: false,
     authenticationCode: false,
     certification: false,
-  });
+  };
 
-  useEffect(() => {
-    if (verification.authenticationCodeView) {
-      setFocus('authenticationCode');
-      setValue('authenticationCode', '');
+  const verificationReducer = (state: State, action: Action) => {
+    switch (action.type) {
+      case 'RESET':
+        return initialState;
+      case 'TOGGLE_AUTHENTICATION_CODE_VIEW':
+        return {
+          ...state,
+          authenticationCodeView: !state.authenticationCodeView,
+          authenticationCode: false,
+          certification: false,
+        };
+      case 'ENABLE_SEND_AUTHENTICATION_CODE':
+        return { ...state, sendAuthenticationCode: true };
+      case 'TOGGLE_AUTHENTICATION_CODE':
+        return { ...state, authenticationCode: !state.authenticationCode };
+      case 'CERTIFY':
+        return { ...state, certification: true };
+      case 'VERIFICATION_CODE_SENT_SUCCESSFULLY':
+        return { ...state, authenticationCodeView: true };
+      case 'ENABLE_AUTHENTICATION_BUTTON':
+        return { ...state, authenticationCode: true };
+      case 'DISABLED_AUTHENTICATION_BUTTON':
+        return { ...state, authenticationCode: false };
     }
-  }, [verification.authenticationCodeView]);
+  };
 
-  const changeEmailInput = (
-    event: ChangeEvent<HTMLInputElement>,
-    type: 'FRONT' | 'BACK',
-  ) => {
+  const [state, dispatch] = useReducer(verificationReducer, initialState);
+
+  const changeEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     if (!value) {
-      setVerification(() => ({
-        sendAuthenticationCode: false,
-        authenticationCodeView: false,
-        authenticationCode: false,
-        certification: false,
-      }));
-    } else if (verification.authenticationCodeView) {
-      setVerification((prev) => ({
-        ...prev,
-        authenticationCodeView: false,
-        authenticationCode: false,
-        certification: false,
-      }));
+      dispatch({ type: 'RESET' });
+    } else if (state.authenticationCodeView) {
+      dispatch({ type: 'TOGGLE_AUTHENTICATION_CODE_VIEW' });
     } else {
-      if (type === 'BACK' && getValues('emailFront')) {
-        setVerification((prev) => ({ ...prev, sendAuthenticationCode: true }));
-      }
-
-      if (type === 'FRONT' && getValues('emailBack')) {
-        setVerification((prev) => ({ ...prev, sendAuthenticationCode: true }));
+      if (getValues('emailFront') || getValues('emailBack')) {
+        dispatch({ type: 'ENABLE_SEND_AUTHENTICATION_CODE' });
       }
     }
   };
 
+  useEffect(() => {
+    if (state.authenticationCodeView) {
+      setFocus('authenticationCode');
+      setValue('authenticationCode', '');
+    }
+  }, [state.authenticationCodeView]);
+
   const sendAuthenticationCode = (data: any) => {
     //인증 코드 전송 성공 했을때
-    setVerification((prev) => ({ ...prev, authenticationCodeView: true }));
+    dispatch({ type: 'VERIFICATION_CODE_SENT_SUCCESSFULLY' });
   };
 
   const authentication = (data: any) => {
     const { authenticationCode } = data;
 
     //인증 코드 인증 성공 했을때
-    setVerification((prev) => ({ ...prev, certification: true }));
+    dispatch({ type: 'CERTIFY' });
   };
 
   const invalid = (data: Record<string, any>) => {
@@ -85,7 +95,7 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
   return (
     <UpdateModalContainer
       title="이메일 변경"
-      disabled={!verification.certification}
+      disabled={!state.certification}
       closeEvent={closeModalHandler}
       updateEvent={updateEmail}
     >
@@ -96,7 +106,7 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
         </dl>
         <div className="w-full text-lg font-semibold sm:grid sm:grid-cols-[7rem_1fr] sm:grid-rows-none sm:text-base">
           <label className="self-start">변경할 이메일</label>
-          <div className="grid grid-cols-[1fr_7.7rem] gap-x-2 gap-y-4 sm:grid-cols-[1fr_1rem_1fr_8.625rem]">
+          <div className="mt-4 grid grid-cols-[1fr_7.7rem] gap-x-2 gap-y-4 sm:mt-0 sm:grid-cols-[1fr_1rem_1fr_8.625rem]">
             <input
               {...register('emailFront', {
                 required: '변경할 이메일을 입력해 주세요.',
@@ -105,8 +115,9 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
                   message: '올바른 이메일 형식을 입력해 주세요.',
                 },
               })}
-              onChange={(e) => changeEmailInput(e, 'FRONT')}
+              onChange={changeEmailInput}
               className="h-11 w-full flex-grow rounded-md px-2 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-7"
+              type="text"
             />
             <span className="self-center text-xl sm:text-base">@</span>
             <input
@@ -117,8 +128,9 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
                   message: '올바른 이메일 형식을 입력해 주세요.',
                 },
               })}
-              onChange={(e) => changeEmailInput(e, 'BACK')}
+              onChange={changeEmailInput}
               className="h-11 w-full flex-grow rounded-md px-2 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-7"
+              type="text"
             />
             <form
               onSubmit={handleSubmit(sendAuthenticationCode, invalid)}
@@ -129,15 +141,14 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
                 color="secondary"
                 type="submit"
                 disabled={
-                  !verification.sendAuthenticationCode ||
-                  verification.authenticationCodeView
+                  !state.sendAuthenticationCode || state.authenticationCodeView
                 }
               >
                 인증코드 전송
               </Button>
             </form>
 
-            {verification.authenticationCodeView && (
+            {state.authenticationCodeView && (
               <>
                 <input
                   {...register('authenticationCode', {
@@ -146,18 +157,13 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
                   className="h-11 w-full rounded-md px-2 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:col-span-3 sm:h-7"
                   onChange={(e) => {
                     if (e.target.value) {
-                      setVerification((prev) => ({
-                        ...prev,
-                        authenticationCode: true,
-                      }));
+                      dispatch({ type: 'ENABLE_AUTHENTICATION_BUTTON' });
                     } else {
-                      setVerification((prev) => ({
-                        ...prev,
-                        authenticationCode: false,
-                      }));
+                      dispatch({ type: 'DISABLED_AUTHENTICATION_BUTTON' });
                     }
                   }}
-                  disabled={verification.certification}
+                  disabled={state.certification}
+                  type="text"
                 />
                 <form
                   className="h-11 w-full sm:h-7"
@@ -167,10 +173,7 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
                     size="full"
                     color="secondary"
                     type="submit"
-                    disabled={
-                      !verification.authenticationCode ||
-                      verification.certification
-                    }
+                    disabled={!state.authenticationCode || state.certification}
                   >
                     인증하기
                   </Button>

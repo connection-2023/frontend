@@ -10,7 +10,7 @@ import { useUserStore } from '@/store';
 import { FetchError } from '@/types/types';
 import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import UpdateModalContainer from './UpdateModalContainer';
+import UpdateModalContainer from '../UpdateModalContainer';
 
 interface NicknameUpdateProps {
   closeModalHandler?: () => void;

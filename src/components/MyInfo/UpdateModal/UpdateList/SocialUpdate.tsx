@@ -1,5 +1,5 @@
 import { GoogleSVG, KaKaoTalkSVG, NaverSVG } from '@/icons/svg';
-import UpdateModalContainer from './UpdateModalContainer';
+import UpdateModalContainer from '../UpdateModalContainer';
 import { social } from '@/types/auth';
 import { useEffect, useState } from 'react';
 

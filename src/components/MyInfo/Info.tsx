@@ -6,9 +6,10 @@ import { ChangeImageSVG, GoogleSVG, KaKaoTalkSVG, NaverSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 import { social } from '@/types/auth';
 import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
-import NicknameUpdate from './UpdateModal/NicknameUpdate';
-import SocialUpdate from './UpdateModal/SocialUpdate';
-import EmailUpdate from './UpdateModal/EmailUpdate';
+import NicknameUpdate from './UpdateModal/UpdateList/NicknameUpdate';
+import SocialUpdate from './UpdateModal/UpdateList/SocialUpdate';
+import EmailUpdate from './UpdateModal/UpdateList/EmailUpdate';
+import PhoneNumberUpdate from './UpdateModal/UpdateList/PhoneNumberUpdate';
 
 const Info = () => {
   const authUser = useUserStore((state) => state.authUser);
@@ -70,6 +71,7 @@ const Info = () => {
         '-' +
         phoneNumber?.slice(7, 11),
       viewArrow: true,
+      updateElement: <PhoneNumberUpdate phoneNumber={phoneNumber} />,
     },
   ];
 
