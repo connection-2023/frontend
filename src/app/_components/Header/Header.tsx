@@ -13,8 +13,9 @@ const Header = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const lastScrollTopRef = useRef(0);
-
-  const { userType } = useUserStore();
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
   const { isScrollingUp, setIsScrollingUp } = useScrollStore();
 
   useEffect(() => {

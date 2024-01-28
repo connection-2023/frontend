@@ -1,30 +1,53 @@
 'use client';
-import { useRef } from 'react';
+import Cookies from 'js-cookie';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { getLikesClassList } from '@/lib/apis/classApi';
 import { useUserStore } from '@/store';
-import { instructorProfile, userProfile } from '@/types/auth';
+import { instructorProfile, userProfile, userType } from '@/types/auth';
 
 interface UserStoreInitializerProps {
   authUser: instructorProfile | userProfile | null;
-  userType: string | null;
+  userType: userType | null;
 }
 
 const UserStoreInitializer = ({
   authUser,
   userType,
 }: UserStoreInitializerProps) => {
-  const initialized = useRef(false);
+  const { setLikeClassList, likeClassList } = useUserStore((state) => ({
+    setLikeClassList: state.setLikeClassList,
+    likeClassList: state.likeClassList,
+  }));
   const store = useUserStore();
+  const pathname = usePathname();
+  const router = useRouter();
+  const reload = Cookies.get('reload');
 
-  if (!initialized.current) {
-    if (authUser && userType === 'user') {
-      store.setAuthUser(authUser);
-      store.setUserType('user');
-    } else if (authUser && userType === 'lecturer') {
-      store.setAuthUser(authUser);
-      store.setUserType('lecturer');
+  useEffect(() => {
+    if (reload === 'true') {
+      Cookies.remove('reload');
+      router.push(pathname);
+      router.refresh();
     }
-    initialized.current = true;
-  }
+  }, [reload]);
+
+  useEffect(() => {
+    store.setAuthUser(authUser);
+    store.setUserType(userType);
+  }, [authUser, userType]);
+
+  useEffect(() => {
+    if (userType === 'user') {
+      if (likeClassList.length === 0) {
+        getLikesClassList().then((data) =>
+          setLikeClassList(data.map(({ lectureId }) => lectureId)),
+        );
+      }
+    } else {
+      setLikeClassList([]);
+    }
+  }, [userType]);
 
   return null;
 };

@@ -25,6 +25,7 @@ const AccountInfo = ({ register, handleSubmit }: AccountInfoProps) => {
           <input
             {...register('depositor')}
             className="h-7 w-60 rounded-md border border-solid border-gray-500 px-2 focus:outline-sub-color1 md:w-80"
+            aria-label="입금자명"
           />
         </li>
 
@@ -41,6 +42,7 @@ const AccountInfo = ({ register, handleSubmit }: AccountInfoProps) => {
           <input
             {...register('accountHolder')}
             className="h-7 w-40 rounded-md border border-solid border-gray-500 px-1.5 focus:outline-sub-color1"
+            aria-label="예금주"
           />
         </li>
 
@@ -52,6 +54,7 @@ const AccountInfo = ({ register, handleSubmit }: AccountInfoProps) => {
             name="bank"
             id="bank"
             className="h-7 w-40 rounded-md border border-solid border-gray-500 px-1.5 focus:outline-sub-color1"
+            aria-label="은행 선택"
           >
             <option value="">은행 선택</option>
             {BANK_LIST.map((item) => (

@@ -12,7 +12,7 @@ import { transformSearchClass } from '@/utils/apiDataProcessor';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
 import Spinner from '@/components/Spinner/Spinner';
 import { ClassCardType } from '@/types/class';
-import { classSearchData } from '@/types/types';
+import { FetchError, classSearchData } from '@/types/types';
 
 interface ClassListViewProps {
   searchData: classSearchData;
@@ -73,7 +73,8 @@ const ClassListView = ({
     try {
       await updateSearchStateAndClassLists();
     } catch (error) {
-      if (error instanceof Error && error.message.includes('401')) {
+      const fetchError = error as FetchError;
+      if (fetchError.status === 401) {
         await accessTokenReissuance();
         await updateSearchStateAndClassLists();
       } else {

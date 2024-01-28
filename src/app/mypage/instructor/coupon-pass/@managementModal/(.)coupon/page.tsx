@@ -9,6 +9,7 @@ import UniqueButton from '@/components/Button/UniqueButton';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import RouterModal from '@/components/Modal/RouterModal';
 import { CouponData, couponGET } from '@/types/coupon';
+import { FetchError } from '@/types/types';
 
 interface CouponCreateModalProps {
   searchParams: {
@@ -45,7 +46,8 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
 
       window.location.reload();
     } catch (error) {
-      if (error instanceof Error && error.message.includes('401')) {
+      const fetchError = error as FetchError;
+      if (fetchError.status === 401) {
         await accessTokenReissuance();
         await onValid(data);
       } else {

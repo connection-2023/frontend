@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import {
   CLASS_TAKE,
   DANCE_GENRE,
@@ -13,7 +14,6 @@ import {
   searchBestClass,
   searchClasses,
 } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import {
   transformBestClassSearch,
   transformSearchClass,
@@ -28,7 +28,8 @@ import { ClassCardType } from '@/types/class';
 import { IFilterOptions, SearchParams, classSearchData } from '@/types/types';
 
 const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { userType } = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
   let bestClassList: ClassCardType[] = [];
   let classList: ClassCardType[] = [];
 
@@ -137,13 +138,9 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   };
 
   try {
-    bestClassList = transformBestClassSearch(
-      await searchBestClass(userType === 'user'),
-    );
+    bestClassList = transformBestClassSearch(await searchBestClass(!!user));
 
-    classList = transformSearchClass(
-      await searchClasses(searchData, userType === 'user'),
-    );
+    classList = transformSearchClass(await searchClasses(searchData, !!user));
   } catch (error) {
     console.error(error);
   }

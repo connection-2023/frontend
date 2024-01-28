@@ -16,11 +16,9 @@ export const createNewCoupon = async (data: createCouponData) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        `쿠폰 생성 오류: ${errorData.message || ''}, status: ${
-          response.status
-        }`,
-      );
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const responseData = await response.json();

@@ -25,6 +25,7 @@ const ClassPreview = (props: ClassCardType) => {
     profile,
     isLiked,
     darkMode = false,
+    smallView = false,
   } = props;
   const [focus, setFocus] = useState(false);
   const router = useRouter();
@@ -44,7 +45,7 @@ const ClassPreview = (props: ClassCardType) => {
         onMouseLeave={() => setFocus(false)}
         onMouseOver={() => setFocus(true)}
         className={`hidden h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg bg-white p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] ${
-          darkMode ? '' : 'xl:flex'
+          smallView ? '' : 'xl:flex'
         }`}
       >
         <div className="relative mr-4 h-full w-[18.6rem] overflow-hidden lg:w-full">
@@ -101,7 +102,7 @@ const ClassPreview = (props: ClassCardType) => {
         </div>
       </div>
 
-      <div className={`h-full w-full ${darkMode ? '' : 'xl:hidden'} `}>
+      <div className={`h-full w-full ${smallView ? '' : 'xl:hidden'} `}>
         <ResponsiveClassPreview {...props} />
       </div>
     </>

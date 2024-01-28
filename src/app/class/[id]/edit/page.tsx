@@ -1,17 +1,19 @@
 'use client';
+import { useQuery } from '@tanstack/react-query';
 import { parse, format, parseISO, isSameDay } from 'date-fns';
-import { usePathname, useRouter } from 'next/navigation';
-import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
-import {
-  LocationSVG,
-  TimeSVG,
-  GroupSVG,
-  LevelSVG,
-  GenreSVG,
-} from '@/icons/svg';
+import AddSchedules from './_components/AddSchedules';
+import EditClassRange from './_components/EditClassRange';
+import EditDayoff from './_components/EditDayoff';
+import Loading from './_components/Loading';
+import NonEditableSection from './_components/NonEditableSection';
+import SideNavbar from './_components/SideNavbar';
+import { filteredAddedSchedules } from './_lib/addScheduleUtils';
+import NumberSelect from '../../create/_components/NumberSelect';
+import { TimeSVG } from '@/icons/svg';
 import { getOriginalClassInfo, updateClassData } from '@/lib/apis/classApis';
 import { deleteImage } from '@/lib/apis/imageApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
@@ -19,16 +21,9 @@ import { useUserStore } from '@/store/userStore';
 import { uploadImageFilesWithFallback } from '@/utils/apiDataProcessor';
 import createOptions from '@/utils/generateStudentCountOptions';
 import {
-  formatLocationToString,
-  formatGenreToString,
   formatScheduleDays,
   generateDatesFromNewEndDate,
 } from '@/utils/parseUtils';
-import AddSchedules from './_components/AddSchedules';
-import EditClassRange from './_components/EditClassRange';
-import EditDayoff from './_components/EditDayoff';
-import SideNavbar from './_components/SideNavbar';
-import NumberSelect from '../../create/_components/NumberSelect';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
@@ -36,20 +31,22 @@ import CustomEditor from '@/components/TextArea/CustomEditor';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import UploadImage from '@/components/UploadImage/UploadImage';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { IClassEditPageData, IClassEditRequest } from '@/types/class';
+import { IClassEditRequest } from '@/types/class';
 import { ErrorMessage, FetchError } from '@/types/types';
+import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
+import { CLASS_EDIT_STYLE } from '@/constants/constants';
 
-const borderStyle = 'border-b border-solid border-gray-700';
-const h2Style = 'mb-4 flex items-center text-lg font-bold';
-const h3Style = 'flex gap-1.5 text-sm';
+const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['class', id],
+    queryFn: () => getOriginalClassInfo(id),
+    refetchOnWindowFocus: 'always',
+  });
 
-const ClassEditPage = () => {
-  const [initData, setInitData] = useState<IClassEditPageData | undefined>();
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const [newEndDate, setNewEndDate] = useState<string>('');
   const router = useRouter();
-  const path = usePathname();
-  const postId = path.split('/')[2];
+
   const formMethods = useForm();
   const {
     control,
@@ -62,44 +59,20 @@ const ClassEditPage = () => {
   const userType = useUserStore((state) => state.userType);
   const newSchedules: Date[] = watch('schedules') || [];
 
-  useEffect(() => {
-    const classOriginalData = async () => {
-      const data = await getOriginalClassInfo(postId);
-      setInitData(data);
-    };
-    classOriginalData();
-  }, [postId]);
-
-  const formatSchedules = useMemo(() => {
-    // 전체 기간에 맞게 클래스 일정 조정
-    if (!newEndDate || !initData) return [];
-    if (
-      initData.daySchedule &&
-      !isSameDay(parseISO(initData.lecture.endDate), parseISO(newEndDate))
-    ) {
-      return [
-        ...initData.schedule,
-        ...generateDatesFromNewEndDate(
-          initData.lecture.endDate,
-          newEndDate,
-          initData.daySchedule,
-        ),
-      ];
-    } else return initData.schedule;
-  }, [newEndDate, initData]);
+  if (isLoading) return <Loading />;
+  if (!data || data instanceof Error || error) {
+    return;
+  }
 
   if (
     userType !== 'lecturer' &&
     authUser &&
-    initData &&
-    Number(authUser.id) !== initData.lecturer.id
+    data &&
+    Number(authUser.id) !== data.id
   )
     return null;
 
-  if (!initData) return null;
   const {
-    title,
-    difficultyLevel,
     isGroup,
     duration,
     price,
@@ -109,17 +82,31 @@ const ClassEditPage = () => {
     startDate,
     endDate,
     locationDescription,
-    lectureToRegion,
     reservationDeadline,
-    lectureToDanceGenre,
-    lectureNotification,
     lectureImage,
     reservationComment,
-  } = initData?.lecture;
-  const { notification } = lectureNotification;
-  const dateRange = {
-    startDate: format(parseISO(startDate), 'yyyy-MM-dd'),
-    endDate: format(parseISO(endDate), 'yyyy-MM-dd'),
+    notification,
+    schedule,
+  } = data;
+
+  const formatSchedule = schedule.map((item) => new Date(item.startDateTime));
+
+  const formatSchedules = (): Date[] => {
+    // 전체 기간에 맞게 클래스 일정 조정
+    if (!newEndDate) return [];
+    if (
+      data.daySchedule &&
+      !isSameDay(parseISO(data.endDate), parseISO(newEndDate))
+    ) {
+      return [
+        ...formatSchedule,
+        ...generateDatesFromNewEndDate(
+          data.endDate,
+          newEndDate,
+          data.daySchedule,
+        ),
+      ];
+    } else return formatSchedule;
   };
 
   const closeValidationMessage = () => {
@@ -138,30 +125,13 @@ const ClassEditPage = () => {
       );
 
       // 추가된 스케쥴만 필터링
-      const originDates = initData.schedule.map((date) => date.toISOString());
-      const newValDates = newSchedules.reduce((acc: string[], date) => {
-        if (date !== null) {
-          acc.push(date.toISOString());
-        }
-        return acc;
-      }, []);
-
-      const differenceSchedules = newValDates
-        .filter((date) => !originDates.includes(date))
-        .map((date) => new Date(date));
-
-      const schedulesData = initData?.daySchedule
-        ? newEndDate &&
-          isSameDay(parseISO(endDate.endDate), parseISO(newEndDate))
-          ? {}
-          : {
-              schedules: generateDatesFromNewEndDate(
-                endDate.endDate,
-                newEndDate,
-                initData.daySchedule,
-              ),
-            }
-        : { schedules: differenceSchedules };
+      const schedulesData = filteredAddedSchedules(
+        formatSchedule,
+        newSchedules,
+        data.daySchedule,
+        newEndDate,
+        endDate,
+      );
 
       reqData = {
         ...data,
@@ -172,16 +142,16 @@ const ClassEditPage = () => {
         endDate: new Date(endDate.endDate),
       };
 
-      await updateClassData(postId, reqData);
+      await updateClassData(id, reqData);
       toast.success('클래스 수정 완료');
-      router.push(`/class/${postId}`);
+      router.push(`/class/${id}`);
     } catch (error) {
       if (error instanceof Error) {
         const fetchError = error as FetchError;
         if (fetchError.status === 401) {
           try {
             await accessTokenReissuance();
-            await updateClassData(postId, reqData!);
+            await updateClassData(id, reqData!);
           } catch (error) {
             console.error(error);
             toast.error('잘못된 요청입니다!');
@@ -204,17 +174,17 @@ const ClassEditPage = () => {
   const handleEditCancel = () => {
     const confirm = window.confirm('클래스 수정을 취소하겠습니까?');
     if (confirm) {
-      router.push(`/class/${postId}`);
+      router.push(`/class/${id}`);
     }
   };
 
   return (
-    <main className="border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 px-4 md:grid-cols-[1fr_3fr] md:gap-x-5 xl:grid-cols-[1fr_2fr_1fr] xl:px-0">
+    <div className="border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 px-4 md:grid-cols-[1fr_3fr] md:gap-x-5 xl:grid-cols-[1fr_2fr_1fr] xl:px-0">
       <section className="mb-4 flex w-full flex-col items-center border-b border-solid border-gray-500 md:col-span-2 xl:col-span-3">
         {/* 클래스 이미지 */}
         <div
           id="images"
-          className="mb-5 flex h-[18rem] w-full justify-center px-10"
+          className="mb-5 flex h-fit w-full justify-center px-10"
         >
           <Controller
             name="images"
@@ -233,38 +203,8 @@ const ClassEditPage = () => {
           />
         </div>
 
-        <h1 className="relative flex w-full max-w-[40rem] px-4 text-lg font-bold md:justify-center">
-          <p className="w-11/12 md:text-center">{title}</p>
-        </h1>
-
-        <hr className="mb-4 h-1 w-full max-w-[40rem] md:mb-6" />
-
         {/* 수정 불가 클래스 기본 정보 */}
-        <div className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 px-4 md:mb-7 md:flex md:flex-wrap md:justify-items-center md:gap-x-10 md:whitespace-nowrap">
-          <h3 className={h3Style}>
-            <LocationSVG />
-            <span className="w-fit break-keep">
-              {formatLocationToString(lectureToRegion)}
-            </span>
-          </h3>
-          <h3 className={h3Style}>
-            <GenreSVG />
-            <span className="w-fit break-keep">
-              {formatGenreToString(lectureToDanceGenre)}
-            </span>
-          </h3>
-
-          <h3 className={h3Style}>
-            <TimeSVG /> {duration}분
-          </h3>
-          <h3 className={h3Style}>
-            <GroupSVG />
-            {isGroup ? `그룹레슨 (${maxCapacity}인)` : '개인레슨'}
-          </h3>
-          <h3 className={h3Style}>
-            <LevelSVG /> {difficultyLevel}
-          </h3>
-        </div>
+        <NonEditableSection {...data} />
       </section>
 
       {/* navbar */}
@@ -272,13 +212,13 @@ const ClassEditPage = () => {
 
       <div>
         <FormProvider {...formMethods}>
-          <div className="flex flex-col gap-8 py-12">
+          <section id="intro" className="flex flex-col gap-8 py-12">
             {/* 공지사항 */}
             <TextAreaSection
               maxLength={200}
               dataName="notification"
               placeholder={ANNOUNCEMENT}
-              defaultValue={notification}
+              defaultValue={notification.content}
               title="중요 공지사항을 입력해주세요"
             />
 
@@ -302,14 +242,17 @@ const ClassEditPage = () => {
               minLength={200}
               requiredMark={false}
             />
-          </div>
+          </section>
 
           {/* 클래스 일정 및 시간 */}
           <section id="plan">
             <Controller
               name="endDate"
               control={control}
-              defaultValue={dateRange}
+              defaultValue={{
+                startDate: format(parseISO(startDate), 'yyyy-MM-dd'),
+                endDate: format(parseISO(endDate), 'yyyy-MM-dd'),
+              }}
               rules={{
                 required: '전체 클래스 기간',
                 validate: ({ startDate, endDate }) => {
@@ -341,10 +284,10 @@ const ClassEditPage = () => {
                 },
               }}
               render={({ field }) => (
-                <div className={`${borderStyle} py-6`}>
+                <div className={`${CLASS_EDIT_STYLE.border} py-6`}>
                   <h2
                     id="classRange"
-                    className={`${h2Style} ${
+                    className={`${CLASS_EDIT_STYLE.h2} ${
                       errors.endDate && 'animate-vibration text-main-color'
                     }`}
                   >
@@ -364,8 +307,8 @@ const ClassEditPage = () => {
                   </div>
 
                   <ul>
-                    {initData?.daySchedule &&
-                      formatScheduleDays(initData?.daySchedule, duration).map(
+                    {data.daySchedule &&
+                      formatScheduleDays(data.daySchedule, duration).map(
                         (list, index) => (
                           <li key={index}>
                             <p className="mt-4 flex items-center gap-1.5 text-base">
@@ -381,23 +324,23 @@ const ClassEditPage = () => {
             />
 
             {/* 휴무일 */}
-            {initData?.daySchedule ? (
+            {data.daySchedule ? (
               <Controller
                 name="holidays"
                 control={control}
                 defaultValue={{
-                  schedules: initData.schedule,
-                  holidays: initData?.holidayArr,
+                  schedules: data.schedule,
+                  holidays: data.holidayArr,
                 }}
                 render={({ field }) => (
-                  <div className={`${borderStyle} py-6`}>
-                    <h2 className={h2Style}>휴무일이 있나요?</h2>
+                  <div className={`${CLASS_EDIT_STYLE.border} py-6`}>
+                    <h2 className={CLASS_EDIT_STYLE.h2}>휴무일이 있나요?</h2>
 
                     <EditDayoff
                       onChange={field.onChange}
                       defaultValue={{
-                        schedules: formatSchedules,
-                        holidays: initData?.holidayArr,
+                        schedules: formatSchedule,
+                        holidays: data.holidayArr,
                       }}
                     />
                   </div>
@@ -409,17 +352,17 @@ const ClassEditPage = () => {
                 control={control}
                 defaultValue={{
                   range: { startDate, endDate },
-                  schedules: initData.schedule,
+                  schedules: data.schedule,
                 }}
                 render={({ field }) => (
-                  <div className={`${borderStyle} py-6`}>
-                    <h2 className={h2Style}>클래스 일정 및 시간</h2>
+                  <div className={`${CLASS_EDIT_STYLE.border} py-6`}>
+                    <h2 className={CLASS_EDIT_STYLE.h2}>클래스 일정 및 시간</h2>
 
                     <AddSchedules
                       onChange={field.onChange}
                       defaultValue={{
                         range: { startDate, endDate: newEndDate },
-                        schedules: initData.schedule,
+                        schedules: formatSchedule,
                       }}
                       duration={duration}
                     />
@@ -428,11 +371,11 @@ const ClassEditPage = () => {
               />
             )}
             {/* 클래스 횟수 */}
-            <section className={`${borderStyle} py-6`}>
-              <h2 className={h2Style}>
+            <section className={`${CLASS_EDIT_STYLE.border} py-6`}>
+              <h2 className={CLASS_EDIT_STYLE.h2}>
                 총 클래스 횟수
                 <span className="ml-10">
-                  {initData.daySchedule
+                  {data.daySchedule
                     ? formatSchedules.length
                     : newSchedules.length}
                   회
@@ -444,7 +387,7 @@ const ClassEditPage = () => {
                   maxCapacity={maxCapacity}
                   duration={duration}
                   lectureSchedule={
-                    initData.daySchedule ? formatSchedules : newSchedules
+                    data.daySchedule ? formatSchedules() : newSchedules
                   }
                 />
               </div>
@@ -459,10 +402,10 @@ const ClassEditPage = () => {
                 min: { value: 1, message: '올바른 마감 시간' },
               }}
               render={({ field }) => (
-                <div className={`${borderStyle} py-6`}>
+                <div className={`${CLASS_EDIT_STYLE.border} py-6`}>
                   <h2
                     id="reservationDeadline"
-                    className={`${h2Style} ${
+                    className={`${CLASS_EDIT_STYLE.h2} ${
                       errors.reservationDeadline &&
                       'animate-vibration text-main-color'
                     }`}
@@ -478,6 +421,7 @@ const ClassEditPage = () => {
                         field.onChange(Number(e.target.value));
                       }}
                       className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1 focus:outline-sub-color1"
+                      aria-label="신청 마감 시간"
                     />
                     <span>시간 전</span>
                   </div>
@@ -494,10 +438,10 @@ const ClassEditPage = () => {
                 required: '예약 시 유의사항',
               }}
               render={({ field }) => (
-                <div className={`${borderStyle} py-6`}>
+                <div className={`${CLASS_EDIT_STYLE.border} py-6`}>
                   <h2
                     id="reservationComment"
-                    className={`${h2Style} ${
+                    className={`${CLASS_EDIT_STYLE.h2} ${
                       errors.reservationComment &&
                       'animate-vibration text-main-color'
                     }`}
@@ -539,7 +483,9 @@ const ClassEditPage = () => {
             className="whitespace-nowrap text-lg font-semibold"
           >
             {isGroup && (
-              <div className={`flex ${borderStyle} items-center py-4`}>
+              <div
+                className={`flex ${CLASS_EDIT_STYLE.border} items-center py-4`}
+              >
                 <p className="mr-10 w-28">1회 최대 수강생</p>
                 <Controller
                   name="maxCapacity"
@@ -587,6 +533,7 @@ const ClassEditPage = () => {
                       className="ml-7 mr-1 h-8 w-24 rounded-md border border-solid border-gray-700 px-2 text-right focus:outline-sub-color1"
                       defaultValue={field.value}
                       onChange={field.onChange}
+                      aria-label="가격 설정"
                     />
                     <span>원</span>
                   </div>
@@ -617,7 +564,7 @@ const ClassEditPage = () => {
         closeModal={closeValidationMessage}
         invalidData={invalidData}
       />
-    </main>
+    </div>
   );
 };
 
