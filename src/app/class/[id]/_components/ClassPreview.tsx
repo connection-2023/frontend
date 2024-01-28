@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import OptionButton from './OptionButton';
+import { CLASS_HSTYLE } from '@/constants/constants';
 import {
   LocationSVG,
   TimeSVG,
@@ -7,17 +7,17 @@ import {
   LevelSVG,
   GenreSVG,
 } from '@/icons/svg';
+import { getClassPreview } from '@/lib/apis/serverApis/classPostApis';
+import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
+import { useUserStore } from '@/store';
 import {
   formatLocationToString,
   formatGenreToString,
 } from '@/utils/parseUtils';
-import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
-import Review from '@/components/Review/Review';
-import { getClassPreview } from '@/lib/apis/serverApis/classPostApis';
 import DiscountCouponBanner from './DiscountCouponBanner';
+import OptionButton from './OptionButton';
 import Carousel from '@/components/Carousel/Carousel';
-import { useUserStore } from '@/store';
-import { CLASS_HSTYLE } from '@/constants/constants';
+import Review from '@/components/Review/Review';
 
 const ClassPreview = async ({ id }: { id: string }) => {
   const { userType } = useUserStore.getState();

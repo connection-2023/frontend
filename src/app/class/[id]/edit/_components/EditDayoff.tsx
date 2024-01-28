@@ -1,14 +1,21 @@
-import { format } from 'date-fns';
 import { compareAsc, isSameDay } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import dynamic from 'next/dynamic';
+import { useEffect, useRef, useState, useMemo, memo } from 'react';
+import { getDayoffClassNames } from '@/utils/classUtils';
+import { formatDateWithDay } from '@/utils/dateTimeUtils';
 import { getUniqueDates } from '@/utils/parseUtils';
-import DayOffCalendar from '@/components/Calendar/BasicCalendar';
-import { IClassSchedule } from '@/types/class';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
+const DayOffCalendar = dynamic(
+  () => import('@/components/Calendar/BasicCalendar'),
+  {
+    ssr: false,
+  },
+);
+
 interface EditDayoffProps {
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: Date[]) => void;
   defaultValue: {
     schedules: Date[];
@@ -78,7 +85,10 @@ const EditDayoff = ({ onChange, defaultValue }: EditDayoffProps) => {
           <button
             key={option}
             onClick={() => handleOptionClick(index)}
-            className={getClassNames(selectedOptionIndex === index, false)}
+            className={getDayoffClassNames(
+              selectedOptionIndex === index,
+              false,
+            )}
           >
             {option}
           </button>
@@ -108,7 +118,7 @@ const EditDayoff = ({ onChange, defaultValue }: EditDayoffProps) => {
                     key={date.toLocaleDateString()}
                     className="h-fit rounded-md border border-solid border-gray-500 px-2.5 py-1.5"
                   >
-                    {format(date, 'yy.MM.dd (E)', { locale: ko })}
+                    {formatDateWithDay(date)}
                   </p>
                 ))}
               </div>
@@ -120,22 +130,4 @@ const EditDayoff = ({ onChange, defaultValue }: EditDayoffProps) => {
   );
 };
 
-export default React.memo(EditDayoff);
-
-const getClassNames = (isSelected: boolean, isDisabled: boolean) => {
-  let classNames = 'h-10 w-1/2 rounded-md';
-
-  if (isDisabled) {
-    classNames += ' border border-solid border-gray-500 text-gray-500';
-  }
-
-  if (isSelected) {
-    classNames += ' bg-sub-color1 text-white';
-  } else if (isSelected && !isDisabled) {
-    classNames += ' border border-solid border-gray-500 text-gray-100';
-  } else {
-    classNames += ' border border-solid border-gray-500';
-  }
-
-  return classNames;
-};
+export default memo(EditDayoff);

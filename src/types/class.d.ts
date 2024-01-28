@@ -8,10 +8,12 @@ interface IInstructorProfile {
   profileCardImageUrl: null | string;
   nickname: string;
 }
+
 export interface IClassImageResponse {
   id: number;
   imageUrl: string;
 }
+
 export interface IClassGenreResponse {
   danceCategoryId: number;
   name: string | null;
@@ -20,6 +22,7 @@ export interface IClassGenreResponse {
     genre: string;
   };
 }
+
 export interface IClassRegionResponse {
   region: {
     administrativeDistrict: string;
@@ -34,6 +37,7 @@ export interface IClassNotification {
   updatedAt: string;
   deletedAt: null;
 }
+
 export interface ClassCardType {
   id: number;
   status: '모집중' | '마감';
@@ -51,6 +55,7 @@ export interface ClassCardType {
   smallView?: boolean;
   searchAfter?: [number, number];
 }
+
 export interface Space {
   current: number;
   total: number;

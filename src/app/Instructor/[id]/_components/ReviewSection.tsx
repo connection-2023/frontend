@@ -1,9 +1,9 @@
 'use client';
-import { parseISO, format } from 'date-fns';
 import { useState, useRef, useEffect } from 'react';
 import { useClickAway } from 'react-use';
 import { StarSVG, ArrowUpSVG } from '@/icons/svg';
 import { getReviews } from '@/lib/apis/instructorPostApis';
+import { formatShortDate } from '@/utils/dateTimeUtils';
 import SortDropdown from '@/components/Dropdown/SortDropdown';
 import Review from '@/components/Review/Review';
 import UserReview from '@/components/Review/UserReview';
@@ -127,9 +127,8 @@ const ReviewSection = ({ id, stars, totalReviewCount }: ReviewSectionProps) => {
             nickname={review.users.nickname}
             average={review.stars}
             content={review.description}
-            date={format(
-              parseISO(review.reservation.lectureSchedule.startDateTime),
-              'yy.MM.dd',
+            date={formatShortDate(
+              review.reservation.lectureSchedule.startDateTime,
             )}
             title={review.reservation.lectureSchedule.lecture.title}
             isLike={review.likedLectureReview?.[0] ? true : false}

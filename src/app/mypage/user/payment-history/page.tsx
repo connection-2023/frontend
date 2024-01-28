@@ -1,20 +1,21 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { MYPAGE_FILTER_OPTIONS } from '@/constants/constants';
 import { getPaymentHistory } from '@/lib/apis/paymentApis';
-import PaymentList from './_components/PaymentList';
 import Pagination from '@/components/Pagination/Pagination';
 import { IMyPayment } from '@/types/types';
 
-enum filterOptions {
-  All = '전체',
-  Class = '클래스',
-  Pass = '패스권',
-}
+const PaymentList = dynamic(() => import('./_components/PaymentList'), {
+  ssr: false,
+});
 
 const PaymentHistory = () => {
   const [activeTabIdx, setActiveTabIdx] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(filterOptions.All);
+  const [selectedOption, setSelectedOption] = useState(
+    MYPAGE_FILTER_OPTIONS.All,
+  );
   const [displayCount, setDisplayCount] = useState(5);
   const [totalItemCount, setTotalItemCount] = useState(0);
   const [paymentData, setPaymentData] = useState<IMyPayment[]>([]);
@@ -75,9 +76,9 @@ const PaymentHistory = () => {
   const handleCheckboxChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const option = event.target.id as filterOptions;
+    const option = event.target.id as MYPAGE_FILTER_OPTIONS;
 
-    if (Object.values(filterOptions).includes(option)) {
+    if (Object.values(MYPAGE_FILTER_OPTIONS).includes(option)) {
       setSelectedOption(option);
 
       await loadPaymentHistory(
@@ -150,7 +151,7 @@ const PaymentHistory = () => {
 
       <div className="mb-4 flex justify-between gap-4 text-sm">
         <ul className="flex gap-4 whitespace-nowrap font-medium">
-          {Object.values(filterOptions).map((option) => (
+          {Object.values(MYPAGE_FILTER_OPTIONS).map((option) => (
             <li key={option} className="flex items-center gap-[0.31rem]">
               <input
                 type="checkbox"

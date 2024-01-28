@@ -1,6 +1,6 @@
 'use client';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
@@ -9,13 +9,14 @@ import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
-import ClassExplanation from './ClassExplanation';
-import ClassLocation from './ClassLocation';
-import ClassPrice from './ClassPrice';
-import ClassSchedule from './ClassSchedule';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { IprocessedDraft, classCreateData } from '@/types/class';
 import { ErrorMessage } from '@/types/types';
+
+const ClassExplanation = lazy(() => import('./ClassExplanation'));
+const ClassSchedule = lazy(() => import('./ClassSchedule'));
+const ClassLocation = lazy(() => import('./ClassLocation'));
+const ClassPrice = lazy(() => import('./ClassPrice'));
 
 const steps = [
   { title: '사진, 카테고리 설정', component: <ClassCategory /> },

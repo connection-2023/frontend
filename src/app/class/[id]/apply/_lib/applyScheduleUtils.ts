@@ -1,4 +1,3 @@
-import { parseISO } from 'date-fns';
 import { formatDateTime } from '@/utils/parseUtils';
 import { IClassSchedule } from '@/types/class';
 
@@ -15,6 +14,7 @@ export const parseApplyQuery = (count: string | string[]) => {
   }>(
     (acc, item) => {
       const [lectureScheduleId, participants] = item.split('-').map(Number);
+
       acc.data.push({
         lectureScheduleId,
         participants,
@@ -34,7 +34,7 @@ export const processSelectedSchedules = (
   duration: number,
 ) => {
   return selectedSchedule.map((lecture) => {
-    const datetime = parseISO(lecture.startDateTime);
+    const datetime = new Date(lecture.startDateTime);
     const remain = maxCapacity - lecture.numberOfParticipants;
     const matchedSchedule = initialApplyData.find(
       (item) => item.lectureScheduleId === lecture.id,

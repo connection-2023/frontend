@@ -1,4 +1,3 @@
-import { parseISO, format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -6,11 +5,13 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { CloseSVG, ArrowUpSVG, CopySVG } from '@/icons/svg';
 import { getAccountInfo } from '@/lib/apis/paymentApis';
+import { formatShortDate, formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/Modal';
 import { IVirtualAccountInfo } from '@/types/payment';
 import { IMyPayment } from '@/types/types';
 
 interface PaymentListProps extends IMyPayment {
+  // eslint-disable-next-line no-unused-vars
   handlePaymentDelete: (id: number) => void;
 }
 
@@ -96,15 +97,12 @@ const PaymentList = ({
         </figure>
 
         <ul className="flex flex-col gap-1">
-          <li className="text-gray-300">
-            결제일 {format(parseISO(updatedAt), 'yy.MM.dd')}
-          </li>
+          <li className="text-gray-300">결제일 {formatShortDate(updatedAt)}</li>
           <li>{orderName}</li>
           {isClass && reservation[0] && (
             <li>
-              {`${format(
-                parseISO(reservation[0].lectureSchedule.startDateTime),
-                'yy.MM.dd HH:mm',
+              {`${formatDateTimeNoSec(
+                reservation[0].lectureSchedule.startDateTime,
               )} ${reservation[0].participants}명 ${
                 reservation.length > 1 ? '+ ' + (reservation.length - 1) : ''
               }`}
@@ -147,9 +145,8 @@ const PaymentList = ({
               <div>
                 {reservation.map(
                   (data) =>
-                    `${format(
-                      parseISO(data.lectureSchedule.startDateTime),
-                      'yy.MM.dd HH:mm',
+                    `${formatDateTimeNoSec(
+                      data.lectureSchedule.startDateTime,
                     )} ${data.participants}명`,
                 )}
               </div>
@@ -185,9 +182,7 @@ const PaymentList = ({
                 </li>
                 <li className="flex gap-5 whitespace-nowrap">
                   <p className="w-[3.3rem] font-semibold">입금 기한</p>
-                  <p>
-                    {format(parseISO(accountDetail.dueDate), 'MM/dd HH:mm')}까지
-                  </p>
+                  <p>{formatDateTimeNoSec(accountDetail.dueDate)}까지</p>
                 </li>
               </ul>
             </section>

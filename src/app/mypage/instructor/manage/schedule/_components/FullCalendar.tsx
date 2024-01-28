@@ -1,9 +1,8 @@
 'use client';
-import 'moment/locale/ko';
-import { isSameDay, parseISO } from 'date-fns';
+import isSameDay from 'date-fns/isSameDay';
+import dynamic from 'next/dynamic';
 import { useState, useMemo } from 'react';
 import { Calendar, View, Views, SlotInfo } from 'react-big-calendar';
-import ScheduleEventModal from '@/app/dashboard/_components/ScheduleEventModal';
 import {
   localizer,
   formats,
@@ -15,8 +14,16 @@ import { IMonthlyClassSchedules } from '@/types/class';
 import { IFullCalendarEvent } from '@/types/types';
 import '@/styles/fullCalendar.css';
 
+const ScheduleEventModal = dynamic(
+  () => import('@/app/dashboard/_components/ScheduleEventModal'),
+  {
+    ssr: false,
+  },
+);
+
 interface FullCalendarProps {
   date: Date;
+  // eslint-disable-next-line no-unused-vars
   handleDateChange: (newDate: Date) => void;
   scheduleData: IMonthlyClassSchedules[] | undefined;
 }
@@ -37,8 +44,8 @@ const FullCalendar = ({
       id: data.id,
       title: data.lecture.title,
       lectureId: data.lectureId,
-      start: parseISO(data.startDateTime),
-      end: parseISO(data.endDateTime),
+      start: new Date(data.startDateTime),
+      end: new Date(data.endDateTime),
       numberOfParticipants: data.numberOfParticipants,
       maxCapacity: data.lecture.maxCapacity,
       isGroup: data.lecture.isGroup,

@@ -1,4 +1,4 @@
-import { isSameDay } from 'date-fns';
+import isSameDay from 'date-fns/isSameDay';
 
 // 토요일, 일요일
 export const DAY_MODIFIERS = {

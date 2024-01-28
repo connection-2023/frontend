@@ -1,8 +1,12 @@
-import { format, isValid, parse } from 'date-fns';
+import isValid from 'date-fns/isValid';
 import { useState, useRef } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG, MoneySVG, DoubleRightSVG } from '@/icons/svg';
+import {
+  formatDateWithHyphens,
+  parseHyphenatedDate,
+} from '@/utils/dateTimeUtils';
 import RangeCalendar from '@/components/Calendar/RangeCalendar';
 
 const PaymentRange = () => {
@@ -11,8 +15,8 @@ const PaymentRange = () => {
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const ref = useRef(null);
   const classRange = {
-    from: fromValue ? parse(fromValue, 'y-MM-dd', new Date()) : undefined,
-    to: toValue ? parse(toValue, 'y-MM-dd', new Date()) : undefined,
+    from: fromValue ? parseHyphenatedDate(fromValue) : undefined,
+    to: toValue ? parseHyphenatedDate(toValue) : undefined,
   };
 
   useClickAway(ref, () => {
@@ -31,11 +35,11 @@ const PaymentRange = () => {
     range: DateRange | undefined,
   ) => {
     if (!fromValue && !toValue && range?.from) {
-      setToValue(format(range.from, 'y-MM-dd'));
+      setToValue(formatDateWithHyphens(range.from));
     }
 
     if (range?.to && isValid(range.to)) {
-      setToValue(format(range.to, 'y-MM-dd'));
+      setToValue(formatDateWithHyphens(range.to));
     } else {
       setToValue('');
     }
