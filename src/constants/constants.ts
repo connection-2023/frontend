@@ -1,4 +1,4 @@
-import { InstagramSVG, LinkSVG, YoutubeSVG } from '@/icons/svg';
+import { InstagramSVG, LinkSVG, YoutubeSVG } from '../../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
 import { day, ReviewOrderType } from '@/types/class';
 import { TimeOfDay } from '@/types/types';
