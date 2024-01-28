@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { MainPopularSVG, MainTopSVG } from '@/icons/svg';
 import Banner from './_components/Banner';
@@ -62,7 +61,7 @@ const Home = async () => {
         <RecentClass />
       </section>
 
-      <div className="mt-10 flex w-screen justify-center">
+      <div className="mt-10 flex w-full justify-center">
         <Link
           href="/class"
           className="mx-auto rounded-[3.13rem] bg-main-color px-7 py-3 text-lg font-bold text-white"
