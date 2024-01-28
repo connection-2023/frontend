@@ -18,6 +18,8 @@ const LoginButtons = () => {
     social: 'NAVER' | 'KAKAO' | 'GOOGLE',
     idToken: string,
   ) => {
+    const toastId = toast.loading('로그인 중...');
+
     const response = await getAuth(social, idToken);
     const { status, data } = response;
 
@@ -26,9 +28,14 @@ const LoginButtons = () => {
 
       store.setAuthUser(profileRes.data.myProfile);
       store.setUserType('user');
-      toast.success('로그인 성공!');
+      toast.update(toastId, {
+        render: '로그인 성공!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 1500,
+      });
+
       router.replace('/');
-      router.refresh();
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
 
