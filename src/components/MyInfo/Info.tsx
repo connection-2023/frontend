@@ -7,6 +7,7 @@ import { useUserStore } from '@/store';
 import { social } from '@/types/auth';
 import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
 import NicknameUpdate from './UpdateModal/NicknameUpdate';
+import SocialUpdate from './UpdateModal/SocialUpdate';
 
 const Info = () => {
   const authUser = useUserStore((state) => state.authUser);
@@ -34,7 +35,7 @@ const Info = () => {
       dt: '닉네임',
       dd: nickname,
       viewArrow: true,
-      updateElemnt: <NicknameUpdate nickname={nickname} />,
+      updateElement: <NicknameUpdate nickname={nickname} />,
     },
     {
       dt: '소셜 계정',
@@ -45,6 +46,13 @@ const Info = () => {
         </div>
       ),
       viewArrow: true,
+      updateElement: (
+        <SocialUpdate
+          social={type}
+          socialImage={renderIcon(type)}
+          email={authEmail}
+        />
+      ),
     },
     {
       dt: '이메일',
@@ -74,7 +82,7 @@ const Info = () => {
           </div>
         </button>
         <dl className="flex grow flex-col border-t border-solid border-gray-700">
-          {infoComponents.map(({ dt, dd, viewArrow, updateElemnt }) => (
+          {infoComponents.map(({ dt, dd, viewArrow, updateElement }) => (
             <div
               key={dt}
               className={`grid grid-cols-[104px_1fr_34px] items-center border-b border-solid border-gray-700 ${
@@ -85,7 +93,7 @@ const Info = () => {
               <dd className="truncate">{dd}</dd>
               {viewArrow && (
                 <InfoUpdateModalViewButton>
-                  {updateElemnt ? updateElemnt : <></>}
+                  {updateElement ? updateElement : <></>}
                 </InfoUpdateModalViewButton>
               )}
             </div>
