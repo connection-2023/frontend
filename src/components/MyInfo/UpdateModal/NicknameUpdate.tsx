@@ -1,16 +1,28 @@
 'use client';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
-import { getCheckNickname } from '@/lib/apis/instructorApi';
+import {
+  getCheckNickname,
+  patchInstructorNickname,
+} from '@/lib/apis/instructorApi';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
+import { useUserStore } from '@/store';
+import { FetchError } from '@/types/types';
 import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface NicknameUpdateProps {
-  handleClosed: () => void;
+  closeModalHandler: () => void;
   nickname: string;
 }
 
-const NicknameUpdate = ({ nickname, handleClosed }: NicknameUpdateProps) => {
+const NicknameUpdate = ({
+  nickname,
+  closeModalHandler,
+}: NicknameUpdateProps) => {
+  const { setAuthUserField } = useUserStore((state) => ({
+    setAuthUserField: state.setAuthUserField,
+  }));
   const [changeNickname, setChangeNickname] = useState('');
   const [validatedNickname, setValidatedNickname] = useState(false);
 
@@ -37,6 +49,33 @@ const NicknameUpdate = ({ nickname, handleClosed }: NicknameUpdateProps) => {
       }
     } catch (error) {
       toast.error('잠시후 다시 시도해주세요!');
+    }
+  };
+
+  const updateNickname = async () => {
+    const changeNicknameAction = async () => {
+      setAuthUserField('nickname', changeNickname);
+      await patchInstructorNickname(changeNickname);
+      toast.success('닉네임 변경 완료');
+      closeModalHandler();
+    };
+
+    try {
+      await changeNicknameAction();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await changeNicknameAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
     }
   };
 
@@ -75,19 +114,9 @@ const NicknameUpdate = ({ nickname, handleClosed }: NicknameUpdateProps) => {
               className="h-11 flex-grow rounded-md px-3 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-7"
               onChange={nincknameChangeHandler}
             />
-            <div className="hidden w-[8.625rem] sm:block">
+            <div className="h-11 w-24 sm:h-7 sm:w-[8.625rem]">
               <Button
-                size="small"
-                color="secondary"
-                onClick={validateNickname}
-                disabled={validatedNickname || !changeNickname}
-              >
-                중복확인
-              </Button>
-            </div>
-            <div className="w-24 sm:hidden">
-              <Button
-                size="large"
+                size="full"
                 color="secondary"
                 onClick={validateNickname}
                 disabled={validatedNickname || !changeNickname}
@@ -100,15 +129,15 @@ const NicknameUpdate = ({ nickname, handleClosed }: NicknameUpdateProps) => {
       </section>
       <div className="my-6 flex gap-4 px-4 sm:px-8">
         <div className="hidden w-1/2 sm:block">
-          <UniqueButton onClick={handleClosed}>취소</UniqueButton>
+          <UniqueButton onClick={closeModalHandler}>취소</UniqueButton>
         </div>
-        <div className="hidden w-1/2 sm:block">
-          <Button size="medium" color="secondary" disabled={!validatedNickname}>
-            변경하기
-          </Button>
-        </div>
-        <div className="w-full sm:hidden">
-          <Button size="large" color="secondary" disabled={!validatedNickname}>
+        <div className="w-full sm:w-1/2">
+          <Button
+            onClick={updateNickname}
+            size="medium"
+            color="secondary"
+            disabled={!validatedNickname}
+          >
             변경하기
           </Button>
         </div>

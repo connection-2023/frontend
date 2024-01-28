@@ -1,30 +1,21 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const DELETE = async (request: NextRequest) => {
+export const PATCH = async (request: NextRequest) => {
   if (!END_POINT) {
-    return NextResponse.json({
-      status: 500,
-      message: '환경 변수가 설정되지 않았습니다.',
-    });
-  }
-
-  const searchParams = request.nextUrl.searchParams;
-  const id = searchParams.get('id');
-
-  if (!id) {
     return NextResponse.json(
       {
-        status: 403,
-        message: 'id값이 존재하지 않습니다.',
+        status: 500,
+        message: '환경 변수가 설정되지 않았습니다.',
       },
-      { status: 403 },
+      { status: 500 },
     );
   }
+  const searchParams = request.nextUrl.searchParams;
+  const nickname = searchParams.get('nickname');
 
-  const tokenValue = request.cookies.get('userAccessToken')?.value;
+  const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
 
   if (!tokenValue) {
     return NextResponse.json(
@@ -41,8 +32,8 @@ export const DELETE = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + `/lecture-likes/${id}`, {
-    method: 'DELETE',
+  const response = await fetch(END_POINT + '/lecturers/nickname/' + nickname, {
+    method: 'PATCH',
     credentials: 'include',
     headers,
   });

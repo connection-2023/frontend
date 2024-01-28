@@ -14,6 +14,7 @@ export interface IUserStore {
   reset: () => void;
   setLikeClassList: (list: number[]) => void;
   setLikeInstructorList: (list: number[]) => void;
+  setAuthUserField: (field: string, value: any) => void;
 }
 
 export const useUserStore = create<IUserStore>((set, get) => ({
@@ -24,6 +25,12 @@ export const useUserStore = create<IUserStore>((set, get) => ({
   likeInstructorList: [],
   setUserType: (type) => set((state) => ({ ...state, userType: type })),
   setAuthUser: (user) => set((state) => ({ ...state, authUser: user })),
+  setRequestLoading: (isLoading) =>
+    set((state) => ({ ...state, requestLoading: isLoading })),
+  reset: () => set({ authUser: null, requestLoading: false }),
+  setLikeClassList: (list: number[]) => set({ likeClassList: [...list] }),
+  setLikeInstructorList: (list: number[]) =>
+    set({ likeInstructorList: [...list] }),
   setAuthUserImage(imageUrl) {
     const currentUser = get().authUser;
 
@@ -32,10 +39,16 @@ export const useUserStore = create<IUserStore>((set, get) => ({
       set({ authUser: updatedUser });
     }
   },
-  setRequestLoading: (isLoading) =>
-    set((state) => ({ ...state, requestLoading: isLoading })),
-  reset: () => set({ authUser: null, requestLoading: false }),
-  setLikeClassList: (list: number[]) => set({ likeClassList: [...list] }),
-  setLikeInstructorList: (list: number[]) =>
-    set({ likeInstructorList: [...list] }),
+  setAuthUserField: (field: string, value: any) =>
+    set((state) =>
+      state.authUser
+        ? {
+            ...state,
+            authUser: {
+              ...state.authUser,
+              [field]: value,
+            },
+          }
+        : state,
+    ),
 }));

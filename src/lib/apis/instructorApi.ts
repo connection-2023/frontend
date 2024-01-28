@@ -4,6 +4,7 @@ import {
   IApproveList,
   IUpdatePaymentStatusRequestData,
 } from '@/types/instructor';
+import { FetchError } from '@/types/types';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
@@ -25,11 +26,48 @@ export const getCheckNickname = async (nickname: string) => {
       `${DOMAIN}/api/instructors/check-nickname?nickname=${encodeURIComponent(
         nickname,
       )}`,
-    ).then((data) => data.json());
+    );
 
-    return response.data.isAvailable;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.isAvailable;
   } catch (error) {
-    console.error('닉네임 중복 검사 오류', error);
+    console.error('강사 닉네임 중복 검사 오류', error);
+    throw error;
+  }
+};
+
+export const patchInstructorNickname = async (nickname: string) => {
+  try {
+    const response = await fetch(
+      `${DOMAIN}/api/instructors/change-nickname?nickname=${encodeURIComponent(
+        nickname,
+      )}`,
+      {
+        credentials: 'include',
+        method: 'PATCH',
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData;
+  } catch (error) {
+    console.error('강사 닉네임 수정 오류', error);
     throw error;
   }
 };

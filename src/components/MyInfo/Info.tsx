@@ -1,3 +1,4 @@
+'use client';
 import ProfileImg from '@/components/ProfileImage/ProfileImage';
 import Link from 'next/link';
 import Button from '@/components/Button/Button';
@@ -7,8 +8,8 @@ import { instructorProfile, social } from '@/types/auth';
 import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
 import NicknameUpdate from './UpdateModal/NicknameUpdate';
 
-const Info = async () => {
-  const { authUser } = useUserStore.getState();
+const Info = () => {
+  const authUser = useUserStore((state) => state.authUser);
   const { nickname, users, email, phoneNumber, profileCardImageUrl } =
     authUser as instructorProfile;
   const { name, auth } = users;

@@ -1,6 +1,7 @@
 'use client';
 import Modal from '@/components/Modal/Modal';
 import { BigArrowSVG } from '@/icons/svg';
+import React from 'react';
 import { useState } from 'react';
 
 const InfoUpdateModalViewButton = ({ children }: { children: JSX.Element }) => {
@@ -9,6 +10,8 @@ const InfoUpdateModalViewButton = ({ children }: { children: JSX.Element }) => {
   const closeModalHandler = () => {
     setModalView(false);
   };
+
+  const childrenWithProps = React.cloneElement(children, { closeModalHandler });
 
   return (
     <>
@@ -24,7 +27,7 @@ const InfoUpdateModalViewButton = ({ children }: { children: JSX.Element }) => {
         isOpened={modalView}
         handleClosed={closeModalHandler}
       >
-        {children}
+        {childrenWithProps}
       </Modal>
     </>
   );
