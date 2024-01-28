@@ -1,5 +1,6 @@
 import { IReservation } from './class';
 import { PaymentStatusType } from './payment';
+
 export interface instructorPostResponse {
   profileCardImageUrl: string | null;
   nickname: string;
@@ -269,6 +270,7 @@ export interface IUpdatePaymentStatusRequestData {
   refusedReason?: string;
   lectureId?: number;
 }
+
 export interface searchInstructorParameters {
   take: number;
   sortOption: 'LATEST' | 'STARS';

@@ -1,12 +1,12 @@
-import { format } from 'date-fns';
 import Link from 'next/link';
 import { CalendarDetailSVG } from '@/icons/svg';
+import { formatTimeNoSec } from '@/utils/dateTimeUtils';
 import { getEventColor } from '@/utils/fullCalendarUtils';
 import { IFullCalendarEvent } from '@/types/types';
 
 const EventList = ({ event }: { event: IFullCalendarEvent }) => {
-  const formattedStart = format(event.start, 'HH:mm');
-  const formattedEnd = format(event.end, 'HH:mm');
+  const formattedStart = formatTimeNoSec(event.start);
+  const formattedEnd = formatTimeNoSec(event.end);
   const color = getEventColor(event);
   const transparency = '2A';
 

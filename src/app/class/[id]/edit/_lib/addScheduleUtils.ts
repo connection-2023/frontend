@@ -1,4 +1,4 @@
-import { parseISO, isSameDay } from 'date-fns';
+import isSameDay from 'date-fns/isSameDay';
 import { generateDatesFromNewEndDate } from '@/utils/parseUtils';
 import { IDaySchedule } from '@/types/class';
 
@@ -22,7 +22,7 @@ export const filteredAddedSchedules = (
     .map((date) => new Date(date));
 
   return daySchedule
-    ? newEndDate && isSameDay(parseISO(newRange.endDate), parseISO(newEndDate))
+    ? newEndDate && isSameDay(new Date(newRange.endDate), new Date(newEndDate))
       ? {}
       : {
           schedules: generateDatesFromNewEndDate(

@@ -13,9 +13,9 @@ import {
   HeartSVG,
   CheckCircleSVG,
 } from '@/icons/svg';
+import { getPendingCount } from '@/lib/apis/instructorApi';
 import { useUserStore } from '@/store/userStore';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import { getPendingCount } from '@/lib/apis/instructorApi';
 
 interface SidebarProps {
   view?: 'my' | 'dashboard';
@@ -58,105 +58,100 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
       : 'text-gray-500 hover:text-gray-100';
 
   return (
-    <>
-      <nav
-        className={`flex h-full flex-col items-start whitespace-nowrap rounded-lg bg-white ${
-          view === 'my' ? 'max-w-[19.5rem] px-9 py-5' : 'w-full'
-        }`}
-      >
-        {isUser ? (
-          <div className="mb-5">
-            <ProfileImage size="large" src={profileImg} label={false} />
+    <nav
+      className={`flex h-full flex-col items-start whitespace-nowrap rounded-lg bg-white ${
+        view === 'my' ? 'max-w-[19.5rem] px-9 py-5' : 'w-full'
+      }`}
+    >
+      {isUser ? (
+        <div className="mb-5">
+          <ProfileImage size="large" src={profileImg} label={false} />
 
-            <p className="mt-4 text-lg font-bold text-gray-100">{nickname}님</p>
-          </div>
-        ) : (
-          <div
-            className={`mb-6 flex items-center gap-2 ${
-              view === 'dashboard' && 'h-[3.3rem] w-full bg-gray-900 px-4'
-            }`}
-          >
-            <ProfileImage size="small" src={profileImg} label={false} />
-
-            <p className="text-lg font-bold text-gray-100">{nickname}</p>
-          </div>
-        )}
-
-        <ul
-          className={`flex flex-col gap-5 text-lg font-semibold ${
-            view === 'dashboard' && 'px-4'
+          <p className="mt-4 text-lg font-bold text-gray-100">{nickname}님</p>
+        </div>
+      ) : (
+        <div
+          className={`mb-6 flex items-center gap-2 ${
+            view === 'dashboard' && 'h-[3.3rem] w-full bg-gray-900 px-4'
           }`}
         >
-          {(isUser ? userLinks : instructorLinks).map((link) => (
-            <li key={link.path} className={getTextColorClass(link.path)}>
-              <div className="flex items-center">
-                <Link href={link.path} className="group flex items-center">
-                  {link.icon}
-                  {link.text}
-                  {link.text === '환불 요청' && (
-                    <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
-                      4
-                    </span>
-                  )}
-                </Link>
+          <ProfileImage size="small" src={profileImg} label={false} />
 
-                {link.submenuItems &&
-                  (isOpen ? (
-                    <button
-                      onClick={() => setIsOpen(!isOpen)}
-                      aria-label="내 클래스 메뉴 닫기"
-                    >
-                      <ArrowUpSVG
-                        width="34"
-                        height="34"
-                        className="fill-sub-color1"
-                      />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setIsOpen(!isOpen)}
-                      aria-label="내 클래스 메뉴 열기"
-                    >
-                      <ArrowUpSVG
-                        width="34"
-                        height="34"
-                        className="origin-center rotate-180 fill-gray-500"
-                      />
-                    </button>
-                  ))}
-              </div>
+          <p className="text-lg font-bold text-gray-100">{nickname}</p>
+        </div>
+      )}
 
-              {link.submenuItems && (
-                <ul
-                  className={`${
-                    isOpen ? 'mt-2 max-h-48 opacity-100' : 'max-h-0 opacity-0'
-                  } ml-8 flex flex-col gap-2.5 transition-all duration-300 ease-linear`}
-                >
-                  {link.submenuItems.map((item) => (
-                    <li
-                      key={item.path}
-                      className={getTextColorClass(item.path)}
-                    >
-                      <Link href={item.path} className="flex items-center">
-                        {item.text}
+      <ul
+        className={`flex flex-col gap-5 text-lg font-semibold ${
+          view === 'dashboard' && 'px-4'
+        }`}
+      >
+        {(isUser ? userLinks : instructorLinks).map((link) => (
+          <li key={link.path} className={getTextColorClass(link.path)}>
+            <div className="flex items-center">
+              <Link href={link.path} className="group flex items-center">
+                {link.icon}
+                {link.text}
+                {link.text === '환불 요청' && (
+                  <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
+                    4
+                  </span>
+                )}
+              </Link>
 
-                        {item.text === '승인 대기' &&
-                          approveCount &&
-                          approveCount > 0 && (
-                            <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
-                              {approveCount}
-                            </span>
-                          )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </>
+              {link.submenuItems &&
+                (isOpen ? (
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label="내 클래스 메뉴 닫기"
+                  >
+                    <ArrowUpSVG
+                      width="34"
+                      height="34"
+                      className="fill-sub-color1"
+                    />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label="내 클래스 메뉴 열기"
+                  >
+                    <ArrowUpSVG
+                      width="34"
+                      height="34"
+                      className="origin-center rotate-180 fill-gray-500"
+                    />
+                  </button>
+                ))}
+            </div>
+
+            {link.submenuItems && (
+              <ul
+                className={`${
+                  isOpen ? 'mt-2 max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                } ml-8 flex flex-col gap-2.5 transition-all duration-300 ease-linear`}
+              >
+                {link.submenuItems.map((item) => (
+                  <li key={item.path} className={getTextColorClass(item.path)}>
+                    <Link href={item.path} className="flex items-center">
+                      {item.text}
+
+                      {item.text === '승인 대기' &&
+                        approveCount &&
+                        approveCount > 0 && (
+                          <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
+                            {approveCount}
+                          </span>
+                        )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 

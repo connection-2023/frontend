@@ -1,5 +1,5 @@
 'use client';
-import { parseISO } from 'date-fns';
+import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -9,6 +9,8 @@ import ReservationItem from './apply/ReservationItem';
 import SelectBox from './apply/SelectBox';
 import ApplyButton from '@/components/Button/ApplyButton';
 import { IClassSchedule, IDateTime } from '@/types/class';
+
+const ApplyList = dynamic(() => import('./apply/ApplyList'), { ssr: false });
 
 interface ApplyProps {
   schedule: IClassSchedule[];
@@ -34,7 +36,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
   const scheduleLists = applyScheduleFilter(schedule, maxCapacity);
 
   const formattedData = scheduleLists.map((list) => {
-    const datetime = parseISO(list.startDateTime);
+    const datetime = new Date(list.startDateTime);
     const space =
       list.numberOfParticipants === maxCapacity
         ? '마감'
@@ -50,7 +52,8 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
 
   const addSelectedSchedule = (selectedDateTime: string) => {
     const selectedSchedule = schedule.find((item) => {
-      const datetime = parseISO(item.startDateTime);
+      const datetime = new Date(item.startDateTime);
+
       return (
         formatDateTime(datetime, duration) ===
         getFormattedDateTime(selectedDateTime)
@@ -170,30 +173,14 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
       </div>
 
       {isOpened && (
-        <>
-          <div className="mb-3 flex w-full flex-col gap-2 md:hidden">
-            <SelectBox
-              lists={formattedData.map((item) => item.dateTime)}
-              onSelect={onSelect}
-              selected={selectedDateTime}
-            />
-          </div>
-          <div className="mb-11 flex w-full flex-col gap-2 md:hidden">
-            {selectedSchedules.map((dateTime) => (
-              <ReservationItem
-                key={dateTime.lectureScheduleId}
-                lectureScheduleId={dateTime.lectureScheduleId}
-                dateTime={dateTime.dateTime}
-                space={dateTime.space}
-                count={dateTime.count}
-                onRemove={() =>
-                  removeReservationItem(dateTime.lectureScheduleId)
-                }
-                countUpdate={updateCount}
-              />
-            ))}
-          </div>
-        </>
+        <ApplyList
+          lists={formattedData.map((item) => item.dateTime)}
+          selectedDateTime={selectedDateTime}
+          onSelect={onSelect}
+          selectedSchedules={selectedSchedules}
+          removeReservationItem={removeReservationItem}
+          updateCount={updateCount}
+        />
       )}
 
       <div className="flex w-full items-center justify-between gap-12 font-semibold md:hidden">

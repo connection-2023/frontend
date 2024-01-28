@@ -1,12 +1,13 @@
-import { format, isSameDay, compareAsc } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
+import { isSameDay, compareAsc } from 'date-fns';
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { formatDateWithDay } from '@/utils/dateTimeUtils';
 import { getUniqueDates } from '@/utils/parseUtils';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
 import { IClassSchedule } from '@/types/class';
 
+/* eslint-disable no-unused-vars */
 interface EditDayOffProps {
   schedules: IClassSchedule[];
   holidays: string[];
@@ -15,7 +16,7 @@ interface EditDayOffProps {
     value: string | Date[],
   ) => void;
 }
-
+/* eslint-enable no-unused-vars */
 const EditDayOff = ({
   schedules,
   holidays,
@@ -100,7 +101,7 @@ const EditDayOff = ({
               key={date.toLocaleDateString()}
               className="h-fit rounded-[0.3125rem] border border-solid border-gray-500 px-[0.69rem] py-[0.31rem]"
             >
-              {format(date, 'yy.MM.dd (E)', { locale: ko })}
+              {formatDateWithDay(date)}
             </li>
           ))}
         </ul>

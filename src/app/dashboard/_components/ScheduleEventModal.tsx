@@ -1,10 +1,12 @@
 'use client';
-import { format } from 'date-fns';
-import koLocale from 'date-fns/locale/ko';
-import EventList from './EventList';
+import dynamic from 'next/dynamic';
+import { formatKoreanFullDate } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/Modal';
 import { IFullCalendarEvent } from '@/types/types';
 
+const EventList = dynamic(() => import('./EventList'), {
+  ssr: false,
+});
 interface ScheduleEventModalProps {
   modalIsOpen: boolean;
   closeModal: () => void;
@@ -21,9 +23,7 @@ const ScheduleEventModal = ({
   <Modal isOpened={modalIsOpen} handleClosed={closeModal}>
     <div className="flex h-80 w-[26rem] flex-col rounded-md bg-white px-4 py-[1.19rem] shadow-float">
       <h2 className="mb-3 flex w-full items-center justify-center border-b border-solid border-gray-700 bg-white pb-2.5">
-        {format(selectedDate, 'yyyy년 MM월 dd일 eeee', {
-          locale: koLocale,
-        })}
+        {formatKoreanFullDate(selectedDate)}
       </h2>
 
       <ul className="flex w-full flex-col gap-3 overflow-y-auto">

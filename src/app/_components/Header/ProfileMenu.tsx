@@ -16,8 +16,23 @@ const ProfileMenu = () => {
   const router = useRouter();
   const userType = useUserStore((state) => state.userType);
 
+  const USER_MENU = [
+    <Link href="/mypage/user/myclass/apply">마이페이지</Link>,
+    <Link href="/mypage/user/myclass/like">관심 클래스</Link>,
+    <Link href="/mypage/user/myclass/apply">신청 현황</Link>,
+  ];
+
+  const LECTURER_MENU = [
+    <Link href="/dashboard">대시보드</Link>,
+    <Link href="/mypage/instructor/manage/myclass">클래스 관리</Link>,
+    <Link href="/mypage/instructor/manage/myclass">회원 관리</Link>,
+  ];
+
   const handleSwitchUser = async () => {
     if (!userType) return;
+    const toastId = toast.loading(
+      userType === 'user' ? '강사로 전환 중...' : '유저로 전환 중...',
+    );
 
     const res = await getSwitchUserRole(userType);
 
@@ -29,7 +44,12 @@ const ProfileMenu = () => {
           await accessTokenReissuance();
           await handleSwitchUser();
         } else {
-          toast.error('잘못된 요청입니다!');
+          toast.update(toastId, {
+            render: '잘못된 요청입니다!',
+            type: 'error',
+            isLoading: false,
+            autoClose: 1500,
+          });
         }
       }
       return;
@@ -39,7 +59,12 @@ const ProfileMenu = () => {
       const instructorProfile = await getInstructorProfile();
 
       if (!instructorProfile) {
-        toast.error('강사 프로필을 불러오는데 실패하였습니다');
+        toast.update(toastId, {
+          render: '강사 프로필을 불러오는데 실패하였습니다',
+          type: 'error',
+          isLoading: false,
+          autoClose: 1500,
+        });
         return;
       }
 
@@ -47,29 +72,54 @@ const ProfileMenu = () => {
       store.setUserType('lecturer');
       router.push('/');
       router.refresh();
-      toast.success('강사로 전환되었습니다!');
+
+      toast.update(toastId, {
+        render: '강사로 전환되었습니다!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 1500,
+      });
     } else {
       const response = await getMyProfile();
       const userProfile = response.data.myProfile;
 
       if (!userProfile) {
-        toast.error('유저 프로필을 불러오는데 실패하였습니다');
+        toast.update(toastId, {
+          render: '유저 프로필을 불러오는데 실패하였습니다',
+          type: 'error',
+          isLoading: false,
+          autoClose: 1500,
+        });
         return;
       }
       store.setAuthUser(userProfile);
       store.setUserType('user');
       router.push('/');
       router.refresh();
-      toast.success('일반 유저로 전환되었습니다!');
+
+      toast.update(toastId, {
+        render: '일반 유저로 전환되었습니다!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 1500,
+      });
     }
   };
 
   const handleLogout = async () => {
     store.setRequestLoading(true);
     try {
+      const toastId = toast.loading('로그아웃 중...');
       const { status } = await getLogout();
+
       if (status === 200) {
-        toast.success('로그아웃 되었습니다!');
+        toast.update(toastId, {
+          render: '로그아웃 되었습니다!',
+          type: 'success',
+          isLoading: false,
+          autoClose: 2000,
+        });
+
         store.setUserType(null);
       }
 
@@ -88,15 +138,14 @@ const ProfileMenu = () => {
           <p className="max-w-[7rem] truncate">{store.authUser?.nickname}</p>님
         </div>
       </li>
-      <li className="mb-3 ml-4">
-        <Link href="/my">마이 페이지</Link>
-      </li>
-      <li className="mb-3 ml-4">
-        <Link href="/">관심 클래스</Link>
-      </li>
-      <li className="mb-4 ml-4">
-        <Link href="/">예약 현황</Link>
-      </li>
+
+      {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
+        (menuList, index) => (
+          <li key={index} className="mb-3 ml-4">
+            {menuList}
+          </li>
+        ),
+      )}
 
       <li className="border-t border-solid border-gray-500 text-main-color">
         <button

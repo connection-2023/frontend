@@ -1,7 +1,7 @@
-import { format, parseISO } from 'date-fns';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { useMemo } from 'react';
+import { formatTimeNoSec } from '@/utils/dateTimeUtils';
 import { IMonthlyClassSchedules } from '@/types/class';
 
 const statusColor: Record<string, string> = {
@@ -23,8 +23,8 @@ const ResponsiveScheduleView = ({
           : event.numberOfParticipants === event.lecture.maxCapacity
           ? 'full'
           : 'private';
-        const formattedStart = format(parseISO(event.startDateTime), 'HH:mm');
-        const formattedEnd = format(parseISO(event.endDateTime), 'HH:mm');
+        const formattedStart = formatTimeNoSec(event.startDateTime);
+        const formattedEnd = formatTimeNoSec(event.endDateTime);
 
         return {
           status,

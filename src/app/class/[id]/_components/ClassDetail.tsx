@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
+import { CLASS_HSTYLE } from '@/constants/constants';
 import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
 import {
-  getClassPreview,
   getClassDetail,
   getClassSchedules,
-  getUserReservation,
 } from '@/lib/apis/serverApis/classPostApis';
 import { formatDate } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import Apply from './Apply';
 import ClassReviewSection from './ClassReviewSection';
 import ReadMore from './ReadMore';
 import Notice from '@/components/ClassNotice/Notice';
@@ -16,9 +16,7 @@ import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import { CLASS_HSTYLE } from '@/constants/constants';
 
-import Apply from './Apply';
 const ClassDetail = async ({ id }: { id: string }) => {
   const classDetailData = getClassDetail(id);
   const classSchedules = getClassSchedules(id);

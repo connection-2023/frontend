@@ -1,4 +1,3 @@
-import { IClassEditPageData } from '@/types/class';
 import { CLASS_EDIT_STYLE } from '@/constants/constants';
 import {
   LocationSVG,
@@ -11,6 +10,7 @@ import {
   formatLocationToString,
   formatGenreToString,
 } from '@/utils/parseUtils';
+import { IClassEditPageData } from '@/types/class';
 
 const NonEditableSection = (props: IClassEditPageData) => {
   const {

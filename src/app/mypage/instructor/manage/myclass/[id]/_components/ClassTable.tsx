@@ -1,5 +1,10 @@
-import { isFuture, format, subHours } from 'date-fns';
+import { isFuture, subHours } from 'date-fns';
 import { useState, MouseEvent } from 'react';
+import {
+  formatShortDate,
+  formatTimeNoSec,
+  formatDateTimeNoSec,
+} from '@/utils/dateTimeUtils';
 import EnrollmentModal from './EnrollmentModal';
 import { IClassSchedule, IProcessedSchedules } from '@/types/class';
 
@@ -8,6 +13,7 @@ interface ClassTableProps {
   schedules: IProcessedSchedules[];
   maxCapacity: number;
   reservationDeadline: number;
+  // eslint-disable-next-line no-unused-vars
   handleSelectClassId: (index: number, id: number) => void;
 }
 
@@ -44,7 +50,7 @@ const ClassTable = ({
 
   return (
     <>
-      <label className="mb-[0.88rem] flex items-center gap-[0.38rem] text-sm font-semibold text-gray-100">
+      <label className="mb-3.5 flex items-center gap-[0.38rem] text-sm font-semibold text-gray-100">
         <input
           type="checkbox"
           checked={showPastClasses}
@@ -95,8 +101,9 @@ const ClassTable = ({
 export default ClassTable;
 
 const formatDateTime = (startDateTime: string, endDateTime: string) => {
-  const startDate = format(new Date(startDateTime), 'yy.MM.dd HH:mm');
-  const endDate = format(new Date(endDateTime), 'HH:mm');
+  const startDate =
+    formatShortDate(startDateTime) + ' ' + formatTimeNoSec(startDateTime);
+  const endDate = formatTimeNoSec(endDateTime);
 
   return `${startDate}-${endDate}`;
 };
@@ -156,7 +163,7 @@ const TableList = ({
         {numberOfParticipants}/{maxCapacity}명
       </th>
       <th className={`${TableCellStyle} font-normal`}>
-        {format(deadlineTime, 'yyyy.MM.dd HH:mm')}
+        {formatDateTimeNoSec(deadlineTime)}
       </th>
     </tr>
   );

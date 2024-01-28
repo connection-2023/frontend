@@ -1,11 +1,18 @@
-import { format } from 'date-fns';
-import { isSameDay } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
-import React, { useEffect, useState } from 'react';
+import isSameDay from 'date-fns/isSameDay';
+import dynamic from 'next/dynamic';
+import { useEffect, useState, memo } from 'react';
 import { useClassScheduleStore } from '@/store';
-import DayOffCalendar from '@/components/Calendar/BasicCalendar';
+import { getDayoffClassNames } from '@/utils/classUtils';
+import { formatDateWithDay } from '@/utils/dateTimeUtils';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
+
+const DayOffCalendar = dynamic(
+  () => import('@/components/Calendar/BasicCalendar'),
+  {
+    ssr: false,
+  },
+);
 
 const DayOff = ({
   onChange,
@@ -71,7 +78,10 @@ const DayOff = ({
             key={option}
             disabled={isDisabled}
             onClick={() => handleOptionClick(index)}
-            className={getClassNames(selectedOptionIndex === index, isDisabled)}
+            className={getDayoffClassNames(
+              selectedOptionIndex === index,
+              isDisabled,
+            )}
           >
             {option}
           </button>
@@ -102,7 +112,7 @@ const DayOff = ({
                         key={date.toLocaleDateString()}
                         className="h-fit rounded-[0.3125rem] border border-solid border-gray-500 px-[0.69rem] py-[0.31rem]"
                       >
-                        {format(date, 'yy.MM.dd (E)', { locale: ko })}
+                        {formatDateWithDay(date)}
                       </p>
                     ))}
                   </div>
@@ -116,22 +126,4 @@ const DayOff = ({
   );
 };
 
-export default React.memo(DayOff);
-
-const getClassNames = (isSelected: boolean, isDisabled: boolean) => {
-  let classNames = 'h-10 w-1/2 rounded-md';
-
-  if (isDisabled) {
-    classNames += ' border border-solid border-gray-500 text-gray-500';
-  }
-
-  if (isSelected) {
-    classNames += ' bg-sub-color1 text-white';
-  } else if (isSelected && !isDisabled) {
-    classNames += ' border border-solid border-gray-500 text-gray-100';
-  } else {
-    classNames += ' border border-solid border-gray-500';
-  }
-
-  return classNames;
-};
+export default memo(DayOff);

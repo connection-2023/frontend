@@ -53,19 +53,32 @@ const UploadProfileModal = () => {
       toast.error('이미지를 업로드해주세요!');
       return;
     }
+
+    const toastId = toast.loading('프로필 이미지 변경 중...');
     const response = await postProfileImage(imgFile);
 
     if (response.statusCode === 201) {
       store.setAuthUserImage(response.data.newUserImage.imageUrl);
-      toast.success('이미지 사진이 성공적으로 변경되었습니다!');
+      toast.update(toastId, {
+        render: '이미지 사진이 성공적으로 변경되었습니다!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 1500,
+      });
       handleSkip();
     } else if (response.statusCode === 400) {
-      toast.error(
-        <p>
-          기존에 설정된 프로필 사진이 있습니다.
-          <br /> 수정할 경우 마이페이지에서 진행해주세요!
-        </p>,
-      );
+      toast.update(toastId, {
+        render: (
+          <p>
+            기존에 설정된 프로필 사진이 있습니다.
+            <br /> 수정할 경우 마이페이지에서 진행해주세요!
+          </p>
+        ),
+        type: 'error',
+        isLoading: false,
+        autoClose: 1500,
+      });
+
       handleSkip();
     }
   };

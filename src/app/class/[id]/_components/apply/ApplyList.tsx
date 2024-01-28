@@ -1,0 +1,52 @@
+import ReservationItem from './ReservationItem';
+import SelectBox from './SelectBox';
+import { IDateTime } from '@/types/class';
+
+/* eslint-disable no-unused-vars */
+interface ApplyList {
+  lists: string[];
+  selectedDateTime: string;
+  onSelect: (list: string) => void;
+  selectedSchedules: IDateTime[];
+  removeReservationItem: (id: number) => void;
+  updateCount: (id: number, newVal: number) => void;
+}
+
+/* eslint-enable no-unused-vars */
+const ApplyList = (props: ApplyList) => {
+  const {
+    lists,
+    selectedDateTime,
+    onSelect,
+    selectedSchedules,
+    removeReservationItem,
+    updateCount,
+  } = props;
+
+  return (
+    <>
+      <div className="mb-3 flex w-full flex-col gap-2 md:hidden">
+        <SelectBox
+          lists={lists}
+          onSelect={onSelect}
+          selected={selectedDateTime}
+        />
+      </div>
+      <div className="mb-11 flex w-full flex-col gap-2 md:hidden">
+        {selectedSchedules.map((dateTime) => (
+          <ReservationItem
+            key={dateTime.lectureScheduleId}
+            lectureScheduleId={dateTime.lectureScheduleId}
+            dateTime={dateTime.dateTime}
+            space={dateTime.space}
+            count={dateTime.count}
+            onRemove={() => removeReservationItem(dateTime.lectureScheduleId)}
+            countUpdate={updateCount}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default ApplyList;

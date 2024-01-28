@@ -15,7 +15,7 @@ const UserProfileLinks = () => {
         Connection 유저 메뉴
       </h2>
 
-      <Link href="/search">
+      <Link href="/search" aria-label="통합 검색">
         <SearchSVG className="h-[1.8rem] w-[1.8rem] fill-black" />
       </Link>
 
@@ -55,7 +55,5 @@ const UserProfileLinks = () => {
     </div>
   );
 };
-// profileCardImageUrl
-// userProfileImage
 
 export default UserProfileLinks;

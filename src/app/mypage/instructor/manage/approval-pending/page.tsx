@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getPendingList } from '@/lib/apis/instructorApi';
 import ClassList from './_components/ClassList';
-import Loading from './_components/Loading';
 import EmptyApprovalList from './_components/EmptyApprovalList';
+import Loading from './_components/Loading';
 
 const ApprovalPendingPage = () => {
   const [selectedClass, setSelectedClass] = useState<string>();

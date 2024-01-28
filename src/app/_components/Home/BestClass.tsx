@@ -1,8 +1,8 @@
 import { searchBestClass } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import { transformBestClassSearch } from '@/utils/apiDataProcessor';
 import CarouselTemplate from '../CarouselTemplate';
 import ClassCard from '@/components/ClassPreview/ClassPreview';
+import { useUserStore } from '@/store/userStore';
 
 const BestClass = async () => {
   let bestClassList = [];

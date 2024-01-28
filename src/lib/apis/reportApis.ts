@@ -1,4 +1,4 @@
-import { IReportRequest } from '@/types/report';
+import { IReportRequest, IReportResponse } from '@/types/report';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
@@ -74,25 +74,23 @@ export const getInstructorReport = async (
   firstItemId: number,
   lastItemId: number,
   type: string,
-) => {
+): Promise<IReportResponse[]> => {
   const query = `take=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&filterOption=${type}`;
 
-  try {
-    const response = await fetch(
-      `${DOMAIN}/api/report/lecturer/history?${query}`,
-      {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+  const response = await fetch(
+    `${DOMAIN}/api/report/lecturer/history?${query}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    ).then((data) => data.json());
+    },
+  ).then((data) => data.json());
 
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error && error.message) {
-      return error.message;
-    }
+  if (!response.ok) {
+    throw new Error('강사 신고 목록 불러오기 요청 에러!');
   }
+
+  return response.data.reportList;
 };

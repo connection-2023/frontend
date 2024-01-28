@@ -1,12 +1,26 @@
-import { eachDayOfInterval, format, isSameDay } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
+import { eachDayOfInterval, isSameDay } from 'date-fns';
+import dynamic from 'next/dynamic';
 import { useEffect, useId, useReducer, useMemo, useState } from 'react';
-import TimeList from './TimeList';
-import InputClassDates from '@/components/Calendar/SingleCalendar';
-import { IEditSpecificDateType, IEditStartDateTime } from '@/types/class';
+import {
+  formatDateWithDay,
+  formatTimeNoSec,
+  formatDateWithHyphens,
+} from '@/utils/dateTimeUtils';
 import { editSpecificDateReducer } from '@/utils/editSpecificDateReducer';
+import { IEditSpecificDateType, IEditStartDateTime } from '@/types/class';
 
-// /* eslint-disable no-unused-vars */
+const InputClassDates = dynamic(
+  () => import('@/components/Calendar/SingleCalendar'),
+  {
+    ssr: false,
+  },
+);
+
+const TimeList = dynamic(() => import('./TimeList'), {
+  ssr: false,
+});
+
+/* eslint-disable no-unused-vars */
 interface AddSchedulesProps {
   onChange: (value: Date[]) => void;
   defaultValue: {
@@ -30,8 +44,8 @@ const AddSchedules = ({
     if (!defaultValue.schedules) return [];
 
     defaultValue.schedules.forEach((schedule) => {
-      const date = format(schedule, 'yyyy-MM-dd');
-      const time = format(schedule, 'HH:mm');
+      const date = formatDateWithHyphens(schedule);
+      const time = formatTimeNoSec(schedule);
 
       if (dateGroupedSchedules[date]) {
         dateGroupedSchedules[date].push({ time: time, editable: false });
@@ -212,9 +226,7 @@ const AddSchedules = ({
               <div className="flex w-full">
                 {/* 선택 날짜 리스트 */}
                 <div className="flex w-[300px] flex-wrap gap-x-2 text-base font-bold">
-                  <span>
-                    {format(selectedDate, 'yy.MM.dd(E)', { locale: ko })}
-                  </span>
+                  <span>{formatDateWithDay(selectedDate)}</span>
                 </div>
               </div>
               {/* 시간 리스트 */}

@@ -1,11 +1,21 @@
-import { eachDayOfInterval, format, isSameDay } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
+import { eachDayOfInterval, isSameDay } from 'date-fns';
+import dynamic from 'next/dynamic';
 import { useEffect, useId, useReducer, useMemo } from 'react';
 import { useClassScheduleStore } from '@/store';
+import { formatDateWithDay } from '@/utils/dateTimeUtils';
 import { specificDateReducer } from '@/utils/specificDateReducer';
-import TimeList from './TimeList';
-import InputClassDates from '@/components/Calendar/SingleCalendar';
 import { DateTimeList } from '@/types/class';
+
+const InputClassDates = dynamic(
+  () => import('@/components/Calendar/SingleCalendar'),
+  {
+    ssr: false,
+  },
+);
+
+const TimeList = dynamic(() => import('./TimeList'), {
+  ssr: false,
+});
 
 interface SpecificDateProps {
   onChange: (value: DateTimeList[]) => void;
@@ -189,7 +199,7 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
                 <div className="flex w-[300px] flex-wrap gap-x-2 text-base font-bold">
                   <span>
                     {state.selectedDate &&
-                      format(state.selectedDate, 'yy.MM.dd(E)', { locale: ko })}
+                      formatDateWithDay(state.selectedDate)}
                   </span>
                 </div>
                 <button

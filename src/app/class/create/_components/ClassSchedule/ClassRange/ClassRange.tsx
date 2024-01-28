@@ -1,13 +1,17 @@
-import { format, isAfter, isBefore, isValid, parse } from 'date-fns';
+import { isAfter, isBefore, isValid } from 'date-fns';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
+import { UseFormClearErrors } from 'react-hook-form';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG } from '@/icons/svg';
 import { useClassScheduleStore } from '@/store';
+import {
+  parseHyphenatedDate,
+  formatDateWithHyphens,
+} from '@/utils/dateTimeUtils';
 import RangeCalendar from '@/components/Calendar/RangeCalendar';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
-import { UseFormClearErrors } from 'react-hook-form';
 import { CouponData } from '@/types/coupon';
 
 interface ClassRangeProps {
@@ -90,7 +94,7 @@ const ClassRange = ({
     (setDateValue: React.Dispatch<React.SetStateAction<string>>) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setDateValue(e.target.value);
-      const date = parse(e.target.value, 'y-MM-dd', new Date());
+      const date = parseHyphenatedDate(e.target.value);
 
       if (!isValid(date)) {
         store.setClassRange({ from: undefined, to: undefined });
@@ -109,12 +113,12 @@ const ClassRange = ({
     if (!range) return;
     store.setClassRange(range);
     if (range?.from) {
-      setFromValue(format(range.from, 'y-MM-dd'));
+      setFromValue(formatDateWithHyphens(range.from));
     } else {
       setFromValue('');
     }
     if (range?.to) {
-      setToValue(format(range.to, 'y-MM-dd'));
+      setToValue(formatDateWithHyphens(range.to));
     } else {
       setToValue('');
     }
