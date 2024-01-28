@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { userType } from '@/types/auth';
+import { userProfile, userType } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
 import { social } from '@/types/auth';
 import { FetchError } from '@/types/types';
@@ -68,7 +68,7 @@ export const postUserRegister = async (data: IRegisterForm) => {
   return response;
 };
 
-export const getMyProfile = async (token?: string) => {
+export const getMyProfile = async (token?: string): Promise<userProfile> => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
@@ -84,7 +84,7 @@ export const getMyProfile = async (token?: string) => {
 
   const res = await response.json();
 
-  return res;
+  return res.data.myProfile;
 };
 
 export const getLogout = async () => {

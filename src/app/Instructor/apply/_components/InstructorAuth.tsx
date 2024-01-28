@@ -11,13 +11,6 @@ const InstructorAuth = () => {
   const { watch, trigger } = useFormContext();
 
   const authUser = useUserStore((state) => state.authUser);
-  let email = '';
-  let phoneNumber = '';
-
-  if (authUser && 'email' in authUser) {
-    email = authUser.email;
-    phoneNumber = authUser.phoneNumber || '';
-  }
 
   const [verification, setVerification] = useState({
     nickname: false,
@@ -41,10 +34,10 @@ const InstructorAuth = () => {
   useEffect(() => {
     setVerification((prev) => ({
       ...prev,
-      email: !!email,
-      phoneNumber: !!phoneNumber,
+      email: !!authUser?.email,
+      phoneNumber: !!authUser?.email,
     }));
-  }, [email, phoneNumber]);
+  }, []);
 
   useEffect(() => {
     const subscription = watch((_, { name }) => {
@@ -72,14 +65,14 @@ const InstructorAuth = () => {
         <PhoneNumber
           changeVerification={changeVerification}
           verification={verification.phoneNumber}
-          defaultValue={phoneNumber}
+          defaultValue={authUser?.phoneNumber ?? ''}
         />
         {/* 추후 인증번호 로직 추가 예정 */}
 
         <Email
           changeVerification={changeVerification}
           verification={verification.email}
-          defaultValue={email || ''}
+          defaultValue={authUser?.email ?? ''}
         />
         {/* 추후 이메일 인증 로직 추가 예정 */}
       </ul>

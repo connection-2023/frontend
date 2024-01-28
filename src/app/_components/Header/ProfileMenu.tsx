@@ -10,6 +10,7 @@ import {
   accessTokenReissuance,
 } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 
 const ProfileMenu = () => {
   const store = useUserStore();
@@ -68,7 +69,8 @@ const ProfileMenu = () => {
         return;
       }
 
-      store.setAuthUser(instructorProfile);
+      const authUser = convertToProfileInfo(instructorProfile);
+      store.setAuthUser(authUser);
       store.setUserType('lecturer');
       router.push('/');
       router.refresh();
@@ -80,8 +82,7 @@ const ProfileMenu = () => {
         autoClose: 1500,
       });
     } else {
-      const response = await getMyProfile();
-      const userProfile = response.data.myProfile;
+      const userProfile = await getMyProfile();
 
       if (!userProfile) {
         toast.update(toastId, {
@@ -92,7 +93,9 @@ const ProfileMenu = () => {
         });
         return;
       }
-      store.setAuthUser(userProfile);
+
+      const authUser = convertToProfileInfo(userProfile);
+      store.setAuthUser(authUser);
       store.setUserType('user');
       router.push('/');
       router.refresh();

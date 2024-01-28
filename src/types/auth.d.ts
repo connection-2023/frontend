@@ -140,20 +140,20 @@ export interface ISignUp {
   image?: File | null;
 }
 
+export type userType = 'user' | 'lecturer';
+
 export interface userProfile {
   id: string;
   name: string;
   nickname: string;
   phoneNumber: string;
   email: string;
-  userProfileImage: { imageUrl: string | null };
+  userProfileImage: string | null;
   verified: boolean;
   createdAt: string;
   updatedAt: string;
   auth: { email: string; type: social };
 }
-
-export type userType = 'user' | 'lecturer';
 
 export interface instructorProfile {
   id: string;
@@ -165,6 +165,17 @@ export interface instructorProfile {
     name: string;
     auth: { email: string; type: social };
   };
+}
+
+export interface profileInfo {
+  id: string;
+  name: string;
+  nickname: string;
+  phoneNumber: string;
+  email: string;
+  profileImage: string | null;
+  authEmail: string;
+  type: social;
 }
 
 interface IMarketingConsent {

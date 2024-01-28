@@ -8,6 +8,7 @@ import { getAuth, postUserRegister, getMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import { IRegisterConsents, SignInResponse } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 
 const UserConsentForm = dynamic(() => import('./_components/UserConsentForm'));
 const UserSetup = dynamic(() => import('./_components/UserSetup'));
@@ -68,8 +69,10 @@ const RegisterPage = () => {
       const response = await getAuth(signUpType, token).then((res) =>
         getMyProfile(res.data.userAccessToken),
       );
+      const authUser = convertToProfileInfo(response);
 
-      store.setAuthUser(response.data.myProfile);
+      store.setAuthUser(authUser);
+      store.setUserType('user');
       router.replace(`/welcome/${data.createUser.nickname}`);
     } else if (statusCode === 400) {
       toast.error(message[0]);

@@ -8,6 +8,7 @@ import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
 import NaverAuth from './NaverAuth';
 import { LoginResponse, social } from '@/types/auth';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 const LoginButtons = () => {
@@ -23,7 +24,9 @@ const LoginButtons = () => {
     if (status === 200) {
       const profileRes = await getMyProfile(data.userAccessToken);
 
-      store.setAuthUser(profileRes.data.myProfile);
+      const authUser = convertToProfileInfo(profileRes);
+
+      store.setAuthUser(authUser);
       store.setUserType('user');
       toast.update(toastId, {
         render: '로그인 성공!',

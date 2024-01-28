@@ -4,10 +4,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { getLikesClassList } from '@/lib/apis/classApi';
 import { useUserStore } from '@/store';
-import { instructorProfile, userProfile, userType } from '@/types/auth';
+import { profileInfo, userType } from '@/types/auth';
 
 interface UserStoreInitializerProps {
-  authUser: instructorProfile | userProfile | null;
+  authUser: profileInfo | null;
   userType: userType | null;
 }
 

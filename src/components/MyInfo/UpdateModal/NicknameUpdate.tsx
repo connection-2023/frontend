@@ -12,7 +12,7 @@ import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface NicknameUpdateProps {
-  closeModalHandler: () => void;
+  closeModalHandler?: () => void;
   nickname: string;
 }
 
@@ -57,7 +57,9 @@ const NicknameUpdate = ({
       setAuthUserField('nickname', changeNickname);
       await patchInstructorNickname(changeNickname);
       toast.success('닉네임 변경 완료');
-      closeModalHandler();
+      if (closeModalHandler) {
+        closeModalHandler();
+      }
     };
 
     try {

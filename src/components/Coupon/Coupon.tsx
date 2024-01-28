@@ -57,7 +57,7 @@ const Coupon = ({
       const { privateCouponCode } = await getPrivateCode(id);
       const userStoreState = useUserStore.getState();
 
-      const lecturerInfo = userStoreState.authUser as instructorProfile;
+      const lecturerInfo = userStoreState.authUser;
 
       const params = new URLSearchParams();
       params.append('lecturerInfo', JSON.stringify(lecturerInfo));

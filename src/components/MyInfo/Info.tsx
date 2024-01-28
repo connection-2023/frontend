@@ -4,15 +4,25 @@ import Link from 'next/link';
 import Button from '@/components/Button/Button';
 import { ChangeImageSVG, GoogleSVG, KaKaoTalkSVG, NaverSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
-import { instructorProfile, social } from '@/types/auth';
+import { social } from '@/types/auth';
 import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
 import NicknameUpdate from './UpdateModal/NicknameUpdate';
 
 const Info = () => {
   const authUser = useUserStore((state) => state.authUser);
-  const { nickname, users, email, phoneNumber, profileCardImageUrl } =
-    authUser as instructorProfile;
-  const { name, auth } = users;
+
+  if (!authUser) return null;
+
+  const {
+    id,
+    nickname,
+    name,
+    authEmail,
+    email,
+    phoneNumber,
+    profileImage,
+    type,
+  } = authUser;
 
   const infoComponents = [
     {
@@ -30,8 +40,8 @@ const Info = () => {
       dt: '소셜 계정',
       dd: (
         <div className="flex w-full gap-2">
-          {renderIcon(auth.type)}
-          <p className="truncate">{email}</p>
+          {renderIcon(type)}
+          <p className="truncate">{authEmail}</p>
         </div>
       ),
       viewArrow: true,
@@ -58,7 +68,7 @@ const Info = () => {
       <h1 className="mb-7 text-2xl font-bold">내 정보</h1>
       <div className="flex flex-col gap-7 sm:flex-row">
         <button className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0 [&>*:nth-child(1)]:h-44">
-          <ProfileImg src={profileCardImageUrl} size="xlarge" />
+          <ProfileImg src={profileImage} size="xlarge" />
           <div className="absolute bottom-0 right-0 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-vertical group-hover:shadow-[inset_0_0px_3px_1px_rgba(0,0,0,0.3)]">
             <ChangeImageSVG className="h-7 w-7" />
           </div>
@@ -83,15 +93,12 @@ const Info = () => {
         </dl>
       </div>
       <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-        <Link href={`/instructor/${authUser?.id}`} className="w-full sm:w-1/2">
+        <Link href={`/instructor/${id}`} className="w-full sm:w-1/2">
           <Button size="medium" color="secondary">
             강사 프로필 보러가기
           </Button>
         </Link>
-        <Link
-          href={`/instructor/${authUser?.id}/edit`}
-          className="w-full sm:w-1/2"
-        >
+        <Link href={`/instructor/${id}/edit`} className="w-full sm:w-1/2">
           <Button size="medium" color="secondary">
             강사 프로필 수정하기
           </Button>

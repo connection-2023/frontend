@@ -1,3 +1,4 @@
+import { instructorProfile } from '@/types/auth';
 import { IMonthlyClassSchedules } from '@/types/class';
 import {
   IInstructorRegister,
@@ -8,7 +9,7 @@ import { FetchError } from '@/types/types';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
-export const getInstructorProfile = async () => {
+export const getInstructorProfile = async (): Promise<instructorProfile> => {
   const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
     credentials: 'include',
     headers: {

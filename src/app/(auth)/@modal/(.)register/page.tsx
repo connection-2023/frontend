@@ -10,6 +10,7 @@ import { useUserStore } from '@/store';
 import RouterModal from '@/components/Modal/RouterModal';
 import { IRegisterConsents, SignInResponse } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 
 const RegisterModal = () => {
   const searchParams = useSearchParams();
@@ -67,8 +68,10 @@ const RegisterModal = () => {
       const response = await getAuth(signUpType, token).then((res) =>
         getMyProfile(res.data.userAccessToken),
       );
+      const authUser = convertToProfileInfo(response);
 
-      store.setAuthUser(response.data.myProfile);
+      store.setUserType('user');
+      store.setAuthUser(authUser);
       router.replace(`/welcome/${data.createUser.nickname}`);
     } else if (statusCode === 400) {
       toast.error('사용 중인 이메일입니다.');
