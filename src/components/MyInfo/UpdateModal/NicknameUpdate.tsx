@@ -10,6 +10,7 @@ import { useUserStore } from '@/store';
 import { FetchError } from '@/types/types';
 import { ChangeEvent, useState } from 'react';
 import { toast } from 'react-toastify';
+import UpdateModalContainer from './UpdateModalContainer';
 
 interface NicknameUpdateProps {
   closeModalHandler?: () => void;
@@ -94,10 +95,12 @@ const NicknameUpdate = ({
   };
 
   return (
-    <main className="flex h-full w-full flex-col sm:h-[19rem] sm:w-[40rem]">
-      <header className="flex justify-center border-b border-solid border-gray-700 pb-6 pt-9 sm:py-4 ">
-        <h1 className="text-lg font-semibold sm:text-2xl">닉네임 변경</h1>
-      </header>
+    <UpdateModalContainer
+      title="닉네임 변경"
+      disabled={!validatedNickname}
+      updateEvent={updateNickname}
+      closeEvent={closeModalHandler}
+    >
       <section className="mx-auto flex flex-grow flex-col gap-4 pt-7 sm:mx-0 sm:justify-center sm:px-8 sm:pt-0">
         <dl className="grid grid-rows-2 items-center gap-y-3 text-lg font-semibold sm:grid-cols-[7rem_1fr] sm:grid-rows-none sm:gap-y-0 sm:text-base">
           <dt>현재 닉네임</dt>
@@ -129,22 +132,7 @@ const NicknameUpdate = ({
           </div>
         </div>
       </section>
-      <div className="my-6 flex gap-4 px-4 sm:px-8">
-        <div className="hidden w-1/2 sm:block">
-          <UniqueButton onClick={closeModalHandler}>취소</UniqueButton>
-        </div>
-        <div className="w-full sm:w-1/2">
-          <Button
-            onClick={updateNickname}
-            size="medium"
-            color="secondary"
-            disabled={!validatedNickname}
-          >
-            변경하기
-          </Button>
-        </div>
-      </div>
-    </main>
+    </UpdateModalContainer>
   );
 };
 
