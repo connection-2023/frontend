@@ -73,11 +73,11 @@ const SocialUpdate = ({
       closeEvent={closeModalHandler}
       updateEvent={updateSocial}
     >
-      <p className="mb-7 mt-6 w-60 text-main-color sm:mx-auto sm:w-auto sm:text-sm">
+      <p className="mb-7 mt-6 w-60 px-4 text-main-color sm:mx-auto sm:w-auto sm:px-0 sm:text-sm">
         * 기존 계정의 정보는 변경한 소셜로그인 계정으로 이동되며, 기존 계정은
         7일 후 삭제됩니다.
       </p>
-      <section className="flex flex-grow flex-col gap-7 sm:px-8 sm:pt-0">
+      <section className="flex flex-grow flex-col gap-7 px-4 sm:px-8 sm:pt-0">
         <dl className="grid grid-rows-2 items-center gap-y-3 text-lg font-semibold sm:grid-cols-[9rem_1fr] sm:grid-rows-none sm:gap-y-0 sm:text-base">
           <dt>소셜로그인 계정</dt>
           <dd className="flex gap-2">
@@ -87,7 +87,7 @@ const SocialUpdate = ({
         </dl>
         <div className="grid grid-rows-2 items-center gap-y-3 text-lg font-semibold sm:grid-cols-[9rem_1fr] sm:grid-rows-none sm:gap-y-0 sm:text-base">
           <label className="self-start">변경할 소셜 선택</label>
-          <ul className="flex gap-2">
+          <ul className="flex gap-4">
             {Object.entries(socials).map(
               ([socialKey, socialIcon]) =>
                 socialKey !== social && (

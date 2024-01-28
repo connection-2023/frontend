@@ -8,6 +8,7 @@ import { social } from '@/types/auth';
 import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
 import NicknameUpdate from './UpdateModal/NicknameUpdate';
 import SocialUpdate from './UpdateModal/SocialUpdate';
+import EmailUpdate from './UpdateModal/EmailUpdate';
 
 const Info = () => {
   const authUser = useUserStore((state) => state.authUser);
@@ -58,6 +59,7 @@ const Info = () => {
       dt: '이메일',
       dd: email,
       viewArrow: true,
+      updateElement: <EmailUpdate email={email} />,
     },
     {
       dt: '휴대폰 번호',
