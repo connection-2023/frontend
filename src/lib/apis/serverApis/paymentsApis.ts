@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import {
   IPaymentConfirmRequest,
   IPaymentConfirmResponse,
@@ -7,23 +8,29 @@ import {
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
 export const patchPaymentConfirm = async (
-  token: string,
   data: IPaymentConfirmRequest,
 ): Promise<IPaymentConfirmResponse | Error> => {
-  try {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
+  const cookieStore = cookies();
+  const token = cookieStore.get('userAccessToken')?.value;
 
+  if (!token) throw new Error(`유저 토큰 에러!`);
+
+  try {
     const response = await fetch(END_POINT + '/payments/toss/confirm', {
       method: 'PATCH',
       credentials: 'include',
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(data),
     }).then((data) => data.json());
 
-    return response.data?.paymentResult;
+    if (response.statusCode !== 200) {
+      throw new Error(`결제 승인 오류: ${response.status}`);
+    }
+
+    return response.data;
   } catch (error) {
     console.error('결제 승인 오류', error);
     throw error;
@@ -31,23 +38,25 @@ export const patchPaymentConfirm = async (
 };
 
 export const getReceipt = async (
-  token: string,
   orderId: string,
 ): Promise<IReceiptResponse | Error> => {
-  try {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
+  const cookieStore = cookies();
+  const token = cookieStore.get('userAccessToken')?.value;
 
+  if (!token) throw new Error(`유저 토큰 에러!`);
+
+  try {
     const response = await fetch(
-      END_POINT + '/payments/user-receipt?orderId=' + orderId,
+      END_POINT + `/user-payments/history/${orderId}`,
       {
         credentials: 'include',
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       },
     ).then((data) => data.json());
-
+    console.log(response.data.receipt);
     return response.data.receipt;
   } catch (error) {
     console.error('영수증 요청 오류', error);
