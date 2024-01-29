@@ -145,6 +145,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
       </section>
       <section className="fixed bottom-0 w-full md:static md:w-auto md:max-w-[17rem]">
         <Apply
+          id={id}
           schedule={schedule}
           duration={duration}
           maxCapacity={maxCapacity}
