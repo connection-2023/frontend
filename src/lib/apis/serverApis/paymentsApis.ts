@@ -56,7 +56,7 @@ export const getReceipt = async (
         },
       },
     ).then((data) => data.json());
-    console.log(response.data.receipt);
+
     return response.data.receipt;
   } catch (error) {
     console.error('영수증 요청 오류', error);
