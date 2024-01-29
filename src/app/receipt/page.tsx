@@ -1,19 +1,14 @@
-import { cookies } from 'next/headers';
-import React from 'react';
+import { Fragment } from 'react';
 import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
 import { formatFullDateTime } from '@/utils/dateTimeUtils';
-
+import { ISSUER_CODE } from '@/constants/constants';
 const ReceiptPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string };
 }) => {
   const { orderId } = searchParams;
-  const cookieStore = cookies();
-  const userToken = cookieStore.get('userAccessToken')?.value;
-  if (!userToken) return;
-
-  const receiptData = await getReceipt(userToken, orderId);
+  const receiptData = await getReceipt(orderId);
   if (receiptData instanceof Error) return;
 
   const {
@@ -24,7 +19,7 @@ const ReceiptPage = async ({
     cardPaymentInfo,
     paymentCouponUsage,
   } = receiptData;
-
+  const issuer = cardPaymentInfo ? ISSUER_CODE[cardPaymentInfo.issuerCode] : '';
   // 무통장, 패스권일 때 로직 추가 예정
   const paymentDetails = [
     {
@@ -41,8 +36,7 @@ const ReceiptPage = async ({
     },
     {
       type: '결제수단',
-      content: `${cardPaymentInfo?.issuer
-        ?.name} (${cardPaymentInfo?.number.slice(-4)})`,
+      content: `${issuer} (${cardPaymentInfo?.number.slice(-4)})`,
     },
     {
       type: '결제구분',
@@ -89,7 +83,7 @@ const ReceiptPage = async ({
 
       <ul className="mt-4 grid w-full grid-cols-[min-content_minmax(auto,_1fr)] items-baseline  gap-y-2 text-sm font-normal">
         {receiptDetails.map((detail, index) => (
-          <React.Fragment key={index}>
+          <Fragment key={index}>
             <li className="flex w-fit whitespace-nowrap text-gray-300">
               {detail.type}
             </li>
@@ -97,7 +91,7 @@ const ReceiptPage = async ({
             {index === 0 || index === 4 ? (
               <hr className="col-span-2 my-2 border-dashed border-gray-500" />
             ) : null}
-          </React.Fragment>
+          </Fragment>
         ))}
       </ul>
       <div className="mb-6 mt-6 flex w-full items-center justify-between ">
