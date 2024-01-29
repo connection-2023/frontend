@@ -84,13 +84,13 @@ const instructorPage = async ({
       image: instructor.lecturerProfileImageUrl[0].url,
     }));
 
-    bestInstructorList =
-      bestInstructorList.length < 10
-        ? [
-            ...bestInstructorList,
-            ...bestInstructorList.slice(0, 10 - bestInstructorList.length),
-          ]
-        : bestInstructorList;
+    if (bestInstructorList.length < 10) {
+      const repeatCount = Math.ceil(10 / bestInstructorList.length);
+      bestInstructorList = Array(repeatCount)
+        .fill(bestInstructorList)
+        .flat()
+        .slice(0, 10);
+    }
 
     instructorList = transformSearchInstructor(instructors);
   } catch (error) {

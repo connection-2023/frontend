@@ -140,6 +140,11 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   try {
     bestClassList = transformBestClassSearch(await searchBestClass(!!user));
 
+    if (bestClassList.length < 6) {
+      const repeatCount = Math.ceil(6 / bestClassList.length);
+      bestClassList = Array(repeatCount).fill(bestClassList).flat().slice(0, 6);
+    }
+
     classList = transformSearchClass(await searchClasses(searchData, !!user));
   } catch (error) {
     console.error(error);

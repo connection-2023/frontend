@@ -5,7 +5,7 @@ import ClassCard from '@/components/ClassPreview/ClassPreview';
 import { useUserStore } from '@/store/userStore';
 
 const BestClass = async () => {
-  let bestClassList = [];
+  let bestClassList: any[] = [];
 
   try {
     const { userType } = useUserStore.getState();
@@ -13,19 +13,21 @@ const BestClass = async () => {
       await searchBestClass(userType === 'user'),
     );
 
-    bestClassList =
-      resBestClassList.length < 6
-        ? [
-            ...resBestClassList,
-            ...resBestClassList.slice(0, 6 - resBestClassList.length),
-          ]
-        : resBestClassList;
+    if (resBestClassList.length === 0) return null;
+
+    if (resBestClassList.length < 6) {
+      const repeatCount = Math.ceil(6 / resBestClassList.length);
+      bestClassList = Array(repeatCount)
+        .fill(resBestClassList)
+        .flat()
+        .slice(0, 6);
+    }
+
+    console.log(bestClassList.length);
   } catch (error) {
     console.error(error);
     return null;
   }
-
-  if (bestClassList.length === 0) return null;
 
   return (
     <CarouselTemplate mode="class">
