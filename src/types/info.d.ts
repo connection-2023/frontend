@@ -20,3 +20,22 @@ export interface EmailFormValues {
   emailBack: string;
   authenticationCode: string;
 }
+
+export interface accountCertificationState {
+  sendAuthenticationCode: boolean;
+  certification: boolean;
+}
+
+export type accountCertificationAction =
+  | { type: 'RESET' }
+  | { type: 'ENABLE_SEND_AUTHENTICATION_CODE' }
+  | { type: 'CERTIFY' };
+
+export interface accountFormValues {
+  name: string;
+  bank: {
+    value: string;
+    label: string;
+  } | null;
+  accountNumber: string;
+}

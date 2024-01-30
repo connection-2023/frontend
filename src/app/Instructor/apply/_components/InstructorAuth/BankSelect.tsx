@@ -72,7 +72,7 @@ const bankSelectStyle:
     borderTop: '1px solid var(--gray-500)',
     color: 'black',
     '&:hover': {
-      backgroundColor: 'var(----gray4)',
+      backgroundColor: 'var(--gray4)',
     },
   }),
 };

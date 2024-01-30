@@ -22,8 +22,6 @@ const BestClass = async () => {
         .flat()
         .slice(0, 6);
     }
-
-    console.log(bestClassList.length);
   } catch (error) {
     console.error(error);
     return null;

@@ -3,7 +3,15 @@ import BankSelect from '@/app/instructor/apply/_components/InstructorAuth/BankSe
 import Button from '@/components/Button/Button';
 import UpdateModalContainer from '@/components/MyInfo/UpdateModal/UpdateModalContainer';
 import { BANK_CODE_TO_NAME } from '@/constants/constants';
+import {
+  accountCertificationAction,
+  accountCertificationState,
+  accountFormValues,
+} from '@/types/info';
 import { bankAccount } from '@/types/instructor';
+import { useEffect, useReducer } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface AccountUpdateProps {
   accountInfo: bankAccount;
@@ -14,8 +22,80 @@ const AccountUpdate = ({
   closeModalHandler,
   accountInfo,
 }: AccountUpdateProps) => {
+  const { handleSubmit, register, control, watch } = useForm({
+    defaultValues: {
+      name: '',
+      bank: null,
+      accountNumber: '',
+    },
+  });
+
+  const initialState = {
+    sendAuthenticationCode: false,
+    certification: false,
+  };
+
+  const verificationReducer = (
+    state: accountCertificationState,
+    action: accountCertificationAction,
+  ) => {
+    switch (action.type) {
+      case 'RESET':
+        return initialState;
+      case 'ENABLE_SEND_AUTHENTICATION_CODE':
+        return { sendAuthenticationCode: true, certification: false };
+      case 'CERTIFY':
+        return { ...state, certification: true };
+    }
+  };
+
+  const [state, dispatch] = useReducer(verificationReducer, initialState);
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      const { name, bank, accountNumber } = value;
+
+      if (name && bank && accountNumber) {
+        dispatch({ type: 'ENABLE_SEND_AUTHENTICATION_CODE' });
+      } else {
+        dispatch({ type: 'RESET' });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const sendAuthenticationCode = (data: accountFormValues) => {
+    const { name, bank, accountNumber } = data;
+    const {
+      accountNumber: currentAccountNumber,
+      bankCode,
+      holderName,
+    } = accountInfo;
+    const strippedAccountNumber = accountNumber.split('-').join('');
+
+    if (
+      name === holderName &&
+      bank?.value === bankCode &&
+      currentAccountNumber === strippedAccountNumber
+    )
+      return toast.error('현재 등록된 계좌와 같은 계좌 입니다.');
+
+    //인증 코드 전송 성공 했을때
+    dispatch({ type: 'CERTIFY' });
+  };
+
+  const invalid = (data: Record<string, any>) => {
+    Object.values(data).forEach((value) => toast.error(value.message));
+  };
+
+  const updateEmail = async () => {};
+
   return (
-    <UpdateModalContainer title="계좌정보 변경" closeEvent={closeModalHandler}>
+    <UpdateModalContainer
+      title="계좌정보 변경"
+      closeEvent={closeModalHandler}
+      disabled={!state.certification}
+    >
       <section className="flex flex-grow flex-col gap-4 sm:justify-center">
         <dl className="mt-5 grid grid-cols-[5.3rem_1fr] grid-rows-2 items-center gap-y-2 px-4">
           <dt className="font-semibold">은행</dt>
@@ -35,19 +115,54 @@ const AccountUpdate = ({
           <div className="mb-3 mt-5 grid items-center gap-y-3 sm:grid-cols-2 ">
             <div className="grid grid-cols-[6rem_1fr]">
               <label className="font-semibold">예금주</label>
-              <input className="h-9 w-full rounded-md px-2 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-7" />
+              <input
+                {...register('name', {
+                  required: '예금주를 입력해 주세요.',
+                  pattern: {
+                    value: /^[가-힣]{1,30}$/,
+                    message: '올바른 예금주를 입력해 주세요.',
+                  },
+                })}
+                className="h-9 w-full rounded-md px-2 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:h-7"
+              />
             </div>
             <div className="row-start-2 grid grid-cols-[5.97rem_1fr]">
-              <label className=" font-semibold">입금 은행</label>
-              <BankSelect />
+              <label className=" font-semibold">은행명</label>
+              <Controller
+                name="bank"
+                control={control}
+                rules={{
+                  required: '계좌 은행을 선택해 주세요.',
+                }}
+                render={({ field: { onChange } }) => (
+                  <BankSelect onChange={onChange} />
+                )}
+              />
             </div>
           </div>
           <div className="grid grid-cols-[2fr_1fr] gap-2 sm:grid-cols-[5rem_1fr_10rem] sm:gap-4">
             <label className="font-semibold">계좌번호</label>
-            <input className="row-start-2 h-9 w-full rounded-md px-2 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:row-start-auto sm:h-7" />
-            <form className="row-start-2 w-full sm:row-start-auto">
-              <Button size="full" color="secondary" type="submit">
-                인증하기
+            <input
+              {...register('accountNumber', {
+                required: '계좌번호를 입력해 주세요.',
+                pattern: {
+                  value: /^[0-9-]*$/,
+                  message: '올바른 계좌번호를 입력해 주세요.',
+                },
+              })}
+              className="row-start-2 h-9 w-full rounded-md px-2 outline outline-1 outline-gray-500 focus:outline-sub-color1 sm:row-start-auto sm:h-7"
+            />
+            <form
+              onSubmit={handleSubmit(sendAuthenticationCode, invalid)}
+              className="row-start-2 w-full sm:row-start-auto"
+            >
+              <Button
+                size="full"
+                color="secondary"
+                type="submit"
+                disabled={!state.sendAuthenticationCode || state.certification}
+              >
+                인증코드 전송
               </Button>
             </form>
           </div>
