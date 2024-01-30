@@ -1,5 +1,5 @@
-import Info from '@/components/MyInfo/Info';
 import ConsentReceiptModification from '@/components/MyInfo/ConsentReceiptModification';
+import Info from '@/components/MyInfo/Info';
 
 const page = () => {
   return (

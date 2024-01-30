@@ -13,6 +13,7 @@ import {
 } from '@/lib/apis/imageApi';
 import { formatLocationToString } from '@/utils/parseUtils';
 import { calculateFinalDates } from './parseUtils';
+import { instructorProfile, userProfile, profileInfo } from '@/types/auth';
 import {
   IprocessedDraft,
   classCreateData,
@@ -23,7 +24,6 @@ import {
 } from '@/types/class';
 import { couponGET, userCouponGET } from '@/types/coupon';
 import { searchInstructor } from '@/types/instructor';
-import { instructorProfile, userProfile, profileInfo } from '@/types/auth';
 
 export const uploadImageFiles = async (
   profileImageUrls: {

@@ -8,7 +8,6 @@ import {
   searchBestInstructor,
   searchInstructors,
 } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import {
   transformSearchInstructor,
   transformSearchParamsLocation,
@@ -86,6 +85,7 @@ const instructorPage = async ({
 
     if (bestInstructorList.length < 10) {
       const repeatCount = Math.ceil(10 / bestInstructorList.length);
+
       bestInstructorList = Array(repeatCount)
         .fill(bestInstructorList)
         .flat()

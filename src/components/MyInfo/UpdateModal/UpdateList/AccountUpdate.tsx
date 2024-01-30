@@ -1,10 +1,13 @@
 'use client';
-import BankSelect from '@/app/instructor/apply/_components/instructorAuth/BankSelect';
-import Button from '@/components/Button/Button';
-import UpdateModalContainer from '@/components/MyInfo/UpdateModal/UpdateModalContainer';
+import { useEffect, useReducer } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import BankSelect from '@/app/instructor/apply/_components/InstructorAuth/BankSelect';
 import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import { updateBankAccount } from '@/lib/apis/instructorApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
+import Button from '@/components/Button/Button';
+import UpdateModalContainer from '@/components/MyInfo/UpdateModal/UpdateModalContainer';
 import {
   accountCertificationAction,
   accountCertificationState,
@@ -12,9 +15,6 @@ import {
 } from '@/types/info';
 import { CommonBankAccount, bankAccount } from '@/types/instructor';
 import { FetchError } from '@/types/types';
-import { useEffect, useReducer } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
 interface AccountUpdateProps {
   accountInfo: bankAccount;
@@ -67,7 +67,7 @@ const AccountUpdate = ({
       }
     });
     return () => subscription.unsubscribe();
-  }, []);
+  }, [watch]);
 
   const sendAuthenticationCode = (data: accountFormValues) => {
     const { name, bank, accountNumber } = data;

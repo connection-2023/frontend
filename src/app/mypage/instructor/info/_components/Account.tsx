@@ -1,9 +1,9 @@
 'use client';
+import { useState } from 'react';
+import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import InfoUpdateModalViewButton from '@/components/MyInfo/UpdateModal/InfoUpdateModalViewButton';
 import AccountUpdate from '@/components/MyInfo/UpdateModal/UpdateList/AccountUpdate';
-import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import { CommonBankAccount, bankAccount } from '@/types/instructor';
-import { useState } from 'react';
 
 interface AccountProps {
   accountInfo: bankAccount;

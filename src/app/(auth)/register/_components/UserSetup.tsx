@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { KaKaoTalkSVG, NaverSVG, GoogleSVG, CheckMarkSVG } from '@/icons/svg';
-import { accessTokenReissuance, checkUserNickname } from '@/lib/apis/userApi';
+import { checkUserNickname } from '@/lib/apis/userApi';
 import StatusButton from '@/components/Button/StatusButton';
 import { SignInResponse } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';

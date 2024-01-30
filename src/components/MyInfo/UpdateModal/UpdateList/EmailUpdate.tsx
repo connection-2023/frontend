@@ -1,15 +1,15 @@
-import Button from '@/components/Button/Button';
-import UpdateModalContainer from '../UpdateModalContainer';
 import { ChangeEvent, useEffect, useReducer } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { accessTokenReissuance, updateMyProfile } from '@/lib/apis/userApi';
+import { useUserStore } from '@/store';
+import UpdateModalContainer from '../UpdateModalContainer';
+import Button from '@/components/Button/Button';
 import {
   EmailFormValues,
   certificationAction,
   certificationState,
 } from '@/types/info';
-import { accessTokenReissuance, updateMyProfile } from '@/lib/apis/userApi';
-import { useUserStore } from '@/store';
 import { FetchError } from '@/types/types';
 
 //추후 이메일 인증, 이메일 변경 api 연결 필요

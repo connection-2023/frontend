@@ -8,7 +8,6 @@ import { getPrivateCode } from '@/lib/apis/couponApis';
 import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
 import UniqueButton from '../Button/UniqueButton';
-import { instructorProfile } from '@/types/auth';
 import { couponGET } from '@/types/coupon';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;

@@ -1,5 +1,5 @@
 import { useAnimation, PanInfo } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import usePreviousValue from './usePreviousValue';
 
 const useBottomSheet = (handleClosed: () => void, isOpened: boolean) => {

@@ -1,18 +1,18 @@
 'use client';
 import { motion } from 'framer-motion';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
 import Link from 'next/link';
-import Button from '@/components/Button/Button';
+import { useState } from 'react';
 import { ChangeImageSVG, GoogleSVG, KaKaoTalkSVG, NaverSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
-import { social } from '@/types/auth';
 import InfoUpdateModalViewButton from './UpdateModal/InfoUpdateModalViewButton';
-import NicknameUpdate from './UpdateModal/UpdateList/NicknameUpdate';
-import SocialUpdate from './UpdateModal/UpdateList/SocialUpdate';
 import EmailUpdate from './UpdateModal/UpdateList/EmailUpdate';
+import NicknameUpdate from './UpdateModal/UpdateList/NicknameUpdate';
 import PhoneNumberUpdate from './UpdateModal/UpdateList/PhoneNumberUpdate';
-import { useState } from 'react';
 import ProfileUpdate from './UpdateModal/UpdateList/ProfileUpdate';
+import SocialUpdate from './UpdateModal/UpdateList/SocialUpdate';
+import Button from '@/components/Button/Button';
+import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import { social } from '@/types/auth';
 
 const Info = () => {
   const [profileUpdateView, setProfileUpdateView] = useState(false);

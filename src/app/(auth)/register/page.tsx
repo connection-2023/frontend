@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { getAuth, postUserRegister, getMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 import { IRegisterConsents, SignInResponse } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
-import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 
 const UserConsentForm = dynamic(() => import('./_components/UserConsentForm'));
 const UserSetup = dynamic(() => import('./_components/UserSetup'));

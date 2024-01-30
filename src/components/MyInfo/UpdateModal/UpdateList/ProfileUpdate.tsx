@@ -1,13 +1,13 @@
 'use client';
 import { motion } from 'framer-motion';
-import { ChangeImageSVG, CloseSVG, DeleteSVG, ProfileSVG } from '@/icons/svg';
-import { useClickAway } from 'react-use';
 import Image from 'next/image';
 import { ChangeEvent, useRef, useState } from 'react';
-import { useUserStore } from '@/store';
+import { useClickAway } from 'react-use';
+import { ChangeImageSVG, CloseSVG, DeleteSVG, ProfileSVG } from '@/icons/svg';
 import { deleteImage, postSingleImage } from '@/lib/apis/imageApi';
 import { updateInstructor } from '@/lib/apis/instructorPostApis';
 import { updateMyProfile } from '@/lib/apis/userApi';
+import { useUserStore } from '@/store';
 
 interface ProfileUpdateProps {
   profileImage: string | null;

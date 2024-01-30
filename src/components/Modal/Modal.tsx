@@ -38,6 +38,7 @@ const Modal = ({
       }}
     >
       <ModalContent
+        // eslint-disable-next-line react/no-children-prop
         children={children}
         handleClosed={handleClosed}
         disableModalSwipe={disableModalSwipe}

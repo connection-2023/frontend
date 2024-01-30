@@ -7,10 +7,10 @@ import UserSetup from '@/app/(auth)/register/_components//UserSetup';
 import UserConsentForm from '@/app/(auth)/register/_components/UserConsentForm';
 import { getAuth, postUserRegister, getMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 import RouterModal from '@/components/Modal/RouterModal';
 import { IRegisterConsents, SignInResponse } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
-import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 
 const RegisterModal = () => {
   const searchParams = useSearchParams();

@@ -1,6 +1,6 @@
 'use client';
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { ChangeEvent, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   getCheckNickname,
   patchInstructorNickname,
@@ -11,10 +11,9 @@ import {
   updateMyProfile,
 } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
-import { FetchError } from '@/types/types';
-import { ChangeEvent, useState } from 'react';
-import { toast } from 'react-toastify';
 import UpdateModalContainer from '../UpdateModalContainer';
+import Button from '@/components/Button/Button';
+import { FetchError } from '@/types/types';
 
 interface NicknameUpdateProps {
   closeModalHandler?: () => void;

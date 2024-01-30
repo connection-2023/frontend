@@ -9,6 +9,7 @@ import {
   getInstructorProfile,
   instructorRegister,
 } from '@/lib/apis/instructorApi';
+import { getSwitchUserRole } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import {
   categorizeGenres,
@@ -22,7 +23,6 @@ import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { InstructorApplyData } from '@/types/instructor';
 import { ErrorMessage } from '@/types/types';
-import { getSwitchUserRole } from '@/lib/apis/userApi';
 
 const steps = [
   { title: '강사 인증', component: <InstructorAuth /> },

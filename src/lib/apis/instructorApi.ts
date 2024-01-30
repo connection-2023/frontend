@@ -181,7 +181,6 @@ export const patchPendingStatus = async (
       throw Error(response.message);
     }
 
-    console.log(response);
     return response.status;
   } catch (error) {
     console.error('승인 대기 상태 변경 오류', error);

@@ -58,6 +58,7 @@ const UploadProfile = () => {
 
     if (response.statusCode === 201) {
       store.setAuthUserField('profileImage', profileImage);
+
       toast.update(toastId, {
         render: '이미지 사진이 성공적으로 변경되었습니다!',
         type: 'success',

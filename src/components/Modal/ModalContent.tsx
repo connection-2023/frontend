@@ -1,8 +1,8 @@
 import { AnimationControls, PanInfo, motion } from 'framer-motion';
-import useMediaQuery from '@/hooks/useMediaQuery';
-import { CloseSVG } from '../../../public/icons/svg';
 import { usePathname } from 'next/navigation';
 import { MutableRefObject, useEffect, useRef } from 'react';
+import useMediaQuery from '@/hooks/useMediaQuery';
+import { CloseSVG } from '../../../public/icons/svg';
 
 interface ModalContentProps {
   children: React.ReactNode;
@@ -27,7 +27,8 @@ const ModalContent = ({
   const initialized = useRef(false);
   const isSm = disableModalSwipe
     ? undefined
-    : useMediaQuery('(min-width: 640px)');
+    : // eslint-disable-next-line react-hooks/rules-of-hooks
+      useMediaQuery('(min-width: 640px)');
   const pathname = usePathname();
 
   const closeModalHandler = () => {
@@ -100,7 +101,7 @@ const ModalContent = ({
         dragConstraints={{ top: 0 }}
         dragElastic={0.2}
         style={isSm ? { y: '-50%', x: '-50%' } : undefined}
-        className={`absolute bottom-0 z-modal h-[90%] w-screen rounded-t-lg bg-white pt-2.5 sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:h-auto sm:w-auto sm:rounded-md sm:pt-0 sm:shadow-float`}
+        className="absolute bottom-0 z-modal h-[90%] w-screen rounded-t-lg bg-white pt-2.5 sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:h-auto sm:w-auto sm:rounded-md sm:pt-0 sm:shadow-float"
       >
         <button
           onClick={closeModalHandler}

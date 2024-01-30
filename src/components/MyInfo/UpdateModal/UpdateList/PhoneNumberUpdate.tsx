@@ -1,11 +1,11 @@
-import Button from '@/components/Button/Button';
-import UpdateModalContainer from '../UpdateModalContainer';
-import { ChangeEvent, useEffect, useReducer, useState } from 'react';
+import { ChangeEvent, useEffect, useReducer } from 'react';
 import { useForm } from 'react-hook-form';
-import { certificationAction, certificationState } from '@/types/info';
 import { toast } from 'react-toastify';
-import { useUserStore } from '@/store';
 import { accessTokenReissuance, updateMyProfile } from '@/lib/apis/userApi';
+import { useUserStore } from '@/store';
+import UpdateModalContainer from '../UpdateModalContainer';
+import Button from '@/components/Button/Button';
+import { certificationAction, certificationState } from '@/types/info';
 import { FetchError } from '@/types/types';
 
 interface PhoneNumberUpdateProps {

@@ -1,8 +1,8 @@
 'use client';
-import Modal from '@/components/Modal/Modal';
-import { BigArrowSVG } from '@/icons/svg';
 import React from 'react';
 import { useState } from 'react';
+import { BigArrowSVG } from '@/icons/svg';
+import Modal from '@/components/Modal/Modal';
 
 const InfoUpdateModalViewButton = ({ children }: { children: JSX.Element }) => {
   const [modalView, setModalView] = useState(false);

@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
@@ -6,7 +7,6 @@ import {
   getInstructorClassLists,
 } from '@/lib/apis/serverApis/instructorPostApis';
 import { getLecturerPassList } from '@/lib/apis/serverApis/passApis';
-import { useUserStore } from '@/store/userStore';
 import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
   formatLocationToString,
@@ -20,7 +20,6 @@ import OptionButtons from '@/components/Button/OptionButtons';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
-import { cookies } from 'next/headers';
 
 const h2Style = 'mb-2 text-lg font-bold';
 

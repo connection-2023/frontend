@@ -1,8 +1,8 @@
-import Info from '@/components/MyInfo/Info';
+import { getBankAccount } from '@/lib/apis/serverApis/instructorPostApis';
 import Account from './_components/Account';
 import ConsentReceiptModification from '@/components/MyInfo/ConsentReceiptModification';
+import Info from '@/components/MyInfo/Info';
 import { bankAccount } from '@/types/instructor';
-import { getBankAccount } from '@/lib/apis/serverApis/instructorPostApis';
 
 const page = async () => {
   let accountInfo: bankAccount | undefined;
