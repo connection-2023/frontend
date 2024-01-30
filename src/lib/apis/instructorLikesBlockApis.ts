@@ -1,12 +1,10 @@
 import { LecturerLike } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const instructorsBlockCancel = async (lectureId: string | number) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/users/instructors/block-cancel?lectureId=${encodeURIComponent(
+      `/api/users/instructors/block-cancel?lectureId=${encodeURIComponent(
         lectureId,
       )}`,
       {
@@ -34,7 +32,7 @@ export const instructorsBlockCancel = async (lectureId: string | number) => {
 export const instructorsLikeCancel = async (lectureId: string | number) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/users/instructors/like-cancel?lectureId=${encodeURIComponent(
+      `/api/users/instructors/like-cancel?lectureId=${encodeURIComponent(
         lectureId,
       )}`,
       {
@@ -62,9 +60,7 @@ export const instructorsLikeCancel = async (lectureId: string | number) => {
 export const instructorsLikes = async (lectureId: string | number) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/users/instructors/likes?lectureId=${encodeURIComponent(
-        lectureId,
-      )}`,
+      `/api/users/instructors/likes?lectureId=${encodeURIComponent(lectureId)}`,
       {
         method: 'POST',
         credentials: 'include',
@@ -90,9 +86,7 @@ export const instructorsLikes = async (lectureId: string | number) => {
 export const instructorsBlock = async (lectureId: string | number) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/users/instructors/block?lectureId=${encodeURIComponent(
-        lectureId,
-      )}`,
+      `/api/users/instructors/block?lectureId=${encodeURIComponent(lectureId)}`,
       {
         method: 'POST',
         credentials: 'include',
@@ -117,7 +111,7 @@ export const instructorsBlock = async (lectureId: string | number) => {
 
 export const getLikesInstructorList = async (): Promise<LecturerLike[]> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/users/instructors/get-like`, {
+    const response = await fetch(`/api/users/instructors/get-like`, {
       method: 'GET',
       credentials: 'include',
       headers: {

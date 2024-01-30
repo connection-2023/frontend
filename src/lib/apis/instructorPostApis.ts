@@ -6,13 +6,11 @@ import {
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const getInstructorPost = async (
   id: string,
 ): Promise<instructorPostResponse | Error> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/post/instructor?id=${id}`, {
+    const response = await fetch(`/api/post/instructor?id=${id}`, {
       method: 'GET',
     }).then((data) => data.json());
 
@@ -35,7 +33,7 @@ export const getReviews = async (
 
   try {
     const response = await fetch(
-      `${DOMAIN}/api/post/review/instructor?id=${id}&${query}`,
+      `/api/post/review/instructor?id=${id}&${query}`,
       {
         credentials: 'include',
         headers: {
@@ -52,7 +50,7 @@ export const getReviews = async (
 
 export const updateInstructor = async (data: InstructorUpdate) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/instructors/update`, {
+    const response = await fetch(`/api/instructors/update`, {
       method: 'PATCH',
       credentials: 'include',
       headers: {
