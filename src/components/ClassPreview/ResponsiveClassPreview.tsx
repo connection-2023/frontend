@@ -1,13 +1,14 @@
 'use client';
-import Image from 'next/image';
 import { useState } from 'react';
 import { StarSVG } from '@/icons/svg';
 import Carousel from '../Carousel/Carousel';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import { ClassCardType } from '@/types/class';
+import { useRouter } from 'next/navigation';
 
 const ResponsiveClassPreview = (props: ClassCardType) => {
   const {
+    id,
     status,
     date,
     title,
@@ -18,13 +19,16 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
     imgURL,
     darkMode = false,
   } = props;
+
   const [focus, setFocus] = useState(false);
+  const router = useRouter();
 
   return (
     <div
       onMouseLeave={() => setFocus(false)}
       onMouseOver={() => setFocus(true)}
-      className={`flex h-full w-full flex-col font-medium ${
+      onClick={() => router.push(`/class/${id}`)}
+      className={`flex h-full w-full cursor-pointer flex-col font-medium ${
         darkMode && 'text-white'
       }`}
     >
@@ -54,14 +58,16 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
         <h1 className="w-5/6 truncate text-base font-semibold leading-5">
           {title}
         </h1>
-        <div
-          className={`flex items-center gap-1 text-gray-100 ${
-            darkMode ? 'text-white' : ''
-          }`}
-        >
-          <StarSVG width={13} height={12} className="fill-sub-color1" />
-          {review?.average}
-        </div>
+        {review.count > 0 && (
+          <div
+            className={`flex items-center gap-1 text-gray-100 ${
+              darkMode ? 'text-white' : ''
+            }`}
+          >
+            <StarSVG width={13} height={12} className="fill-sub-color1" />
+            {review?.average}
+          </div>
+        )}
       </div>
       <span className="mt-1 text-xs text-gray-500">
         {genre.length > 1 ? genre[0] + ' 외 ' + (genre.length - 1) : genre[0]}
@@ -73,11 +79,19 @@ const ResponsiveClassPreview = (props: ClassCardType) => {
       >
         <p className="text-lg font-bold">{price.toLocaleString()}원</p>
 
-        <ProfileImage
-          size="xsmall"
-          src={profile?.src || null}
-          nickname={profile.nickname}
-        />
+        <div
+          onClick={(event) => {
+            event.stopPropagation();
+            router.push(`/instructor/${profile.id}`);
+          }}
+          className="cursor-pointer"
+        >
+          <ProfileImage
+            size="xsmall"
+            src={profile?.src || null}
+            nickname={profile.nickname}
+          />
+        </div>
       </div>
     </div>
   );
