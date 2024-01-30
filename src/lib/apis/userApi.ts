@@ -4,8 +4,6 @@ import { IRegisterForm } from '@/types/form';
 import { social } from '@/types/auth';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const checkUserNickname = async (nickname: string) => {
   try {
     const response = await fetch(
@@ -28,8 +26,7 @@ export const checkUserNickname = async (nickname: string) => {
 export const getAuth = async (social: social, idToken: string) => {
   try {
     const response = await fetch(
-      DOMAIN +
-        `/api/auth/login?social=${social}&token=${encodeURIComponent(idToken)}`,
+      `/api/auth/login?social=${social}&token=${encodeURIComponent(idToken)}`,
       {
         credentials: 'include',
         headers: {
@@ -76,7 +73,7 @@ export const getMyProfile = async (token?: string): Promise<userProfile> => {
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-  const response = await fetch(`${DOMAIN}/api/users/me`, {
+  const response = await fetch(`/api/users/me`, {
     method: 'GET',
     credentials: 'include',
     headers,
@@ -88,7 +85,7 @@ export const getMyProfile = async (token?: string): Promise<userProfile> => {
 };
 
 export const getLogout = async () => {
-  const response = await fetch(`${DOMAIN}/api/auth/logout`, {
+  const response = await fetch(`/api/auth/logout`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -103,7 +100,7 @@ export const postProfileImage = async (image: File) => {
   const formData = new FormData();
   formData.append('image', image);
 
-  const response = await fetch(`${DOMAIN}/api/users/upload-profile`, {
+  const response = await fetch(`/api/users/upload-profile`, {
     method: 'POST',
     credentials: 'include',
     body: formData,
@@ -115,15 +112,12 @@ export const postProfileImage = async (image: File) => {
 };
 
 export const getSwitchUserRole = async (userType: userType) => {
-  const response = await fetch(
-    `${DOMAIN}/api/auth/switch-user?userType=${userType}`,
-    {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  const response = await fetch(`/api/auth/switch-user?userType=${userType}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+  });
 
   const res = await response.json();
 
@@ -132,7 +126,7 @@ export const getSwitchUserRole = async (userType: userType) => {
 
 export const accessTokenReissuance = async () => {
   try {
-    const response = await fetch(`${DOMAIN}/api/auth/refresh`, {
+    const response = await fetch(`/api/auth/refresh`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -154,7 +148,7 @@ export const accessTokenReissuance = async () => {
 
 export const updateMyProfile = async (data: userProfileupdate) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/users/update-profile`, {
+    const response = await fetch(`/api/users/update-profile`, {
       method: 'PATCH',
       credentials: 'include',
       headers: {

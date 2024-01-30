@@ -1,12 +1,10 @@
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const postSingleImage = async (image: File, folder: string) => {
   try {
     const formData = new FormData();
     formData.append('image', image);
 
     const response = await fetch(
-      `${DOMAIN}/api/image/single?folder=${encodeURIComponent(folder)}`,
+      `/api/image/single?folder=${encodeURIComponent(folder)}`,
       {
         method: 'POST',
         credentials: 'include',
@@ -36,7 +34,7 @@ export const postMultipleImage = async (images: File[], folder: string) => {
     });
 
     const response = await fetch(
-      `${DOMAIN}/api/image/multiple?folder=${encodeURIComponent(folder)}`,
+      `/api/image/multiple?folder=${encodeURIComponent(folder)}`,
       {
         method: 'POST',
         credentials: 'include',
@@ -58,7 +56,7 @@ export const postMultipleImage = async (images: File[], folder: string) => {
 
 export const deleteImage = async (data: { imageUrl: string }) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/image/delete`, {
+    const response = await fetch(`/api/image/delete`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

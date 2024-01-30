@@ -9,10 +9,8 @@ import {
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const getInstructorProfile = async (): Promise<instructorProfile> => {
-  const response = await fetch(`${DOMAIN}/api/instructors/myProfile`, {
+  const response = await fetch(`/api/instructors/myProfile`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
@@ -26,7 +24,7 @@ export const getInstructorProfile = async (): Promise<instructorProfile> => {
 export const getCheckNickname = async (nickname: string) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/instructors/check-nickname?nickname=${encodeURIComponent(
+      `/api/instructors/check-nickname?nickname=${encodeURIComponent(
         nickname,
       )}`,
     );
@@ -50,7 +48,7 @@ export const getCheckNickname = async (nickname: string) => {
 export const patchInstructorNickname = async (nickname: string) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/instructors/change-nickname?nickname=${encodeURIComponent(
+      `/api/instructors/change-nickname?nickname=${encodeURIComponent(
         nickname,
       )}`,
       {
@@ -77,7 +75,7 @@ export const patchInstructorNickname = async (nickname: string) => {
 
 export const instructorRegister = async (data: IInstructorRegister) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/instructors/register`, {
+    const response = await fetch(`/api/instructors/register`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -104,7 +102,7 @@ export const instructorRegister = async (data: IInstructorRegister) => {
 
 export const updateBankAccount = async (data: CommonBankAccount) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/instructors/change-account`, {
+    const response = await fetch(`/api/instructors/change-account`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -133,7 +131,7 @@ export const getMonthlyClassPlan = async (
 ): Promise<IMonthlyClassSchedules[]> => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/instructors/monthly-schedules?year=${year}&month=${month}`,
+      `/api/instructors/monthly-schedules?year=${year}&month=${month}`,
     ).then((data) => data.json());
 
     return response.data.schedules;
@@ -145,9 +143,9 @@ export const getMonthlyClassPlan = async (
 
 export const getPendingCount = async () => {
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/instructors/mypage/approve/count`,
-    ).then((data) => data.json());
+    const response = await fetch(`/api/instructors/mypage/approve/count`).then(
+      (data) => data.json(),
+    );
 
     return response.data.requestCount;
   } catch (error) {
@@ -158,9 +156,9 @@ export const getPendingCount = async () => {
 
 export const getPendingList = async (): Promise<IApproveList[] | Error> => {
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/instructors/mypage/approve/list`,
-    ).then((data) => data.json());
+    const response = await fetch(`/api/instructors/mypage/approve/list`).then(
+      (data) => data.json(),
+    );
 
     return response.data?.requestList;
   } catch (error) {
@@ -173,14 +171,11 @@ export const patchPendingStatus = async (
   data: IUpdatePaymentStatusRequestData,
 ) => {
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/instructors/mypage/approve/status`,
-      {
-        method: 'PATCH',
-        credentials: 'include',
-        body: JSON.stringify(data),
-      },
-    ).then((data) => data.json());
+    const response = await fetch(`/api/instructors/mypage/approve/status`, {
+      method: 'PATCH',
+      credentials: 'include',
+      body: JSON.stringify(data),
+    }).then((data) => data.json());
 
     if (response.status !== 200) {
       throw Error(response.message);
@@ -196,7 +191,7 @@ export const patchPendingStatus = async (
 
 export const getBankAccount = async (): Promise<bankAccount> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/instructors/get-account`, {
+    const response = await fetch(`/api/instructors/get-account`, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',

@@ -1,11 +1,9 @@
 import { IPaymentInfo, IVirtualAccountInfo } from '@/types/payment';
 import { IMyPaymentResponse } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/payment/payInfo`, {
+    const response = await fetch(`/api/payment/payInfo`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -28,7 +26,7 @@ export const postPaymentInfo = async (data: IPaymentInfo) => {
 
 export const postPaymentCancel = async (id: string) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/payment/cancel?id=${id}`, {
+    const response = await fetch(`/api/payment/cancel?id=${id}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -55,7 +53,7 @@ export const getPaymentHistory = async (
   const query = `displayCount=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&option=${option}`;
 
   try {
-    const response = await fetch(`${DOMAIN}/api/payment/history?${query}`, {
+    const response = await fetch(`/api/payment/history?${query}`, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +70,7 @@ export const getAccountInfo = async (
   id: number,
 ): Promise<IVirtualAccountInfo | Error> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/payment/accountInfo?id=${id}`, {
+    const response = await fetch(`/api/payment/accountInfo?id=${id}`, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
