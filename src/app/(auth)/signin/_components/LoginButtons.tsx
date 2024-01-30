@@ -36,6 +36,7 @@ const LoginButtons = () => {
       });
 
       router.replace('/');
+      router.refresh();
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
 

@@ -5,6 +5,7 @@ import { ArrowUpSVG } from '@/icons/svg';
 interface SelectBoxProps {
   lists: string[];
   selected: string;
+  // eslint-disable-next-line no-unused-vars
   onSelect: (value: string) => void;
 }
 
@@ -38,7 +39,7 @@ const SelectBox = ({ lists, selected, onSelect }: SelectBoxProps) => {
       <ul
         className={`${
           isListOpened ? 'flex flex-col' : 'hidden'
-        } ${selectBoxBorderStyle} divide-y divide-solid divide-gray-700 border-t-0 `}
+        } ${selectBoxBorderStyle} max-h-52 divide-y divide-solid divide-gray-700 overflow-y-auto border-t-0`}
       >
         {lists.map((list: string) => {
           const parts = list.split(' ');
@@ -51,7 +52,7 @@ const SelectBox = ({ lists, selected, onSelect }: SelectBoxProps) => {
           return (
             <li
               key={list}
-              className={`flex h-8 cursor-pointer items-center justify-between gap-2 px-2 hover:bg-gray-900 ${textColor}`}
+              className={`flex h-8 shrink-0 cursor-pointer items-center justify-between gap-2 px-2 hover:bg-gray-900 ${textColor}`}
               onClick={() => onClickList(list)}
             >
               <p>{dateTime}</p>

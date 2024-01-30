@@ -152,19 +152,19 @@ export interface IMyPayment {
       lectureId: number;
       startDateTime: string;
       lecture: {
-        lectureImage: {
-          imageUrl: string;
-        }[];
+        id: number;
+        title: string;
+        imageUrl: string;
       };
     };
-  }[];
+  };
 
   userPass: string[];
 }
 
 export interface IMyPaymentResponse {
   totalItemCount: number;
-  paymentHistory: IMyPayment[];
+  userPaymentsHistory: IMyPayment[];
 }
 
 export interface FetchError extends Error {

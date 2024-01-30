@@ -26,8 +26,8 @@ export const formatDateTimeNoSec = (date: Date | string) =>
 
 export const formatKoreanDateTime = (date: Date | string) =>
   date instanceof Date
-    ? format(date, 'MM월 dd일 (eee) HH:mm')
-    : format(parseISO(date), 'MM월 dd일 (eee) HH:mm');
+    ? format(date, 'MM월 dd일 (eee) HH:mm', { locale: ko })
+    : format(parseISO(date), 'MM월 dd일 (eee) HH:mm', { locale: ko });
 
 export const formatKoreanFullDate = (date: Date | string) =>
   date instanceof Date
