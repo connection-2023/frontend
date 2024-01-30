@@ -12,7 +12,10 @@ import EmailUpdate from './UpdateModal/UpdateList/EmailUpdate';
 import PhoneNumberUpdate from './UpdateModal/UpdateList/PhoneNumberUpdate';
 
 const Info = () => {
-  const authUser = useUserStore((state) => state.authUser);
+  const { authUser, userType } = useUserStore((state) => ({
+    authUser: state.authUser,
+    userType: state.userType,
+  }));
 
   if (!authUser) return null;
 
@@ -64,12 +67,13 @@ const Info = () => {
     },
     {
       dt: '휴대폰 번호',
-      dd:
-        phoneNumber?.slice(0, 3) +
-        '-' +
-        phoneNumber?.slice(3, 7) +
-        '-' +
-        phoneNumber?.slice(7, 11),
+      dd: phoneNumber
+        ? phoneNumber.slice(0, 3) +
+          '-' +
+          phoneNumber.slice(3, 7) +
+          '-' +
+          phoneNumber.slice(7, 11)
+        : '등록된 번호가 존재하지 않습니다.',
       viewArrow: true,
       updateElement: <PhoneNumberUpdate phoneNumber={phoneNumber} />,
     },
@@ -104,18 +108,20 @@ const Info = () => {
           ))}
         </dl>
       </div>
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-        <Link href={`/instructor/${id}`} className="w-full sm:w-1/2">
-          <Button size="medium" color="secondary">
-            강사 프로필 보러가기
-          </Button>
-        </Link>
-        <Link href={`/instructor/${id}/edit`} className="w-full sm:w-1/2">
-          <Button size="medium" color="secondary">
-            강사 프로필 수정하기
-          </Button>
-        </Link>
-      </div>
+      {userType === 'lecturer' && (
+        <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+          <Link href={`/instructor/${id}`} className="w-full sm:w-1/2">
+            <Button size="medium" color="secondary">
+              강사 프로필 보러가기
+            </Button>
+          </Link>
+          <Link href={`/instructor/${id}/edit`} className="w-full sm:w-1/2">
+            <Button size="medium" color="secondary">
+              강사 프로필 수정하기
+            </Button>
+          </Link>
+        </div>
+      )}
     </section>
   );
 };
