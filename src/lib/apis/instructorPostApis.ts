@@ -1,7 +1,6 @@
 import {
   instructorPostResponse,
   IInstructorReviewList,
-  IInstructorRegister,
   InstructorUpdate,
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';

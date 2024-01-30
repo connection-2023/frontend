@@ -90,18 +90,18 @@ export interface IInstructorRegister {
 }
 
 export interface InstructorUpdate {
-  newProfileImageUrls: string[];
-  etcGenres: string[];
-  genres: string[];
-  regions: string[];
-  profileCardImageUrl: string;
-  youtubeUrl: string;
-  instagramUrl: string;
-  homepageUrl: string;
-  affiliation: string;
-  introduction: string;
-  experience: string;
-  instagramPostUrls: string[];
+  newProfileImageUrls?: string[];
+  etcGenres?: string[];
+  genres?: string[];
+  regions?: string[];
+  profileCardImageUrl?: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
+  homepageUrl?: string;
+  affiliation?: string;
+  introduction?: string;
+  experience?: string;
+  instagramPostUrls?: string[];
 }
 
 export interface IInstructorReviewList {

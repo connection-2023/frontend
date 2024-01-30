@@ -22,6 +22,10 @@ const Info = () => {
 
   if (!authUser) return null;
 
+  const closeProfileUpdate = () => {
+    setProfileUpdateView(false);
+  };
+
   const {
     id,
     nickname,
@@ -128,7 +132,12 @@ const Info = () => {
           </Link>
         </div>
       )}
-      {profileUpdateView && <ProfileUpdate profileImage={profileImage} />}
+      {profileUpdateView && (
+        <ProfileUpdate
+          profileImage={profileImage}
+          closeEvent={closeProfileUpdate}
+        />
+      )}
     </section>
   );
 };
