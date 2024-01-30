@@ -1,5 +1,5 @@
 'use client';
-import BankSelect from '../../../../app/instructor/apply/_components/InstructorAuth/BankSelect';
+import BankSelect from '@/app/instructor/apply/_components/InstructorAuth/BankSelect';
 import Button from '@/components/Button/Button';
 import UpdateModalContainer from '@/components/MyInfo/UpdateModal/UpdateModalContainer';
 import { BANK_CODE_TO_NAME } from '@/constants/constants';
