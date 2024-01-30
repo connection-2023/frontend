@@ -10,8 +10,11 @@ import NicknameUpdate from './UpdateModal/UpdateList/NicknameUpdate';
 import SocialUpdate from './UpdateModal/UpdateList/SocialUpdate';
 import EmailUpdate from './UpdateModal/UpdateList/EmailUpdate';
 import PhoneNumberUpdate from './UpdateModal/UpdateList/PhoneNumberUpdate';
+import { useState } from 'react';
+import ProfileUpdate from './UpdateModal/UpdateList/ProfileUpdate';
 
 const Info = () => {
+  const [profileUpdateView, setProfileUpdateView] = useState(false);
   const { authUser, userType } = useUserStore((state) => ({
     authUser: state.authUser,
     userType: state.userType,
@@ -83,7 +86,10 @@ const Info = () => {
     <section className="flex flex-col rounded-md bg-white px-5 py-6 shadow-vertical">
       <h1 className="mb-7 text-2xl font-bold">내 정보</h1>
       <div className="flex flex-col gap-7 sm:flex-row">
-        <button className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0 [&>*:nth-child(1)]:h-44">
+        <button
+          onClick={() => setProfileUpdateView(true)}
+          className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0 [&>*:nth-child(1)]:h-44"
+        >
           <ProfileImg src={profileImage} size="xlarge" />
           <div className="absolute bottom-0 right-0 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-vertical group-hover:shadow-[inset_0_0px_3px_1px_rgba(0,0,0,0.3)]">
             <ChangeImageSVG className="h-7 w-7" />
@@ -122,6 +128,7 @@ const Info = () => {
           </Link>
         </div>
       )}
+      {profileUpdateView && <ProfileUpdate profileImage={profileImage} />}
     </section>
   );
 };

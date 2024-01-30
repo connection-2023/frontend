@@ -70,9 +70,7 @@ const ModalContent = ({
 
   if (disableModalSwipe) {
     return (
-      <div
-        className={`absolute bottom-0 z-modal h-screen w-screen bg-white sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:h-auto sm:w-auto sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-md sm:pt-0 sm:shadow-float`}
-      >
+      <div className="absolute bottom-0 z-modal h-screen w-screen bg-white sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:h-auto sm:w-auto sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-md sm:pt-0 sm:shadow-float">
         <button onClick={closeModalHandler} className="absolute right-6 top-5">
           <CloseSVG
             width="24"
