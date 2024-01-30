@@ -5,7 +5,11 @@ import {
   getCheckNickname,
   patchInstructorNickname,
 } from '@/lib/apis/instructorApi';
-import { accessTokenReissuance } from '@/lib/apis/userApi';
+import {
+  accessTokenReissuance,
+  checkUserNickname,
+  updateMyProfile,
+} from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import { FetchError } from '@/types/types';
 import { ChangeEvent, useState } from 'react';
@@ -21,8 +25,9 @@ const NicknameUpdate = ({
   nickname,
   closeModalHandler,
 }: NicknameUpdateProps) => {
-  const { setAuthUserField } = useUserStore((state) => ({
+  const { setAuthUserField, userType } = useUserStore((state) => ({
     setAuthUserField: state.setAuthUserField,
+    userType: state.userType,
   }));
   const [changeNickname, setChangeNickname] = useState('');
   const [validatedNickname, setValidatedNickname] = useState(false);
@@ -42,21 +47,32 @@ const NicknameUpdate = ({
     }
 
     try {
-      if (await getCheckNickname(changeNickname)) {
-        toast.success('사용 가능한 닉네임 입니다!');
-        setValidatedNickname(true);
-      } else {
-        toast.error('중복된 닉네임 입니다.');
+      if (userType === 'user') {
+        await checkUserNickname(changeNickname);
+      } else if (!(await getCheckNickname(changeNickname))) {
+        throw new Error('중복');
       }
+      toast.success('사용 가능한 닉네임 입니다!');
+      setValidatedNickname(true);
     } catch (error) {
-      toast.error('잠시후 다시 시도해주세요!');
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 403 || error.message === '중복') {
+          toast.error('중복된 닉네임입니다!');
+        } else {
+          toast.error('잠시후 다시 시도해주세요!');
+        }
+      }
     }
   };
 
   const updateNickname = async () => {
     const changeNicknameAction = async () => {
       setAuthUserField('nickname', changeNickname);
-      await patchInstructorNickname(changeNickname);
+
+      userType === 'lecturer'
+        ? await patchInstructorNickname(changeNickname)
+        : await updateMyProfile({ nickname: changeNickname });
       toast.success('닉네임 변경 완료');
       if (closeModalHandler) {
         closeModalHandler();

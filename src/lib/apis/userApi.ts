@@ -153,7 +153,6 @@ export const accessTokenReissuance = async () => {
 };
 
 export const updateMyProfile = async (data: userProfileupdate) => {
-  console.log(data);
   try {
     const response = await fetch(`${DOMAIN}/api/users/update-profile`, {
       method: 'PATCH',
