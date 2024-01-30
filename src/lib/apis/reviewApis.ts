@@ -6,19 +6,14 @@ import {
 } from '@/types/review';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const getWriteReviews = async (
   orderBy: string,
 ): Promise<WriteReview[]> => {
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/review/user?orderBy=${orderBy}`,
-      {
-        method: 'GET',
-        credentials: 'include',
-      },
-    );
+    const response = await fetch(`/api/review/user?orderBy=${orderBy}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -48,7 +43,7 @@ export const getMyLecturersReviews = async (
         params.append(k, String(v));
       });
 
-    const response = await fetch(`${DOMAIN}/api/review/lecturer?${params}`, {
+    const response = await fetch(`/api/review/lecturer?${params}`, {
       method: 'GET',
       credentials: 'include',
       signal,
@@ -76,7 +71,7 @@ export const getMyLecturersReviews = async (
 
 export const writeReview = async (data: NewReviews) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/review/new`, {
+    const response = await fetch(`/api/review/new`, {
       method: 'POST',
       credentials: 'include',
       headers: {

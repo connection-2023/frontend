@@ -6,8 +6,6 @@ import {
 } from '@/types/pass';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const getIssuedPassLists = async (
   data: IgetFunction,
   type: 'lecturer' | 'user',
@@ -26,18 +24,15 @@ export const getIssuedPassLists = async (
     });
 
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/pass/getIssuedPassList?${params}`,
-      {
-        method: 'GET',
-        credentials: 'include',
-        signal,
-        headers: {
-          'Content-Type': 'application/json',
-          type: type,
-        },
+    const response = await fetch(`/api/pass/getIssuedPassList?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+      signal,
+      headers: {
+        'Content-Type': 'application/json',
+        type: type,
       },
-    );
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -59,7 +54,7 @@ export const getIssuedPassLists = async (
 
 export const createNewPass = async (data: IcreatePassReqData) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/pass/new`, {
+    const response = await fetch(`/api/pass/new`, {
       method: 'POST',
       credentials: 'include',
       headers: {
