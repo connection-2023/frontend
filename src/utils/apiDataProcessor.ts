@@ -511,6 +511,7 @@ export const transformSearchClass = (classList: searchClass[]) => {
         profile: {
           src: lecturer.profileCardImageUrl,
           nickname: lecturer.nickname,
+          id: lecturer.id,
         },
         isLiked: isLiked ? isLiked : false,
         searchAfter,
