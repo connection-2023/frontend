@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { userProfile, userType } from '@/types/auth';
+import { userProfile, userType, userProfileupdate } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
 import { social } from '@/types/auth';
 import { FetchError } from '@/types/types';
@@ -148,6 +148,33 @@ export const accessTokenReissuance = async () => {
     return response;
   } catch (error) {
     console.error('엑세스 토큰 재발급 오류', error);
+    throw error;
+  }
+};
+
+export const updateMyProfile = async (data: userProfileupdate) => {
+  console.log(data);
+  try {
+    const response = await fetch(`${DOMAIN}/api/users/update-profile`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data;
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 };

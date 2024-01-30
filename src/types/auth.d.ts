@@ -201,3 +201,13 @@ type ConsentOptionType<T extends keyof any> = T extends keyof IRegisterConsents
   : never;
 
 export type ConsentListType = Array<ConsentOptionType<keyof IRegisterConsents>>;
+
+export interface userProfileupdate {
+  name?: string;
+  nickname?: string;
+  phoneNumber?: string;
+  email?: string;
+  provider?: social;
+  authEmail?: string;
+  imageUrl?: string;
+}

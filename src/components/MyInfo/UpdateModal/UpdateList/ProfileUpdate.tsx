@@ -6,6 +6,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import { useUserStore } from '@/store';
 import { deleteImage, postSingleImage } from '@/lib/apis/imageApi';
 import { updateInstructor } from '@/lib/apis/instructorPostApis';
+import { updateMyProfile } from '@/lib/apis/userApi';
 
 interface ProfileUpdateProps {
   profileImage: string | null;
@@ -13,8 +14,9 @@ interface ProfileUpdateProps {
 }
 
 const ProfileUpdate = ({ profileImage, closeEvent }: ProfileUpdateProps) => {
-  const { setAuthUserField } = useUserStore((state) => ({
+  const { setAuthUserField, userType } = useUserStore((state) => ({
     setAuthUserField: state.setAuthUserField,
+    userType: state.userType,
   }));
   const [beforeImage, setBeforeImage] = useState<string | null>(profileImage);
   const modalRef = useRef(null);
@@ -42,7 +44,11 @@ const ProfileUpdate = ({ profileImage, closeEvent }: ProfileUpdateProps) => {
         if (beforeImage) {
           await deleteImage({ imageUrl: beforeImage });
         }
-        await updateInstructor({ profileCardImageUrl: imageUrl });
+        if (userType === 'lecturer') {
+          await updateInstructor({ profileCardImageUrl: imageUrl });
+        } else {
+          await updateMyProfile({ imageUrl });
+        }
       }
     } catch (error) {
       console.error(error);
