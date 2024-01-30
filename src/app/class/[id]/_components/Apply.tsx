@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { usePathname, useRouter } from 'next/navigation';
-import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
@@ -13,25 +13,19 @@ import { IClassSchedule, IDateTime } from '@/types/class';
 const ApplyList = dynamic(() => import('./apply/ApplyList'), { ssr: false });
 
 interface ApplyProps {
+  id: string | number;
   schedule: IClassSchedule[];
   price: number;
   maxCapacity: number;
   duration: number;
 }
 
-const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
-  const pathname = usePathname();
+const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
   const router = useRouter();
-  const pathnameParts = pathname.split('/class/');
-  const id = pathnameParts[1];
-  const [isOpened, setIsOpened] = useState(false);
   const modalRef = useRef(null);
-  const [selectedSchedules, setSelectedSchedules] = useState<IDateTime[]>([]);
+  const [selectedSchedule, setSelectedSchedule] = useState<IDateTime | null>();
   const [selectedDateTime, setSelectedDateTime] = useState('날짜 및 시간 선택');
-  const totalCount = selectedSchedules.reduce(
-    (sum, schedule) => sum + schedule.count,
-    0,
-  );
+  const [isOpened, setIsOpened] = useState(false);
 
   const scheduleLists = applyScheduleFilter(schedule, maxCapacity);
 
@@ -51,7 +45,7 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
     selectedDateTime.slice(0, selectedDateTime.lastIndexOf('(')).trim();
 
   const addSelectedSchedule = (selectedDateTime: string) => {
-    const selectedSchedule = schedule.find((item) => {
+    const findSchedule = schedule.find((item) => {
       const datetime = new Date(item.startDateTime);
 
       return (
@@ -60,26 +54,23 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
       );
     });
 
-    if (selectedSchedule) {
+    if (findSchedule) {
+      if (findSchedule.id === selectedSchedule?.lectureScheduleId) return;
+
       const newValue = {
-        lectureScheduleId: selectedSchedule.id,
-        lectureId: selectedSchedule.lectureId,
+        lectureScheduleId: findSchedule.id,
+        lectureId: findSchedule.lectureId,
         dateTime: selectedDateTime
           .slice(0, selectedDateTime.lastIndexOf('('))
           .trim(),
         space: {
           total: maxCapacity,
-          current: selectedSchedule.numberOfParticipants,
+          current: findSchedule.numberOfParticipants,
         },
         count: 1,
       };
 
-      const isDuplicate = selectedSchedules.some((value) => {
-        return value.dateTime === newValue.dateTime;
-      });
-
-      if (isDuplicate) return;
-      setSelectedSchedules([...selectedSchedules, newValue]);
+      setSelectedSchedule(newValue);
     }
   };
 
@@ -87,31 +78,19 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
     setIsOpened(false);
   });
 
-  useEffect(() => {
-    if (selectedDateTime !== '날짜 및 시간 선택') {
-      addSelectedSchedule(selectedDateTime);
-      setSelectedDateTime('날짜 및 시간 선택');
-    }
-  }, [selectedDateTime]);
-
   const onSelect = (listValue: string) => {
     setSelectedDateTime(listValue);
+    addSelectedSchedule(listValue);
   };
 
-  const removeReservationItem = (id: number) => {
-    setSelectedSchedules((prevDatetimes) =>
-      prevDatetimes.filter((datetime) => datetime.lectureScheduleId !== id),
-    );
+  const removeReservationItem = () => {
+    setSelectedSchedule(null);
   };
 
-  const updateCount = (id: number, newCount: number) => {
-    setSelectedSchedules((prevDatetimes) =>
-      prevDatetimes.map((datetime) =>
-        datetime.lectureScheduleId === id
-          ? { ...datetime, count: newCount }
-          : datetime,
-      ),
-    );
+  const updateCount = (newCount: number) => {
+    if (selectedSchedule) {
+      setSelectedSchedule({ ...selectedSchedule, count: newCount });
+    }
   };
 
   const handleApply = () => {
@@ -120,16 +99,16 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
       return;
     }
 
-    if (selectedSchedules.length === 0) {
+    if (!selectedSchedule) {
       toast.error('한 개 이상의 클래스를 선택해주세요!');
       return;
     }
 
-    const queryString = selectedSchedules
-      .map((item) => `count=${item.lectureScheduleId}-${item.count}`)
-      .join('&');
+    const { lectureScheduleId, count } = selectedSchedule;
 
-    router.push(`/class/${id}/apply?${queryString}`);
+    router.push(
+      `/class/${id}/apply?lectureScheduleId=${lectureScheduleId}&count=${count}`,
+    );
   };
 
   return (
@@ -146,38 +125,42 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
           />
         </div>
         <div className="hidden flex-col gap-2 md:flex">
-          {selectedSchedules.map((dateTime) => (
+          {selectedSchedule && (
             <ReservationItem
-              key={dateTime.lectureScheduleId}
-              lectureScheduleId={dateTime.lectureScheduleId}
-              dateTime={dateTime.dateTime}
-              space={dateTime.space}
-              count={dateTime.count}
-              onRemove={() => removeReservationItem(dateTime.lectureScheduleId)}
+              key={selectedSchedule.lectureScheduleId}
+              lectureScheduleId={selectedSchedule.lectureScheduleId}
+              dateTime={selectedSchedule.dateTime}
+              space={selectedSchedule.space}
+              count={selectedSchedule.count}
+              onRemove={removeReservationItem}
               countUpdate={updateCount}
             />
-          ))}
+          )}
         </div>
 
         {/* 가격 */}
         <div className="mb-4 mt-7 hidden w-full justify-between md:flex">
           <span className="text-xl font-bold">
-            {totalCount > 1 ? `총 ${totalCount}회` : '1회'}
+            {selectedSchedule ? `총 ${selectedSchedule.count}회` : '1회'}
           </span>
           <span className="text-xl font-bold">
-            {(totalCount > 1 ? price * totalCount : price).toLocaleString()}원
+            {(selectedSchedule
+              ? price * selectedSchedule.count
+              : price
+            ).toLocaleString()}
+            원
           </span>
         </div>
 
         <ApplyButton label="신청하기" onClick={handleApply} />
       </div>
 
-      {isOpened && (
+      {isOpened && selectedSchedule && (
         <ApplyList
           lists={formattedData.map((item) => item.dateTime)}
           selectedDateTime={selectedDateTime}
           onSelect={onSelect}
-          selectedSchedules={selectedSchedules}
+          selectedSchedules={selectedSchedule}
           removeReservationItem={removeReservationItem}
           updateCount={updateCount}
         />
@@ -186,10 +169,14 @@ const Apply = ({ schedule, duration, price, maxCapacity }: ApplyProps) => {
       <div className="flex w-full items-center justify-between gap-12 font-semibold md:hidden">
         <p className="flex max-w-[6rem] gap-x-[0.69rem] whitespace-nowrap">
           <span className="text-lg text-gray-500">
-            {totalCount > 1 ? `총 ${totalCount}회` : '1회'}
+            {selectedSchedule ? `총 ${selectedSchedule.count}회` : '1회'}
           </span>
           <span className="text-xl">
-            {(totalCount > 1 ? price * totalCount : price).toLocaleString()}원
+            {(selectedSchedule
+              ? price * selectedSchedule.count
+              : price
+            ).toLocaleString()}
+            원
           </span>
         </p>
         <ApplyButton label="신청하기" onClick={handleApply} />

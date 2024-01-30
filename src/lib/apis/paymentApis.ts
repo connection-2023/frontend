@@ -18,7 +18,7 @@ export const postPaymentInfo = async (data: IPaymentInfo) => {
       return response.message;
     }
 
-    return response.data.lecturePaymentInfo;
+    return response.data.pendingPaymentInfo;
   } catch (error) {
     if (error instanceof Error && error.message) {
       return error.message;
