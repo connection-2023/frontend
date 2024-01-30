@@ -11,36 +11,35 @@ interface ApplySidebarProps {
   postId: string;
   title: string;
   price: number;
-  handleAccountInfoSubmit: () => void;
 }
 
-const ApplySidebar = ({
-  postId,
-  title,
-  price,
-  handleAccountInfoSubmit,
-}: ApplySidebarProps) => {
+const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const [participants, setParticipants] = useState(0);
   const orderId = nanoid();
   const totalPrice = price * participants;
   const discountPrice = usePaymentStore((state) => state.discountPrice);
   const applyClass = usePaymentStore((state) => state.applyClass);
   const applicant = usePaymentStore((state) => state.applicant);
+  const paymentWidget = usePaymentStore((state) => state.paymentWidget);
+  const paymentMethodsWidget = usePaymentStore(
+    (state) => state.paymentMethodsWidget,
+  );
 
   useEffect(() => {
     if (applyClass) {
-      const newParticipants = applyClass.reduce(
-        (sum, schedule) => sum + schedule.participants,
-        0,
-      );
-      if (participants !== newParticipants) {
-        setParticipants(newParticipants);
-      }
+      setParticipants(applyClass.participants);
     }
   }, [JSON.stringify(applyClass)]);
 
+  useEffect(() => {
+    if (paymentMethodsWidget === null) {
+      return;
+    }
+
+    paymentMethodsWidget.updateAmount(totalPrice);
+  }, [participants, paymentWidget]);
+
   const handlePayment = async () => {
-    handleAccountInfoSubmit();
     if (!applyClass) {
       toast.error('하나 이상의 클래스를 추가해주세요!');
       return;
@@ -69,7 +68,7 @@ const ApplySidebar = ({
       lectureId: postId,
       orderName: title,
       orderId,
-      lectureSchedules: applyClass,
+      lectureSchedule: applyClass,
       originalPrice: totalPrice,
       finalPrice: totalPrice,
       representative,
@@ -77,20 +76,28 @@ const ApplySidebar = ({
       requests,
     };
 
-    // try {
-    //   const paymentInfo = await postPaymentInfo(paymentData);
-    //   const { orderId, orderName } = paymentInfo;
+    try {
+      const paymentInfo = await postPaymentInfo(paymentData);
+      const { orderId, orderName } = paymentInfo;
 
-    //   if (orderId && orderName) {
-    //   } else {
-    //     toast.error(paymentInfo);
-    //   }
-    // } catch (error) {
-    //   if (error instanceof Error && error.message) {
-    //     postPaymentCancel(orderId);
-    //     toast.error(error.message);
-    //   }
-    // }
+      if (orderId && orderName) {
+        await paymentWidget?.requestPayment({
+          orderId,
+          orderName,
+          customerName: representative,
+          customerEmail: '',
+          successUrl: `${window.location.origin}/class/${postId}/apply/complete`,
+          failUrl: `${window.location.origin}/fail`,
+        });
+      } else {
+        toast.error(paymentInfo);
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message) {
+        postPaymentCancel(orderId);
+        toast.error(error.message);
+      }
+    }
   };
 
   return (
@@ -108,20 +115,13 @@ const ApplySidebar = ({
             ㄴ 쿠폰사용 <span>{discountPrice?.toLocaleString()}원</span>
           </li>
         )}
-        <li className="text-sm font-medium text-sub-color1">
-          (노쇼 위약금을 제외한 수강금액은 수업 강사에게 직접 결제하시면
-          됩니다.)
-        </li>
       </ul>
 
-      <div className="mb-2 flex items-baseline justify-between font-bold">
+      <div className="mb-2 flex items-center justify-between font-bold">
         <p>최종 결제 금액</p>
-        <div className="flex flex-col">
-          <p className="text-right font-medium text-main-color">노쇼위약금</p>
-          <span className="min-w-[2rem] text-2xl text-black">
-            {totalPrice.toLocaleString()}원
-          </span>
-        </div>
+        <span className="min-w-[2rem] text-2xl text-black">
+          {totalPrice.toLocaleString()}원
+        </span>
       </div>
 
       <ul className="gap-2">

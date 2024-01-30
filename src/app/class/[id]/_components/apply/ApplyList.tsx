@@ -7,7 +7,7 @@ interface ApplyList {
   lists: string[];
   selectedDateTime: string;
   onSelect: (list: string) => void;
-  selectedSchedules: IDateTime[];
+  selectedSchedules: IDateTime;
   removeReservationItem: (id: number) => void;
   updateCount: (id: number, newVal: number) => void;
 }
@@ -33,17 +33,17 @@ const ApplyList = (props: ApplyList) => {
         />
       </div>
       <div className="mb-11 flex w-full flex-col gap-2 md:hidden">
-        {selectedSchedules.map((dateTime) => (
-          <ReservationItem
-            key={dateTime.lectureScheduleId}
-            lectureScheduleId={dateTime.lectureScheduleId}
-            dateTime={dateTime.dateTime}
-            space={dateTime.space}
-            count={dateTime.count}
-            onRemove={() => removeReservationItem(dateTime.lectureScheduleId)}
-            countUpdate={updateCount}
-          />
-        ))}
+        <ReservationItem
+          key={selectedSchedules.lectureScheduleId}
+          lectureScheduleId={selectedSchedules.lectureScheduleId}
+          dateTime={selectedSchedules.dateTime}
+          space={selectedSchedules.space}
+          count={selectedSchedules.count}
+          onRemove={() =>
+            removeReservationItem(selectedSchedules.lectureScheduleId)
+          }
+          countUpdate={updateCount}
+        />
       </div>
     </>
   );

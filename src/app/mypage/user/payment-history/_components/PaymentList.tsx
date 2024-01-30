@@ -36,7 +36,7 @@ const PaymentList = ({
       : 'text-gray-300';
 
   const handleNavigateToDetail = () => {
-    router.push(`/${reservation[0].lectureSchedule.lectureId}`);
+    router.push(`/${reservation.lectureSchedule.lectureId}`);
   };
 
   const handleModalOpened = async () => {
@@ -84,9 +84,7 @@ const PaymentList = ({
           className="flex h-28 w-[8.5rem] overflow-hidden rounded-md"
         >
           <Image
-            src={
-              reservation[0].lectureSchedule.lecture.lectureImage[0].imageUrl
-            }
+            src={reservation.lectureSchedule.lecture.imageUrl}
             width={0}
             height={0}
             sizes="(max-width: 768px) 100vw, 33vw"
@@ -99,13 +97,11 @@ const PaymentList = ({
         <ul className="flex flex-col gap-1">
           <li className="text-gray-300">결제일 {formatShortDate(updatedAt)}</li>
           <li>{orderName}</li>
-          {isClass && reservation[0] && (
+          {isClass && reservation && (
             <li>
               {`${formatDateTimeNoSec(
-                reservation[0].lectureSchedule.startDateTime,
-              )} ${reservation[0].participants}명 ${
-                reservation.length > 1 ? '+ ' + (reservation.length - 1) : ''
-              }`}
+                reservation.lectureSchedule.startDateTime,
+              )} ${reservation.participants}명`}
             </li>
           )}
 
@@ -114,10 +110,11 @@ const PaymentList = ({
               ₩{finalPrice.toLocaleString()}
             </span>
             <Link
-              href={`/receipt/${orderId}`}
+              href={`/mypage/user/payment-history/${orderId}`}
               className="flex items-center text-sub-color1"
+              prefetch={false}
             >
-              영수증보기
+              결제상세
               <ArrowUpSVG
                 width="17"
                 height="17"
@@ -143,12 +140,9 @@ const PaymentList = ({
             <section className="mt-3.5 w-full px-6">
               <h4 className="mb-1.5 font-semibold">{orderName}</h4>
               <div>
-                {reservation.map(
-                  (data) =>
-                    `${formatDateTimeNoSec(
-                      data.lectureSchedule.startDateTime,
-                    )} ${data.participants}명`,
-                )}
+                {`${formatDateTimeNoSec(
+                  reservation.lectureSchedule.startDateTime,
+                )} ${reservation.participants}명`}
               </div>
 
               <ul className="mt-4 flex w-full flex-col gap-y-2">

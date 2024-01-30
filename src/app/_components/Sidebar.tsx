@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   ArrowUpSVG,
   BookmarkSVG,
@@ -11,9 +11,7 @@ import {
   ReportSVG,
   MoneySVG,
   HeartSVG,
-  CheckCircleSVG,
 } from '@/icons/svg';
-import { getPendingCount } from '@/lib/apis/instructorApi';
 import { useUserStore } from '@/store/userStore';
 import ProfileImage from '@/components/ProfileImage/ProfileImage';
 
@@ -31,17 +29,6 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
     ),
   );
   const [isOpen, setIsOpen] = useState(isSubmenuActive);
-  const [approveCount, setApproveCount] = useState<number>();
-
-  useEffect(() => {
-    const getAprroveCount = async () => {
-      // const approveData = await getPendingCount();
-
-      setApproveCount(1);
-    };
-
-    getAprroveCount();
-  }, []);
 
   const { userType, authUser } = useUserStore();
   const isUser = userType === 'user';
@@ -132,14 +119,6 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
                   <li key={item.path} className={getTextColorClass(item.path)}>
                     <Link href={item.path} className="flex items-center">
                       {item.text}
-
-                      {item.text === '승인 대기' &&
-                        approveCount &&
-                        approveCount > 0 && (
-                          <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
-                            {approveCount}
-                          </span>
-                        )}
                     </Link>
                   </li>
                 ))}
@@ -168,7 +147,6 @@ const instructorLinks = [
     text: '내 클래스',
     icon: <BookmarkSVG width="21" height="21" className={iconStyle} />,
     submenuItems: [
-      { path: '/mypage/instructor/manage/approval-pending', text: '승인 대기' },
       { path: '/mypage/instructor/manage/schedule', text: '수업 일정' },
       { path: '/mypage/instructor/manage/myclass', text: '내 클래스' },
       { path: '/mypage/instructor/manage/member', text: '회원 관리' },
@@ -184,11 +162,6 @@ const instructorLinks = [
     path: '/mypage/instructor/income',
     text: '수익 관리',
     icon: <MoneySVG width="19" height="19" className={iconStyle} />,
-  },
-  {
-    path: '/mypage/instructor/refund',
-    text: '환불 요청',
-    icon: <CheckCircleSVG width="21" height="21" className={iconStyle} />,
   },
   {
     path: '/mypage/instructor/report',

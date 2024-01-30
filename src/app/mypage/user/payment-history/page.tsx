@@ -56,15 +56,15 @@ const PaymentHistory = () => {
 
     if (data instanceof Error) return;
 
-    const { totalItemCount, paymentHistory } = data;
+    const { totalItemCount, userPaymentsHistory } = data;
     setTotalItemCount(totalItemCount);
 
     if (totalItemCount) {
-      setPaymentData(paymentHistory);
+      setPaymentData(userPaymentsHistory);
 
       const itemIds = {
-        firstItemId: paymentHistory[0].id,
-        lastItemId: paymentHistory[displayCount - 1].id,
+        firstItemId: userPaymentsHistory[0].id,
+        lastItemId: userPaymentsHistory[displayCount - 1].id,
       };
 
       setItemId(itemIds);
@@ -189,7 +189,7 @@ const PaymentHistory = () => {
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
+      <div className="mb-4 flex flex-col gap-4">
         {paymentData.map((data) => (
           <PaymentList
             key={data.id}
