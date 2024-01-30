@@ -290,9 +290,12 @@ export interface searchBestInstructorData {
   }[];
 }
 
-export interface bankAccount {
-  id: number;
+export interface CommonBankAccount {
   bankCode: string;
   holderName: string;
   accountNumber: string;
+}
+
+export interface bankAccount extends CommonBankAccount {
+  id: number;
 }

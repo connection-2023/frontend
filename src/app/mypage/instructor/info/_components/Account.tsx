@@ -1,28 +1,29 @@
+'use client';
 import InfoUpdateModalViewButton from '@/components/MyInfo/UpdateModal/InfoUpdateModalViewButton';
 import AccountUpdate from '@/components/MyInfo/UpdateModal/UpdateList/AccountUpdate';
 import { BANK_CODE_TO_NAME } from '@/constants/constants';
-import { getBankAccount } from '@/lib/apis/serverApis/instructorPostApis';
-import { bankAccount } from '@/types/instructor';
+import { CommonBankAccount, bankAccount } from '@/types/instructor';
+import { useState } from 'react';
 
-const Account = async () => {
-  let accountInfo: bankAccount | undefined;
+interface AccountProps {
+  accountInfo: bankAccount;
+}
+const Account = ({ accountInfo: currentAccountInfo }: AccountProps) => {
+  const [accountInfo, setAccountInfo] = useState(currentAccountInfo);
 
-  try {
-    accountInfo = await getBankAccount();
-  } catch (error) {
-    console.error(error);
-  }
-
-  if (!accountInfo) {
-    return null;
-  }
+  const changeAccountInfo = (accountInfo: CommonBankAccount) => {
+    setAccountInfo((prev) => ({ ...prev, ...accountInfo }));
+  };
 
   return (
     <section className="flex flex-col rounded-md bg-white py-4 text-[#414141] shadow-vertical">
       <header className="flex items-center justify-between border-b border-solid border-gray-500 px-5 pb-3">
         <h1 className="text-lg font-semibold">계좌 정보</h1>
         <InfoUpdateModalViewButton>
-          <AccountUpdate accountInfo={accountInfo} />
+          <AccountUpdate
+            accountInfo={accountInfo}
+            changeAccountInfo={changeAccountInfo}
+          />
         </InfoUpdateModalViewButton>
       </header>
       <div className="mt-4 flex flex-col gap-2">

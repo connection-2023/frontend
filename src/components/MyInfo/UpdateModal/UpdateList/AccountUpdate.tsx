@@ -3,29 +3,34 @@ import BankSelect from '@/app/instructor/apply/_components/InstructorAuth/BankSe
 import Button from '@/components/Button/Button';
 import UpdateModalContainer from '@/components/MyInfo/UpdateModal/UpdateModalContainer';
 import { BANK_CODE_TO_NAME } from '@/constants/constants';
+import { updateBankAccount } from '@/lib/apis/instructorApi';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import {
   accountCertificationAction,
   accountCertificationState,
   accountFormValues,
 } from '@/types/info';
-import { bankAccount } from '@/types/instructor';
+import { CommonBankAccount, bankAccount } from '@/types/instructor';
+import { FetchError } from '@/types/types';
 import { useEffect, useReducer } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 interface AccountUpdateProps {
   accountInfo: bankAccount;
+  changeAccountInfo: (accountInfo: CommonBankAccount) => void;
   closeModalHandler?: () => void;
 }
 
 const AccountUpdate = ({
   closeModalHandler,
   accountInfo,
+  changeAccountInfo,
 }: AccountUpdateProps) => {
-  const { handleSubmit, register, control, watch } = useForm({
+  const { handleSubmit, register, control, watch, getValues } = useForm({
     defaultValues: {
       name: '',
-      bank: null,
+      bank: { value: '', label: '' },
       accountNumber: '',
     },
   });
@@ -88,13 +93,52 @@ const AccountUpdate = ({
     Object.values(data).forEach((value) => toast.error(value.message));
   };
 
-  const updateEmail = async () => {};
+  const updateAccountAction = async () => {
+    const [name, bank, accountNumber] = getValues([
+      'name',
+      'bank',
+      'accountNumber',
+    ]);
+
+    const data = {
+      bankCode: bank.value,
+      holderName: name,
+      accountNumber: accountNumber,
+    };
+
+    await updateBankAccount(data);
+    changeAccountInfo(data);
+    if (closeModalHandler) {
+      closeModalHandler();
+    }
+  };
+
+  const updateAccount = async () => {
+    try {
+      await updateAccountAction();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await updateAccountAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
 
   return (
     <UpdateModalContainer
       title="계좌정보 변경"
       closeEvent={closeModalHandler}
       disabled={!state.certification}
+      updateEvent={updateAccount}
     >
       <section className="flex flex-grow flex-col gap-4 sm:justify-center">
         <dl className="mt-5 grid grid-cols-[5.3rem_1fr] grid-rows-2 items-center gap-y-2 px-4">
