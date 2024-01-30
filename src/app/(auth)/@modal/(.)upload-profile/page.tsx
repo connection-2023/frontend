@@ -56,9 +56,10 @@ const UploadProfileModal = () => {
 
     const toastId = toast.loading('프로필 이미지 변경 중...');
     const response = await postProfileImage(imgFile);
+    const profileImage = response.data.newUserImage.imageUrl;
 
     if (response.statusCode === 201) {
-      store.setAuthUserImage(response.data.newUserImage.imageUrl);
+      store.setAuthUserField('profileImage', profileImage);
       toast.update(toastId, {
         render: '이미지 사진이 성공적으로 변경되었습니다!',
         type: 'success',

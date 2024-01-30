@@ -4,10 +4,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { getLikesClassList } from '@/lib/apis/classApi';
 import { useUserStore } from '@/store';
-import { instructorProfile, userProfile, userType } from '@/types/auth';
+import { profileInfo, userType } from '@/types/auth';
 
 interface UserStoreInitializerProps {
-  authUser: instructorProfile | userProfile | null;
+  authUser: profileInfo | null;
   userType: userType | null;
 }
 
@@ -15,6 +15,7 @@ const UserStoreInitializer = ({
   authUser,
   userType,
 }: UserStoreInitializerProps) => {
+  const initialized = useRef(false);
   const { setLikeClassList, likeClassList } = useUserStore((state) => ({
     setLikeClassList: state.setLikeClassList,
     likeClassList: state.likeClassList,
@@ -32,10 +33,16 @@ const UserStoreInitializer = ({
     }
   }, [reload]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   store.setAuthUser(authUser);
+  //   store.setUserType(userType);
+  // }, [authUser, userType]); // 다음 이슈에서 수정 예정
+
+  if (!initialized.current) {
     store.setAuthUser(authUser);
     store.setUserType(userType);
-  }, [authUser, userType]);
+    initialized.current = true;
+  }
 
   useEffect(() => {
     if (userType === 'user') {

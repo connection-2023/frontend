@@ -33,18 +33,16 @@ const ReservationInfo = ({
   useEffect(() => {
     if (!userInfo) return;
 
-    if ('name' in userInfo && 'phoneNumber' in userInfo) {
-      const name = userInfo.name || '';
-      const phoneNumber = userInfo.phoneNumber || '';
+    const name = userInfo.name;
+    const phoneNumber = userInfo.phoneNumber;
 
-      const newValue = {
-        ...applicantInfo,
-        representative: name,
-        phoneNumber,
-      };
-      setApplicantInfo(newValue);
-      setApplicant(newValue);
-    }
+    const newValue = {
+      ...applicantInfo,
+      representative: name,
+      phoneNumber,
+    };
+    setApplicantInfo(newValue);
+    setApplicant(newValue);
   }, [userInfo]);
 
   const updateParticipants = (id: number, value: number) => {

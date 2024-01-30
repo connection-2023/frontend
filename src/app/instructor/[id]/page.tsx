@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
@@ -6,7 +7,6 @@ import {
   getInstructorClassLists,
 } from '@/lib/apis/serverApis/instructorPostApis';
 import { getLecturerPassList } from '@/lib/apis/serverApis/passApis';
-import { useUserStore } from '@/store/userStore';
 import { transformToCardData } from '@/utils/apiDataProcessor';
 import {
   formatLocationToString,
@@ -28,9 +28,10 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const userStoreState = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
 
-  const profile = getInstructor(id, userStoreState.userType === 'user');
+  const profile = getInstructor(id, !!user);
   const classLists = getInstructorClassLists(id);
   const passLists = getLecturerPassList(id);
 

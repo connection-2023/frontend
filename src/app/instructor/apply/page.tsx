@@ -5,15 +5,19 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { deleteImage } from '@/lib/apis/imageApi';
-import { instructorRegister } from '@/lib/apis/instructorApi';
+import {
+  getInstructorProfile,
+  instructorRegister,
+} from '@/lib/apis/instructorApi';
+import { getSwitchUserRole } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import {
   categorizeGenres,
   constructEmail,
+  convertToProfileInfo,
   reqRegions,
   uploadImageFiles,
 } from '@/utils/apiDataProcessor';
-import { switchToInstructor } from '@/utils/switchUserUtil';
 import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
@@ -49,6 +53,21 @@ const ApplyPage = () => {
     handleSubmit,
     formState: { isValid },
   } = formMethods;
+
+  const switchToInstructor = async () => {
+    await getSwitchUserRole('lecturer');
+
+    const instructorProfile = await getInstructorProfile();
+
+    if (instructorProfile) {
+      const authUser = convertToProfileInfo(instructorProfile);
+      store.setAuthUser(authUser);
+      store.setUserType('lecturer');
+    }
+
+    router.push('/');
+    router.refresh();
+  };
 
   const submit = async (data: InstructorApplyData) => {
     try {
@@ -106,7 +125,7 @@ const ApplyPage = () => {
         genres: newGenres,
         regions: newRegions,
         phoneNumber,
-        profileCardImageUrl: uploadImgList[0], //추후 강사 프로필 이미지 넣는 곳 생기면 수정
+        profileCardImageUrl: uploadImgList[0],
         youtubeUrl,
         instagramUrl,
         homepageUrl,
@@ -122,10 +141,7 @@ const ApplyPage = () => {
 
       await instructorRegister(instructorData);
       toast.success('강사 등록 완료!');
-
-      await switchToInstructor(store);
-
-      router.push('/');
+      switchToInstructor();
     } catch (error) {
       if (error instanceof Error) {
         toast.error('잠시 후 다시 시도해 주세요');

@@ -17,10 +17,10 @@ export const DELETE = async (request: NextRequest) => {
   if (!id) {
     return NextResponse.json(
       {
-        status: 401,
+        status: 403,
         message: 'id값이 존재하지 않습니다.',
       },
-      { status: 401 },
+      { status: 403 },
     );
   }
 

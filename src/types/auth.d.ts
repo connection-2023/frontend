@@ -4,6 +4,8 @@ interface KakaoError {
   error_description: string;
 }
 
+export type social = 'NAVER' | 'KAKAO' | 'GOOGLE';
+
 interface RequestParams {
   url: string;
   success: (profile: UserProfile) => void;
@@ -75,7 +77,7 @@ interface LogoutResponse {
 
 export interface SignInResponse {
   authEmail: string;
-  signUpType: 'NAVER' | 'KAKAO' | 'GOOGLE';
+  signUpType: social;
   idToken?: string;
 }
 
@@ -138,26 +140,42 @@ export interface ISignUp {
   image?: File | null;
 }
 
+export type userType = 'user' | 'lecturer';
+
 export interface userProfile {
   id: string;
   name: string;
   nickname: string;
   phoneNumber: string;
   email: string;
-  userProfileImage: { imageUrl: string | null };
+  userProfileImage: string | null;
   verified: boolean;
   createdAt: string;
   updatedAt: string;
+  auth: { email: string; type: social };
 }
-
-export type userType = 'user' | 'lecturer';
 
 export interface instructorProfile {
   id: string;
   profileCardImageUrl: string | null;
   nickname: string;
-  name: string;
   phoneNumber: string;
+  email: string;
+  users: {
+    name: string;
+    auth: { email: string; type: social };
+  };
+}
+
+export interface profileInfo {
+  id: string;
+  name: string;
+  nickname: string;
+  phoneNumber: string;
+  email: string;
+  profileImage: string | null;
+  authEmail: string;
+  type: social;
 }
 
 interface IMarketingConsent {
@@ -183,3 +201,13 @@ type ConsentOptionType<T extends keyof any> = T extends keyof IRegisterConsents
   : never;
 
 export type ConsentListType = Array<ConsentOptionType<keyof IRegisterConsents>>;
+
+export interface userProfileupdate {
+  name?: string;
+  nickname?: string;
+  phoneNumber?: string;
+  email?: string;
+  provider?: social;
+  authEmail?: string;
+  imageUrl?: string;
+}

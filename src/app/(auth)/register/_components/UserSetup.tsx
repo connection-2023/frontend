@@ -6,6 +6,7 @@ import { checkUserNickname } from '@/lib/apis/userApi';
 import StatusButton from '@/components/Button/StatusButton';
 import { SignInResponse } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
+import { FetchError } from '@/types/types';
 
 const inputStyle =
   'w-full max-w-[15.4rem] h-8 rounded-md px-3 py-2 outline outline-1 outline-gray-700 focus:outline-sub-color1';
@@ -59,19 +60,31 @@ const UserSetup = ({
 
   const validateNickname = async () => {
     if (nickname.length > 11) {
-      toast.error('닉네임은 최대 11글자까지 가능합니다!');
-      return;
+      return toast.error('닉네임은 최대 11글자까지 가능합니다!');
     }
 
-    const response = await checkUserNickname(nickname);
+    if (nickname.length < 2 || nickname.length > 12) {
+      return toast.error('닉네임은 2자 이상, 12자 이하로 작성 해주세요.');
+    }
 
-    if (response.status === 200) {
+    const pattern = /^[가-힣a-zA-Z0-9]+$/;
+    if (!pattern.test(nickname)) {
+      return toast.error('올바른 닉네임을 작성 해주세요.');
+    }
+
+    try {
+      await checkUserNickname(nickname);
       toast.success('사용 가능한 닉네임 입니다!');
       setValidatedNickname(nickname);
-    } else if (response.status === 403) {
-      toast.error('중복된 닉네임입니다!');
-    } else {
-      toast.error('잠시후 다시 시도해주세요!');
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 403) {
+          toast.error('중복된 닉네임입니다!');
+        } else {
+          toast.error('잠시후 다시 시도해주세요!');
+        }
+      }
     }
   };
 

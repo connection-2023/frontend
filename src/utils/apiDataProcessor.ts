@@ -13,6 +13,7 @@ import {
 } from '@/lib/apis/imageApi';
 import { formatLocationToString } from '@/utils/parseUtils';
 import { calculateFinalDates } from './parseUtils';
+import { instructorProfile, userProfile, profileInfo } from '@/types/auth';
 import {
   IprocessedDraft,
   classCreateData,
@@ -582,4 +583,36 @@ export const transformBestClassSearch = (classList: searchBestClassData[]) => {
       };
     },
   );
+};
+
+export const convertToProfileInfo = (
+  profile: userProfile | instructorProfile,
+): profileInfo => {
+  let profileInfo = null;
+
+  if ('users' in profile) {
+    profileInfo = {
+      id: profile.id,
+      name: profile.users.name,
+      nickname: profile.nickname,
+      phoneNumber: profile.phoneNumber,
+      email: profile.email,
+      profileImage: profile.profileCardImageUrl || null,
+      authEmail: profile.users.auth.email,
+      type: profile.users.auth.type,
+    };
+  } else {
+    profileInfo = {
+      id: profile.id,
+      name: profile.name,
+      nickname: profile.nickname,
+      phoneNumber: profile.phoneNumber,
+      email: profile.email,
+      profileImage: profile.userProfileImage || null,
+      authEmail: profile.auth.email,
+      type: profile.auth.type,
+    };
+  }
+
+  return profileInfo;
 };

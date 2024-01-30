@@ -1,7 +1,7 @@
 import { ButtonSizes, ButtonStyles } from '../../constants/constants';
 
 interface ButtonProps {
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | 'full';
   color?: 'primary' | 'default' | 'secondary';
   children?: React.ReactNode;
   type?: 'button' | 'submit';
@@ -27,7 +27,7 @@ const Button = ({
 
   const styles = `${
     disabled ? DisabledStyled[color] : ButtonStyles[color]
-  } group h-[${ButtonSizes[size]}px]`;
+  } group ${size === 'full' ? 'h-full' : `h-[${ButtonSizes[size]}px]`}`;
 
   return (
     <button

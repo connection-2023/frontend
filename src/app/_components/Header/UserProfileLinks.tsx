@@ -3,7 +3,6 @@ import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, ChatSVG, SearchSVG } from '@/icons/svg';
 import { useUserStore } from '@/store/userStore';
 import Profile from './Profile';
-import { instructorProfile, userProfile } from '@/types/auth';
 
 const UserProfileLinks = () => {
   const { alarmCount, commentCount } = dummyUserInfo;
@@ -41,15 +40,7 @@ const UserProfileLinks = () => {
             </span>
           </button>
 
-          <Profile
-            defaultProfileImg={
-              userStoreState.userType === 'lecturer'
-                ? (userStoreState.authUser as instructorProfile)
-                    ?.profileCardImageUrl
-                : (userStoreState.authUser as userProfile)?.userProfileImage
-                    ?.imageUrl
-            }
-          />
+          <Profile defaultProfileImg={userStoreState.authUser.profileImage} />
         </>
       )}
     </div>

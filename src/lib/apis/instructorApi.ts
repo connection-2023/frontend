@@ -1,11 +1,15 @@
+import { instructorProfile } from '@/types/auth';
 import { IMonthlyClassSchedules } from '@/types/class';
 import {
   IInstructorRegister,
   IApproveList,
   IUpdatePaymentStatusRequestData,
+  CommonBankAccount,
+  bankAccount,
 } from '@/types/instructor';
+import { FetchError } from '@/types/types';
 
-export const getInstructorProfile = async () => {
+export const getInstructorProfile = async (): Promise<instructorProfile> => {
   const response = await fetch(`/api/instructors/myProfile`, {
     credentials: 'include',
     headers: {
@@ -23,11 +27,48 @@ export const getCheckNickname = async (nickname: string) => {
       `/api/instructors/check-nickname?nickname=${encodeURIComponent(
         nickname,
       )}`,
-    ).then((data) => data.json());
+    );
 
-    return response.data.isAvailable;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.isAvailable;
   } catch (error) {
-    console.error('닉네임 중복 검사 오류', error);
+    console.error('강사 닉네임 중복 검사 오류', error);
+    throw error;
+  }
+};
+
+export const patchInstructorNickname = async (nickname: string) => {
+  try {
+    const response = await fetch(
+      `/api/instructors/change-nickname?nickname=${encodeURIComponent(
+        nickname,
+      )}`,
+      {
+        credentials: 'include',
+        method: 'PATCH',
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData;
+  } catch (error) {
+    console.error('강사 닉네임 수정 오류', error);
     throw error;
   }
 };
@@ -55,6 +96,31 @@ export const instructorRegister = async (data: IInstructorRegister) => {
     return await response.json();
   } catch (error) {
     console.error('강사 등록 오류', error);
+    throw error;
+  }
+};
+
+export const updateBankAccount = async (data: CommonBankAccount) => {
+  try {
+    const response = await fetch(`/api/instructors/change-account`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('계좌 등록 & 변경 오류', error);
     throw error;
   }
 };
@@ -115,10 +181,34 @@ export const patchPendingStatus = async (
       throw Error(response.message);
     }
 
-    console.log(response);
     return response.status;
   } catch (error) {
     console.error('승인 대기 상태 변경 오류', error);
+    throw error;
+  }
+};
+
+export const getBankAccount = async (): Promise<bankAccount> => {
+  try {
+    const response = await fetch(`/api/instructors/get-account`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.lecturerRecentBankAccount;
+  } catch (error) {
+    console.error('강사 닉네임 중복 검사 오류', error);
     throw error;
   }
 };

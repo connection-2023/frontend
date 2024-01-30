@@ -10,7 +10,6 @@ import formatDate from '@/utils/formatDate';
 import Button from '@/components/Button/Button';
 import ReviewStatistics from '@/components/Review/ReviewStatistics';
 import UserReview from '@/components/Review/UserReview';
-import { userProfile } from '@/types/auth';
 import { ReservationDetails, WriteReview } from '@/types/review';
 import { FetchError } from '@/types/types';
 
@@ -21,11 +20,11 @@ interface ReviewProps {
 
 const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
   const [reviewList, setReviewList] = useState(writeReviews);
-  const userStoreState = useUserStore();
+  const { authUser } = useUserStore((state) => ({
+    authUser: state.authUser,
+  }));
 
-  const profile = (userStoreState.authUser as userProfile)?.userProfileImage
-    ?.imageUrl;
-  const nickname = (userStoreState.authUser as userProfile)?.nickname;
+  if (!authUser) return null;
 
   const filterChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     try {
@@ -97,8 +96,8 @@ const MyReview = ({ writeReviews, classLists }: ReviewProps) => {
                 }) => (
                   <UserReview
                     key={id}
-                    src={profile}
-                    nickname={nickname}
+                    src={authUser.profileImage}
+                    nickname={authUser.nickname}
                     average={stars}
                     date={formatDate(lecture.startDate)}
                     title={lecture.title}

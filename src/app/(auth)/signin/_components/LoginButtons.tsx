@@ -4,20 +4,18 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { getAuth, getMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 import GoogleAuth from './GoogleAuth';
 import KakaoAuth from './KakaoAuth';
 import NaverAuth from './NaverAuth';
-import { LoginResponse } from '@/types/auth';
+import { LoginResponse, social } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 const LoginButtons = () => {
   const store = useUserStore();
   const router = useRouter();
 
-  const handleAuthSuccess = async (
-    social: 'NAVER' | 'KAKAO' | 'GOOGLE',
-    idToken: string,
-  ) => {
+  const handleAuthSuccess = async (social: social, idToken: string) => {
     const toastId = toast.loading('로그인 중...');
 
     const response = await getAuth(social, idToken);
@@ -26,8 +24,11 @@ const LoginButtons = () => {
     if (status === 200) {
       const profileRes = await getMyProfile(data.userAccessToken);
 
-      store.setAuthUser(profileRes.data.myProfile);
+      const authUser = convertToProfileInfo(profileRes);
+
+      store.setAuthUser(authUser);
       store.setUserType('user');
+
       toast.update(toastId, {
         render: '로그인 성공!',
         type: 'success',
@@ -36,6 +37,7 @@ const LoginButtons = () => {
       });
 
       router.replace('/');
+      router.refresh();
     } else if (status === 201) {
       const { authEmail, signUpType } = data;
 

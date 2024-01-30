@@ -1,23 +1,29 @@
 import { toast } from 'react-toastify';
-import { userType } from '@/types/auth';
+import { userProfile, userType, userProfileupdate } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
+import { social } from '@/types/auth';
+import { FetchError } from '@/types/types';
 
 export const checkUserNickname = async (nickname: string) => {
   try {
-    const res = await fetch(
-      `api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+    const response = await fetch(
+      `/api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
     );
 
-    return res;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    return await response.json();
   } catch (error) {
-    throw new Error('유저 닉네임 중복 확인 fetch 요청 오류');
+    throw error;
   }
 };
 
-export const getAuth = async (
-  social: 'NAVER' | 'KAKAO' | 'GOOGLE',
-  idToken: string,
-) => {
+export const getAuth = async (social: social, idToken: string) => {
   try {
     const response = await fetch(
       `/api/auth/login?social=${social}&token=${encodeURIComponent(idToken)}`,
@@ -59,7 +65,7 @@ export const postUserRegister = async (data: IRegisterForm) => {
   return response;
 };
 
-export const getMyProfile = async (token?: string) => {
+export const getMyProfile = async (token?: string): Promise<userProfile> => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
@@ -75,7 +81,7 @@ export const getMyProfile = async (token?: string) => {
 
   const res = await response.json();
 
-  return res;
+  return res.data.myProfile;
 };
 
 export const getLogout = async () => {
@@ -136,6 +142,32 @@ export const accessTokenReissuance = async () => {
     return response;
   } catch (error) {
     console.error('엑세스 토큰 재발급 오류', error);
+    throw error;
+  }
+};
+
+export const updateMyProfile = async (data: userProfileupdate) => {
+  try {
+    const response = await fetch(`/api/users/update-profile`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data;
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 };

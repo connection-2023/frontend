@@ -1,16 +1,9 @@
-import { redirect } from 'next/navigation';
 import { getInstructor } from '@/lib/apis/serverApis/instructorPostApis';
-import { useUserStore } from '@/store';
 import { categorizeGenres, resRegions } from '@/utils/apiDataProcessor';
 import EditInstructor from './_components/EditInstructor';
+import IdAccessChecker from './_components/IdAccessChecker';
 
 const page = async ({ params: { id } }: { params: { id: string } }) => {
-  const { authUser } = useUserStore.getState();
-
-  if (Number(authUser?.id) !== Number(id)) {
-    redirect('/404');
-  }
-
   let processData;
 
   try {
@@ -35,6 +28,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <main className="mx-auto mb-28 flex w-full max-w-[40rem] flex-col items-center px-5">
+      <IdAccessChecker id={id} />
       <EditInstructor defaultData={processData} />
     </main>
   );
