@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import errorImg from '@/images/ErrorImg.webp';
+import errorImg from '@/images/ErrorImg.webp';
 
 interface ErrorProps {
   toHome?: boolean;
