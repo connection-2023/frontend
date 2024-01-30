@@ -1,4 +1,5 @@
 'use client';
+import { motion } from 'framer-motion';
 import ProfileImg from '@/components/ProfileImage/ProfileImage';
 import Link from 'next/link';
 import Button from '@/components/Button/Button';
@@ -92,12 +93,19 @@ const Info = () => {
       <div className="flex flex-col gap-7 sm:flex-row">
         <button
           onClick={() => setProfileUpdateView(true)}
-          className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0 [&>*:nth-child(1)]:h-44"
+          className="group relative mx-auto w-44 flex-shrink-0 self-start sm:mx-0"
         >
-          <ProfileImg src={profileImage} size="xlarge" />
-          <div className="absolute bottom-0 right-0 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-vertical group-hover:shadow-[inset_0_0px_3px_1px_rgba(0,0,0,0.3)]">
+          <motion.div layoutId="profile" className="[&>*:nth-child(1)]:h-44">
+            <ProfileImg src={profileImage} size="xlarge" />
+          </motion.div>
+          <motion.div layoutId="cansel" />
+          <motion.div layoutId="delete" />
+          <motion.div
+            layoutId="change"
+            className="absolute bottom-0 right-0 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-vertical group-hover:shadow-[inset_0_0px_3px_1px_rgba(0,0,0,0.3)]"
+          >
             <ChangeImageSVG className="h-7 w-7" />
-          </div>
+          </motion.div>
         </button>
         <dl className="flex grow flex-col border-t border-solid border-gray-700">
           {infoComponents.map(({ dt, dd, viewArrow, updateElement }) => (

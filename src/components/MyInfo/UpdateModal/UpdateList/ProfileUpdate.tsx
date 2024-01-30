@@ -1,4 +1,5 @@
 'use client';
+import { motion } from 'framer-motion';
 import { ChangeImageSVG, CloseSVG, DeleteSVG, ProfileSVG } from '@/icons/svg';
 import { useClickAway } from 'react-use';
 import Image from 'next/image';
@@ -58,8 +59,9 @@ const ProfileUpdate = ({ profileImage, closeEvent }: ProfileUpdateProps) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto bg-black/60 backdrop-blur-sm">
       <div className="absolute left-1/2 top-1/3 z-modal -translate-x-1/2 -translate-y-1/2 sm:top-1/2">
-        <div
+        <motion.div
           ref={modalRef}
+          layoutId="profile"
           className="relative h-[calc(100vw-1.6rem)] max-h-[21.56rem] w-[calc(100vw-1.6rem)] max-w-[21.56rem] sm:h-[21.56rem] sm:w-[21.56rem] "
         >
           {beforeImage ? (
@@ -69,6 +71,7 @@ const ProfileUpdate = ({ profileImage, closeEvent }: ProfileUpdateProps) => {
                 alt="프로필 사진"
                 src={beforeImage}
                 sizes="(min-width: 744px) 345px, 345px"
+                priority={true}
                 className="rounded-full border-2 border-black"
               />
             </button>
@@ -90,6 +93,7 @@ const ProfileUpdate = ({ profileImage, closeEvent }: ProfileUpdateProps) => {
               className: 'stroke-black stroke-2',
             }}
             clickEvent={closeEvent}
+            layoutId="cansel"
           />
           <ButtonGroup
             icon={DeleteSVG}
@@ -97,6 +101,7 @@ const ProfileUpdate = ({ profileImage, closeEvent }: ProfileUpdateProps) => {
             positionClasses="-bottom-1/3 right-1/2 sm:-right-3 sm:bottom-0"
             iconProps={{ width: '28', height: '28', className: 'stroke-black' }}
             clickEvent={deleteProfile}
+            layoutId="delete"
           />
           <ButtonGroup
             icon={ChangeImageSVG}
@@ -104,8 +109,9 @@ const ProfileUpdate = ({ profileImage, closeEvent }: ProfileUpdateProps) => {
             positionClasses="-bottom-[17%] right-1/2 sm:-right-12 sm:bottom-14"
             iconProps={{ className: 'h-7 w-7' }}
             clickEvent={changeProfileClick}
+            layoutId="change"
           />
-        </div>
+        </motion.div>
       </div>
       <input
         type="file"
@@ -125,6 +131,7 @@ interface ButtonGroupProps {
   positionClasses: string;
   iconProps: React.SVGProps<SVGSVGElement>;
   clickEvent: () => void;
+  layoutId: string;
 }
 
 const ButtonGroup = ({
@@ -133,9 +140,11 @@ const ButtonGroup = ({
   positionClasses,
   iconProps,
   clickEvent,
+  layoutId,
 }: ButtonGroupProps) => {
   return (
-    <div
+    <motion.div
+      layoutId={layoutId}
       className={`group absolute ${positionClasses} flex translate-x-1/2 items-center gap-3 sm:translate-x-0`}
     >
       <button
@@ -147,7 +156,7 @@ const ButtonGroup = ({
       <label className="cursor-pointer text-white group-hover:font-semibold sm:hidden">
         {label}
       </label>
-    </div>
+    </motion.div>
   );
 };
 
