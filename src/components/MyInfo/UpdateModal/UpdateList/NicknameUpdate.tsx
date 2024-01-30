@@ -68,11 +68,11 @@ const NicknameUpdate = ({
 
   const updateNickname = async () => {
     const changeNicknameAction = async () => {
-      setAuthUserField('nickname', changeNickname);
-
       userType === 'lecturer'
         ? await patchInstructorNickname(changeNickname)
         : await updateMyProfile({ nickname: changeNickname });
+
+      setAuthUserField('nickname', changeNickname);
       toast.success('닉네임 변경 완료');
       if (closeModalHandler) {
         closeModalHandler();

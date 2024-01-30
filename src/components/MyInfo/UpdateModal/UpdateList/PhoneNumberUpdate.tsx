@@ -4,6 +4,9 @@ import { ChangeEvent, useEffect, useReducer, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { certificationAction, certificationState } from '@/types/info';
 import { toast } from 'react-toastify';
+import { useUserStore } from '@/store';
+import { accessTokenReissuance, updateMyProfile } from '@/lib/apis/userApi';
+import { FetchError } from '@/types/types';
 
 interface PhoneNumberUpdateProps {
   phoneNumber: string;
@@ -14,7 +17,7 @@ const PhoneNumberUpdate = ({
   phoneNumber,
   closeModalHandler,
 }: PhoneNumberUpdateProps) => {
-  const { handleSubmit, register, setFocus, setValue } = useForm({
+  const { handleSubmit, register, setFocus, setValue, getValues } = useForm({
     defaultValues: {
       phoneNumber: '',
       authenticationCode: '',
@@ -58,6 +61,10 @@ const PhoneNumberUpdate = ({
   };
 
   const [state, dispatch] = useReducer(verificationReducer, initialState);
+  const { setAuthUserField, userType } = useUserStore((state) => ({
+    setAuthUserField: state.setAuthUserField,
+    userType: state.userType,
+  }));
 
   useEffect(() => {
     if (state.authenticationCodeView) {
@@ -93,7 +100,42 @@ const PhoneNumberUpdate = ({
     Object.values(data).forEach((value) => toast.error(value.message));
   };
 
-  const updatePhoneNumber = async () => {};
+  const updatePhoneNumber = async () => {
+    const phoneNumber = getValues('phoneNumber');
+
+    const changePhoneNumberAction = async () => {
+      if (userType === 'user') {
+        await updateMyProfile({
+          phoneNumber,
+        });
+      } else {
+      }
+      setAuthUserField('phoneNumber', phoneNumber);
+      toast.success('휴대폰 번호 변경 완료');
+      if (closeModalHandler) {
+        closeModalHandler();
+      }
+    };
+
+    try {
+      await changePhoneNumberAction();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await changePhoneNumberAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+          console.error(error);
+        }
+      }
+    }
+  };
 
   return (
     <UpdateModalContainer

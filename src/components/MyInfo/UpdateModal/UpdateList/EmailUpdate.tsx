@@ -8,6 +8,9 @@ import {
   certificationAction,
   certificationState,
 } from '@/types/info';
+import { accessTokenReissuance, updateMyProfile } from '@/lib/apis/userApi';
+import { useUserStore } from '@/store';
+import { FetchError } from '@/types/types';
 
 //추후 이메일 인증, 이메일 변경 api 연결 필요
 interface EmailUpdateProps {
@@ -16,6 +19,10 @@ interface EmailUpdateProps {
 }
 
 const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
+  const { setAuthUserField, userType } = useUserStore((state) => ({
+    setAuthUserField: state.setAuthUserField,
+    userType: state.userType,
+  }));
   const { handleSubmit, register, getValues, setFocus, setValue } = useForm({
     defaultValues: {
       emailFront: '',
@@ -103,7 +110,41 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
     Object.values(data).forEach((value) => toast.error(value.message));
   };
 
-  const updateEmail = async () => {};
+  const updateEmail = async () => {
+    const email = getValues('emailFront') + '@' + getValues('emailBack');
+
+    const changeEmailAction = async () => {
+      if (userType === 'user') {
+        await updateMyProfile({
+          email,
+        });
+      } else {
+      }
+      setAuthUserField('email', email);
+      toast.success('이메일 변경 완료');
+      if (closeModalHandler) {
+        closeModalHandler();
+      }
+    };
+
+    try {
+      await changeEmailAction();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await changeEmailAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
 
   return (
     <UpdateModalContainer
