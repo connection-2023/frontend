@@ -17,7 +17,7 @@ const UpdateModalContainer = ({
   closeEvent,
 }: UpdateModalContainerProps) => {
   return (
-    <main className="flex h-full w-full flex-col sm:h-[19rem] sm:w-[40rem]">
+    <main className="flex h-full w-full flex-col sm:w-[40rem]">
       <header className="flex justify-center border-b border-solid border-gray-700 pb-6 pt-9 sm:py-4 ">
         <h1 className="text-lg font-semibold sm:text-2xl">{title}</h1>
       </header>

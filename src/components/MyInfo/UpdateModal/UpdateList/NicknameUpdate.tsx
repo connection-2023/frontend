@@ -101,7 +101,7 @@ const NicknameUpdate = ({
       updateEvent={updateNickname}
       closeEvent={closeModalHandler}
     >
-      <section className="mx-auto flex flex-grow flex-col gap-4 pt-7 sm:mx-0 sm:justify-center sm:px-8 sm:pt-0">
+      <section className="mx-auto flex h-[12rem] flex-grow flex-col gap-4 pt-7 sm:mx-0 sm:justify-center sm:px-8 sm:pt-0">
         <dl className="grid grid-rows-2 items-center gap-y-3 text-lg font-semibold sm:grid-cols-[7rem_1fr] sm:grid-rows-none sm:gap-y-0 sm:text-base">
           <dt>현재 닉네임</dt>
           <dd>{nickname}</dd>

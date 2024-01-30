@@ -14,6 +14,7 @@ interface EmailUpdateProps {
   email: string;
   closeModalHandler?: () => void;
 }
+
 const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
   const { handleSubmit, register, getValues, setFocus, setValue } = useForm({
     defaultValues: {
@@ -111,7 +112,7 @@ const EmailUpdate = ({ email, closeModalHandler }: EmailUpdateProps) => {
       closeEvent={closeModalHandler}
       updateEvent={updateEmail}
     >
-      <section className="flex flex-grow flex-col gap-4 px-5 pt-7 sm:justify-center sm:px-8 sm:pt-0">
+      <section className="flex h-[12rem] flex-grow flex-col gap-4 px-5 pt-7 sm:justify-center sm:px-8 sm:pt-0">
         <dl className="grid grid-rows-2 items-center gap-y-3 text-lg font-semibold sm:grid-cols-[7rem_1fr] sm:grid-rows-none sm:gap-y-0 sm:text-base">
           <dt>현재 이메일</dt>
           <dd>{email}</dd>
