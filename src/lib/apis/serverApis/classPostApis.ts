@@ -3,6 +3,7 @@ import {
   IClassScheduleResponse,
   IClassPreviewResponse,
   IClassDetailResponse,
+  searchBestClassData,
 } from '@/types/class';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
@@ -106,4 +107,30 @@ export const getUserReservation = async (id: string): Promise<boolean> => {
     return true;
   }
   return false;
+};
+
+export const getLatestClassLists = async (): Promise<searchBestClassData[]> => {
+  const cookieStore = cookies();
+  const token = cookieStore.get('userAccessToken')?.value;
+  const path = token ? 'users' : 'non-members';
+  const headers: Record<string, string> = token
+    ? {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    : {
+        'Content-Type': 'application/json',
+      };
+
+  const response = await fetch(END_POINT + `/latest-lectures/${path}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers,
+  }).then((data) => data.json());
+
+  if (response.statusCode !== 200) {
+    throw new Error('최신 클래스 조회 요청 에러!');
+  }
+
+  return response.data.lectures;
 };
