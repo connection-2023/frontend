@@ -469,37 +469,6 @@ export interface ApiResponse {
   data: ResponseData;
 }
 
-export interface ILearner {
-  id: number;
-  enrollmentCount: number;
-  memo: string;
-  user: {
-    id: number;
-    nickname: string;
-    userProfileImage: {
-      imageUrl: string;
-    };
-  };
-  reservation: {
-    id: number;
-    representative: string;
-    phoneNumber: string;
-    participants: number;
-    requests: string;
-    lectureSchedule: {
-      id: number;
-      startDateTime: string;
-      endDateTime: string;
-      numberOfParticipants: number;
-      lecture: {
-        id: number;
-        title: string;
-        imageUrl: null | string;
-      };
-    };
-  };
-}
-
 export interface IClassEditData
   extends IClassScheduleResponse,
     IClassPreviewResponse,
