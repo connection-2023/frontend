@@ -1,16 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const GET = async (req: NextRequest) => {
+export const GET = async (request: NextRequest) => {
   try {
-    const clientResponse = new NextResponse(JSON.stringify({ status: 200 }));
+    const response = NextResponse.json({}, { status: 200 });
 
-    await Promise.all([
-      clientResponse.cookies.delete('userAccessToken'),
-      clientResponse.cookies.delete('lecturerAccessToken'),
-      clientResponse.cookies.delete('refreshToken'),
-    ]);
+    response.cookies.set({
+      name: 'userAccessToken',
+      value: '',
+      httpOnly: true,
+      path: '/',
+      maxAge: 0,
+    });
+    response.cookies.set({
+      name: 'lecturerAccessToken',
+      value: '',
+      httpOnly: true,
+      path: '/',
+      maxAge: 0,
+    });
+    response.cookies.set({
+      name: 'refreshToken',
+      value: '',
+      httpOnly: true,
+      path: '/',
+      maxAge: 0,
+    });
 
-    return clientResponse;
+    return response;
   } catch (error) {
     return new NextResponse(
       JSON.stringify({ status: 500, message: '로그아웃에 실패하였습니다' }),
