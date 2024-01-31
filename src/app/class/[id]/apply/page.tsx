@@ -1,6 +1,9 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import { redirect } from 'next/navigation';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import { getOriginalClassInfo } from '@/lib/apis/classApis';
+import { getCouponLists } from '@/lib/apis/couponApis';
 import ApplySidebar from './_components/ApplySidebar';
 import CouponContainer from './_components/Coupon/CouponContainer';
 import PaymentType from './_components/PaymentType';
@@ -8,9 +11,6 @@ import ReservationInfo from './_components/ReservationInfo';
 import { processSelectedSchedules } from './_lib/applyScheduleUtils';
 import ApplyLoading from '@/components/Loading/ApplyLoading';
 import { IReservationInfo } from '@/types/payment';
-import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getOriginalClassInfo } from '@/lib/apis/classApis';
-import { getCouponList } from '@/lib/apis/serverApis/couponApis';
 
 const ClassApplyPage = ({
   params: { id },
@@ -19,24 +19,35 @@ const ClassApplyPage = ({
   params: { id: string };
   searchParams: { [key: string]: string };
 }) => {
-  const { lectureScheduleId, count } = searchParams;
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['apply', id],
-    queryFn: () => getOriginalClassInfo(id),
-    refetchOnWindowFocus: 'always',
-  });
-
   const reqData = {
     take: 10000, //추후 null로 변경
     couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
     filterOption: 'LATEST' as 'LATEST',
   };
 
-  if (isLoading) {
+  const { lectureScheduleId, count } = searchParams;
+
+  const [
+    { data, isLoading, error },
+    { data: couponList, isLoading: couponLoading, error: couponError },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ['apply', id],
+        queryFn: () => getOriginalClassInfo(id),
+      },
+      {
+        queryKey: ['apply2', id],
+        queryFn: () => getCouponLists(reqData, 'user'),
+      },
+    ],
+  });
+
+  if (isLoading || couponLoading) {
     return <ApplyLoading />;
   }
 
-  if (error || !data || data instanceof Error) {
+  if (error || !data || data instanceof Error || couponError || !couponList) {
     redirect('/404');
   }
 
@@ -102,7 +113,7 @@ const ClassApplyPage = ({
               <CouponSVG className="h-6 w-6 fill-sub-color1" />
               쿠폰/패스권 적용
             </h3>
-            {/* <CouponContainer couponList={couponList} price={price} /> */}
+            <CouponContainer couponList={couponList} price={price} />
             {/* 쿠폰 선택 */}
           </section>
 
