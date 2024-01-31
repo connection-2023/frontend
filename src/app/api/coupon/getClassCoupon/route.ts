@@ -10,8 +10,7 @@ export const POST = async (request: NextRequest) => {
     });
   }
 
-  const searchParams = request.nextUrl.searchParams;
-  const couponId = searchParams.get('couponId');
+  const data = await request.json();
 
   const tokenValue = request.cookies.get(`userAccessToken`)?.value;
 
@@ -30,10 +29,11 @@ export const POST = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(`${END_POINT}/coupons/public/${couponId}/user`, {
+  const response = await fetch(`${END_POINT}/coupons/public/user`, {
     method: 'POST',
     credentials: 'include',
     headers,
+    body: JSON.stringify(data),
   });
 
   if (!response.ok) {

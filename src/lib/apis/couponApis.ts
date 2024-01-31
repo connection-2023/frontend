@@ -134,18 +134,16 @@ export const getPrivateCoupon = async (couponCode: string) => {
   }
 };
 
-export const getClassCoupon = async (couponId: number) => {
+export const getClassCoupon = async (couponIdList: { couponIds: number[] }) => {
   try {
-    const response = await fetch(
-      `/api/coupon/getClassCoupon?couponId=${couponId}`,
-      {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const response = await fetch(`/api/coupon/getClassCoupon`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(couponIdList),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
