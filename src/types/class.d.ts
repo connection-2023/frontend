@@ -432,15 +432,6 @@ export interface IClassEditRequest {
   endDate?: Date;
 }
 
-export interface IRegisterLists {
-  enrollmentCount?: number;
-  nickname: string;
-  userProfileImage: {
-    userId: number;
-    imageUrl: string;
-  };
-}
-
 export interface Lecture {
   id: number;
   lecturerId: number;
@@ -501,9 +492,9 @@ export interface ILearner {
       endDateTime: string;
       numberOfParticipants: number;
       lecture: {
-        createdAt: string;
         id: number;
         title: string;
+        imageUrl: null | string;
       };
     };
   };
@@ -729,4 +720,17 @@ export interface LikedLecture {
     updatedAt: string;
     deletedAt: null | string;
   };
+}
+
+interface IScheduleLearnerList {
+  id: number;
+  userId: number;
+  nickname: string;
+  userProfileImage: string | null;
+  representative: string;
+  phoneNumber: number;
+  participants: number;
+  requests: string;
+  enrollmentCount: number;
+  memo: null | string;
 }
