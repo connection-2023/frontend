@@ -34,16 +34,12 @@ const ClassPreview = (props: ClassCardType) => {
       ? 'border-gray-500 text-inherit'
       : 'border-gray-500 text-gray-500';
 
-  // 현재는 제목 눌러서만 해당 게시글로 이동 가능
-  const handleCardClick = () => {
-    router.push(`/class/${id}`);
-  };
-
   return (
     <>
       <div
         onMouseLeave={() => setFocus(false)}
         onMouseOver={() => setFocus(true)}
+        onClick={() => router.push(`/class/${id}`)}
         className={`hidden h-[13.5rem] w-full min-w-[20.5rem] cursor-pointer whitespace-nowrap rounded-lg bg-white p-3.5 shadow-horizontal hover:z-10 hover:scale-[1.02] ${
           smallView ? '' : 'xl:flex'
         }`}
@@ -86,18 +82,28 @@ const ClassPreview = (props: ClassCardType) => {
             <span>{type}</span>
           </div>
 
-          {review && <Review average={review.average} count={review.count} />}
+          {review.count > 0 && (
+            <Review average={review.average} count={review.count} />
+          )}
 
           <div className="mt-auto flex w-full items-center justify-between text-sm">
             <p className="text-lg font-bold text-black text-gray-100">
               {price.toLocaleString()}원
             </p>
 
-            <ProfileImage
-              src={profile?.src || null}
-              nickname={profile.nickname}
-              size="xsmall"
-            />
+            <div
+              onClick={(event) => {
+                event.stopPropagation();
+                router.push(`/instructor/${profile.id}`);
+              }}
+              className="cursor-pointer"
+            >
+              <ProfileImage
+                src={profile?.src || null}
+                nickname={profile.nickname}
+                size="xsmall"
+              />
+            </div>
           </div>
         </div>
       </div>

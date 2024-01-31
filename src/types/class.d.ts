@@ -50,7 +50,7 @@ export interface ClassCardType {
   type: string;
   review: { average: number; count: number };
   price: number;
-  profile: { src: string | null; nickname: string };
+  profile: { src: string | null; nickname: string; id: number };
   darkMode?: boolean;
   smallView?: boolean;
   searchAfter?: [number, number];

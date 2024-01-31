@@ -387,7 +387,7 @@ export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
 
 export const transformToCardData = (
   data: IClassPostResponse[],
-  lecturer: { nickname: string; img: string | null },
+  lecturer: { nickname: string; img: string | null; id: number },
 ): ClassCardType[] =>
   data.map((item) => {
     const {
@@ -412,7 +412,11 @@ export const transformToCardData = (
     const status = isActive ? '모집중' : '마감';
     const review = { average: stars, count: reviewCount };
     const type = isGroup ? '그룹레슨' : '개인레슨';
-    const profile = { src: lecturer.img, nickname: lecturer.nickname };
+    const profile = {
+      src: lecturer.img,
+      nickname: lecturer.nickname,
+      id: lecturer.id,
+    };
     const location = formatLocationToString(lectureToRegion).split(', ');
     const genre = lectureToDanceGenre.map((genre) => genre.danceCategory.genre);
     const imgURL = lectureImage.map((img) => img.imageUrl);
@@ -507,6 +511,7 @@ export const transformSearchClass = (classList: searchClass[]) => {
         profile: {
           src: lecturer.profileCardImageUrl,
           nickname: lecturer.nickname,
+          id: lecturer.id,
         },
         isLiked: isLiked ? isLiked : false,
         searchAfter,
@@ -578,6 +583,7 @@ export const transformBestClassSearch = (classList: searchBestClassData[]) => {
         profile: {
           src: lecturer.profileCardImageUrl,
           nickname: lecturer.nickname,
+          id: lecturer.id,
         },
         isLiked: likedLecture && likedLecture.length > 0 ? true : false,
       };

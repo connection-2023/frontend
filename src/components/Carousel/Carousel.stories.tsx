@@ -142,7 +142,7 @@ const classCardData = [
     review: { average: 4.5, count: 14 },
     price: 80000,
     isLiked: true,
-    profile: { src: null, nickname: 'nickname' },
+    profile: { src: null, nickname: 'nickname', id: 1 },
     selectedDates: [
       new Date(2023, 8, 4),
       new Date(2023, 8, 6),
@@ -168,7 +168,7 @@ const classCardData = [
     time: ['오전'],
     review: { average: 4.5, count: 14 },
     price: 80000,
-    profile: { src: null, nickname: 'nickname' },
+    profile: { src: null, nickname: 'nickname', id: 1 },
     selectedDates: [new Date()],
     imgURL: [
       'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
@@ -190,7 +190,7 @@ const classCardData = [
     isLiked: false,
     review: { average: 4, count: 12 },
     price: 80000,
-    profile: { src: null, nickname: 'nickname' },
+    profile: { src: null, nickname: 'nickname', id: 1 },
     selectedDates: [new Date()],
     imgURL: [
       'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
