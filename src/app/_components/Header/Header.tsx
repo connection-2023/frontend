@@ -16,7 +16,10 @@ const Header = ({ children }: { children: React.ReactNode }) => {
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
-  const { isScrollingUp, setIsScrollingUp } = useScrollStore();
+  const { isScrollingUp, setIsScrollingUp } = useScrollStore((state) => ({
+    isScrollingUp: state.isScrollingUp,
+    setIsScrollingUp: state.setIsScrollingUp,
+  }));
 
   useEffect(() => {
     const handleScroll = () => {

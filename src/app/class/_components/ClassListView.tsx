@@ -28,7 +28,9 @@ const ClassListView = ({
   const { changeParams } = useChangeSearchParams();
   const [classLists, setClassLists] = useState(classList);
   const [searchState, setSearchState] = useState({ ...searchData });
-  const { userType } = useUserStore.getState();
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
 
   useEffect(() => {
     setClassLists([...classList]);

@@ -9,7 +9,9 @@ import Button from '@/components/Button/Button';
 import { FetchError } from '@/types/types';
 
 const Download = ({ code }: { code: string }) => {
-  const { userType } = useUserStore.getState();
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
   const router = useRouter();
 
   const downloadPrivateCoupon = async () => {

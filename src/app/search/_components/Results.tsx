@@ -1,5 +1,5 @@
+import { cookies } from 'next/headers';
 import { searchAll } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import {
   transformSearchClass,
   transformSearchInstructor,
@@ -12,7 +12,8 @@ import { ClassCardType } from '@/types/class';
 import { InstructorCardProps, SearchParams } from '@/types/types';
 
 const Results = async ({ searchParams }: { searchParams: SearchParams }) => {
-  const { userType } = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
   let instructorList: InstructorCardProps[] = [];
   let classList: ClassCardType[] = [];
   const query = searchParams.query ?? '';
@@ -21,7 +22,7 @@ const Results = async ({ searchParams }: { searchParams: SearchParams }) => {
     const { searchedLecturers, searchedLectures } = await searchAll(
       query,
       8,
-      userType === 'user',
+      !!user,
     );
 
     instructorList = transformSearchInstructor(searchedLecturers).slice(0, 4);

@@ -30,7 +30,9 @@ const LECTURER_MENU = [
 
 const HeaderMenu = () => {
   const segment = useSelectedLayoutSegment();
-  const { userType } = useUserStore();
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
   const mySidebar = segment === 'mypage' || segment === 'dashboard';
   const [isOpened, setIsOpened] = useState(false);
 

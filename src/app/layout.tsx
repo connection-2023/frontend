@@ -6,7 +6,7 @@ import {
   getMyProfile,
 } from '@/lib/apis/serverApis/userApi';
 import Providers from '@/lib/provider/providers';
-import { useUserStore } from '@/store/userStore';
+import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 import ControlOptions from './_components/ControlOptions';
 import Footer from './_components/Footer';
 import Header from './_components/Header/Header';
@@ -17,7 +17,6 @@ import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
-import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -42,18 +41,12 @@ export default async function RootLayout({
       const userProfile = await getMyProfile();
       authUser = convertToProfileInfo(userProfile);
       userType = 'user';
-      useUserStore.setState({ authUser, userType: 'user' });
     }
 
     if (lecturer) {
       const instructorProfile = await getInstructorProfile();
       authUser = convertToProfileInfo(instructorProfile);
       userType = 'lecturer';
-      useUserStore.setState({ authUser, userType: 'lecturer' });
-    }
-
-    if (!user && !lecturer) {
-      useUserStore.setState({ authUser: null, userType: null });
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -69,7 +62,7 @@ export default async function RootLayout({
         <Providers>
           <UserStoreInitializer authUser={authUser} userType={userType} />
           <Header>
-            <UserProfileLinks />
+            <UserProfileLinks authUser={authUser} />
           </Header>
           <ToastContainer
             position="top-center"
