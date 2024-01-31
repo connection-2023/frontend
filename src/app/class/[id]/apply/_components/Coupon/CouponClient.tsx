@@ -37,23 +37,31 @@ const CouponClient = ({
   const [normalOption, setNormalOption] = useState(normalOptions);
   const [stackableOption, setStackableOption] = useState(stackableOptions);
 
+  const calculateDiscount = (couponSelect: SelectCoupon[], price: number) => {
+    if (couponSelect.length === 0) return 0;
+
+    const coupon = couponSelect[0].value;
+    const isPercentage = !!coupon.percentage;
+
+    if (!isPercentage) return coupon.discountPrice;
+
+    const maxDiscountPrice = coupon.maxDiscountPrice;
+    const discountPrice = (price * coupon.percentage) / 100;
+
+    return maxDiscountPrice && discountPrice > maxDiscountPrice
+      ? maxDiscountPrice
+      : discountPrice;
+  };
+
   useEffect(() => {
-    let normalCouponDiscount = 0;
-    let stackableCouponDiscount = 0;
+    const normalCouponDiscount = calculateDiscount(normalCouponSelect, price);
+    const stackableCouponDiscount = calculateDiscount(
+      stackableCouponSelect,
+      price,
+    );
 
-    if (normalCouponSelect.length > 0) {
-      normalCouponDiscount = !!normalCouponSelect[0].value.percentage
-        ? (price * normalCouponSelect[0].value.percentage) / 100
-        : normalCouponSelect[0].value.discountPrice;
-    }
-
-    if (stackableCouponSelect.length > 0) {
-      stackableCouponDiscount = !!stackableCouponSelect[0].value.percentage
-        ? (price * stackableCouponSelect[0].value.percentage) / 100
-        : stackableCouponSelect[0].value.discountPrice;
-    }
     setDiscountPrice(normalCouponDiscount + stackableCouponDiscount);
-  }, [normalCouponSelect, stackableCouponSelect]);
+  }, [normalCouponSelect, stackableCouponSelect, price]);
 
   const onChangeNormalCoupon = (
     coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
