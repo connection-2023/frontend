@@ -5,7 +5,6 @@ import {
   ILecturerClassDetailResonse,
   IClassEditRequest,
   IClassSchedule,
-  ILearner,
   IClassEditPageData,
   IScheduleLearnerList,
 } from '@/types/class';
@@ -212,17 +211,7 @@ export const getAllRegisterLists = async (
   if (response.statusCode !== 200)
     throw Error('강사 클래스 관리 전체 수강생 조회 요청 오류!');
 
-  return response.data.lectureLearnerList.map((item: ILearner) => {
-    const { enrollmentCount, user } = item;
-    return {
-      enrollmentCount,
-      nickname: user.nickname,
-      userProfileImage: {
-        userId: user.id,
-        imageUrl: user.userProfileImage.imageUrl,
-      },
-    };
-  });
+  return response.data.lectureLearnerList;
 };
 
 export const getClassSchedules = async (
@@ -249,7 +238,7 @@ export const getScheduleRegisterLists = async (
   if (response.statusCode !== 200)
     throw Error('강사 클래스 관리 - 수강생 요청 모달 조회 요청 오류!');
 
-  return response.data.scheduleLearnerList;
+  return response.data.scheduleLearnerList || [];
 };
 
 export const getOriginalClassInfo = async (
