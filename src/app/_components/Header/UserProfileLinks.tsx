@@ -1,12 +1,15 @@
 import Link from 'next/link';
 import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, ChatSVG, SearchSVG } from '@/icons/svg';
-import { useUserStore } from '@/store/userStore';
 import Profile from './Profile';
+import { profileInfo } from '@/types/auth';
 
-const UserProfileLinks = () => {
+interface UserProfileLinksProps {
+  authUser: profileInfo | null;
+}
+
+const UserProfileLinks = ({ authUser }: UserProfileLinksProps) => {
   const { alarmCount, commentCount } = dummyUserInfo;
-  const userStoreState = useUserStore.getState();
 
   return (
     <div className="flex items-end gap-3">
@@ -18,13 +21,13 @@ const UserProfileLinks = () => {
         <SearchSVG className="h-[1.8rem] w-[1.8rem] fill-black" />
       </Link>
 
-      {!userStoreState.authUser && (
+      {!authUser && (
         <Link href="/login" className="text-lg font-medium">
           로그인/회원가입
         </Link>
       )}
 
-      {userStoreState.authUser && (
+      {authUser && (
         <>
           <button className="relative">
             <AlarmSVG className="fill-black pt-0.5" width="31" height="31" />
@@ -40,7 +43,7 @@ const UserProfileLinks = () => {
             </span>
           </button>
 
-          <Profile defaultProfileImg={userStoreState.authUser.profileImage} />
+          <Profile defaultProfileImg={authUser.profileImage} />
         </>
       )}
     </div>

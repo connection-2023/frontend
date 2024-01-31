@@ -18,7 +18,9 @@ const Profile = ({
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
 
-  const { isScrollingUp } = useScrollStore();
+  const { isScrollingUp } = useScrollStore((state) => ({
+    isScrollingUp: state.isScrollingUp,
+  }));
 
   useEffect(() => {
     if (!isScrollingUp) {

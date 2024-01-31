@@ -1,11 +1,15 @@
-import { redirect } from 'next/navigation';
+'use client';
+import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store';
 
 const IdAccessChecker = ({ id }: { id: string }) => {
-  const { authUser } = useUserStore.getState();
+  const router = useRouter();
+  const { authUser } = useUserStore((state) => ({
+    authUser: state.authUser,
+  }));
 
   if (Number(authUser?.id) !== Number(id)) {
-    redirect('/404');
+    router.push('/404');
   }
   return null;
 };

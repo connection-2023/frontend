@@ -12,7 +12,10 @@ import { LoginResponse, social } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 const LoginButtons = () => {
-  const store = useUserStore();
+  const { setAuthUser, setUserType } = useUserStore((state) => ({
+    setAuthUser: state.setAuthUser,
+    setUserType: state.setUserType,
+  }));
   const router = useRouter();
 
   const handleAuthSuccess = async (social: social, idToken: string) => {
@@ -26,8 +29,8 @@ const LoginButtons = () => {
 
       const authUser = convertToProfileInfo(profileRes);
 
-      store.setAuthUser(authUser);
-      store.setUserType('user');
+      setAuthUser(authUser);
+      setUserType('user');
 
       toast.update(toastId, {
         render: '로그인 성공!',

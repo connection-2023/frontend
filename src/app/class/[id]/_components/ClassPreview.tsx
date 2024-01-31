@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import Image from 'next/image';
 import { CLASS_HSTYLE } from '@/constants/constants';
 import {
@@ -9,7 +10,6 @@ import {
 } from '@/icons/svg';
 import { getClassPreview } from '@/lib/apis/serverApis/classPostApis';
 import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
-import { useUserStore } from '@/store';
 import {
   formatLocationToString,
   formatGenreToString,
@@ -20,9 +20,10 @@ import Carousel from '@/components/Carousel/Carousel';
 import Review from '@/components/Review/Review';
 
 const ClassPreview = async ({ id }: { id: string }) => {
-  const { userType } = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
   const classPreview = getClassPreview(id);
-  const couponLists = getClassCouponList(id, userType === 'user');
+  const couponLists = getClassCouponList(id, !!user);
 
   const [classPreviewData, couponList] = await Promise.all([
     classPreview,
