@@ -4,10 +4,9 @@ import {
   ILecturerClassListResonse,
   ILecturerClassDetailResonse,
   IClassEditRequest,
-  IRegisterLists,
   IClassSchedule,
-  ILearner,
   IClassEditPageData,
+  IScheduleLearnerList,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
 
@@ -142,28 +141,29 @@ export const getLecturerClassDetail = async (
   id: string,
 ): Promise<ILecturerClassDetailResonse | Error> => {
   try {
-    const [classInfoResponse, ScheduleResponse] = await Promise.all([
-      fetch(`/api/class/info?id=${id}`, {
-        credentials: 'include',
-        method: 'GET',
-      }).then((data) => data.json()),
-      fetch(`/api/class/schedules?id=${id}`, {
-        method: 'GET',
-      }).then((data) => data.json()),
-    ]);
+    const [classInfoResponse, classDetailReponse, ScheduleResponse] =
+      await Promise.all([
+        fetch(`/api/class/info?id=${id}`, {
+          credentials: 'include',
+          method: 'GET',
+        }).then((data) => data.json()),
+        fetch(`/api/class/detail?id=${id}`, {
+          credentials: 'include',
+          method: 'GET',
+        }).then((data) => data.json()),
+        fetch(`/api/class/schedules?id=${id}`, {
+          method: 'GET',
+        }).then((data) => data.json()),
+      ]);
 
-    const {
-      title,
-      lectureNotification,
-      reservationComment,
-      maxCapacity,
-      reservationDeadline,
-    } = classInfoResponse.data.lecture;
+    const { title, maxCapacity } = classInfoResponse.data.lecturePreview;
     const { schedule, holidayArr } = ScheduleResponse.data;
+    const { notification, reservationComment, reservationDeadline } =
+      classDetailReponse.data.lectureDetail;
 
     return {
       title,
-      notification: lectureNotification,
+      notification,
       reservationComment,
       maxCapacity,
       reservationDeadline,
@@ -199,48 +199,23 @@ export const updateClassData = async (id: string, data: IClassEditRequest) => {
   }
 };
 
-export const getRegisterLists = async (lectureId: string, id: number) => {
-  try {
-    const response = await fetch(
-      `/api/class/myclass/registerLists?lectureId=${lectureId}&scheduleId=${id}`,
-    ).then((data) => data.json());
-
-    return response.data.participant.map(
-      (item: { user: IRegisterLists }) => item.user,
-    );
-  } catch (error) {
-    return new Error('강사 클래스 관리 수강생 조회 요청 오류!');
-  }
-};
-
 export const getAllRegisterLists = async (
   lectureId: string,
   displayCount: number,
   lastItemId: number,
-) => {
-  try {
-    const response = await fetch(
-      `/api/class/myclass/learners?lectureId=${lectureId}&displayCount=${displayCount}&lastItemId=${lastItemId}`,
-    ).then((data) => data.json());
+): Promise<IScheduleLearnerList[] | Error> => {
+  const response = await fetch(
+    `/api/class/myclass/learners?lectureId=${lectureId}&displayCount=${displayCount}&lastItemId=${lastItemId}`,
+  ).then((data) => data.json());
 
-    return response.data.lectureLearnerList.map((item: ILearner) => {
-      const { enrollmentCount, user } = item;
-      return {
-        enrollmentCount,
-        nickname: user.nickname,
-        userProfileImage: {
-          userId: user.id,
-          imageUrl: user.userProfileImage.imageUrl,
-        },
-      };
-    });
-  } catch (error) {
-    return new Error('강사 클래스 관리 전체 수강생 조회 요청 오류!');
-  }
+  if (response.statusCode !== 200)
+    throw Error('강사 클래스 관리 전체 수강생 조회 요청 오류!');
+
+  return response.data.lectureLearnerList;
 };
 
 export const getClassSchedules = async (
-  id: string,
+  id: string | number,
 ): Promise<IClassSchedule[] | Error> => {
   try {
     const response = await fetch(`/api/class/schedules?id=${id}`).then((data) =>
@@ -251,6 +226,19 @@ export const getClassSchedules = async (
   } catch (error) {
     return new Error('강의 스케쥴 조회 요청 오류!');
   }
+};
+
+export const getScheduleRegisterLists = async (
+  scheduleId: number,
+): Promise<IScheduleLearnerList[]> => {
+  const response = await fetch(
+    `/api/class/myclass/schedule-learners?scheduleId=${scheduleId}`,
+  ).then((data) => data.json());
+
+  if (response.statusCode !== 200)
+    throw Error('강사 클래스 관리 - 수강생 요청 모달 조회 요청 오류!');
+
+  return response.data.scheduleLearnerList || [];
 };
 
 export const getOriginalClassInfo = async (

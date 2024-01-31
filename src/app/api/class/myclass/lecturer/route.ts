@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   const progressType = request.nextUrl.searchParams.get('progressType');
 
   const serverResponse = await fetch(
-    END_POINT + `/lectures/lecturers/in-progress?progressType=${progressType}`,
+    END_POINT + `/lecturers/in-progress?progressType=${progressType}`,
     {
       credentials: 'include',
       headers: {

@@ -173,23 +173,6 @@ const dummyUserInfo = {
   commentCount: 10,
 };
 
-const dummyEnrollmentPerson = [
-  {
-    userId: 1,
-    src: null,
-    nickname: '닉네임',
-    memo: '',
-    request: `회원이 강사에게 전하는 요청사항 제가 실내용 신발이 없어서 그런데 따로 준비해 주실 수 있나요? 그리고 수업 시간보다 한 10분 정도 늦을 것 같아요 제가 그날 회사가 몇시에 끝날지 아직 몰라서... 일찍 갈 수도 있는데 어쨋든 최대한 노력해볼게요`,
-  },
-  {
-    userId: 2,
-    src: null,
-    nickname: '닉네임2',
-    memo: '',
-    request: null,
-  },
-];
-
 const dummyIncomeList = [
   {
     id: 1,
@@ -402,7 +385,6 @@ export {
   dummyClass,
   dummyUserInputSuggestion,
   dummySearchData,
-  dummyEnrollmentPerson,
   dummyIncomeList,
   dummyPaymentList,
 };

@@ -432,15 +432,6 @@ export interface IClassEditRequest {
   endDate?: Date;
 }
 
-export interface IRegisterLists {
-  enrollmentCount?: number;
-  nickname: string;
-  userProfileImage: {
-    userId: number;
-    imageUrl: string;
-  };
-}
-
 export interface Lecture {
   id: number;
   lecturerId: number;
@@ -476,37 +467,6 @@ interface ResponseData {
 export interface ApiResponse {
   statusCode: number;
   data: ResponseData;
-}
-
-export interface ILearner {
-  id: number;
-  enrollmentCount: number;
-  memo: string;
-  user: {
-    id: number;
-    nickname: string;
-    userProfileImage: {
-      imageUrl: string;
-    };
-  };
-  reservation: {
-    id: number;
-    representative: string;
-    phoneNumber: string;
-    participants: number;
-    requests: string;
-    lectureSchedule: {
-      id: number;
-      startDateTime: string;
-      endDateTime: string;
-      numberOfParticipants: number;
-      lecture: {
-        createdAt: string;
-        id: number;
-        title: string;
-      };
-    };
-  };
 }
 
 export interface IClassEditData
@@ -729,4 +689,17 @@ export interface LikedLecture {
     updatedAt: string;
     deletedAt: null | string;
   };
+}
+
+interface IScheduleLearnerList {
+  id: number;
+  userId: number;
+  nickname: string;
+  userProfileImage: string | null;
+  representative: string;
+  phoneNumber: number;
+  participants: number;
+  requests: string;
+  enrollmentCount: number;
+  memo: null | string;
 }

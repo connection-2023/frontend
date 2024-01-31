@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import { ButtonStyles } from '@/constants/constants';
 import { ArrowUpSVG, EditSVG } from '@/icons/svg';
 import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
-import { formatShortDate } from '@/utils/dateTimeUtils';
 import Notice from '@/components/ClassNotice/Notice';
 import { ILecturerClassDetailResonse } from '@/types/class';
 
@@ -44,7 +43,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   useEffect(() => {
     const fetchClassDetailData = async () => {
       const data = await getLecturerClassDetail(id);
-      if (data instanceof Error) return;
+      if (data instanceof Error) return router.push('/error');
 
       setClassData(data);
     };
@@ -61,14 +60,6 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       setSelectedClass({ index, id });
     }
   };
-
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  const notificationUpdateDate = formatShortDate(
-    classData.notification.updatedAt,
-  );
 
   const updateData = async (
     key: 'notification' | 'reservationComment' | 'holidays',
@@ -132,7 +123,10 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
         {/* Top Section */}
         <section className="flex whitespace-nowrap px-2 py-3">
           <div className="flex w-full items-center">
-            <button onClick={handleGoBack} className="origin-center -rotate-90">
+            <button
+              onClick={() => router.back()}
+              className="origin-center -rotate-90"
+            >
               <ArrowUpSVG width="34" height="34" fill="black" />
             </button>
             <p className="mr-2 flex h-[1.5625rem] w-[3.5625rem] items-center justify-center border-2 border-solid border-gray-500 text-sm font-bold text-gray-100">
@@ -164,7 +158,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
               <Notice
                 isEditMode={true}
                 content={classData.notification.content}
-                updateDate={notificationUpdateDate}
+                updateDate={classData.notification.updatedAt}
                 updateNotice={updateData}
               />
             </div>
