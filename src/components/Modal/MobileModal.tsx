@@ -1,5 +1,5 @@
 'use client';
-import { m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import useBottomSheet from '@/hooks/useBottomSheet';
 
@@ -37,7 +37,7 @@ const MobileModal = ({
         handleClosed();
       }}
     >
-      <m.div
+      <motion.div
         drag="y"
         onDragEnd={onDragEnd}
         initial="hidden"
@@ -53,13 +53,13 @@ const MobileModal = ({
         }}
         dragConstraints={{ top: 0 }}
         dragElastic={0.2}
-        className="absolute bottom-0 z-modal h-[90%] w-screen rounded-t-lg bg-white pt-2.5"
+        className="absolute left-0 right-0 top-[20%] z-modal mx-auto h-full rounded-t-lg bg-white pt-2.5 sm:hidden"
       >
         <div className="mb-8 flex w-full justify-center">
           <button className="h-1.5 w-16 rounded-lg bg-gray-700" />
         </div>
         {children}
-      </m.div>
+      </motion.div>
     </div>
   ) : null;
 };

@@ -1,7 +1,7 @@
 'use client';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { CouponSVG } from '@/icons/svg';
+import { CloseSVG, CouponSVG } from '@/icons/svg';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/createCoupon';
 import Button from '@/components/Button/Button';
@@ -64,17 +64,26 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
   };
 
   return (
-    <RouterModal>
-      <div className="h-screen sm:h-fit">
-        <header className="mb-4 flex justify-between gap-2 border-b border-gray-500 px-5 pb-4 pt-5">
-          <div className="flex items-center gap-2">
-            <CouponSVG className="h-6 w-6 fill-black " />
-            <h1 className="text-lg font-semibold">
-              쿠폰 {type === 'CREATE' ? '생성하기' : '수정/삭제'}
-            </h1>
+    <RouterModal closeButtonView={false}>
+      <div className="h-screen w-screen overflow-auto sm:h-fit sm:w-[640px]">
+        <header className="mb-4 flex w-full justify-between gap-2 border-b border-gray-500 px-5 pb-4 pt-5">
+          <div className="flex w-full justify-between">
+            <div className="flex items-center gap-2">
+              <CouponSVG className="h-6 w-6 fill-black " />
+              <h1 className="text-lg font-semibold">
+                쿠폰 {type === 'CREATE' ? '생성하기' : '수정/삭제'}
+              </h1>
+            </div>
+            <button>
+              <CloseSVG
+                width="24"
+                height="24"
+                className="stroke-gray-500 stroke-2"
+              />
+            </button>
           </div>
         </header>
-        <form onSubmit={handleSubmit(onValid, invalid)} className="px-5 pb-7">
+        <div className="px-5 pb-7">
           <CouponOption
             register={register}
             control={control}
@@ -93,13 +102,16 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
                 <UniqueButton size="small">배포 중지</UniqueButton>
               </div>
             )}
-            <div className="w-24 font-semibold">
+            <form
+              onSubmit={handleSubmit(onValid, invalid)}
+              className="w-24 font-semibold"
+            >
               <Button type="submit" size="small">
                 {type === 'CREATE' ? '생성 하기' : '수정 완료'}
               </Button>
-            </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </RouterModal>
   );

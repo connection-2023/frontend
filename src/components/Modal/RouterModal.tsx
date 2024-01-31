@@ -6,9 +6,14 @@ import { CloseSVG } from '@/icons/svg';
 interface RouterModalProps {
   path?: string;
   children: React.ReactNode;
+  closeButtonView?: boolean;
 }
 
-const RouterModal = ({ path, children }: RouterModalProps) => {
+const RouterModal = ({
+  path,
+  children,
+  closeButtonView = true,
+}: RouterModalProps) => {
   const router = useRouter();
   const overlayRef = useRef(null);
 
@@ -36,13 +41,15 @@ const RouterModal = ({ path, children }: RouterModalProps) => {
       }}
     >
       <div className="absolute left-1/2 top-1/2 max-w-[40rem] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-md bg-white py-4 shadow-float">
-        <button onClick={handleRouter} className="absolute right-6 top-5">
-          <CloseSVG
-            width="24"
-            height="24"
-            className="stroke-gray-500 stroke-2"
-          />
-        </button>
+        {closeButtonView && (
+          <button onClick={handleRouter} className="absolute right-6 top-5">
+            <CloseSVG
+              width="24"
+              height="24"
+              className="stroke-gray-500 stroke-2"
+            />
+          </button>
+        )}
 
         {children}
       </div>

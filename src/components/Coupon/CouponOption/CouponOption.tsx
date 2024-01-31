@@ -19,6 +19,7 @@ import { getMyLecture } from '@/lib/apis/classApi';
 import CouponOptionSection from './CouponOptionSection';
 import DistributionCount from './DistributionCount';
 import SelectClass from './SelectClass';
+import SelectClassModal from './SelectClassModal';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import {
   CouponDuplicationTooltip,
@@ -325,11 +326,16 @@ const CouponOption = ({
                     </label>
                   </div>
                   <div className="col-span-2 mb-2 w-full sm:col-start-2">
-                    <SelectClass
-                      options={options}
-                      onChange={field.onChange}
-                      value={field.value}
-                    />
+                    <div className="hidden sm:block">
+                      <SelectClass
+                        options={options}
+                        onChange={field.onChange}
+                        value={field.value}
+                      />
+                    </div>
+                    <div className="sm:hidden">
+                      <SelectClassModal />
+                    </div>
                   </div>
                   <div className="col-span-2 flex max-h-48 flex-col gap-1 overflow-y-auto sm:col-start-2">
                     {selectClass?.map(({ label = '', value = '' }, index) => (
