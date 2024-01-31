@@ -64,6 +64,7 @@ const InstructorDetailPage = async ({
   } = profileData;
 
   const classList = transformToCardData(classListsResponse, {
+    id: Number(id),
     nickname,
     img: profileCardImageUrl,
   });

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, MouseEvent } from 'react';
 import { toast } from 'react-toastify';
 import { HeartSVG } from '@/../public/icons/svg';
 import { postClassLikes, deleteClassLikes } from '@/lib/apis/classApis';
@@ -46,7 +46,8 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
     }
   }, [likeClassList, likeInstructorList]);
 
-  const handleLike = async () => {
+  const handleLike = async (event: MouseEvent) => {
+    event.stopPropagation();
     let retryFunc: () => Promise<any> = async () => {};
 
     try {
