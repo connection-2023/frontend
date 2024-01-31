@@ -29,8 +29,6 @@ const ClassTable = ({
     null,
   );
 
-  if (!schedules) return null;
-
   const openModal = (item: IProcessedSchedules) => {
     setSelectedItem(item);
     setIsModalOpen(true);
@@ -39,6 +37,8 @@ const ClassTable = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  if (!schedules) return null;
 
   const filteredTableData = showPastClasses
     ? schedules
@@ -59,41 +59,46 @@ const ClassTable = ({
         />
         지난 클래스도 함께 보기
       </label>
-      <table className={`w-full border-collapse ${TableCellStyle} text-base`}>
-        <thead>
-          <tr className="break-keep font-bold text-gray-100">
-            <th className={`${TableCellStyle}`}>클래스</th>
-            <th className={`${TableCellStyle}`}>날짜 및 시간</th>
-            <th className={`${TableCellStyle}`}>신청한 수강생</th>
-            <th className={`${TableCellStyle}`}>예약 마감일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredTableData.map((item, idx) => (
-            <TableList
-              key={idx}
-              {...item}
-              reservationDeadline={reservationDeadline}
-              isPastClass={item.isPastClass}
-              isFirstClass={
-                showPastClasses ? idx === firstFutureClassIndex : idx === 0
-              }
-              maxCapacity={maxCapacity}
-              handleSelectClassId={() =>
-                handleSelectClassId(item.index, item.id)
-              }
-              handleModal={() => openModal(item)}
-            />
-          ))}
-        </tbody>
-      </table>
-      <EnrollmentModal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        selectedClass={selectedItem}
-        maxCapacity={maxCapacity}
-        reservationDeadline={reservationDeadline}
-      />
+      <div className="max-h-96 w-full border-collapse overflow-y-auto">
+        <table className={`w-full border-collapse ${TableCellStyle} text-base`}>
+          <thead>
+            <tr className="break-keep font-bold text-gray-100">
+              <th className={`${TableCellStyle}`}>클래스</th>
+              <th className={`${TableCellStyle}`}>날짜 및 시간</th>
+              <th className={`${TableCellStyle}`}>신청한 수강생</th>
+              <th className={`${TableCellStyle}`}>예약 마감일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTableData.map((item, idx) => (
+              <TableList
+                key={idx}
+                {...item}
+                reservationDeadline={reservationDeadline}
+                isPastClass={item.isPastClass}
+                isFirstClass={
+                  showPastClasses ? idx === firstFutureClassIndex : idx === 0
+                }
+                maxCapacity={maxCapacity}
+                handleSelectClassId={() =>
+                  handleSelectClassId(item.index, item.id)
+                }
+                handleModal={() => openModal(item)}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {selectedItem && (
+        <EnrollmentModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          selectedClass={selectedItem}
+          maxCapacity={maxCapacity}
+          reservationDeadline={reservationDeadline}
+        />
+      )}
     </>
   );
 };
