@@ -91,7 +91,7 @@ export const getLogout = async () => {
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((data) => data.json());
+  });
 
   return response;
 };
