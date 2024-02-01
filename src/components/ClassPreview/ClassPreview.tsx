@@ -77,8 +77,8 @@ const ClassPreview = (props: ClassCardType) => {
           </Link>
 
           <div className="mb-2 flex w-full flex-wrap gap-x-3 text-sm">
-            <span>{displayFirstElement(location)}</span>
-            <span>{displayFirstElement(genre)}</span>
+            {/* <span>{displayFirstElement(location)}</span>
+            <span>{displayFirstElement(genre)}</span> */}
             <span>{type}</span>
           </div>
 

@@ -69,6 +69,7 @@ export interface couponGET {
   maxDiscountPrice: number;
   maxUsageCount: number;
   percentage: number;
+  isOwned?: boolean;
 }
 
 export interface IprivateCoupon {
@@ -194,4 +195,5 @@ export interface IclassCoupon {
   isDisabled: boolean;
   isPrivate: boolean;
   lectureCouponTarget: lectureCouponTarget[];
+  isOwned?: boolean;
 }

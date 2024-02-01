@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { DownloadSVG, NotFoundSVG } from '@/icons/svg';
 import { getClassCoupon } from '@/lib/apis/couponApis';
@@ -24,18 +24,27 @@ const DiscountCouponBanner = ({
   price,
 }: DiscountCouponBannerProps) => {
   const router = useRouter();
+  const disOwnedCouponList = getCouponList.filter((coupon) => !coupon.isOwned);
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
   const [isOpened, setIsOpened] = useState(false);
-  const [couponList, setCouponList] = useState(getCouponList);
-
-  const { maxDiscount } = calculateMaxDiscount(price, getCouponList);
+  const [couponList, setCouponList] = useState(disOwnedCouponList);
+  const { maxDiscount: calMaxDiscount } = calculateMaxDiscount(
+    price,
+    couponList,
+  );
+  const [maxDiscount, setMaxDiscount] = useState(calMaxDiscount);
 
   const couponListPop = (id: number[]) => {
-    setCouponList((list) =>
-      list.filter(({ id: lectureCouponId }) => !id.includes(lectureCouponId)),
+    const newCouponList = couponList.filter(
+      ({ id: lectureCouponId }) => !id.includes(lectureCouponId),
     );
+
+    setCouponList(newCouponList);
+
+    const { maxDiscount } = calculateMaxDiscount(price, newCouponList);
+    setMaxDiscount(maxDiscount);
   };
 
   const downloadClassCoupon = async (id: number | number[]) => {
@@ -76,13 +85,15 @@ const DiscountCouponBanner = ({
 
   return (
     <>
-      <div
-        onClick={() => setIsOpened(true)}
-        className="flex h-[2.2rem] w-full cursor-pointer items-center gap-0.5 rounded-md border border-solid border-sub-color1 px-2.5 text-sm font-medium text-sub-color1 md:justify-center"
-      >
-        <DownloadSVG width="21" height="21" className="fill-sub-color1" />
-        최대 {maxDiscount.toLocaleString()}원 할인쿠폰 받기
-      </div>
+      {couponList.length > 0 && (
+        <div
+          onClick={() => setIsOpened(true)}
+          className="flex h-[2.2rem] w-full cursor-pointer items-center gap-0.5 rounded-md border border-solid border-sub-color1 px-2.5 text-sm font-medium text-sub-color1 md:justify-center"
+        >
+          <DownloadSVG width="21" height="21" className="fill-sub-color1" />
+          최대 {maxDiscount.toLocaleString()}원 할인쿠폰 받기
+        </div>
+      )}
       {isOpened && (
         <Modal isOpened={isOpened} handleClosed={() => setIsOpened(false)}>
           <section className="w-screen max-w-[28.125rem]">
@@ -115,7 +126,6 @@ const DiscountCouponBanner = ({
                 >
                   모두 다운받기
                 </Button>
-                {/* 추후 백엔드 api 수정 시 모두 다운 로직 추가 */}
               </div>
             ) : null}
           </section>
