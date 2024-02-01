@@ -21,7 +21,7 @@ const CouponClient = ({
   stackableCoupon = [],
   price,
 }: CouponClient) => {
-  const setDiscountPrice = usePaymentStore((state) => state.setDiscountPrice);
+  const setCoupon = usePaymentStore((state) => state.setCoupon);
 
   const [normalCouponSelect, setNormalCouponSelect] = useState(normalCoupon);
   const [stackableCouponSelect, setStackableCouponSelect] =
@@ -60,7 +60,13 @@ const CouponClient = ({
       price,
     );
 
-    setDiscountPrice(normalCouponDiscount + stackableCouponDiscount);
+    const coupon = {
+      discountPrice: normalCouponDiscount + stackableCouponDiscount,
+      couponId: normalCouponSelect[0]?.value.id,
+      stackableCouponId: stackableCouponSelect[0]?.value.id,
+    };
+
+    setCoupon(coupon);
   }, [normalCouponSelect, stackableCouponSelect, price]);
 
   const onChangeNormalCoupon = (

@@ -17,7 +17,9 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const [participants, setParticipants] = useState(0);
   const orderId = nanoid();
   const totalPrice = price * participants;
-  const discountPrice = usePaymentStore((state) => state.discountPrice);
+  const { discountPrice, couponId, stackableCouponId } = usePaymentStore(
+    (state) => state.coupon,
+  );
   const applyClass = usePaymentStore((state) => state.applyClass);
   const applicant = usePaymentStore((state) => state.applicant);
   const paymentWidget = usePaymentStore((state) => state.paymentWidget);
@@ -74,6 +76,8 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       representative,
       phoneNumber,
       requests,
+      couponId,
+      stackableCouponId,
     };
 
     try {
@@ -120,7 +124,10 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       <div className="mb-2 flex items-center justify-between font-bold">
         <p>최종 결제 금액</p>
         <span className="min-w-[2rem] text-2xl text-black">
-          {totalPrice.toLocaleString()}원
+          {discountPrice
+            ? Math.max(0, totalPrice - discountPrice).toLocaleString()
+            : totalPrice.toLocaleString()}
+          원
         </span>
       </div>
 
