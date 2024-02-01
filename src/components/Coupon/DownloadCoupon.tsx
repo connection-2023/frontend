@@ -66,7 +66,7 @@ const DownloadCoupon = ({
 로그인 화면으로 이동하시겠습니까?
         `)
         )
-          router.push('/signin');
+          router.push('/login');
       }
     } catch (error) {
       if (error instanceof Error) {

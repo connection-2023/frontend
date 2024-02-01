@@ -334,7 +334,11 @@ const CouponOption = ({
                       />
                     </div>
                     <div className="sm:hidden">
-                      <SelectClassModal />
+                      <SelectClassModal
+                        options={options}
+                        onChange={field.onChange}
+                        selectList={field.value}
+                      />
                     </div>
                   </div>
                   <div className="col-span-2 flex max-h-48 flex-col gap-1 overflow-y-auto sm:col-start-2">

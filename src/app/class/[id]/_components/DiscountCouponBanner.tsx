@@ -1,5 +1,6 @@
 'use client';
-import router from 'next/router';
+
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { DownloadSVG, NotFoundSVG } from '@/icons/svg';
@@ -22,6 +23,7 @@ const DiscountCouponBanner = ({
   couponList: getCouponList,
   price,
 }: DiscountCouponBannerProps) => {
+  const router = useRouter();
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
@@ -52,7 +54,7 @@ const DiscountCouponBanner = ({
 로그인 화면으로 이동하시겠습니까?
         `)
         )
-          router.push('/signin');
+          router.push('/login');
       }
     } catch (error) {
       if (error instanceof Error) {

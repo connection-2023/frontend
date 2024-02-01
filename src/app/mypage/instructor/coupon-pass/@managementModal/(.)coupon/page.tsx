@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { CloseSVG, CouponSVG } from '@/icons/svg';
@@ -20,6 +21,7 @@ interface CouponCreateModalProps {
 
 const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
   const { type, coupon } = searchParams;
+  const router = useRouter();
   const couponObj = coupon ? (JSON.parse(coupon) as couponGET) : undefined;
 
   const {
@@ -74,7 +76,7 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
                 쿠폰 {type === 'CREATE' ? '생성하기' : '수정/삭제'}
               </h1>
             </div>
-            <button>
+            <button onClick={() => router.back()}>
               <CloseSVG
                 width="24"
                 height="24"
