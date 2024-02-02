@@ -4,7 +4,11 @@ import { useRouter } from 'next/navigation';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { CloseSVG, CouponSVG } from '@/icons/svg';
-import { createNewCoupon, updateCoupon } from '@/lib/apis/couponApis';
+import {
+  createNewCoupon,
+  deleteCoupon,
+  updateCoupon,
+} from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/apiDataProcessor';
 import { reloadToast } from '@/utils/reloadMessage';
@@ -38,6 +42,38 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
     trigger,
     clearErrors,
   } = useForm<CouponData>();
+
+  const stopDeployAction = async (couponObj: couponGET) => {
+    await deleteCoupon(couponObj.id, 'lecturer');
+    reloadToast(`${couponObj.title} 배포 중지 완료`);
+    window.location.reload();
+  };
+
+  const deploymentStopHandler = async () => {
+    if (!couponObj) return toast.error('잘못된 접근 입니다.');
+
+    try {
+      if (
+        confirm(`쿠폰명: '${couponObj.title}'
+  해당 쿠폰의 배포를 중지 하시겠습니까?`)
+      )
+        await stopDeployAction(couponObj);
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await stopDeployAction(couponObj);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
 
   const couponAction = async (data: CouponData, type: 'CREATE' | 'UPDATE') => {
     if (
@@ -120,7 +156,9 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
           <div className="mt-5 flex justify-end gap-2">
             {type === 'UPDATE' && (
               <div className="w-24 font-semibold">
-                <UniqueButton size="small">배포 중지</UniqueButton>
+                <UniqueButton size="small" onClick={deploymentStopHandler}>
+                  배포 중지
+                </UniqueButton>
               </div>
             )}
             <form
