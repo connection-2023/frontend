@@ -1,6 +1,7 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
+import { toast } from 'react-toastify';
 import { usePaymentStore } from '@/store';
 import CouponSelect from './CouponSelect';
 import Coupon from '@/components/Coupon/Coupon';
@@ -26,16 +27,6 @@ const CouponClient = ({
   const [normalCouponSelect, setNormalCouponSelect] = useState(normalCoupon);
   const [stackableCouponSelect, setStackableCouponSelect] =
     useState(stackableCoupon);
-
-  const normalSelectPercentage = useRef(
-    !!normalCoupon?.[0]?.value.percentage ?? false,
-  );
-  const stackablePercentage = useRef(
-    !!stackableCoupon?.[0]?.value.percentage ?? false,
-  );
-
-  const [normalOption, setNormalOption] = useState(normalOptions);
-  const [stackableOption, setStackableOption] = useState(stackableOptions);
 
   const calculateDiscount = (couponSelect: SelectCoupon[], price: number) => {
     if (couponSelect.length === 0) return 0;
@@ -75,9 +66,7 @@ const CouponClient = ({
     handleOnChangeCoupon(
       coupon,
       setNormalCouponSelect,
-      normalSelectPercentage,
-      setStackableOption,
-      stackableOptions,
+      setStackableCouponSelect,
     );
   };
 
@@ -87,22 +76,20 @@ const CouponClient = ({
     handleOnChangeCoupon(
       coupon,
       setStackableCouponSelect,
-      stackablePercentage,
-      setNormalOption,
-      normalOptions,
+      setNormalCouponSelect,
     );
   };
 
   return (
     <div className="mt-11 flex flex-col gap-2">
       <CouponSelect
-        options={normalOption}
+        options={normalOptions}
         type="NOMAL"
         selectValue={normalCouponSelect}
         onChange={onChangeNormalCoupon}
       />
       <CouponSelect
-        options={stackableOption}
+        options={stackableOptions}
         type="STACKABLE"
         selectValue={stackableCouponSelect}
         onChange={onChangeStackableCoupon}
@@ -133,30 +120,27 @@ export default CouponClient;
 const handleOnChangeCoupon = (
   coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
   setSelectCoupon: React.Dispatch<React.SetStateAction<SelectCoupon[]>>,
-  selectPercentage: React.MutableRefObject<boolean>,
-  setOptions: React.Dispatch<React.SetStateAction<SelectCoupon[]>>,
-  options: SelectCoupon[],
+  setAnotherSelectCoupon: React.Dispatch<React.SetStateAction<SelectCoupon[]>>,
 ) => {
   if (!coupon) {
     setSelectCoupon([]);
     return;
   }
 
-  if (
-    Array.isArray(coupon) &&
-    coupon.length === 0 &&
-    selectPercentage.current
-  ) {
-    selectPercentage.current = false;
-    setOptions(options);
-  }
+  if ('value' in coupon && !!coupon.value.percentage) {
+    let changeAnotherCoupon = false;
 
-  if ('value' in coupon && coupon.value.percentage) {
-    selectPercentage.current = true;
+    setAnotherSelectCoupon((coupon) => {
+      if (coupon.length > 0 && coupon[0].value.percentage) {
+        changeAnotherCoupon = true;
+        return [];
+      }
+      return coupon;
+    });
 
-    setOptions((options) =>
-      options.filter((option) => !option.value.percentage),
-    );
+    if (changeAnotherCoupon) {
+      toast.error('퍼센트 쿠폰은 하나만 적용이 가능합니다.');
+    }
   }
 
   const newValue = Array.isArray(coupon) ? coupon : [coupon];

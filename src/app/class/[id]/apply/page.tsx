@@ -23,7 +23,7 @@ const ClassApplyPage = ({
     take: 10000, //추후 null로 변경
     couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
     filterOption: 'LATEST' as 'LATEST',
-    // lectureIds: [id],
+    lectureIds: [id],
   };
 
   const { lectureScheduleId, count } = searchParams;
