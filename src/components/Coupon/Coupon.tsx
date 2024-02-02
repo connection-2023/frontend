@@ -216,7 +216,7 @@ const Coupon = ({
         )}
       </div>
       <dd className="w-full truncate text-sm">{title}</dd>
-      <dd className="flex gap-2 text-sm">
+      <dd className="flex flex-wrap gap-2 text-sm ">
         {startAt + '-' + endAt}
         {maxDiscountPrice !== null &&
           maxDiscountPrice.toLocaleString() !== '0' && (

@@ -61,6 +61,7 @@ const CouponOption = ({
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   const selectClass = watch('lectureIds');
+  const couponQuantity = watch('couponQuantity');
 
   useEffect(() => {
     getMyLecture()
@@ -78,6 +79,12 @@ const CouponOption = ({
   useEffect(() => {
     setIsAllSelected(selectClass?.length === options.length);
   }, [selectClass, options]);
+
+  useEffect(() => {
+    if (couponQuantity === '원') {
+      setValue('maxDiscountAmount', undefined);
+    }
+  }, [couponQuantity]);
 
   return (
     <main className="flex flex-col gap-4 ">
@@ -233,6 +240,7 @@ const CouponOption = ({
             type="number"
             className={`${CouponOptionInputStyles} peer mr-1 w-20 text-right`}
             defaultValue={defaultValue?.maxDiscountPrice ?? ''}
+            disabled={couponQuantity === '원'}
             {...register('maxDiscountAmount', {
               pattern: {
                 value: /^[0-9]*$/,
