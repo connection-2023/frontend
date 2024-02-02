@@ -16,7 +16,7 @@ const CouponContainer = ({
   }
   let normalCoupon: SelectCoupon[] | undefined;
   let stackableCoupon: SelectCoupon[] | undefined;
-  const couponList = resCouponList.itemList.map(mapItemToCoupon);
+  const couponList = resCouponList.itemList?.map(mapItemToCoupon) ?? [];
 
   const {
     normalCoupon: maxNormalCouponId,

@@ -53,8 +53,9 @@ const CouponClient = ({
 
     const coupon = {
       discountPrice: normalCouponDiscount + stackableCouponDiscount,
-      couponId: normalCouponSelect[0]?.value.id,
-      stackableCouponId: stackableCouponSelect[0]?.value.id,
+      couponId: normalCouponSelect[0]?.value.lectureCouponId ?? null,
+      stackableCouponId:
+        stackableCouponSelect[0]?.value.lectureCouponId ?? null,
     };
 
     setCoupon(coupon);

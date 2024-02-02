@@ -1,9 +1,4 @@
-import {
-  IcouponsData,
-  IgetFunction,
-  createCouponData,
-  userCouponGET,
-} from '@/types/coupon';
+import { IcouponsData, IgetFunction, createCouponData } from '@/types/coupon';
 import { FetchError } from '@/types/types';
 
 export const createNewCoupon = async (data: createCouponData) => {

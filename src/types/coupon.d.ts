@@ -87,7 +87,7 @@ export interface IprivateCoupon {
 
 export interface IcouponsData {
   totalItemCount: number;
-  itemList: couponGET[];
+  itemList?: couponGET[];
 }
 
 export interface IuserCouponsData {
