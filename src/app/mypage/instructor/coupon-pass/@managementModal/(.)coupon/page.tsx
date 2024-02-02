@@ -1,4 +1,5 @@
 'use client';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -6,16 +7,12 @@ import { CloseSVG, CouponSVG } from '@/icons/svg';
 import { createNewCoupon, updateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/apiDataProcessor';
+import { reloadToast } from '@/utils/reloadMessage';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import RouterModal from '@/components/Modal/RouterModal';
-import {
-  CouponData,
-  couponGET,
-  createCouponData,
-  updateCouponData,
-} from '@/types/coupon';
+import { CouponData, couponGET, createCouponData } from '@/types/coupon';
 import { FetchError } from '@/types/types';
 
 interface CouponCreateModalProps {
@@ -60,6 +57,7 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
       await updateCoupon(processData, couponObj.id);
     }
 
+    reloadToast(`쿠폰 ${type === 'CREATE' ? '생성' : '수정'} 완료`);
     window.location.reload();
   };
 
