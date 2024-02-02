@@ -160,3 +160,34 @@ export const getClassCoupon = async (couponIdList: { couponIds: number[] }) => {
     throw error;
   }
 };
+
+export const deleteCoupon = async (
+  couponId: number,
+  userType: 'user' | 'lecturer',
+) => {
+  try {
+    const response = await fetch(
+      `/api/coupon/deleteCoupon?couponId=${encodeURIComponent(
+        couponId,
+      )}&userType=${encodeURIComponent(userType)}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('쿠폰 삭제 오류', error);
+    throw error;
+  }
+};

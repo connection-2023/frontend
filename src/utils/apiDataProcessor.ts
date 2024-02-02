@@ -370,6 +370,7 @@ export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
       startAt: item.lectureCoupon.startAt,
       endAt: item.lectureCoupon.endAt,
       id: item.id,
+      lectureCouponId: item.lectureCouponId,
       title: item.lectureCoupon.title,
       discountPrice: item.lectureCoupon.discountPrice,
       isDisabled: item.lectureCoupon.isDisabled,

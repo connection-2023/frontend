@@ -70,6 +70,7 @@ export interface couponGET {
   maxUsageCount: number;
   percentage: number;
   isOwned?: boolean;
+  lectureCouponId?: number;
 }
 
 export interface IprivateCoupon {
