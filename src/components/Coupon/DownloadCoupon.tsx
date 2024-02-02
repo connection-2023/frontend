@@ -19,7 +19,7 @@ const DownloadCoupon = ({
 }: {
   coupon: IprivateCoupon | IclassCoupon;
   code?: string;
-  downloadPublicCoupon: (id: number | number[]) => Promise<void>;
+  downloadPublicCoupon?: (id: number | number[]) => Promise<void>;
 }) => {
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
@@ -140,7 +140,11 @@ const DownloadCoupon = ({
       <button
         className="absolute right-[6%] top-1/2 -translate-y-1/2 transform"
         onClick={() =>
-          code ? downloadPrivateCoupon() : downloadPublicCoupon(id)
+          code
+            ? downloadPrivateCoupon()
+            : downloadPublicCoupon
+            ? downloadPublicCoupon(id)
+            : null
         }
       >
         <DownloadSVG width="34" height="34" className="fill-main-color" />
