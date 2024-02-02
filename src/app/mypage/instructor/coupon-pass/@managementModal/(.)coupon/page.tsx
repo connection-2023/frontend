@@ -3,13 +3,19 @@ import { useRouter } from 'next/navigation';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { CloseSVG, CouponSVG } from '@/icons/svg';
+import { createNewCoupon, updateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import { createCouponUtils } from '@/utils/createCoupon';
+import { createCouponUtils } from '@/utils/apiDataProcessor';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import RouterModal from '@/components/Modal/RouterModal';
-import { CouponData, couponGET } from '@/types/coupon';
+import {
+  CouponData,
+  couponGET,
+  createCouponData,
+  updateCouponData,
+} from '@/types/coupon';
 import { FetchError } from '@/types/types';
 
 interface CouponCreateModalProps {
@@ -36,24 +42,39 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
     clearErrors,
   } = useForm<CouponData>();
 
+  const couponAction = async (data: CouponData, type: 'CREATE' | 'UPDATE') => {
+    if (
+      !window.confirm(
+        `쿠폰을 ${type === 'CREATE' ? '생성' : '수정'}하시겠습니까?`,
+      )
+    ) {
+      return;
+    }
+
+    const processData = createCouponUtils(data, type);
+
+    if (type === 'CREATE') {
+      await createNewCoupon(processData as createCouponData);
+    } else {
+      if (!couponObj) return toast.error('잘못된 요청 입니다.');
+      await updateCoupon(processData, couponObj.id);
+    }
+
+    window.location.reload();
+  };
+
   const onValid = async (data: CouponData) => {
+    const actionType = type === 'CREATE' ? '생성' : '수정';
+
     try {
-      if (!window.confirm('쿠폰을 생성하시겠습니까?')) {
-        return;
-      }
-
-      await createCouponUtils(data);
-
-      toast.success('쿠폰 생성 완료');
-
-      window.location.reload();
+      await couponAction(data, type);
     } catch (error) {
       const fetchError = error as FetchError;
       if (fetchError.status === 401) {
         await accessTokenReissuance();
-        await onValid(data);
+        await couponAction(data, type);
       } else {
-        toast.error('쿠폰 생성 실패, 잠시후 다시 시도해주세요.');
+        toast.error(`쿠폰 ${actionType} 실패, 잠시후 다시 시도해주세요.`);
         console.error(error);
       }
     }

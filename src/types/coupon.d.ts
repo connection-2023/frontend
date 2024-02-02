@@ -132,18 +132,23 @@ export interface OptionType {
   label: string;
 }
 
-export interface createCouponData {
+export interface baseCouponData {
   title: string;
   percentage: number | undefined;
   discountPrice: number | undefined;
   maxDiscountPrice: number | undefined;
   maxUsageCount: number | undefined;
-  startAt: Date;
   endAt: Date;
   isStackable: boolean;
   isPrivate: boolean;
   lectureIds: number[];
 }
+
+export interface createCouponData extends baseCouponData {
+  startAt: Date;
+}
+
+export interface updateCouponData extends baseCouponData {}
 
 export interface IgetFunction {
   take: number | undefined;

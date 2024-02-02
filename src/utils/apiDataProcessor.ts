@@ -22,7 +22,14 @@ import {
   searchClass,
   searchBestClassData,
 } from '@/types/class';
-import { couponGET, userCouponGET } from '@/types/coupon';
+import {
+  CouponData,
+  couponGET,
+  createCoupon,
+  createCouponData,
+  updateCouponData,
+  userCouponGET,
+} from '@/types/coupon';
 import { searchInstructor } from '@/types/instructor';
 
 export const uploadImageFiles = async (
@@ -622,4 +629,43 @@ export const convertToProfileInfo = (
   }
 
   return profileInfo;
+};
+
+export const createCouponUtils = (
+  data: CouponData,
+  type: 'CREATE' | 'UPDATE',
+): createCouponData | updateCouponData => {
+  const {
+    validityPeriod,
+    couponQuantity,
+    discountValue,
+    maxUsageCount,
+    couponDistributionCount,
+    lectureIds,
+    title,
+    maxDiscountAmount,
+    isPrivate,
+    isStackable,
+  } = data;
+
+  const baseData = {
+    title,
+    endAt: new Date(validityPeriod.endDate),
+    percentage: couponQuantity === '%' ? Number(discountValue) : undefined,
+    discountPrice: couponQuantity === '원' ? Number(discountValue) : undefined,
+    maxUsageCount: maxUsageCount ? undefined : Number(couponDistributionCount),
+    isPrivate,
+    isStackable,
+    lectureIds: lectureIds.map(({ value }) => Number(value)),
+    maxDiscountPrice: Number(maxDiscountAmount) ?? undefined,
+  };
+
+  if (type === 'CREATE') {
+    return {
+      ...baseData,
+      startAt: new Date(validityPeriod.startDate),
+    };
+  } else {
+    return baseData;
+  }
 };

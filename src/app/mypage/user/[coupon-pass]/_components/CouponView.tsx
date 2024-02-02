@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { NotFoundSVG } from '@/icons/svg';
 import { getCouponLists } from '@/lib/apis/couponApis';

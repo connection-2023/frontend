@@ -88,7 +88,7 @@ const getCouponInfo = async () => {
         resultCoupon;
       CouponCount = resTotalItemCount;
 
-      couponList = resCouponList.map(mapItemToCoupon);
+      couponList = resCouponList?.map(mapItemToCoupon) ?? [];
     }
 
     const resLectureLists = await getMyLecture();

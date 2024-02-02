@@ -1,4 +1,9 @@
-import { IcouponsData, IgetFunction, createCouponData } from '@/types/coupon';
+import {
+  IcouponsData,
+  IgetFunction,
+  createCouponData,
+  updateCouponData,
+} from '@/types/coupon';
 import { FetchError } from '@/types/types';
 
 export const createNewCoupon = async (data: createCouponData) => {
@@ -183,6 +188,38 @@ export const deleteCoupon = async (
     return data;
   } catch (error) {
     console.error('쿠폰 삭제 오류', error);
+    throw error;
+  }
+};
+
+export const updateCoupon = async (
+  data: updateCouponData,
+  couponId: number,
+) => {
+  try {
+    const response = await fetch(
+      `/api/coupon/updateCoupon?couponId=${couponId}`,
+      {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const responseData = await response.json();
+    return responseData.data.coupon;
+  } catch (error) {
+    console.error('쿠폰 수정 오류', error);
     throw error;
   }
 };
