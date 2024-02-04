@@ -1,14 +1,16 @@
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { EditSVG, LinkSVG } from '@/icons/svg';
-import { getPrivateCode } from '@/lib/apis/couponApis';
+import { deleteCoupon, getPrivateCode } from '@/lib/apis/couponApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
 import UniqueButton from '../Button/UniqueButton';
 import { couponGET } from '@/types/coupon';
+import { FetchError } from '@/types/types';
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 interface CouponProps {
@@ -38,8 +40,10 @@ const Coupon = ({
     maxDiscountPrice,
     lectureCouponTarget,
     id,
+    lectureCouponId,
   } = coupon;
 
+  const router = useRouter();
   const startAt = formatDate(startDate);
   const endAt = formatDate(endDate);
 
@@ -51,38 +55,83 @@ const Coupon = ({
     setClassListsView(false);
   });
 
-  const getPrivateCouponCode = async () => {
+  const getPrivateCouponCodeAction = async () => {
+    const { privateCouponCode } = await getPrivateCode(id);
+    const userStoreState = useUserStore.getState();
+
+    const lecturerInfo = userStoreState.authUser;
+
+    const params = new URLSearchParams();
+    params.append('lecturerInfo', JSON.stringify(lecturerInfo));
+
+    params.append(
+      'coupon',
+      JSON.stringify({
+        title,
+        percentage,
+        discountPrice,
+        startAt,
+        endAt,
+        isStackable,
+        maxDiscountPrice,
+        lectureCouponTarget,
+      }),
+    );
+
+    const link = `${DOMAIN}/coupon/${privateCouponCode}?${params.toString()}`;
+
+    await navigator.clipboard.writeText(link);
+
+    toast.success('쿠폰 다운로드 링크가 클립보드에 복사되었습니다.');
+  };
+
+  const getPrivateCouponCodeHandler = async () => {
     try {
-      const { privateCouponCode } = await getPrivateCode(id);
-      const userStoreState = useUserStore.getState();
-
-      const lecturerInfo = userStoreState.authUser;
-
-      const params = new URLSearchParams();
-      params.append('lecturerInfo', JSON.stringify(lecturerInfo));
-
-      params.append(
-        'coupon',
-        JSON.stringify({
-          title,
-          percentage,
-          discountPrice,
-          startAt,
-          endAt,
-          isStackable,
-          maxDiscountPrice,
-          lectureCouponTarget,
-        }),
-      );
-
-      const link = `${DOMAIN}/coupon/${privateCouponCode}?${params.toString()}`;
-
-      await navigator.clipboard.writeText(link);
-
-      toast.success('쿠폰 다운로드 링크가 클립보드에 복사되었습니다.');
+      await getPrivateCouponCodeAction();
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message);
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await getPrivateCouponCodeAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
+
+  const deleteCouponHandler = async (couponID?: number) => {
+    if (!couponID) return toast.error('잘못된 요청입니다!');
+
+    try {
+      if (
+        confirm(`쿠폰명: '${title}'
+해당 쿠폰을 삭제 하시겠습니까?`)
+      ) {
+        await deleteCoupon(couponID, type);
+        toast.success(`${title} 쿠폰 제거 완료`);
+        router.refresh();
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await deleteCoupon(couponID, type);
+            toast.success(`${title} 쿠폰 제거 완료`);
+            router.refresh();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
       }
     }
   };
@@ -108,7 +157,7 @@ const Coupon = ({
               : discountPrice.toLocaleString() + '원'}
           </dt>
           {!expiration && isPrivate && type === 'lecturer' && (
-            <button onClick={getPrivateCouponCode}>
+            <button onClick={getPrivateCouponCodeHandler}>
               <LinkSVG className="fill-black" />
             </button>
           )}
@@ -141,7 +190,7 @@ const Coupon = ({
           <div className="text-sm">
             <UniqueButton
               type="button"
-              onClick={() => console.log('추후 삭제 api 추가', id)}
+              onClick={() => deleteCouponHandler(lectureCouponId)}
               size="small"
               color="secondary"
             >
@@ -167,7 +216,7 @@ const Coupon = ({
         )}
       </div>
       <dd className="w-full truncate text-sm">{title}</dd>
-      <dd className="flex gap-2 text-sm">
+      <dd className="flex flex-wrap gap-2 text-sm ">
         {startAt + '-' + endAt}
         {maxDiscountPrice !== null &&
           maxDiscountPrice.toLocaleString() !== '0' && (

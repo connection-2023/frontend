@@ -19,6 +19,7 @@ import { getMyLecture } from '@/lib/apis/classApi';
 import CouponOptionSection from './CouponOptionSection';
 import DistributionCount from './DistributionCount';
 import SelectClass from './SelectClass';
+import SelectClassModal from './SelectClassModal';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import {
   CouponDuplicationTooltip,
@@ -60,6 +61,7 @@ const CouponOption = ({
   const [isAllSelected, setIsAllSelected] = useState(false);
 
   const selectClass = watch('lectureIds');
+  const couponQuantity = watch('couponQuantity');
 
   useEffect(() => {
     getMyLecture()
@@ -77,6 +79,12 @@ const CouponOption = ({
   useEffect(() => {
     setIsAllSelected(selectClass?.length === options.length);
   }, [selectClass, options]);
+
+  useEffect(() => {
+    if (couponQuantity === '원') {
+      setValue('maxDiscountAmount', undefined);
+    }
+  }, [couponQuantity]);
 
   return (
     <main className="flex flex-col gap-4 ">
@@ -232,6 +240,7 @@ const CouponOption = ({
             type="number"
             className={`${CouponOptionInputStyles} peer mr-1 w-20 text-right`}
             defaultValue={defaultValue?.maxDiscountPrice ?? ''}
+            disabled={couponQuantity === '원'}
             {...register('maxDiscountAmount', {
               pattern: {
                 value: /^[0-9]*$/,
@@ -325,11 +334,20 @@ const CouponOption = ({
                     </label>
                   </div>
                   <div className="col-span-2 mb-2 w-full sm:col-start-2">
-                    <SelectClass
-                      options={options}
-                      onChange={field.onChange}
-                      value={field.value}
-                    />
+                    <div className="hidden sm:block">
+                      <SelectClass
+                        options={options}
+                        onChange={field.onChange}
+                        value={field.value}
+                      />
+                    </div>
+                    <div className="sm:hidden">
+                      <SelectClassModal
+                        options={options}
+                        onChange={field.onChange}
+                        selectList={field.value}
+                      />
+                    </div>
                   </div>
                   <div className="col-span-2 flex max-h-48 flex-col gap-1 overflow-y-auto sm:col-start-2">
                     {selectClass?.map(({ label = '', value = '' }, index) => (

@@ -51,7 +51,7 @@ export const getIssuedPassList = async (
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(`${END_POINT}/passes/lecturer?${params}`, {
+  const response = await fetch(`${END_POINT}/passes/issued?${params}`, {
     cache: 'no-store',
     method: 'GET',
     credentials: 'include',

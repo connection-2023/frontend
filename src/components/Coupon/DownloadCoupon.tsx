@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { DownloadSVG } from '@/icons/svg';
-import { getClassCoupon, getPrivateCoupon } from '@/lib/apis/couponApis';
+import { getPrivateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
@@ -15,13 +15,15 @@ import { FetchError } from '@/types/types';
 const DownloadCoupon = ({
   coupon,
   code,
-  couponListPop,
+  downloadPublicCoupon,
 }: {
   coupon: IprivateCoupon | IclassCoupon;
   code?: string;
-  couponListPop?: (id: number) => void;
+  downloadPublicCoupon?: (id: number | number[]) => Promise<void>;
 }) => {
-  const { userType } = useUserStore.getState();
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
   const { title, percentage, discountPrice, isStackable, maxDiscountPrice } =
     coupon;
 
@@ -64,7 +66,7 @@ const DownloadCoupon = ({
 로그인 화면으로 이동하시겠습니까?
         `)
         )
-          router.push('/my/user/coupon-pass?state=coupon');
+          router.push('/login');
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -73,44 +75,6 @@ const DownloadCoupon = ({
           try {
             await accessTokenReissuance();
             await getPrivateCoupon(code);
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          toast.error('잘못된 요청입니다!');
-        }
-      }
-    }
-  };
-
-  const downloadClassCoupon = async (id: number) => {
-    if (!couponListPop) {
-      return;
-    }
-
-    try {
-      if (userType === 'user') {
-        await getClassCoupon(id);
-        couponListPop(id);
-        toast.success('쿠폰 다운로드 완료');
-      } else if (userType) {
-        toast.error('유저로 전환이 필요한 서비스 입니다.');
-      } else {
-        if (
-          confirm(`로그인이 필요한 서비스입니다.
-로그인 화면으로 이동하시겠습니까?
-        `)
-        )
-          router.push('/my/user/coupon-pass?state=coupon');
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        const fetchError = error as FetchError;
-        if (fetchError.status === 401) {
-          try {
-            await accessTokenReissuance();
-            await getClassCoupon(id);
-            couponListPop(id);
           } catch (error) {
             console.error(error);
           }
@@ -176,7 +140,11 @@ const DownloadCoupon = ({
       <button
         className="absolute right-[6%] top-1/2 -translate-y-1/2 transform"
         onClick={() =>
-          code ? downloadPrivateCoupon() : downloadClassCoupon(id)
+          code
+            ? downloadPrivateCoupon()
+            : downloadPublicCoupon
+            ? downloadPublicCoupon(id)
+            : null
         }
       >
         <DownloadSVG width="34" height="34" className="fill-main-color" />

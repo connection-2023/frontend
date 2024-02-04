@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const GET = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
   if (!END_POINT) {
     return NextResponse.json({
       status: 500,
@@ -10,7 +10,24 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
+  const searchParams = request.nextUrl.searchParams;
+  const couponId = searchParams.get('couponId');
+  const userType = searchParams.get('userType');
+
+  if (!couponId || !userType) {
+    return NextResponse.json(
+      {
+        status: 403,
+        message: `conponId: ${couponId}, userType: ${userType} 값이 존재하지 않습니다.`,
+      },
+      {
+        status: 403,
+      },
+    );
+  }
+
+  const tokenValue = request.cookies.get(`${userType}AccessToken`)?.value;
+
   if (!tokenValue) {
     return NextResponse.json(
       {
@@ -26,14 +43,11 @@ export const GET = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(
-    `${END_POINT}/passes/issued?${request.nextUrl.searchParams.toString()}`,
-    {
-      method: 'GET',
-      credentials: 'include',
-      headers,
-    },
-  );
+  const response = await fetch(END_POINT + '/coupons/' + couponId, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers,
+  });
 
   if (!response.ok) {
     const errorData = await response.json();

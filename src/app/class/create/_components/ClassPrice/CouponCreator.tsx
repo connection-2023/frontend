@@ -1,9 +1,10 @@
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { createNewCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import { createCouponUtils } from '@/utils/createCoupon';
+import { createCouponUtils } from '@/utils/apiDataProcessor';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
-import { CouponData, createCoupon } from '@/types/coupon';
+import { CouponData, createCoupon, createCouponData } from '@/types/coupon';
 import { FetchError } from '@/types/types';
 
 interface CouponCreatorProps {
@@ -39,7 +40,9 @@ const CouponCreator = ({
         return;
       }
 
-      const resData = await createCouponUtils(data);
+      const processData = createCouponUtils(data, 'CREATE');
+
+      const resData = await createNewCoupon(processData as createCouponData);
       resData.lectureCouponTarget = data.lectureIds;
 
       reset();

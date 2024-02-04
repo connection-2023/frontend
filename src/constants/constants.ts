@@ -489,3 +489,5 @@ export const ISSUER_CODE: Record<string, string> = {
   '91': '농협',
   '34': '수협',
 };
+
+export const RELOAD_TOAST_TIME = 10000;

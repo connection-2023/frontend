@@ -15,8 +15,8 @@ export interface IPaymentInfo extends IApplicantInfo {
   lectureSchedule: IReservationInfo;
   originalPrice: number;
   finalPrice: number;
-  couponId?: number;
-  stackableCouponId?: number;
+  couponId: number | null;
+  stackableCouponId: number | null;
 }
 
 export interface IApplicantInfo {
@@ -122,3 +122,9 @@ interface IPaymentCoupon {
 }
 
 export type PaymentStatusType = WAITING_FOR_DEPOSIT | DONE | REFUSED;
+
+export interface PaymentCoupon {
+  discountPrice: null | number;
+  couponId: null | number;
+  stackableCouponId: null | number;
+}

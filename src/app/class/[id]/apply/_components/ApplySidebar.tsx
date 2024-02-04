@@ -15,9 +15,14 @@ interface ApplySidebarProps {
 
 const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const [participants, setParticipants] = useState(0);
+  const { discountPrice, couponId, stackableCouponId } = usePaymentStore(
+    (state) => state.coupon,
+  );
   const orderId = nanoid();
   const totalPrice = price * participants;
-  const discountPrice = usePaymentStore((state) => state.discountPrice);
+  const finalPrice = discountPrice
+    ? Math.max(0, totalPrice - discountPrice)
+    : totalPrice;
   const applyClass = usePaymentStore((state) => state.applyClass);
   const applicant = usePaymentStore((state) => state.applicant);
   const paymentWidget = usePaymentStore((state) => state.paymentWidget);
@@ -70,10 +75,12 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       orderId,
       lectureSchedule: applyClass,
       originalPrice: totalPrice,
-      finalPrice: totalPrice,
+      finalPrice,
       representative,
       phoneNumber,
       requests,
+      couponId,
+      stackableCouponId,
     };
 
     try {
@@ -120,7 +127,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       <div className="mb-2 flex items-center justify-between font-bold">
         <p>최종 결제 금액</p>
         <span className="min-w-[2rem] text-2xl text-black">
-          {totalPrice.toLocaleString()}원
+          {finalPrice.toLocaleString()}원
         </span>
       </div>
 

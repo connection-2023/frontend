@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
-import { CouponSVG, NotFoundSVG, PassSVG } from '@/icons/svg';
+import { NotFoundSVG, PassSVG } from '@/icons/svg';
 import { getIssuedPassLists } from '@/lib/apis/passApis';
 import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from './ClassFilterSelect';

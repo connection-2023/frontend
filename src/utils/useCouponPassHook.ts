@@ -19,10 +19,11 @@ interface useCouponPassHookProps {
   defaultItemCount: number;
   itemList: any[];
   onChange: ({ itemList, prevPage, type }: IonChangeItemList) => void;
-  getFunction: ({ type, data, signal }: IgetListFunctionHandler) => Promise<{
-    totalItemCount: number;
-    itemList: any[];
-  }>;
+  getFunction: ({
+    type,
+    data,
+    signal,
+  }: IgetListFunctionHandler) => Promise<any>;
   type: 'user' | 'lecturer';
   isInterested: 'COUPON' | 'PASS';
 }

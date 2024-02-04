@@ -29,14 +29,14 @@ const CouponComponent = ({
             coupon={coupon}
             lastItemElementRef={width < 640 ? lastItemElementRef : undefined}
             type={type}
-            expiration={expiration === 'DISABLED'}
+            expiration={expiration === 'DISABLED' || expiration === 'EXPIRED'}
           />
         ) : (
           <Coupon
             key={coupon.id}
             coupon={coupon}
             type={type}
-            expiration={expiration === 'DISABLED'}
+            expiration={expiration === 'DISABLED' || expiration === 'EXPIRED'}
           />
         );
       })}
