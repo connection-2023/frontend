@@ -34,6 +34,24 @@ const handleInvalidToken = (request: NextRequest, includes: boolean) => {
   return response;
 };
 
+const redirectWithMessage = (
+  message: string,
+  response: NextResponse<unknown>,
+) => {
+  const toast = {
+    toast: message,
+    date: new Date().toISOString(),
+    state: 'error',
+  };
+
+  response.cookies.set({
+    name: 'toast',
+    value: JSON.stringify(toast),
+  });
+
+  return response;
+};
+
 export async function middleware(request: NextRequest, event: NextFetchEvent) {
   const user = request.cookies.get('userAccessToken')?.value;
   const lecturer = request.cookies.get('lecturerAccessToken')?.value;
@@ -46,20 +64,31 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 
         if (USER_NO_ACCESS.includes(request.nextUrl.pathname)) {
           // 유저가 가면 안되는 lecturer 링크
-          return NextResponse.redirect(new URL('/', request.url));
+
+          return redirectWithMessage(
+            '강사로 전환이 필요한 페이지 입니다.',
+            NextResponse.redirect(new URL('/', request.url)),
+          );
         }
       } else if (lecturer) {
         await checkAccessToken('lecturer', authorization);
 
         if (LECTURER_NO_ACCESS.includes(request.nextUrl.pathname)) {
           // 강사가 가면 안되는 user 링크 확인
-          return NextResponse.redirect(new URL('/', request.url));
+
+          return redirectWithMessage(
+            '유저로 전환이 필요한 페이지 입니다.',
+            NextResponse.redirect(new URL('/', request.url)),
+          );
         }
       }
 
       if (NON_ACCESSIBLE_AFTER_LOGIN.includes(request.nextUrl.pathname)) {
         //로그인해서 가면 안되는 링크
-        return NextResponse.redirect(new URL('/', request.url));
+        return redirectWithMessage(
+          '잘못된 접근입니다.',
+          NextResponse.redirect(new URL('/', request.url)),
+        );
       }
 
       return NextResponse.next();
@@ -89,13 +118,15 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
               throw new Error('refreshToken 존재하지 않음');
             }
           } catch (error) {
-            console.error(error);
             const includes = LOGIN_REQUIRED_URLS.includes(
               request.nextUrl.pathname,
             );
             // 로그인이 필요한 링크 (강사 || 유저)
 
-            return handleInvalidToken(request, includes);
+            return redirectWithMessage(
+              '세션이 만료되었습니다. 다시 로그인해주세요.',
+              handleInvalidToken(request, includes),
+            );
           }
         } else {
           const includes = LOGIN_REQUIRED_URLS.includes(
@@ -103,7 +134,10 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
           );
           // 로그인이 필요한 링크 (강사 || 유저)
 
-          return handleInvalidToken(request, includes);
+          return redirectWithMessage(
+            '세션이 만료되었습니다. 다시 로그인해주세요.',
+            handleInvalidToken(request, includes),
+          );
         }
       }
     }
@@ -111,7 +145,10 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 
   if (LOGIN_REQUIRED_URLS.includes(request.nextUrl.pathname)) {
     // 로그인이 필요한 링크 (강사 || 유저)
-    return NextResponse.redirect(new URL('/login', request.url));
+    return redirectWithMessage(
+      '로그인이 필요한 페이지입니다.',
+      NextResponse.redirect(new URL('/login', request.url)),
+    );
   }
 
   return NextResponse.next();

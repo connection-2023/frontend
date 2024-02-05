@@ -30,12 +30,21 @@ const UserStoreInitializer = ({
 
   Cookies.remove('toast');
   if (toastMessage) {
-    const message: { toast: string; date: string } = JSON.parse(toastMessage);
-    const dateDifference =
-      new Date().getTime() - new Date(message.date).getTime();
+    const message: {
+      toast?: string;
+      date?: string;
+      state?: 'error' | 'success';
+    } = JSON.parse(toastMessage);
+    const dateDifference = message.date
+      ? new Date().getTime() - new Date(message.date).getTime()
+      : RELOAD_TOAST_TIME + 1;
 
     if (dateDifference <= RELOAD_TOAST_TIME) {
-      toast.success(message.toast);
+      if (message.state === 'success') {
+        toast.success(message.toast);
+      } else {
+        toast.error(message.toast);
+      }
     }
   }
 

@@ -45,7 +45,7 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
 
   const stopDeployAction = async (couponObj: couponGET) => {
     await deleteCoupon(couponObj.id, 'lecturer');
-    reloadToast(`${couponObj.title} 배포 중지 완료`);
+    reloadToast(`${couponObj.title} 배포 중지 완료`, 'success');
     window.location.reload();
   };
 
@@ -93,7 +93,7 @@ const CouponCreateModal = ({ searchParams }: CouponCreateModalProps) => {
       await updateCoupon(processData, couponObj.id);
     }
 
-    reloadToast(`쿠폰 ${type === 'CREATE' ? '생성' : '수정'} 완료`);
+    reloadToast(`쿠폰 ${type === 'CREATE' ? '생성' : '수정'} 완료`, 'success');
     window.location.reload();
   };
 
