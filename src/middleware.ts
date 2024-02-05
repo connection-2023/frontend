@@ -68,7 +68,7 @@ const isProtectedUrl = (
   return false;
 };
 
-export async function middleware(request: NextRequest, event: NextFetchEvent) {
+export async function middleware(request: NextRequest) {
   const user = request.cookies.get('userAccessToken')?.value;
   const lecturer = request.cookies.get('lecturerAccessToken')?.value;
   const authorization = user || lecturer;
