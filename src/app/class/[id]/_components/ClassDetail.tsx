@@ -79,7 +79,12 @@ const ClassDetail = async ({ id }: { id: string }) => {
               href={`/chat/${lecturer.id}`}
               className={`h-[28px] ${ButtonStyles.secondary}`}
             >
-              <ChatSVG className="mr-[3px] stroke-black" />
+              <ChatSVG
+                width="17"
+                height="17"
+                fill="black"
+                className="mr-[3px]"
+              />
               문의하기
             </Link>
           </div>
