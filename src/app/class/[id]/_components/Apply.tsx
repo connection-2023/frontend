@@ -21,12 +21,11 @@ interface ApplyProps {
 }
 
 const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
-  const router = useRouter();
-  const modalRef = useRef(null);
   const [selectedSchedule, setSelectedSchedule] = useState<IDateTime | null>();
   const [selectedDateTime, setSelectedDateTime] = useState('날짜 및 시간 선택');
   const [isOpened, setIsOpened] = useState(false);
-  console.log('selectedSchedule: ', selectedSchedule);
+  const router = useRouter();
+  const modalRef = useRef(null);
   const scheduleLists = applyScheduleFilter(schedule, maxCapacity);
 
   const formattedData = scheduleLists.map((list) => {
@@ -85,10 +84,10 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
 
   const removeReservationItem = () => {
     setSelectedSchedule(null);
+    setSelectedDateTime('날짜 및 시간 선택');
   };
 
   const updateCount = (newCount: number) => {
-    console.log('newCount: ', newCount);
     if (selectedSchedule) {
       setSelectedSchedule({ ...selectedSchedule, count: newCount });
     }
