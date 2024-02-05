@@ -26,7 +26,7 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
   const [selectedSchedule, setSelectedSchedule] = useState<IDateTime | null>();
   const [selectedDateTime, setSelectedDateTime] = useState('날짜 및 시간 선택');
   const [isOpened, setIsOpened] = useState(false);
-
+  console.log('selectedSchedule: ', selectedSchedule);
   const scheduleLists = applyScheduleFilter(schedule, maxCapacity);
 
   const formattedData = scheduleLists.map((list) => {
@@ -88,6 +88,7 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
   };
 
   const updateCount = (newCount: number) => {
+    console.log('newCount: ', newCount);
     if (selectedSchedule) {
       setSelectedSchedule({ ...selectedSchedule, count: newCount });
     }
