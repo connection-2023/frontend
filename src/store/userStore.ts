@@ -19,7 +19,7 @@ export interface IUserStore {
   ) => void;
 }
 
-export const useUserStore = create<IUserStore>((set, get) => ({
+export const useUserStore = create<IUserStore>((set) => ({
   authUser: null,
   userType: null,
   requestLoading: false,
