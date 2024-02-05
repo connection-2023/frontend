@@ -33,7 +33,7 @@ const ReservationItem = ({
         <p>{dateTime}</p>
         <ClearSVG
           onClick={onRemove}
-          className="cursor-pointer fill-gray-500"
+          className="cursor-pointer fill-gray-500 stroke-white stroke-2"
           width={18}
           height={18}
         />
