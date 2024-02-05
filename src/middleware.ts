@@ -119,17 +119,12 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 
 export const config = {
   matcher: [
-    '/',
-    '/class/:path*',
-    '/instructor/:path*',
-    '/coupon/:path*',
-    '/dashboard',
-    '/login',
-    '/notify',
-    '/register/:path*',
-    '/report ',
-    '/search',
-    '/signin',
-    '/mypage/:path*',
+    {
+      source: '/((?!api|_next/static|_next/image|favicon.ico|error).*)',
+      missing: [
+        { type: 'header', key: 'next-router-prefetch' },
+        { type: 'header', key: 'purpose', value: 'prefetch' },
+      ],
+    },
   ],
 };
