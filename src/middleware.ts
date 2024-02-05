@@ -52,6 +52,22 @@ const redirectWithMessage = (
   return response;
 };
 
+const isProtectedUrl = (
+  patterns: (string | RegExp)[],
+  url: string,
+): boolean => {
+  for (const pattern of patterns) {
+    if (pattern instanceof RegExp) {
+      if (pattern.test(url)) {
+        return true;
+      }
+    } else if (pattern === url) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export async function middleware(request: NextRequest, event: NextFetchEvent) {
   const user = request.cookies.get('userAccessToken')?.value;
   const lecturer = request.cookies.get('lecturerAccessToken')?.value;
@@ -62,7 +78,7 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
       if (user) {
         await checkAccessToken('user', authorization);
 
-        if (USER_NO_ACCESS.includes(request.nextUrl.pathname)) {
+        if (isProtectedUrl(USER_NO_ACCESS, request.nextUrl.pathname)) {
           // 유저가 가면 안되는 lecturer 링크
 
           return redirectWithMessage(
@@ -73,7 +89,7 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
       } else if (lecturer) {
         await checkAccessToken('lecturer', authorization);
 
-        if (LECTURER_NO_ACCESS.includes(request.nextUrl.pathname)) {
+        if (isProtectedUrl(LECTURER_NO_ACCESS, request.nextUrl.pathname)) {
           // 강사가 가면 안되는 user 링크 확인
 
           return redirectWithMessage(
@@ -83,7 +99,9 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
         }
       }
 
-      if (NON_ACCESSIBLE_AFTER_LOGIN.includes(request.nextUrl.pathname)) {
+      if (
+        isProtectedUrl(NON_ACCESSIBLE_AFTER_LOGIN, request.nextUrl.pathname)
+      ) {
         //로그인해서 가면 안되는 링크
         return redirectWithMessage(
           '잘못된 접근입니다.',
@@ -118,7 +136,8 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
               throw new Error('refreshToken 존재하지 않음');
             }
           } catch (error) {
-            const includes = LOGIN_REQUIRED_URLS.includes(
+            const includes = isProtectedUrl(
+              LOGIN_REQUIRED_URLS,
               request.nextUrl.pathname,
             );
             // 로그인이 필요한 링크 (강사 || 유저)
@@ -129,7 +148,8 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
             );
           }
         } else {
-          const includes = LOGIN_REQUIRED_URLS.includes(
+          const includes = isProtectedUrl(
+            LOGIN_REQUIRED_URLS,
             request.nextUrl.pathname,
           );
           // 로그인이 필요한 링크 (강사 || 유저)
@@ -143,7 +163,7 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
     }
   }
 
-  if (LOGIN_REQUIRED_URLS.includes(request.nextUrl.pathname)) {
+  if (isProtectedUrl(LOGIN_REQUIRED_URLS, request.nextUrl.pathname)) {
     // 로그인이 필요한 링크 (강사 || 유저)
     return redirectWithMessage(
       '로그인이 필요한 페이지입니다.',

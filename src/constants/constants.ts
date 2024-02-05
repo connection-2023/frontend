@@ -365,11 +365,11 @@ export const BANK_CODE_TO_NAME: { [key: string]: string } = {
   SD: 'SK증권',
 };
 
-export const LOGIN_REQUIRED_URLS = ['/class/create']; // '/instructor/apply',
+export const LOGIN_REQUIRED_URLS = ['/class/create'];
 
-export const LECTURER_NO_ACCESS = ['/aaa']; // '/instructor/apply'
+export const LECTURER_NO_ACCESS = []; //new RegExp('^/class/[^/]+/apply$') 동적 라우터 있는 부분은 해당 방식으로 넣으면 됨
 
-export const USER_NO_ACCESS = ['/class/create'];
+export const USER_NO_ACCESS = [];
 
 export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];
 
