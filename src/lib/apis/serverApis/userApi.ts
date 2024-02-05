@@ -3,6 +3,7 @@ import { instructorProfile, userProfile } from '@/types/auth';
 import { FetchError } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
+const END_POINT_DOMAIN = process.env.NEXT_PUBLIC_API_END_POINT_DOMAIN;
 
 export const getInstructorProfile = async (): Promise<instructorProfile> => {
   const cookieStore = cookies();
@@ -60,14 +61,10 @@ export const getMyProfile = async (): Promise<userProfile> => {
   return data.data.myProfile;
 };
 
-export const accessTokenReissuance = async (): Promise<{
-  accessToken: string;
-  refreshToken: string;
-}> => {
-  const cookieStore = cookies();
-  const refreshToken = cookieStore.get('refreshToken')?.value;
-
-  const response = await fetch(END_POINT + '/auth/token/refresh', {
+export const accessTokenReissuance = async (
+  refreshToken: string,
+): Promise<Response> => {
+  const response = await fetch(`${END_POINT_DOMAIN}/auth/token/refresh`, {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
@@ -77,50 +74,59 @@ export const accessTokenReissuance = async (): Promise<{
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(
-      `refresh 조회 에러: ${errorData.message || ''}, status: ${
-        response.status
-      }`,
-    );
+    const error: FetchError = new Error(errorData.message || '');
+    error.status = response.status;
+    throw error;
   }
 
   const resCookies = response.headers.get('set-cookie')?.split('; ');
   const refreshTokenCookie = resCookies!.find((cookie) =>
     cookie.startsWith('refreshToken='),
   );
+
   const data = await response.json();
   const userAccessToken = data.data.userAccessToken;
   const lecturerAccessToken = data.data.lecturerAccessToken;
   const resRefreshToken = refreshTokenCookie!.split('=')[1];
 
+  let result;
+
   if (userAccessToken) {
-    return { accessToken: userAccessToken, refreshToken: resRefreshToken };
+    result = {
+      accessToken: userAccessToken,
+      refreshToken: resRefreshToken,
+    };
   } else if (lecturerAccessToken) {
-    return { accessToken: lecturerAccessToken, refreshToken: resRefreshToken };
+    result = {
+      accessToken: lecturerAccessToken,
+      refreshToken: resRefreshToken,
+    };
   } else {
     throw new Error('엑세스 토큰 미 발급');
   }
+
+  return new Response(JSON.stringify(result));
 };
 
 export const checkAccessToken = async (
-  tokenType: 'userAccessToken' | 'lecturerAccessToken',
+  tokenType: 'user' | 'lecturer',
+  token: string,
 ) => {
-  const cookieStore = cookies();
-  const authorization = cookieStore.get(tokenType)?.value;
   const point =
-    tokenType === 'userAccessToken'
-      ? 'user-access-token'
-      : 'lecturer-access-token';
+    tokenType === 'user' ? 'user-access-token' : 'lecturer-access-token';
 
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${authorization}`,
+    Authorization: `Bearer ${token}`,
   };
 
-  const response = await fetch(`${END_POINT}/auth/token/verify/${point}`, {
-    method: 'GET',
-    credentials: 'include',
-    headers,
-  });
+  const response = await fetch(
+    `${END_POINT_DOMAIN}/auth/token/verify/${point}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    },
+  );
 
   if (!response.ok) {
     const errorData = await response.json();
@@ -129,5 +135,5 @@ export const checkAccessToken = async (
     throw error;
   }
 
-  return response.json();
+  return response;
 };
