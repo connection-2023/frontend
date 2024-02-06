@@ -148,7 +148,11 @@ export interface userProfile {
   nickname: string;
   phoneNumber: string;
   email: string;
-  userProfileImage: string | null;
+  userProfileImage: {
+    id: number;
+    userId: number;
+    imageUrl: string;
+  } | null;
   verified: boolean;
   createdAt: string;
   updatedAt: string;

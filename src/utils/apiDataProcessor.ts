@@ -622,7 +622,7 @@ export const convertToProfileInfo = (
       nickname: profile.nickname,
       phoneNumber: profile.phoneNumber,
       email: profile.email,
-      profileImage: profile.userProfileImage || null,
+      profileImage: profile.userProfileImage?.imageUrl ?? null,
       authEmail: profile.auth.email,
       type: profile.auth.type,
     };
