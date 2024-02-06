@@ -39,7 +39,7 @@ const ResponsiveScheduleView = ({
   );
 
   return (
-    <ul className="flex flex-col gap-2">
+    <ul className="flex max-h-40 flex-col gap-2 overflow-y-auto">
       {schedules.map((schedule) => (
         <li key={nanoid()} className="flex text-sm">
           <p className="mb-2 flex w-28 items-center gap-1 whitespace-nowrap font-semibold">
