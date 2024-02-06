@@ -6,6 +6,6 @@ interface IDashboardStore {
 }
 
 export const dashboardStore = create<IDashboardStore>((set) => ({
-  selectedDate: undefined,
+  selectedDate: new Date(),
   setSelectedDate: (date) => set({ selectedDate: date }),
 }));

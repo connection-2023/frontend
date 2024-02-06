@@ -18,7 +18,7 @@ import '../../styles/calendar.css';
 interface SingleCalendarProps {
   mode: 'schedule' | 'dashboard' | 'specific';
   clickableDates?: Date[];
-  handleClickDate?: (newDate: Date | undefined) => void;
+  handleClickDate: (newDate: Date | undefined) => void;
 }
 
 /* eslint-enable no-unused-vars */
@@ -36,12 +36,9 @@ const SingleCalendar = ({
 
   useEffect(() => {
     if (selected && handleClickDate) {
-      if (mode === 'dashboard') {
-        store.setSelectedDate(selected);
-      }
       handleClickDate(selected);
     }
-  }, [selected, handleClickDate, mode, store]);
+  }, [selected, handleClickDate]);
 
   useEffect(() => {
     if (mode === 'dashboard') {
@@ -88,7 +85,12 @@ const SingleCalendar = ({
       showOutsideDays
       defaultMonth={clickableDates[0]}
       selected={selected}
-      onSelect={setSelected}
+      onSelect={(newSelectedDate) => {
+        if (mode === 'dashboard' && newSelectedDate) {
+          store.setSelectedDate(newSelectedDate);
+        }
+        setSelected(newSelectedDate);
+      }}
       disabled={disabledDays}
       modifiers={modifiers}
       modifiersClassNames={modifiersClassNames}
