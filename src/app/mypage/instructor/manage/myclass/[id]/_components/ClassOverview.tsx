@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import Spinner from '@/components/Loading/Spinner';
+import UserProfileMenu from '@/components/Profile/UserProfileMenu';
+import { IScheduleLearnerList } from '@/types/class';
 import ErrorFallback from '@/app/_components/Error';
 import { ChatSVG } from '@/icons/svg';
 import {
   getAllRegisterLists,
   getScheduleRegisterLists,
 } from '@/lib/apis/classApis';
-import Spinner from '@/components/Loading/Spinner';
-import ProfileImage from '@/components/Profile/ProfileImage';
-import { IScheduleLearnerList } from '@/types/class';
 
 interface ClassOverViewProps {
   totalClassNum: number;
@@ -103,8 +103,12 @@ const LearnerList = (props: IScheduleLearnerList) => {
   return (
     <li className="flex w-full items-center justify-between text-sm font-medium">
       <div className="flex cursor-pointer items-center">
-        <ProfileImage src={userProfileImage} label={false} size="small" />
-        <span className="w-25 ml-2.5 truncate">{nickname}</span>
+        <UserProfileMenu
+          contact="" // api 변경 후 추가 예정
+          userId={userId}
+          profileImg={userProfileImage}
+          name={nickname}
+        />
       </div>
       <div className="flex items-center gap-4 text-sub-color1">
         {enrollmentCount && <span>{enrollmentCount}회 신청</span>}

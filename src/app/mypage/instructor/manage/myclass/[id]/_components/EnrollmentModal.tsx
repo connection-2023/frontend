@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import subHours from 'date-fns/subHours';
 import Link from 'next/link';
 import { useState } from 'react';
+import Spinner from '@/components/Loading/Spinner';
+import Modal from '@/components/Modal/Modal';
+import UserProfileMenu from '@/components/Profile/UserProfileMenu';
+import { IProcessedSchedules, IScheduleLearnerList } from '@/types/class';
 import { ChatSVG } from '@/icons/svg';
 import { getScheduleRegisterLists } from '@/lib/apis/classApis';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
-import Spinner from '@/components/Loading/Spinner';
-import Modal from '@/components/Modal/Modal';
-import ProfileImage from '@/components/Profile/ProfileImage';
-import { IProcessedSchedules, IScheduleLearnerList } from '@/types/class';
 
 interface EnrollmentModalProps {
   isOpen: boolean;
@@ -91,7 +91,8 @@ const getButtonClass = (request: string, isClicked: boolean) => {
 };
 
 const ScheduleLearnerList = (props: IScheduleLearnerList) => {
-  const { userId, nickname, userProfileImage, requests, memo } = props;
+  const { userId, nickname, phoneNumber, userProfileImage, requests, memo } =
+    props;
   const [isRequestOpened, setIsRequestOpened] = useState(false);
   const [classStudentMemo, setClassStudentMemo] = useState(memo || '');
 
@@ -110,8 +111,13 @@ const ScheduleLearnerList = (props: IScheduleLearnerList) => {
     <li className="flex flex-col">
       <div className="flex w-full items-center justify-between whitespace-nowrap text-sm font-medium">
         <div className="flex cursor-pointer items-center">
-          <ProfileImage src={userProfileImage} label={false} size="small" />
-          <p className=" ml-2.5 w-[4.5rem] truncate">{nickname}</p>
+          <UserProfileMenu
+            contact={phoneNumber}
+            userId={userId}
+            profileImg={userProfileImage}
+            name={nickname}
+            nameWidth={72}
+          />
         </div>
         <textarea
           value={classStudentMemo}
