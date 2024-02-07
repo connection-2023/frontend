@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { TrashcanSVG } from '@/icons/svg';
 import { deleteClassDrafts } from '@/lib/apis/classApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
@@ -33,7 +32,11 @@ const DraftListModal = ({
   };
 
   return (
-    <Modal handleClosed={closeDraftsModal} isOpened={draftModalView}>
+    <Modal
+      handleClosed={closeDraftsModal}
+      isOpened={draftModalView}
+      modalHistroryControl={false}
+    >
       <section className="w-[40rem]">
         <h1 className="flex justify-center border-b border-solid border-gray-700 py-3 text-lg">
           임시저장 불러오기({classDrafts.length})
@@ -41,7 +44,6 @@ const DraftListModal = ({
 
         <DraftList
           classDraftList={classDrafts}
-          closeModal={closeDraftsModal}
           deleteClassDraftList={deleteClassDraftList}
         />
       </section>
@@ -53,7 +55,6 @@ export default DraftListModal;
 
 interface DraftListProps {
   classDraftList: IGetClassDrafts[];
-  closeModal: () => void;
   deleteClassDraftList: (deleteId: string) => Promise<void>;
 }
 
