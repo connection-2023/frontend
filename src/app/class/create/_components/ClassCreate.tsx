@@ -1,22 +1,31 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, lazy } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
-import { updateClassDraft } from '@/lib/apis/classApi';
+import { createClassDraft, updateClassDraft } from '@/lib/apis/classApi';
 import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { IprocessedDraft, classCreateData } from '@/types/class';
+import {
+  IGetClassDrafts,
+  IprocessedDraft,
+  classCreateData,
+} from '@/types/class';
 import { ErrorMessage } from '@/types/types';
 
 const ClassExplanation = lazy(() => import('./ClassExplanation'));
 const ClassSchedule = lazy(() => import('./ClassSchedule'));
 const ClassLocation = lazy(() => import('./ClassLocation'));
 const ClassPrice = lazy(() => import('./ClassPrice'));
+
+const DraftListModal = dynamic(() => import('./DraftListModal'), {
+  ssr: false,
+});
 
 const steps = [
   { title: '사진, 카테고리 설정', component: <ClassCategory /> },
@@ -26,10 +35,15 @@ const steps = [
   { title: '가격 설정', component: <ClassPrice /> },
 ];
 
-export default function ClassCreate({ step }: { step: string | undefined }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
+interface ClassCreateProps {
+  step: string | undefined;
+  classDrafts: IGetClassDrafts[];
+}
+
+export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
+  const [draftModalView, setDraftModalView] = useState(true);
+  const [classDraftList, setClassDraftList] =
+    useState<IGetClassDrafts[]>(classDrafts);
 
   const { classData, setClassData, setProcessedClassData } =
     useClassCreateStore();
@@ -38,6 +52,10 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit } = formMethods;
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const id = searchParams.get('id');
 
@@ -62,6 +80,14 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
       }
     }
   }, [searchParams]);
+
+  const changeDraftList = (draftList: IGetClassDrafts[]) => {
+    setClassDraftList(draftList);
+  };
+
+  const closeDraftsModal = () => {
+    setDraftModalView(false);
+  };
 
   const setProcessedClassDataHandler = (data: IprocessedDraft) => {
     setProcessedClassData({ ...classData, ...data });
@@ -105,17 +131,29 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
     setInvalidData(null);
   };
 
-  const updateDraft = async (
-    data: classCreateData,
-    shouldShowToast?: boolean,
-  ) => {
-    shouldShowToast = shouldShowToast === undefined ? true : shouldShowToast;
+  const createDraft = async (title: string) => {
+    const { id } = await createClassDraft();
 
-    if (classData && classData.id) {
+    const draftsData = {
+      id,
+      updatedAt: new Date(),
+      title,
+      step: 0,
+    };
+
+    setClassDraftList((prev) => [...prev, draftsData]);
+    return id;
+  };
+
+  const updateDraft = async (data: classCreateData, update?: boolean) => {
+    update = update === undefined ? true : update;
+    if (!update) return;
+
+    if (classDraftList.length < 5) {
+      const id = classData?.id ? classData.id : await createDraft(data.title);
+
       try {
-        if (classData.step === null || classData.step! < activeStep) {
-          setProcessedClassData({ ...classData, step: activeStep });
-        }
+        setProcessedClassData({ ...classData, step: activeStep });
 
         const processData = await classOutputDataProcess(
           data,
@@ -124,20 +162,21 @@ export default function ClassCreate({ step }: { step: string | undefined }) {
         );
 
         await updateClassDraft({
-          lectureId: classData.id,
-          step:
-            classData.step === null || classData.step! < activeStep
-              ? activeStep
-              : classData.step,
+          lectureId: id,
+          step: activeStep,
           ...processData,
         });
-        if (shouldShowToast) {
-          toast.success('임시저장 완료');
-        }
+
+        toast.success('임시저장 완료');
       } catch (error) {
         console.error(error);
         toast.error('임시저장 실패');
       }
+    } else {
+      toast.error(
+        `임시저장은 최대 5개까지 가능 합니다. 불러오기 혹은 삭제 후 진행해주세요.`,
+      );
+      setDraftModalView(true);
     }
   };
 
@@ -265,6 +304,15 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           </div>
         </nav>
       </section>
+
+      {classDraftList.length > 0 && (
+        <DraftListModal
+          draftModalView={draftModalView}
+          closeDraftsModal={closeDraftsModal}
+          classDrafts={classDraftList}
+          changeDraftList={changeDraftList}
+        />
+      )}
 
       {/* 유효성 토스트 메세지 */}
       <ValidationMessage

@@ -83,7 +83,7 @@ export interface DateTimeList {
 
 export interface IGetClassDrafts {
   id: string;
-  updatedAt: string;
+  updatedAt: Date;
   title: null | string;
   step: null | number;
 }

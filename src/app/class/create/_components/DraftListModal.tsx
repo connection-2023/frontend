@@ -1,50 +1,47 @@
+'use client';
 import Link from 'next/link';
-import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 import { TrashcanSVG } from '@/icons/svg';
+import { deleteClassDrafts } from '@/lib/apis/classApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/Modal';
 import { IGetClassDrafts } from '@/types/class';
 
 interface IDraftListModal {
-  isOpen: boolean;
-  closeModal: () => void;
-  classDraftList: IGetClassDrafts[];
-  createDraft: () => Promise<void>;
-  deleteClassDraftList: (deleteId: string) => Promise<void>;
+  draftModalView: boolean;
+  closeDraftsModal: () => void;
+  classDrafts: IGetClassDrafts[];
+  changeDraftList: (draftList: IGetClassDrafts[]) => void;
 }
 
 const DraftListModal = ({
-  isOpen,
-  closeModal,
-  classDraftList,
-  createDraft,
-  deleteClassDraftList,
+  classDrafts,
+  draftModalView,
+  closeDraftsModal,
+  changeDraftList,
 }: IDraftListModal) => {
-  const closeWithoutSelection = async () => {
-    if (classDraftList.length >= 5) {
-      toast.error(
-        <>
-          임시저장은 최대 5개까지 가능합니다.
-          <br />
-          기존 목록을 삭제 혹은 불러와주세요.
-        </>,
-      );
-    } else {
-      await createDraft();
-      closeModal();
+  const deleteClassDraftList = async (deleteId: string) => {
+    await deleteClassDrafts(deleteId);
+
+    if (classDrafts && classDrafts.length - 1 === 0) {
+      closeDraftsModal();
     }
+
+    const draftsList = classDrafts.filter(({ id }) => deleteId !== id);
+
+    changeDraftList(draftsList);
   };
 
   return (
-    <Modal handleClosed={closeWithoutSelection} isOpened={isOpen}>
+    <Modal handleClosed={closeDraftsModal} isOpened={draftModalView}>
       <section className="w-[40rem]">
         <h1 className="flex justify-center border-b border-solid border-gray-700 py-3 text-lg">
-          임시저장 불러오기({classDraftList.length})
+          임시저장 불러오기({classDrafts.length})
         </h1>
 
         <DraftList
-          classDraftList={classDraftList}
-          closeModal={closeModal}
+          classDraftList={classDrafts}
+          closeModal={closeDraftsModal}
           deleteClassDraftList={deleteClassDraftList}
         />
       </section>
