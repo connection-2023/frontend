@@ -8,7 +8,7 @@ import {
   DeleteSVG,
   ArrowUpSVG,
 } from '@/icons/svg';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import ProfileImg from '@/components/Profile/ProfileImage';
 import { INoticeMessage } from '@/types/types';
 
 const filterOptions = ['수강 클래스', '관심', '쿠폰/패스권', '신고'];

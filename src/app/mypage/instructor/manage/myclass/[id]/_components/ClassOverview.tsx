@@ -7,7 +7,7 @@ import {
   getScheduleRegisterLists,
 } from '@/lib/apis/classApis';
 import Spinner from '@/components/Loading/Spinner';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 import { IScheduleLearnerList } from '@/types/class';
 
 interface ClassOverViewProps {

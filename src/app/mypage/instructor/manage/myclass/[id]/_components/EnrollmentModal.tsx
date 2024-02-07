@@ -7,7 +7,7 @@ import { getScheduleRegisterLists } from '@/lib/apis/classApis';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Spinner from '@/components/Loading/Spinner';
 import Modal from '@/components/Modal/Modal';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 import { IProcessedSchedules, IScheduleLearnerList } from '@/types/class';
 
 interface EnrollmentModalProps {
