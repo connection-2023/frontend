@@ -9,7 +9,7 @@ interface ApplyList {
   onSelect: (list: string) => void;
   selectedSchedules: IDateTime;
   removeReservationItem: (id: number) => void;
-  updateCount: (id: number, newVal: number) => void;
+  updateCount: (newVal: number) => void;
 }
 
 /* eslint-enable no-unused-vars */
