@@ -1,17 +1,21 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, lazy } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
 import { createClassDraft, updateClassDraft } from '@/lib/apis/classApi';
 import { useClassScheduleStore } from '@/store';
-import { useClassCreateStore } from '@/store/classCreate';
-import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
+import {
+  classCreate,
+  classDraftsDataProcess,
+  classOutputDataProcess,
+} from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import {
+  IGetClassDraft,
   IGetClassDrafts,
   IprocessedDraft,
   classCreateData,
@@ -37,40 +41,48 @@ const steps = [
 
 interface ClassCreateProps {
   step: string | undefined;
+  data: IprocessedDraft | null;
   classDrafts: IGetClassDrafts[];
+  searchParams?: { [key: string]: string | undefined };
 }
 
-export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
-  const [draftModalView, setDraftModalView] = useState(true);
-  const [classDraftList, setClassDraftList] =
-    useState<IGetClassDrafts[]>(classDrafts);
+export default function ClassCreate({
+  step,
+  data,
+  classDrafts,
+  searchParams,
+}: ClassCreateProps) {
+  const [classData, setClassData] = useState<IprocessedDraft | null>(data);
 
-  const { classData, setClassData, setProcessedClassData } =
-    useClassCreateStore();
   const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
   const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit } = formMethods;
 
+  const [draftModalView, setDraftModalView] = useState(true);
+  const [classDraftList, setClassDraftList] =
+    useState<IGetClassDrafts[]>(classDrafts);
+
   const router = useRouter();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const id = searchParams.get('id');
-
   useEffect(() => {
-    if (id === null && classData) {
+    if (data) {
+      setClassData(data);
+      setDraftModalView(false);
+    } else {
       setClassData(null);
     }
-    if (id && !classData) {
-      location.reload();
+
+    if (!data && classDraftList.length > 0) {
+      setDraftModalView(true);
     }
-  }, [id]); //추후 리펙토링...
+  }, [data]);
 
   useEffect(() => {
     if (classData) {
-      const step = Number(searchParams.get('step'));
+      const step = Number(searchParams?.step ?? 0);
       const isValidStep = !isNaN(step) && step - 1 <= (classData?.step || 0);
 
       if (isValidStep) {
@@ -81,16 +93,12 @@ export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
     }
   }, [searchParams]);
 
-  const changeDraftList = (draftList: IGetClassDrafts[]) => {
-    setClassDraftList(draftList);
-  };
-
   const closeDraftsModal = () => {
     setDraftModalView(false);
   };
 
-  const setProcessedClassDataHandler = (data: IprocessedDraft) => {
-    setProcessedClassData({ ...classData, ...data });
+  const changeDraftList = (draftList: IGetClassDrafts[]) => {
+    setClassDraftList(draftList);
   };
 
   const moveStep = (step: number | string) => {
@@ -114,8 +122,15 @@ export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
   };
 
   const onValid = async (data: classCreateData) => {
-    await updateDraft(data);
-    nextStep();
+    if (classDraftList.length < 5) {
+      await updateDraft(data);
+      nextStep();
+    } else {
+      toast.error(
+        `임시저장은 최대 5개까지 가능 합니다. 불러오기 혹은 삭제 후 진행해주세요.`,
+      );
+      setDraftModalView(true);
+    }
   };
 
   const invalid = (data: Record<string, any>) => {
@@ -142,6 +157,10 @@ export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
     };
 
     setClassDraftList((prev) => [...prev, draftsData]);
+
+    if (!data) {
+      router.push(`/class/create?step=1&id=${id}`);
+    }
     return id;
   };
 
@@ -153,12 +172,12 @@ export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
       const id = classData?.id ? classData.id : await createDraft(data.title);
 
       try {
-        setProcessedClassData({ ...classData, step: activeStep });
+        setClassData({ ...classData, step: activeStep });
 
         const processData = await classOutputDataProcess(
           data,
           activeStep,
-          setProcessedClassDataHandler,
+          setClassData,
         );
 
         await updateClassDraft({
@@ -226,11 +245,10 @@ export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
                 ? 'bg-sub-color1 text-white'
                 : 'text-gray-500'
             } ${
-              classData &&
-              classData.step &&
+              classData?.step != null &&
               classData.step + 1 >= index &&
               activeStep !== index
-                ? 'hover:bg-[#8338ec] hover:bg-opacity-50 hover:text-white' // 추후 컬러 글로버 설정 된걸로 변경 ex)opactity sub 1
+                ? 'hover:bg-[#8338ec] hover:bg-opacity-50 hover:text-white'
                 : 'pointer-events-none'
             } `}
             key={step.title}
@@ -245,7 +263,7 @@ export default function ClassCreate({ step, classDrafts }: ClassCreateProps) {
                   activeStep === index
                     ? 'bg-white text-sub-color1'
                     : 'bg-gray-500 text-white'
-                } 
+                }
               ${
                 classData &&
                 classData.step &&
@@ -305,14 +323,12 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
         </nav>
       </section>
 
-      {classDraftList.length > 0 && (
-        <DraftListModal
-          draftModalView={draftModalView}
-          closeDraftsModal={closeDraftsModal}
-          classDrafts={classDraftList}
-          changeDraftList={changeDraftList}
-        />
-      )}
+      <DraftListModal
+        draftModalView={draftModalView}
+        closeDraftsModal={closeDraftsModal}
+        classDrafts={classDraftList}
+        changeDraftList={changeDraftList}
+      />
 
       {/* 유효성 토스트 메세지 */}
       <ValidationMessage

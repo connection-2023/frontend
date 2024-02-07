@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
 import { getClassDrafts, getClassDraft } from '@/lib/apis/serverApis/classApi';
+import { classDraftsDataProcess } from '@/utils/apiDataProcessor';
 import ClassCreate from './_components/ClassCreate';
-import ClassStoreInitializer from './_components/ClassStoreInitializer';
+import { IprocessedDraft } from '@/types/class';
 
 const validateSearchParams = (searchParams: {
   [key: string]: string | undefined;
@@ -32,23 +33,25 @@ const ClassCreatePage = async ({
   if (searchParams && searchParams.id && searchParams.step) {
     try {
       validateSearchParams(searchParams);
-      data = await getClassDraft(searchParams.id);
+      const resData = await getClassDraft(searchParams.id);
+      data = classDraftsDataProcess(resData);
     } catch (error) {
       handleServerError(error, '/class/create');
     }
-  } else {
-    try {
-      classDrafts = await getClassDrafts();
-    } catch (error) {
-      handleServerError(error, '/error');
-    }
+  }
+  try {
+    classDrafts = await getClassDrafts();
+  } catch (error) {
+    handleServerError(error, '/error');
   }
 
   return (
-    <>
-      <ClassStoreInitializer data={data} />
-      <ClassCreate step={searchParams?.step} classDrafts={classDrafts} />
-    </>
+    <ClassCreate
+      data={data as IprocessedDraft | null}
+      searchParams={searchParams}
+      step={searchParams?.step}
+      classDrafts={classDrafts ?? []}
+    />
   );
 };
 

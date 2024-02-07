@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { Lecture, LikedLecture } from '@/types/class';
+import { IGetClassDraft, Lecture, LikedLecture } from '@/types/class';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -26,7 +26,9 @@ export const getClassDrafts = async () => {
   return data.data.temporaryLectures;
 };
 
-export const getClassDraft = async (lectureId: string | number) => {
+export const getClassDraft = async (
+  lectureId: string | number,
+): Promise<IGetClassDraft> => {
   const cookieStore = cookies();
   const authorization = cookieStore.get('lecturerAccessToken')?.value;
 
