@@ -11,10 +11,11 @@ interface UserProfileMenuProps {
   userId: number | string;
   profileImg: string | null;
   name: string;
+  nameWidth?: number;
 }
 
 const UserProfileMenu = (props: UserProfileMenuProps) => {
-  const { userId, name, contact, profileImg } = props;
+  const { userId, name, contact, profileImg, nameWidth } = props;
   const [isProfileMenuOpened, setIsProfileMenuOpened] = useState(false);
   const listRef = useRef(null);
 
@@ -57,7 +58,11 @@ const UserProfileMenu = (props: UserProfileMenuProps) => {
       </div>
 
       <div className="relative">
-        <button onClick={() => setIsProfileMenuOpened(!isProfileMenuOpened)}>
+        <button
+          style={{ width: nameWidth ? `${nameWidth}px` : undefined }}
+          className={`truncate`}
+          onClick={() => setIsProfileMenuOpened(!isProfileMenuOpened)}
+        >
           {name}
         </button>
 
