@@ -48,7 +48,6 @@ const ClassCreatePage = async ({
   return (
     <ClassCreate
       data={data as IprocessedDraft | null}
-      searchParams={searchParams}
       step={searchParams?.step}
       classDrafts={classDrafts ?? []}
     />

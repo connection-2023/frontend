@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassScheduleStore } from '@/store';
-import { useClassCreateStore } from '@/store/classCreate';
 import {
   formatDateWithHyphens,
   parseHyphenatedDate,
@@ -10,16 +9,19 @@ import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import { DayTimeList, DateTimeList } from '@/types/class';
+import { DayTimeList, DateTimeList, IprocessedDraft } from '@/types/class';
 
-const ClassSchedule = () => {
+const ClassSchedule = ({
+  classData,
+}: {
+  classData: IprocessedDraft | null;
+}) => {
   const {
     register,
     control,
     watch,
     formState: { errors },
   } = useFormContext();
-  const { classData } = useClassCreateStore();
   const duration = watch('duration') || classData?.duration;
   const lectureMethod = watch('lectureMethod') || classData?.lectureMethod;
   const setClassDuration = useClassScheduleStore(

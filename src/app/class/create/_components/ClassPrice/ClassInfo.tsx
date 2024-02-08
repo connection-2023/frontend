@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useClassCreateStore } from '@/store/classCreate';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
+import { IprocessedDraft } from '@/types/class';
 
-const ClassInfo = () => {
+const ClassInfo = ({ classData }: { classData: IprocessedDraft | null }) => {
   const {
     control,
     formState: { errors },
     setValue,
   } = useFormContext();
-
-  const { classData, setProcessedClassData } = useClassCreateStore();
 
   const [defaultValue, setDefaultValue] = useState({
     value: classData?.isGroup ? classData?.max! : 1,
@@ -55,7 +53,7 @@ const ClassInfo = () => {
                 options={options}
                 onChange={(selected) => {
                   field.onChange(selected);
-                  setProcessedClassData({ ...classData, max: selected?.value });
+                  // setProcessedClassData({ ...classData, max: selected?.value });
                 }}
               />
             );

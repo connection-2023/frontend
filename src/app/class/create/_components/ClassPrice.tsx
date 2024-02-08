@@ -7,9 +7,10 @@ import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
+import { IprocessedDraft } from '@/types/class';
 import { couponGET, createCoupon } from '@/types/coupon';
 
-const ClassPrice = () => {
+const ClassPrice = ({ classData }: { classData: IprocessedDraft | null }) => {
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
   const [couponList, setCouponList] = useState<couponGET[]>([]);
   const { getValues, setValue } = useFormContext();
@@ -55,7 +56,7 @@ const ClassPrice = () => {
 
   return (
     <>
-      <ClassInfo />
+      <ClassInfo classData={classData} />
 
       <section
         className={`flex flex-col border-y-2 border-solid border-sub-color1 py-5 ${
@@ -77,6 +78,7 @@ const ClassPrice = () => {
         <AppliedCouponDisplay
           isCouponSectionOpen={isCouponSectionOpen}
           couponList={couponList}
+          classData={classData}
         />
       </section>
     </>

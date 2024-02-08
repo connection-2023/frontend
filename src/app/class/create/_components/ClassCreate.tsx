@@ -7,15 +7,10 @@ import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
 import { createClassDraft, updateClassDraft } from '@/lib/apis/classApi';
 import { useClassScheduleStore } from '@/store';
-import {
-  classCreate,
-  classDraftsDataProcess,
-  classOutputDataProcess,
-} from '@/utils/apiDataProcessor';
+import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCategory from './ClassCategory';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import {
-  IGetClassDraft,
   IGetClassDrafts,
   IprocessedDraft,
   classCreateData,
@@ -31,26 +26,16 @@ const DraftListModal = dynamic(() => import('./DraftListModal'), {
   ssr: false,
 });
 
-const steps = [
-  { title: '사진, 카테고리 설정', component: <ClassCategory /> },
-  { title: '클래스 상세 설명', component: <ClassExplanation /> },
-  { title: '일정 및 공지사항', component: <ClassSchedule /> },
-  { title: '클래스 장소', component: <ClassLocation /> },
-  { title: '가격 설정', component: <ClassPrice /> },
-];
-
 interface ClassCreateProps {
   step: string | undefined;
   data: IprocessedDraft | null;
   classDrafts: IGetClassDrafts[];
-  searchParams?: { [key: string]: string | undefined };
 }
 
 export default function ClassCreate({
   step,
   data,
   classDrafts,
-  searchParams,
 }: ClassCreateProps) {
   const [classData, setClassData] = useState<IprocessedDraft | null>(data);
 
@@ -58,7 +43,7 @@ export default function ClassCreate({
   const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, reset } = formMethods;
 
   const [draftModalView, setDraftModalView] = useState(true);
   const [classDraftList, setClassDraftList] =
@@ -71,27 +56,49 @@ export default function ClassCreate({
     if (data) {
       setClassData(data);
       setDraftModalView(false);
+      reset();
     } else {
       setClassData(null);
-    }
-
-    if (!data && classDraftList.length > 0) {
-      setDraftModalView(true);
+      setActiveStep(0);
+      if (classDraftList.length > 0) {
+        setDraftModalView(true);
+      }
     }
   }, [data]);
 
   useEffect(() => {
-    if (classData) {
-      const step = Number(searchParams?.step ?? 0);
-      const isValidStep = !isNaN(step) && step - 1 <= (classData?.step || 0);
+    if (data) {
+      const searchParamsStep = Number(step ?? 0);
+      const isValidStep =
+        !isNaN(searchParamsStep) && searchParamsStep - 1 <= (data?.step || 0);
 
       if (isValidStep) {
-        setActiveStep(step);
+        setActiveStep(searchParamsStep);
       } else {
         router.back();
       }
     }
-  }, [searchParams]);
+  }, [step]);
+
+  const steps = [
+    {
+      title: '사진, 카테고리 설정',
+      component: <ClassCategory classData={classData} />,
+    },
+    {
+      title: '클래스 상세 설명',
+      component: <ClassExplanation classData={classData} />,
+    },
+    {
+      title: '일정 및 공지사항',
+      component: <ClassSchedule classData={classData} />,
+    },
+    {
+      title: '클래스 장소',
+      component: <ClassLocation classData={classData} />,
+    },
+    { title: '가격 설정', component: <ClassPrice classData={classData} /> },
+  ];
 
   const closeDraftsModal = () => {
     setDraftModalView(false);
@@ -109,28 +116,33 @@ export default function ClassCreate({
 
   const nextStep = () => {
     if (activeStep < steps.length - 1 && classData) {
-      setActiveStep(activeStep + 1);
       moveStep(activeStep + 1);
     }
   };
 
   const prevStep = () => {
     if (activeStep > 0 && classData) {
-      setActiveStep(activeStep - 1);
       moveStep(activeStep - 1);
     }
   };
 
-  const onValid = async (data: classCreateData) => {
-    if (classDraftList.length < 5) {
+  const navOnValidHandler = async (data: classCreateData, index: number) => {
+    if (activeStep < index) {
       await updateDraft(data);
-      nextStep();
-    } else {
-      toast.error(
-        `임시저장은 최대 5개까지 가능 합니다. 불러오기 혹은 삭제 후 진행해주세요.`,
-      );
-      setDraftModalView(true);
     }
+    moveStep(index);
+  };
+
+  const navinvalidHandler = async (
+    data: Record<string, any>,
+    index: number,
+  ) => {
+    activeStep > index ? moveStep(index) : invalid(data);
+  };
+
+  const onValid = async (data: classCreateData) => {
+    await updateDraft(data);
+    nextStep();
   };
 
   const invalid = (data: Record<string, any>) => {
@@ -197,20 +209,6 @@ export default function ClassCreate({
       );
       setDraftModalView(true);
     }
-  };
-
-  const navOnValidHandler = async (data: classCreateData, index: number) => {
-    if (activeStep < index) {
-      await updateDraft(data);
-    }
-    moveStep(index);
-  };
-
-  const navinvalidHandler = async (
-    data: Record<string, any>,
-    index: number,
-  ) => {
-    activeStep > index ? moveStep(index) : invalid(data);
   };
 
   const createClass = async (data: classCreateData) => {

@@ -4,21 +4,22 @@ import {
   CATEGORY_LESSON_TYPE,
   CATEGORY_PROGRESS_METHOD,
 } from '@/constants/constants';
-import { useClassCreateStore } from '@/store/classCreate';
 import CategoryContainer from './ClassCategory/CategoryContainer';
 import ClassSizeSelect from './ClassCategory/ClassSizeSelect';
 import RadioComponent from './ClassCategory/RadioComponent';
 import GenreCheckboxGroup from '@/components/GenreCheckboxGroup/GenreCheckboxGroup';
 import UploadImage from '@/components/UploadImage/UploadImage';
+import { IprocessedDraft } from '@/types/class';
 
-const ClassCategory = () => {
+const ClassCategory = ({
+  classData,
+}: {
+  classData: IprocessedDraft | null;
+}) => {
   const {
     control,
     formState: { errors },
   } = useFormContext();
-
-  const store = useClassCreateStore();
-  const classData = store.classData;
 
   return (
     <>

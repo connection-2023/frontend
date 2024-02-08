@@ -1,28 +1,26 @@
 import { useEffect, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useClassCreateStore } from '@/store/classCreate';
 import CouponSelect from './CouponSelect';
 import InstructorCoupon from '@/components/Coupon/Coupon';
-import { classCreateData } from '@/types/class';
+import { IprocessedDraft } from '@/types/class';
 import { couponGET } from '@/types/coupon';
 
 interface AppliedCouponDisplayProps {
   isCouponSectionOpen: boolean;
   couponList: couponGET[];
+  classData: IprocessedDraft | null;
 }
 
 const AppliedCouponDisplay = ({
   isCouponSectionOpen,
   couponList,
+  classData,
 }: AppliedCouponDisplayProps) => {
   const { control, setValue } = useFormContext();
   const renderRef = useRef(false);
   const couponOptions = couponList.map((option) => {
     return { value: option, label: option.title };
   });
-
-  const store = useClassCreateStore();
-  const classData = store.classData;
 
   const couponSelectDefaultValue = (
     classData?.temporaryLectureCouponTarget?.map(({ lectureCouponId }) =>
