@@ -8,30 +8,16 @@ const ClassInfo = ({ classData }: { classData: IprocessedDraft | null }) => {
   const {
     control,
     formState: { errors },
-    setValue,
   } = useFormContext();
 
-  const [defaultValue, setDefaultValue] = useState({
+  const maxStudentDefaultValue = {
     value: classData?.isGroup ? classData?.max! : 1,
     label: String(classData?.isGroup ? classData?.max! : 1),
-  });
+  };
 
-  useEffect(() => {
-    setDefaultValue({
-      value: classData?.isGroup ? classData?.max! : 1,
-      label: String(classData?.isGroup ? classData?.max! : 1),
-    });
+  const selectedMin = classData?.min ? classData.min + 1 : 1;
 
-    setValue('max', {
-      value: classData?.isGroup ? classData?.max! : 1,
-      label: String(classData?.isGroup ? classData?.max! : 1),
-    });
-  }, [classData, classData?.max]);
-
-  const options = createOptions(
-    classData?.min ?? 1,
-    classData?.isGroup ? classData?.max ?? 100 : 1,
-  );
+  const options = createOptions(selectedMin, classData?.isGroup ? 100 : 1);
 
   return (
     <section className="mt-3 flex flex-col text-lg font-semibold">
@@ -45,16 +31,16 @@ const ClassInfo = ({ classData }: { classData: IprocessedDraft | null }) => {
         <Controller
           name="max"
           control={control}
+          defaultValue={maxStudentDefaultValue}
           render={({ field }) => {
             return (
               <NumberSelect
-                instanceId="StudentCountSelect"
-                defaultValue={defaultValue}
-                options={options}
+                instanceId="select-max"
+                value={field.value}
                 onChange={(selected) => {
                   field.onChange(selected);
-                  // setProcessedClassData({ ...classData, max: selected?.value });
                 }}
+                options={options}
               />
             );
           }}

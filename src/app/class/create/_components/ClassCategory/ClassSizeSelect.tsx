@@ -6,73 +6,46 @@ import NumberSelect from '../NumberSelect';
 const ClassSizeSelect = ({
   defaultValue,
 }: {
-  defaultValue: { min: number; max: number } | undefined;
+  defaultValue: { min: number; max: number };
 }) => {
+  const { min, max } = defaultValue;
   const allOptions = createOptions(1, 100);
+
+  const optionChange = (type: 'min' | 'max', selectValue: number) => {
+    const sliceOptions =
+      type === 'max'
+        ? allOptions.slice(selectValue, 100)
+        : allOptions.slice(0, selectValue - 1);
+    return sliceOptions;
+  };
+
+  const [minOptions, setMinOptions] = useState(optionChange('min', max));
+  const [maxOptions, setMaxOptions] = useState(optionChange('max', min));
 
   const { watch, control } = useFormContext();
 
   const isGroupType = watch('lessonType');
 
-  const [minStudent, setMinStudent] = useState({
-    select: {
-      value: defaultValue?.min ?? 1,
-      label: String(defaultValue?.min ?? 1),
-    },
-    option: allOptions,
-  });
-
-  const [maxStudent, setMaxStudent] = useState({
-    select: {
-      value: defaultValue?.max ?? 100,
-      label: String(defaultValue?.max ?? 100),
-    },
-    option: allOptions,
-  });
-
   const studentCounts = [
     {
       title: '최소',
-      state: minStudent,
-      setState: setMinStudent,
-      rangeType: 'min',
+      state: { value: min, label: String(min) },
+      rangeType: 'min' as 'min',
+      options: minOptions,
     },
     {
       title: '최대',
-      state: maxStudent,
-      setState: setMaxStudent,
-      rangeType: 'max',
+      state: { value: max, label: String(max) },
+      rangeType: 'max' as 'max',
+      options: maxOptions,
     },
   ];
 
   const isDisabled = '그룹레슨' !== isGroupType;
 
-  interface OptionType {
-    value: number;
-    label: string;
-  }
-  interface StateType {
-    select: OptionType;
-    option: OptionType[];
-  }
-
-  const selectClassSize = (
-    selected: OptionType | null,
-    title: string,
-    setState: React.Dispatch<React.SetStateAction<StateType>>,
-    option: OptionType[],
-  ) => {
-    setState({
-      select:
-        selected ||
-        (title === '최소' ? allOptions[0] : allOptions[allOptions.length - 1]),
-      option,
-    });
-  };
-
   return (
     <>
-      {studentCounts.map(({ title, state, setState, rangeType }) => {
+      {studentCounts.map(({ title, state, rangeType, options }) => {
         return (
           <div
             key={title}
@@ -84,17 +57,24 @@ const ClassSizeSelect = ({
             <Controller
               name={rangeType}
               control={control}
-              defaultValue={state.select}
+              defaultValue={state}
               render={({ field }) => (
                 <NumberSelect
-                  instanceId={`select-${title}`}
-                  defaultValue={field.value}
+                  instanceId={`select-${rangeType}`}
+                  value={field.value}
                   onChange={(selected) => {
-                    selectClassSize(selected, title, setState, state.option);
+                    const selectedValue = selected?.value;
+                    if (selectedValue) {
+                      if (rangeType === 'min') {
+                        setMaxOptions(optionChange('max', selectedValue));
+                      } else {
+                        setMinOptions(optionChange('min', selectedValue));
+                      }
+                    }
                     field.onChange(selected);
                   }}
                   isDisabled={isDisabled}
-                  options={state.option}
+                  options={options}
                 />
               )}
             />

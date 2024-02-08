@@ -15,21 +15,21 @@ interface SelectOption {
 
 interface SelectComponentProps {
   instanceId: string;
-  defaultValue: SelectOption;
   onChange: (
     selectedOption: SingleValue<SelectOption>,
     actionMeta: ActionMeta<SelectOption>,
   ) => void;
   isDisabled?: boolean;
   options: SelectOption[];
+  value: SelectOption;
 }
 
 const NumberSelect = ({
   instanceId,
-  defaultValue,
   onChange,
   isDisabled = false,
   options,
+  value,
 }: SelectComponentProps) => {
   const customComponents = {
     DropdownIndicator: NumberDropdownIndicator,
@@ -38,8 +38,8 @@ const NumberSelect = ({
 
   return (
     <Select
+      value={value}
       instanceId={instanceId}
-      defaultValue={defaultValue}
       onChange={onChange}
       options={options}
       components={customComponents}
