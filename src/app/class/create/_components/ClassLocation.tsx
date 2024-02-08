@@ -13,7 +13,10 @@ const ClassLocation = ({
 }) => {
   const { control, watch } = useFormContext();
 
-  const isLocationSet = watch('locationConsultative');
+  const isLocationSet = watch(
+    'locationConsultative',
+    classData?.location?.roadAddr ? false : true,
+  );
 
   return (
     <section className="mt-10 flex flex-col gap-6">
@@ -22,7 +25,7 @@ const ClassLocation = ({
       <Controller
         name="locationConsultative"
         control={control}
-        defaultValue={classData?.location ? false : true}
+        defaultValue={classData?.location?.roadAddr ? false : true}
         render={({ field }) => (
           <div className="flex items-center gap-1">
             <input

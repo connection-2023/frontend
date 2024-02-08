@@ -58,7 +58,7 @@ const NaverMapRenderer = ({ address, studioName }: MapProps) => {
           return console.error('Geocode Error, address:' + address);
         }
         if (response.v2.meta.totalCount === 0) {
-          return console.error('No result.');
+          return;
         }
 
         let item = response.v2.addresses[0];
@@ -76,15 +76,15 @@ const NaverMapRenderer = ({ address, studioName }: MapProps) => {
       const destinationLink = `https://map.naver.com/p/directions/-/${x},${y},${studioName}/-/transit?c=17.56,0,0,0,dh`;
 
       const content = `
-        <div class="infowindow-container">
-          <address class="studio-name">${studioName}</address>
-          <address class="studio-address">${address}</address>
-          <div class="button-container">
-            <a class="start-button" href="${startLink}" target="_blank" rel="noopener noreferrer">출발</a>
-            <a class="destination-button" href="${destinationLink}" target="_blank" rel="noopener noreferrer">도착</a>
+          <div class="infowindow-container">
+            <address class="studio-name">${studioName}</address>
+            <address class="studio-address">${address}</address>
+            <div class="button-container">
+              <a class="start-button" href="${startLink}" target="_blank" rel="noopener noreferrer">출발</a>
+              <a class="destination-button" href="${destinationLink}" target="_blank" rel="noopener noreferrer">도착</a>
+            </div>
           </div>
-        </div>
-      `;
+        `;
 
       infowindow.setContent(content);
       infowindow.open(map, latLng);
