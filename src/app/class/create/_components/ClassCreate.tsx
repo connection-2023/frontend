@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState, lazy } from 'react';
+import { useEffect, useState, lazy, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
@@ -40,7 +40,8 @@ export default function ClassCreate({
   const [classData, setClassData] = useState<IprocessedDraft | null>(data);
 
   const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
-  const [activeStep, setActiveStep] = useState(step ? Number(step) : 0);
+  const [activeStep, setActiveStep] = useState(data?.step ? data.step : 0);
+  const [currentStep, setCurrentStep] = useState(step ? Number(step) : 0);
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit, reset } = formMethods;
@@ -54,12 +55,13 @@ export default function ClassCreate({
 
   useEffect(() => {
     if (data) {
+      setActiveStep(data.step!);
       setClassData(data);
       setDraftModalView(false);
       reset();
     } else {
       setClassData(null);
-      setActiveStep(0);
+      setCurrentStep(0);
       if (classDraftList.length > 0) {
         setDraftModalView(true);
       }
@@ -73,7 +75,7 @@ export default function ClassCreate({
         !isNaN(searchParamsStep) && searchParamsStep - 1 <= (data?.step || 0);
 
       if (isValidStep) {
-        setActiveStep(searchParamsStep);
+        setCurrentStep(searchParamsStep);
       } else {
         router.back();
       }
@@ -115,14 +117,14 @@ export default function ClassCreate({
   };
 
   const nextStep = () => {
-    if (activeStep < steps.length - 1 && classData) {
-      moveStep(activeStep + 1);
+    if (currentStep < steps.length - 1 && classData) {
+      moveStep(currentStep + 1);
     }
   };
 
   const prevStep = () => {
-    if (activeStep > 0 && classData) {
-      moveStep(activeStep - 1);
+    if (currentStep > 0 && classData) {
+      moveStep(currentStep - 1);
     }
   };
 
@@ -137,7 +139,7 @@ export default function ClassCreate({
     data: Record<string, any>,
     index: number,
   ) => {
-    activeStep > index ? moveStep(index) : invalid(data);
+    activeStep >= index ? moveStep(index) : invalid(data);
   };
 
   const onValid = async (data: classCreateData) => {
@@ -183,18 +185,27 @@ export default function ClassCreate({
     if (classDraftList.length < 5) {
       const id = classData?.id ? classData.id : await createDraft(data.title);
 
+      const step = Math.max(activeStep, currentStep);
+
+      if (step !== activeStep) {
+        setActiveStep(step);
+      }
+
       try {
-        setClassData({ ...classData, step: activeStep });
+        setClassData({
+          ...classData,
+          step,
+        });
 
         const processData = await classOutputDataProcess(
           data,
-          activeStep,
+          currentStep,
           setClassData,
         );
 
         await updateClassDraft({
           lectureId: id,
-          step: activeStep,
+          step,
           ...processData,
         });
 
@@ -239,13 +250,11 @@ export default function ClassCreate({
         {steps.map((step, index) => (
           <form
             className={`group flex h-full flex-grow items-center justify-center rounded-[3.13rem] px-1 ${
-              activeStep === index
+              currentStep === index
                 ? 'bg-sub-color1 text-white'
                 : 'text-gray-500'
             } ${
-              classData?.step != null &&
-              classData.step + 1 >= index &&
-              activeStep !== index
+              activeStep + 1 >= index && currentStep !== index
                 ? 'hover:bg-[#8338ec] hover:bg-opacity-50 hover:text-white'
                 : 'pointer-events-none'
             } `}
@@ -258,15 +267,13 @@ export default function ClassCreate({
             <button className="flex flex-grow items-center justify-center gap-2">
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full ${
-                  activeStep === index
+                  currentStep === index
                     ? 'bg-white text-sub-color1'
                     : 'bg-gray-500 text-white'
                 }
               ${
-                classData &&
-                classData.step &&
-                classData.step + 1 >= index &&
-                activeStep !== index &&
+                activeStep + 1 >= index &&
+                currentStep !== index &&
                 'group-hover:bg-white group-hover:text-sub-color1'
               }`}
               >
@@ -283,14 +290,14 @@ export default function ClassCreate({
             className="mr-2 flex h-7 w-7
 items-center justify-center rounded-full border border-solid border-sub-color1 text-lg"
           >
-            {activeStep + 1}
+            {currentStep + 1}
           </span>
-          {steps[activeStep].title}
+          {steps[currentStep].title}
         </h2>
 
         {/* 해당 컴포넌트*/}
         <FormProvider {...formMethods}>
-          {steps[activeStep].component}
+          {steps[currentStep].component}
         </FormProvider>
 
         {/* 하단 버튼 */}

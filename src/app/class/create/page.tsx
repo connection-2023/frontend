@@ -35,6 +35,14 @@ const ClassCreatePage = async ({
       validateSearchParams(searchParams);
       const resData = await getClassDraft(searchParams.id);
       data = classDraftsDataProcess(resData);
+
+      if (
+        searchParams?.step &&
+        data.step &&
+        data.step + 1 < Number(searchParams.step)
+      ) {
+        throw new Error('올바르지 않은 step 접근');
+      }
     } catch (error) {
       handleServerError(error, '/class/create');
     }
