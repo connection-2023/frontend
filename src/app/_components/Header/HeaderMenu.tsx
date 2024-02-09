@@ -55,9 +55,13 @@ const HeaderMenu = () => {
           />
         </button>
 
-        <Link href="/" className="mr-6" aria-label="홈으로 이동">
-          <ConnectionLogoSVG className="block h-4 w-36 translate-y-1 sm:hidden md:block md:h-[1.375rem] md:w-[12.6875rem] md:translate-y-0" />
-          <SmallLogoSVG className="hidden h-5 w-11 translate-x-5 translate-y-1 sm:block md:hidden" />
+        <Link href="/" aria-label="홈으로 이동">
+          <ConnectionLogoSVG className="mr-6 block h-4 w-36 translate-y-1 sm:hidden md:block md:h-[1.375rem] md:w-[12.6875rem] md:translate-y-0" />
+          <SmallLogoSVG
+            width="44"
+            height="22"
+            className="mr-4 hidden sm:block md:hidden"
+          />
         </Link>
 
         <h1 className="text-0 overflow-hidden indent-[-9999px]">
