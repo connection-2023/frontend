@@ -314,10 +314,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
           </button>
           <div className="flex">
             <form
-              onSubmit={handleSubmit(
-                (data) => updateDraft(data, classData.id),
-                invalid,
-              )}
+              onSubmit={handleSubmit((data) => updateDraft(data, 11), invalid)}
             >
               <button className="flex items-center whitespace-nowrap rounded-md bg-black px-[0.87rem] py-[0.31rem] text-sm font-bold text-white">
                 임시저장

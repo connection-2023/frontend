@@ -1,9 +1,14 @@
 import { cookies } from 'next/headers';
-import { IGetClassDraft, Lecture, LikedLecture } from '@/types/class';
+import {
+  IGetClassDraft,
+  IGetClassDrafts,
+  Lecture,
+  LikedLecture,
+} from '@/types/class';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const getClassDrafts = async () => {
+export const getClassDrafts = async (): Promise<IGetClassDrafts[]> => {
   const cookieStore = cookies();
   const authorization = cookieStore.get('lecturerAccessToken')?.value;
 
@@ -12,7 +17,6 @@ export const getClassDrafts = async () => {
   };
 
   const response = await fetch(END_POINT + '/lecture-temporarily-save', {
-    cache: 'no-store',
     method: 'GET',
     credentials: 'include',
     headers,

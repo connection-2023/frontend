@@ -47,11 +47,6 @@ const ClassCreatePage = async ({
       handleServerError(error, '/class/create');
     }
   }
-  try {
-    classDrafts = await getClassDrafts();
-  } catch (error) {
-    handleServerError(error, '/error');
-  }
 
   // console.log(data);
 
