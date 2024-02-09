@@ -15,24 +15,28 @@ const ProfileImg = ({
   size,
   nickname = '',
   label = true,
-  marginLeft = 1.5,
+  marginLeft = 3,
 }: ProfileProps) => {
   const imageSize = ProfileImgSize[size];
-  const height = `h-[${imageSize}px]`;
   const ml = `ml-${marginLeft}`;
 
   return (
-    <div className={`color-inherit flex items-center ${height}`}>
+    <div className={`color-inherit flex items-center`}>
       {src ? (
-        <Image
-          src={src}
-          width={imageSize}
-          height={imageSize}
-          alt="프로필 사진"
-          sizes="1x"
-          priority={true}
-          className="h-full rounded-full"
-        />
+        <figure
+          style={{ height: `${imageSize}px`, width: `${imageSize}px` }}
+          className="overflow-hidden rounded-full"
+        >
+          <Image
+            src={src}
+            width={0}
+            height={0}
+            alt="프로필 사진"
+            sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
+            className="object-cover"
+            style={{ height: '100%', width: '100%' }}
+          />
+        </figure>
       ) : (
         <ProfileSVG
           width={imageSize}
