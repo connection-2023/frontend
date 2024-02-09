@@ -5,6 +5,7 @@ import {
   Lecture,
   LikedLecture,
 } from '@/types/class';
+import { FetchError } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -75,12 +76,15 @@ export const createClassDraft = async () => {
   });
 
   if (!response.ok) {
-    throw new Error(`Server error: ${response.status}`);
+    const errorData = await response.json();
+    const error: FetchError = new Error(errorData.message || '');
+    error.status = response.status;
+    throw error;
   }
 
   const data = await response.json();
 
-  return data;
+  return data.data;
 };
 
 export const getMyLecture = async (): Promise<Lecture[]> => {

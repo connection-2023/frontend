@@ -1,13 +1,22 @@
 import { redirect } from 'next/navigation';
-import { getClassDrafts } from '@/lib/apis/serverApis/classApi';
+import {
+  createClassDraft,
+  getClassDrafts,
+} from '@/lib/apis/serverApis/classApi';
 import DraftList from './_components/DraftList';
 import { IGetClassDrafts } from '@/types/class';
 
 const page = async () => {
   let classDrafts: IGetClassDrafts[] = [];
+  let id;
 
   try {
     const classDraftList = await getClassDrafts();
+
+    if (classDraftList.length === 0) {
+      const { id: classDraftId } = await createClassDraft();
+      id = classDraftId;
+    }
 
     classDrafts = classDraftList.sort(
       (a, b) =>
@@ -15,9 +24,13 @@ const page = async () => {
     );
   } catch (error) {
     if (error instanceof Error) {
-      console.error(error.message);
+      console.error(error);
       redirect('/error');
     }
+  }
+
+  if (id) {
+    redirect(`/class/create/${id}?step=0`);
   }
 
   return (
