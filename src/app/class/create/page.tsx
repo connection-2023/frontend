@@ -53,6 +53,8 @@ const ClassCreatePage = async ({
     handleServerError(error, '/error');
   }
 
+  // console.log(data);
+
   return (
     <ClassCreate
       data={data as IprocessedDraft | null}

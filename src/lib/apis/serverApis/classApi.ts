@@ -12,6 +12,7 @@ export const getClassDrafts = async () => {
   };
 
   const response = await fetch(END_POINT + '/lecture-temporarily-save', {
+    cache: 'no-store',
     method: 'GET',
     credentials: 'include',
     headers,

@@ -37,16 +37,19 @@ export default function ClassCreate({
   data,
   classDrafts,
 }: ClassCreateProps) {
+  const roadClassData = useRef(data);
   const [classData, setClassData] = useState<IprocessedDraft | null>(data);
 
-  const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
   const [activeStep, setActiveStep] = useState(data?.step ? data.step : 0);
   const [currentStep, setCurrentStep] = useState(step ? Number(step) : 0);
+
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit, reset } = formMethods;
 
-  const [draftModalView, setDraftModalView] = useState(true);
+  const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
+
+  const [draftModalView, setDraftModalView] = useState(false);
   const [classDraftList, setClassDraftList] =
     useState<IGetClassDrafts[]>(classDrafts);
 
@@ -55,29 +58,36 @@ export default function ClassCreate({
 
   useEffect(() => {
     if (data) {
-      setActiveStep(data.step!);
-      setClassData(data);
-      setDraftModalView(false);
-      reset();
-    } else {
-      setClassData(null);
-      setCurrentStep(0);
-      if (classDraftList.length > 0) {
-        setDraftModalView(true);
-      }
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (data) {
       const searchParamsStep = Number(step ?? 0);
       const isValidStep =
         !isNaN(searchParamsStep) && searchParamsStep - 1 <= (data?.step || 0);
 
       if (isValidStep) {
+        setActiveStep(data?.step ? data.step : 0);
         setCurrentStep(searchParamsStep);
       } else {
         router.back();
+      }
+    }
+
+    if (!classData) {
+      reset();
+      setClassData(data);
+    }
+
+    if (!classData && classDraftList.length > 0 && (step === '0' || !step)) {
+      setDraftModalView(true);
+    } else {
+      setDraftModalView(false);
+    }
+
+    if (!step) {
+      reset();
+      setClassData(null);
+      setCurrentStep(0);
+      setActiveStep(0);
+      if (classDraftList.length > 0) {
+        setDraftModalView(true);
       }
     }
   }, [step]);
@@ -117,33 +127,45 @@ export default function ClassCreate({
   };
 
   const nextStep = () => {
-    if (currentStep < steps.length - 1 && classData) {
-      moveStep(currentStep + 1);
-    }
+    moveStep(currentStep + 1);
   };
 
   const prevStep = () => {
-    if (currentStep > 0 && classData) {
-      moveStep(currentStep - 1);
-    }
+    moveStep(currentStep - 1);
   };
 
   const navOnValidHandler = async (data: classCreateData, index: number) => {
-    if (activeStep < index) {
-      await updateDraft(data);
+    if (classData?.id && currentStep < index) {
+      await updateDraft(data, classData.id);
     }
     moveStep(index);
   };
 
-  const navinvalidHandler = async (
-    data: Record<string, any>,
+  const navinvalidHandler = (
+    invalidData: Record<string, any>,
     index: number,
   ) => {
-    activeStep >= index ? moveStep(index) : invalid(data);
+    const moveUnderStep = () => {
+      if (roadClassData.current) {
+        reset();
+      }
+      moveStep(index);
+    };
+
+    activeStep < index ? invalid(invalidData) : moveUnderStep();
   };
 
   const onValid = async (data: classCreateData) => {
-    await updateDraft(data);
+    let id;
+    if (!classData?.id && classDraftList.length < 5) {
+      id = await createDraft(data.title);
+    } else {
+      toast.error(
+        `임시저장은 최대 5개까지 가능 합니다. 불러오기 혹은 삭제 후 진행해주세요.`,
+      );
+      return setDraftModalView(true);
+    }
+    await updateDraft(data, id);
     nextStep();
   };
 
@@ -178,54 +200,38 @@ export default function ClassCreate({
     return id;
   };
 
-  const updateDraft = async (data: classCreateData, update?: boolean) => {
-    update = update === undefined ? true : update;
-    if (!update) return;
+  const updateDraft = async (data: classCreateData, id: number) => {
+    const step = Math.max(activeStep, currentStep);
 
-    if (classDraftList.length < 5) {
-      const id = classData?.id ? classData.id : await createDraft(data.title);
+    if (step !== activeStep) {
+      setActiveStep(step);
+    }
 
-      const step = Math.max(activeStep, currentStep);
+    try {
+      setClassData({
+        ...classData,
+        step,
+        id,
+      });
 
-      if (step !== activeStep) {
-        setActiveStep(step);
-      }
+      const processData = await classOutputDataProcess(data, currentStep);
 
-      try {
-        setClassData({
-          ...classData,
-          step,
-        });
-
-        const processData = await classOutputDataProcess(
-          data,
-          currentStep,
-          setClassData,
-        );
-
-        await updateClassDraft({
-          lectureId: id,
-          step,
-          ...processData,
-        });
-
-        toast.success('임시저장 완료');
-      } catch (error) {
-        console.error(error);
-        toast.error('임시저장 실패');
-      }
-    } else {
-      toast.error(
-        `임시저장은 최대 5개까지 가능 합니다. 불러오기 혹은 삭제 후 진행해주세요.`,
-      );
-      setDraftModalView(true);
+      await updateClassDraft({
+        lectureId: id!,
+        step,
+        ...processData,
+      });
+      toast.success('임시저장 완료');
+    } catch (error) {
+      console.error(error);
+      toast.error('임시저장 실패');
     }
   };
 
   const createClass = async (data: classCreateData) => {
     try {
       if (classData && classData.id) {
-        await updateDraft(data, false);
+        await updateDraft(data, classData.id);
         const newLectureId = await classCreate(classData.id, finalSchedule);
 
         if (newLectureId) {
@@ -307,12 +313,17 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
             이전
           </button>
           <div className="flex">
-            <form onSubmit={handleSubmit((data) => updateDraft(data), invalid)}>
+            <form
+              onSubmit={handleSubmit(
+                (data) => updateDraft(data, classData.id),
+                invalid,
+              )}
+            >
               <button className="flex items-center whitespace-nowrap rounded-md bg-black px-[0.87rem] py-[0.31rem] text-sm font-bold text-white">
                 임시저장
               </button>
             </form>
-            {activeStep !== 4 ? (
+            {currentStep !== 4 ? (
               <form onSubmit={handleSubmit(onValid, invalid)}>
                 <button className="ml-4 flex items-center">
                   다음

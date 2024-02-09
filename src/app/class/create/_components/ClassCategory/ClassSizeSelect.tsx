@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';

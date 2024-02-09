@@ -144,7 +144,6 @@ export const formatDate = (dateString: string | undefined) => {
 export const classOutputDataProcess = async (
   data: classCreateData,
   step: number,
-  setProcessedClassDataHandler: (data: IprocessedDraft) => void,
 ) => {
   switch (step) {
     case 0:
@@ -180,12 +179,6 @@ export const classOutputDataProcess = async (
       const maxCapacity = isGroup ? max.value : undefined;
 
       const { newGenres, etcGenres } = categorizeGenres(genres);
-
-      setProcessedClassDataHandler({
-        isGroup,
-        min: min.value,
-        max: max.value,
-      });
 
       return {
         images,
