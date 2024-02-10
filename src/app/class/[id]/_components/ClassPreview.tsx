@@ -87,7 +87,7 @@ const ClassPreview = async ({ id }: { id: string }) => {
       </div>
 
       {/* Review */}
-      <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:mb-6 md:justify-center">
+      <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:justify-center">
         <Review average={stars} />
         <span className="text-sm font-bold text-gray-500">({stars})</span>
       </div>
