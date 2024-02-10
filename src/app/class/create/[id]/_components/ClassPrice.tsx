@@ -2,15 +2,18 @@
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { getCouponLists } from '@/lib/apis/couponApis';
+import { useClassCreateStore } from '@/store/classCreate';
 import formatDate from '@/utils/formatDate';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
-import { IprocessedDraft } from '@/types/class';
 import { couponGET, createCoupon } from '@/types/coupon';
 
-const ClassPrice = ({ classData }: { classData: IprocessedDraft | null }) => {
+const ClassPrice = () => {
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
   const [couponList, setCouponList] = useState<couponGET[]>([]);
   const { getValues, setValue } = useFormContext();
@@ -78,7 +81,6 @@ const ClassPrice = ({ classData }: { classData: IprocessedDraft | null }) => {
         <AppliedCouponDisplay
           isCouponSectionOpen={isCouponSectionOpen}
           couponList={couponList}
-          classData={classData}
         />
       </section>
     </>

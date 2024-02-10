@@ -2,42 +2,43 @@
 
 import { useRouter } from 'next/navigation';
 import { lazy, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useClassCreateStore } from '@/store/classCreate';
 import ClassCreate from './ClassCreate';
 import ClassCreateNav from './ClassCreateNav';
 import { classCreateData } from '@/types/class';
 
-// const ClassExplanation = lazy(() => import('./ClassExplanation'));
-// const ClassSchedule = lazy(() => import('./ClassSchedule'));
-// const ClassLocation = lazy(() => import('./ClassLocation'));
-// const ClassPrice = lazy(() => import('./ClassPrice'));
+const ClassCategory = lazy(() => import('./ClassCategory'));
+const ClassExplanation = lazy(() => import('./ClassExplanation'));
+const ClassSchedule = lazy(() => import('./ClassSchedule'));
+const ClassLocation = lazy(() => import('./ClassLocation'));
+const ClassPrice = lazy(() => import('./ClassPrice'));
 
 const NAV_STEPS = [
   {
     title: '사진, 카테고리 설정',
     svg: <div />,
-    // component: <ClassCategory />,
+    component: <ClassCategory />,
   },
   {
     title: '클래스 상세 설명',
     svg: <div />,
-    // component: <ClassExplanation />,
+    component: <ClassExplanation />,
   },
   {
     title: '일정 및 공지사항',
     svg: <div />,
-    // component: <ClassSchedule />,
+    component: <ClassSchedule />,
   },
   {
     title: '클래스 장소',
     svg: <div />,
-    // component: <ClassLocation />,
+    component: <ClassLocation />,
   },
   {
     title: '가격 설정',
     svg: <div />,
-    // component: <ClassPrice />
+    component: <ClassPrice />,
   },
 ];
 
@@ -76,7 +77,9 @@ const ClassCreateContainer = ({
         title={NAV_STEPS[currentStep].title}
         currentStep={currentStep}
       >
-        <div>aaa</div>
+        <FormProvider {...formMethods}>
+          {NAV_STEPS[currentStep].component}
+        </FormProvider>
       </ClassCreate>
     </>
   );

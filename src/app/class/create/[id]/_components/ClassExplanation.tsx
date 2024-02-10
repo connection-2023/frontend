@@ -5,7 +5,7 @@ import {
   CLASS_OPERATION_PLAN,
   QUILL_DEFAULT_VALUE,
 } from '@/constants/constants';
-import { IprocessedDraft } from '@/types/class';
+import { useClassCreateStore } from '@/store/classCreate';
 
 const CustomEditor = dynamic(
   () => import('@/components/TextArea/CustomEditor'),
@@ -21,12 +21,12 @@ const TextAreaSection = dynamic(
   },
 );
 
-const ClassExplanation = ({
-  classData,
-}: {
-  classData: IprocessedDraft | null;
-}) => {
+const ClassExplanation = () => {
   const { control } = useFormContext();
+
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
 
   return (
     <section className="mt-9 flex flex-col gap-9">

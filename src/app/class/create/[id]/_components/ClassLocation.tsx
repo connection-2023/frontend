@@ -1,16 +1,16 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { useClassCreateStore } from '@/store/classCreate';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
-import PendingLocation from '../../../../components/SelectLocation/SelectLocation';
+import SelectLocation from '@/components/SelectLocation/SelectLocation';
 import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import Tooltip from '@/components/Tooltip/Tooltip';
 import { LocationDiscussionTooltip } from '@/components/Tooltip/TooltipMessages/TooltipMessages';
-import { IprocessedDraft } from '@/types/class';
 
-const ClassLocation = ({
-  classData,
-}: {
-  classData: IprocessedDraft | null;
-}) => {
+const ClassLocation = () => {
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
+
   const { control, watch } = useFormContext();
 
   const isLocationSet = watch(
@@ -79,7 +79,7 @@ const ClassLocation = ({
             },
           }}
           render={({ field }) => (
-            <PendingLocation
+            <SelectLocation
               defaultValue={field.value}
               onChange={field.onChange}
             />
