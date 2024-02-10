@@ -52,7 +52,10 @@ export const getClassDraft = async (
   );
 
   if (!response.ok) {
-    throw new Error(`Server error: ${response.status}`);
+    const errorData = await response.json();
+    const error: FetchError = new Error(errorData.message || '');
+    error.status = response.status;
+    throw error;
   }
 
   const data = await response.json();

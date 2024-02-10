@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: 'Connection 클래스 작성 페이지',
 };
 
-export default function ClassCreateLayout({
+export default function ClassCreateDraftsLayout({
   children,
 }: {
   children: React.ReactNode;

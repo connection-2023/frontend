@@ -75,9 +75,9 @@ const DraftList = ({ classDrafts }: DraftListProps) => {
             <li key={id} className="relative">
               <div className="h-[4.56rem] border-b border-solid border-gray-500 hover:bg-sub-color1-transparent">
                 <Link
-                  href={`/class/create?step=${
+                  href={`/class/create/${id}?step=${
                     step === null ? 0 : step === 4 ? step : step + 1
-                  }&id=${id}`}
+                  }`}
                 >
                   <dl className="flex h-full flex-col justify-center px-3">
                     <dt className="w-11/12 truncate text-lg font-bold">
