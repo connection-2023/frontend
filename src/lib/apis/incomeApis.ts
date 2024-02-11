@@ -20,3 +20,21 @@ export const getIncomeStatics = async (type: 'MONTHLY' | 'DAILY') => {
     }
   }
 };
+
+export const getRecentAccount = async () => {
+  try {
+    const response = await fetch(`/api/income/recent-account`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((data) => data.json());
+
+    return response.data.lecturerRecentBankAccount;
+  } catch (error) {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+  }
+};
