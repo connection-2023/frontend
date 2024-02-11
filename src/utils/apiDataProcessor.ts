@@ -22,11 +22,11 @@ import {
   searchClass,
   searchBestClassData,
   IGetClassDraft,
+  IUpdateClassDraft,
 } from '@/types/class';
 import {
   CouponData,
   couponGET,
-  createCoupon,
   createCouponData,
   updateCouponData,
   userCouponGET,

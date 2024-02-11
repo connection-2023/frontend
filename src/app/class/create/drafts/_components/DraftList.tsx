@@ -49,9 +49,9 @@ const DraftList = ({ classDrafts }: DraftListProps) => {
 
       setClassDraftList(draftsList);
 
-      if (draftsList.length === 0) {
-        await createClassDraftHandler();
-      }
+      // if (draftsList.length === 0) {
+      //   await createClassDraftHandler();
+      // }
 
       toast.success('임시저장 삭제 성공');
     } catch (error) {
@@ -75,9 +75,7 @@ const DraftList = ({ classDrafts }: DraftListProps) => {
             <li key={id} className="relative">
               <div className="h-[4.56rem] border-b border-solid border-gray-500 hover:bg-sub-color1-transparent">
                 <Link
-                  href={`/class/create/${id}?step=${
-                    step === null ? 0 : step === 4 ? step : step + 1
-                  }`}
+                  href={`/class/create/${id}?step=${step === null ? 0 : step}`}
                 >
                   <dl className="flex h-full flex-col justify-center px-3">
                     <dt className="w-11/12 truncate text-lg font-bold">

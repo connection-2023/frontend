@@ -152,7 +152,7 @@ export interface IGetClassDraft {
 }
 
 export interface IUpdateClassDraft {
-  lectureId: number | string;
+  lectureId?: number | string;
   step?: number;
   regions?: string[];
   lectureType?: string;
