@@ -1,17 +1,22 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import { lazy, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import { getClassDraft, updateClassDraft } from '@/lib/apis/classApi';
+import {
+  deleteClassDrafts,
+  getClassDraft,
+  updateClassDraft,
+} from '@/lib/apis/classApi';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
+import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
-import { classOutputDataProcess } from '@/utils/apiDataProcessor';
+import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCreate from './ClassCreate';
 import ClassCreateNav from './ClassCreateNav';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { classCreateData } from '@/types/class';
-import { ErrorMessage } from '@/types/types';
+import { ErrorMessage, FetchError } from '@/types/types';
 
 const ClassCategory = lazy(() => import('./ClassCategory'));
 const ClassExplanation = lazy(() => import('./ClassExplanation'));
@@ -58,10 +63,12 @@ const ClassCreateContainer = ({
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit, clearErrors, reset } = formMethods;
 
+  const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
+
   const { classData, setClassData, setProcessedClassData } =
     useClassCreateStore();
 
-  const { changeParams } = useChangeSearchParams();
+  const router = useRouter();
 
   const activeStep = classData?.step ?? 0;
 
@@ -72,7 +79,7 @@ const ClassCreateContainer = ({
   }, [currentStep]);
 
   const changeStep = (targetStep: number) => {
-    changeParams({ name: 'step', value: String(targetStep) });
+    router.push(`/class/create/${id}?step=${targetStep}`);
   };
 
   const closeValidationMessage = () => {
@@ -80,27 +87,48 @@ const ClassCreateContainer = ({
   };
 
   const inValidPreviousStep = async (targetStep: number) => {
-    try {
-      clearErrors();
-
+    const inValidPreviousAction = async () => {
       if (activeStep > currentStep) {
         const draftsData = await getClassDraft(id);
-        await setClassData(draftsData);
+        if (draftsData) await setClassData(draftsData);
         reset();
       }
 
       changeStep(targetStep);
-    } catch (error) {}
+    };
+
+    try {
+      clearErrors();
+      await inValidPreviousAction();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await inValidPreviousAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
   };
 
-  const onValidPreviousStep = (data: classCreateData, targetStep: number) => {
-    updateDrafts(data);
-    changeStep(targetStep);
+  const onValidMoveStep = async (data: classCreateData, targetStep: number) => {
+    try {
+      await updateDrafts(data, false, true);
+      changeStep(targetStep);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const prevHandleSubmit = (targetStep: number) =>
     handleSubmit(
-      (data) => onValidPreviousStep(data, targetStep),
+      (data) => onValidMoveStep(data, targetStep),
       () => inValidPreviousStep(targetStep),
     );
 
@@ -113,19 +141,18 @@ const ClassCreateContainer = ({
     setInvalidData(invalidList);
   };
 
-  const onValidNextStep = (data: classCreateData, targetStep: number) => {
-    updateDrafts(data);
-    changeStep(targetStep);
-  };
-
   const nextHandleSubmit = (targetStep: number) =>
     handleSubmit(
-      (data) => onValidNextStep(data, targetStep),
+      (data) => onValidMoveStep(data, targetStep),
       (data) => inValidNextStep(data),
     );
 
-  const updateDrafts = async (data: classCreateData, successView?: boolean) => {
-    try {
+  const updateDrafts = async (
+    data: classCreateData,
+    successView?: boolean,
+    isThrow?: boolean,
+  ) => {
+    const updateDraftsAction = async () => {
       const processData = await classOutputDataProcess(data, currentStep);
 
       // if (processData) {
@@ -151,14 +178,67 @@ const ClassCreateContainer = ({
       if (successView) {
         toast.success('임시저장 완료');
       }
+    };
+
+    try {
+      await updateDraftsAction();
     } catch (error) {
-      console.error(error);
-      toast.error('임시저장 실패');
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await updateDraftsAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('임시저장 실패');
+          if (isThrow) {
+            throw error;
+          }
+        }
+      }
     }
   };
 
   const updateDraftsHandleSubmit = handleSubmit(
     (data) => updateDrafts(data, true),
+    (data) => inValidNextStep(data),
+  );
+
+  const createClass = async (data: classCreateData) => {
+    const createClassAction = async () => {
+      await updateDrafts(data);
+      const newLectureId = await classCreate(id, finalSchedule);
+
+      toast.success('클래스 등록 완료');
+
+      await deleteClassDrafts(id);
+      router.push(`/class/${newLectureId}`);
+    };
+
+    try {
+      await createClassAction();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await createClassAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
+    }
+  };
+
+  const createClassHandleSubmit = handleSubmit(
+    (data) => createClass(data),
     (data) => inValidNextStep(data),
   );
 
@@ -177,6 +257,7 @@ const ClassCreateContainer = ({
         nextHandleSubmit={nextHandleSubmit}
         prevHandleSubmit={prevHandleSubmit}
         updateDraftsHandleSubmit={updateDraftsHandleSubmit}
+        createClassHandleSubmit={createClassHandleSubmit}
       >
         <FormProvider {...formMethods}>
           {NAV_STEPS[currentStep].component}

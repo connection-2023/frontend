@@ -268,7 +268,7 @@ export const classOutputDataProcess = async (
 };
 
 export const classCreate = async (
-  id: number,
+  id: string,
   finalSchedule: Date[] | undefined,
 ) => {
   const { location, temporaryLecture, schedules } = await getClassDraft(id);

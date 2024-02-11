@@ -12,6 +12,7 @@ interface ClassCreateProps {
     targetStep: number,
   ) => (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
   updateDraftsHandleSubmit: () => void;
+  createClassHandleSubmit: () => void;
 }
 
 const ClassCreate = ({
@@ -21,6 +22,7 @@ const ClassCreate = ({
   nextHandleSubmit,
   prevHandleSubmit,
   updateDraftsHandleSubmit,
+  createClassHandleSubmit,
 }: ClassCreateProps) => {
   return (
     <section className="mx-auto flex max-w-[675px] flex-col">
@@ -39,10 +41,14 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
       {/* 하단 버튼 */}
       <nav className="my-10 flex w-full justify-between text-lg font-bold">
         <form onSubmit={prevHandleSubmit(currentStep - 1)}>
-          <button className="flex items-center">
-            <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
-            이전
-          </button>
+          {currentStep === 0 ? (
+            <div />
+          ) : (
+            <button className="flex items-center">
+              <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
+              이전
+            </button>
+          )}
         </form>
         <div className="flex">
           <form onSubmit={updateDraftsHandleSubmit}>
@@ -58,7 +64,7 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
               </button>
             </form>
           ) : (
-            <form>
+            <form onSubmit={createClassHandleSubmit}>
               <button className="ml-4 flex items-center">등록하기</button>
             </form>
           )}

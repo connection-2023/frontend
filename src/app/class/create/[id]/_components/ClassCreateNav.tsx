@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useEffect } from 'react';
+import { BaseSyntheticEvent } from 'react';
 
 interface ClassCreateNavProps {
   currentStep: number;
@@ -22,10 +22,6 @@ const ClassCreateNav = ({
   nextHandleSubmit,
   prevHandleSubmit,
 }: ClassCreateNavProps) => {
-  useEffect(() => {
-    console.log(activeStep);
-  }, [activeStep]);
-
   return (
     <nav className="flex h-[45px] w-full min-w-[675px] items-center justify-between whitespace-nowrap rounded-[3.13rem] text-lg font-bold shadow-float">
       {navSteps.map(({ title, svg }, targetStep) => {
