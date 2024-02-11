@@ -6,7 +6,7 @@ import ClassDates from './ClassDates';
 import ResponsiveClassPreview from './ResponsiveClassPreview';
 import Carousel from '../Carousel/Carousel';
 import Like from '../Like/Like';
-import ProfileImage from '../ProfileImage/ProfileImage';
+import ProfileImage from '../Profile/ProfileImage';
 import Review from '../Review/Review';
 import { ClassCardType } from '@/types/class';
 

@@ -5,7 +5,7 @@ import { ArrowUpSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 import { useScrollStore } from '@/store/scrollStore';
 import ProfileMenu from './ProfileMenu';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 
 const Profile = ({
   defaultProfileImg,

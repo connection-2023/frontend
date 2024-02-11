@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { instructorsBlockCancel } from '@/lib/apis/instructorLikesBlockApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 import { InstructorBlock } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 

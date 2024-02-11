@@ -3,7 +3,7 @@ import { ButtonStyles } from '@/constants/constants';
 import { ArrowUpSVG, ChatSVG } from '@/icons/svg';
 import UniqueButton from '@/components/Button/UniqueButton';
 import Notice from '@/components/ClassNotice/Notice';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 
 const timeTable = [
   {

@@ -11,7 +11,7 @@ import PhoneNumberUpdate from './UpdateModal/UpdateList/PhoneNumberUpdate';
 import ProfileUpdate from './UpdateModal/UpdateList/ProfileUpdate';
 import SocialUpdate from './UpdateModal/UpdateList/SocialUpdate';
 import Button from '@/components/Button/Button';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import ProfileImg from '@/components/Profile/ProfileImage';
 import { social } from '@/types/auth';
 
 const Info = () => {

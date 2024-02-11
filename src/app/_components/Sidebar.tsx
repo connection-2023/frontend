@@ -13,7 +13,7 @@ import {
   HeartSVG,
 } from '@/icons/svg';
 import { useUserStore } from '@/store/userStore';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 
 interface SidebarProps {
   view?: 'my' | 'dashboard';
