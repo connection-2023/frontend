@@ -1,19 +1,52 @@
 import { Chart } from 'chart.js';
 
-const labelsForDay = Array.from({ length: 31 }, (_, i) => `${i + 1}일`);
+interface IStatResponse {
+  date: string;
+  totalSales: number;
+  totalPrice: number;
+}
 
-const labelsForMonth = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
+export const getMonthlyData = (data: IStatResponse[]) => {
+  const labels = data
+    .map((item) => new Date(item.date).getMonth() + 1 + '월')
+    .reverse();
+  const dataSets = data.map((item) => item.totalPrice).reverse();
 
-// 임의값
-const valuesByDay = Array.from(
-  { length: 31 },
-  () => Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000,
-);
+  return {
+    labels: labels,
+    datasets: [
+      {
+        label: '수입',
+        data: dataSets,
+        backgroundColor: '#8338EC',
+        hoverBackgroundColor: '#FF3E9A',
+      },
+    ],
+  };
+};
 
-const valuesByMonth = [
-  0, 92432, 87744, 78233, 93210, 89462, 70825, 97642, 76688, 84211, 81292,
-  90978,
-];
+export const getDailyData = (data: IStatResponse[]) => {
+  const labels = data
+    .map((item) => new Date(item.date).getDate() + '일')
+    .reverse();
+  const dataSets = data.map((item) => item.totalPrice).reverse();
+
+  return {
+    labels: labels,
+    datasets: [
+      {
+        fill: true,
+        label: '수입',
+        data: dataSets,
+        borderColor: '#8338EC',
+        backgroundColor: 'rgba(131, 56, 236, 0.1)',
+        pointBackgroundColor: '#8338EC',
+        pointRadius: 0,
+        pointHoverRadius: 5,
+      },
+    ],
+  };
+};
 
 export const chartPlugins = [
   {
@@ -76,33 +109,4 @@ export const options = {
       },
     },
   },
-};
-
-export const dataByDay = {
-  labels: labelsForDay,
-  datasets: [
-    {
-      fill: true,
-      label: '수입',
-      data: valuesByDay,
-      borderColor: '#8338EC',
-      backgroundColor: 'rgba(131, 56, 236, 0.1)',
-      pointBackgroundColor: '#8338EC',
-
-      pointRadius: 0,
-      pointHoverRadius: 5,
-    },
-  ],
-};
-
-export const dataByMonth = {
-  labels: labelsForMonth,
-  datasets: [
-    {
-      label: '수입',
-      data: valuesByMonth,
-      backgroundColor: '#8338EC',
-      hoverBackgroundColor: '#FF3E9A',
-    },
-  ],
 };
