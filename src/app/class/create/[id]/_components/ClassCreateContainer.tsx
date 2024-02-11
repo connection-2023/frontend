@@ -1,9 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { lazy, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import useChangeSearchParams from '@/hooks/useChangeSearchParams';
+import { updateClassDraft } from '@/lib/apis/classApi';
 import { useClassCreateStore } from '@/store/classCreate';
+import { classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCreate from './ClassCreate';
 import ClassCreateNav from './ClassCreateNav';
 import { classCreateData } from '@/types/class';
@@ -50,21 +53,75 @@ const ClassCreateContainer = ({
   id: string;
 }) => {
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
+  const { handleSubmit, reset, clearErrors } = formMethods;
 
-  const { classData } = useClassCreateStore((state) => ({
+  const { classData, setProcessedClassData } = useClassCreateStore((state) => ({
     classData: state.classData,
-    setClassData: state.setClassData,
+    setProcessedClassData: state.setProcessedClassData,
   }));
 
-  const router = useRouter();
+  const { changeParams } = useChangeSearchParams();
 
   const activeStep = classData?.step ?? 0;
 
   useEffect(() => {
     if (activeStep < currentStep) {
-      router.push(`/class/create/${id}?step=${activeStep}`);
+      changeStep(activeStep);
     }
   }, [currentStep]);
+
+  const changeStep = (targetStep: number) => {
+    changeParams({ name: 'step', value: String(targetStep) });
+  };
+
+  const inValidPreviousStep = (targetStep: number) => {
+    clearErrors();
+    reset();
+    changeStep(targetStep);
+  };
+
+  const onValidPreviousStep = (targetStep: number) => {
+    changeStep(targetStep);
+  };
+
+  const prevHandleSubmit = (targetStep: number) =>
+    handleSubmit(
+      () => onValidPreviousStep(targetStep),
+      () => inValidPreviousStep(targetStep),
+    );
+
+  const inValidNextStep = (data: Record<string, any>) => {
+    console.log(data);
+  };
+
+  const onValidNextStep = (data: classCreateData, targetStep: number) => {
+    updateDrafts(data);
+    changeStep(targetStep);
+  };
+
+  const nextHandleSubmit = (targetStep: number) =>
+    handleSubmit(
+      (data) => onValidNextStep(data, targetStep),
+      (data) => inValidNextStep(data),
+    );
+
+  const updateDrafts = async (data: classCreateData) => {
+    try {
+      const processData = await classOutputDataProcess(data, currentStep);
+
+      console.log(data);
+
+      await updateClassDraft({
+        lectureId: id!,
+        step: currentStep,
+        ...processData,
+      });
+      toast.success('임시저장 완료');
+    } catch (error) {
+      console.error(error);
+      toast.error('임시저장 실패');
+    }
+  };
 
   return (
     <>
@@ -72,10 +129,14 @@ const ClassCreateContainer = ({
         navSteps={NAV_STEPS}
         currentStep={Number(currentStep)}
         activeStep={activeStep}
+        nextHandleSubmit={nextHandleSubmit}
+        prevHandleSubmit={prevHandleSubmit}
       />
       <ClassCreate
         title={NAV_STEPS[currentStep].title}
         currentStep={currentStep}
+        nextHandleSubmit={nextHandleSubmit}
+        prevHandleSubmit={prevHandleSubmit}
       >
         <FormProvider {...formMethods}>
           {NAV_STEPS[currentStep].component}

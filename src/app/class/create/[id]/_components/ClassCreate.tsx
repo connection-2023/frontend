@@ -1,12 +1,25 @@
+import { BaseSyntheticEvent } from 'react';
 import { ArrowRightSVG } from '@/icons/svg';
 
 interface ClassCreateProps {
   title: string;
   children: React.ReactNode;
   currentStep: number;
+  nextHandleSubmit: (
+    targetStep: number,
+  ) => (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
+  prevHandleSubmit: (
+    targetStep: number,
+  ) => (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
 }
 
-const ClassCreate = ({ title, children, currentStep }: ClassCreateProps) => {
+const ClassCreate = ({
+  title,
+  children,
+  currentStep,
+  nextHandleSubmit,
+  prevHandleSubmit,
+}: ClassCreateProps) => {
   return (
     <section className="mx-auto flex max-w-[675px] flex-col">
       <h2 className="mt-8 flex items-center text-2xl font-bold text-sub-color1">
@@ -23,12 +36,14 @@ items-center justify-center rounded-full border border-solid border-sub-color1 t
 
       {/* 하단 버튼 */}
       <nav className="my-10 flex w-full justify-between text-lg font-bold">
-        <button className="flex items-center">
-          <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
-          이전
-        </button>
+        <form onSubmit={() => prevHandleSubmit(currentStep - 1)}>
+          <button className="flex items-center">
+            <ArrowRightSVG className="mr-2 h-[15px] w-[9px] origin-center rotate-180 stroke-black" />
+            이전
+          </button>
+        </form>
         <div className="flex">
-          <form>
+          <form onSubmit={() => nextHandleSubmit(currentStep + 1)}>
             <button className="flex items-center whitespace-nowrap rounded-md bg-black px-[0.87rem] py-[0.31rem] text-sm font-bold text-white">
               임시저장
             </button>
