@@ -5,9 +5,11 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { TrashcanSVG } from '@/icons/svg';
 import { createClassDraft, deleteClassDrafts } from '@/lib/apis/classApi';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Button from '@/components/Button/Button';
 import { IGetClassDrafts } from '@/types/class';
+import { FetchError } from '@/types/types';
 
 interface DraftListProps {
   classDrafts: IGetClassDrafts[];
@@ -26,10 +28,23 @@ const DraftList = ({ classDrafts }: DraftListProps) => {
 
     try {
       const { id } = await createClassDraft();
-
       router.push(`/class/create/${id}?step=0`);
     } catch (error) {
-      toast.error('새로 고침 후 다시 시도해 주세요.');
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            const { id } = await createClassDraft();
+            router.push(`/class/create/${id}?step=0`);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          console.error(error);
+          toast.error('새로 고침 후 다시 시도해 주세요.');
+        }
+      }
     }
   };
 
@@ -42,20 +57,33 @@ const DraftList = ({ classDrafts }: DraftListProps) => {
       return;
     }
 
-    try {
+    const deleteClassDraftAction = async () => {
       await deleteClassDrafts(deleteId);
 
       const draftsList = classDraftList.filter(({ id }) => deleteId !== id);
 
       setClassDraftList(draftsList);
 
-      // if (draftsList.length === 0) {
-      //   await createClassDraftHandler();
-      // }
-
       toast.success('임시저장 삭제 성공');
+    };
+
+    try {
+      await deleteClassDraftAction();
     } catch (error) {
-      toast.error('새로 고침 후 다시 시도해 주세요.');
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await deleteClassDraftAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          console.error(error);
+          toast.error('새로 고침 후 다시 시도해 주세요.');
+        }
+      }
     }
   };
 

@@ -97,11 +97,9 @@ export const deleteClassDrafts = async (
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        `임시저장 삭제 오류: ${errorData.message || ''}, status: ${
-          response.status
-        }`,
-      );
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
