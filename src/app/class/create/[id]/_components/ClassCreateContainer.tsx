@@ -1,6 +1,6 @@
 'use client';
 
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
@@ -9,7 +9,9 @@ import { useClassCreateStore } from '@/store/classCreate';
 import { classOutputDataProcess } from '@/utils/apiDataProcessor';
 import ClassCreate from './ClassCreate';
 import ClassCreateNav from './ClassCreateNav';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { classCreateData } from '@/types/class';
+import { ErrorMessage } from '@/types/types';
 
 const ClassCategory = lazy(() => import('./ClassCategory'));
 const ClassExplanation = lazy(() => import('./ClassExplanation'));
@@ -52,6 +54,7 @@ const ClassCreateContainer = ({
   currentStep: number;
   id: string;
 }) => {
+  const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit, clearErrors, reset } = formMethods;
 
@@ -70,6 +73,10 @@ const ClassCreateContainer = ({
 
   const changeStep = (targetStep: number) => {
     changeParams({ name: 'step', value: String(targetStep) });
+  };
+
+  const closeValidationMessage = () => {
+    setInvalidData(null);
   };
 
   const inValidPreviousStep = async (targetStep: number) => {
@@ -98,7 +105,12 @@ const ClassCreateContainer = ({
     );
 
   const inValidNextStep = (data: Record<string, any>) => {
-    console.log(data);
+    const invalidList = Object.entries(data).map(([key, value]) => ({
+      key,
+      ...value,
+    }));
+
+    setInvalidData(invalidList);
   };
 
   const onValidNextStep = (data: classCreateData, targetStep: number) => {
@@ -147,7 +159,7 @@ const ClassCreateContainer = ({
 
   const updateDraftsHandleSubmit = handleSubmit(
     (data) => updateDrafts(data, true),
-    // (data) => inValidNextStep(data),
+    (data) => inValidNextStep(data),
   );
 
   return (
@@ -170,6 +182,11 @@ const ClassCreateContainer = ({
           {NAV_STEPS[currentStep].component}
         </FormProvider>
       </ClassCreate>
+
+      <ValidationMessage
+        closeModal={closeValidationMessage}
+        invalidData={invalidData}
+      />
     </>
   );
 };
