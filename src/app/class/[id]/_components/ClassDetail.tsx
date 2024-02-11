@@ -14,7 +14,7 @@ import ReadMore from './ReadMore';
 import Notice from '@/components/ClassNotice/Notice';
 import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 
 const ClassDetail = async ({ id }: { id: string }) => {

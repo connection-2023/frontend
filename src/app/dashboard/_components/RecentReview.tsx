@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { ReviewSVG, ArrowUpSVG } from '@/icons/svg';
 import { getMyLecturersReviews } from '@/lib/apis/reviewApis';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import ProfileImg from '@/components/Profile/ProfileImage';
 import Review from '@/components/Review/Review';
 import { MyLecturersReviewsData } from '@/types/review';
 
