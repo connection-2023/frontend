@@ -1,23 +1,39 @@
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useClassCreateStore } from '@/store/classCreate';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
-import { IprocessedDraft } from '@/types/class';
 
-const ClassInfo = ({ classData }: { classData: IprocessedDraft | null }) => {
+const ClassInfo = () => {
   const {
     control,
     formState: { errors },
+    getValues,
+    setValue,
   } = useFormContext();
 
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
+
+  const lessonType = getValues('lessonType');
+  const lessonTypeMin = getValues('min');
+  const lessonTypeMax = getValues('max');
+
+  const isGroup = lessonType ? lessonType === '그룹레슨' : classData?.isGroup;
+  const selectedMin = lessonTypeMin ? lessonTypeMin.value : classData?.min;
+  const selectedMax = lessonTypeMax ? lessonTypeMax.value : classData?.max;
+
   const maxStudentDefaultValue = {
-    value: classData?.isGroup ? classData?.max! : 1,
-    label: String(classData?.isGroup ? classData?.max! : 1),
+    value: isGroup ? selectedMax : 1,
+    label: String(isGroup ? selectedMax : 1),
   };
 
-  const selectedMin = classData?.min ? classData.min + 1 : 1;
+  useEffect(() => {
+    setValue('max', maxStudentDefaultValue);
+  }, []);
 
-  const options = createOptions(selectedMin, classData?.isGroup ? 100 : 1);
+  const options = createOptions(selectedMin, isGroup ? 100 : 1);
 
   return (
     <section className="mt-3 flex flex-col text-lg font-semibold">
@@ -41,6 +57,7 @@ const ClassInfo = ({ classData }: { classData: IprocessedDraft | null }) => {
                   field.onChange(selected);
                 }}
                 options={options}
+                isDisabled={!isGroup}
               />
             );
           }}

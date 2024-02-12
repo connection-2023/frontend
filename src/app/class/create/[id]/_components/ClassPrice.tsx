@@ -59,7 +59,7 @@ const ClassPrice = () => {
 
   return (
     <>
-      <ClassInfo classData={classData} />
+      <ClassInfo />
 
       <section
         className={`flex flex-col border-y-2 border-solid border-sub-color1 py-5 ${

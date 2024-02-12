@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
@@ -22,7 +22,7 @@ const ClassSizeSelect = ({
   const [minOptions, setMinOptions] = useState(optionChange('min', max));
   const [maxOptions, setMaxOptions] = useState(optionChange('max', min));
 
-  const { watch, control } = useFormContext();
+  const { watch, control, getValues, setValue } = useFormContext();
 
   const isGroupType = watch('lessonType');
 
@@ -42,6 +42,16 @@ const ClassSizeSelect = ({
   ];
 
   const isDisabled = '그룹레슨' !== isGroupType;
+
+  useEffect(() => {
+    const lessonTypeMax = getValues('max');
+
+    setMinOptions(
+      optionChange('min', lessonTypeMax ? lessonTypeMax.value : max),
+    );
+
+    if (lessonTypeMax?.value === 1) setValue('max', studentCounts[1].state);
+  }, []);
 
   return (
     <>

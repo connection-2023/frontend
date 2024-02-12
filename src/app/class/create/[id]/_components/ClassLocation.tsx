@@ -13,9 +13,13 @@ const ClassLocation = () => {
 
   const { control, watch } = useFormContext();
 
+  const locationConsultativeDefaultValue = classData?.location?.roadAddr
+    ? true
+    : false;
+
   const isLocationSet = watch(
     'locationConsultative',
-    classData?.location?.roadAddr ? false : true,
+    locationConsultativeDefaultValue,
   );
 
   return (
@@ -25,7 +29,7 @@ const ClassLocation = () => {
       <Controller
         name="locationConsultative"
         control={control}
-        defaultValue={classData?.location?.roadAddr ? false : true}
+        defaultValue={locationConsultativeDefaultValue}
         render={({ field }) => (
           <div className="flex items-center gap-1">
             <input
