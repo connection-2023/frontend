@@ -72,7 +72,7 @@ export { default as GroupSVG } from './class/group.svg';
 
 export { default as HamburgerSVG } from './menu/hamburgerMenu.svg';
 
-export { default as HeartSVG } from './common/button/heart.svg';
+export { default as HeartSVG } from './common/button/line-heart.svg';
 
 export { default as ImageSVG } from './upload/image.svg';
 
@@ -157,4 +157,5 @@ export { default as YoutubeSVG } from './logo/sns/youtube.svg';
 export { default as ZoomInSVG } from './common/button/zoomIn.svg';
 
 export { default as ZoomOutSVG } from './common/button/zoomOut.svg';
+
 export { default as ChangeImageSVG } from './my/changeImage.svg';
