@@ -39,9 +39,7 @@ const AppliedCouponDisplay = ({
 
   return (
     <section>
-      <div
-        className={`${!isCouponSectionOpen ? 'hidden' : ''} mb-3 flex gap-10`}
-      >
+      <div className="mb-3 flex gap-10">
         <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
         <div className="flex w-5/6 flex-wrap gap-5">
           <div className="w-full">
@@ -83,10 +81,7 @@ const AppliedCouponDisplay = ({
                     };
 
                     return (
-                      <div
-                        key={coupon.value.id}
-                        className={!isCouponSectionOpen ? 'hidden' : ''}
-                      >
+                      <div key={coupon.value.id}>
                         <InstructorCoupon
                           coupon={coupon.value}
                           cancelSelectedCoupon={cancelSelectedCoupon}

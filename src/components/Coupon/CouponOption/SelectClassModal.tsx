@@ -50,6 +50,7 @@ const SelectClassModal = ({
   return (
     <>
       <button
+        type="button"
         onClick={() => setModalView(true)}
         className="flex h-10 w-full items-center justify-between rounded-md border border-solid border-gray-300 p-2"
       >

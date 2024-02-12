@@ -8,6 +8,7 @@ import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
 import CouponButton from './ClassPrice/CouponButton';
 import CouponCreator from './ClassPrice/CouponCreator';
+import Accordion from '@/components/Accordion/Accordion';
 import { couponGET, createCoupon } from '@/types/coupon';
 
 const ClassPrice = () => {
@@ -61,27 +62,27 @@ const ClassPrice = () => {
     <>
       <ClassInfo />
 
-      <section
-        className={`flex flex-col border-y-2 border-solid border-sub-color1 py-5 ${
-          isCouponSectionOpen && 'gap-7'
-        } `}
-      >
+      <section className="flex flex-col gap-7 border-y-2 border-solid border-sub-color1 py-5">
         <CouponButton
           isCouponSectionOpen={isCouponSectionOpen}
           toggleCouponSection={toggleCouponSection}
         />
 
-        <CouponCreator
-          isCouponSectionOpen={isCouponSectionOpen}
-          changeCouponList={changeCouponList}
-        />
+        <Accordion isOpen={isCouponSectionOpen}>
+          <div className="flex flex-col gap-7">
+            <CouponCreator
+              isCouponSectionOpen={isCouponSectionOpen}
+              changeCouponList={changeCouponList}
+            />
 
-        {isCouponSectionOpen && <hr className="border-gray-500" />}
+            <hr className="border-gray-500" />
 
-        <AppliedCouponDisplay
-          isCouponSectionOpen={isCouponSectionOpen}
-          couponList={couponList}
-        />
+            <AppliedCouponDisplay
+              isCouponSectionOpen={isCouponSectionOpen}
+              couponList={couponList}
+            />
+          </div>
+        </Accordion>
       </section>
     </>
   );
