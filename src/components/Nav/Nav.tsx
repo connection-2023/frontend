@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface NavSection {
   id: string;
@@ -8,66 +8,91 @@ interface NavSection {
 }
 
 const Nav = ({ sections }: { sections: NavSection[] }) => {
-  const [activeSection, setActiveSection] = useState<string | null>(null);
-  const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const [activeId, setActiveId] = useState<null | string>(null);
+  const [headingTops, setHeadingTops] = useState<
+    | null
+    | {
+        id: string;
+        top: number;
+      }[]
+  >(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.9 },
-    );
+  const updateSectionPositions = useCallback(() => {
+    const scrollTop = getScrollTop();
+    const headingTops = sections.map(({ id }) => {
+      const el = document.getElementById(id);
 
-    sections.forEach(({ id }) => {
-      const elem = document.getElementById(id);
-      if (elem) observer.observe(elem);
-      sectionRefs.current[id] = elem;
+      if (!el) {
+        return {
+          id,
+          top: 0,
+        };
+      }
+      const top = el.getBoundingClientRect().top + scrollTop;
+
+      return {
+        id,
+        top,
+      };
     });
 
-    return () => {
-      sections.forEach(({ id }) => {
-        const elem = sectionRefs.current[id];
-        if (elem) observer.unobserve(elem);
-      });
-    };
-  }, []);
+    setHeadingTops(headingTops);
+  }, [sections]);
 
-  const handleNavLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    updateSectionPositions();
 
-    const targetId = event.currentTarget.getAttribute('href');
+    let prevScrollHeight = document.body.scrollHeight;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-    if (targetId) {
-      const targetElement = sectionRefs.current[targetId.replace('#', '')];
-
-      if (targetElement) {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-
-        setActiveSection(targetId.replace('#', ''));
+    const checkScrollHeight = () => {
+      const scrollHeight = document.body.scrollHeight;
+      if (prevScrollHeight !== scrollHeight) {
+        updateSectionPositions();
       }
+      prevScrollHeight = scrollHeight;
+      timeoutId = setTimeout(checkScrollHeight, 250);
+    };
+    timeoutId = setTimeout(checkScrollHeight, 250);
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [updateSectionPositions]);
+
+  const onScroll = useCallback(() => {
+    const scrollTop = getScrollTop();
+    if (!headingTops) return;
+    const currentHeading = [...headingTops]
+      .reverse()
+      .find((headingTop) => scrollTop >= headingTop.top - 500);
+
+    if (!currentHeading) {
+      setActiveId(null);
+      return;
     }
-  };
+
+    setActiveId(currentHeading.id);
+  }, [headingTops]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [onScroll]);
 
   return (
-    <nav
-      onClick={handleNavLinkClick}
-      className="sticky top-0 z-20 mb-[0.87rem] flex h-[64px] w-full items-center justify-between gap-5 whitespace-nowrap bg-white text-lg font-bold sm:gap-0"
-    >
+    <nav className="sticky top-0 z-20 mb-3.5 flex h-16 w-full items-center justify-between gap-5 whitespace-nowrap bg-white text-lg font-bold sm:gap-0">
       {sections.map(({ id, label }) => (
         <Link
           key={id}
           href={`#${id}`}
-          ref={(ref) => (sectionRefs.current[id] = ref)}
           className={`${
-            activeSection === id
+            activeId === id
               ? 'text-sub-color1 underline underline-offset-8'
               : 'text-gray-500'
           }`}
@@ -80,3 +105,11 @@ const Nav = ({ sections }: { sections: NavSection[] }) => {
 };
 
 export default Nav;
+
+export const getScrollTop = () => {
+  if (!document.body) return 0;
+  const scrollTop = document.documentElement
+    ? document.documentElement.scrollTop || document.body.scrollTop
+    : document.body.scrollTop;
+  return scrollTop;
+};

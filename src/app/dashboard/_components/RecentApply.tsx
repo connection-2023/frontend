@@ -1,5 +1,5 @@
 import { RecentSVG } from '@/icons/svg';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import ProfileImg from '@/components/Profile/ProfileImage';
 
 const RecentApply = () => {
   return (

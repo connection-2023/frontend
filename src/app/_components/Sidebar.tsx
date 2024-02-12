@@ -13,7 +13,7 @@ import {
   HeartSVG,
 } from '@/icons/svg';
 import { useUserStore } from '@/store/userStore';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 
 interface SidebarProps {
   view?: 'my' | 'dashboard';
@@ -38,8 +38,8 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
 
   const getTextColorClass = (path: string) =>
     pathname.includes(path)
-      ? 'text-gray-100'
-      : 'text-gray-500 hover:text-gray-100';
+      ? 'w-fit text-gray-100'
+      : 'w-fit text-gray-500 hover:text-gray-100';
 
   return (
     <nav
@@ -76,11 +76,6 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
               <Link href={link.path} className="group flex items-center">
                 {link.icon}
                 {link.text}
-                {link.text === '환불 요청' && (
-                  <span className="ml-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-main-color text-sm font-bold text-white">
-                    4
-                  </span>
-                )}
               </Link>
 
               {link.submenuItems &&
@@ -112,12 +107,14 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
             {link.submenuItems && (
               <ul
                 className={`${
-                  isOpen ? 'mt-2 max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                  isOpen
+                    ? 'mt-2 max-h-48 opacity-100'
+                    : 'hidden max-h-0 opacity-0'
                 } ml-8 flex flex-col gap-2.5 transition-all duration-300 ease-linear`}
               >
                 {link.submenuItems.map((item) => (
                   <li key={item.path} className={getTextColorClass(item.path)}>
-                    <Link href={item.path} className="flex items-center">
+                    <Link href={item.path} className="group flex items-center">
                       {item.text}
                     </Link>
                   </li>
@@ -134,7 +131,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
 export default Sidebar;
 
 const iconStyle =
-  'mr-2.5 fill-stroke-gray-500 stroke-gray-500 group-hover:fill-stroke-sub-color1 group-hover:stroke-sub-color1 group-focus:fill-stroke-sub-color1 group-focus:stroke-sub-color1';
+  'mr-2.5 fill-gray-500 stroke-gray-500 group-hover:fill-stroke-sub-color1 group-hover:stroke-sub-color1 group-focus:fill-stroke-sub-color1 group-focus:stroke-sub-color1';
 
 const instructorLinks = [
   {
@@ -183,19 +180,25 @@ const userLinks = [
   },
 
   {
-    path: '/mypage/user/class/apply',
+    path: '/mypage/user/myclass/apply',
     text: '내 클래스',
     icon: <BookmarkSVG width="21" height="21" className={iconStyle} />,
     submenuItems: [
-      { path: '/mypage/user/class/apply', text: '신청한 클래스' },
-      { path: '/mypage/user/class/myclass', text: '관심 클래스' },
-      { path: '/mypage/user/class/member', text: '클래스 후기' },
+      { path: '/mypage/user/myclass/apply', text: '신청한 클래스' },
+      { path: '/mypage/user/myclass/myclass', text: '관심 클래스' },
+      { path: '/mypage/user/myclass/member', text: '클래스 후기' },
     ],
   },
   {
     path: '/mypage/user/instructor',
     text: '관심/차단 강사',
-    icon: <HeartSVG width="21" height="21" className={iconStyle} />,
+    icon: (
+      <HeartSVG
+        width="21"
+        height="21"
+        className="group-hover:fill-stroke-sub-color1 group-focus:fill-stroke-sub-color1 mr-2.5 stroke-gray-500 stroke-[3px] group-hover:stroke-sub-color1 group-focus:stroke-sub-color1"
+      />
+    ),
   },
   {
     path: '/mypage/user/coupon',
