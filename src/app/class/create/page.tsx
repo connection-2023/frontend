@@ -1,7 +1,7 @@
-import React from 'react';
+import { redirect } from 'next/navigation';
 
-const page = () => {
-  return <div />;
+const page = async () => {
+  redirect('/class/create/drafts');
 };
 
 export default page;
