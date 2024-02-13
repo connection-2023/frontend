@@ -4,6 +4,13 @@ import { lazy, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
+  BasicCalendarSVG,
+  EditSVG,
+  LocationSVG,
+  MoneySVG,
+  UploadImageSVG,
+} from '@/icons/svg';
+import {
   deleteClassDrafts,
   getClassDraft,
   updateClassDraft,
@@ -26,28 +33,47 @@ const ClassPrice = lazy(() => import('./ClassPrice'));
 
 const NAV_STEPS = [
   {
-    title: '사진, 카테고리 설정',
-    svg: <div />,
+    lgTitle: '사진, 카테고리 설정',
+    smTitle: '기본정보',
+    svg: (
+      <UploadImageSVG
+        width={21}
+        height={17}
+        className="group-hover:fill-white"
+      />
+    ),
     component: <ClassCategory />,
   },
   {
-    title: '클래스 상세 설명',
-    svg: <div />,
+    lgTitle: '클래스 상세 설명',
+    smTitle: '상세정보',
+    svg: <EditSVG width={18} height={18} className="group-hover:fill-white" />,
     component: <ClassExplanation />,
   },
   {
-    title: '일정 및 공지사항',
-    svg: <div />,
+    lgTitle: '일정 및 공지사항',
+    smTitle: '일정&공지',
+    svg: (
+      <BasicCalendarSVG
+        width={18}
+        height={19}
+        className="group-hover:fill-white"
+      />
+    ),
     component: <ClassSchedule />,
   },
   {
-    title: '클래스 장소',
-    svg: <div />,
+    lgTitle: '클래스 장소',
+    smTitle: '장소',
+    svg: (
+      <LocationSVG width={24} height={24} className="group-hover:fill-white" />
+    ),
     component: <ClassLocation />,
   },
   {
-    title: '가격 설정',
-    svg: <div />,
+    lgTitle: '가격 설정',
+    smTitle: '가격 ',
+    svg: <MoneySVG width={22} height={22} className="group-hover:fill-white" />,
     component: <ClassPrice />,
   },
 ];
@@ -243,7 +269,10 @@ const ClassCreateContainer = ({
   );
 
   return (
-    <>
+    <main className="mx-auto max-w-[1440px] px-4 sm:px-[2.38rem]">
+      <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
+        클래스 작성
+      </h1>
       <ClassCreateNav
         navSteps={NAV_STEPS}
         currentStep={Number(currentStep)}
@@ -252,7 +281,7 @@ const ClassCreateContainer = ({
         prevHandleSubmit={prevHandleSubmit}
       />
       <ClassCreate
-        title={NAV_STEPS[currentStep].title}
+        title={NAV_STEPS[currentStep].lgTitle}
         currentStep={currentStep}
         nextHandleSubmit={nextHandleSubmit}
         prevHandleSubmit={prevHandleSubmit}
@@ -268,7 +297,7 @@ const ClassCreateContainer = ({
         closeModal={closeValidationMessage}
         invalidData={invalidData}
       />
-    </>
+    </main>
   );
 };
 

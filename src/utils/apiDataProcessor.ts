@@ -259,6 +259,8 @@ export const classOutputDataProcess = async (
     case 4:
       const { classPrice, max: priceMax, coupons } = data;
 
+      console.log(coupons);
+
       return {
         maxCapacity: priceMax.value,
         price: classPrice,
@@ -358,6 +360,8 @@ export const classCreate = async (
     ),
     schedules: allClassDates,
   };
+
+  console.log(data);
 
   const newClassId = await createClass(data);
   return newClassId;

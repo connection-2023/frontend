@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassCreateStore } from '@/store/classCreate';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
@@ -11,11 +12,11 @@ const ClassLocation = () => {
     classData: state.classData,
   }));
 
-  const { control, watch } = useFormContext();
+  const { control, watch, setValue } = useFormContext();
 
   const locationConsultativeDefaultValue = classData?.location?.roadAddr
-    ? true
-    : false;
+    ? false
+    : true;
 
   const isLocationSet = watch(
     'locationConsultative',

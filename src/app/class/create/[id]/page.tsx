@@ -27,14 +27,7 @@ const page = async ({
     redirect('/class/create/drafts');
   }
 
-  return (
-    <main className="mx-auto max-w-[1440px] px-[2.38rem]">
-      <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
-        클래스 작성
-      </h1>
-      <ClassCreateContainer currentStep={Number(step)} id={id} />
-    </main>
-  );
+  return <ClassCreateContainer currentStep={Number(step)} id={id} />;
 };
 
 export default page;

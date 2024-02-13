@@ -69,7 +69,7 @@ const ConfirmedLocation = ({
       {location?.roadAddr && (
         <section className="flex flex-col gap-3">
           <address className="flex">
-            <LocationSVG />
+            <LocationSVG width={21} height={21} className="fill-sub-color1" />
             {location.roadAddr}
           </address>
           <input

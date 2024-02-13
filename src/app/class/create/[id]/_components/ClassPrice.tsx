@@ -62,7 +62,11 @@ const ClassPrice = () => {
     <>
       <ClassInfo />
 
-      <section className="flex flex-col gap-7 border-y-2 border-solid border-sub-color1 py-5">
+      <section
+        className={`flex flex-col ${
+          isCouponSectionOpen ? 'gap-7' : ''
+        } border-y-2 border-solid border-sub-color1 py-5`}
+      >
         <CouponButton
           isCouponSectionOpen={isCouponSectionOpen}
           toggleCouponSection={toggleCouponSection}
@@ -76,13 +80,12 @@ const ClassPrice = () => {
             />
 
             <hr className="border-gray-500" />
-
-            <AppliedCouponDisplay
-              isCouponSectionOpen={isCouponSectionOpen}
-              couponList={couponList}
-            />
           </div>
         </Accordion>
+        <AppliedCouponDisplay
+          isCouponSectionOpen={isCouponSectionOpen}
+          couponList={couponList}
+        />
       </section>
     </>
   );

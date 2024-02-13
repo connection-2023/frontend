@@ -140,7 +140,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
         {/* <section id="location-section" className="mb-14 scroll-mt-16">
       <h2 className={h2Style}>진행 장소</h2>
       <span className="mb-[0.62rem] mt-2 flex items-center gap-[0.13rem]">
-        <LocationSVG /> {detailAddress}
+        <LocationSVG width={21} height={21} className="fill-sub-color1" /> {detailAddress}
       </span>
       <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
         <Map address={locationDetail} studioName={studioName} />
