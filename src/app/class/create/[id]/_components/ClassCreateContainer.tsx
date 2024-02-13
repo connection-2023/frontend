@@ -109,7 +109,6 @@ const ClassCreateContainer = ({
     if (activeStep < currentStep) {
       changeStep(activeStep);
     }
-    console.log('reset');
     reset();
   }, [currentStep]);
 

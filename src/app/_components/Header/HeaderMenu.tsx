@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useSelectedLayoutSegment } from 'next/navigation';
+import { usePathname, useSelectedLayoutSegments } from 'next/navigation';
 import { useState } from 'react';
 import {
   ConnectionLogoSVG,
@@ -22,18 +22,37 @@ const LECTURER_MENU = [
   { href: 'instructor', menu: '강사', label: '강사 페이지로 이동' },
   { href: 'class', menu: '클래스', label: '클래스 페이지로 이동' },
   {
-    href: 'class/create',
+    href: 'class/create/drafts',
     menu: '클래스 등록',
     label: '클래스 등록 페이지로 이동',
   },
 ];
 
+const getClassName = (href: string, pathname: string) => {
+  if (
+    href !== 'class' &&
+    href !== 'class/create/drafts' &&
+    pathname.includes(href)
+  )
+    return 'font-bold';
+
+  const isClassPath = pathname.includes('class');
+  const isCreatePath = pathname.includes('create');
+
+  if (href === 'class' && isClassPath && !isCreatePath) return 'font-bold';
+  if (href === 'class/create/drafts' && isClassPath && isCreatePath)
+    return 'font-bold';
+
+  return '';
+};
+
 const HeaderMenu = () => {
-  const segment = useSelectedLayoutSegment();
+  const pathname = usePathname();
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
-  const mySidebar = segment === 'mypage' || segment === 'dashboard';
+  const mySidebar =
+    pathname.includes('mypage') || pathname.includes('dashboard');
   const [isOpened, setIsOpened] = useState(false);
 
   const handleOpened = () => {
@@ -73,16 +92,17 @@ const HeaderMenu = () => {
         </h2>
         <ul className="hidden gap-6 text-lg sm:flex">
           {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
-            ({ href, menu, label }, index) => (
-              <li
-                key={href + index}
-                className={segment === href ? 'font-bold' : ''}
-              >
-                <Link href={`/${href}`} aria-label={label}>
-                  {menu}
-                </Link>
-              </li>
-            ),
+            ({ href, menu, label }, index) => {
+              const className = getClassName(href, pathname);
+
+              return (
+                <li key={`${href}${index}`} className={className}>
+                  <Link href={`/${href}`} aria-label={label}>
+                    {menu}
+                  </Link>
+                </li>
+              );
+            },
           )}
         </ul>
       </nav>

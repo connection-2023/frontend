@@ -60,7 +60,7 @@ const ClassLocation = () => {
           defaultValue={classData?.location}
           rules={{
             validate: (value) => {
-              if (!value.roadAddr) {
+              if (!value || !value.roadAddr) {
                 return '주소';
               }
             },
