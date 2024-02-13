@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 interface TextAreaSectionProps {
@@ -22,21 +22,14 @@ const TextAreaSection = ({
   defaultValue = '',
   errorMessage = title || '',
 }: TextAreaSectionProps) => {
-  const [length, setLength] = useState(0);
-
   const {
     register,
-    getValues,
     watch,
     formState: { errors },
     setValue,
   } = useFormContext();
 
   const textareaWatch = watch(dataName);
-
-  useEffect(() => {
-    setLength(getValues(dataName)?.length);
-  }, [textareaWatch]);
 
   useEffect(() => {
     setValue(dataName, defaultValue);
@@ -64,7 +57,7 @@ const TextAreaSection = ({
         maxLength={maxLength}
       />
       <div className="absolute bottom-2 right-3 text-gray-500">
-        ({length || 0} / {maxLength})
+        ({textareaWatch?.length || 0} / {maxLength})
       </div>
     </section>
   );

@@ -13,9 +13,12 @@ const ClassLocation = () => {
 
   const { control, watch } = useFormContext();
 
-  const locationConsultativeDefaultValue = classData?.location?.roadAddr
-    ? false
-    : true;
+  const locationConsultativeDefaultValue =
+    classData?.regions && Object.keys(classData?.regions).length > 0
+      ? true
+      : classData?.location?.roadAddr
+      ? false
+      : false;
 
   const isLocationSet = watch(
     'locationConsultative',
@@ -77,7 +80,7 @@ const ClassLocation = () => {
           defaultValue={classData?.regions}
           rules={{
             validate: (value) => {
-              if (Object.keys(value).length === 0) {
+              if (!value || Object.keys(value).length === 0) {
                 return '주소';
               }
             },

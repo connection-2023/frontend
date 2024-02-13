@@ -831,6 +831,7 @@ export const formToClassDataProcess = (
       };
     case 3:
       const { location, locationDescription, regions } = processData;
+      const { locationConsultative } = data;
 
       const regionsList: { [key: string]: string[] } = {};
 
@@ -857,13 +858,15 @@ export const formToClassDataProcess = (
       });
 
       return {
-        location: {
-          roadAddr: location?.address,
-          bdNm: location?.buildingName,
-          detailAddress: location?.detailAddress,
-        },
+        location: locationConsultative
+          ? undefined
+          : {
+              roadAddr: location?.address,
+              bdNm: location?.buildingName,
+              detailAddress: location?.detailAddress,
+            },
         locationDescription,
-        regions: regionsList,
+        regions: locationConsultative ? regionsList : undefined,
       };
     case 4:
       const { maxCapacity: max, price } = processData;
