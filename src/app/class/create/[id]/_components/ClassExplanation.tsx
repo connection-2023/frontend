@@ -29,7 +29,7 @@ const ClassExplanation = () => {
   }));
 
   return (
-    <section className="mt-9 flex flex-col gap-9">
+    <section className="mt-9 flex w-full flex-col gap-9">
       <Controller
         name="notification"
         control={control}

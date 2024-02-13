@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
@@ -15,6 +16,8 @@ const ClassInfo = () => {
   const { classData } = useClassCreateStore((state) => ({
     classData: state.classData,
   }));
+
+  const classDates = useClassScheduleStore((state) => state.filteredDates);
 
   const lessonType = getValues('lessonType');
   const lessonTypeMin = getValues('min');
@@ -38,12 +41,12 @@ const ClassInfo = () => {
   return (
     <section className="mt-3 flex flex-col text-lg font-semibold">
       <div className="flex h-16 items-center border-b border-solid border-gray-500">
-        <h2 className="w-1/4">총 클래스 횟수</h2>
-        <div>{classData?.totalClasses}회</div>
+        <h2 className="w-36 sm:w-1/4">총 클래스 횟수</h2>
+        <div>{classDates?.length ?? classData?.totalClasses}회</div>
       </div>
 
       <div className="flex h-16 items-center border-b border-solid border-gray-500">
-        <h2 className="w-1/4">1회 최대 수강생</h2>
+        <h2 className="w-36 sm:w-1/4">1회 최대 수강생</h2>
         <Controller
           name="max"
           control={control}
@@ -79,7 +82,7 @@ const ClassInfo = () => {
               id="classPrice"
               className={`${
                 errors.classPrice && 'animate-vibration text-main-color'
-              } w-1/4`}
+              } w-36 sm:w-1/4`}
             >
               가격 설정
             </h2>

@@ -40,10 +40,12 @@ const AppliedCouponDisplay = ({
   return (
     <section>
       <div
-        className={`${!isCouponSectionOpen ? 'hidden' : ''} mb-3 flex gap-10`}
+        className={`${
+          !isCouponSectionOpen ? 'hidden' : ''
+        } mb-3 gap-10 sm:flex`}
       >
-        <h2 className="w-1/6 font-semibold">적용할 쿠폰</h2>
-        <div className="flex w-5/6 flex-wrap gap-5">
+        <h2 className="mb-3 font-semibold sm:mb-0 sm:w-1/6">적용할 쿠폰</h2>
+        <div className="flex hidden w-5/6 flex-wrap gap-5 sm:block">
           <div className="w-full">
             <Controller
               name="coupons"
@@ -59,6 +61,7 @@ const AppliedCouponDisplay = ({
             />
           </div>
         </div>
+        <button>aa</button>
       </div>
       <div className="flex flex-wrap gap-4">
         <Controller

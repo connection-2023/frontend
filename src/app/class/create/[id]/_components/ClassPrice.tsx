@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { getCouponLists } from '@/lib/apis/couponApis';
-import { useClassCreateStore } from '@/store/classCreate';
 import formatDate from '@/utils/formatDate';
 import AppliedCouponDisplay from './ClassPrice/AppliedCouponDisplay';
 import ClassInfo from './ClassPrice/ClassInfo';
@@ -12,9 +11,6 @@ import Accordion from '@/components/Accordion/Accordion';
 import { couponGET, createCoupon } from '@/types/coupon';
 
 const ClassPrice = () => {
-  const { classData } = useClassCreateStore((state) => ({
-    classData: state.classData,
-  }));
   const [isCouponSectionOpen, setIsCouponSectionOpen] = useState(false);
   const [couponList, setCouponList] = useState<couponGET[]>([]);
   const { getValues, setValue } = useFormContext();

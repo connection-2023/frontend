@@ -60,7 +60,7 @@ const ConfirmedLocation = ({
     <>
       <button
         onClick={openPopup}
-        className={`flex h-8 w-80 items-center justify-center gap-1 rounded-md shadow-float ${
+        className={`flex h-8 w-full items-center justify-center gap-1 rounded-md shadow-float sm:w-80 ${
           errors.address && 'animate-vibration text-main-color'
         }`}
       >
@@ -74,7 +74,7 @@ const ConfirmedLocation = ({
           </address>
           <input
             type="text"
-            className={`w-full border border-solid border-sub-color2 px-2 py-1 focus:outline-none  ${
+            className={`w-full border border-solid border-gray-500 px-2 py-1 focus:outline-none  ${
               errors.detail && 'animate-vibration placeholder:text-main-color'
             }`}
             defaultValue={location.detailAddress || ''}

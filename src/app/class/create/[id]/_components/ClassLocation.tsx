@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useClassCreateStore } from '@/store/classCreate';
 import ConfirmedLocation from './ClassLocation/ConfirmedLocation';
@@ -12,7 +11,7 @@ const ClassLocation = () => {
     classData: state.classData,
   }));
 
-  const { control, watch, setValue } = useFormContext();
+  const { control, watch } = useFormContext();
 
   const locationConsultativeDefaultValue = classData?.location?.roadAddr
     ? false
@@ -24,7 +23,7 @@ const ClassLocation = () => {
   );
 
   return (
-    <section className="mt-10 flex flex-col gap-6">
+    <section className="mt-6 flex flex-col gap-6 sm:mt-10">
       <h2 className="text-lg font-bold">수업이 진행되는 위치를 알려주세요.</h2>
 
       <Controller
