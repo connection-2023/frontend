@@ -1,6 +1,7 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { lazy, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import {
@@ -10,11 +11,7 @@ import {
   MoneySVG,
   UploadImageSVG,
 } from '@/icons/svg';
-import {
-  deleteClassDrafts,
-  getClassDraft,
-  updateClassDraft,
-} from '@/lib/apis/classApi';
+import { deleteClassDrafts, updateClassDraft } from '@/lib/apis/classApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
@@ -29,11 +26,15 @@ import ValidationMessage from '@/components/ValidationMessage/ValidationMessage'
 import { classCreateData } from '@/types/class';
 import { ErrorMessage, FetchError } from '@/types/types';
 
-const ClassCategory = lazy(() => import('./ClassCategory'));
-const ClassExplanation = lazy(() => import('./ClassExplanation'));
-const ClassSchedule = lazy(() => import('./ClassSchedule'));
-const ClassLocation = lazy(() => import('./ClassLocation'));
-const ClassPrice = lazy(() => import('./ClassPrice'));
+const ClassCategory = dynamic(() => import('./ClassCategory'));
+
+const ClassExplanation = dynamic(() => import('./ClassExplanation'));
+
+const ClassSchedule = dynamic(() => import('./ClassSchedule'));
+
+const ClassLocation = dynamic(() => import('./ClassLocation'));
+
+const ClassPrice = dynamic(() => import('./ClassPrice'));
 
 const NAV_STEPS = [
   {
@@ -95,8 +96,10 @@ const ClassCreateContainer = ({
 
   const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
 
-  const { classData, setClassData, setProcessedClassData } =
-    useClassCreateStore();
+  const { classData, setProcessedClassData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+    setProcessedClassData: state.setProcessedClassData,
+  }));
 
   const router = useRouter();
 
@@ -118,34 +121,9 @@ const ClassCreateContainer = ({
   };
 
   const inValidPreviousStep = async (targetStep: number) => {
-    const inValidPreviousAction = async () => {
-      if (activeStep > currentStep) {
-        const draftsData = await getClassDraft(id);
-        if (draftsData) await setClassData(draftsData);
-        reset();
-      }
+    clearErrors();
 
-      changeStep(targetStep);
-    };
-
-    try {
-      clearErrors();
-      await inValidPreviousAction();
-    } catch (error) {
-      if (error instanceof Error) {
-        const fetchError = error as FetchError;
-        if (fetchError.status === 401) {
-          try {
-            await accessTokenReissuance();
-            await inValidPreviousAction();
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          toast.error('잘못된 요청입니다!');
-        }
-      }
-    }
+    changeStep(targetStep);
   };
 
   const onValidMoveStep = async (data: classCreateData, targetStep: number) => {
