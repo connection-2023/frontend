@@ -828,6 +828,7 @@ export const formToClassDataProcess = (
         schedules,
         holidays,
         reservationDeadline,
+        totalClasses: schedules?.length,
       };
     case 3:
       const { location, locationDescription, regions } = processData;

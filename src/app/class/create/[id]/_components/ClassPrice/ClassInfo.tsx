@@ -9,8 +9,6 @@ const ClassInfo = () => {
   const {
     control,
     formState: { errors },
-    getValues,
-    setValue,
   } = useFormContext();
 
   const { classData } = useClassCreateStore((state) => ({
@@ -19,24 +17,14 @@ const ClassInfo = () => {
 
   const classDates = useClassScheduleStore((state) => state.filteredDates);
 
-  const lessonType = getValues('lessonType');
-  const lessonTypeMin = getValues('min');
-  const lessonTypeMax = getValues('max');
-
-  const isGroup = lessonType ? lessonType === '그룹레슨' : classData?.isGroup;
-  const selectedMin = lessonTypeMin ? lessonTypeMin.value : classData?.min;
-  const selectedMax = lessonTypeMax ? lessonTypeMax.value : classData?.max;
+  const isGroup = classData?.lessonType === '그룹레슨';
 
   const maxStudentDefaultValue = {
-    value: isGroup ? selectedMax : 1,
-    label: String(isGroup ? selectedMax : 1),
+    value: classData?.max,
+    label: String(classData?.max),
   };
 
-  useEffect(() => {
-    setValue('max', maxStudentDefaultValue);
-  }, []);
-
-  const options = createOptions(selectedMin, isGroup ? 100 : 1);
+  const options = createOptions(classData?.min ?? 1, 100);
 
   return (
     <section className="mt-3 flex flex-col text-lg font-semibold">
@@ -55,7 +43,14 @@ const ClassInfo = () => {
             return (
               <NumberSelect
                 instanceId="select-max"
-                value={field.value}
+                value={
+                  isGroup
+                    ? field.value
+                    : {
+                        value: 1,
+                        label: 1,
+                      }
+                }
                 onChange={(selected) => {
                   field.onChange(selected);
                 }}

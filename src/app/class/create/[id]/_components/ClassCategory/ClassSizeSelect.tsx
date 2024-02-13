@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
@@ -9,20 +9,21 @@ const ClassSizeSelect = ({
   defaultValue: { min: number; max: number };
 }) => {
   const { min, max } = defaultValue;
+
   const allOptions = createOptions(1, 100);
 
   const optionChange = (type: 'min' | 'max', selectValue: number) => {
     const sliceOptions =
       type === 'max'
-        ? allOptions.slice(selectValue, 100)
-        : allOptions.slice(0, selectValue - 1);
+        ? allOptions.slice(selectValue - 1, 100)
+        : allOptions.slice(0, selectValue);
     return sliceOptions;
   };
 
   const [minOptions, setMinOptions] = useState(optionChange('min', max));
   const [maxOptions, setMaxOptions] = useState(optionChange('max', min));
 
-  const { watch, control, getValues, setValue } = useFormContext();
+  const { watch, control } = useFormContext();
 
   const isGroupType = watch('lessonType');
 
@@ -43,16 +44,6 @@ const ClassSizeSelect = ({
 
   const isDisabled = '그룹레슨' !== isGroupType;
 
-  useEffect(() => {
-    const lessonTypeMax = getValues('max');
-
-    setMinOptions(
-      optionChange('min', lessonTypeMax ? lessonTypeMax.value : max),
-    );
-
-    if (lessonTypeMax?.value === 1) setValue('max', studentCounts[1].state);
-  }, []);
-
   return (
     <div className="flex gap-4">
       {studentCounts.map(({ title, state, rangeType, options }) => {
@@ -71,7 +62,7 @@ const ClassSizeSelect = ({
               render={({ field }) => (
                 <NumberSelect
                   instanceId={`select-${rangeType}`}
-                  value={field.value}
+                  value={field.value.value ? field.value : state}
                   onChange={(selected) => {
                     const selectedValue = selected?.value;
                     if (selectedValue) {
