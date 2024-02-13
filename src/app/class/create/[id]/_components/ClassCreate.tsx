@@ -26,7 +26,7 @@ const ClassCreate = ({
 }: ClassCreateProps) => {
   return (
     <section className="mx-auto flex max-w-[675px] flex-col">
-      <h2 className="mt-8 flex items-center text-2xl font-bold text-sub-color1">
+      <h2 className="mt-5 flex items-center text-xl font-bold text-sub-color1 sm:mt-8 sm:text-2xl">
         <span
           className="mr-2 flex h-7 w-7
 items-center justify-center rounded-full border border-solid border-sub-color1 text-lg"

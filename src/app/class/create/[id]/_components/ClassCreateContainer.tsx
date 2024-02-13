@@ -270,8 +270,8 @@ const ClassCreateContainer = ({
 
   return (
     <main className="mx-auto max-w-[1440px] px-4 sm:px-[2.38rem]">
-      <h1 className="my-4 flex w-full justify-center text-2xl font-bold">
-        클래스 작성
+      <h1 className="my-4 flex w-full justify-center text-lg font-bold sm:text-2xl">
+        클래스 등록
       </h1>
       <ClassCreateNav
         navSteps={NAV_STEPS}

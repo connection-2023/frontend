@@ -54,7 +54,7 @@ const ClassSizeSelect = ({
   }, []);
 
   return (
-    <>
+    <div className="flex gap-4">
       {studentCounts.map(({ title, state, rangeType, options }) => {
         return (
           <div
@@ -92,7 +92,7 @@ const ClassSizeSelect = ({
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 

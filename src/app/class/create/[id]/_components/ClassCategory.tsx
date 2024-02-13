@@ -25,7 +25,7 @@ const ClassCategory = () => {
     <>
       <section
         id="images"
-        className="mb-5 border-b border-solid border-sub-color2 py-10"
+        className="mb-4 border-b border-solid border-gray-500 py-4 sm:mb-5 sm:py-10"
       >
         <Controller
           name="images"
@@ -61,7 +61,7 @@ const ClassCategory = () => {
         )}
       />
 
-      <section className="flex">
+      <section className="flex flex-col gap-3 sm:flex-row sm:gap-0">
         <h2
           id="genres"
           className={`w-1/6 font-bold ${
@@ -70,7 +70,7 @@ const ClassCategory = () => {
         >
           장르
         </h2>
-        <div className="w-5/6">
+        <div className="w-full sm:w-5/6">
           <Controller
             name="genres"
             control={control}
