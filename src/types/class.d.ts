@@ -213,6 +213,18 @@ export interface classCreateData {
   coupons: { value: couponGET; label: string }[];
 }
 
+export interface classProccessData {
+  difficultyLevel?: string;
+  etcGenres?: string[];
+  genres?: string[];
+  images?: string[];
+  isGroup?: boolean;
+  lectureMethod?: string;
+  maxCapacity?: number;
+  minCapacity?: number;
+  title?: string;
+}
+
 export interface IprocessedDraft {
   id?: number;
   lecturerId?: number;

@@ -18,7 +18,11 @@ import {
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
-import { classCreate, classOutputDataProcess } from '@/utils/apiDataProcessor';
+import {
+  classCreate,
+  classOutputDataProcess,
+  formToClassDataProcess,
+} from '@/utils/apiDataProcessor';
 import ClassCreate from './ClassCreate';
 import ClassCreateNav from './ClassCreateNav';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
@@ -102,6 +106,7 @@ const ClassCreateContainer = ({
     if (activeStep < currentStep) {
       changeStep(activeStep);
     }
+    reset();
   }, [currentStep]);
 
   const changeStep = (targetStep: number) => {
@@ -179,21 +184,23 @@ const ClassCreateContainer = ({
     isThrow?: boolean,
   ) => {
     const updateDraftsAction = async () => {
+      console.log('입력:::', data);
       const processData = await classOutputDataProcess(data, currentStep);
-
-      // if (processData) {
-      //   formToClassDataProcess(processData, currentStep);
-      // } 추후 inValidPreviousStep 변경 시 추가
 
       const step =
         activeStep > currentStep + (currentStep === 4 ? 0 : 1)
           ? activeStep
           : currentStep + (currentStep === 4 ? 0 : 1);
 
-      setProcessedClassData({
-        ...classData,
-        step,
-      });
+      if (processData) {
+        const processClassData = formToClassDataProcess(
+          processData,
+          currentStep,
+        );
+
+        console.log('출력:::', processClassData);
+        setProcessedClassData({ ...classData, step, ...processClassData });
+      }
 
       await updateClassDraft({
         lectureId: id!,

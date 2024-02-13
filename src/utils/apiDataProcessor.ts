@@ -23,6 +23,7 @@ import {
   searchBestClassData,
   IGetClassDraft,
   IUpdateClassDraft,
+  classProccessData,
 } from '@/types/class';
 import {
   CouponData,
@@ -258,8 +259,6 @@ export const classOutputDataProcess = async (
 
     case 4:
       const { classPrice, max: priceMax, coupons } = data;
-
-      console.log(coupons);
 
       return {
         maxCapacity: priceMax.value,
@@ -686,9 +685,12 @@ export const classDraftsDataProcess = (
     temporaryLectureToRegion,
   } = data.temporaryLecture;
 
-  const genres = temporaryLectureToDanceGenre.map(
-    (item) => item.danceCategory.genre,
-  );
+  const genres = temporaryLectureToDanceGenre.map((item) => {
+    if (item.danceCategory.genre === '기타') {
+      return item.name as string;
+    }
+    return item.danceCategory.genre;
+  });
 
   const newDifficultyLevel =
     difficultyLevel === '상'
@@ -749,4 +751,60 @@ export const classDraftsDataProcess = (
     schedules: data.schedules ? data.schedules : [],
     totalClasses: data.schedules?.length,
   };
+};
+
+export const formToClassDataProcess = (
+  processData: classProccessData,
+  currentStep: number,
+) => {
+  switch (currentStep) {
+    case 0:
+      console.log('가공 입력:::', processData);
+      const {
+        images,
+        title,
+        genres,
+        isGroup,
+        etcGenres,
+        lectureMethod,
+        difficultyLevel,
+        minCapacity,
+        maxCapacity,
+      } = processData;
+
+      const temporaryLectureImage = images?.map((imageUrl) => ({
+        imageUrl,
+      }));
+
+      const temporaryLectureToDanceGenre = [...genres!, ...etcGenres!];
+
+      const lessonType = isGroup ? '그룹레슨' : '개인(1:1)레슨';
+
+      const newlectureMethod =
+        lectureMethod === '원데이'
+          ? '원데이 레슨'
+          : lectureMethod === '정기'
+          ? '정기클래스'
+          : null;
+
+      const newDifficultyLevel =
+        difficultyLevel === '상'
+          ? '상급'
+          : difficultyLevel === '중'
+          ? '중급'
+          : difficultyLevel === '하'
+          ? '초급(입문)'
+          : null;
+
+      return {
+        title,
+        temporaryLectureImage,
+        temporaryLectureToDanceGenre,
+        lessonType,
+        lectureMethod: newlectureMethod,
+        difficultyLevel: newDifficultyLevel,
+        min: minCapacity,
+        max: maxCapacity,
+      };
+  }
 };
