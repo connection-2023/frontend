@@ -169,7 +169,7 @@ export interface IUpdateClassDraft {
   difficultyLevel?: string;
   minCapacity?: number;
   maxCapacity?: number;
-  reservationDeadline?: string;
+  reservationDeadline?: number;
   reservationComment?: string;
   price?: number | string;
   noShowDeposit?: number;
@@ -202,7 +202,7 @@ export interface classCreateData {
   classRange: { startDate: string; endDate: string };
   duration: number;
   reservationComment: string;
-  reservationDeadline: string;
+  reservationDeadline: number;
   address: Juso | null;
   detail: string;
   locationConsultative: boolean;
@@ -223,6 +223,24 @@ export interface classProccessData {
   maxCapacity?: number;
   minCapacity?: number;
   title?: string;
+  notification?: string;
+  introduction?: string;
+  curriculum?: string;
+  startDate?: string;
+  endDate?: string;
+  duration?: number;
+  schedules?: DayTimeList[] | DateTimeList[];
+  holidays?: Data[];
+  reservationDeadline?: number;
+  location?: {
+    detailAddress?: string;
+    address?: string;
+    buildingName?: string;
+  } | null;
+  locationDescription?: string;
+  regions?: string[];
+  price?: string | number;
+  coupons?: number[];
 }
 
 export interface IprocessedDraft {

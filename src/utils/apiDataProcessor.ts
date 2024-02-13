@@ -360,8 +360,6 @@ export const classCreate = async (
     schedules: allClassDates,
   };
 
-  console.log(data);
-
   const newClassId = await createClass(data);
   return newClassId;
 };
@@ -755,11 +753,11 @@ export const classDraftsDataProcess = (
 
 export const formToClassDataProcess = (
   processData: classProccessData,
+  data: classCreateData,
   currentStep: number,
 ) => {
   switch (currentStep) {
     case 0:
-      console.log('가공 입력:::', processData);
       const {
         images,
         title,
@@ -805,6 +803,76 @@ export const formToClassDataProcess = (
         difficultyLevel: newDifficultyLevel,
         min: minCapacity,
         max: maxCapacity,
+      };
+    case 1:
+      const { notification, introduction, curriculum } = processData;
+
+      return {
+        notification,
+        introduction,
+        curriculum,
+      };
+    case 2:
+      const {
+        startDate,
+        endDate,
+        duration,
+        schedules,
+        holidays,
+        reservationDeadline,
+      } = processData;
+
+      return {
+        classRange: { startDate, endDate },
+        duration,
+        schedules,
+        holidays,
+        reservationDeadline,
+      };
+    case 3:
+      const { location, locationDescription, regions } = processData;
+
+      const regionsList: { [key: string]: string[] } = {};
+
+      regions?.forEach((region) => {
+        const [administrativeDistrict, district] = region.split(' ');
+        const abbreviation = CITY_ABBREVIATION_NAME[administrativeDistrict];
+
+        if (!abbreviation) return;
+
+        if (!regionsList[abbreviation]) {
+          regionsList[abbreviation] = [];
+        }
+
+        const newEntries =
+          district === null || district === '전'
+            ? abbreviation === '온라인'
+              ? ['온라인']
+              : WARD_LIST[abbreviation]
+            : [district];
+
+        regionsList[abbreviation] = [
+          ...new Set([...regionsList[abbreviation], ...newEntries]),
+        ];
+      });
+
+      return {
+        location: {
+          roadAddr: location?.address,
+          bdNm: location?.buildingName,
+          detailAddress: location?.detailAddress,
+        },
+        locationDescription,
+        regions: regionsList,
+      };
+    case 4:
+      const { maxCapacity: max, price } = processData;
+      const { coupons } = data;
+
+      return {
+        max,
+        price,
+        coupons,
       };
   }
 };

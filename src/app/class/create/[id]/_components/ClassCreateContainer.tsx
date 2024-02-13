@@ -184,7 +184,6 @@ const ClassCreateContainer = ({
     isThrow?: boolean,
   ) => {
     const updateDraftsAction = async () => {
-      console.log('입력:::', data);
       const processData = await classOutputDataProcess(data, currentStep);
 
       const step =
@@ -195,10 +194,10 @@ const ClassCreateContainer = ({
       if (processData) {
         const processClassData = formToClassDataProcess(
           processData,
+          data,
           currentStep,
         );
 
-        console.log('출력:::', processClassData);
         setProcessedClassData({ ...classData, step, ...processClassData });
       }
 
