@@ -147,6 +147,8 @@ export interface IGetClassDraft {
     address: string;
     detailAddress: string;
     buildingName: string;
+    administrativeDistrict: string;
+    district: string;
   } | null;
   schedules: DayTimeList[] | DateTimeList[];
 }
@@ -233,10 +235,12 @@ export interface classProccessData {
   holidays?: Data[];
   reservationDeadline?: number;
   location?: {
-    detailAddress?: string;
-    address?: string;
-    buildingName?: string;
-  } | null;
+    detailAddress?: string | null;
+    address?: string | null;
+    buildingName?: string | null;
+    administrativeDistrict?: string | null;
+    district?: string | null;
+  };
   locationDescription?: string;
   regions?: string[];
   price?: string | number;
@@ -284,9 +288,11 @@ export interface IprocessedDraft {
   temporaryLectureToDanceGenre?: string[];
   holidays?: Data[];
   location?: {
-    roadAddr: string | undefined;
-    detailAddress: string | undefined;
-    bdNm: string | undefined;
+    roadAddr?: string | null;
+    detailAddress?: string | null;
+    bdNm?: string | null;
+    administrativeDistrict?: string | null;
+    district?: string | null;
   };
   totalClasses?: number;
   schedules?: DayTimeList[] | DateTimeList[];

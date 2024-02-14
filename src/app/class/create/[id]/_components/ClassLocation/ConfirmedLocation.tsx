@@ -33,13 +33,13 @@ const ConfirmedLocation = ({
   useEffect(() => {
     const receiveMessage = (event: MessageEvent) => {
       if (
-        event.origin !== window.origin ||
-        event.data.source === 'react-devtools-content-script' ||
-        event.data.source === 'react-devtools-backend-manager' ||
-        event.data.source === 'react-devtools-bridge'
+        process.env.NODE_ENV === 'development' &&
+        (event.origin !== window.origin ||
+          event.data.source === 'react-devtools-content-script' ||
+          event.data.source === 'react-devtools-backend-manager' ||
+          event.data.source === 'react-devtools-bridge')
       )
         return;
-      //추후 배포시 devtools 제거
 
       onChange(event.data);
       setLocation(event.data);

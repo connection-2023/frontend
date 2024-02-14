@@ -13,12 +13,11 @@ const ClassLocation = () => {
 
   const { control, watch } = useFormContext();
 
-  const locationConsultativeDefaultValue =
-    classData?.regions && Object.keys(classData?.regions).length > 0
-      ? true
-      : classData?.location?.roadAddr
-      ? false
-      : false;
+  const locationConsultativeDefaultValue = classData?.location?.roadAddr
+    ? false
+    : classData?.regions && Object.keys(classData?.regions).length > 0
+    ? true
+    : false;
 
   const isLocationSet = watch(
     'locationConsultative',

@@ -241,6 +241,7 @@ const ClassCreateContainer = ({
             console.error(error);
           }
         } else {
+          console.error(error);
           toast.error('잘못된 요청입니다!');
         }
       }

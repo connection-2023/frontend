@@ -237,24 +237,31 @@ export const classOutputDataProcess = async (
         locationDescription,
       } = data;
 
-      const location = {
-        detailAddress: detail,
-        address: address?.roadAddr,
-        buildingName: address?.bdNm,
-      };
-
       if (locationConsultative) {
         return {
           regions: reqRegions(regions),
           locationDescription,
-          location: null,
+          location: {
+            detailAddress: null,
+            address: null,
+            buildingName: null,
+            administrativeDistrict: null,
+            district: null,
+          },
         };
       }
+
+      const location = {
+        detailAddress: detail,
+        address: address?.roadAddr,
+        buildingName: address?.bdNm,
+        administrativeDistrict: address?.siNm,
+        district: address?.sggNm,
+      };
 
       return {
         location,
         locationDescription,
-        regions: [],
       };
 
     case 4:
@@ -310,11 +317,13 @@ export const classCreate = async (
         temporaryLectureHoliday,
       );
 
-  const isLocationConfirmed = temporaryLectureToRegion.length > 0;
+  const isLocationConfirmed = location?.address;
 
   const { newGenres, etcGenres } = categorizeGenres(
-    temporaryLectureToDanceGenre.map(
-      ({ danceCategory }) => danceCategory.genre,
+    temporaryLectureToDanceGenre.map(({ name, danceCategory }) =>
+      DANCE_GENRE.includes(danceCategory.genre)
+        ? danceCategory.genre
+        : name ?? '',
     ),
   );
 
@@ -322,23 +331,24 @@ export const classCreate = async (
 
   const data = {
     regions: isLocationConfirmed
-      ? temporaryLectureToRegion.map(
+      ? []
+      : temporaryLectureToRegion.map(
           ({ region }) => region.administrativeDistrict + ' ' + region.district,
-        )
-      : [],
+        ),
     location: isLocationConfirmed
-      ? null
-      : {
-          address: location?.address,
-          detailAddress: location?.detailAddress,
-          buildingName: location?.buildingName,
-        },
+      ? {
+          ...location,
+          administrativeDistrict:
+            temporaryLectureToRegion[0].region.administrativeDistrict,
+          district: temporaryLectureToRegion[0].region.district,
+        }
+      : null,
     lectureType: 'dance',
     lectureMethod: lectureMethod?.name,
     isGroup,
     startDate,
     endDate,
-    notification: temporaryLecturenotification.notification,
+    notification: temporaryLecturenotification?.notification ?? 'qqq', // 백엔드 공지사항 필수 값 변경 후 수정 필수
     genres: newGenres,
     etcGenres,
     images,
@@ -359,6 +369,8 @@ export const classCreate = async (
     ),
     schedules: allClassDates,
   };
+
+  console.log(data);
 
   const newClassId = await createClass(data);
   return newClassId;
@@ -721,9 +733,11 @@ export const classDraftsDataProcess = (
 
   const newReservationDeadline = Number(reservationDeadline);
 
-  const regions = resRegions(
-    temporaryLectureToRegion.map(({ region }) => region),
-  );
+  const regions = data.location?.address
+    ? {}
+    : resRegions(temporaryLectureToRegion.map(({ region }) => region));
+
+  console.log(data.schedules);
 
   return {
     ...data.temporaryLecture,
@@ -745,6 +759,8 @@ export const classDraftsDataProcess = (
       roadAddr: data.location?.address,
       bdNm: data.location?.buildingName,
       detailAddress: data.location?.detailAddress,
+      administrativeDistrict: data.location?.administrativeDistrict,
+      district: data.location?.district,
     },
     schedules: data.schedules ? data.schedules : [],
     totalClasses: data.schedules?.length,
@@ -836,38 +852,52 @@ export const formToClassDataProcess = (
 
       const regionsList: { [key: string]: string[] } = {};
 
-      regions?.forEach((region) => {
-        const [administrativeDistrict, district] = region.split(' ');
-        const abbreviation = CITY_ABBREVIATION_NAME[administrativeDistrict];
+      if (locationConsultative) {
+        regions?.forEach((region) => {
+          const [administrativeDistrict, district] = region.split(' ');
+          const abbreviation = CITY_ABBREVIATION_NAME[administrativeDistrict];
 
-        if (!abbreviation) return;
+          if (!abbreviation) return;
 
-        if (!regionsList[abbreviation]) {
-          regionsList[abbreviation] = [];
-        }
+          if (!regionsList[abbreviation]) {
+            regionsList[abbreviation] = [];
+          }
 
-        const newEntries =
-          district === null || district === '전'
-            ? abbreviation === '온라인'
-              ? ['온라인']
-              : WARD_LIST[abbreviation]
-            : [district];
+          const newEntries =
+            district === null || district === '전'
+              ? abbreviation === '온라인'
+                ? ['온라인']
+                : WARD_LIST[abbreviation]
+              : [district];
 
-        regionsList[abbreviation] = [
-          ...new Set([...regionsList[abbreviation], ...newEntries]),
-        ];
-      });
+          regionsList[abbreviation] = [
+            ...new Set([...regionsList[abbreviation], ...newEntries]),
+          ];
+        });
+
+        return {
+          location: {
+            roadAddr: null,
+            bdNm: null,
+            detailAddress: null,
+            administrativeDistrict: null,
+            district: null,
+          },
+          locationDescription,
+          regions: regionsList,
+        };
+      }
 
       return {
-        location: locationConsultative
-          ? undefined
-          : {
-              roadAddr: location?.address,
-              bdNm: location?.buildingName,
-              detailAddress: location?.detailAddress,
-            },
+        location: {
+          roadAddr: location?.address,
+          bdNm: location?.buildingName,
+          detailAddress: location?.detailAddress,
+          administrativeDistrict: location?.administrativeDistrict,
+          district: location?.district,
+        },
         locationDescription,
-        regions: locationConsultative ? regionsList : undefined,
+        regions: {},
       };
     case 4:
       const { maxCapacity: max, price } = processData;
