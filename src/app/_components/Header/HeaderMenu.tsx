@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { usePathname, useSelectedLayoutSegments } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
   ConnectionLogoSVG,
@@ -28,20 +28,14 @@ const LECTURER_MENU = [
   },
 ];
 
-const getClassName = (href: string, pathname: string) => {
-  if (
-    href !== 'class' &&
-    href !== 'class/create/drafts' &&
-    pathname.includes(href)
-  )
-    return 'font-bold';
+const getClassName = (href: string, pathname: string, menuList: Array<any>) => {
+  const isSubmenu = menuList.some(
+    (menu) => menu.href !== href && menu.href.startsWith(href),
+  );
 
-  const isClassPath = pathname.includes('class');
-  const isCreatePath = pathname.includes('create');
+  if (isSubmenu && pathname.startsWith(`/${href}/`)) return '';
 
-  if (href === 'class' && isClassPath && !isCreatePath) return 'font-bold';
-  if (href === 'class/create/drafts' && isClassPath && isCreatePath)
-    return 'font-bold';
+  if (pathname.startsWith(`/${href}`)) return 'font-bold';
 
   return '';
 };
@@ -58,6 +52,8 @@ const HeaderMenu = () => {
   const handleOpened = () => {
     setIsOpened(!isOpened);
   };
+
+  const menuList = userType === 'lecturer' ? LECTURER_MENU : USER_MENU;
 
   return (
     <>
@@ -91,19 +87,17 @@ const HeaderMenu = () => {
           Connection 서비스 주요 메뉴
         </h2>
         <ul className="hidden gap-6 text-lg sm:flex">
-          {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
-            ({ href, menu, label }, index) => {
-              const className = getClassName(href, pathname);
+          {menuList.map(({ href, menu, label }, index) => {
+            const className = getClassName(href, pathname, menuList);
 
-              return (
-                <li key={`${href}${index}`} className={className}>
-                  <Link href={`/${href}`} aria-label={label}>
-                    {menu}
-                  </Link>
-                </li>
-              );
-            },
-          )}
+            return (
+              <li key={`${href}${index}`} className={className}>
+                <Link href={`/${href}`} aria-label={label}>
+                  {menu}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 

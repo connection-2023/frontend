@@ -13,9 +13,6 @@ const ClassInfo = () => {
   const { classData } = useClassCreateStore((state) => ({
     classData: state.classData,
   }));
-
-  const classDates = useClassScheduleStore((state) => state.filteredDates);
-
   const isGroup = classData?.lessonType === '그룹레슨';
 
   const maxStudentDefaultValue = {
@@ -29,7 +26,7 @@ const ClassInfo = () => {
     <section className="mt-3 flex flex-col text-lg font-semibold">
       <div className="flex h-16 items-center border-b border-solid border-gray-500">
         <h2 className="w-36 sm:w-1/4">총 클래스 횟수</h2>
-        <div>{classDates?.length ?? classData?.totalClasses}회</div>
+        <div>{classData?.totalClasses}회</div>
       </div>
 
       <div className="flex h-16 items-center border-b border-solid border-gray-500">
