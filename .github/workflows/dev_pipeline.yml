@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-      - chore/#250-deploy
 
   pull_request:
     branches:
@@ -49,7 +48,7 @@ jobs:
         run: npm run build
 
   deploy:
-    ##  if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev'
     needs: build-and-test
     runs-on: ubuntu-latest
     permissions:

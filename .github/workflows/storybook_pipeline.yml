@@ -3,12 +3,13 @@ name: Storybook CI/CD Pipeline
 on:
   push:
     paths:
-      # - '.storybook/**'
-      # - 'src/components/**'
+      - '.storybook/**'
+      - 'src/components/**'
+
   pull_request:
     paths:
-      # - '.storybook/**'
-      # - 'src/components/**'
+      - '.storybook/**'
+      - 'src/components/**'
 
 jobs:
   build:
@@ -45,7 +46,7 @@ jobs:
           path: ./storybook-static
 
   deploy:
-    # if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev'
     needs: build
     runs-on: ubuntu-latest
     steps:
