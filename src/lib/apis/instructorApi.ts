@@ -6,6 +6,8 @@ import {
   IUpdatePaymentStatusRequestData,
   CommonBankAccount,
   bankAccount,
+  GetMyMembersParameter,
+  GetMyMembersData,
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
@@ -209,6 +211,46 @@ export const getBankAccount = async (): Promise<bankAccount> => {
     return resData.data.lecturerRecentBankAccount;
   } catch (error) {
     console.error('강사 닉네임 중복 검사 오류', error);
+    throw error;
+  }
+};
+
+export const getMyMembers = async (
+  data: GetMyMembersParameter,
+  signal?: AbortSignal,
+): Promise<GetMyMembersData> => {
+  try {
+    const params = new URLSearchParams();
+
+    Object.entries(data)
+      .filter(([_, v]) => v !== undefined)
+      .forEach(([k, v]) => {
+        params.append(k, String(v));
+      });
+
+    const response = await fetch(`/api/instructors/my-member?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+      signal,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return {
+      count: resData.data.totalItemCount,
+      item: resData.data.lecturerLearnerList,
+    };
+  } catch (error) {
+    console.error('회원 불러오기 에러', error);
     throw error;
   }
 };

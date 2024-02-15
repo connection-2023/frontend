@@ -137,5 +137,8 @@ export const getMyMembers = async (
   }
 
   const resData = await response.json();
-  return resData.data;
+  return {
+    count: resData.data.totalItemCount,
+    item: resData.data.lecturerLearnerList,
+  };
 };

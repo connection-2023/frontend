@@ -312,52 +312,52 @@ export interface GetMyMembersParameter {
 }
 
 export interface GetMyMembersData {
-  totalItemCount: number;
-  learnerList: [
-    {
+  count: number;
+  item: MemberData[];
+}
+
+export interface MemberData {
+  id: number;
+  enrollmentCount: number;
+  memo: string;
+  user: {
+    id: number;
+    nickname: string;
+    phoneNumber: string;
+    userProfileImage: string;
+  };
+  reservation: {
+    id: number;
+    representative: string;
+    phoneNumber: string;
+    participants: number;
+    requests: string;
+    lectureSchedule: {
       id: number;
-      enrollmentCount: number;
-      memo: string;
-      user: {
+      startDateTime: Date;
+      endDateTime: Date;
+      numberOfParticipants: number;
+      lecture: {
         id: number;
-        nickname: string;
-        phoneNumber: string;
-        userProfileImage: string;
+        title: string;
+        imageUrl: string;
       };
-      reservation: {
+    };
+    regularLectureStatus: {
+      id: number;
+      day: FILTER_WEEK;
+      dateTime: string[];
+      numberOfParticipants: number;
+      lecture: {
         id: number;
-        representative: string;
-        phoneNumber: string;
-        participants: number;
-        requests: string;
-        lectureSchedule: {
-          id: number;
-          startDateTime: Date;
-          endDateTime: Date;
-          numberOfParticipants: number;
-          lecture: {
-            id: number;
-            title: string;
-            imageUrl: string;
-          };
-        };
-        regularLectureStatus: {
-          id: number;
-          day: FILTER_WEEK;
-          dateTime: string[];
-          numberOfParticipants: number;
-          lecture: {
-            id: number;
-            title: string;
-          };
-          regularLectureSchedule: {
-            id: number;
-            day: number;
-            startDateTime: Date;
-            endDateTime: Date;
-          }[];
-        };
+        title: string;
       };
-    },
-  ];
+      regularLectureSchedule: {
+        id: number;
+        day: number;
+        startDateTime: Date;
+        endDateTime: Date;
+      }[];
+    };
+  };
 }
