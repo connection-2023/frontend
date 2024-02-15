@@ -23,6 +23,7 @@ const ClassCategory = () => {
 
   return (
     <>
+      <span className="mt-3 font-bold text-main-color">*등록 후 수정 불가</span>
       <section
         id="images"
         className="mb-4 border-b border-solid border-gray-500 py-4 sm:mb-5 sm:py-10"
@@ -43,7 +44,6 @@ const ClassCategory = () => {
           )}
         />
       </section>
-
       <Controller
         name="title"
         control={control}
@@ -60,7 +60,6 @@ const ClassCategory = () => {
           />
         )}
       />
-
       <section className="flex flex-col gap-3 sm:flex-row sm:gap-0">
         <h2
           id="genres"
@@ -87,7 +86,6 @@ const ClassCategory = () => {
           />
         </div>
       </section>
-
       <CategoryContainer id="lessonType" title="인원">
         <Controller
           name="lessonType"
@@ -110,7 +108,6 @@ const ClassCategory = () => {
           }}
         />
       </CategoryContainer>
-
       <CategoryContainer id="lectureMethod" title="진행방식">
         <Controller
           name="lectureMethod"
@@ -126,7 +123,6 @@ const ClassCategory = () => {
           )}
         />
       </CategoryContainer>
-
       <CategoryContainer id="difficultyLevel" title="난이도">
         <Controller
           name="difficultyLevel"
