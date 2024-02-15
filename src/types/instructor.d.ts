@@ -299,3 +299,65 @@ export interface CommonBankAccount {
 export interface bankAccount extends CommonBankAccount {
   id: number;
 }
+
+export interface GetMyMembersParameter {
+  take: number;
+  currentPage?: number;
+  targetPage?: number;
+  firstItemId?: number;
+  lastItemId?: number;
+  sortOption: 'LATEST' | 'ASC' | 'HIGHEST_APPLICANTS';
+  filterOption: 'ALL' | 'IN_PROGRESS' | 'COMPLETED';
+  lectureId?: number;
+}
+
+export interface GetMyMembersData {
+  totalItemCount: number;
+  learnerList: [
+    {
+      id: number;
+      enrollmentCount: number;
+      memo: string;
+      user: {
+        id: number;
+        nickname: string;
+        phoneNumber: string;
+        userProfileImage: string;
+      };
+      reservation: {
+        id: number;
+        representative: string;
+        phoneNumber: string;
+        participants: number;
+        requests: string;
+        lectureSchedule: {
+          id: number;
+          startDateTime: Date;
+          endDateTime: Date;
+          numberOfParticipants: number;
+          lecture: {
+            id: number;
+            title: string;
+            imageUrl: string;
+          };
+        };
+        regularLectureStatus: {
+          id: number;
+          day: FILTER_WEEK;
+          dateTime: string[];
+          numberOfParticipants: number;
+          lecture: {
+            id: number;
+            title: string;
+          };
+          regularLectureSchedule: {
+            id: number;
+            day: number;
+            startDateTime: Date;
+            endDateTime: Date;
+          }[];
+        };
+      };
+    },
+  ];
+}
