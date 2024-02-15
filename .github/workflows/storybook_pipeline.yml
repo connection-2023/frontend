@@ -3,12 +3,12 @@ name: Storybook CI/CD Pipeline
 on:
   push:
     paths:
-      - '.storybook/**'
-      - 'src/components/**'
+      # - '.storybook/**'
+      # - 'src/components/**'
   pull_request:
     paths:
-      - '.storybook/**'
-      - 'src/components/**'
+      # - '.storybook/**'
+      # - 'src/components/**'
 
 jobs:
   build:
@@ -36,29 +36,30 @@ jobs:
         run: npm ci
 
       - name: Build Storybook
-        run: |
-          npm run build-storybook 
-          mkdir -p ./storybook-build
-          mv ./storybook-static ./storybook-build/storybook
+        run: npm run build-storybook
 
       - name: Upload Storybook build
         uses: actions/upload-artifact@v4
         with:
-          name: storybook-build
-          path: ./storybook-build
+          name: storybook
+          path: ./storybook-static
 
   deploy:
-    if: github.ref == 'refs/heads/dev'
+    # if: github.ref == 'refs/heads/dev'
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Download Storybook build
         uses: actions/download-artifact@v4
         with:
-          name: storybook-build
+          name: storybook
+          path: ./storybook-build/storybook
 
       - name: Deploy Storybook to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.2.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: ./storybook-build
