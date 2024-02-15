@@ -22,9 +22,12 @@ const RadioComponent = ({
   }, []);
 
   return (
-    <>
+    <div className="flex gap-4 gap-4">
       {checkList.map((element, index) => (
-        <li key={element} className="flex items-center gap-1">
+        <li
+          key={element}
+          className="flex items-center gap-1 self-start sm:self-auto"
+        >
           <input
             {...register(title, {
               required: message,
@@ -54,7 +57,7 @@ const RadioComponent = ({
           </label>
         </li>
       ))}
-    </>
+    </div>
   );
 };
 

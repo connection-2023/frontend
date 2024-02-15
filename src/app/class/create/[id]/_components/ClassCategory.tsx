@@ -17,14 +17,16 @@ const ClassCategory = () => {
     formState: { errors },
   } = useFormContext();
 
-  const store = useClassCreateStore();
-  const classData = store.classData;
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
 
   return (
     <>
+      <span className="mt-3 font-bold text-main-color">*등록 후 수정 불가</span>
       <section
         id="images"
-        className="mb-5 border-b border-solid border-sub-color2 py-10"
+        className="mb-4 border-b border-solid border-gray-500 py-4 sm:mb-5 sm:py-10"
       >
         <Controller
           name="images"
@@ -42,7 +44,6 @@ const ClassCategory = () => {
           )}
         />
       </section>
-
       <Controller
         name="title"
         control={control}
@@ -59,8 +60,7 @@ const ClassCategory = () => {
           />
         )}
       />
-
-      <section className="flex">
+      <section className="flex flex-col gap-3 sm:flex-row sm:gap-0">
         <h2
           id="genres"
           className={`w-1/6 font-bold ${
@@ -69,7 +69,7 @@ const ClassCategory = () => {
         >
           장르
         </h2>
-        <div className="w-5/6">
+        <div className="w-full sm:w-5/6">
           <Controller
             name="genres"
             control={control}
@@ -86,7 +86,6 @@ const ClassCategory = () => {
           />
         </div>
       </section>
-
       <CategoryContainer id="lessonType" title="인원">
         <Controller
           name="lessonType"
@@ -109,7 +108,6 @@ const ClassCategory = () => {
           }}
         />
       </CategoryContainer>
-
       <CategoryContainer id="lectureMethod" title="진행방식">
         <Controller
           name="lectureMethod"
@@ -125,7 +123,6 @@ const ClassCategory = () => {
           )}
         />
       </CategoryContainer>
-
       <CategoryContainer id="difficultyLevel" title="난이도">
         <Controller
           name="difficultyLevel"

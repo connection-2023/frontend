@@ -8,8 +8,11 @@ const AddressPage = async () => {
   const headersList = headers();
   const referer = headersList.get('referer');
 
-  if (!referer?.startsWith(`${DOMAIN}/class/create`)) {
-    redirect('/');
+  if (
+    process.env.NODE_ENV !== 'development' &&
+    !referer?.startsWith(`${DOMAIN}/class/create`)
+  ) {
+    redirect('/404');
   }
 
   return <Address />;

@@ -19,7 +19,11 @@ const ClassSchedule = () => {
     watch,
     formState: { errors },
   } = useFormContext();
-  const { classData } = useClassCreateStore();
+
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
+
   const duration = watch('duration') || classData?.duration;
   const lectureMethod = watch('lectureMethod') || classData?.lectureMethod;
   const setClassDuration = useClassScheduleStore(
@@ -39,7 +43,7 @@ const ClassSchedule = () => {
       <Controller
         name="classRange"
         control={control}
-        defaultValue={classData?.classRange}
+        defaultValue={classData?.classRange ?? { startDate: '', endDate: '' }}
         rules={{
           required: '전체 클래스 기간',
           validate: ({ startDate, endDate }) => {
@@ -112,7 +116,7 @@ const ClassSchedule = () => {
       <Controller
         name="schedules"
         control={control}
-        defaultValue={classData?.schedules}
+        defaultValue={classData?.schedules ?? []}
         rules={{
           required: '운영 일정',
           validate: (schedules) => {
@@ -146,7 +150,7 @@ const ClassSchedule = () => {
       <Controller
         name="holidays"
         control={control}
-        defaultValue={classData?.holidays}
+        defaultValue={classData?.holidays ?? []}
         render={({ field }) => (
           <Section title="휴무일이 있나요?" id={field.name}>
             <DayOff onChange={field.onChange} defaultValue={field.value} />

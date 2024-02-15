@@ -67,10 +67,7 @@ const CouponCreator = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onValid, invalid)}
-      className={`${!isCouponSectionOpen ? 'hidden' : ''} relative`}
-    >
+    <form onSubmit={handleSubmit(onValid, invalid)} className="relative pb-7">
       <CouponOption
         register={register}
         control={control}
@@ -81,7 +78,7 @@ const CouponCreator = ({
         trigger={trigger}
         clearErrors={clearErrors}
       />
-      <button className="absolute bottom-0 right-5 h-7 w-[5.375rem] rounded-md bg-sub-color1 text-white">
+      <button className="absolute -bottom-4 right-5 h-7 w-[5.375rem] rounded-md bg-sub-color1 text-white">
         생성하기
       </button>
     </form>

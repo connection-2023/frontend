@@ -11,8 +11,8 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from 'react-hook-form';
-import NoborderSelect from '@/app/class/create/_components/ClassPrice/NoborderSelect';
-import ClassRange from '@/app/class/create/_components/ClassSchedule/ClassRange/ClassRange';
+import NoborderSelect from '@/app/class/create/[id]/_components/ClassPrice/NoborderSelect';
+import ClassRange from '@/app/class/create/[id]/_components/ClassSchedule/ClassRange/ClassRange';
 import { COUPON_UNIT_LIST } from '@/constants/constants';
 import { CloseSVG } from '@/icons/svg';
 import { getMyLecture } from '@/lib/apis/classApi';

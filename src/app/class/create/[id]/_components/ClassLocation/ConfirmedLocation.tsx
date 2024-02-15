@@ -33,13 +33,13 @@ const ConfirmedLocation = ({
   useEffect(() => {
     const receiveMessage = (event: MessageEvent) => {
       if (
-        event.origin !== window.origin ||
-        event.data.source === 'react-devtools-content-script' ||
-        event.data.source === 'react-devtools-backend-manager' ||
-        event.data.source === 'react-devtools-bridge'
+        process.env.NODE_ENV === 'development' &&
+        (event.origin !== window.origin ||
+          event.data.source === 'react-devtools-content-script' ||
+          event.data.source === 'react-devtools-backend-manager' ||
+          event.data.source === 'react-devtools-bridge')
       )
         return;
-      //추후 배포시 devtools 제거
 
       onChange(event.data);
       setLocation(event.data);
@@ -60,7 +60,7 @@ const ConfirmedLocation = ({
     <>
       <button
         onClick={openPopup}
-        className={`flex h-8 w-80 items-center justify-center gap-1 rounded-md shadow-float ${
+        className={`flex h-8 w-full items-center justify-center gap-1 rounded-md shadow-float sm:w-80 ${
           errors.address && 'animate-vibration text-main-color'
         }`}
       >
@@ -69,12 +69,12 @@ const ConfirmedLocation = ({
       {location?.roadAddr && (
         <section className="flex flex-col gap-3">
           <address className="flex">
-            <LocationSVG />
+            <LocationSVG width={21} height={21} className="fill-sub-color1" />
             {location.roadAddr}
           </address>
           <input
             type="text"
-            className={`w-full border border-solid border-sub-color2 px-2 py-1 focus:outline-none  ${
+            className={`w-full border border-solid border-gray-500 px-2 py-1 focus:outline-none  ${
               errors.detail && 'animate-vibration placeholder:text-main-color'
             }`}
             defaultValue={location.detailAddress || ''}

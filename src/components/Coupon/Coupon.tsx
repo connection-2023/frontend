@@ -20,6 +20,7 @@ interface CouponProps {
   lastItemElementRef?: (node: HTMLElement | null) => void;
   type?: 'user' | 'lecturer';
   expiration?: boolean;
+  edit?: boolean;
 }
 
 const Coupon = ({
@@ -28,6 +29,7 @@ const Coupon = ({
   lastItemElementRef,
   type = 'lecturer',
   expiration = false,
+  edit = true,
 }: CouponProps) => {
   const {
     title,
@@ -138,7 +140,7 @@ const Coupon = ({
 
   return (
     <dl
-      className={`relative flex w-[20.5rem] flex-col justify-evenly gap-1 p-3 shadow-float sm:w-[18.125rem] ${
+      className={`relative flex w-[20.5rem] flex-col justify-evenly gap-1 rounded-md p-3 shadow-float sm:w-[18.125rem] ${
         pathname.startsWith('/mypage') || pathname.startsWith('/class/create')
           ? 'lg:w-[20.5rem] xl:w-[19rem]'
           : 'md:w-[20.5rem] lg:w-[17rem]'
@@ -163,41 +165,42 @@ const Coupon = ({
           )}
         </div>
 
-        {pathname.startsWith('/class') ? (
-          <div className="text-sm">
-            <UniqueButton
-              type="button"
-              onClick={cancelSelectedCoupon}
-              size="small"
+        {edit &&
+          (pathname.startsWith('/class') ? (
+            <div className="text-sm">
+              <UniqueButton
+                type="button"
+                onClick={cancelSelectedCoupon}
+                size="small"
+              >
+                <p className="mx-2">적용취소</p>
+              </UniqueButton>
+            </div>
+          ) : type === 'lecturer' ? (
+            <Link
+              href={{
+                pathname: '/mypage/instructor/coupon-pass/coupon',
+                query: {
+                  type: 'UPDATE',
+                  state: 'coupon',
+                  coupon: JSON.stringify(coupon),
+                },
+              }}
             >
-              <p className="mx-2">적용취소</p>
-            </UniqueButton>
-          </div>
-        ) : type === 'lecturer' ? (
-          <Link
-            href={{
-              pathname: '/mypage/instructor/coupon-pass/coupon',
-              query: {
-                type: 'UPDATE',
-                state: 'coupon',
-                coupon: JSON.stringify(coupon),
-              },
-            }}
-          >
-            <EditSVG className="h-4 w-4 fill-gray-500" />
-          </Link>
-        ) : (
-          <div className="text-sm">
-            <UniqueButton
-              type="button"
-              onClick={() => deleteCouponHandler(lectureCouponId)}
-              size="small"
-              color="secondary"
-            >
-              <p className="mx-2">삭제</p>
-            </UniqueButton>
-          </div>
-        )}
+              <EditSVG className="h-4 w-4 fill-gray-500" />
+            </Link>
+          ) : (
+            <div className="text-sm">
+              <UniqueButton
+                type="button"
+                onClick={() => deleteCouponHandler(lectureCouponId)}
+                size="small"
+                color="secondary"
+              >
+                <p className="mx-2">삭제</p>
+              </UniqueButton>
+            </div>
+          ))}
       </div>
       <div className="flex gap-2">
         <dd

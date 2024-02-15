@@ -14,19 +14,25 @@ export const DELETE = async (request: NextRequest) => {
   const lectureId = searchParams.get('lectureId');
 
   if (!lectureId) {
-    return NextResponse.json({
-      status: 401,
-      message: 'id값이 존재하지 않습니다.',
-    });
+    return NextResponse.json(
+      {
+        status: 403,
+        message: 'id값이 존재하지 않습니다.',
+      },
+      { status: 403 },
+    );
   }
 
   const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
 
   if (!tokenValue) {
-    return NextResponse.json({
-      status: 401,
-      message: '토큰이 존재하지 않습니다.',
-    });
+    return NextResponse.json(
+      {
+        status: 401,
+        message: '토큰이 존재하지 않습니다.',
+      },
+      { status: 401 },
+    );
   }
 
   const headers: Record<string, string> = {

@@ -69,7 +69,7 @@ const MobileModal = ({
         className="absolute left-0 right-0 top-[20%] z-modal mx-auto h-full rounded-t-lg bg-white pt-2.5 sm:hidden"
       >
         <div className="flex h-8 w-full justify-center">
-          <button className="h-1.5 w-16 rounded-lg bg-gray-700" />
+          <button type="button" className="h-1.5 w-16 rounded-lg bg-gray-700" />
         </div>
         <div
           className="h-full w-full"

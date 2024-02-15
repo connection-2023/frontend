@@ -31,7 +31,7 @@ import Loading from './_components/Loading';
 import NonEditableSection from './_components/NonEditableSection';
 import SideNavbar from './_components/SideNavbar';
 import { filteredAddedSchedules } from './_lib/addScheduleUtils';
-import NumberSelect from '../../create/_components/NumberSelect';
+import NumberSelect from '../../create/[id]/_components/NumberSelect';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import UploadImage from '@/components/UploadImage/UploadImage';
 import { IClassEditRequest } from '@/types/class';
@@ -507,7 +507,7 @@ const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
                   render={({ field }) => (
                     <NumberSelect
                       instanceId="maxCapacity"
-                      defaultValue={field.value}
+                      value={field.value}
                       onChange={field.onChange}
                       options={createOptions(maxCapacity, 100)}
                     />

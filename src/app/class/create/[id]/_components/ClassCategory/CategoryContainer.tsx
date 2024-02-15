@@ -12,15 +12,17 @@ const CategoryContainer = ({ title, children, id }: CategoryProps) => {
   } = useFormContext();
 
   return (
-    <section className="mt-5 flex w-full">
+    <section className="mt-5 sm:flex sm:w-full sm:items-center">
       <h2
         id={id}
-        className={`w-1/6 pt-1 font-bold
+        className={`mb-3 font-bold sm:mb-0 sm:w-1/6
        ${errors[id] && 'animate-vibration text-main-color'}`}
       >
         {title}
       </h2>
-      <ul className="flex gap-4">{children}</ul>
+      <ul className="grid-rows grid gap-y-3 sm:flex sm:gap-4 sm:gap-y-0">
+        {children}
+      </ul>
     </section>
   );
 };

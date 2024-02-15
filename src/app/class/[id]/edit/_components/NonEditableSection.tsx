@@ -33,7 +33,7 @@ const NonEditableSection = (props: IClassEditPageData) => {
 
       <div className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 px-4 md:mb-7 md:flex md:flex-wrap md:justify-items-center md:gap-x-10 md:whitespace-nowrap">
         <h3 className={CLASS_EDIT_STYLE.h3}>
-          <LocationSVG />
+          <LocationSVG width={21} height={21} className="fill-sub-color1" />
           <span className="w-fit break-keep">
             {formatLocationToString(lectureToRegion)}
           </span>

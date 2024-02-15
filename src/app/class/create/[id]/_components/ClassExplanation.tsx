@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { useFormContext, Controller } from 'react-hook-form';
 import {
   ANNOUNCEMENT,
@@ -6,28 +5,18 @@ import {
   QUILL_DEFAULT_VALUE,
 } from '@/constants/constants';
 import { useClassCreateStore } from '@/store/classCreate';
-
-const CustomEditor = dynamic(
-  () => import('@/components/TextArea/CustomEditor'),
-  {
-    ssr: false,
-  },
-);
-
-const TextAreaSection = dynamic(
-  () => import('@/components/TextArea/TextAreaSection'),
-  {
-    ssr: false,
-  },
-);
+import CustomEditor from '@/components/TextArea/CustomEditor';
+import TextAreaSection from '@/components/TextArea/TextAreaSection';
 
 const ClassExplanation = () => {
   const { control } = useFormContext();
-  const store = useClassCreateStore();
-  const classData = store.classData;
+
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
 
   return (
-    <section className="mt-9 flex flex-col gap-9">
+    <section className="mt-9 flex w-full flex-col gap-9">
       <Controller
         name="notification"
         control={control}

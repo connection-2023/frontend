@@ -45,11 +45,10 @@ const SelectClassModal = ({
     closeModalHandler();
   };
 
-  const test = [...options, ...options, ...options];
-
   return (
     <>
       <button
+        type="button"
         onClick={() => setModalView(true)}
         className="flex h-10 w-full items-center justify-between rounded-md border border-solid border-gray-300 p-2"
       >
@@ -60,7 +59,7 @@ const SelectClassModal = ({
         <section className="flex h-full flex-col gap-5 px-3">
           <strong className="text-lg">적용할 클래스를 선택해주세요.</strong>
           <ul className="flex h-1/2 flex-col gap-2 overflow-auto">
-            {test.map((option, index) => {
+            {options.map((option, index) => {
               const { value: optionId, label } = option;
               const selected = selectClassList.some(
                 ({ value }) => value === option.value,

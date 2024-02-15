@@ -5,7 +5,9 @@ import { IGetClassDraft } from '@/types/class';
 
 const ClassStoreInitializer = ({ data }: { data: IGetClassDraft }) => {
   const initialized = useRef(false);
-  const { setClassData } = useClassCreateStore();
+  const { setClassData } = useClassCreateStore((state) => ({
+    setClassData: state.setClassData,
+  }));
 
   if (!initialized.current) {
     setClassData(data);
