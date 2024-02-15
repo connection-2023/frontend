@@ -321,9 +321,7 @@ export const classCreate = async (
 
   const { newGenres, etcGenres } = categorizeGenres(
     temporaryLectureToDanceGenre.map(({ name, danceCategory }) =>
-      DANCE_GENRE.includes(danceCategory.genre)
-        ? danceCategory.genre
-        : name ?? '',
+      danceCategory.genre === '기타' ? name ?? '' : danceCategory.genre,
     ),
   );
 
@@ -331,13 +329,15 @@ export const classCreate = async (
 
   const data = {
     regions: isLocationConfirmed
-      ? []
+      ? null
       : temporaryLectureToRegion.map(
           ({ region }) => region.administrativeDistrict + ' ' + region.district,
         ),
     location: isLocationConfirmed
       ? {
-          ...location,
+          address: location.address,
+          detailAddress: location.detailAddress,
+          buildingName: location.buildingName,
           administrativeDistrict:
             temporaryLectureToRegion[0].region.administrativeDistrict,
           district: temporaryLectureToRegion[0].region.district,
@@ -348,7 +348,7 @@ export const classCreate = async (
     isGroup,
     startDate,
     endDate,
-    notification: temporaryLecturenotification?.notification ?? 'qqq', // 백엔드 공지사항 필수 값 변경 후 수정 필수
+    notification: temporaryLecturenotification?.notification,
     genres: newGenres,
     etcGenres,
     images,
@@ -369,8 +369,6 @@ export const classCreate = async (
     ),
     schedules: allClassDates,
   };
-
-  console.log(data);
 
   const newClassId = await createClass(data);
   return newClassId;
@@ -736,8 +734,6 @@ export const classDraftsDataProcess = (
   const regions = data.location?.address
     ? {}
     : resRegions(temporaryLectureToRegion.map(({ region }) => region));
-
-  console.log(data.schedules);
 
   return {
     ...data.temporaryLecture,

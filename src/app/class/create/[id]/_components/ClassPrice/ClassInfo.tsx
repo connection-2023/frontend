@@ -1,5 +1,4 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import createOptions from '@/utils/generateStudentCountOptions';
 import NumberSelect from '../NumberSelect';
@@ -13,6 +12,7 @@ const ClassInfo = () => {
   const { classData } = useClassCreateStore((state) => ({
     classData: state.classData,
   }));
+
   const isGroup = classData?.lessonType === '그룹레슨';
 
   const maxStudentDefaultValue = {
