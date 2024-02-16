@@ -222,6 +222,8 @@ export const getMyMembers = async (
   try {
     const params = new URLSearchParams();
 
+    console.log(data);
+
     Object.entries(data)
       .filter(([_, v]) => v !== undefined)
       .forEach(([k, v]) => {
