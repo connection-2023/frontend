@@ -4,6 +4,7 @@ import { MEMBER_MANAGE_TAKE } from '@/constants/constants';
 import { getMyMembers } from '@/lib/apis/instructorApi';
 import usePageNation from '@/utils/usePagenation';
 import FilterNav from './FilterNav';
+import MemberListView from './MemberListView';
 import Pagination from '@/components/Pagination/Pagination';
 import { OptionType } from '@/types/coupon';
 import {
@@ -52,7 +53,7 @@ const MemberManage = ({ myMembers, myClassListsOption }: MemberManageProps) => {
     <main className="col-span-1 flex w-full flex-col px-2 sm:px-6">
       <section className="flex flex-col rounded-md bg-white pb-10 pt-6 shadow-horizontal">
         <header className="flex flex-col gap-3 border-b border-gray-700 px-5 pb-4">
-          <h1 className="text-2xl font-bold">회원관리</h1>
+          <h1 className="text-2xl font-bold">회원 관리</h1>
           <FilterNav
             filterState={filterState}
             resetFilter={resetFilter}
@@ -60,29 +61,12 @@ const MemberManage = ({ myMembers, myClassListsOption }: MemberManageProps) => {
           />
         </header>
         <div className="flex flex-col px-5 pt-3">
-          <nav className="flex justify-between">
-            <select
-              name="sorting"
-              className="h-7 outline outline-1 outline-gray-500 focus:outline-sub-color1"
-              value={filterState.orderBy}
-              onChange={(e) => updateFilter('sortOption', e.target.value)}
-            >
-              <option value="LATEST">오름차순</option>
-              <option value="ASC">내림차순</option>
-              <option value="HIGHEST_APPLICANTS">수강 횟수순</option>
-            </select>
+          <MemberListView
+            memberList={memberList}
+            filterState={filterState}
+            updateFilter={updateFilter}
+          />
 
-            <select
-              name="sorting"
-              className="h-7 outline outline-1 outline-gray-500 focus:outline-sub-color1"
-              value={filterState.take}
-              onChange={(e) => updateFilter('take', e.target.value)}
-            >
-              <option value="10">10줄</option>
-              <option value="20">20줄</option>
-              <option value="30">30줄</option>
-            </select>
-          </nav>
           <nav className="z-0">
             <Pagination
               pageCount={Math.ceil(

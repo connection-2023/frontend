@@ -89,7 +89,7 @@ const FilterNav = ({
             }
           }}
           onChange={(event) => setSearchMember(event.target.value)}
-          className="no-cancel-button h-[30px] w-80 rounded-md pl-3 pr-8 outline outline-1 outline-gray-500 focus:outline-sub-color1"
+          className="no-cancel-button h-8 w-80 rounded-md pl-3 pr-8 outline outline-1 outline-gray-500 focus:outline-sub-color1"
         />
         <button
           className="absolute right-2 top-0.5"

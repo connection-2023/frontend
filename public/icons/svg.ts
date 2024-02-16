@@ -159,3 +159,5 @@ export { default as ZoomInSVG } from './common/button/zoomIn.svg';
 export { default as ZoomOutSVG } from './common/button/zoomOut.svg';
 
 export { default as ChangeImageSVG } from './my/changeImage.svg';
+
+export { default as MemoSVG } from './my/memo.svg';
