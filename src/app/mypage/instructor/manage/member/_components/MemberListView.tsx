@@ -5,11 +5,14 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { ChatSVG, MemoSVG } from '@/icons/svg';
+import { useMemberStore } from '@/store/memberStore';
 import formatDate from '@/utils/formatDate';
 import ProfileImg from '@/components/Profile/ProfileImage';
-import { MemberData } from '@/types/instructor';
+import { MemberData, MemberInfo } from '@/types/instructor';
 import { PagenationFilterState } from '@/types/types';
 
 interface MemberListViewProps {
@@ -35,28 +38,55 @@ const MemberListView = ({
     { value: '30', label: '30줄' },
   ];
 
+  const { setMemberInfo } = useMemberStore((state) => ({
+    setMemberInfo: state.setMemberInfo,
+  }));
+  const router = useRouter();
+
+  const selectMemberHandler = (memberInfo: MemberInfo) => {
+    setMemberInfo(memberInfo);
+    router.push(`/mypage/instructor/manage/member/${memberInfo.id}`);
+  };
+
   const columnHelper = createColumnHelper<MemberData>();
   const columns = useMemo<ColumnDef<MemberData, any>[]>(
     () => [
-      columnHelper.accessor('user', {
-        id: 'member',
-        header: '수강생',
-        cell: ({ getValue }) => {
-          const { nickname, userProfileImage, id } = getValue();
+      columnHelper.accessor(
+        (d) => ({
+          user: d.user,
+          memo: d.memo,
+        }),
+        {
+          id: 'member',
+          header: '수강생',
+          cell: ({ getValue }) => {
+            const { user, memo } = getValue();
+            const { nickname, userProfileImage } = user;
 
-          return (
-            <div className="flex w-full max-w-[9rem] items-center gap-2 lg:max-w-[10.7rem]">
-              <ProfileImg
-                src={userProfileImage}
-                nickname={nickname}
-                size="small"
-                label={false}
-              />
-              <span className="flex-grow truncate">{nickname}</span>
-            </div>
-          );
+            const memberInfo = {
+              ...user,
+              memo,
+            };
+
+            return (
+              <button
+                onClick={() => selectMemberHandler(memberInfo)}
+                className="flex w-full max-w-[9rem] items-center gap-2 text-left lg:max-w-[10.7rem]"
+              >
+                <ProfileImg
+                  src={userProfileImage}
+                  nickname={nickname}
+                  size="small"
+                  label={false}
+                />
+                <div className="h-6 flex-grow truncate underline underline-offset-4">
+                  {nickname}
+                </div>
+              </button>
+            );
+          },
         },
-      }),
+      ),
       columnHelper.accessor('user', {
         id: 'phoneNumber',
         header: '연락처',
@@ -73,20 +103,19 @@ const MemberListView = ({
         cell: ({ getValue }) => {
           const { lectureSchedule, regularLectureStatus } = getValue();
 
-          let title;
+          const schedule = lectureSchedule
+            ? lectureSchedule
+            : regularLectureStatus;
 
-          if (lectureSchedule) {
-            const { lecture } = lectureSchedule;
-            title = lecture.title;
-          } else if (regularLectureStatus) {
-            const { lecture } = regularLectureStatus;
-            title = lecture.title;
-          }
+          const { lecture } = schedule;
 
           return (
-            <div className="hidden truncate sm:block sm:max-w-[15rem] md:max-w-[13rem] lg:max-w-[23rem]">
-              {title}
-            </div>
+            <Link
+              href={`/class/${lecture.id}`}
+              className="hidden truncate sm:block sm:max-w-[15rem] md:max-w-[13rem] lg:max-w-[23rem]"
+            >
+              {lecture.title}
+            </Link>
           );
         },
       }),
@@ -122,23 +151,34 @@ const MemberListView = ({
           return <div className="hidden md:block">{schedule}</div>; //{lectureSchedule.startDateTime}
         },
       }),
-      columnHelper.accessor('memo', {
-        id: 'memo',
-        header: () => {
-          return <div className="flex justify-center">메모</div>;
-        },
-        cell: ({ getValue }) => {
-          const date = getValue();
+      columnHelper.accessor(
+        (d) => ({
+          user: d.user,
+          memo: d.memo,
+        }),
+        {
+          id: 'memo',
+          header: () => {
+            return <div className="flex justify-center">메모</div>;
+          },
+          cell: ({ getValue }) => {
+            const { user, memo } = getValue();
 
-          return (
-            <div className="flex w-full justify-center">
-              <button>
-                <MemoSVG className="h-5 w-5 stroke-gray-100" />
-              </button>
-            </div>
-          );
+            const memberInfo = {
+              ...user,
+              memo,
+            };
+
+            return (
+              <div className="flex w-full justify-center">
+                <button onClick={() => selectMemberHandler(memberInfo)}>
+                  <MemoSVG className="h-5 w-5 stroke-gray-100" />
+                </button>
+              </div>
+            );
+          },
         },
-      }),
+      ),
       columnHelper.accessor('user', {
         id: 'chat',
         header: () => {
@@ -168,7 +208,7 @@ const MemberListView = ({
 
   return (
     <>
-      <nav className="flex justify-between">
+      <nav className="mb-5 flex justify-between">
         <Select
           name="sorting"
           value={filterState.orderBy}
@@ -187,7 +227,7 @@ const MemberListView = ({
         <thead className="whitespace-nowrap border-b border-solid border-gray-700">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header, index) => (
+              {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
                   className={`py-2 text-left text-sm text-gray-300 `}
@@ -206,7 +246,7 @@ const MemberListView = ({
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} className="border-b border-solid border-gray-700">
-              {row.getVisibleCells().map((cell, index) => (
+              {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="py-2">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>

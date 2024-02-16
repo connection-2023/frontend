@@ -319,13 +319,8 @@ export interface GetMyMembersData {
 export interface MemberData {
   id: number;
   enrollmentCount: number;
-  memo: string;
-  user: {
-    id: number;
-    nickname: string;
-    phoneNumber: string;
-    userProfileImage: string;
-  };
+  memo: string | null;
+  user: MemberInfo;
   reservation: {
     id: number;
     representative: string;
@@ -360,4 +355,12 @@ export interface MemberData {
       }[];
     };
   };
+}
+
+export interface MemberInfo {
+  id: number;
+  meno: string | null;
+  nickname: string;
+  phoneNumber: string;
+  userProfileImage: string;
 }

@@ -492,4 +492,4 @@ export const ISSUER_CODE: Record<string, string> = {
 
 export const RELOAD_TOAST_TIME = 10000;
 
-export const MEMBER_MANAGE_TAKE = 1;
+export const MEMBER_MANAGE_TAKE = 10;

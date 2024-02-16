@@ -13,7 +13,7 @@ const page = async () => {
   };
 
   const firstRender = {
-    take: MEMBER_MANAGE_TAKE, //10
+    take: MEMBER_MANAGE_TAKE,
     sortOption: 'LATEST' as 'LATEST',
     filterOption: 'ALL' as 'ALL',
   };
