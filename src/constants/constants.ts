@@ -20,7 +20,7 @@ export const ButtonSizes = {
 
 export const ButtonStyles = {
   primary:
-    'hover:bg-white hover:text-main-color group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-main-color text-white active:bg-white active:text-main-color',
+    'group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-white text-main-color hover:bg-[var(--sub-color1-transparent)] active:bg-main-color active:text-white',
   default:
     'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 active:bg-sub-color1 active:text-white',
   secondary:
@@ -213,6 +213,7 @@ export const NO_HEADER_FOOTER_PATHS = [
   '/search',
   '/class/create/address',
   '/coupon',
+  '/more',
 ];
 
 export const CATEGORY_LESSON_TYPE = ['개인(1:1)레슨', '그룹레슨'];
