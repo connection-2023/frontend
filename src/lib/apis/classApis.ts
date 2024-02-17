@@ -7,6 +7,7 @@ import {
   IClassSchedule,
   IClassEditPageData,
   IScheduleLearnerList,
+  IMonthlyClassSchedules,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
 
@@ -29,24 +30,23 @@ export const getClassReviews = async (
 };
 
 export const getUserClass = async (
+  type: '진행중/예정' | '수강 완료',
   displayCount: number,
-  currentPage: number,
   targetPage: number,
-  firstItemId: number,
-  lastItemId: number,
-  type: string,
 ) => {
-  const query = `take=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&enrollLectureType=${type}`;
+  const reqType = type === '진행중/예정' ? '진행중' : '예정';
+  const query = `take=${displayCount}&targetPage=${targetPage}&enrollLectureType=${reqType}`;
 
-  try {
-    const response = await fetch(`/api/class/myclass/list?${query}`, {
-      method: 'GET',
-    }).then((data) => data.json());
+  const response = await fetch(`/api/class/myclass/list?${query}`);
 
-    return response.data;
-  } catch (error) {
-    return new Error('유저 신청 내역 조회 에러!');
+  if (!response.ok) {
+    throw new Error(
+      `유저 신청 내역 목록 조회 에러: ${response.status}: ${response}`,
+    );
   }
+
+  const resData = await response.json();
+  return resData.data;
 };
 
 export const postClassLikes = async (id: string) => {
@@ -274,4 +274,24 @@ export const getOriginalClassInfo = async (
   } catch (error) {
     return new Error('클래스 수정 기본 정보 요청 에러!');
   }
+};
+
+export const getUserSchedulesCalendar = async (
+  year: number,
+  month: number,
+): Promise<IMonthlyClassSchedules[]> => {
+  const response = await fetch(
+    `/api/class/myclass/calendar?year=${year}&month=${month}`,
+    {
+      credentials: 'include',
+      method: 'GET',
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`유저 신청 내역 캘린더 조회 에러: ${response.status}`);
+  }
+
+  const resData = await response.json();
+  return resData.data.schedules;
 };
