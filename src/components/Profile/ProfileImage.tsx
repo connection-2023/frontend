@@ -41,7 +41,7 @@ const ProfileImg = ({
         <ProfileSVG
           width={imageSize}
           height={imageSize}
-          className="rounded-full"
+          className="rounded-full fill-gray-500"
         />
       )}
       {label && <span className={ml}>{nickname}</span>}
