@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { MEMBER_MANAGE_TAKE } from '@/constants/constants';
+import { NotFoundSVG } from '@/icons/svg';
 import { getMyMembers } from '@/lib/apis/instructorApi';
 import usePageNation from '@/utils/usePagenation';
 import FilterNav from './FilterNav';
@@ -61,27 +62,36 @@ const MemberManage = ({ myMembers, myClassListsOption }: MemberManageProps) => {
           />
         </header>
         <div className="flex flex-col px-5 pt-3">
-          <MemberListView
-            memberList={memberList}
-            filterState={filterState}
-            updateFilter={updateFilter}
-          />
-
-          <nav className="z-0">
-            <Pagination
-              pageCount={Math.ceil(
-                totalItemCount /
-                  (filterState?.take ? filterState.take : MEMBER_MANAGE_TAKE),
-              )}
-              currentPage={
-                filterState.targetPage !== undefined &&
-                filterState.targetPage > 0
-                  ? filterState.targetPage - 1
-                  : 0
-              }
-              onPageChange={handleChangePage}
+          {memberList.length > 0 ? (
+            <MemberListView
+              memberList={memberList}
+              filterState={filterState}
+              updateFilter={updateFilter}
             />
-          </nav>
+          ) : (
+            <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
+              <NotFoundSVG />
+              <p>존재하는 회원이 없습니다</p>
+            </div>
+          )}
+
+          {memberList.length > 0 && (
+            <nav className="z-0">
+              <Pagination
+                pageCount={Math.ceil(
+                  totalItemCount /
+                    (filterState?.take ? filterState.take : MEMBER_MANAGE_TAKE),
+                )}
+                currentPage={
+                  filterState.targetPage !== undefined &&
+                  filterState.targetPage > 0
+                    ? filterState.targetPage - 1
+                    : 0
+                }
+                onPageChange={handleChangePage}
+              />
+            </nav>
+          )}
         </div>
       </section>
     </main>

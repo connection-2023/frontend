@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
@@ -20,6 +21,10 @@ interface MemberListViewProps {
   filterState: PagenationFilterState;
   updateFilter: (key: string, value: any) => void;
 }
+
+const ExcelDownload = dynamic(() => import('./ExcelDownload'), {
+  ssr: false,
+});
 
 const MemberListView = ({
   memberList,
@@ -71,7 +76,7 @@ const MemberListView = ({
             return (
               <button
                 onClick={() => selectMemberHandler(memberInfo)}
-                className="flex w-full max-w-[9rem] items-center gap-2 text-left lg:max-w-[10.7rem]"
+                className="group flex w-full max-w-[9rem] items-center gap-2 text-left lg:max-w-[10.7rem]"
               >
                 <ProfileImg
                   src={userProfileImage}
@@ -79,7 +84,7 @@ const MemberListView = ({
                   size="small"
                   label={false}
                 />
-                <div className="h-6 flex-grow truncate underline underline-offset-4">
+                <div className="h-6 flex-grow truncate underline underline-offset-4 group-hover:text-sub-color1">
                   {nickname}
                 </div>
               </button>
@@ -112,7 +117,7 @@ const MemberListView = ({
           return (
             <Link
               href={`/class/${lecture.id}`}
-              className="hidden truncate sm:block sm:max-w-[15rem] md:max-w-[13rem] lg:max-w-[23rem]"
+              className="hidden truncate hover:text-sub-color1 sm:block sm:max-w-[15rem] md:max-w-[13rem] lg:max-w-[19rem]"
             >
               {lecture.title}
             </Link>
@@ -132,15 +137,17 @@ const MemberListView = ({
           if (lectureSchedule) {
             const { startDateTime, endDateTime } = lectureSchedule;
 
-            schedule = `${formatDate(startDateTime)} ~ ${formatDate(
+            schedule = `${formatDate(startDateTime, true)} ~ ${formatDate(
               endDateTime,
+              true,
             )}`;
           } else if (regularLectureStatus) {
             const { regularLectureSchedule } = regularLectureStatus;
             const { startDateTime, endDateTime } = regularLectureSchedule[0];
 
-            schedule = `${formatDate(startDateTime)} ~ ${formatDate(
+            schedule = `${formatDate(startDateTime, true)} ~ ${formatDate(
               endDateTime,
+              true,
             )} ${
               regularLectureSchedule.length > 0
                 ? `외 ${regularLectureSchedule.length}`
@@ -148,7 +155,7 @@ const MemberListView = ({
             }`;
           }
 
-          return <div className="hidden md:block">{schedule}</div>; //{lectureSchedule.startDateTime}
+          return <div className="hidden md:block">{schedule}</div>;
         },
       }),
       columnHelper.accessor(
@@ -170,9 +177,9 @@ const MemberListView = ({
             };
 
             return (
-              <div className="flex w-full justify-center">
+              <div className="group flex w-full justify-center">
                 <button onClick={() => selectMemberHandler(memberInfo)}>
-                  <MemoSVG className="h-5 w-5 stroke-gray-100" />
+                  <MemoSVG className="h-5 w-5 stroke-gray-100 group-hover:stroke-sub-color1" />
                 </button>
               </div>
             );
@@ -188,9 +195,9 @@ const MemberListView = ({
           const date = getValue();
 
           return (
-            <div className="flex w-full justify-center">
+            <div className="group flex w-full justify-center">
               <button>
-                <ChatSVG className="h-5 w-5 fill-gray-100" />
+                <ChatSVG className="h-5 w-5 fill-gray-100 group-hover:fill-sub-color1" />
               </button>
             </div>
           );
@@ -216,12 +223,16 @@ const MemberListView = ({
           options={sortingOptions}
         />
 
-        <Select
-          name="take"
-          value={filterState.take}
-          onChange={(e) => updateFilter('take', e.target.value)}
-          options={takeOptions}
-        />
+        <div className="flex gap-2">
+          <Select
+            name="take"
+            value={filterState.take}
+            onChange={(e) => updateFilter('take', e.target.value)}
+            options={takeOptions}
+          />
+
+          <ExcelDownload memberList={memberList} />
+        </div>
       </nav>
       <table className="text-sm">
         <thead className="whitespace-nowrap border-b border-solid border-gray-700">

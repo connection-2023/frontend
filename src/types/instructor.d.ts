@@ -329,8 +329,8 @@ export interface MemberData {
     requests: string;
     lectureSchedule: {
       id: number;
-      startDateTime: Date;
-      endDateTime: Date;
+      startDateTime: string;
+      endDateTime: string;
       numberOfParticipants: number;
       lecture: {
         id: number;
@@ -350,8 +350,8 @@ export interface MemberData {
       regularLectureSchedule: {
         id: number;
         day: number;
-        startDateTime: Date;
-        endDateTime: Date;
+        startDateTime: string;
+        endDateTime: string;
       }[];
     };
   };
