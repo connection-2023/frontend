@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers';
 import { IClassPostResponse } from '@/types/class';
 import {
+  GetMyMemberData,
+  GetMyMemberPassesData,
   GetMyMembersData,
   GetMyMembersParameter,
   bankAccount,
@@ -141,4 +143,61 @@ export const getMyMembers = async (
     count: resData.data.totalItemCount,
     item: resData.data.lecturerLearnerList,
   };
+};
+
+export const getMyMember = async (
+  userId: number | string,
+): Promise<GetMyMemberData[]> => {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get('lecturerAccessToken')?.value;
+
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${authorization}`,
+  };
+
+  const response = await fetch(`${END_POINT}/lecturers/learners/${userId}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error(errorData.message);
+    throw new Error(`수강생의 신청한 클래스 에러: ${response.status}`);
+  }
+
+  const resData = await response.json();
+
+  return resData.data;
+};
+
+export const getMyMemberPasses = async (
+  userId: number | string,
+): Promise<GetMyMemberPassesData[]> => {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get('lecturerAccessToken')?.value;
+
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${authorization}`,
+  };
+
+  const response = await fetch(
+    `${END_POINT}/lecturers/learners/${userId}/passes`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error(errorData.message);
+    throw new Error(`수강생의 보유중인 패스권 조회 에러: ${response.status}`);
+  }
+
+  const resData = await response.json();
+
+  return resData.data;
 };

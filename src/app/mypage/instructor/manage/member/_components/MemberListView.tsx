@@ -231,6 +231,11 @@ const MemberListView = ({
             options={takeOptions}
           />
 
+          <button className="flex h-7 items-center justify-center whitespace-nowrap rounded-md bg-gray-100 px-2 text-sm text-white">
+            <ChatSVG className="h-5 w-5 fill-white" />
+            전체 채팅
+          </button>
+
           <ExcelDownload memberList={memberList} />
         </div>
       </nav>
