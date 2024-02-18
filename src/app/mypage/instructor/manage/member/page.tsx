@@ -24,7 +24,11 @@ const page = async () => {
       getMyLecture(),
     ]);
 
-    myMembers = resMyMembers;
+    myMembers = {
+      ...resMyMembers,
+      item: resMyMembers.item.filter((data) => data.reservation),
+    }; // 백엔드 데이터 정리 후 추후 제거
+    // myMembers = { ...resMyMembers }
 
     myClassListsOption = resLectureLists.map(
       ({ id, title }): OptionType => ({

@@ -130,6 +130,7 @@ const MemberListView = ({
           return <div className="hidden md:block">수업 일정</div>;
         },
         cell: ({ getValue }) => {
+          const test = getValue();
           const { lectureSchedule, regularLectureStatus } = getValue();
 
           let schedule;

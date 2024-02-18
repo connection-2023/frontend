@@ -4,14 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ChatSVG, ReportSVG } from '@/icons/svg';
 import { useMemberStore } from '@/store/memberStore';
+import { formatPhoneNumber } from '@/utils/parseUtils';
 import ProfileImg from '@/components/Profile/ProfileImage';
 import { GetMyMemberPassesData } from '@/types/instructor';
 
-interface MemberProps {
-  passes: GetMyMemberPassesData[];
-}
-
-const Member = ({ passes }: MemberProps) => {
+const Member = () => {
   const { memberInfo } = useMemberStore((state) => ({
     memberInfo: state.memberInfo,
   }));
@@ -26,6 +23,8 @@ const Member = ({ passes }: MemberProps) => {
     }
   }, []);
 
+  if (!memberInfo) return null;
+
   return (
     <div className="flex gap-5">
       <div className="relative">
@@ -35,11 +34,13 @@ const Member = ({ passes }: MemberProps) => {
           <span className="h-1 w-1 bg-sub-color1-transparent" />
           <span className="h-1 w-1 bg-sub-color1-transparent" />
         </span>
-        <ProfileImg src={memberInfo?.userProfileImage} size="mlarge" />
+        <ProfileImg src={memberInfo.userProfileImage} size="mlarge" />
       </div>
       <dl className="flex flex-col gap-1">
-        <dt className="text-lg font-bold">{memberInfo?.nickname}</dt>
-        <dd className="mb-5 text-sm">{memberInfo?.phoneNumber}</dd>
+        <dt className="text-lg font-bold">{memberInfo.nickname}</dt>
+        <dd className="mb-5 text-sm">
+          {formatPhoneNumber(memberInfo.phoneNumber)}
+        </dd>
 
         <button className="flex items-center gap-1">
           <ChatSVG fill="black" width="21" height="21" /> 채팅 보내기

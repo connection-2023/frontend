@@ -5,6 +5,7 @@ import {
   getMyMemberPasses,
 } from '@/lib/apis/serverApis/instructorPostApis';
 import Member from './_components/Member';
+import PassesView from './_components/PassesView';
 import { GetMyMemberData, GetMyMemberPassesData } from '@/types/instructor';
 
 const page = async ({ params: { id } }: { params: { id: string } }) => {
@@ -37,7 +38,8 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
           </button>
           <h1 className="text-2xl font-bold text-gray-100">회원 관리</h1>
         </header>
-        <Member passes={passes} />
+        <Member />
+        <PassesView passes={passes} />
       </section>
     </main>
   );
