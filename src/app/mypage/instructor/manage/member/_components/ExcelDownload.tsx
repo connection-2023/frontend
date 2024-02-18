@@ -57,7 +57,8 @@ const ExcelDownload = ({ memberList }: ExcelDownloadProps) => {
     <CSVLink data={memberData} filename="connection_회원관리.csv">
       <button className="flex h-7 items-center justify-center whitespace-nowrap rounded-md bg-gray-100 px-2 text-sm text-white">
         <ExcelSVG width="20" height="20" />
-        엑셀 다운로드
+        엑셀
+        <p className="hidden sm:block">다운로드</p>
       </button>
     </CSVLink>
   );

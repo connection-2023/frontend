@@ -21,7 +21,7 @@ const ClassApplied = ({ member }: ClassAppliedProps) => {
   if (!schedule) return null;
 
   return (
-    <dl className="flex flex-col gap-3 rounded-md border border-gray-700 p-4 text-sm">
+    <dl className="flex flex-col gap-3 rounded-md border border-gray-700 bg-white p-4 text-sm shadow-float sm:bg-none sm:shadow-none">
       <dd className="text-gray-300">
         {formatEventTime(schedule[0].startDateTime, schedule[0].endDateTime)}
       </dd>
