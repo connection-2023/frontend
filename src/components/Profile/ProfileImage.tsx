@@ -3,7 +3,7 @@ import { ProfileImgSize } from '@/constants/constants';
 import { ProfileSVG } from '@/icons/svg';
 
 interface ProfileProps {
-  src: string | null;
+  src?: string | null;
   nickname?: string;
   size: keyof typeof ProfileImgSize;
   label?: boolean;
@@ -21,7 +21,7 @@ const ProfileImg = ({
   const ml = `ml-${marginLeft}`;
 
   return (
-    <div className={`color-inherit flex items-center`}>
+    <div className="color-inherit flex items-center">
       {src ? (
         <figure
           style={{ height: `${imageSize}px`, width: `${imageSize}px` }}

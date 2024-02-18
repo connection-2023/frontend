@@ -361,7 +361,7 @@ interface Reservation {
 
 export interface MemberInfo {
   id: number;
-  meno: string | null;
+  memo: string | null;
   nickname: string;
   phoneNumber: string;
   userProfileImage: string;

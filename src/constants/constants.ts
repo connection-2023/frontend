@@ -8,6 +8,7 @@ export const ProfileImgSize = {
   small: 34,
   medium: 59,
   large: 101,
+  mlarge: 139,
   xlarge: 176,
 };
 

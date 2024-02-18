@@ -169,7 +169,7 @@ export const getMyMember = async (
 
   const resData = await response.json();
 
-  return resData.data;
+  return resData.data.learnerPaymentsOverView;
 };
 
 export const getMyMemberPasses = async (
@@ -199,5 +199,5 @@ export const getMyMemberPasses = async (
 
   const resData = await response.json();
 
-  return resData.data;
+  return resData.data.lecturerLearnerPassList;
 };
