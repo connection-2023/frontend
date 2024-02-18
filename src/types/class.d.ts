@@ -578,29 +578,34 @@ export interface IEditStartDateTime {
   editable: boolean;
 }
 
-export interface IUserClassResponse {
+export interface IUserApplyClass {
   id: number;
-  orderId: string;
-  orderName: string;
-  reservation: {
-    lectureSchedule: {
-      startDateTime: string;
-      lecture: {
+  lecture: {
+    id: number;
+    lectureImage: [
+      {
         id: number;
-        title: string;
-        lectureImage: {
-          imageUrl: string;
-        }[];
-      };
+        lectureId: number;
+        imageUrl: string;
+      },
+      {
+        id: number;
+        lectureId: number;
+        imageUrl: string;
+      },
+    ];
+    lectureMethod: {
+      id: number;
+      name: string;
     };
-  }[];
-
-  lecturer: {
-    nickname: string;
-    profileCardImageUrl: string;
+    title: string;
   };
+  schedules: string[];
 }
-
+export interface IApplyListResponse {
+  totalItemCount: number;
+  enrollLectureList: IUserApplyClass[];
+}
 export interface IReservation {
   id: number;
   representative: string;

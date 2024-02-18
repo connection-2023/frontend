@@ -8,6 +8,7 @@ import {
   IClassEditPageData,
   IScheduleLearnerList,
   IMonthlyClassSchedules,
+  IApplyListResponse,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
 
@@ -33,9 +34,9 @@ export const getUserClass = async (
   type: '진행중/예정' | '수강 완료',
   displayCount: number,
   targetPage: number,
-) => {
-  const reqType = type === '진행중/예정' ? '진행중' : '예정';
-  const query = `take=${displayCount}&targetPage=${targetPage}&enrollLectureType=${reqType}`;
+): Promise<IApplyListResponse> => {
+  const reqType = type === '진행중/예정' ? '진행중' : '완료';
+  const query = `type=${reqType}&pageSize=${displayCount}&page=${targetPage}`;
 
   const response = await fetch(`/api/class/myclass/list?${query}`);
 
