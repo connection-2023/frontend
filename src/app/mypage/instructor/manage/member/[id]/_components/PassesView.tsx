@@ -13,7 +13,7 @@ const PassesView = ({ passes }: PassesViewProps) => {
 
   return (
     <div>
-      <h2 className="text-sm font-semibold">보유 패스권 ({passes.length})</h2>
+      <h2 className="text-lg font-semibold">보유 패스권 ({passes.length})</h2>
       {passes.length > 1 ? (
         <div className="relative px-11">
           <div className="overflow-hidden px-5">
