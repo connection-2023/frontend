@@ -1,6 +1,6 @@
 import { dummyMain } from '@/constants/dummy';
 import { SmallLogoSVG } from '@/icons/svg';
-import SuggestionPreview from '@/components/Preview/SuggestionPreview';
+import SuggestionPreview from '@/components/ClassPreview/SuggestionClassPreview';
 
 const SuggestionClass = () => {
   const { suggestionClass } = dummyMain;
