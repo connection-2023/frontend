@@ -744,3 +744,55 @@ interface IScheduleLearnerList {
   enrollmentCount: number;
   memo: null | string;
 }
+
+interface IApplyDetailResponse {
+  lecture: {
+    id: number;
+    title: string;
+    notification: {
+      id: number;
+      content: string;
+      updatedAt: string;
+    };
+    location?: {
+      id: number;
+      address: string;
+      detailAddress: string;
+      buildingName: string;
+    };
+    region?: IRegion[];
+  };
+
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string | null;
+  };
+
+  lectureSchedule?: {
+    id: number;
+    startDateTime: string;
+    endDateTime: string;
+    numberOfParticipants: number;
+    lecture: {
+      id: number;
+      title: string;
+    };
+  };
+
+  regularLectureSchedule?: [
+    {
+      id: 0;
+      day: 0;
+      startDateTime: string;
+      endDateTime: string;
+    },
+  ];
+  representative: string;
+  phoneNumber: string;
+  payment: {
+    id: number;
+    finalPrice: number;
+  };
+  request?: string;
+}
