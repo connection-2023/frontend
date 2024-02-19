@@ -4,7 +4,7 @@ import {
   getInstructorLinks,
   getUserLinks,
 } from '@/app/_components/MypageLinks';
-import UserProfile from './userProfile';
+import UserProfile from './UserProfile';
 
 const MorePage = () => {
   const cookieStore = cookies();
