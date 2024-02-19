@@ -54,6 +54,8 @@ export { default as DashboardSVG } from './menu/dashboard.svg';
 
 export { default as DeleteSVG } from './common/button/delete.svg';
 
+export { default as LogInSVG } from './common/button/login.svg';
+
 export { default as DoubleRightSVG } from './common/arrow/doubleRight.svg';
 
 export { default as DownloadSVG } from './common/button/download.svg';
@@ -117,8 +119,6 @@ export { default as PassSVG } from './common/pass.svg';
 export { default as PlusesSVG } from './class/pluses.svg';
 
 export { default as ProfileSVG } from './common/profile_default.svg';
-
-export { default as ProfileNoStrokeSVG } from './common/profile-no-stroke.svg';
 
 export { default as HomeSVG } from './common/home.svg';
 
