@@ -4,63 +4,38 @@ import { useState } from 'react';
 import { ButtonStyles } from '@/constants/constants';
 import { formatShortDate } from '@/utils/dateTimeUtils';
 import CancelModal from './CancelModal';
-import DeclineModal from './DeclineModal';
 import UniqueButton from '@/components/Button/UniqueButton';
 import ProfileImage from '@/components/Profile/ProfileImage';
-import { IUserClassResponse } from '@/types/class';
+import { IUserApplyClass } from '@/types/class';
 
-interface IClassList extends IUserClassResponse {
-  activeTab: string;
+interface IClassList extends IUserApplyClass {
+  activeTab: '진행중/예정' | '수강 완료';
 }
 
-const ClassList = ({ activeTab, reservation, lecturer }: IClassList) => {
-  const [isDeclineModalOpened, setIsDeclineModalOpened] = useState(false);
+const ClassList = ({ activeTab, schedules, lecture }: IClassList) => {
+  const { title, lectureImage, lectureMethod } = lecture;
   const [isCancelModalOpened, setIsCancelModalOpened] = useState(false);
   const router = useRouter();
-  const classDates = reservation.map((info) =>
-    formatShortDate(info.lectureSchedule.startDateTime),
-  );
+  const classDates = schedules.map((info) => formatShortDate(info));
 
-  const uniqueClassDates = new Set(classDates);
-
-  const buttonText = () => {
-    switch (activeTab) {
-      case '진행중':
-      case '대기':
-        return '수강취소';
-      case '수강완료':
-        return '다시 신청';
-      default:
-        return '취소사유';
-    }
-  };
-
-  const handleClassStatusChange = () => {
-    switch (activeTab) {
-      case '진행중':
-      case '대기':
-        setIsCancelModalOpened(true);
-        break;
-
-      case '수강완료':
-        break;
-
-      case '취소/거절':
-        setIsDeclineModalOpened(true);
-        break;
-
-      default:
-        break;
+  const handleButtonClick = () => {
+    if (activeTab === '진행중/예정') {
+      // 수강 취소 로직
+    } else {
+      // 다시 신청
+      router.push(`/class/${lecture.id}`);
     }
   };
 
   const handleListClick = () => {
-    router.push(`/my/class/${reservation[0].lectureSchedule.lecture.id}`);
+    router.push(
+      `/mypage/user/myclass/apply/${lecture.id}?type=${lectureMethod.name}`,
+    );
   };
 
   const handleCurriculumClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    router.push(`/class/${reservation[0].lectureSchedule.lecture.id}`);
+    router.push(`/class/${lecture.id}`);
   };
 
   const handleSubmitCancelForm = () => {};
@@ -69,20 +44,16 @@ const ClassList = ({ activeTab, reservation, lecturer }: IClassList) => {
     <>
       <li
         onClick={handleListClick}
-        className="grid h-full max-h-[13.6rem] w-full cursor-pointer auto-rows-max grid-cols-2 gap-x-2.5 gap-y-3.5 rounded-md p-3.5 shadow-vertical md:gap-4"
+        className="grid h-full max-h-[13.6rem] w-full cursor-pointer grid-cols-2 grid-rows-[1fr_max-content] gap-x-2.5 gap-y-3.5 rounded-md p-3.5 shadow-vertical md:gap-4"
       >
-        <figure className="flex aspect-[297/188] h-full max-h-[188px] w-full md:row-span-2">
+        <figure className="flex aspect-[297/188] h-full max-h-[114px] w-full md:row-span-2 md:max-h-[188px]">
           <Image
-            src={
-              reservation[0].lectureSchedule.lecture.lectureImage[0].imageUrl
-            }
+            src={lectureImage[0].imageUrl}
             alt="클래스 이미지"
             width={0}
             height={0}
             placeholder="blur"
-            blurDataURL={
-              reservation[0].lectureSchedule.lecture.lectureImage[0].imageUrl
-            }
+            blurDataURL={lectureImage[0].imageUrl}
             sizes="(max-width: 720px) 60vw, (max-width: 1440px) 30vw"
             className="object-none"
             style={{
@@ -93,16 +64,17 @@ const ClassList = ({ activeTab, reservation, lecturer }: IClassList) => {
           />
         </figure>
 
-        <div className="flex w-full flex-col items-center">
+        <div className="flex w-full flex-col text-sm font-semibold text-gray-100">
           <h2 className="mb-2.5 line-clamp-1 w-full text-base font-bold text-black">
-            {reservation[0].lectureSchedule.lecture.title}
+            {title}
           </h2>
 
-          <div className="grid w-full grid-cols-[3.3rem_1fr] gap-x-[0.69rem] gap-y-[0.44rem] text-sm">
-            <p>신청 횟수</p> <span>{reservation.length}회</span>
+          <span>{lectureMethod.name}</span>
+
+          <div className="grid w-full grid-cols-[3.3rem_1fr] gap-x-2.5 gap-y-2 text-sm">
             <p>수업 날짜</p>
-            <div className="flex w-full flex-wrap gap-x-4 gap-y-1">
-              {[...uniqueClassDates].map((date) => (
+            <div className="flex w-full flex-wrap gap-x-4 gap-y-1 font-medium">
+              {classDates.map((date) => (
                 <span key={date}>{date}</span>
               ))}
             </div>
@@ -111,31 +83,27 @@ const ClassList = ({ activeTab, reservation, lecturer }: IClassList) => {
 
         <div className="col-span-2 mt-auto flex w-full items-center justify-between gap-3.5 whitespace-nowrap pr-2 text-sm md:col-span-1">
           <div className="flex flex-1 gap-2.5">
-            <div className="w-full">
+            <div className="w-[75px]">
               <UniqueButton
                 size="small"
                 color="secondary"
-                onClick={handleClassStatusChange}
+                onClick={handleButtonClick}
               >
-                {buttonText()}
+                {activeTab === '진행중/예정' ? '수강취소' : '다시신청'}
               </UniqueButton>
             </div>
 
-            {activeTab === '진행중' && (
+            {activeTab === '진행중/예정' ? (
               <button
                 onClick={handleCurriculumClick}
                 className={`h-7 w-[4.69rem] font-semibold ${ButtonStyles.default}`}
               >
                 커리큘럼
               </button>
-            )}
+            ) : null}
           </div>
 
-          <ProfileImage
-            size="small"
-            src={lecturer.profileCardImageUrl}
-            nickname={lecturer.nickname}
-          />
+          <ProfileImage size="small" src={null} nickname="강사닉네임" />
         </div>
       </li>
 
@@ -145,13 +113,6 @@ const ClassList = ({ activeTab, reservation, lecturer }: IClassList) => {
           setIsCancelModalOpened(false);
         }}
         handleSubmitCancelForm={handleSubmitCancelForm}
-      />
-
-      <DeclineModal
-        isDeclineModalOpened={isDeclineModalOpened}
-        handleClosed={() => {
-          setIsDeclineModalOpened(false);
-        }}
       />
     </>
   );
