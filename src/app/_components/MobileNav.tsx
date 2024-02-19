@@ -4,16 +4,19 @@ import {
   HamburgerSVG,
   BookmarkSVG,
   HomeSVG,
-  ProfileNoStrokeSVG,
+  BasicCalendarSVG,
   EditSVG,
   UnFilledNoteSVG,
+  LogInSVG,
 } from '@/icons/svg';
 import { useUserStore } from '@/store/userStore';
 import { useActivePath } from '@/utils/hooks/useActivePath';
 
 const MobileNav = () => {
   const { userType } = useUserStore();
-  const isUser = userType === 'user';
+  const isUser = userType !== null;
+  const isLecturer = userType === 'lecturer';
+
   const checkActivePath = useActivePath();
 
   const getTextColor = (path: string) =>
@@ -39,13 +42,13 @@ const MobileNav = () => {
     {
       href: '/instructor',
       icon: (
-        <ProfileNoStrokeSVG
+        <UnFilledNoteSVG
           width="24"
           height="24"
           className={
-            checkActivePath('/mypage/user/myclass/apply')
-              ? 'fill-black stroke-black'
-              : 'fill-gray-500 stroke-gray-500 group-hover:fill-black group-hover:stroke-black'
+            checkActivePath('/instructor')
+              ? 'stroke-black stroke-2'
+              : 'stroke-gray-500 stroke-2 group-hover:stroke-black'
           }
         />
       ),
@@ -57,41 +60,39 @@ const MobileNav = () => {
       label: '홈',
     },
     {
-      href: isUser ? '/mypage/user/myclass/apply' : '/class/create',
-      icon: isUser ? (
-        <UnFilledNoteSVG
-          width="24"
-          height="24"
-          className={
-            checkActivePath('/mypage/user/myclass/apply')
-              ? 'stroke-black stroke-2'
-              : 'stroke-gray-500 stroke-2'
-          }
-        />
-      ) : (
+      href: isLecturer ? '/class/create' : '/mypage/user/myclass/apply',
+      icon: isLecturer ? (
         <EditSVG
           width="20"
           height="20"
           className={getIconColor('/class/create')}
         />
+      ) : (
+        <BasicCalendarSVG
+          width="24"
+          height="24"
+          className={getIconColor('/mypage/user/myclass/apply')}
+        />
       ),
-      label: isUser ? '내 클래스' : '등록',
+      label: isLecturer ? '등록' : '내 클래스',
     },
     {
-      href: '/more',
-      icon: (
+      href: isUser ? '/more' : '/login',
+      icon: isUser ? (
         <HamburgerSVG
           width="24"
           height="24"
           className={getIconColor('/more')}
         />
+      ) : (
+        <LogInSVG width="24" height="24" className={getIconColor('login')} />
       ),
-      label: '더보기',
+      label: isUser ? '더보기' : '로그인',
     },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 h-24 w-full border-t border-solid border-gray-700 bg-white px-4 pb-10 pt-3 sm:hidden">
+    <nav className="fixed bottom-0 left-0 z-50 h-24 w-full border-t border-solid border-gray-700 bg-white px-4 pb-10 pt-3 sm:hidden">
       <ul className="flex justify-around">
         {NAV_LINKS.map(({ href, icon, label }, index) => (
           <li key={index}>
