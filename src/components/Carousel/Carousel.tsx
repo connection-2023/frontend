@@ -196,7 +196,7 @@ const Carousel = ({
 
   return (
     <>
-      <div
+      <ul
         className={`flex h-full ${
           isAnimating && 'transition-transform duration-[1600ms] ease-out'
         }`}
@@ -207,7 +207,7 @@ const Carousel = ({
         }}
       >
         {carouselElements.slice(0, loadedElementCount).map((element, index) => (
-          <picture
+          <li
             key={index}
             className={`relative h-full w-full flex-shrink-0 `}
             style={{ marginRight: `${gap}rem` }}
@@ -224,9 +224,9 @@ const Carousel = ({
                     style={{ objectFit: 'cover' }}
                   />
                 )}
-          </picture>
+          </li>
         ))}
-      </div>
+      </ul>
       {showCurrentElement && (
         <div
           className={`absolute bottom-0 flex h-[10%] w-full items-center justify-center ${

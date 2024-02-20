@@ -6,7 +6,7 @@ const RedirectToLogin = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace('/signin');
+    router.replace('/signin', { scroll: false });
   }, []);
 
   return null;
