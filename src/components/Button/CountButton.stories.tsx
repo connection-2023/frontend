@@ -5,7 +5,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof CountButton> = {
   title: 'Components/Buttons/CountButton',
   component: CountButton,
-  parameters: {},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          '클래스 상세페이지, 신청 페이지에서 사용되는 신청 인원 증감 버튼 컴포넌트',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     onClick: {

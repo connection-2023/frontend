@@ -9,10 +9,7 @@ const config: StorybookConfig = {
   staticDirs: ['../public'],
   addons: [
     '@storybook/addon-links',
-    {
-      name: '@storybook/addon-essentials',
-      options: { docs: false },
-    },
+    '@storybook/addon-essentials',
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
     {

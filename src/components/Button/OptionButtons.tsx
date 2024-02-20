@@ -11,8 +11,8 @@ import {
 } from '@/lib/apis/instructorLikesBlockApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
+import Sharing from './Sharing';
 import Modal from '../Modal/Modal';
-import Sharing from '../Sharing/Sharing';
 import { FetchError } from '@/types/types';
 
 interface OptionButtonProps {

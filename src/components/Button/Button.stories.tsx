@@ -4,7 +4,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Button> = {
   title: 'Components/Buttons/Button',
   component: Button,
-  parameters: {},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: '기본으로 사용되는 버튼 컴포넌트',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     size: {

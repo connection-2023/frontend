@@ -6,6 +6,11 @@ const meta: Meta<typeof FilterButton> = {
   component: FilterButton,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: '클래스/강사 필터 버튼 컴포넌트',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

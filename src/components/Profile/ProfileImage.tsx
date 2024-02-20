@@ -21,7 +21,7 @@ const ProfileImg = ({
   const ml = `ml-${marginLeft}`;
 
   return (
-    <div className={`color-inherit flex items-center`}>
+    <div className="color-inherit flex items-center">
       {src ? (
         <figure
           style={{ height: `${imageSize}px`, width: `${imageSize}px` }}

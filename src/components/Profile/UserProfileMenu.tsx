@@ -60,7 +60,7 @@ const UserProfileMenu = (props: UserProfileMenuProps) => {
       <div className="relative">
         <button
           style={{ width: nameWidth ? `${nameWidth}px` : undefined }}
-          className={`truncate`}
+          className="truncate"
           onClick={() => setIsProfileMenuOpened(!isProfileMenuOpened)}
         >
           {name}

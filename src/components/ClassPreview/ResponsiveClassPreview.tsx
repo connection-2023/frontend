@@ -1,10 +1,10 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { StarSVG } from '@/icons/svg';
 import Carousel from '../Carousel/Carousel';
 import ProfileImage from '../Profile/ProfileImage';
 import { ClassCardType } from '@/types/class';
-import { useRouter } from 'next/navigation';
 
 const ResponsiveClassPreview = (props: ClassCardType) => {
   const {
