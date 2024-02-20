@@ -1,11 +1,14 @@
-import { IcouponsData, IgetFunction, createCouponData } from '@/types/coupon';
+import {
+  IcouponsData,
+  IgetFunction,
+  createCouponData,
+  updateCouponData,
+} from '@/types/coupon';
 import { FetchError } from '@/types/types';
-
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const createNewCoupon = async (data: createCouponData) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/coupon/new`, {
+    const response = await fetch(`/api/coupon/new`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -47,18 +50,15 @@ export const getCouponLists = async (
     });
 
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/coupon/getCouponList?${params}`,
-      {
-        method: 'GET',
-        credentials: 'include',
-        signal,
-        headers: {
-          'Content-Type': 'application/json',
-          type: type,
-        },
+    const response = await fetch(`/api/coupon/getCouponList?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+      signal,
+      headers: {
+        'Content-Type': 'application/json',
+        type: type,
       },
-    );
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -81,7 +81,7 @@ export const getCouponLists = async (
 export const getPrivateCode = async (couponId: number) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/coupon/getPrivateCode?couponId=${couponId}`,
+      `/api/coupon/getPrivateCode?couponId=${couponId}`,
       {
         method: 'GET',
         credentials: 'include',
@@ -108,7 +108,7 @@ export const getPrivateCode = async (couponId: number) => {
 export const getPrivateCoupon = async (couponCode: string) => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/coupon/getPrivateCoupon?couponCode=${couponCode}`,
+      `/api/coupon/getPrivateCoupon?couponCode=${couponCode}`,
       {
         method: 'POST',
         credentials: 'include',
@@ -134,18 +134,16 @@ export const getPrivateCoupon = async (couponCode: string) => {
   }
 };
 
-export const getClassCoupon = async (couponId: number) => {
+export const getClassCoupon = async (couponIdList: { couponIds: number[] }) => {
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/coupon/getClassCoupon?couponId=${couponId}`,
-      {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const response = await fetch(`/api/coupon/getClassCoupon`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(couponIdList),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -159,6 +157,69 @@ export const getClassCoupon = async (couponId: number) => {
     return resData.data;
   } catch (error) {
     console.error('클래스 공개 쿠폰 다운 오류', error);
+    throw error;
+  }
+};
+
+export const deleteCoupon = async (
+  couponId: number,
+  userType: 'user' | 'lecturer',
+) => {
+  try {
+    const response = await fetch(
+      `/api/coupon/deleteCoupon?couponId=${encodeURIComponent(
+        couponId,
+      )}&userType=${encodeURIComponent(userType)}`,
+      {
+        method: 'DELETE',
+        credentials: 'include',
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('쿠폰 삭제 오류', error);
+    throw error;
+  }
+};
+
+export const updateCoupon = async (
+  data: updateCouponData,
+  couponId: number,
+) => {
+  try {
+    const response = await fetch(
+      `/api/coupon/updateCoupon?couponId=${couponId}`,
+      {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const responseData = await response.json();
+    return responseData.data.coupon;
+  } catch (error) {
+    console.error('쿠폰 수정 오류', error);
     throw error;
   }
 };

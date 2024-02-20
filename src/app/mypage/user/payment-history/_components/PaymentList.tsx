@@ -1,4 +1,3 @@
-import { parseISO, format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -6,11 +5,13 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { CloseSVG, ArrowUpSVG, CopySVG } from '@/icons/svg';
 import { getAccountInfo } from '@/lib/apis/paymentApis';
+import { formatShortDate, formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/Modal';
 import { IVirtualAccountInfo } from '@/types/payment';
 import { IMyPayment } from '@/types/types';
 
 interface PaymentListProps extends IMyPayment {
+  // eslint-disable-next-line no-unused-vars
   handlePaymentDelete: (id: number) => void;
 }
 
@@ -35,7 +36,7 @@ const PaymentList = ({
       : 'text-gray-300';
 
   const handleNavigateToDetail = () => {
-    router.push(`/${reservation[0].lectureSchedule.lectureId}`);
+    router.push(`/${reservation.lectureSchedule.lectureId}`);
   };
 
   const handleModalOpened = async () => {
@@ -83,9 +84,7 @@ const PaymentList = ({
           className="flex h-28 w-[8.5rem] overflow-hidden rounded-md"
         >
           <Image
-            src={
-              reservation[0].lectureSchedule.lecture.lectureImage[0].imageUrl
-            }
+            src={reservation.lectureSchedule.lecture.imageUrl}
             width={0}
             height={0}
             sizes="(max-width: 768px) 100vw, 33vw"
@@ -96,18 +95,13 @@ const PaymentList = ({
         </figure>
 
         <ul className="flex flex-col gap-1">
-          <li className="text-gray-300">
-            결제일 {format(parseISO(updatedAt), 'yy.MM.dd')}
-          </li>
+          <li className="text-gray-300">결제일 {formatShortDate(updatedAt)}</li>
           <li>{orderName}</li>
-          {isClass && reservation[0] && (
+          {isClass && reservation && (
             <li>
-              {`${format(
-                parseISO(reservation[0].lectureSchedule.startDateTime),
-                'yy.MM.dd HH:mm',
-              )} ${reservation[0].participants}명 ${
-                reservation.length > 1 ? '+ ' + (reservation.length - 1) : ''
-              }`}
+              {`${formatDateTimeNoSec(
+                reservation.lectureSchedule.startDateTime,
+              )} ${reservation.participants}명`}
             </li>
           )}
 
@@ -116,10 +110,11 @@ const PaymentList = ({
               ₩{finalPrice.toLocaleString()}
             </span>
             <Link
-              href={`/receipt/${orderId}`}
+              href={`/mypage/user/payment-history/${orderId}`}
               className="flex items-center text-sub-color1"
+              prefetch={false}
             >
-              영수증보기
+              결제상세
               <ArrowUpSVG
                 width="17"
                 height="17"
@@ -145,13 +140,9 @@ const PaymentList = ({
             <section className="mt-3.5 w-full px-6">
               <h4 className="mb-1.5 font-semibold">{orderName}</h4>
               <div>
-                {reservation.map(
-                  (data) =>
-                    `${format(
-                      parseISO(data.lectureSchedule.startDateTime),
-                      'yy.MM.dd HH:mm',
-                    )} ${data.participants}명`,
-                )}
+                {`${formatDateTimeNoSec(
+                  reservation.lectureSchedule.startDateTime,
+                )} ${reservation.participants}명`}
               </div>
 
               <ul className="mt-4 flex w-full flex-col gap-y-2">
@@ -185,9 +176,7 @@ const PaymentList = ({
                 </li>
                 <li className="flex gap-5 whitespace-nowrap">
                   <p className="w-[3.3rem] font-semibold">입금 기한</p>
-                  <p>
-                    {format(parseISO(accountDetail.dueDate), 'MM/dd HH:mm')}까지
-                  </p>
+                  <p>{formatDateTimeNoSec(accountDetail.dueDate)}까지</p>
                 </li>
               </ul>
             </section>

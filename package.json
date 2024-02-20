@@ -16,13 +16,16 @@
     "test": "jest --watch",
     "test:ci": "jest --ci",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "analyze-bundle": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "@channel.io/channel-web-sdk-loader": "^1.1.3",
+    "@next/bundle-analyzer": "^14.1.0",
     "@react-oauth/google": "^0.11.1",
     "@tanstack/react-query": "^5.17.12",
     "@tanstack/react-table": "^8.10.6",
+    "@tosspayments/payment-widget-sdk": "^0.10.2",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",

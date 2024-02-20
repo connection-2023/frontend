@@ -77,7 +77,7 @@ const formatOptionLabel = (
       <div className="flex justify-between">
         <div className="flex gap-2 text-gray-300">
           <dd>{startAt + '-' + endAt}</dd>
-          {maxDiscountPrice !== 0 && (
+          {maxDiscountPrice !== 0 && maxDiscountPrice && (
             <dd>(최대할인 {maxDiscountPrice.toLocaleString()}원)</dd>
           )}
         </div>

@@ -1,29 +1,32 @@
 import { toast } from 'react-toastify';
-import { userType } from '@/types/auth';
+import { userProfile, userType, userProfileupdate } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
-
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
+import { social } from '@/types/auth';
+import { FetchError } from '@/types/types';
 
 export const checkUserNickname = async (nickname: string) => {
   try {
-    const res = await fetch(
-      `api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
+    const response = await fetch(
+      `/api/users/check-nickname?nickname=${encodeURIComponent(nickname)}`,
     );
 
-    return res;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    return await response.json();
   } catch (error) {
-    throw new Error('유저 닉네임 중복 확인 fetch 요청 오류');
+    throw error;
   }
 };
 
-export const getAuth = async (
-  social: 'NAVER' | 'KAKAO' | 'GOOGLE',
-  idToken: string,
-) => {
+export const getAuth = async (social: social, idToken: string) => {
   try {
     const response = await fetch(
-      DOMAIN +
-        `/api/auth/login?social=${social}&token=${encodeURIComponent(idToken)}`,
+      `/api/auth/login?social=${social}&token=${encodeURIComponent(idToken)}`,
       {
         credentials: 'include',
         headers: {
@@ -62,7 +65,7 @@ export const postUserRegister = async (data: IRegisterForm) => {
   return response;
 };
 
-export const getMyProfile = async (token?: string) => {
+export const getMyProfile = async (token?: string): Promise<userProfile> => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
@@ -70,7 +73,7 @@ export const getMyProfile = async (token?: string) => {
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-  const response = await fetch(`${DOMAIN}/api/users/me`, {
+  const response = await fetch(`/api/users/me`, {
     method: 'GET',
     credentials: 'include',
     headers,
@@ -78,17 +81,17 @@ export const getMyProfile = async (token?: string) => {
 
   const res = await response.json();
 
-  return res;
+  return res.data.myProfile;
 };
 
 export const getLogout = async () => {
-  const response = await fetch(`${DOMAIN}/api/auth/logout`, {
+  const response = await fetch(`/api/auth/logout`, {
     method: 'GET',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((data) => data.json());
+  });
 
   return response;
 };
@@ -97,7 +100,7 @@ export const postProfileImage = async (image: File) => {
   const formData = new FormData();
   formData.append('image', image);
 
-  const response = await fetch(`${DOMAIN}/api/users/upload-profile`, {
+  const response = await fetch(`/api/users/upload-profile`, {
     method: 'POST',
     credentials: 'include',
     body: formData,
@@ -109,15 +112,12 @@ export const postProfileImage = async (image: File) => {
 };
 
 export const getSwitchUserRole = async (userType: userType) => {
-  const response = await fetch(
-    `${DOMAIN}/api/auth/switch-user?userType=${userType}`,
-    {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  const response = await fetch(`/api/auth/switch-user?userType=${userType}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+  });
 
   const res = await response.json();
 
@@ -126,7 +126,7 @@ export const getSwitchUserRole = async (userType: userType) => {
 
 export const accessTokenReissuance = async () => {
   try {
-    const response = await fetch(`${DOMAIN}/api/auth/refresh`, {
+    const response = await fetch(`/api/auth/refresh`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -142,6 +142,32 @@ export const accessTokenReissuance = async () => {
     return response;
   } catch (error) {
     console.error('엑세스 토큰 재발급 오류', error);
+    throw error;
+  }
+};
+
+export const updateMyProfile = async (data: userProfileupdate) => {
+  try {
+    const response = await fetch(`/api/users/update-profile`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data;
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 };

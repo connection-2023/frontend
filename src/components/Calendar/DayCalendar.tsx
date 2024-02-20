@@ -1,10 +1,8 @@
 'use client';
-import 'moment/locale/ko';
-import { isSameDay, setHours, setMinutes, parseISO } from 'date-fns';
+import { isSameDay, setHours, setMinutes } from 'date-fns';
+import dynamic from 'next/dynamic';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Calendar, Views, SlotInfo } from 'react-big-calendar';
-import ResponsiveScheduleView from '@/app/dashboard/_components/ResponsiveScheduleView';
-import ScheduleEventModal from '@/app/dashboard/_components/ScheduleEventModal';
 import { dashboardStore } from '@/store';
 import {
   localizer,
@@ -17,6 +15,20 @@ import { IMonthlyClassSchedules } from '@/types/class';
 import { IFullCalendarEvent } from '@/types/types';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/fullCalendar.css';
+
+const ResponsiveScheduleView = dynamic(
+  () => import('@/app/dashboard/_components/ResponsiveScheduleView'),
+  {
+    ssr: false,
+  },
+);
+
+const ScheduleEventModal = dynamic(
+  () => import('@/app/dashboard/_components/ScheduleEventModal'),
+  {
+    ssr: false,
+  },
+);
 
 const DayCalendar = ({
   scheduleData,
@@ -35,8 +47,8 @@ const DayCalendar = ({
       id: data.id,
       title: data.lecture.title,
       lectureId: data.lectureId,
-      start: parseISO(data.startDateTime),
-      end: parseISO(data.endDateTime),
+      start: new Date(data.startDateTime),
+      end: new Date(data.endDateTime),
       numberOfParticipants: data.numberOfParticipants,
       maxCapacity: data.lecture.maxCapacity,
       isGroup: data.lecture.isGroup,
@@ -46,7 +58,7 @@ const DayCalendar = ({
   const selectedEvents = useMemo(() => {
     if (!scheduleData) return [];
     return scheduleData.filter((event) =>
-      isSameDay(date, parseISO(event.startDateTime)),
+      isSameDay(date, new Date(event.startDateTime)),
     );
   }, [scheduleData, date]);
 

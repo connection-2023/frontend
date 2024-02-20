@@ -1,36 +1,20 @@
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { CLASS_EDIT_SECTIONS } from '@/constants/constants';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 
 const SideNavbar = ({ onClick }: { onClick: () => void }) => {
-  const sections = [
-    {
-      id: 'intro',
-      label: '클래스 소개',
-    },
-    {
-      id: 'plan',
-      label: '일정 및 시간',
-    },
-    {
-      id: 'location',
-      label: '진행 장소',
-    },
-    {
-      id: 'price',
-      label: '가격',
-    },
-  ];
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const router = useRouter();
   const path = usePathname();
   const postId = path.split('/')[2];
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    observer.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -41,17 +25,14 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
       { threshold: 0.9 },
     );
 
-    sections.forEach(({ id }) => {
+    CLASS_EDIT_SECTIONS.forEach(({ id }) => {
       const elem = document.getElementById(id);
-      if (elem) observer.observe(elem);
+      if (elem && observer.current) observer.current.observe(elem);
       sectionRefs.current[id] = elem;
     });
 
     return () => {
-      sections.forEach(({ id }) => {
-        const elem = sectionRefs.current[id];
-        if (elem) observer.unobserve(elem);
-      });
+      if (observer.current) observer.current.disconnect();
     };
   }, []);
 
@@ -88,7 +69,7 @@ const SideNavbar = ({ onClick }: { onClick: () => void }) => {
         className="whitespace-nowrap text-lg font-bold"
       >
         <ul className="mb-6 flex flex-col gap-y-8">
-          {sections.map(({ id, label }) => (
+          {CLASS_EDIT_SECTIONS.map(({ id, label }) => (
             <li key={id}>
               <Link
                 href={`#${id}`}

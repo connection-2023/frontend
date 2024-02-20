@@ -1,29 +1,25 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { getLecturerClassList } from '@/lib/apis/classApis';
 import ClassList from './_components/ClassList';
-import { ILecturerClassListResonse } from '@/types/class';
+import Spinner from '@/components/Loading/Spinner';
 
 const MyClassPage = () => {
   const [isProgress, setIsProgress] = useState(true);
-  const [classListData, setClassListData] = useState<
-    ILecturerClassListResonse[]
-  >([]);
+  const status = isProgress ? '진행중' : '마감된 클래스';
+  const router = useRouter();
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['instructor', 'myclass', status],
+    queryFn: () => getLecturerClassList(status),
+    refetchOnWindowFocus: 'always',
+  });
 
-  useEffect(() => {
-    fetchClassListData();
-  }, []);
+  if (data instanceof Error || error) return router.push('/error');
 
   const handleOptions = () => {
     setIsProgress(!isProgress);
-  };
-
-  const fetchClassListData = async () => {
-    const option = isProgress ? '진행중' : '마감된 클래스';
-    const classData = await getLecturerClassList(option);
-    if (classData instanceof Error) return;
-
-    setClassListData(classData);
   };
 
   return (
@@ -50,11 +46,18 @@ const MyClassPage = () => {
           마감된 클래스
         </h1>
       </div>
-      <ul className="flex flex-col gap-4">
-        {classListData.map((item) => (
-          <ClassList key={item.id} {...item} isProgress={isProgress} />
-        ))}
-      </ul>
+
+      {isLoading ? (
+        <div className="mb-auto mt-5 flex h-fit items-center justify-center">
+          <Spinner />
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-4">
+          {data?.map((item) => (
+            <ClassList key={item.id} {...item} isProgress={isProgress} />
+          ))}
+        </ul>
+      )}
     </section>
   );
 };

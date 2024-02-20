@@ -5,19 +5,22 @@ import { ArrowUpSVG } from '@/icons/svg';
 import { useUserStore } from '@/store';
 import { useScrollStore } from '@/store/scrollStore';
 import ProfileMenu from './ProfileMenu';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import { instructorProfile, userProfile } from '@/types/auth';
+import ProfileImage from '@/components/Profile/ProfileImage';
 
 const Profile = ({
   defaultProfileImg,
 }: {
   defaultProfileImg: string | null;
 }) => {
-  const userStoreState = useUserStore();
+  const { authUser } = useUserStore((state) => ({
+    authUser: state.authUser,
+  }));
   const [isProfileMenu, setIsProfileMenu] = useState(false);
   const menuRef = useRef(null);
 
-  const { isScrollingUp } = useScrollStore();
+  const { isScrollingUp } = useScrollStore((state) => ({
+    isScrollingUp: state.isScrollingUp,
+  }));
 
   useEffect(() => {
     if (!isScrollingUp) {
@@ -33,10 +36,7 @@ const Profile = ({
     setIsProfileMenu((prev) => !prev);
   };
 
-  const profileImg =
-    userStoreState.userType === 'user'
-      ? (userStoreState.authUser as userProfile)?.userProfileImage?.imageUrl
-      : (userStoreState.authUser as instructorProfile)?.profileCardImageUrl;
+  const profileImg = authUser ? authUser.profileImage : defaultProfileImg;
 
   return (
     <div className="relative hidden w-[4.8125rem] sm:block" ref={menuRef}>
@@ -45,11 +45,7 @@ const Profile = ({
         className="absolute -top-10 flex h-12 w-full cursor-pointer items-center justify-center rounded-[3.125rem] bg-white shadow-horizontal "
       >
         <div className="relative ml-1.5 overflow-hidden rounded-full">
-          <ProfileImage
-            size="small"
-            src={userStoreState.userType ? profileImg : defaultProfileImg}
-            label={false}
-          />
+          <ProfileImage size="small" src={profileImg} label={false} />
         </div>
         <ArrowUpSVG
           className={`h-[34px] w-[34px] fill-black ${

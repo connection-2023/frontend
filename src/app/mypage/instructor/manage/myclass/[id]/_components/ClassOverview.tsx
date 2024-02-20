@@ -1,9 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import Spinner from '@/components/Loading/Spinner';
+import UserProfileMenu from '@/components/Profile/UserProfileMenu';
+import { IScheduleLearnerList } from '@/types/class';
+import ErrorFallback from '@/app/_components/Error';
 import { ChatSVG } from '@/icons/svg';
-import { getAllRegisterLists, getRegisterLists } from '@/lib/apis/classApis';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import { IRegisterLists } from '@/types/class';
+import {
+  getAllRegisterLists,
+  getScheduleRegisterLists,
+} from '@/lib/apis/classApis';
 
 interface ClassOverViewProps {
   totalClassNum: number;
@@ -18,24 +23,31 @@ const ClassOverview = ({
   selectedClass,
   lectureId,
 }: ClassOverViewProps) => {
-  const [registerList, setRegisterList] = useState<IRegisterLists[]>([]);
+  const fetchRegisterList = async () => {
+    if (selectedClass.id) {
+      const registerData = await getScheduleRegisterLists(selectedClass.id);
+      return registerData;
+    } else {
+      const allLearnersData = await getAllRegisterLists(lectureId, 100, 0);
+      return allLearnersData;
+    }
+  };
+  const {
+    data: registerList,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['registerList', lectureId, selectedClass.id],
+    queryFn: fetchRegisterList,
+    refetchOnWindowFocus: 'always',
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (selectedClass.id) {
-        const registerData = await getRegisterLists(
-          lectureId,
-          selectedClass.id,
-        );
-        setRegisterList(registerData);
-      } else {
-        const allLearnersData = await getAllRegisterLists(lectureId, 100, 0);
-        setRegisterList(allLearnersData);
-      }
-    };
-
-    fetchData();
-  }, [selectedClass.id]);
+  if (!registerList || registerList instanceof Error || error)
+    return (
+      <aside className="flex h-fit flex-col whitespace-nowrap rounded-lg bg-white p-4 font-medium shadow-float shadow-float">
+        <ErrorFallback />
+      </aside>
+    );
 
   return (
     <aside className="flex h-fit flex-col whitespace-nowrap rounded-lg bg-white shadow-float shadow-float ">
@@ -67,11 +79,17 @@ const ClassOverview = ({
             전체 채팅
           </button>
         </h3>
-        <ul className="grid w-full grid-cols-1 gap-4 py-4 md:grid-cols-2 lg:grid-cols-1">
-          {registerList.map((item, index) => (
-            <ClassRoster key={index} {...item} />
-          ))}
-        </ul>
+        {isLoading ? (
+          <div className="mb-auto mt-5 flex h-fit items-center justify-center">
+            <Spinner />
+          </div>
+        ) : (
+          <ul className="grid w-full grid-cols-1 gap-4 py-4 md:grid-cols-2 lg:grid-cols-1">
+            {registerList.map((item, index) => (
+              <LearnerList key={index} {...item} />
+            ))}
+          </ul>
+        )}
       </div>
     </aside>
   );
@@ -79,18 +97,18 @@ const ClassOverview = ({
 
 export default ClassOverview;
 
-const ClassRoster = ({
-  nickname,
-  userProfileImage,
-  enrollmentCount,
-}: IRegisterLists) => {
-  const { userId, imageUrl } = userProfileImage;
+const LearnerList = (props: IScheduleLearnerList) => {
+  const { userId, nickname, userProfileImage, enrollmentCount } = props;
 
   return (
     <li className="flex w-full items-center justify-between text-sm font-medium">
       <div className="flex cursor-pointer items-center">
-        <ProfileImage src={imageUrl} label={false} size="small" />
-        <span className="w-25 ml-2.5 truncate">{nickname}</span>
+        <UserProfileMenu
+          contact="" // api 변경 후 추가 예정
+          userId={userId}
+          profileImg={userProfileImage}
+          name={nickname}
+        />
       </div>
       <div className="flex items-center gap-4 text-sub-color1">
         {enrollmentCount && <span>{enrollmentCount}회 신청</span>}

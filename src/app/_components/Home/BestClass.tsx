@@ -1,31 +1,33 @@
+import { cookies } from 'next/headers';
 import { searchBestClass } from '@/lib/apis/serverApis/searchApis';
-import { useUserStore } from '@/store/userStore';
 import { transformBestClassSearch } from '@/utils/apiDataProcessor';
 import CarouselTemplate from '../CarouselTemplate';
 import ClassCard from '@/components/ClassPreview/ClassPreview';
 
 const BestClass = async () => {
-  let bestClassList = [];
+  let bestClassList: any[] = [];
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
 
   try {
-    const { userType } = useUserStore.getState();
     const resBestClassList = transformBestClassSearch(
-      await searchBestClass(userType === 'user'),
+      await searchBestClass(!!user),
     );
 
-    bestClassList =
-      resBestClassList.length < 6
-        ? [
-            ...resBestClassList,
-            ...resBestClassList.slice(0, 6 - resBestClassList.length),
-          ]
-        : resBestClassList;
+    if (resBestClassList.length === 0) return null;
+
+    if (resBestClassList.length < 6) {
+      const repeatCount = Math.ceil(6 / resBestClassList.length);
+
+      bestClassList = Array(repeatCount)
+        .fill(resBestClassList)
+        .flat()
+        .slice(0, 6);
+    }
   } catch (error) {
     console.error(error);
     return null;
   }
-
-  if (bestClassList.length === 0) return null;
 
   return (
     <CarouselTemplate mode="class">

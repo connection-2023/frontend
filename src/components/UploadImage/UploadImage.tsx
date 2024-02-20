@@ -166,7 +166,7 @@ const UploadImage = ({
       ) : (
         <>
           {/* 이미지 미리보기 */}
-          <div className="h-56 w-full sm:h-[17.17rem] sm:w-[26.6rem]">
+          <div className="h-56 w-[20rem] sm:h-[17.17rem] sm:w-[26.6rem]">
             {selectedImage && (
               <div className="relative h-full w-full overflow-hidden">
                 <Image
@@ -190,7 +190,7 @@ const UploadImage = ({
           {/* 추가한 이미지 리스트 */}
           <div
             ref={scrollContainerRef}
-            className="mt-2 flex w-full max-w-[calc(90vw)] gap-3 overflow-x-auto sm:justify-center"
+            className="mt-2 flex w-full max-w-[calc(90vw)] gap-3 overflow-x-auto overflow-y-hidden sm:justify-center"
           >
             {images.map((image, index) => (
               <div

@@ -1,5 +1,6 @@
+import { cookies } from 'next/headers';
 import Image from 'next/image';
-import OptionButton from './OptionButton';
+import { CLASS_HSTYLE } from '@/constants/constants';
 import {
   LocationSVG,
   TimeSVG,
@@ -7,22 +8,22 @@ import {
   LevelSVG,
   GenreSVG,
 } from '@/icons/svg';
+import { getClassPreview } from '@/lib/apis/serverApis/classPostApis';
+import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
 import {
   formatLocationToString,
   formatGenreToString,
 } from '@/utils/parseUtils';
-import { getClassCouponList } from '@/lib/apis/serverApis/couponApis';
-import Review from '@/components/Review/Review';
-import { getClassPreview } from '@/lib/apis/serverApis/classPostApis';
 import DiscountCouponBanner from './DiscountCouponBanner';
+import OptionButton from './OptionButton';
 import Carousel from '@/components/Carousel/Carousel';
-import { useUserStore } from '@/store';
-import { CLASS_HSTYLE } from '@/constants/constants';
+import Review from '@/components/Review/Review';
 
 const ClassPreview = async ({ id }: { id: string }) => {
-  const { userType } = useUserStore.getState();
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
   const classPreview = getClassPreview(id);
-  const couponLists = getClassCouponList(id, userType === 'user');
+  const couponLists = getClassCouponList(id, !!user);
 
   const [classPreviewData, couponList] = await Promise.all([
     classPreview,
@@ -86,7 +87,7 @@ const ClassPreview = async ({ id }: { id: string }) => {
       </div>
 
       {/* Review */}
-      <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:mb-6 md:justify-center">
+      <div className="mb-4 mt-2 flex w-full max-w-[40rem] gap-1 px-4 md:justify-center">
         <Review average={stars} />
         <span className="text-sm font-bold text-gray-500">({stars})</span>
       </div>
@@ -102,7 +103,7 @@ const ClassPreview = async ({ id }: { id: string }) => {
       {/* Class Info */}
       <ul className="mb-4 grid w-full max-w-[40rem] grid-cols-2 gap-y-3.5 px-4 md:mb-7 md:flex md:flex-wrap md:justify-items-center md:gap-x-10 md:whitespace-nowrap">
         <li className={CLASS_HSTYLE.h3}>
-          <LocationSVG />
+          <LocationSVG width={21} height={21} className="fill-sub-color1" />
           <span className="w-fit break-keep">
             {formatLocationToString(lectureToRegion)}
           </span>

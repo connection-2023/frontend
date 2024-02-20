@@ -2,12 +2,14 @@
 import Cookies from 'js-cookie';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
+import { RELOAD_TOAST_TIME } from '@/constants/constants';
 import { getLikesClassList } from '@/lib/apis/classApi';
 import { useUserStore } from '@/store';
-import { instructorProfile, userProfile, userType } from '@/types/auth';
+import { profileInfo, userType } from '@/types/auth';
 
 interface UserStoreInitializerProps {
-  authUser: instructorProfile | userProfile | null;
+  authUser: profileInfo | null;
   userType: userType | null;
 }
 
@@ -15,6 +17,7 @@ const UserStoreInitializer = ({
   authUser,
   userType,
 }: UserStoreInitializerProps) => {
+  const initialized = useRef(false);
   const { setLikeClassList, likeClassList } = useUserStore((state) => ({
     setLikeClassList: state.setLikeClassList,
     likeClassList: state.likeClassList,
@@ -23,6 +26,33 @@ const UserStoreInitializer = ({
   const pathname = usePathname();
   const router = useRouter();
   const reload = Cookies.get('reload');
+  const toastMessage: string | undefined = Cookies.get('toast');
+
+  Cookies.remove('toast');
+  if (toastMessage) {
+    const message: {
+      toast?: string;
+      date?: string;
+      state?: 'error' | 'success';
+    } = JSON.parse(toastMessage);
+    const dateDifference = message.date
+      ? new Date().getTime() - new Date(message.date).getTime()
+      : RELOAD_TOAST_TIME + 1;
+
+    if (dateDifference <= RELOAD_TOAST_TIME) {
+      if (message.state === 'success') {
+        toast.success(message.toast);
+      } else {
+        toast.error(message.toast);
+      }
+    }
+  }
+
+  if (!initialized.current) {
+    store.setAuthUser(authUser);
+    store.setUserType(userType);
+    initialized.current = true;
+  }
 
   useEffect(() => {
     if (reload === 'true') {
@@ -32,10 +62,10 @@ const UserStoreInitializer = ({
     }
   }, [reload]);
 
-  useEffect(() => {
-    store.setAuthUser(authUser);
-    store.setUserType(userType);
-  }, [authUser, userType]);
+  // useEffect(() => {
+  //   store.setAuthUser(authUser);
+  //   store.setUserType(userType);
+  // }, [authUser, userType]); // 다음 이슈에서 수정 예정
 
   useEffect(() => {
     if (userType === 'user') {

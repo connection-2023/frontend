@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, ChatSVG, SearchSVG } from '@/icons/svg';
-import { useUserStore } from '@/store/userStore';
 import Profile from './Profile';
-import { instructorProfile, userProfile } from '@/types/auth';
+import { profileInfo } from '@/types/auth';
 
-const UserProfileLinks = () => {
+interface UserProfileLinksProps {
+  authUser: profileInfo | null;
+}
+
+const UserProfileLinks = ({ authUser }: UserProfileLinksProps) => {
   const { alarmCount, commentCount } = dummyUserInfo;
-  const userStoreState = useUserStore.getState();
 
   return (
     <div className="flex items-end gap-3">
@@ -15,17 +17,17 @@ const UserProfileLinks = () => {
         Connection 유저 메뉴
       </h2>
 
-      <Link href="/search">
+      <Link href="/search" aria-label="통합 검색">
         <SearchSVG className="h-[1.8rem] w-[1.8rem] fill-black" />
       </Link>
 
-      {!userStoreState.authUser && (
+      {!authUser && (
         <Link href="/login" className="text-lg font-medium">
           로그인/회원가입
         </Link>
       )}
 
-      {userStoreState.authUser && (
+      {authUser && (
         <>
           <button className="relative">
             <AlarmSVG className="fill-black pt-0.5" width="31" height="31" />
@@ -41,21 +43,11 @@ const UserProfileLinks = () => {
             </span>
           </button>
 
-          <Profile
-            defaultProfileImg={
-              userStoreState.userType === 'lecturer'
-                ? (userStoreState.authUser as instructorProfile)
-                    ?.profileCardImageUrl
-                : (userStoreState.authUser as userProfile)?.userProfileImage
-                    ?.imageUrl
-            }
-          />
+          <Profile defaultProfileImg={authUser.profileImage} />
         </>
       )}
     </div>
   );
 };
-// profileCardImageUrl
-// userProfileImage
 
 export default UserProfileLinks;

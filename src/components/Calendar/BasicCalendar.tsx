@@ -1,6 +1,6 @@
 'use client';
-import { isSameDay } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
+import isSameDay from 'date-fns/isSameDay';
+import ko from 'date-fns/locale/ko';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';

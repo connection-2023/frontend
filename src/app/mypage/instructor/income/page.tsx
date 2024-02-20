@@ -1,8 +1,17 @@
 'use client';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import IncomeTable from './_components/IncomeDataViewer';
-import IncomeOverview from './_components/IncomeOverview';
-import Payment from './_components/Payment';
+
+const IncomeOverview = dynamic(() => import('./_components/IncomeOverview'), {
+  ssr: false,
+});
+
+const IncomeDataViewer = dynamic(
+  () => import('./_components/IncomeDataViewer'),
+);
+const Payment = dynamic(() => import('./_components/Payment'), {
+  ssr: false,
+});
 
 const IncomePage = () => {
   const [view, setView] = useState<'main' | 'payment'>('main');
@@ -22,7 +31,7 @@ const IncomePage = () => {
         handlePrev={handlePrev}
         handleApply={handleApply}
       />
-      {view === 'main' ? <IncomeTable /> : <Payment />}
+      {view === 'main' ? <IncomeDataViewer /> : <Payment />}
     </div>
   );
 };

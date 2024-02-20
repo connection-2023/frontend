@@ -16,9 +16,22 @@ export const GET = async (request: NextRequest) => {
   try {
     const response = await fetch(
       END_POINT + '/lecturers/nickname/' + encodeURI(nickname),
-    ).then((data) => data.json());
+    );
 
-    return NextResponse.json(response);
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        {
+          status: response.status,
+          message: errorData.message || '서버 요청 오류',
+        },
+        { status: response.status },
+      );
+    }
+
+    const result = await response.json();
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error('네트워크 요청 에러: ', error);
 

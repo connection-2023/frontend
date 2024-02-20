@@ -8,10 +8,12 @@ interface IInstructorProfile {
   profileCardImageUrl: null | string;
   nickname: string;
 }
+
 export interface IClassImageResponse {
   id: number;
   imageUrl: string;
 }
+
 export interface IClassGenreResponse {
   danceCategoryId: number;
   name: string | null;
@@ -20,6 +22,7 @@ export interface IClassGenreResponse {
     genre: string;
   };
 }
+
 export interface IClassRegionResponse {
   region: {
     administrativeDistrict: string;
@@ -34,6 +37,7 @@ export interface IClassNotification {
   updatedAt: string;
   deletedAt: null;
 }
+
 export interface ClassCardType {
   id: number;
   status: '모집중' | '마감';
@@ -46,11 +50,12 @@ export interface ClassCardType {
   type: string;
   review: { average: number; count: number };
   price: number;
-  profile: { src: string | null; nickname: string };
+  profile: { src: string | null; nickname: string; id: number };
   darkMode?: boolean;
   smallView?: boolean;
   searchAfter?: [number, number];
 }
+
 export interface Space {
   current: number;
   total: number;
@@ -78,7 +83,7 @@ export interface DateTimeList {
 
 export interface IGetClassDrafts {
   id: string;
-  updatedAt: string;
+  updatedAt: Date;
   title: null | string;
   step: null | number;
 }
@@ -142,12 +147,14 @@ export interface IGetClassDraft {
     address: string;
     detailAddress: string;
     buildingName: string;
+    administrativeDistrict: string;
+    district: string;
   } | null;
   schedules: DayTimeList[] | DateTimeList[];
 }
 
 export interface IUpdateClassDraft {
-  lectureId: number | string;
+  lectureId?: number | string;
   step?: number;
   regions?: string[];
   lectureType?: string;
@@ -164,7 +171,7 @@ export interface IUpdateClassDraft {
   difficultyLevel?: string;
   minCapacity?: number;
   maxCapacity?: number;
-  reservationDeadline?: string;
+  reservationDeadline?: number;
   reservationComment?: string;
   price?: number | string;
   noShowDeposit?: number;
@@ -197,7 +204,7 @@ export interface classCreateData {
   classRange: { startDate: string; endDate: string };
   duration: number;
   reservationComment: string;
-  reservationDeadline: string;
+  reservationDeadline: number;
   address: Juso | null;
   detail: string;
   locationConsultative: boolean;
@@ -206,6 +213,38 @@ export interface classCreateData {
   classPrice: string | number;
   schedules: DayTimeList[] | DateTimeList[];
   coupons: { value: couponGET; label: string }[];
+}
+
+export interface classProccessData {
+  difficultyLevel?: string;
+  etcGenres?: string[];
+  genres?: string[];
+  images?: string[];
+  isGroup?: boolean;
+  lectureMethod?: string;
+  maxCapacity?: number;
+  minCapacity?: number;
+  title?: string;
+  notification?: string;
+  introduction?: string;
+  curriculum?: string;
+  startDate?: string;
+  endDate?: string;
+  duration?: number;
+  schedules?: DayTimeList[] | DateTimeList[];
+  holidays?: Data[];
+  reservationDeadline?: number;
+  location?: {
+    detailAddress?: string | null;
+    address?: string | null;
+    buildingName?: string | null;
+    administrativeDistrict?: string | null;
+    district?: string | null;
+  };
+  locationDescription?: string;
+  regions?: string[];
+  price?: string | number;
+  coupons?: number[];
 }
 
 export interface IprocessedDraft {
@@ -249,9 +288,11 @@ export interface IprocessedDraft {
   temporaryLectureToDanceGenre?: string[];
   holidays?: Data[];
   location?: {
-    roadAddr: string | undefined;
-    detailAddress: string | undefined;
-    bdNm: string | undefined;
+    roadAddr?: string | null;
+    detailAddress?: string | null;
+    bdNm?: string | null;
+    administrativeDistrict?: string | null;
+    district?: string | null;
   };
   totalClasses?: number;
   schedules?: DayTimeList[] | DateTimeList[];
@@ -427,15 +468,6 @@ export interface IClassEditRequest {
   endDate?: Date;
 }
 
-export interface IRegisterLists {
-  enrollmentCount?: number;
-  nickname: string;
-  userProfileImage: {
-    userId: number;
-    imageUrl: string;
-  };
-}
-
 export interface Lecture {
   id: number;
   lecturerId: number;
@@ -471,37 +503,6 @@ interface ResponseData {
 export interface ApiResponse {
   statusCode: number;
   data: ResponseData;
-}
-
-export interface ILearner {
-  id: number;
-  enrollmentCount: number;
-  memo: string;
-  user: {
-    id: number;
-    nickname: string;
-    userProfileImage: {
-      imageUrl: string;
-    };
-  };
-  reservation: {
-    id: number;
-    representative: string;
-    phoneNumber: string;
-    participants: number;
-    requests: string;
-    lectureSchedule: {
-      id: number;
-      startDateTime: string;
-      endDateTime: string;
-      numberOfParticipants: number;
-      lecture: {
-        createdAt: string;
-        id: number;
-        title: string;
-      };
-    };
-  };
 }
 
 export interface IClassEditData
@@ -724,4 +725,17 @@ export interface LikedLecture {
     updatedAt: string;
     deletedAt: null | string;
   };
+}
+
+interface IScheduleLearnerList {
+  id: number;
+  userId: number;
+  nickname: string;
+  userProfileImage: string | null;
+  representative: string;
+  phoneNumber: number;
+  participants: number;
+  requests: string;
+  enrollmentCount: number;
+  memo: null | string;
 }

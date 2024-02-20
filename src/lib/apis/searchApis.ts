@@ -5,8 +5,6 @@ import {
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const searchInstructors = async (
   data: searchInstructorParameters,
   userState: boolean,
@@ -24,7 +22,7 @@ export const searchInstructors = async (
         }
       });
 
-    const response = await fetch(`${DOMAIN}/api/instructors/search?${params}`, {
+    const response = await fetch(`/api/instructors/search?${params}`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -65,7 +63,7 @@ export const searchClasses = async (
         }
       });
 
-    const response = await fetch(`${DOMAIN}/api/class/search?${params}`, {
+    const response = await fetch(`/api/class/search?${params}`, {
       method: 'GET',
       credentials: 'include',
       headers: {

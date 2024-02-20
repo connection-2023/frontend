@@ -1,4 +1,4 @@
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
+import { FetchError } from '@/types/types';
 
 export const postSingleImage = async (image: File, folder: string) => {
   try {
@@ -6,7 +6,7 @@ export const postSingleImage = async (image: File, folder: string) => {
     formData.append('image', image);
 
     const response = await fetch(
-      `${DOMAIN}/api/image/single?folder=${encodeURIComponent(folder)}`,
+      `/api/image/single?folder=${encodeURIComponent(folder)}`,
       {
         method: 'POST',
         credentials: 'include',
@@ -15,7 +15,10 @@ export const postSingleImage = async (image: File, folder: string) => {
     );
 
     if (!response.ok) {
-      throw new Error('단일 이미지 업로드 실패');
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
@@ -36,7 +39,7 @@ export const postMultipleImage = async (images: File[], folder: string) => {
     });
 
     const response = await fetch(
-      `${DOMAIN}/api/image/multiple?folder=${encodeURIComponent(folder)}`,
+      `/api/image/multiple?folder=${encodeURIComponent(folder)}`,
       {
         method: 'POST',
         credentials: 'include',
@@ -45,7 +48,10 @@ export const postMultipleImage = async (images: File[], folder: string) => {
     );
 
     if (!response.ok) {
-      throw new Error('다중 이미지 업로드 실패');
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
@@ -58,7 +64,7 @@ export const postMultipleImage = async (images: File[], folder: string) => {
 
 export const deleteImage = async (data: { imageUrl: string }) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/image/delete`, {
+    const response = await fetch(`/api/image/delete`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +73,10 @@ export const deleteImage = async (data: { imageUrl: string }) => {
     });
 
     if (!response.ok) {
-      throw new Error('이미지 삭제 실패');
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const responseData = await response.json();

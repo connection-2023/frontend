@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { LikeSVG } from '@/icons/svg';
 import { postReviewLikes, deleteReviewLikes } from '@/lib/apis/classApis';
 import Review from './Review';
-import Profile from '../ProfileImage/ProfileImage';
+import Profile from '../Profile/ProfileImage';
 
 interface UserReviewProps {
   src: string | null;

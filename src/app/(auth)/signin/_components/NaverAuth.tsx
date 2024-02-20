@@ -4,8 +4,6 @@ import { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { NaverSVG } from '@/icons/svg';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 const NaverAuth = ({
   onSuccess,
 }: {
@@ -22,7 +20,7 @@ const NaverAuth = ({
     if (code && state && !isLoading.current) {
       isLoading.current = true;
 
-      fetch(`${DOMAIN}/api/auth/naver-login?code=${code}&state=${state}`, {
+      fetch(`/api/auth/naver-login?code=${code}&state=${state}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -7,16 +7,12 @@ import {
 } from '@/types/class';
 import { FetchError } from '@/types/types';
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
-
 export const getClassDraft = async (
   lectureId: number | string,
 ): Promise<IGetClassDraft> => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/class/drafts/getDraft?lectureId=${encodeURIComponent(
-        lectureId,
-      )}`,
+      `/api/class/drafts/getDraft?lectureId=${encodeURIComponent(lectureId)}`,
       {
         method: 'GET',
         credentials: 'include',
@@ -25,7 +21,9 @@ export const getClassDraft = async (
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || '');
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
@@ -38,18 +36,16 @@ export const getClassDraft = async (
 
 export const createClassDraft = async () => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/drafts/createDraft`, {
+    const response = await fetch(`/api/class/drafts/createDraft`, {
       method: 'POST',
       credentials: 'include',
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        `임시저장 생성 오류: ${errorData.message || ''}, status: ${
-          response.status
-        }`,
-      );
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
@@ -62,7 +58,7 @@ export const createClassDraft = async () => {
 
 export const getClassDrafts = async (): Promise<IGetClassDrafts[]> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/drafts/getDrafts`, {
+    const response = await fetch(`/api/class/drafts/getDrafts`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -90,7 +86,7 @@ export const deleteClassDrafts = async (
 ): Promise<IGetClassDrafts> => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/class/drafts/deleteDraft?lectureId=${encodeURIComponent(
+      `/api/class/drafts/deleteDraft?lectureId=${encodeURIComponent(
         lectureId,
       )}`,
       {
@@ -101,11 +97,9 @@ export const deleteClassDrafts = async (
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        `임시저장 삭제 오류: ${errorData.message || ''}, status: ${
-          response.status
-        }`,
-      );
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
@@ -119,7 +113,7 @@ export const deleteClassDrafts = async (
 
 export const updateClassDraft = async (data: IUpdateClassDraft) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/drafts/updateDraft`, {
+    const response = await fetch(`/api/class/drafts/updateDraft`, {
       method: 'PATCH',
       credentials: 'include',
       headers: {
@@ -130,9 +124,9 @@ export const updateClassDraft = async (data: IUpdateClassDraft) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        `임시저장 오류: ${errorData.message || ''}, status: ${response.status}`,
-      );
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const responseData = await response.json();
@@ -145,7 +139,7 @@ export const updateClassDraft = async (data: IUpdateClassDraft) => {
 
 export const createClass = async (data: any) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/create`, {
+    const response = await fetch(`/api/class/create`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -172,7 +166,7 @@ export const createClass = async (data: any) => {
 
 export const getMyLecture = async (): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/myLecture`, {
+    const response = await fetch(`/api/class/myLecture`, {
       method: 'GET',
       credentials: 'include',
     });
@@ -192,7 +186,7 @@ export const getMyLecture = async (): Promise<ApiResponse> => {
 
 export const getLikesClassList = async (): Promise<LikedLecture[]> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/likes/get`, {
+    const response = await fetch(`/api/class/likes/get`, {
       method: 'GET',
       credentials: 'include',
       headers: {

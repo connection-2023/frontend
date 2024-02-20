@@ -1,5 +1,6 @@
 import { IReservation } from './class';
 import { PaymentStatusType } from './payment';
+
 export interface instructorPostResponse {
   profileCardImageUrl: string | null;
   nickname: string;
@@ -89,18 +90,18 @@ export interface IInstructorRegister {
 }
 
 export interface InstructorUpdate {
-  newProfileImageUrls: string[];
-  etcGenres: string[];
-  genres: string[];
-  regions: string[];
-  profileCardImageUrl: string;
-  youtubeUrl: string;
-  instagramUrl: string;
-  homepageUrl: string;
-  affiliation: string;
-  introduction: string;
-  experience: string;
-  instagramPostUrls: string[];
+  newProfileImageUrls?: string[];
+  etcGenres?: string[];
+  genres?: string[];
+  regions?: string[];
+  profileCardImageUrl?: string;
+  youtubeUrl?: string;
+  instagramUrl?: string;
+  homepageUrl?: string;
+  affiliation?: string;
+  introduction?: string;
+  experience?: string;
+  instagramPostUrls?: string[];
 }
 
 export interface IInstructorReviewList {
@@ -269,6 +270,7 @@ export interface IUpdatePaymentStatusRequestData {
   refusedReason?: string;
   lectureId?: number;
 }
+
 export interface searchInstructorParameters {
   take: number;
   sortOption: 'LATEST' | 'STARS';
@@ -286,4 +288,14 @@ export interface searchBestInstructorData {
   lecturerProfileImageUrl: {
     url: string;
   }[];
+}
+
+export interface CommonBankAccount {
+  bankCode: string;
+  holderName: string;
+  accountNumber: string;
+}
+
+export interface bankAccount extends CommonBankAccount {
+  id: number;
 }

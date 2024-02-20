@@ -1,5 +1,6 @@
 'use client';
-import { parseISO, format, isPast, isFuture } from 'date-fns';
+import { isPast, isFuture } from 'date-fns';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -7,12 +8,27 @@ import { toast } from 'react-toastify';
 import { ButtonStyles } from '@/constants/constants';
 import { ArrowUpSVG, EditSVG } from '@/icons/svg';
 import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
-import ClassOverview from './_components/ClassOverview';
-import ClassTable from './_components/ClassTable';
-import EditDayOff from './_components/EditDayOff';
-import EditReservationComment from './_components/EditReservationComment';
 import Notice from '@/components/ClassNotice/Notice';
 import { ILecturerClassDetailResonse } from '@/types/class';
+
+const EditDayOff = dynamic(() => import('./_components/EditDayOff'), {
+  ssr: false,
+});
+
+const EditReservationComment = dynamic(
+  () => import('./_components/EditReservationComment'),
+  {
+    ssr: false,
+  },
+);
+
+const ClassOverview = dynamic(() => import('./_components/ClassOverview'), {
+  ssr: false,
+});
+
+const ClassTable = dynamic(() => import('./_components/ClassTable'), {
+  ssr: false,
+});
 
 const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const router = useRouter();
@@ -27,13 +43,13 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   useEffect(() => {
     const fetchClassDetailData = async () => {
       const data = await getLecturerClassDetail(id);
-      if (data instanceof Error) return;
+      if (data instanceof Error) return router.push('/error');
 
       setClassData(data);
     };
 
     fetchClassDetailData();
-  }, []);
+  }, [id]);
 
   if (!classData) return null;
 
@@ -44,15 +60,6 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       setSelectedClass({ index, id });
     }
   };
-
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  const notificationUpdateDate = format(
-    parseISO(classData.notification.updatedAt),
-    'yyyy.MM.dd',
-  );
 
   const updateData = async (
     key: 'notification' | 'reservationComment' | 'holidays',
@@ -116,7 +123,10 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
         {/* Top Section */}
         <section className="flex whitespace-nowrap px-2 py-3">
           <div className="flex w-full items-center">
-            <button onClick={handleGoBack} className="origin-center -rotate-90">
+            <button
+              onClick={() => router.back()}
+              className="origin-center -rotate-90"
+            >
               <ArrowUpSVG width="34" height="34" fill="black" />
             </button>
             <p className="mr-2 flex h-[1.5625rem] w-[3.5625rem] items-center justify-center border-2 border-solid border-gray-500 text-sm font-bold text-gray-100">
@@ -148,7 +158,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
               <Notice
                 isEditMode={true}
                 content={classData.notification.content}
-                updateDate={notificationUpdateDate}
+                updateDate={classData.notification.updatedAt}
                 updateNotice={updateData}
               />
             </div>
@@ -172,7 +182,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
               }
             />
 
-            <div className="my-5 w-full ">
+            <div className="my-5 w-full">
               <ClassTable
                 schedules={processedScheduleData}
                 maxCapacity={classData.maxCapacity}

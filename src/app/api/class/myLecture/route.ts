@@ -24,7 +24,7 @@ export const GET = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + '/lectures/lecturers', {
+  const response = await fetch(END_POINT + '/lecturers/lectures', {
     method: 'GET',
     credentials: 'include',
     headers,

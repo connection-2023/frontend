@@ -3,6 +3,7 @@ import {
   addMinutes,
   parseISO,
   compareAsc,
+  isBefore,
   isAfter,
   isEqual,
   eachDayOfInterval,
@@ -10,14 +11,15 @@ import {
   getDay,
   isSameDay,
 } from 'date-fns';
-import { ko } from 'date-fns/locale';
-import { IGenre, IRegion } from '@/types/types';
+import ko from 'date-fns/locale/ko';
 import {
   IClassSchedule,
   DayTimeList,
   DateTimeList,
   IDaySchedule,
+  IMonthlyClassSchedules,
 } from '@/types/class';
+import { IGenre, IRegion } from '@/types/types';
 
 // 서울 특별시 -> 서울 충청북도 -> 충북
 export const formatLocationToString = (
@@ -256,4 +258,34 @@ export const calculateEndTime = (start: string, duration: number) => {
   const minutes = ('0' + dateObj.getMinutes()).slice(-2);
 
   return `${strHours}:${minutes} ${period}`;
+};
+
+export const getLectureProgress = (data: IMonthlyClassSchedules[]) => {
+  const today = new Date();
+
+  const pastLectures = data.filter((item) =>
+    isBefore(parseISO(item.startDateTime), today),
+  );
+
+  const futureLectures = data.filter((item) =>
+    isAfter(parseISO(item.startDateTime), today),
+  );
+
+  return [
+    {
+      text: '수업 완료',
+      count: pastLectures.length,
+      color: 'text-main-color',
+    },
+    {
+      text: '수업 예정',
+      count: futureLectures.length,
+      color: 'text-sub-color1',
+    },
+    {
+      text: '총 수업',
+      count: data.length,
+      color: '',
+    },
+  ];
 };

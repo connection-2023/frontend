@@ -12,7 +12,7 @@ import { ArrowRightSVG } from '@/icons/svg';
 import formatDate from '@/utils/formatDate';
 import Button from '@/components/Button/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import ProfileImg from '@/components/Profile/ProfileImage';
 import { IpassData, IpassTable } from '@/types/pass';
 
 interface PassDetailProps {

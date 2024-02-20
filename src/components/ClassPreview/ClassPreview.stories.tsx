@@ -16,7 +16,7 @@ const meta: Meta<typeof ClassPreview> = {
     type: '개인레슨',
     review: { average: 4.5, count: 14 },
     price: 80000,
-    profile: { src: null, nickname: 'nickname' },
+    profile: { src: null, nickname: 'nickname', id: 1 },
     imgURL: [
       'https://img.freepik.com/free-photo/pretty-woman-practising-hip-hop-dance_107420-85008.jpg?size=626&ext=jpg',
       'https://img.freepik.com/free-photo/girl-dancing-hip-hop-in-stylish-clothes-on-gradient-background-at-dance-hall-in-neon-light_155003-9249.jpg?size=626&ext=jpg',
@@ -45,6 +45,6 @@ export const 마감: Story = {
     type: '개인레슨',
     review: { average: 4, count: 12 },
     price: 80000,
-    profile: { src: null, nickname: 'nickname' },
+    profile: { src: null, nickname: 'nickname', id: 1 },
   },
 };

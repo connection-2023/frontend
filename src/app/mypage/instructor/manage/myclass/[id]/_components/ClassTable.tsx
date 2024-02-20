@@ -1,5 +1,10 @@
-import { isFuture, format, subHours } from 'date-fns';
+import { isFuture, subHours } from 'date-fns';
 import { useState, MouseEvent } from 'react';
+import {
+  formatShortDate,
+  formatTimeNoSec,
+  formatDateTimeNoSec,
+} from '@/utils/dateTimeUtils';
 import EnrollmentModal from './EnrollmentModal';
 import { IClassSchedule, IProcessedSchedules } from '@/types/class';
 
@@ -8,6 +13,7 @@ interface ClassTableProps {
   schedules: IProcessedSchedules[];
   maxCapacity: number;
   reservationDeadline: number;
+  // eslint-disable-next-line no-unused-vars
   handleSelectClassId: (index: number, id: number) => void;
 }
 
@@ -23,8 +29,6 @@ const ClassTable = ({
     null,
   );
 
-  if (!schedules) return null;
-
   const openModal = (item: IProcessedSchedules) => {
     setSelectedItem(item);
     setIsModalOpen(true);
@@ -33,6 +37,8 @@ const ClassTable = ({
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  if (!schedules) return null;
 
   const filteredTableData = showPastClasses
     ? schedules
@@ -44,7 +50,7 @@ const ClassTable = ({
 
   return (
     <>
-      <label className="mb-[0.88rem] flex items-center gap-[0.38rem] text-sm font-semibold text-gray-100">
+      <label className="mb-3.5 flex items-center gap-[0.38rem] text-sm font-semibold text-gray-100">
         <input
           type="checkbox"
           checked={showPastClasses}
@@ -53,41 +59,46 @@ const ClassTable = ({
         />
         지난 클래스도 함께 보기
       </label>
-      <table className={`w-full border-collapse ${TableCellStyle} text-base`}>
-        <thead>
-          <tr className="break-keep font-bold text-gray-100">
-            <th className={`${TableCellStyle}`}>클래스</th>
-            <th className={`${TableCellStyle}`}>날짜 및 시간</th>
-            <th className={`${TableCellStyle}`}>신청한 수강생</th>
-            <th className={`${TableCellStyle}`}>예약 마감일</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredTableData.map((item, idx) => (
-            <TableList
-              key={idx}
-              {...item}
-              reservationDeadline={reservationDeadline}
-              isPastClass={item.isPastClass}
-              isFirstClass={
-                showPastClasses ? idx === firstFutureClassIndex : idx === 0
-              }
-              maxCapacity={maxCapacity}
-              handleSelectClassId={() =>
-                handleSelectClassId(item.index, item.id)
-              }
-              handleModal={() => openModal(item)}
-            />
-          ))}
-        </tbody>
-      </table>
-      <EnrollmentModal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        selectedClass={selectedItem}
-        maxCapacity={maxCapacity}
-        reservationDeadline={reservationDeadline}
-      />
+      <div className="max-h-96 w-full border-collapse overflow-y-auto">
+        <table className={`w-full border-collapse ${TableCellStyle} text-base`}>
+          <thead>
+            <tr className="break-keep font-bold text-gray-100">
+              <th className={`${TableCellStyle}`}>클래스</th>
+              <th className={`${TableCellStyle}`}>날짜 및 시간</th>
+              <th className={`${TableCellStyle}`}>신청한 수강생</th>
+              <th className={`${TableCellStyle}`}>예약 마감일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTableData.map((item, idx) => (
+              <TableList
+                key={idx}
+                {...item}
+                reservationDeadline={reservationDeadline}
+                isPastClass={item.isPastClass}
+                isFirstClass={
+                  showPastClasses ? idx === firstFutureClassIndex : idx === 0
+                }
+                maxCapacity={maxCapacity}
+                handleSelectClassId={() =>
+                  handleSelectClassId(item.index, item.id)
+                }
+                handleModal={() => openModal(item)}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {selectedItem && (
+        <EnrollmentModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          selectedClass={selectedItem}
+          maxCapacity={maxCapacity}
+          reservationDeadline={reservationDeadline}
+        />
+      )}
     </>
   );
 };
@@ -95,8 +106,9 @@ const ClassTable = ({
 export default ClassTable;
 
 const formatDateTime = (startDateTime: string, endDateTime: string) => {
-  const startDate = format(new Date(startDateTime), 'yy.MM.dd HH:mm');
-  const endDate = format(new Date(endDateTime), 'HH:mm');
+  const startDate =
+    formatShortDate(startDateTime) + ' ' + formatTimeNoSec(startDateTime);
+  const endDate = formatTimeNoSec(endDateTime);
 
   return `${startDate}-${endDate}`;
 };
@@ -156,7 +168,7 @@ const TableList = ({
         {numberOfParticipants}/{maxCapacity}명
       </th>
       <th className={`${TableCellStyle} font-normal`}>
-        {format(deadlineTime, 'yyyy.MM.dd HH:mm')}
+        {formatDateTimeNoSec(deadlineTime)}
       </th>
     </tr>
   );

@@ -1,17 +1,30 @@
-import { format, isValid, parse } from 'date-fns';
-import React, { useState, useRef, useEffect } from 'react';
+import isValid from 'date-fns/isValid';
+import dynamic from 'next/dynamic';
+import { useState, useRef, useEffect, ChangeEventHandler, memo } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG } from '@/icons/svg';
-import RangeCalendar from '@/components/Calendar/RangeCalendar';
+import {
+  formatDateWithHyphens,
+  parseHyphenatedDate,
+} from '@/utils/dateTimeUtils';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
 
+const RangeCalendar = dynamic(
+  () => import('@/components/Calendar/RangeCalendar'),
+  {
+    ssr: false,
+  },
+);
+
+/* eslint-disable no-unused-vars */
 interface EditClassRangeProps {
   onChange: (value: { startDate: string; endDate: string }) => void;
   defaultValue?: { startDate: string; endDate: string };
 }
 
+/* eslint-enable no-unused-vars */
 const EditClassRange = ({
   onChange,
   defaultValue = { startDate: '', endDate: '' },
@@ -23,7 +36,7 @@ const EditClassRange = ({
 
   useEffect(() => {
     onChange({ startDate: fromValue, endDate: toValue });
-  }, [fromValue, toValue]);
+  }, [fromValue, toValue, onChange]);
 
   useClickAway(ref, () => {
     setIsCalendarVisible(false);
@@ -36,7 +49,8 @@ const EditClassRange = ({
   const handleDateChange =
     (setDateValue: React.Dispatch<React.SetStateAction<string>>) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const date = parse(e.target.value, 'y-MM-dd', new Date());
+      const date = parseHyphenatedDate(e.target.value);
+
       if (isValid(date)) {
         setDateValue(e.target.value);
       }
@@ -51,12 +65,12 @@ const EditClassRange = ({
     if (!range) return;
 
     if (range.from) {
-      setFromValue(format(range.from, 'y-MM-dd'));
+      setFromValue(formatDateWithHyphens(range.from));
     } else {
       setFromValue('');
     }
     if (range.to) {
-      setToValue(format(range.to, 'y-MM-dd'));
+      setToValue(formatDateWithHyphens(range.to));
     } else {
       setToValue('');
     }
@@ -102,13 +116,13 @@ const EditClassRange = ({
   );
 };
 
-export default React.memo(EditClassRange);
+export default memo(EditClassRange);
 
 interface IDateInputProps {
   placeholder: string;
   value: string;
   disabled?: boolean;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onChange: ChangeEventHandler<HTMLInputElement>;
   openCalendar: () => void;
 }
 

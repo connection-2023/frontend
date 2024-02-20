@@ -7,7 +7,7 @@ import {
   UploadBeforeReturn,
   UploadInfo,
 } from 'suneditor-react/dist/types/upload';
-import { QUILL_DEFAULT_VALUE, TOOLBAR } from '@/constants/constants';
+import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
 import { postSingleImage } from '@/lib/apis/imageApi';
 import { toast } from 'react-toastify';
@@ -138,7 +138,8 @@ const CustomEditor = ({
         )}
       </label>
 
-      <div className="w-full max-w-[calc(95vw)] sm:max-w-[40rem]">
+      {/* max-w-[calc(95vw)] sm:max-w-[40rem] */}
+      <div className="w-full">
         <Controller
           name={dataName}
           control={control}

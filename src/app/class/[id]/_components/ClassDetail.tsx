@@ -1,24 +1,22 @@
 import Link from 'next/link';
 import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
+import { CLASS_HSTYLE } from '@/constants/constants';
 import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
 import {
-  getClassPreview,
   getClassDetail,
   getClassSchedules,
-  getUserReservation,
 } from '@/lib/apis/serverApis/classPostApis';
 import { formatDate } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import Apply from './Apply';
 import ClassReviewSection from './ClassReviewSection';
 import ReadMore from './ReadMore';
 import Notice from '@/components/ClassNotice/Notice';
 import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import { CLASS_HSTYLE } from '@/constants/constants';
 
-import Apply from './Apply';
 const ClassDetail = async ({ id }: { id: string }) => {
   const classDetailData = getClassDetail(id);
   const classSchedules = getClassSchedules(id);
@@ -62,13 +60,16 @@ const ClassDetail = async ({ id }: { id: string }) => {
         />
         {/* 프로필 */}
         <div className="mb-10 mt-[1.81rem] flex w-full items-center justify-between">
-          <div className="text-lg font-bold">
+          <Link
+            href={`/instructor/${lecturer.id}`}
+            className="cursor-pointer text-lg font-bold"
+          >
             <ProfileImage
               src={lecturer.profileCardImageUrl}
               nickname={lecturer.nickname}
               size="medium"
             />
-          </div>
+          </Link>
           <div className="flex h-[1.8rem] w-[12.5rem] items-center gap-[0.81rem] whitespace-nowrap text-sm font-normal">
             <Link
               href={`/instructor/${lecturer.id}`}
@@ -81,7 +82,12 @@ const ClassDetail = async ({ id }: { id: string }) => {
               href={`/chat/${lecturer.id}`}
               className={`h-[28px] ${ButtonStyles.secondary}`}
             >
-              <ChatSVG className="mr-[3px] stroke-black" />
+              <ChatSVG
+                width="17"
+                height="17"
+                fill="black"
+                className="mr-[3px]"
+              />
               문의하기
             </Link>
           </div>
@@ -134,7 +140,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
         {/* <section id="location-section" className="mb-14 scroll-mt-16">
       <h2 className={h2Style}>진행 장소</h2>
       <span className="mb-[0.62rem] mt-2 flex items-center gap-[0.13rem]">
-        <LocationSVG /> {detailAddress}
+        <LocationSVG width={21} height={21} className="fill-sub-color1" /> {detailAddress}
       </span>
       <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
         <Map address={locationDetail} studioName={studioName} />
@@ -147,6 +153,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
       </section>
       <section className="fixed bottom-0 w-full md:static md:w-auto md:max-w-[17rem]">
         <Apply
+          id={id}
           schedule={schedule}
           duration={duration}
           maxCapacity={maxCapacity}

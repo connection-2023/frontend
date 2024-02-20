@@ -2,8 +2,8 @@ import Link from 'next/link';
 import Download from './_components/Download';
 import Button from '@/components/Button/Button';
 import DownloadCoupon from '@/components/Coupon/DownloadCoupon';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
-import { instructorProfile } from '@/types/auth';
+import ProfileImage from '@/components/Profile/ProfileImage';
+import { profileInfo } from '@/types/auth';
 import { IprivateCoupon } from '@/types/coupon';
 
 interface pageProps {
@@ -17,9 +17,9 @@ interface pageProps {
 }
 
 const page = async ({ params, searchParams }: pageProps) => {
-  const { nickname, profileCardImageUrl } = JSON.parse(
+  const { nickname, profileImage } = JSON.parse(
     searchParams.lecturerInfo,
-  ) as instructorProfile;
+  ) as profileInfo;
   const coupon = JSON.parse(searchParams.coupon) as IprivateCoupon;
   return (
     <main className="mb-20 flex h-full w-full flex-col items-center gap-7">
@@ -32,11 +32,7 @@ const page = async ({ params, searchParams }: pageProps) => {
         <dl className="flex items-center">
           <dt className="w-24 font-semibold">강사</dt>
           <dd>
-            <ProfileImage
-              size="small"
-              src={profileCardImageUrl}
-              nickname={nickname}
-            />
+            <ProfileImage size="small" src={profileImage} nickname={nickname} />
           </dd>
         </dl>
 

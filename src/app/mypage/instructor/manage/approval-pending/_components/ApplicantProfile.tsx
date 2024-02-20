@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import Dropdown from '@/components/Dropdown/Dropdown';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import ProfileImg from '@/components/Profile/ProfileImage';
 import { IReservation } from '@/types/class';
 
 interface ApplicantProfileProps {

@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
 
 interface AccordionProps {
   children: React.ReactNode;
@@ -12,18 +12,20 @@ const Accordion = ({ children, isOpen }: AccordionProps) => {
   };
 
   return (
-    <AnimatePresence initial={false}>
-      {isOpen && (
-        <motion.div
-          variants={contentVariants}
-          initial="collapsed"
-          animate="open"
-          exit="collapsed"
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <m.div
+            variants={contentVariants}
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+          >
+            {children}
+          </m.div>
+        )}
+      </AnimatePresence>
+    </LazyMotion>
   );
 };
 

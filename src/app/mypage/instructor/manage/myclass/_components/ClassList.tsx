@@ -1,5 +1,5 @@
-import { parseISO, format } from 'date-fns';
 import { useRouter } from 'next/navigation';
+import { formatShortDate } from '@/utils/dateTimeUtils';
 import { ILecturerClassListResonse } from '@/types/class';
 
 interface ClassListProps extends ILecturerClassListResonse {
@@ -18,10 +18,7 @@ const ClassList = ({
   const router = useRouter();
   const currentSchedule = allSchedule - completedSchedule;
   const status = isProgress ? '모집중' : '마감';
-  const range = `${format(parseISO(startDate), 'yy.MM.dd')} - ${format(
-    parseISO(endDate),
-    'yy.MM.dd',
-  )}`;
+  const range = `${formatShortDate(startDate)} - ${formatShortDate(endDate)}`;
 
   const handleTitleClick = (e: React.MouseEvent) => {
     e.stopPropagation();

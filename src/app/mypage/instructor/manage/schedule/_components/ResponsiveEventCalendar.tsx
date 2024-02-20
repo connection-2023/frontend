@@ -1,5 +1,5 @@
-import { isSameDay, parseISO } from 'date-fns';
-import { ko } from 'date-fns/esm/locale';
+import isSameDay from 'date-fns/isSameDay';
+import ko from 'date-fns/locale/ko';
 import { useState } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
 import { DayPicker, CaptionProps } from 'react-day-picker';
@@ -18,6 +18,7 @@ import '@/styles/calendar.css';
 
 interface ResponsiveEventCalendarProps {
   date: Date;
+  // eslint-disable-next-line no-unused-vars
   handleDateChange: (newDate: Date) => void;
   scheduleData: IMonthlyClassSchedules[] | undefined;
 }
@@ -41,7 +42,7 @@ const ResponsiveEventCalendar = ({
 
   const selectedEvent =
     scheduleData?.filter((event) =>
-      isSameDay(selectedDate, parseISO(event.startDateTime)),
+      isSameDay(selectedDate, new Date(event.startDateTime)),
     ) || [];
 
   const onNavigate = (newDate: Date | undefined) => {

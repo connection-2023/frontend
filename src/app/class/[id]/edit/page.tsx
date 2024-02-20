@@ -1,40 +1,59 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { parse, format, parseISO, isSameDay } from 'date-fns';
+import isSameDay from 'date-fns/isSameDay';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, lazy } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import AddSchedules from './_components/AddSchedules';
-import EditClassRange from './_components/EditClassRange';
-import EditDayoff from './_components/EditDayoff';
-import Loading from './_components/Loading';
-import NonEditableSection from './_components/NonEditableSection';
-import SideNavbar from './_components/SideNavbar';
-import { filteredAddedSchedules } from './_lib/addScheduleUtils';
-import NumberSelect from '../../create/_components/NumberSelect';
+import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
+import { CLASS_EDIT_STYLE } from '@/constants/constants';
 import { TimeSVG } from '@/icons/svg';
 import { getOriginalClassInfo, updateClassData } from '@/lib/apis/classApis';
 import { deleteImage } from '@/lib/apis/imageApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store/userStore';
 import { uploadImageFilesWithFallback } from '@/utils/apiDataProcessor';
+import {
+  formatDateWithHyphens,
+  parseHyphenatedDate,
+} from '@/utils/dateTimeUtils';
 import createOptions from '@/utils/generateStudentCountOptions';
 import {
   formatScheduleDays,
   generateDatesFromNewEndDate,
 } from '@/utils/parseUtils';
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
+import AddSchedules from './_components/AddSchedules';
+import EditButtons from './_components/EditButtons';
+import EditClassRange from './_components/EditClassRange';
+import EditDayoff from './_components/EditDayoff';
+import Loading from './_components/Loading';
+import NonEditableSection from './_components/NonEditableSection';
+import SideNavbar from './_components/SideNavbar';
+import { filteredAddedSchedules } from './_lib/addScheduleUtils';
+import NumberSelect from '../../create/[id]/_components/NumberSelect';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import CustomEditor from '@/components/TextArea/CustomEditor';
-import TextAreaSection from '@/components/TextArea/TextAreaSection';
 import UploadImage from '@/components/UploadImage/UploadImage';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { IClassEditRequest } from '@/types/class';
 import { ErrorMessage, FetchError } from '@/types/types';
-import { ANNOUNCEMENT, CLASS_OPERATION_PLAN } from '@/constants/constants';
-import { CLASS_EDIT_STYLE } from '@/constants/constants';
+
+const CustomEditor = dynamic(
+  () => import('@/components/TextArea/CustomEditor'),
+  {
+    ssr: false,
+  },
+);
+
+const TextAreaSection = dynamic(
+  () => import('@/components/TextArea/TextAreaSection'),
+  {
+    ssr: false,
+  },
+);
+
+const ValidationMessage = lazy(
+  () => import('@/components/ValidationMessage/ValidationMessage'),
+);
 
 const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
   const { data, isLoading, error } = useQuery({
@@ -96,7 +115,7 @@ const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
     if (!newEndDate) return [];
     if (
       data.daySchedule &&
-      !isSameDay(parseISO(data.endDate), parseISO(newEndDate))
+      !isSameDay(new Date(data.endDate), new Date(newEndDate))
     ) {
       return [
         ...formatSchedule,
@@ -250,8 +269,8 @@ const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
               name="endDate"
               control={control}
               defaultValue={{
-                startDate: format(parseISO(startDate), 'yyyy-MM-dd'),
-                endDate: format(parseISO(endDate), 'yyyy-MM-dd'),
+                startDate: formatDateWithHyphens(startDate),
+                endDate: formatDateWithHyphens(endDate),
               }}
               rules={{
                 required: '전체 클래스 기간',
@@ -259,23 +278,14 @@ const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
                   const dateFormat = /^\d{4}-\d{2}-\d{2}$/;
                   const isValidStartDate = dateFormat.test(startDate);
                   const isValidEndDate = dateFormat.test(endDate);
-
-                  const parsedStartDate = parse(
-                    startDate,
-                    'yyyy-MM-dd',
-                    new Date(),
-                  );
-                  const parsedEndDate = parse(
-                    endDate,
-                    'yyyy-MM-dd',
-                    new Date(),
-                  );
+                  const parsedStartDate = parseHyphenatedDate(startDate);
+                  const parsedEndDate = parseHyphenatedDate(endDate);
 
                   if (
                     !isValidStartDate ||
                     !isValidEndDate ||
-                    !format(parsedStartDate, 'yyyy-MM-dd') === startDate ||
-                    !format(parsedEndDate, 'yyyy-MM-dd') === endDate
+                    !formatDateWithHyphens(parsedStartDate) === startDate ||
+                    !formatDateWithHyphens(parsedEndDate) === endDate
                   ) {
                     return '올바른 클래스 기간';
                   }
@@ -497,7 +507,7 @@ const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
                   render={({ field }) => (
                     <NumberSelect
                       instanceId="maxCapacity"
-                      defaultValue={field.value}
+                      value={field.value}
                       onChange={field.onChange}
                       options={createOptions(maxCapacity, 100)}
                     />
@@ -544,20 +554,13 @@ const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
         </FormProvider>
       </div>
 
-      <div className="mb-11 mt-20 flex flex-col gap-2 text-lg font-semibold md:hidden">
-        <Button
-          type="submit"
-          onClick={handleSubmit(onSubmit, invalid)}
-          color="secondary"
-          size="large"
-        >
-          수정 완료
-        </Button>
+      <EditButtons
+        handleSubmit={handleSubmit}
+        handleEditCancel={handleEditCancel}
+        invalid={invalid}
+        onSubmit={onSubmit}
+      />
 
-        <UniqueButton onClick={handleEditCancel} color="secondary" size="large">
-          수정 취소
-        </UniqueButton>
-      </div>
       {/* 유효성 토스트 메세지 */}
       <ValidationMessage
         title="하기 값(들)을 확인해 주세요."

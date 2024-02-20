@@ -4,14 +4,11 @@ import {
   ILecturerClassListResonse,
   ILecturerClassDetailResonse,
   IClassEditRequest,
-  IRegisterLists,
   IClassSchedule,
-  ILearner,
   IClassEditPageData,
+  IScheduleLearnerList,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
-
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 export const getClassReviews = async (
   id: string,
@@ -19,7 +16,7 @@ export const getClassReviews = async (
 ): Promise<IUserReview[] | Error> => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/post/class/review?id=${id}&orderBy=${order}`,
+      `/api/post/class/review?id=${id}&orderBy=${order}`,
       {
         method: 'GET',
       },
@@ -42,7 +39,7 @@ export const getUserClass = async (
   const query = `take=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&enrollLectureType=${type}`;
 
   try {
-    const response = await fetch(`${DOMAIN}/api/class/myclass/list?${query}`, {
+    const response = await fetch(`/api/class/myclass/list?${query}`, {
       method: 'GET',
     }).then((data) => data.json());
 
@@ -54,7 +51,7 @@ export const getUserClass = async (
 
 export const postClassLikes = async (id: string) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/likes/add?id=${id}`, {
+    const response = await fetch(`/api/class/likes/add?id=${id}`, {
       method: 'POST',
       credentials: 'include',
     });
@@ -77,7 +74,7 @@ export const postClassLikes = async (id: string) => {
 
 export const deleteClassLikes = async (id: string) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/likes/delete?id=${id}`, {
+    const response = await fetch(`/api/class/likes/delete?id=${id}`, {
       method: 'DELETE',
       credentials: 'include',
     });
@@ -100,12 +97,9 @@ export const deleteClassLikes = async (id: string) => {
 
 export const postReviewLikes = async (id: number) => {
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/post/review/likes/add?id=${id}`,
-      {
-        method: 'POST',
-      },
-    );
+    const response = await fetch(`/api/post/review/likes/add?id=${id}`, {
+      method: 'POST',
+    });
 
     return response;
   } catch (error) {
@@ -115,12 +109,9 @@ export const postReviewLikes = async (id: number) => {
 
 export const deleteReviewLikes = async (id: number) => {
   try {
-    const response = await fetch(
-      `${DOMAIN}/api/post/review/likes/delete?id=${id}`,
-      {
-        method: 'DELETE',
-      },
-    );
+    const response = await fetch(`/api/post/review/likes/delete?id=${id}`, {
+      method: 'DELETE',
+    });
 
     return response;
   } catch (error) {
@@ -133,7 +124,7 @@ export const getLecturerClassList = async (
 ): Promise<ILecturerClassListResonse[] | Error> => {
   try {
     const response = await fetch(
-      `${DOMAIN}/api/class/myclass/lecturer?progressType=${progressType}`,
+      `/api/class/myclass/lecturer?progressType=${progressType}`,
       {
         credentials: 'include',
         method: 'GET',
@@ -150,28 +141,29 @@ export const getLecturerClassDetail = async (
   id: string,
 ): Promise<ILecturerClassDetailResonse | Error> => {
   try {
-    const [classInfoResponse, ScheduleResponse] = await Promise.all([
-      fetch(`${DOMAIN}/api/class/info?id=${id}`, {
-        credentials: 'include',
-        method: 'GET',
-      }).then((data) => data.json()),
-      fetch(`${DOMAIN}/api/class/schedules?id=${id}`, {
-        method: 'GET',
-      }).then((data) => data.json()),
-    ]);
+    const [classInfoResponse, classDetailReponse, ScheduleResponse] =
+      await Promise.all([
+        fetch(`/api/class/info?id=${id}`, {
+          credentials: 'include',
+          method: 'GET',
+        }).then((data) => data.json()),
+        fetch(`/api/class/detail?id=${id}`, {
+          credentials: 'include',
+          method: 'GET',
+        }).then((data) => data.json()),
+        fetch(`/api/class/schedules?id=${id}`, {
+          method: 'GET',
+        }).then((data) => data.json()),
+      ]);
 
-    const {
-      title,
-      lectureNotification,
-      reservationComment,
-      maxCapacity,
-      reservationDeadline,
-    } = classInfoResponse.data.lecture;
+    const { title, maxCapacity } = classInfoResponse.data.lecturePreview;
     const { schedule, holidayArr } = ScheduleResponse.data;
+    const { notification, reservationComment, reservationDeadline } =
+      classDetailReponse.data.lectureDetail;
 
     return {
       title,
-      notification: lectureNotification,
+      notification,
       reservationComment,
       maxCapacity,
       reservationDeadline,
@@ -185,7 +177,7 @@ export const getLecturerClassDetail = async (
 
 export const updateClassData = async (id: string, data: IClassEditRequest) => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/edit?id=${id}`, {
+    const response = await fetch(`/api/class/edit?id=${id}`, {
       credentials: 'include',
       method: 'PATCH',
       body: JSON.stringify(data),
@@ -207,52 +199,27 @@ export const updateClassData = async (id: string, data: IClassEditRequest) => {
   }
 };
 
-export const getRegisterLists = async (lectureId: string, id: number) => {
-  try {
-    const response = await fetch(
-      `${DOMAIN}/api/class/myclass/registerLists?lectureId=${lectureId}&scheduleId=${id}`,
-    ).then((data) => data.json());
-
-    return response.data.participant.map(
-      (item: { user: IRegisterLists }) => item.user,
-    );
-  } catch (error) {
-    return new Error('강사 클래스 관리 수강생 조회 요청 오류!');
-  }
-};
-
 export const getAllRegisterLists = async (
   lectureId: string,
   displayCount: number,
   lastItemId: number,
-) => {
-  try {
-    const response = await fetch(
-      `${DOMAIN}/api/class/myclass/learners?lectureId=${lectureId}&displayCount=${displayCount}&lastItemId=${lastItemId}`,
-    ).then((data) => data.json());
+): Promise<IScheduleLearnerList[] | Error> => {
+  const response = await fetch(
+    `/api/class/myclass/learners?lectureId=${lectureId}&displayCount=${displayCount}&lastItemId=${lastItemId}`,
+  ).then((data) => data.json());
 
-    return response.data.lectureLearnerList.map((item: ILearner) => {
-      const { enrollmentCount, user } = item;
-      return {
-        enrollmentCount,
-        nickname: user.nickname,
-        userProfileImage: {
-          userId: user.id,
-          imageUrl: user.userProfileImage.imageUrl,
-        },
-      };
-    });
-  } catch (error) {
-    return new Error('강사 클래스 관리 전체 수강생 조회 요청 오류!');
-  }
+  if (response.statusCode !== 200)
+    throw Error('강사 클래스 관리 전체 수강생 조회 요청 오류!');
+
+  return response.data.lectureLearnerList;
 };
 
 export const getClassSchedules = async (
-  id: string,
+  id: string | number,
 ): Promise<IClassSchedule[] | Error> => {
   try {
-    const response = await fetch(`${DOMAIN}/api/class/schedules?id=${id}`).then(
-      (data) => data.json(),
+    const response = await fetch(`/api/class/schedules?id=${id}`).then((data) =>
+      data.json(),
     );
 
     return response.data.schedule;
@@ -261,20 +228,33 @@ export const getClassSchedules = async (
   }
 };
 
+export const getScheduleRegisterLists = async (
+  scheduleId: number,
+): Promise<IScheduleLearnerList[]> => {
+  const response = await fetch(
+    `/api/class/myclass/schedule-learners?scheduleId=${scheduleId}`,
+  ).then((data) => data.json());
+
+  if (response.statusCode !== 200)
+    throw Error('강사 클래스 관리 - 수강생 요청 모달 조회 요청 오류!');
+
+  return response.data.scheduleLearnerList || [];
+};
+
 export const getOriginalClassInfo = async (
   id: string,
 ): Promise<IClassEditPageData | Error> => {
   try {
     const [classInfoResponse, classDetailResponse, scheduleResponse] =
       await Promise.all([
-        fetch(`${DOMAIN}/api/class/info?id=${id}`, {
+        fetch(`/api/class/info?id=${id}`, {
           credentials: 'include',
           method: 'GET',
         }).then((data) => data.json()),
-        fetch(`${DOMAIN}/api/class/detail?id=${id}`, {
+        fetch(`/api/class/detail?id=${id}`, {
           method: 'GET',
         }).then((data) => data.json()),
-        fetch(`${DOMAIN}/api/class/schedules?id=${id}`, {
+        fetch(`/api/class/schedules?id=${id}`, {
           method: 'GET',
         }).then((data) => data.json()),
       ]);
@@ -294,16 +274,4 @@ export const getOriginalClassInfo = async (
   } catch (error) {
     return new Error('클래스 수정 기본 정보 요청 에러!');
   }
-};
-
-export const getRecentLists = async () => {
-  const response = await fetch(`${DOMAIN}/api/class/latest`, {
-    method: 'GET',
-  }).then((data) => data.json());
-
-  if (response.statusCode !== 200) {
-    throw new Error('최신 클래스 조회 요청 에러!');
-  }
-
-  return response.data.lectures;
 };

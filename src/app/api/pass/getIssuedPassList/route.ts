@@ -27,7 +27,7 @@ export const GET = async (request: NextRequest) => {
   };
 
   const response = await fetch(
-    `${END_POINT}/passes/lecturer?${request.nextUrl.searchParams.toString()}`,
+    `${END_POINT}/passes/issued?${request.nextUrl.searchParams.toString()}`,
     {
       method: 'GET',
       credentials: 'include',

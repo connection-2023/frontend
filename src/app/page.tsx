@@ -1,14 +1,23 @@
-import { cookies } from 'next/headers';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { Suspense } from 'react';
 import { MainPopularSVG, MainTopSVG } from '@/icons/svg';
 import Banner from './_components/Banner';
-import BestClass from './_components/Home/BestClass';
-import BestInstructor from './_components/Home/BestInstructor';
 import BestClassLoading from './_components/Home/Loading/BestClassLoading';
 import BestInstructorLoading from './_components/Home/Loading/BestInstructorLoading';
 import RecentClassLoading from './_components/Home/Loading/RecentClassLoading';
-import RecentClass from './_components/Home/RecentClass';
+
+const BestClass = dynamic(() => import('./_components/Home/BestClass'), {
+  loading: () => <BestClassLoading />,
+});
+
+const BestInstructor = dynamic(
+  () => import('./_components/Home/BestInstructor'),
+  { loading: () => <BestInstructorLoading /> },
+);
+
+const RecentClass = dynamic(() => import('./_components/Home/RecentClass'), {
+  loading: () => <RecentClassLoading />,
+});
 
 const Home = async () => {
   return (
@@ -28,9 +37,7 @@ const Home = async () => {
           link="/class"
         />
 
-        <Suspense fallback={<BestClassLoading />}>
-          <BestClass />
-        </Suspense>
+        <BestClass />
       </section>
 
       {/* 인기 강사 TOP 8 */}
@@ -41,9 +48,7 @@ const Home = async () => {
           link="/instructor"
         />
 
-        <Suspense fallback={<BestInstructorLoading />}>
-          <BestInstructor />
-        </Suspense>
+        <BestInstructor />
       </section>
 
       {/* 최신 클래스 */}
@@ -53,12 +58,10 @@ const Home = async () => {
           최신 클래스
         </h2>
 
-        <Suspense fallback={<RecentClassLoading />}>
-          <RecentClass />
-        </Suspense>
+        <RecentClass />
       </section>
 
-      <div className="mt-10 flex w-screen justify-center">
+      <div className="mt-10 flex w-full justify-center">
         <Link
           href="/class"
           className="mx-auto rounded-[3.13rem] bg-main-color px-7 py-3 text-lg font-bold text-white"

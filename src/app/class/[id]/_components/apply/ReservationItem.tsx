@@ -3,13 +3,11 @@ import CountButton from '@/components/Button/CountButton';
 import { IDateTime } from '@/types/class';
 
 interface ReservationItemProps extends IDateTime {
-  lectureScheduleId: number;
-  countUpdate: (id: number, newVal: number) => void;
+  countUpdate: (newVal: number) => void;
   onRemove: () => void;
 }
 
 const ReservationItem = ({
-  lectureScheduleId,
   dateTime,
   space,
   count,
@@ -17,16 +15,15 @@ const ReservationItem = ({
   countUpdate,
 }: ReservationItemProps) => {
   const remainSpace = space.total - space.current;
-
   const onClickUp = () => {
     if (count < remainSpace) {
-      countUpdate(lectureScheduleId, count + 1);
+      countUpdate(count + 1);
     }
   };
 
   const onClickDown = () => {
     if (count > 1) {
-      countUpdate(lectureScheduleId, count - 1);
+      countUpdate(count - 1);
     }
   };
 
@@ -36,7 +33,7 @@ const ReservationItem = ({
         <p>{dateTime}</p>
         <ClearSVG
           onClick={onRemove}
-          className="cursor-pointer fill-gray-500"
+          className="cursor-pointer fill-gray-500 stroke-white stroke-2"
           width={18}
           height={18}
         />

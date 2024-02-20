@@ -12,11 +12,11 @@ export interface IPaymentInfo extends IApplicantInfo {
   lectureId: string;
   orderName: string;
   orderId: string;
-  lectureSchedules: IReservationInfo[];
+  lectureSchedule: IReservationInfo;
   originalPrice: number;
   finalPrice: number;
-  couponId?: number;
-  stackableCouponId?: number;
+  couponId: number | null;
+  stackableCouponId: number | null;
 }
 
 export interface IApplicantInfo {
@@ -40,12 +40,21 @@ export interface IPaymentConfirmResponse {
   paymentMethod: { name: string };
   updatedAt: string;
   reservation: {
+    id: number;
+    representative: string;
+    phoneNumber: string;
     participants: number;
     requests: string;
     lectureSchedule: {
+      id: number;
+      lectureId: number;
+      day: number;
       startDateTime: string;
+      endDateTime: string;
+      numberOfParticipants: number;
     };
-  }[];
+    regularLectureStatus: null;
+  };
 
   cardPaymentInfo: ICardPaymentInfo | null;
   virtualAccountPaymentInfo: IVirtualAccountInfo | null;
@@ -58,25 +67,40 @@ export interface IPaymentInfoResponse {
 }
 
 export interface IReceiptResponse {
+  createdAt: string;
+  updatedAt: string;
   orderId: string;
   orderName: string;
   originalPrice: number;
   finalPrice: number;
   paymentProductType: { name: string };
   paymentMethod: { name: string };
-  createdAt: string;
-  updatedAt: string;
   cardPaymentInfo: ICardPaymentInfo | null;
   virtualAccountPaymentInfo: IVirtualAccountInfo | null;
   paymentCouponUsage: IPaymentCoupon | null;
+  reservation: {
+    id: number;
+    representative: string;
+    phoneNumber: number | string;
+    participants: number;
+    requests: string;
+    lectureSchedule: {
+      id: number;
+      startDateTime: string;
+      endDateTime: string;
+      numberOfParticipants: number;
+      lecture: { id: number; title: string; imageUrl: string | null };
+    };
+    regularLectureStatus: null;
+  };
 }
 
 interface ICardPaymentInfo {
   number: string;
   installmentPlanMonths: number;
   approveNo: number;
-  issuer?: { code: string; name: string };
-  acquirer?: { code: string; name: string };
+  issuerCode: string;
+  acquirerCode?: number;
 }
 
 export interface IVirtualAccountInfo {
@@ -98,3 +122,9 @@ interface IPaymentCoupon {
 }
 
 export type PaymentStatusType = WAITING_FOR_DEPOSIT | DONE | REFUSED;
+
+export interface PaymentCoupon {
+  discountPrice: null | number;
+  couponId: null | number;
+  stackableCouponId: null | number;
+}

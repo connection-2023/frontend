@@ -69,6 +69,8 @@ export interface couponGET {
   maxDiscountPrice: number;
   maxUsageCount: number;
   percentage: number;
+  isOwned?: boolean;
+  lectureCouponId?: number;
 }
 
 export interface IprivateCoupon {
@@ -85,7 +87,7 @@ export interface IprivateCoupon {
 
 export interface IcouponsData {
   totalItemCount: number;
-  itemList: couponGET[];
+  itemList?: couponGET[];
 }
 
 export interface IuserCouponsData {
@@ -130,18 +132,23 @@ export interface OptionType {
   label: string;
 }
 
-export interface createCouponData {
+export interface baseCouponData {
   title: string;
   percentage: number | undefined;
   discountPrice: number | undefined;
   maxDiscountPrice: number | undefined;
   maxUsageCount: number | undefined;
-  startAt: Date;
   endAt: Date;
   isStackable: boolean;
   isPrivate: boolean;
   lectureIds: number[];
 }
+
+export interface createCouponData extends baseCouponData {
+  startAt: Date;
+}
+
+export interface updateCouponData extends baseCouponData {}
 
 export interface IgetFunction {
   take: number | undefined;
@@ -194,4 +201,5 @@ export interface IclassCoupon {
   isDisabled: boolean;
   isPrivate: boolean;
   lectureCouponTarget: lectureCouponTarget[];
+  isOwned?: boolean;
 }

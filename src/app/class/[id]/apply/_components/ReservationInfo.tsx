@@ -5,17 +5,16 @@ import ApplyClassList from './ApplyClassList';
 import { IReservationInfo, IApplyClassList } from '@/types/payment';
 
 interface ReservationInfoProps {
-  initialApplyData: IReservationInfo[];
-  processedSchedules: IApplyClassList[];
+  initialApplyData: IReservationInfo;
+  processedSchedules: IApplyClassList;
 }
 
 const ReservationInfo = ({
   initialApplyData,
   processedSchedules,
 }: ReservationInfoProps) => {
-  const [selectedSchedule, setSelectedSchedule] = useState<IReservationInfo[]>(
-    [],
-  );
+  const [selectedSchedule, setSelectedSchedule] =
+    useState<IReservationInfo>(initialApplyData);
   const [applicantInfo, setApplicantInfo] = useState({
     representative: '',
     phoneNumber: '',
@@ -34,24 +33,20 @@ const ReservationInfo = ({
   useEffect(() => {
     if (!userInfo) return;
 
-    if ('name' in userInfo && 'phoneNumber' in userInfo) {
-      const name = userInfo.name || '';
-      const phoneNumber = userInfo.phoneNumber || '';
+    const name = userInfo.name;
+    const phoneNumber = userInfo.phoneNumber;
 
-      const newValue = {
-        ...applicantInfo,
-        representative: name,
-        phoneNumber,
-      };
-      setApplicantInfo(newValue);
-      setApplicant(newValue);
-    }
+    const newValue = {
+      ...applicantInfo,
+      representative: name,
+      phoneNumber,
+    };
+    setApplicantInfo(newValue);
+    setApplicant(newValue);
   }, [userInfo]);
 
   const updateParticipants = (id: number, value: number) => {
-    const newSchedule = selectedSchedule.map((item) =>
-      item.lectureScheduleId === id ? { ...item, participants: value } : item,
-    );
+    const newSchedule = { ...selectedSchedule, participants: value };
 
     setSelectedSchedule(newSchedule);
     setApplyClass(newSchedule);
@@ -77,13 +72,11 @@ const ReservationInfo = ({
       <section className="mt-4 rounded-md px-4 py-[1.31rem] shadow-vertical">
         <h3 className="text-lg font-semibold">신청한 클래스</h3>
         <ul className="mt-4 divide-y divide-solid divide-sub-color1">
-          {processedSchedules.map((schedule) => (
-            <ApplyClassList
-              key={schedule.lectureScheduleId}
-              updateParticipants={updateParticipants}
-              {...schedule}
-            />
-          ))}
+          <ApplyClassList
+            key={processedSchedules.lectureScheduleId}
+            updateParticipants={updateParticipants}
+            {...processedSchedules}
+          />
         </ul>
       </section>
 
