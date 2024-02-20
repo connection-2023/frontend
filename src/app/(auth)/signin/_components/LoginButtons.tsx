@@ -53,18 +53,6 @@ const LoginButtons = () => {
         autoClose: 2500,
       });
       const { authEmail, signUpType } = data;
-      toast.update(toastId, {
-        render: (
-          <p>
-            가입되지 않은 회원입니다!
-            <br />
-            회원가입 페이지로 이동합니다.
-          </p>
-        ),
-        type: 'info',
-        isLoading: false,
-        autoClose: 2000,
-      });
       router.replace(
         `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
         { scroll: false },
