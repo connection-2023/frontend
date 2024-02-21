@@ -21,7 +21,7 @@ const FormatCreateSchedule = ({
     <li
       key={schedule.toDateString()}
       className={`border-box flex h-[2.8125rem] w-full items-center justify-between rounded-md border border-solid
-        border-gray-700 px-6 text-sm font-medium md:max-w-[16.8125rem]`}
+        border-gray-700 px-6 text-sm font-medium`}
     >
       <p>{formattedDateTime}</p>
     </li>

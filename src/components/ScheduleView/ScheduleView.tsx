@@ -35,8 +35,8 @@ const ScheduleView = ({
   };
 
   return (
-    <div className="flex w-full flex-col whitespace-nowrap md:flex-row md:justify-between">
-      <div className="flex w-full justify-center md:w-fit md:justify-start">
+    <div className="grid w-full grid-cols-[max_content] place-items-center gap-x-20 whitespace-nowrap md:auto-cols-min md:grid-flow-col-dense md:place-items-stretch">
+      <div className="flex w-fit justify-center md:w-fit md:justify-start">
         <ScheduleCalendar
           mode="schedule"
           clickableDates={clickableDates}
@@ -44,7 +44,7 @@ const ScheduleView = ({
         />
       </div>
 
-      <ul className="flex w-full flex-col items-center gap-[0.37rem] overflow-y-auto pl-3">
+      <ul className="flex flex-col items-center gap-2.5 overflow-y-auto md:w-72">
         {lectureSchedule.length > 0 && lectureSchedule[0] instanceof Date
           ? (lectureSchedule as Date[]).map((date, index) => (
               <FormatCreateSchedule
