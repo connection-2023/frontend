@@ -4,13 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
-import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
-import ReservationItem from './apply/ReservationItem';
 import SelectBox from './apply/SelectBox';
 import ApplyButton from '@/components/Button/ApplyButton';
 import { IClassSchedule, IDateTime } from '@/types/class';
+import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 
-const ApplyList = dynamic(() => import('./apply/ApplyList'), { ssr: false });
+const ReservationItem = dynamic(() => import('./apply/ReservationItem'));
 
 interface ApplyProps {
   id: string | number;
@@ -20,12 +19,13 @@ interface ApplyProps {
   duration: number;
 }
 
-const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
+const Apply = (props: ApplyProps) => {
+  const { id, schedule, duration, price, maxCapacity } = props;
   const [selectedSchedule, setSelectedSchedule] = useState<IDateTime | null>();
-  const [selectedDateTime, setSelectedDateTime] = useState('날짜 및 시간 선택');
-  const [isOpened, setIsOpened] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
+  const [isMobileScheduleOpened, setIsMobileScheduleOpened] = useState(false);
   const router = useRouter();
-  const modalRef = useRef(null);
+  const mobileScheduleListRef = useRef(null);
   const scheduleLists = applyScheduleFilter(schedule, maxCapacity);
 
   const formattedData = scheduleLists.map((list) => {
@@ -34,10 +34,15 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
       list.numberOfParticipants === maxCapacity
         ? '마감'
         : `${list.numberOfParticipants}/${maxCapacity}명`;
+
     return {
       lectureScheduleId: list.id,
       dateTime: `${formatDateTime(datetime, duration)} (${space})`,
     };
+  });
+
+  useClickAway(mobileScheduleListRef, () => {
+    setIsMobileScheduleOpened(false);
   });
 
   const getFormattedDateTime = (selectedDateTime: string) =>
@@ -73,18 +78,14 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
     }
   };
 
-  useClickAway(modalRef, () => {
-    setIsOpened(false);
-  });
-
   const onSelect = (listValue: string) => {
-    setSelectedDateTime(listValue);
+    setSelectedLabel(listValue);
     addSelectedSchedule(listValue);
   };
 
   const removeReservationItem = () => {
     setSelectedSchedule(null);
-    setSelectedDateTime('날짜 및 시간 선택');
+    setSelectedLabel('날짜 및 시간 선택');
   };
 
   const updateCount = (newCount: number) => {
@@ -94,11 +95,6 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
   };
 
   const handleApply = () => {
-    if (!isOpened && window.innerWidth < 768) {
-      setIsOpened(true);
-      return;
-    }
-
     if (!selectedSchedule) {
       toast.error('한 개 이상의 클래스를 선택해주세요!');
       return;
@@ -111,20 +107,26 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
     );
   };
 
+  const handleMobileApply = () => {
+    if (!selectedSchedule || !isMobileScheduleOpened) {
+      setIsMobileScheduleOpened(true);
+    } else {
+      handleApply();
+    }
+  };
+
   return (
-    <div
-      ref={modalRef}
-      className="flex min-h-[5.5rem] w-full flex-col items-center rounded-t-lg bg-white px-4 py-3.5 shadow-vertical md:min-h-0 md:items-stretch md:p-0 md:shadow-none"
-    >
-      <div className="sticky top-20 mt-5 hidden w-full flex-col whitespace-nowrap pr-2 md:flex">
-        <div className="mb-3 flex w-full flex-col gap-2">
-          <SelectBox
-            lists={formattedData.map((item) => item.dateTime)}
-            onSelect={onSelect}
-            selected={selectedDateTime}
-          />
-        </div>
-        <div className="hidden flex-col gap-2 md:flex">
+    <>
+      <section className="hidden min-w-[264px] max-w-[17rem] flex-col bg-white lg:flex">
+        <div className="sticky top-24 mt-5 flex w-full flex-col whitespace-nowrap pr-2">
+          <div className="mb-3 flex w-full flex-col gap-2">
+            <SelectBox
+              lists={formattedData.map((item) => item.dateTime)}
+              onSelect={onSelect}
+              selected={selectedLabel ? selectedLabel : '날짜 및 시간 선택'}
+            />
+          </div>
+
           {selectedSchedule && (
             <ReservationItem
               key={selectedSchedule.lectureScheduleId}
@@ -136,52 +138,78 @@ const Apply = ({ id, schedule, duration, price, maxCapacity }: ApplyProps) => {
               countUpdate={updateCount}
             />
           )}
+
+          {/* 가격 */}
+          <div className="mb-4 mt-7 flex w-full justify-between font-semibold">
+            <span className="text-lg">
+              {selectedSchedule ? `총 ${selectedSchedule.count}회` : '1회'}
+            </span>
+            <span className="text-xl">
+              {(selectedSchedule
+                ? price * selectedSchedule.count
+                : price
+              ).toLocaleString()}
+              원
+            </span>
+          </div>
+
+          <ApplyButton label="신청하기" onClick={handleApply} />
         </div>
+      </section>
+      {/* 모바일 화면 */}
+      <section className="fixed bottom-0 z-50 w-full lg:hidden">
+        <div
+          ref={mobileScheduleListRef}
+          className="flex w-full flex-col items-center rounded-t-lg bg-white px-4 py-3.5 shadow-vertical"
+        >
+          {isMobileScheduleOpened && (
+            <div className="my-3 flex w-full flex-col gap-2">
+              <SelectBox
+                lists={formattedData.map((item) => item.dateTime)}
+                onSelect={onSelect}
+                selected={selectedLabel ? selectedLabel : '날짜 및 시간 선택'}
+              />
+            </div>
+          )}
 
-        {/* 가격 */}
-        <div className="mb-4 mt-7 hidden w-full justify-between md:flex">
-          <span className="text-xl font-bold">
-            {selectedSchedule ? `총 ${selectedSchedule.count}회` : '1회'}
-          </span>
-          <span className="text-xl font-bold">
-            {(selectedSchedule
-              ? price * selectedSchedule.count
-              : price
-            ).toLocaleString()}
-            원
-          </span>
+          <div
+            className={
+              isMobileScheduleOpened
+                ? 'mb-3 flex w-full flex-col gap-2'
+                : 'hidden'
+            }
+          >
+            {selectedSchedule && (
+              <ReservationItem
+                key={selectedSchedule.lectureScheduleId}
+                lectureScheduleId={selectedSchedule.lectureScheduleId}
+                dateTime={selectedSchedule.dateTime}
+                space={selectedSchedule.space}
+                count={selectedSchedule.count}
+                onRemove={removeReservationItem}
+                countUpdate={updateCount}
+              />
+            )}
+          </div>
+
+          <div className="flex w-full shrink-0 items-center justify-between gap-12 font-semibold">
+            <p className="flex max-w-[6rem] gap-x-2.5 whitespace-nowrap">
+              <span className="text-lg">
+                {selectedSchedule ? `총 ${selectedSchedule.count}회` : '1회'}
+              </span>
+              <span className="text-xl">
+                {(selectedSchedule
+                  ? price * selectedSchedule.count
+                  : price
+                ).toLocaleString()}
+                원
+              </span>
+            </p>
+            <ApplyButton label="신청하기" onClick={handleMobileApply} />
+          </div>
         </div>
-
-        <ApplyButton label="신청하기" onClick={handleApply} />
-      </div>
-
-      {isOpened && selectedSchedule && (
-        <ApplyList
-          lists={formattedData.map((item) => item.dateTime)}
-          selectedDateTime={selectedDateTime}
-          onSelect={onSelect}
-          selectedSchedules={selectedSchedule}
-          removeReservationItem={removeReservationItem}
-          updateCount={updateCount}
-        />
-      )}
-
-      <div className="flex w-full items-center justify-between gap-12 font-semibold md:hidden">
-        <p className="flex max-w-[6rem] gap-x-[0.69rem] whitespace-nowrap">
-          <span className="text-lg text-gray-500">
-            {selectedSchedule ? `총 ${selectedSchedule.count}회` : '1회'}
-          </span>
-          <span className="text-xl">
-            {(selectedSchedule
-              ? price * selectedSchedule.count
-              : price
-            ).toLocaleString()}
-            원
-          </span>
-        </p>
-        <ApplyButton label="신청하기" onClick={handleApply} />
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 
