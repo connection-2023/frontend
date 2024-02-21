@@ -1,13 +1,4 @@
 import Link from 'next/link';
-import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
-import { CLASS_HSTYLE } from '@/constants/constants';
-import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
-import {
-  getClassDetail,
-  getClassSchedules,
-} from '@/lib/apis/serverApis/classPostApis';
-import { formatDate } from '@/utils/parseUtils';
-import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import Apply from './Apply';
 import ClassReviewSection from './ClassReviewSection';
 import ReadMore from './ReadMore';
@@ -16,6 +7,15 @@ import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
 import ProfileImage from '@/components/Profile/ProfileImage';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import { CLASS_HSTYLE } from '@/constants/constants';
+import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
+import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
+import {
+  getClassDetail,
+  getClassSchedules,
+} from '@/lib/apis/serverApis/classPostApis';
+import { formatDate } from '@/utils/parseUtils';
+import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 
 const ClassDetail = async ({ id }: { id: string }) => {
   const classDetailData = getClassDetail(id);
@@ -151,15 +151,14 @@ const ClassDetail = async ({ id }: { id: string }) => {
         {/* 클래스 후기 */}
         <ClassReviewSection id={id} stars={stars} />
       </section>
-      <section className="fixed bottom-0 w-full md:static md:w-auto md:max-w-[17rem]">
-        <Apply
-          id={id}
-          schedule={schedule}
-          duration={duration}
-          maxCapacity={maxCapacity}
-          price={price}
-        />
-      </section>
+
+      <Apply
+        id={id}
+        schedule={schedule}
+        duration={duration}
+        maxCapacity={maxCapacity}
+        price={price}
+      />
     </>
   );
 };
