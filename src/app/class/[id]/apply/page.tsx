@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import ApplySidebar from './_components/ApplySidebar';
 import Coupon from './_components/Coupon';
 import PaymentType from './_components/PaymentType';
@@ -10,6 +11,20 @@ import {
   getClassDetail,
   getClassSchedules,
 } from '@/lib/apis/serverApis/classPostApis';
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> => {
+  const { id } = params;
+  const classData = await getClassPreview(id);
+
+  return {
+    title: `Connection | ${classData.title} 클래스 신청`,
+    description: `Connection | ${classData.title} 클래스 신청`,
+  };
+};
 
 const ClassApplyPage = async ({
   params: { id },
