@@ -1,6 +1,5 @@
 'use client';
 import { useQueries } from '@tanstack/react-query';
-import { redirect } from 'next/navigation';
 import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
 import { getOriginalClassInfo } from '@/lib/apis/classApis';
 import { getCouponLists } from '@/lib/apis/couponApis';
@@ -49,7 +48,7 @@ const ClassApplyPage = ({
   }
 
   if (error || !data || data instanceof Error || couponError || !couponList) {
-    redirect('/404');
+    throw Error('클래스 신청 페이지 오류');
   }
 
   const { title, duration, maxCapacity, reservationComment, price, schedule } =
