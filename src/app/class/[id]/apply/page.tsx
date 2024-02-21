@@ -1,59 +1,37 @@
-'use client';
-import { useQueries } from '@tanstack/react-query';
-import { redirect } from 'next/navigation';
-import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getOriginalClassInfo } from '@/lib/apis/classApis';
-import { getCouponLists } from '@/lib/apis/couponApis';
 import ApplySidebar from './_components/ApplySidebar';
-import CouponContainer from './_components/Coupon/CouponContainer';
+import Coupon from './_components/Coupon';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
 import { processSelectedSchedules } from './_lib/applyScheduleUtils';
-import ApplyLoading from '@/components/Loading/ApplyLoading';
 import { IReservationInfo } from '@/types/payment';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import {
+  getClassPreview,
+  getClassDetail,
+  getClassSchedules,
+} from '@/lib/apis/serverApis/classPostApis';
 
-const ClassApplyPage = ({
+const ClassApplyPage = async ({
   params: { id },
   searchParams,
 }: {
   params: { id: string };
   searchParams: { [key: string]: string };
 }) => {
-  const reqData = {
-    take: 10000, //추후 null로 변경
-    couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
-    filterOption: 'LATEST' as 'LATEST',
-    lectureIds: [id],
-  };
+  const classPreview = getClassPreview(id);
+  const classDetailData = getClassDetail(id);
+  const classSchedules = getClassSchedules(id);
 
+  const [classPreviewData, classDetail, classSchedule] = await Promise.all([
+    classPreview,
+    classDetailData,
+    classSchedules,
+  ]);
+
+  const { schedule } = classSchedule;
   const { lectureScheduleId, count } = searchParams;
-
-  const [
-    { data, isLoading, error },
-    { data: couponList, isLoading: couponLoading, error: couponError },
-  ] = useQueries({
-    queries: [
-      {
-        queryKey: ['apply', id],
-        queryFn: () => getOriginalClassInfo(id),
-      },
-      {
-        queryKey: ['apply2', id],
-        queryFn: () => getCouponLists(reqData, 'user'),
-      },
-    ],
-  });
-
-  if (isLoading || couponLoading) {
-    return <ApplyLoading />;
-  }
-
-  if (error || !data || data instanceof Error || couponError || !couponList) {
-    redirect('/404');
-  }
-
-  const { title, duration, maxCapacity, reservationComment, price, schedule } =
-    data;
+  const { title } = classPreviewData;
+  const { duration, maxCapacity, reservationComment, price } = classDetail;
 
   const initialApplyData: IReservationInfo = {
     lectureScheduleId: Number(lectureScheduleId),
@@ -81,7 +59,7 @@ const ClassApplyPage = ({
             <MusicalNoteSVG
               width="21"
               height="21"
-              className="mr-1 shrink-0 cursor-pointer stroke-black"
+              className="mr-1 shrink-0 stroke-black"
             />
             {title}
           </h2>
@@ -114,8 +92,8 @@ const ClassApplyPage = ({
               <CouponSVG className="h-6 w-6 fill-sub-color1" />
               쿠폰/패스권 적용
             </h3>
-            <CouponContainer couponList={couponList} price={price} />
             {/* 쿠폰 선택 */}
+            <Coupon id={id} price={price} />
           </section>
 
           <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">
