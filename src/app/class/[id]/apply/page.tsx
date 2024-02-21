@@ -33,10 +33,13 @@ const ClassApplyPage = async ({
   params: { id: string };
   searchParams: { [key: string]: string };
 }) => {
+  const { lectureScheduleId, count } = searchParams;
+  if (!lectureScheduleId || !count)
+    throw Error('lectureScheduleId나 count가 설정되지 않았습니다');
+
   const classPreview = getClassPreview(id);
   const classDetailData = getClassDetail(id);
   const classSchedules = getClassSchedules(id);
-
   const [classPreviewData, classDetail, classSchedule] = await Promise.all([
     classPreview,
     classDetailData,
@@ -44,7 +47,6 @@ const ClassApplyPage = async ({
   ]);
 
   const { schedule } = classSchedule;
-  const { lectureScheduleId, count } = searchParams;
   const { title } = classPreviewData;
   const { duration, maxCapacity, reservationComment, price } = classDetail;
 
