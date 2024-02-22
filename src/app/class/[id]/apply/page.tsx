@@ -1,10 +1,9 @@
-import type { Metadata } from 'next';
 import ApplySidebar from './_components/ApplySidebar';
+import ClassApplicationInfo from './_components/ClassApplicationInfo';
 import Coupon from './_components/Coupon';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
-import { processSelectedSchedules } from './_lib/applyScheduleUtils';
-import { IReservationInfo } from '@/types/payment';
+import type { Metadata } from 'next';
 import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
 import {
   getClassPreview,
@@ -50,28 +49,26 @@ const ClassApplyPage = async ({
   const { title } = classPreviewData;
   const { duration, maxCapacity, reservationComment, price } = classDetail;
 
-  const initialApplyData: IReservationInfo = {
-    lectureScheduleId: Number(lectureScheduleId),
-    participants: Number(count),
-  };
+  const clickableDates = schedule.map((item) => new Date(item.startDateTime));
 
-  const processedSchedules = processSelectedSchedules(
-    schedule,
-    initialApplyData,
-    maxCapacity,
-    duration,
+  const findSelectedSchedule = schedule.find(
+    (item) => item.id === Number(lectureScheduleId),
   );
+
+  const initialClickDate = findSelectedSchedule
+    ? new Date(findSelectedSchedule.startDateTime)
+    : undefined;
 
   return (
     <>
       <h1 className="mx-auto mb-6 flex w-full items-center justify-center border-b border-solid border-gray-700 py-4 text-2xl font-bold">
         클래스 신청하기
       </h1>
-      <div className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
+      <div className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 justify-items-center gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
         {/* 임시 빈 공간 */}
         <div className="hidden xl:block" />
 
-        <section className="w-full lg:max-w-[40rem]">
+        <section className="w-full md:w-[40rem]">
           <h2 className="flex w-full items-center gap-2 whitespace-pre-line break-keep border-b-[3px] border-solid border-black py-3.5 text-2xl font-bold">
             <MusicalNoteSVG
               width="21"
@@ -97,12 +94,18 @@ const ClassApplyPage = async ({
             </section>
           ) : null}
 
-          {processedSchedules && (
-            <ReservationInfo
-              initialApplyData={initialApplyData}
-              processedSchedules={processedSchedules}
-            />
-          )}
+          <ClassApplicationInfo
+            lectureScheduleId={lectureScheduleId}
+            clickableDates={clickableDates}
+            findSelectedSchedule={findSelectedSchedule}
+            lectureSchedule={schedule}
+            maxCapacity={maxCapacity}
+            duration={duration}
+            applyCount={Number(count)}
+            initialClickDate={initialClickDate}
+          />
+
+          <ReservationInfo />
 
           <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
             <h3 className="flex gap-1 text-lg font-semibold">
