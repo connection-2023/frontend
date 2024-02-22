@@ -39,7 +39,7 @@ const Member = () => {
         </div>
         <dl className="flex flex-col gap-1">
           <dt className="text-lg font-bold">{memberInfo.nickname}</dt>
-          <dd className="mb-5 text-sm">
+          <dd className="mb-5 h-5 text-sm">
             {formatPhoneNumber(memberInfo.phoneNumber)}
           </dd>
 

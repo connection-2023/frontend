@@ -8,6 +8,7 @@ import {
   bankAccount,
   GetMyMembersParameter,
   GetMyMembersData,
+  Reservation,
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
@@ -245,9 +246,14 @@ export const getMyMembers = async (
     }
 
     const resData = await response.json();
+
+    const item = resData.data.lecturerLearnerList.filter(
+      ({ reservation }: { reservation: Reservation }) => reservation,
+    ); // 백엔드 데이터 정리 후 추후 제거
+
     return {
       count: resData.data.totalItemCount,
-      item: resData.data.lecturerLearnerList,
+      item,
     };
   } catch (error) {
     console.error('회원 불러오기 에러', error);
