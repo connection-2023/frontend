@@ -63,8 +63,6 @@ const ClassApplicationInfo = ({
     }
   }, []);
 
-  if (!clickableDates.length) return null;
-
   const timeList = useMemo(() => {
     if (!clickDate) {
       return [];
@@ -74,6 +72,8 @@ const ClassApplicationInfo = ({
       isSameDay(new Date(schedule.startDateTime), clickDate),
     );
   }, [clickDate, lectureSchedule]);
+
+  if (!clickableDates.length) return null;
 
   const handleTimeList = (newTimeList: IClassSchedule) => {
     const schedule = {
