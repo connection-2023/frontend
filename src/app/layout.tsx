@@ -1,3 +1,5 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleTagManager } from '@next/third-parties/google';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { ToastContainer } from 'react-toastify';
@@ -84,6 +86,8 @@ export default async function RootLayout({
           </main>
           <Footer />
         </Providers>
+        <GoogleAnalytics gaId="G-JSWE2TFJ10" />
+        <GoogleTagManager gtmId="GTM-WV6RNCC9" />
       </body>
     </html>
   );

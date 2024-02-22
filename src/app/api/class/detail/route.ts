@@ -21,7 +21,7 @@ export const GET = async (request: NextRequest) => {
       };
 
   const serverResponse = await fetch(
-    `${END_POINT}/lectures/${lectureId}/details`,
+    `${END_POINT}/lectures/${lectureId}/detail`,
     {
       credentials: 'include',
       headers,
