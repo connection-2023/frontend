@@ -2,10 +2,10 @@
 import { nanoid } from 'nanoid';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import ApplyButton from '@/components/Button/ApplyButton';
 import { ArrowUpSVG } from '@/icons/svg';
 import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore } from '@/store';
-import ApplyButton from '@/components/Button/ApplyButton';
 
 interface ApplySidebarProps {
   postId: string;
@@ -18,7 +18,6 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const { discountPrice, couponId, stackableCouponId } = usePaymentStore(
     (state) => state.coupon,
   );
-  const orderId = nanoid();
   const totalPrice = price * participants;
   const finalPrice = discountPrice
     ? Math.max(0, totalPrice - discountPrice)
@@ -67,12 +66,12 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       return;
     }
 
+    const uniqueOrderId = nanoid();
     const { representative, phoneNumber, requests } = applicant;
-
     const paymentData = {
       lectureId: postId,
       orderName: title,
-      orderId,
+      orderId: uniqueOrderId,
       lectureSchedule: applyClass,
       originalPrice: totalPrice,
       finalPrice,
@@ -101,7 +100,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       }
     } catch (error) {
       if (error instanceof Error && error.message) {
-        postPaymentCancel(orderId);
+        postPaymentCancel(uniqueOrderId);
         toast.error(error.message);
       }
     }
