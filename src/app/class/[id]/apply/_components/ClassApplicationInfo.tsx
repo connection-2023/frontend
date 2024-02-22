@@ -135,7 +135,7 @@ const ClassApplicationInfo = ({
 
         <div className="flex max-w-[288px] flex-col">
           <p className="flex items-center gap-x-1.5 text-sm font-medium">
-            <TimeSVG /> {duration}분 수업
+            <TimeSVG className="fill-black" /> {duration}분 수업
           </p>
 
           <ul className="mb-auto mt-3 grid h-28 grid-cols-2 gap-x-3.5 gap-y-2 overflow-y-auto whitespace-nowrap pr-5">

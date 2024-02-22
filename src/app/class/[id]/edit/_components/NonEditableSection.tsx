@@ -46,7 +46,7 @@ const NonEditableSection = (props: IClassEditPageData) => {
         </h3>
 
         <h3 className={CLASS_EDIT_STYLE.h3}>
-          <TimeSVG /> {duration}분
+          <TimeSVG className="fill-sub-color1" /> {duration}분
         </h3>
         <h3 className={CLASS_EDIT_STYLE.h3}>
           <GroupSVG />

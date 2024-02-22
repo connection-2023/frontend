@@ -123,7 +123,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
               {`${formatDate(startDate)}~${formatDate(endDate)}`}
             </span>
             <span className="flex items-center gap-2">
-              <TimeSVG /> {duration}분 수업
+              <TimeSVG className="fill-sub-color1" /> {duration}분 수업
             </span>
           </div>
 
