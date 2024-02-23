@@ -260,3 +260,27 @@ export const getMyMembers = async (
     throw error;
   }
 };
+
+export const patchMemberMemo = async (memo: string, userId: number) => {
+  try {
+    const response = await fetch(`/api/instructors/memo?userId=${userId}`, {
+      method: 'PATCH',
+      credentials: 'include',
+      body: JSON.stringify({ memo }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData;
+  } catch (error) {
+    console.error('회원 메모 수정 에러', error);
+    throw error;
+  }
+};

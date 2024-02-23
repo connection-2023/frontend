@@ -1,12 +1,13 @@
 'use client';
 
+import { debounce } from 'lodash';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 import { ChatSVG, ReportSVG } from '@/icons/svg';
+import { patchMemberMemo } from '@/lib/apis/instructorApi';
 import { useMemberStore } from '@/store/memberStore';
 import { formatPhoneNumber } from '@/utils/parseUtils';
 import ProfileImg from '@/components/Profile/ProfileImage';
-import { GetMyMemberPassesData } from '@/types/instructor';
 
 const Member = () => {
   const { memberInfo } = useMemberStore((state) => ({
@@ -15,7 +16,16 @@ const Member = () => {
 
   const router = useRouter();
 
-  const [memo, setMemo] = useState<string>(memberInfo?.memo ?? '');
+  const debouncedSetMemo = useCallback(
+    debounce((value) => {
+      if (memberInfo) patchMemberMemo(value, memberInfo.id);
+    }, 500),
+    [],
+  );
+
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    debouncedSetMemo(e.target.value);
+  };
 
   useEffect(() => {
     if (!memberInfo) {
@@ -56,8 +66,8 @@ const Member = () => {
         <h2 className="text-sm font-semibold">메모</h2>
         <textarea
           placeholder="강사가 작성하는 메모란으로 수강생에게는 보여지지 않습니다."
-          value={memo}
-          onChange={(e) => setMemo(e.target.value)}
+          defaultValue={memberInfo?.memo ?? ''}
+          onChange={handleInputChange}
           className="flex-grow resize-none border border-gray-500 p-3 text-sm focus:outline-sub-color1"
         />
       </div>
