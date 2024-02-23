@@ -1,6 +1,7 @@
 'use client';
 
 import { debounce } from 'lodash';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { ChatSVG, ReportSVG } from '@/icons/svg';
@@ -56,10 +57,13 @@ const Member = () => {
           <button className="flex items-center gap-1">
             <ChatSVG fill="black" width="21" height="21" /> 채팅 보내기
           </button>
-          <button className="flex items-center gap-1">
+          <Link
+            href={`/report?targetUserId=${memberInfo.id}`}
+            className="flex items-center gap-1"
+          >
             <ReportSVG width="21" height="21" fill="black" />
             신고하기
-          </button>
+          </Link>
         </dl>
       </div>
       <div className="flex flex-grow flex-col gap-1 sm:ml-6">
