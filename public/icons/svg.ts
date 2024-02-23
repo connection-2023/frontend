@@ -100,7 +100,7 @@ export { default as MapSVG } from './home/map.svg';
 
 export { default as MoneySVG } from './my/money.svg';
 
-export { default as UnFilledNoteSVG } from './class/unfilled-note.svg';
+export { default as UnFilledNoteSVG } from './class/unfilled-note.svg';
 
 export { default as MusicalNoteSVG } from './class/musicalNote.svg';
 
