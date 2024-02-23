@@ -52,47 +52,49 @@ const CropperModal = ({
   };
 
   return (
-    <Modal handleClosed={closeModal} isOpened={isOpen}>
-      <h2 className="flex h-16 w-full items-center justify-center text-2xl font-bold">
-        사진 편집
-      </h2>
+    <Modal handleClosed={closeModal} isOpened={isOpen} disableModalSwipe={true}>
+      <div className="h-screen w-screen sm:h-auto sm:w-auto">
+        <h2 className="flex h-16 w-full items-center justify-center text-2xl font-bold">
+          사진 편집
+        </h2>
 
-      <Cropper
-        ref={cropperRef}
-        src={selectedImage}
-        viewMode={1}
-        background={false}
-        aspectRatio={448 / 289}
-        autoCropArea={0.7}
-        minContainerHeight={420}
-        minContainerWidth={370}
-        dragMode="move"
-        restore={false}
-        className="h-[420px] overflow-hidden bg-black/[0.7]"
-      />
+        <Cropper
+          ref={cropperRef}
+          src={selectedImage}
+          viewMode={1}
+          background={false}
+          aspectRatio={448 / 289}
+          autoCropArea={0.7}
+          minContainerHeight={420}
+          minContainerWidth={370}
+          dragMode="move"
+          restore={false}
+          className="h-[80vh] overflow-hidden bg-black/[0.7] sm:h-[420px]"
+        />
 
-      {/* 하단 버튼 */}
-      <div className="flex h-16 w-full items-center justify-between bg-white px-4">
-        <div className="flex">
+        {/* 하단 버튼 */}
+        <div className="flex h-16 w-full items-center justify-between bg-white px-4">
+          <div className="flex">
+            <button
+              onClick={handleReset}
+              className="mr-5 flex items-center text-lg font-bold text-gray-500"
+            >
+              <ResetSVG className="mr-2 h-[14px] w-[14px]" /> 되돌리기
+            </button>
+            <button onClick={handleZoomIn} className="mr-2">
+              <ZoomInSVG />
+            </button>
+            <button onClick={handleZoomOut}>
+              <ZoomOutSVG />
+            </button>
+          </div>
           <button
-            onClick={handleReset}
-            className="mr-5 flex items-center text-lg font-bold text-gray-500"
+            onClick={handleApply}
+            className="h-9 w-[5.3125rem] rounded-md bg-sub-color1 text-lg font-bold text-white"
           >
-            <ResetSVG className="mr-2 h-[14px] w-[14px]" /> 되돌리기
-          </button>
-          <button onClick={handleZoomIn} className="mr-2">
-            <ZoomInSVG />
-          </button>
-          <button onClick={handleZoomOut}>
-            <ZoomOutSVG />
+            적용하기
           </button>
         </div>
-        <button
-          onClick={handleApply}
-          className="h-9 w-[5.3125rem] rounded-md bg-sub-color1 text-lg font-bold text-white"
-        >
-          적용하기
-        </button>
       </div>
     </Modal>
   );

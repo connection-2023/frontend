@@ -83,7 +83,7 @@ export interface DateTimeList {
 
 export interface IGetClassDrafts {
   id: string;
-  updatedAt: string;
+  updatedAt: Date;
   title: null | string;
   step: null | number;
 }
@@ -147,12 +147,14 @@ export interface IGetClassDraft {
     address: string;
     detailAddress: string;
     buildingName: string;
+    administrativeDistrict: string;
+    district: string;
   } | null;
   schedules: DayTimeList[] | DateTimeList[];
 }
 
 export interface IUpdateClassDraft {
-  lectureId: number | string;
+  lectureId?: number | string;
   step?: number;
   regions?: string[];
   lectureType?: string;
@@ -169,7 +171,7 @@ export interface IUpdateClassDraft {
   difficultyLevel?: string;
   minCapacity?: number;
   maxCapacity?: number;
-  reservationDeadline?: string;
+  reservationDeadline?: number;
   reservationComment?: string;
   price?: number | string;
   noShowDeposit?: number;
@@ -202,7 +204,7 @@ export interface classCreateData {
   classRange: { startDate: string; endDate: string };
   duration: number;
   reservationComment: string;
-  reservationDeadline: string;
+  reservationDeadline: number;
   address: Juso | null;
   detail: string;
   locationConsultative: boolean;
@@ -211,6 +213,38 @@ export interface classCreateData {
   classPrice: string | number;
   schedules: DayTimeList[] | DateTimeList[];
   coupons: { value: couponGET; label: string }[];
+}
+
+export interface classProccessData {
+  difficultyLevel?: string;
+  etcGenres?: string[];
+  genres?: string[];
+  images?: string[];
+  isGroup?: boolean;
+  lectureMethod?: string;
+  maxCapacity?: number;
+  minCapacity?: number;
+  title?: string;
+  notification?: string;
+  introduction?: string;
+  curriculum?: string;
+  startDate?: string;
+  endDate?: string;
+  duration?: number;
+  schedules?: DayTimeList[] | DateTimeList[];
+  holidays?: Data[];
+  reservationDeadline?: number;
+  location?: {
+    detailAddress?: string | null;
+    address?: string | null;
+    buildingName?: string | null;
+    administrativeDistrict?: string | null;
+    district?: string | null;
+  };
+  locationDescription?: string;
+  regions?: string[];
+  price?: string | number;
+  coupons?: number[];
 }
 
 export interface IprocessedDraft {
@@ -254,9 +288,11 @@ export interface IprocessedDraft {
   temporaryLectureToDanceGenre?: string[];
   holidays?: Data[];
   location?: {
-    roadAddr: string | undefined;
-    detailAddress: string | undefined;
-    bdNm: string | undefined;
+    roadAddr?: string | null;
+    detailAddress?: string | null;
+    bdNm?: string | null;
+    administrativeDistrict?: string | null;
+    district?: string | null;
   };
   totalClasses?: number;
   schedules?: DayTimeList[] | DateTimeList[];

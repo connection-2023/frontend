@@ -34,9 +34,9 @@ const BestClass = async () => {
       {bestClassList.map((classList, index) => {
         const data = { ...classList, smallView: true };
         return (
-          <li key={classList.title + index} className="w-full max-w-[13rem]">
+          <div key={classList.title + index} className="w-full max-w-[13rem]">
             <ClassCard key={classList.title + index} {...data} />
-          </li>
+          </div>
         );
       })}
     </CarouselTemplate>

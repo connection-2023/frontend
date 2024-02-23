@@ -1,3 +1,5 @@
+import { FetchError } from '@/types/types';
+
 export const postSingleImage = async (image: File, folder: string) => {
   try {
     const formData = new FormData();
@@ -13,7 +15,10 @@ export const postSingleImage = async (image: File, folder: string) => {
     );
 
     if (!response.ok) {
-      throw new Error('단일 이미지 업로드 실패');
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
@@ -43,7 +48,10 @@ export const postMultipleImage = async (images: File[], folder: string) => {
     );
 
     if (!response.ok) {
-      throw new Error('다중 이미지 업로드 실패');
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const data = await response.json();
@@ -65,7 +73,10 @@ export const deleteImage = async (data: { imageUrl: string }) => {
     });
 
     if (!response.ok) {
-      throw new Error('이미지 삭제 실패');
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
     const responseData = await response.json();

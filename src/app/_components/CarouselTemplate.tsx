@@ -27,7 +27,7 @@ const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
   return (
     <div className={`relative flex ${height} w-full justify-center px-2`}>
       <div className="h-full w-11/12 items-center overflow-hidden">
-        <ul className={width} onMouseOver={onFocus} onMouseLeave={offFocus}>
+        <div className={width} onMouseOver={onFocus} onMouseLeave={offFocus}>
           <Carousel
             move={true}
             showCurrentElement={false}
@@ -38,7 +38,7 @@ const CarouselTemplate = ({ mode, children }: ICarouselTemplateProps) => {
           >
             {children}
           </Carousel>
-        </ul>
+        </div>
       </div>
     </div>
   );

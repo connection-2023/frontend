@@ -1,12 +1,20 @@
-import { StoryObj, Meta } from '@storybook/react';
 import { useState } from 'react';
 import Carousel from './Carousel';
 import ClassCard from '../ClassPreview/ClassPreview';
+import type { StoryObj, Meta } from '@storybook/react';
 
 const meta: Meta<typeof Carousel> = {
   title: 'Components/Carousel',
   component: Carousel,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: '이미지 캐러셀',
+      },
+    },
+  },
   argTypes: {
     imgURL: {
       description: '표시할 이미지들의 URL들이 담긴 배열, children 우선 렌더',

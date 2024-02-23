@@ -31,7 +31,7 @@ const BestInstructor = async () => {
   return (
     <CarouselTemplate mode="instructor">
       {bestInstructorLists.map((list) => (
-        <li key={list.id} className="h-full w-full">
+        <div key={list.id} className="h-full w-full">
           <Link
             href={`/instructor/${list.id}`}
             className="flex h-full flex-col"
@@ -50,7 +50,7 @@ const BestInstructor = async () => {
               {list.nickname}
             </div>
           </Link>
-        </li>
+        </div>
       ))}
     </CarouselTemplate>
   );

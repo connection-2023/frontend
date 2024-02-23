@@ -14,6 +14,7 @@ interface ModalContentProps {
   ) => void;
   controls: AnimationControls;
   skipBackOnUnmount: MutableRefObject<boolean>;
+  modalHistroryControl: boolean;
 }
 
 const ModalContent = ({
@@ -23,6 +24,7 @@ const ModalContent = ({
   onDragEnd,
   controls,
   skipBackOnUnmount,
+  modalHistroryControl,
 }: ModalContentProps) => {
   const initialized = useRef(false);
   const isSm = disableModalSwipe
@@ -33,9 +35,11 @@ const ModalContent = ({
 
   const closeModalHandler = () => {
     handleClosed();
-    window.onpopstate = null;
-    window.history.back();
-    skipBackOnUnmount.current = true;
+    if (modalHistroryControl) {
+      window.onpopstate = null;
+      window.history.back();
+      skipBackOnUnmount.current = true;
+    }
   };
 
   const handleKeyUp = (e: globalThis.KeyboardEvent) => {
@@ -44,6 +48,8 @@ const ModalContent = ({
   };
 
   useEffect(() => {
+    if (!modalHistroryControl) return;
+
     if (!initialized.current) {
       window.addEventListener('keyup', handleKeyUp);
 

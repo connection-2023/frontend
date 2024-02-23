@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useSelectedLayoutSegment } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
   ConnectionLogoSVG,
@@ -22,23 +22,38 @@ const LECTURER_MENU = [
   { href: 'instructor', menu: '강사', label: '강사 페이지로 이동' },
   { href: 'class', menu: '클래스', label: '클래스 페이지로 이동' },
   {
-    href: 'class/create',
+    href: 'class/create/drafts',
     menu: '클래스 등록',
     label: '클래스 등록 페이지로 이동',
   },
 ];
 
+const getClassName = (href: string, pathname: string, menuList: Array<any>) => {
+  const isSubmenu = menuList.some(
+    (menu) => menu.href !== href && menu.href.startsWith(href),
+  );
+
+  if (isSubmenu && pathname.startsWith(`/${href}/`)) return '';
+
+  if (pathname.startsWith(`/${href}`)) return 'font-bold';
+
+  return '';
+};
+
 const HeaderMenu = () => {
-  const segment = useSelectedLayoutSegment();
+  const pathname = usePathname();
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
-  const mySidebar = segment === 'mypage' || segment === 'dashboard';
+  const mySidebar =
+    pathname.includes('mypage') || pathname.includes('dashboard');
   const [isOpened, setIsOpened] = useState(false);
 
   const handleOpened = () => {
     setIsOpened(!isOpened);
   };
+
+  const menuList = userType === 'lecturer' ? LECTURER_MENU : USER_MENU;
 
   return (
     <>
@@ -72,18 +87,17 @@ const HeaderMenu = () => {
           Connection 서비스 주요 메뉴
         </h2>
         <ul className="hidden gap-6 text-lg sm:flex">
-          {(userType === 'lecturer' ? LECTURER_MENU : USER_MENU).map(
-            ({ href, menu, label }, index) => (
-              <li
-                key={href + index}
-                className={segment === href ? 'font-bold' : ''}
-              >
+          {menuList.map(({ href, menu, label }, index) => {
+            const className = getClassName(href, pathname, menuList);
+
+            return (
+              <li key={`${href}${index}`} className={className}>
                 <Link href={`/${href}`} aria-label={label}>
                   {menu}
                 </Link>
               </li>
-            ),
-          )}
+            );
+          })}
         </ul>
       </nav>
 

@@ -1,5 +1,6 @@
-import { Children, cloneElement, useState } from 'react';
+import { Children, cloneElement, useRef, useState } from 'react';
 import React from 'react';
+import { useClickAway } from 'react-use';
 import { TooltipSVG } from '@/icons/svg';
 
 type ChildComponentProps = { setShow: (event: React.MouseEvent) => void };
@@ -10,6 +11,7 @@ const Tooltip = ({
 }: {
   children: React.ReactElement | React.ReactElement[];
 }) => {
+  const overlayRef = useRef(null);
   const [show, setShow] = useState(true);
 
   const closeViewHandler = (event: React.MouseEvent) => {
@@ -21,13 +23,20 @@ const Tooltip = ({
     return cloneElement(child, { setShow: closeViewHandler });
   });
 
+  useClickAway(overlayRef, () => {
+    setShow(false);
+  });
+
   return (
     <div
       className={`${show && 'group'} relative`}
       onClick={() => setShow(true)}
     >
       <TooltipSVG />
-      <div className="fixed left-1/2 top-1/2 z-20 hidden -translate-x-1/2 -translate-y-1/2 transform border border-solid border-gray-700 bg-white shadow-float group-hover:block sm:absolute sm:left-6 sm:top-0 sm:translate-x-0 sm:translate-y-0">
+      <div
+        ref={overlayRef}
+        className="fixed left-1/2 top-1/2 z-20 hidden -translate-x-1/2 -translate-y-1/2 transform border border-solid border-gray-700 bg-white shadow-float group-hover:block sm:absolute sm:left-6 sm:top-0 sm:translate-x-0 sm:translate-y-0"
+      >
         {childrenWithProps}
       </div>
 

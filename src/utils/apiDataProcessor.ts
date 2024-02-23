@@ -21,11 +21,13 @@ import {
   ClassCardType,
   searchClass,
   searchBestClassData,
+  IGetClassDraft,
+  IUpdateClassDraft,
+  classProccessData,
 } from '@/types/class';
 import {
   CouponData,
   couponGET,
-  createCoupon,
   createCouponData,
   updateCouponData,
   userCouponGET,
@@ -143,7 +145,6 @@ export const formatDate = (dateString: string | undefined) => {
 export const classOutputDataProcess = async (
   data: classCreateData,
   step: number,
-  setProcessedClassDataHandler: (data: IprocessedDraft) => void,
 ) => {
   switch (step) {
     case 0:
@@ -179,12 +180,6 @@ export const classOutputDataProcess = async (
       const maxCapacity = isGroup ? max.value : undefined;
 
       const { newGenres, etcGenres } = categorizeGenres(genres);
-
-      setProcessedClassDataHandler({
-        isGroup,
-        min: min.value,
-        max: max.value,
-      });
 
       return {
         images,
@@ -242,24 +237,31 @@ export const classOutputDataProcess = async (
         locationDescription,
       } = data;
 
-      const location = {
-        detailAddress: detail,
-        address: address?.roadAddr,
-        buildingName: address?.bdNm,
-      };
-
       if (locationConsultative) {
         return {
           regions: reqRegions(regions),
           locationDescription,
-          location: null,
+          location: {
+            detailAddress: null,
+            address: null,
+            buildingName: null,
+            administrativeDistrict: null,
+            district: null,
+          },
         };
       }
+
+      const location = {
+        detailAddress: detail,
+        address: address?.roadAddr,
+        buildingName: address?.bdNm,
+        administrativeDistrict: address?.siNm,
+        district: address?.sggNm,
+      };
 
       return {
         location,
         locationDescription,
-        regions: [],
       };
 
     case 4:
@@ -274,7 +276,7 @@ export const classOutputDataProcess = async (
 };
 
 export const classCreate = async (
-  id: number,
+  id: string,
   finalSchedule: Date[] | undefined,
 ) => {
   const { location, temporaryLecture, schedules } = await getClassDraft(id);
@@ -315,11 +317,11 @@ export const classCreate = async (
         temporaryLectureHoliday,
       );
 
-  const isLocationConfirmed = temporaryLectureToRegion.length > 0;
+  const isLocationConfirmed = location?.address;
 
   const { newGenres, etcGenres } = categorizeGenres(
-    temporaryLectureToDanceGenre.map(
-      ({ danceCategory }) => danceCategory.genre,
+    temporaryLectureToDanceGenre.map(({ name, danceCategory }) =>
+      danceCategory.genre === '기타' ? name ?? '' : danceCategory.genre,
     ),
   );
 
@@ -327,23 +329,26 @@ export const classCreate = async (
 
   const data = {
     regions: isLocationConfirmed
-      ? temporaryLectureToRegion.map(
-          ({ region }) => region.administrativeDistrict + ' ' + region.district,
-        )
-      : [],
-    location: isLocationConfirmed
       ? null
-      : {
-          address: location?.address,
-          detailAddress: location?.detailAddress,
-          buildingName: location?.buildingName,
-        },
+      : temporaryLectureToRegion.map(
+          ({ region }) => region.administrativeDistrict + ' ' + region.district,
+        ),
+    location: isLocationConfirmed
+      ? {
+          address: location.address,
+          detailAddress: location.detailAddress,
+          buildingName: location.buildingName,
+          administrativeDistrict:
+            temporaryLectureToRegion[0].region.administrativeDistrict,
+          district: temporaryLectureToRegion[0].region.district,
+        }
+      : null,
     lectureType: 'dance',
     lectureMethod: lectureMethod?.name,
     isGroup,
     startDate,
     endDate,
-    notification: temporaryLecturenotification.notification,
+    notification: temporaryLecturenotification?.notification,
     genres: newGenres,
     etcGenres,
     images,
@@ -667,5 +672,237 @@ export const createCouponUtils = (
     };
   } else {
     return baseData;
+  }
+};
+
+export const classDraftsDataProcess = (
+  data: IGetClassDraft,
+): IprocessedDraft => {
+  const {
+    temporaryLectureToDanceGenre,
+    isGroup,
+    maxCapacity,
+    minCapacity,
+    difficultyLevel,
+    lectureMethod,
+    temporaryLecturenotification,
+    startDate,
+    endDate,
+    temporaryLectureHoliday,
+    reservationDeadline,
+    temporaryLectureToRegion,
+  } = data.temporaryLecture;
+
+  const genres = temporaryLectureToDanceGenre.map((item) => {
+    if (item.danceCategory.genre === '기타') {
+      return item.name as string;
+    }
+    return item.danceCategory.genre;
+  });
+
+  const newDifficultyLevel =
+    difficultyLevel === '상'
+      ? '상급'
+      : difficultyLevel === '중'
+      ? '중급'
+      : difficultyLevel === '하'
+      ? '초급(입문)'
+      : null;
+
+  const newlectureMethod =
+    lectureMethod?.name === '원데이'
+      ? '원데이 레슨'
+      : lectureMethod?.name === '정기'
+      ? '정기클래스'
+      : null;
+
+  const lessonType =
+    isGroup === null ? null : isGroup ? '그룹레슨' : '개인(1:1)레슨';
+
+  const notification = temporaryLecturenotification?.notification;
+
+  const newStartDate = startDate === null ? '' : formatDate(startDate);
+
+  const newEndDate = endDate === null ? '' : formatDate(endDate);
+
+  const holidays = temporaryLectureHoliday.map(
+    ({ holiday }) => new Date(holiday),
+  );
+
+  const newReservationDeadline = Number(reservationDeadline);
+
+  const regions = data.location?.address
+    ? {}
+    : resRegions(temporaryLectureToRegion.map(({ region }) => region));
+
+  return {
+    ...data.temporaryLecture,
+    temporaryLectureToDanceGenre: genres,
+    difficultyLevel: newDifficultyLevel,
+    lectureMethod: newlectureMethod,
+    lessonType,
+    notification,
+    classRange: {
+      startDate: newStartDate,
+      endDate: newEndDate,
+    },
+    holidays,
+    reservationDeadline: newReservationDeadline,
+    regions,
+    min: minCapacity ?? 1,
+    max: maxCapacity ?? 100,
+    location: {
+      roadAddr: data.location?.address,
+      bdNm: data.location?.buildingName,
+      detailAddress: data.location?.detailAddress,
+      administrativeDistrict: data.location?.administrativeDistrict,
+      district: data.location?.district,
+    },
+    schedules: data.schedules ? data.schedules : [],
+    totalClasses: data.schedules?.length,
+  };
+};
+
+export const formToClassDataProcess = (
+  processData: classProccessData,
+  data: classCreateData,
+  currentStep: number,
+) => {
+  switch (currentStep) {
+    case 0:
+      const {
+        images,
+        title,
+        genres,
+        isGroup,
+        etcGenres,
+        lectureMethod,
+        difficultyLevel,
+        minCapacity,
+        maxCapacity,
+      } = processData;
+
+      const temporaryLectureImage = images?.map((imageUrl) => ({
+        imageUrl,
+      }));
+
+      const temporaryLectureToDanceGenre = [...genres!, ...etcGenres!];
+
+      const lessonType = isGroup ? '그룹레슨' : '개인(1:1)레슨';
+
+      const newlectureMethod =
+        lectureMethod === '원데이'
+          ? '원데이 레슨'
+          : lectureMethod === '정기'
+          ? '정기클래스'
+          : null;
+
+      const newDifficultyLevel =
+        difficultyLevel === '상'
+          ? '상급'
+          : difficultyLevel === '중'
+          ? '중급'
+          : difficultyLevel === '하'
+          ? '초급(입문)'
+          : null;
+
+      return {
+        title,
+        temporaryLectureImage,
+        temporaryLectureToDanceGenre,
+        lessonType,
+        lectureMethod: newlectureMethod,
+        difficultyLevel: newDifficultyLevel,
+        min: minCapacity,
+        max: maxCapacity,
+      };
+    case 1:
+      const { notification, introduction, curriculum } = processData;
+
+      return {
+        notification,
+        introduction,
+        curriculum,
+      };
+    case 2:
+      const {
+        startDate,
+        endDate,
+        duration,
+        schedules,
+        holidays,
+        reservationDeadline,
+      } = processData;
+
+      return {
+        classRange: { startDate, endDate },
+        duration,
+        schedules,
+        holidays,
+        reservationDeadline,
+        totalClasses: schedules?.length,
+      };
+    case 3:
+      const { location, locationDescription, regions } = processData;
+      const { locationConsultative } = data;
+
+      const regionsList: { [key: string]: string[] } = {};
+
+      if (locationConsultative) {
+        regions?.forEach((region) => {
+          const [administrativeDistrict, district] = region.split(' ');
+          const abbreviation = CITY_ABBREVIATION_NAME[administrativeDistrict];
+
+          if (!abbreviation) return;
+
+          if (!regionsList[abbreviation]) {
+            regionsList[abbreviation] = [];
+          }
+
+          const newEntries =
+            district === null || district === '전'
+              ? abbreviation === '온라인'
+                ? ['온라인']
+                : WARD_LIST[abbreviation]
+              : [district];
+
+          regionsList[abbreviation] = [
+            ...new Set([...regionsList[abbreviation], ...newEntries]),
+          ];
+        });
+
+        return {
+          location: {
+            roadAddr: null,
+            bdNm: null,
+            detailAddress: null,
+            administrativeDistrict: null,
+            district: null,
+          },
+          locationDescription,
+          regions: regionsList,
+        };
+      }
+
+      return {
+        location: {
+          roadAddr: location?.address,
+          bdNm: location?.buildingName,
+          detailAddress: location?.detailAddress,
+          administrativeDistrict: location?.administrativeDistrict,
+          district: location?.district,
+        },
+        locationDescription,
+        regions: {},
+      };
+    case 4:
+      const { maxCapacity: max, price } = processData;
+      const { coupons } = data;
+
+      return {
+        max,
+        price,
+        coupons,
+      };
   }
 };

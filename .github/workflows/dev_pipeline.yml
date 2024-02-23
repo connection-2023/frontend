@@ -58,6 +58,9 @@ jobs:
       cancel-in-progress: true
 
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -76,3 +79,5 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/connection-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

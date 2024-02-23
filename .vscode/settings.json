@@ -2,5 +2,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "svg.preview.background": "transparent"
+  "svg.preview.background": "black"
 }

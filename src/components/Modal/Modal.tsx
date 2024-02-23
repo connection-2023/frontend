@@ -8,6 +8,7 @@ interface ModalProps {
   isOpened: boolean;
   handleClosed: () => void;
   disableModalSwipe?: boolean;
+  modalHistroryControl?: boolean;
 }
 
 const Modal = ({
@@ -15,14 +16,17 @@ const Modal = ({
   isOpened,
   handleClosed,
   disableModalSwipe = false,
+  modalHistroryControl = true,
 }: ModalProps) => {
   const skipBackOnUnmount = useRef(false);
 
   const closeModalHandler = () => {
     handleClosed();
-    window.onpopstate = null;
-    window.history.back();
-    skipBackOnUnmount.current = true;
+    if (modalHistroryControl) {
+      window.onpopstate = null;
+      window.history.back();
+      skipBackOnUnmount.current = true;
+    }
   };
 
   const { onDragEnd, controls } = useBottomSheet(closeModalHandler, isOpened);
@@ -45,6 +49,7 @@ const Modal = ({
         onDragEnd={onDragEnd}
         controls={controls}
         skipBackOnUnmount={skipBackOnUnmount}
+        modalHistroryControl={modalHistroryControl}
       />
     </div>
   ) : null;
