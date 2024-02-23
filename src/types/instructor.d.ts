@@ -324,7 +324,7 @@ export interface MemberData {
   reservation: Reservation;
 }
 
-interface Reservation {
+export interface Reservation {
   id: number;
   representative: string;
   phoneNumber: string;

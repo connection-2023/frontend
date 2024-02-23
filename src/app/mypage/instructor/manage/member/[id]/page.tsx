@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { ArrowRightSVG } from '@/icons/svg';
 import {
@@ -35,9 +36,9 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
     <main className="col-span-1 flex w-full flex-col gap-4 px-2 sm:gap-0 sm:px-6">
       <section className="flex flex-col gap-6 rounded-md bg-white px-5 pb-5 pt-6 shadow-float sm:rounded-t-md sm:shadow-[0_-1px_5px_0px_rgba(0,0,0,0.25)]">
         <header className="flex items-center gap-2">
-          <button>
+          <Link href="/mypage/instructor/manage/member">
             <ArrowRightSVG className="h-8 w-8 rotate-180 stroke-gray-100 " />
-          </button>
+          </Link>
           <h1 className="text-2xl font-bold text-gray-100">회원 관리</h1>
         </header>
         <Member />
