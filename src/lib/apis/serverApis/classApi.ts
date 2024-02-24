@@ -4,6 +4,7 @@ import {
   IGetClassDrafts,
   Lecture,
   LikedLecture,
+  IRecentApply,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
 
@@ -142,4 +143,35 @@ export const getLikesClassList = async (): Promise<
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getRecentApply = async (): Promise<IRecentApply[]> => {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get('lecturerAccessToken')?.value;
+
+  if (!authorization) {
+    throw new Error('대시보드 - 최근 신청한 수강생 조회 요청 오류: 권한 없음');
+  }
+
+  const response = await fetch(
+    END_POINT + `/lecturers/my-reservations?take=5`,
+    {
+      cache: 'no-store',
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Authorization: `Bearer ${authorization}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `대시보드 - 최근 신청한 수강생 조회 오류: ${response.status}`,
+    );
+  }
+
+  const resData = await response.json();
+
+  return resData.data.myReservationList;
 };
