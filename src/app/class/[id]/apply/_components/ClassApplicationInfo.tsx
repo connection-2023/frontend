@@ -165,6 +165,7 @@ const ClassApplicationInfo = ({
               count={selectedSchedule.count}
               onRemove={removeReservationItem}
               countUpdate={updateParticipants}
+              borderColor="border-gray-500"
             />
           )}
         </div>
