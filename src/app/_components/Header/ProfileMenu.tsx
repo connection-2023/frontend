@@ -157,7 +157,7 @@ const ProfileMenu = () => {
       <li className="border-t border-solid border-gray-500 text-main-color">
         <button
           onClick={handleSwitchUser}
-          className="flex h-full w-full cursor-pointer gap-1 py-4 pl-4"
+          className="flex h-full w-full cursor-pointer items-center gap-1 py-4 pl-4"
         >
           <TransFormSVG />
           {store.userType === 'user' ? '강사 전환' : '유저 전환'}

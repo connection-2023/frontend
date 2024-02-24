@@ -4,7 +4,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof UniqueButton> = {
   title: 'Components/Buttons/UniqueButton',
   component: UniqueButton,
-  parameters: {},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          '기본 상태가 눈에 띄지 않아야 하는 경우에 사용하는 버튼 컴포넌트',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     size: {

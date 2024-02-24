@@ -8,7 +8,7 @@ interface ISuggestionProps {
   image: string;
 }
 
-const SuggestionPreview = ({
+const SuggestionClassPreview = ({
   title,
   range,
   review,
@@ -38,4 +38,4 @@ const SuggestionPreview = ({
   );
 };
 
-export default SuggestionPreview;
+export default SuggestionClassPreview;

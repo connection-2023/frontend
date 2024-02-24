@@ -1,7 +1,8 @@
+'use client';
+import dynamic from 'next/dynamic';
 import { useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import SunEditorCore, { fileInfo } from 'suneditor/src/lib/core';
-import SunEditor from 'suneditor-react';
 import {
   UploadBeforeHandler,
   UploadBeforeReturn,
@@ -11,6 +12,10 @@ import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
 import { postSingleImage } from '@/lib/apis/imageApi';
 import { toast } from 'react-toastify';
+
+const SunEditor = dynamic(() => import('suneditor-react'), {
+  ssr: false,
+});
 
 interface CustomEditorProps {
   title: string;

@@ -16,13 +16,13 @@ const Footer = () => {
   });
 
   return !shouldRenderFooter ? (
-    <footer className="mx-auto w-full whitespace-pre-line break-keep border-t border-solid border-gray-700 px-[4.37rem] py-8 text-sm">
-      <div className="mb-8 flex flex-wrap items-center gap-x-12 gap-y-4">
+    <footer className="mx-auto mb-24 w-full whitespace-pre-line break-keep border-t border-solid border-gray-700 px-4 py-8 text-sm sm:mb-0 sm:px-[4.37rem]">
+      <div className="mb-4 flex flex-wrap items-center gap-x-12 gap-y-4 sm:mb-8">
         <Link href="/" aria-label="홈으로 이동">
           <ConnectionLogoSVG className="h-[0.875rem] w-[8.1875rem]" />
         </Link>
 
-        <nav className="flex flex-wrap gap-12 text-sm font-bold">
+        <nav className="flex flex-wrap gap-x-12 gap-y-2 text-sm font-bold">
           <Link href="/notice">공지사항</Link>
           <Link href="/help">이용약관</Link>
           <Link href="/help">개인정보처리방침</Link>

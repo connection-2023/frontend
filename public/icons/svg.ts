@@ -24,6 +24,8 @@ export { default as BillSVG } from './my/bill.svg';
 
 export { default as BookmarkSVG } from './menu/bookmark.svg';
 
+export { default as PeopleSVG } from './menu/people.svg';
+
 export { default as CalendarSVG } from './class/calendar.svg';
 
 export { default as CalendarDetailSVG } from './class/calendarDetail.svg';
@@ -51,6 +53,8 @@ export { default as CropSVG } from './common/button/crop.svg';
 export { default as DashboardSVG } from './menu/dashboard.svg';
 
 export { default as DeleteSVG } from './common/button/delete.svg';
+
+export { default as LogInSVG } from './common/button/login.svg';
 
 export { default as DoubleRightSVG } from './common/arrow/doubleRight.svg';
 
@@ -96,6 +100,8 @@ export { default as MapSVG } from './home/map.svg';
 
 export { default as MoneySVG } from './my/money.svg';
 
+export { default as UnFilledNoteSVG } from './class/unfilled-note.svg';
+
 export { default as MusicalNoteSVG } from './class/musicalNote.svg';
 
 export { default as NaverSVG } from './logo/sns/naverIcon.svg';
@@ -113,6 +119,8 @@ export { default as PassSVG } from './common/pass.svg';
 export { default as PlusesSVG } from './class/pluses.svg';
 
 export { default as ProfileSVG } from './common/profile_default.svg';
+
+export { default as HomeSVG } from './common/home.svg';
 
 export { default as ReadMessageSVG } from './my/readMessage.svg';
 

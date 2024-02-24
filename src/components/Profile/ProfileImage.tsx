@@ -21,7 +21,7 @@ const ProfileImg = ({
   const ml = `ml-${marginLeft}`;
 
   return (
-    <div className={`color-inherit flex items-center`}>
+    <div className="color-inherit flex items-center">
       {src ? (
         <figure
           style={{ height: `${imageSize}px`, width: `${imageSize}px` }}
@@ -41,7 +41,7 @@ const ProfileImg = ({
         <ProfileSVG
           width={imageSize}
           height={imageSize}
-          className="rounded-full"
+          className="rounded-full fill-gray-500"
         />
       )}
       {label && <span className={ml}>{nickname}</span>}
