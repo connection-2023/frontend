@@ -14,6 +14,7 @@ import Footer from './_components/Footer';
 import Header from './_components/Header/Header';
 import UserProfileLinks from './_components/Header/UserProfileLinks';
 import UserStoreInitializer from './_components/Header/UserStoreInitializer';
+import MobileNav from './_components/MobileNav';
 import { profileInfo, userType } from '@/types/auth';
 import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
@@ -78,13 +79,14 @@ export default async function RootLayout({
             pauseOnHover
             theme="light"
           />
-          <main className="relative flex-1">
+          <main className="main">
             {children}
             <div className="fixed bottom-24 right-8">
               <ControlOptions />
             </div>
           </main>
           <Footer />
+          <MobileNav />
         </Providers>
         <GoogleAnalytics gaId="G-JSWE2TFJ10" />
         <GoogleTagManager gtmId="GTM-WV6RNCC9" />
