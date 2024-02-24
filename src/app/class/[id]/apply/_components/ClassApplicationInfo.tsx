@@ -122,8 +122,8 @@ const ClassApplicationInfo = ({
     <section className="mt-4 rounded-md px-4 py-[1.31rem] shadow-vertical">
       <h3 className="text-lg font-semibold">신청한 클래스</h3>
 
-      <div className="mt-2 grid grid-cols-2">
-        <div className="flex w-fit justify-center md:w-fit md:justify-start">
+      <div className="mt-2 grid grid-cols-1 md:grid-cols-2">
+        <div className="w-fit justify-self-center">
           <ScheduleCalendar
             mode="schedule"
             clickableDates={clickableDates}
@@ -133,7 +133,7 @@ const ClassApplicationInfo = ({
           />
         </div>
 
-        <div className="flex max-w-[288px] flex-col">
+        <div className="flex flex-col md:max-w-[288px]">
           <p className="flex items-center gap-x-1.5 text-sm font-medium">
             <TimeSVG className="fill-black" /> {duration}분 수업
           </p>
@@ -142,7 +142,7 @@ const ClassApplicationInfo = ({
             {timeList.map((list) => (
               <li key={list.id} onClick={() => handleTimeList(list)}>
                 <button
-                  className={`flex h-9 w-[120px] items-center justify-between rounded-md border border-solid ${timeListStyle(
+                  className={`flex h-9 w-full items-center justify-between rounded-md border border-solid md:w-[120px] ${timeListStyle(
                     list.id,
                   )} px-2 text-sm`}
                 >
