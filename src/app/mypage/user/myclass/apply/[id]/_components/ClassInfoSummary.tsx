@@ -1,7 +1,8 @@
-import InstructorProfileMenu from '@/components/Profile/InstructorProfileMenu';
-import { IApplyDetailResponse } from '@/types/class';
+import Link from 'next/link';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import { formatPhoneNumber } from '@/utils/parseUtils';
+import InstructorProfileMenu from '@/components/Profile/InstructorProfileMenu';
+import { IApplyDetailResponse } from '@/types/class';
 
 interface IClassInfoSummaryProps extends IApplyDetailResponse {
   type: '원데이' | '정기';
@@ -38,16 +39,22 @@ const ClassInfoSummary = (props: IClassInfoSummaryProps) => {
       <p>대표자</p>
       <p className="font-normal">{representative}</p>
       <p>신청인원</p>
-      <p className="font-normal">5명</p>
+      {/* API 데이터 반환 변경 후 변경 예정 */}
+      <p className="font-normal">{lectureSchedule?.numberOfParticipants}명</p>
       <p>대표 연락처</p>
       <p className="font-normal">{formatPhoneNumber(phoneNumber)}</p>
 
       <p>결제금액</p>
       <p>
-        <span className="font-normal text-gray-100 underline">
+        <Link
+          href={`/receipt?orderId=${payment.orderId}`}
+          className="font-normal text-gray-100 underline"
+        >
           {payment.finalPrice.toLocaleString()}원
+        </Link>
+        <span className="ml-2 text-gray-500">
+          {payment.paymentMethod.name}결제
         </span>
-        <span className="ml-2 text-gray-500">카드결제</span>
       </p>
     </div>
   );
