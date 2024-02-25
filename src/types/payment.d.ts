@@ -128,3 +128,11 @@ export interface PaymentCoupon {
   couponId: null | number;
   stackableCouponId: null | number;
 }
+
+export interface PaymentPassInfoParam {
+  passId: number;
+  orderId: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+}

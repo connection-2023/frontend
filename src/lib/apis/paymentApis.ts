@@ -1,5 +1,9 @@
-import { IPaymentInfo, IVirtualAccountInfo } from '@/types/payment';
-import { IMyPaymentResponse } from '@/types/types';
+import {
+  IPaymentInfo,
+  IVirtualAccountInfo,
+  PaymentPassInfoParam,
+} from '@/types/payment';
+import { FetchError, IMyPaymentResponse } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {
@@ -79,6 +83,32 @@ export const getAccountInfo = async (
 
     return response.data.virtualAccountPaymentInfo;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const postPassPaymentInfo = async (data: PaymentPassInfoParam) => {
+  try {
+    const response = await fetch(`/api/payment/pass`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error('패스권 결제 정보 생성 오류', error);
     throw error;
   }
 };

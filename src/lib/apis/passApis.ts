@@ -78,9 +78,9 @@ export const createNewPass = async (data: IcreatePassReqData) => {
   }
 };
 
-export const getPassDetail = async (passId: number) => {
+export const getPassForId = async (passId: number) => {
   try {
-    const response = await fetch(`/api/pass/detail?passId=${passId}`, {
+    const response = await fetch(`/api/pass/get-id?passId=${passId}`, {
       method: 'GET',
       credentials: 'include',
       headers: {

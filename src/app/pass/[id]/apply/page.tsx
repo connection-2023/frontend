@@ -1,10 +1,9 @@
 import PaymentType from '@/app/class/[id]/apply/_components/PaymentType';
-import { ArrowUpSVG, MusicalNoteSVG, PassSVG } from '@/icons/svg';
-import ApplyButton from '@/components/Button/ApplyButton';
+import { PassSVG } from '@/icons/svg';
+import BuyerInfo from './_components/BuyerInfo';
+import PaymentForm from './_components/PaymentForm';
 
-const page = async ({ params }) => {
-  console.log(params);
-
+const page = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <h1 className="mx-auto mb-6 flex w-full items-center justify-center border-b border-solid border-gray-700 py-4 text-2xl font-bold">
@@ -20,7 +19,7 @@ const page = async ({ params }) => {
             제목
           </h2>
 
-          <section className="mt-5 rounded-md px-4 py-[1.31rem] shadow-vertical">
+          <section className="mt-5 rounded-md px-4 py-4 shadow-vertical">
             <div className="w-full whitespace-nowrap">
               <h3 className="mb-3 text-lg font-semibold">패스권 정보</h3>
               <dl className="grid grid-cols-[4rem,1fr] gap-x-3 gap-y-2 text-sm [&>dt]:font-semibold [&>dt]:text-gray-500">
@@ -36,31 +35,7 @@ const page = async ({ params }) => {
             </div>
           </section>
 
-          <div className="mt-4 rounded-md px-4 py-[1.31rem] shadow-vertical">
-            <section className="w-full whitespace-nowrap">
-              <h3 className="text-lg font-semibold">예약자 정보</h3>
-              <ul className="mt-4 flex flex-col gap-2 text-sm font-semibold text-gray-100 ">
-                <li className="flex items-center gap-4 py-[0.31rem]">
-                  <label className="flex items-center gap-4">
-                    <span>대표자 이름</span>
-                    <input className="h-7 w-full max-w-[20rem] rounded-md border border-solid border-gray-500 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1" />
-                  </label>
-
-                  <div className="w-24 shrink-0" />
-                </li>
-                <li className="flex items-center gap-4 py-[0.31rem]">
-                  <label className="flex items-center gap-4">
-                    <span>대표 연락처</span>
-                    <input className="h-7 w-full max-w-[20rem] rounded-md border border-solid border-gray-500 px-[0.62rem] py-[0.31rem] focus:outline-sub-color1" />
-                  </label>
-
-                  <button className="h-7 w-24 shrink-0 cursor-pointer whitespace-nowrap rounded-md border border-solid border-black bg-black font-medium text-white">
-                    인증하기
-                  </button>
-                </li>
-              </ul>
-            </section>
-          </div>
+          <BuyerInfo />
 
           <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">
             {/* <h3 className="text-lg font-semibold">결제 방법 선택</h3> */}
@@ -88,45 +63,7 @@ const page = async ({ params }) => {
               </span>
             </div>
 
-            <ul className="gap-2">
-              <li className="flex items-center">
-                <p className="flex-1">ㅂㅂㅂㅂ</p>
-                <button aria-label="자세히보기">
-                  <ArrowUpSVG
-                    className={`h-[34px] w-[34px] fill-gray-500 ${
-                      false ? '' : 'rotate-180'
-                    }`}
-                  />
-                </button>
-              </li>
-              <li className="flex items-center">
-                <p className="flex-1">ㅂㅂㅂㅂ</p>
-                <button aria-label="자세히보기">
-                  <ArrowUpSVG
-                    className={`h-[34px] w-[34px] fill-gray-500 ${
-                      false ? '' : 'rotate-180'
-                    }`}
-                  />
-                </button>
-              </li>
-            </ul>
-
-            <p className="mb-4 mt-[1.31rem] font-bold">
-              상기 필수약관을 확인하였으며 결제에 동의합니다.
-            </p>
-
-            <div className="fixed bottom-4 left-0 w-screen px-9 lg:static lg:w-full lg:px-0">
-              <ApplyButton
-                label={
-                  <>
-                    <p className="hidden lg:block">결제하기</p>
-                    <p className="lg:hidden">
-                      {'100000'.toLocaleString()}원 결제하기
-                    </p>
-                  </>
-                }
-              />
-            </div>
+            <PaymentForm />
           </section>
         </aside>
       </div>
