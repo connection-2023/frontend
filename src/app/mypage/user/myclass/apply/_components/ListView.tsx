@@ -9,6 +9,9 @@ import Spinner from '@/components/Spinner/Spinner';
 
 const ClassList = dynamic(() => import('./ClassList'), {
   ssr: false,
+  loading: () => (
+    <div className="mt-4 h-48 animate-pulse rounded-md bg-gray-700 shadow-vertical" />
+  ),
 });
 
 const ListView = () => {
@@ -62,8 +65,8 @@ const ListView = () => {
 
         <PageSizeSelector value={displayCount} onChange={handleDisplayCount} />
       </div>
-
-      {isLoading ? (
+      {/* 로딩 왜 안 보일까요... */}
+      {isLoading || !classListData ? (
         <div className="mt-20 flex h-full items-center justify-center">
           <Spinner />
         </div>

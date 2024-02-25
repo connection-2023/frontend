@@ -8,12 +8,22 @@ import Spinner from '@/components/Spinner/Spinner';
 
 const FullCalendar = dynamic(() => import('./Calendar/FullCalendar'), {
   ssr: false,
+  loading: () => (
+    <div className="mt-2 flex h-[675px] w-full max-w-[960px] items-center justify-center">
+      <Spinner />
+    </div>
+  ),
 });
 
 const ResponsiveEventCalendar = dynamic(
   () => import('./Calendar/ResponsiveEventCalendar'),
   {
     ssr: false,
+    loading: () => (
+      <div className="mt-2 flex h-80 w-full items-center justify-center">
+        <Spinner />
+      </div>
+    ),
   },
 );
 
@@ -37,7 +47,7 @@ const CalendarView = () => {
   return (
     <div className="mx-auto flex h-full w-full max-w-[60rem] flex-col gap-4">
       {isLoading ? (
-        <div className="mt-20 flex h-full items-center justify-center">
+        <div className="mt-2 flex h-96 w-full max-w-[960px] items-center justify-center rounded-lg md:h-[675px] md:shadow-float">
           <Spinner />
         </div>
       ) : (
