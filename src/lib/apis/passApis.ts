@@ -77,3 +77,29 @@ export const createNewPass = async (data: IcreatePassReqData) => {
     throw error;
   }
 };
+
+export const getPassDetail = async (passId: number) => {
+  try {
+    const response = await fetch(`/api/pass/detail?passId=${passId}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData;
+  } catch (error) {
+    console.error('패스권 조회 오류', error);
+    throw error;
+  }
+};
