@@ -153,7 +153,7 @@ export const getApplyClassDetail = async (
   const authorization = cookieStore.get('userAccessToken')?.value;
 
   const response = await fetch(
-    END_POINT + `/lectures/enroll-schedule-detail/${scheduleId}?type=원데이`,
+    END_POINT + `/lectures/enroll-schedule-detail/${scheduleId}?type=${type}`,
     {
       method: 'GET',
       credentials: 'include',
