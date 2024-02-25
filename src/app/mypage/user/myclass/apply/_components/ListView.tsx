@@ -19,8 +19,7 @@ const ListView = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: classListData, isLoading } = useQuery({
     queryKey: ['user', 'apply', 'list', activeTab, displayCount, currentPage],
-    queryFn: () =>
-      getUserClass(activeTab, displayCount, currentPage * displayCount),
+    queryFn: () => getUserClass(activeTab, displayCount, currentPage - 1),
   });
 
   if (!classListData) return null;
