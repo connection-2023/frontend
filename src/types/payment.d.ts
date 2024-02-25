@@ -1,3 +1,5 @@
+import { PAYMENT_STATUS } from '@/constants/constants';
+
 export interface IReservationInfo {
   lectureScheduleId: number;
   participants: number;
@@ -121,10 +123,29 @@ interface IPaymentCoupon {
   stackableCouponMaxDiscountPrice: number | null;
 }
 
-export type PaymentStatusType = WAITING_FOR_DEPOSIT | DONE | REFUSED;
+export type PaymentStatusType = keyof typeof PAYMENT_STATUS;
 
 export interface PaymentCoupon {
   discountPrice: null | number;
   couponId: null | number;
   stackableCouponId: null | number;
+}
+
+// Income
+
+export interface ILecturerPayment {
+  id: number;
+  updatedAt: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+  paymentStatus: {
+    name: PaymentStatusType;
+  };
+  paymentCouponUsage: null; // 수정 필요
+}
+
+export interface IIncomeHistoryResponse {
+  totalItemCount: number;
+  lecturerPaymentList: ILecturerPayment[];
 }
