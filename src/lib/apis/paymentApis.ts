@@ -1,4 +1,8 @@
-import { IPaymentInfo, IVirtualAccountInfo } from '@/types/payment';
+import {
+  IPaymentInfo,
+  IVirtualAccountInfo,
+  IRefundRequest,
+} from '@/types/payment';
 import { IMyPaymentResponse } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
@@ -81,4 +85,17 @@ export const getAccountInfo = async (
   } catch (error) {
     throw error;
   }
+};
+
+export const postRefund = async (id: number | string, data: IRefundRequest) => {
+  const response = await fetch(`/api/payment/refund?id=${id}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  }).then((data) => data.json());
+
+  return response;
 };

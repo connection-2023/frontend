@@ -128,3 +128,9 @@ export interface PaymentCoupon {
   couponId: null | number;
   stackableCouponId: null | number;
 }
+
+export interface IRefundRequest {
+  cancelReason: string;
+  refundAmount: number;
+  userBankAccountId?: number;
+}
