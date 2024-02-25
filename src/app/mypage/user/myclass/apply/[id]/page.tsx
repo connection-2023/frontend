@@ -1,12 +1,12 @@
 import Link from 'next/link';
+import { ButtonStyles } from '@/constants/constants';
+import { getApplyClassDetail } from '@/lib/apis/serverApis/classApi';
 import Back from './_components/Back';
 import CancelApplicationButton from './_components/CancelApplicationButton';
 import ClassLocation from './_components/ClassLocation';
 import OneDayClass from './_components/OneDayClass';
 import RegularClass from './_components/RegularClass';
 import Notice from '@/components/ClassNotice/Notice';
-import { ButtonStyles } from '@/constants/constants';
-import { getApplyClassDetail } from '@/lib/apis/serverApis/classApi';
 
 const ApplyDetailPage = async ({
   params: { id },
@@ -21,19 +21,18 @@ const ApplyDetailPage = async ({
     throw Error('type(원데이/정기)가 지정되지 않았습니다!');
 
   const data = await getApplyClassDetail(id, type);
-
-  const { lecture } = data;
+  const { lecture, isCompleted } = data;
 
   return (
     <section className="mb-18 mx-auto flex h-full w-full max-w-[40rem] flex-col rounded-lg px-4 text-sm md:px-0 xl:mx-0">
-      <div className="flex flex-col items-center whitespace-nowrap border-solid border-gray-500 py-3 md:flex-row md:border-b">
+      <div className="mb-2 flex flex-col items-center whitespace-nowrap border-solid border-gray-500 py-3 md:mb-3 md:flex-row md:border-b">
         <div className="mb-2.5 flex w-full border-b border-solid border-gray-500 py-3 md:mb-0 md:border-none md:py-0">
           <Back />
           <p className="text-2xl font-bold">{lecture.title}</p>
         </div>
 
         <div className="flex w-full gap-2 md:w-fit">
-          <CancelApplicationButton {...data} />
+          {!isCompleted && <CancelApplicationButton {...data} />}
 
           <div className="w-1/2 md:hidden">
             <Link
@@ -54,12 +53,14 @@ const ApplyDetailPage = async ({
         </div>
       </div>
 
-      <div className="mb-4 mt-2 md:mt-3">
-        <Notice
-          content={lecture.notification.content}
-          updateDate={lecture.notification.updatedAt}
-        />
-      </div>
+      {lecture?.notification && (
+        <div className="mb-4 md:mt-3">
+          <Notice
+            content={lecture.notification.content}
+            updateDate={lecture.notification.updatedAt}
+          />
+        </div>
+      )}
 
       {type === '원데이' ? (
         <OneDayClass {...data} />
