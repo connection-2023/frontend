@@ -495,3 +495,9 @@ export const ISSUER_CODE: Record<string, string> = {
 export const RELOAD_TOAST_TIME = 10000;
 
 export const MEMBER_MANAGE_TAKE = 10;
+
+export const PAYMENT_STATUS = {
+  WAITING_FOR_DEPOSIT: '입금대기',
+  DONE: '결제완료',
+  CANCELED: '결제취소',
+};
