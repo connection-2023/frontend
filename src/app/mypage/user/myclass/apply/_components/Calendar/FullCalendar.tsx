@@ -39,6 +39,7 @@ const FullCalendar = ({
       numberOfParticipants: data.numberOfParticipants,
       maxCapacity: data.lecture.maxCapacity,
       isGroup: data.lecture.isGroup,
+      lectureMethod: data.lecture.lectureMethod.name,
     }));
   }, [scheduleData]);
 
@@ -49,7 +50,9 @@ const FullCalendar = ({
   };
 
   const handleSelectSlotEvent = (slotInfo: IFullCalendarEvent) => {
-    router.push(`/mypage/user/myclass/apply/${slotInfo.id}`);
+    router.push(
+      `/mypage/user/myclass/apply/${slotInfo.id}?type=${slotInfo.lectureMethod}`,
+    );
   };
 
   return (
