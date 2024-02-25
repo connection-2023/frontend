@@ -1,11 +1,11 @@
-import Map from '@/components/Map/Map';
-import { IApplyDetailResponse } from '@/types/class';
 import { LocationSVG } from '@/icons/svg';
 import { formatLocationToString } from '@/utils/parseUtils';
+import Map from '@/components/Map/Map';
+import { IApplyDetailResponse } from '@/types/class';
 
 const ClassLocation = (props: IApplyDetailResponse) => {
   const { lecture } = props;
-  const { location, region } = lecture;
+  const { location, region, locationDescription } = lecture;
 
   return (
     <section className="mt-5 text-sm">
@@ -19,7 +19,9 @@ const ClassLocation = (props: IApplyDetailResponse) => {
           <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
             {/* <Map address={locationDetail} studioName={studioName} /> */}
           </div>
-          <p className="mt-2 font-normal">장소 설명</p>
+          {locationDescription && (
+            <p className="mt-2 font-normal">{locationDescription}</p>
+          )}
         </>
       ) : (
         region && <p>{formatLocationToString(region)}</p>
