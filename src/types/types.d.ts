@@ -53,15 +53,6 @@ export interface ErrorMessage {
   ref: any;
 }
 
-export interface ITableList {
-  id: number;
-  name: string;
-  purchase: string;
-  date: string;
-  price: string;
-  status: string;
-}
-
 export interface IPaymentList {
   date: string;
   period: string;
