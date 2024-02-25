@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import {
   Column,
   ColumnDef,
@@ -9,6 +10,7 @@ import {
 import { useMemo, useState } from 'react';
 import { dummyPassTableData } from '@/constants/dummy';
 import { ArrowRightSVG } from '@/icons/svg';
+import { getSalesStatusPass } from '@/lib/apis/passApis';
 import formatDate from '@/utils/formatDate';
 import Button from '@/components/Button/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
@@ -22,6 +24,13 @@ interface PassDetailProps {
 
 const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
   const [data, setData] = useState(dummyPassTableData);
+
+  const { data: test, isLoading } = useQuery({
+    queryKey: ['instructor', 'pass'],
+    queryFn: () => getSalesStatusPass(passInfo.id),
+  });
+
+  console.log(test);
 
   const columnHelper = createColumnHelper<IpassTable>();
   const columns = useMemo<ColumnDef<IpassTable, any>[]>(
