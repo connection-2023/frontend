@@ -38,7 +38,7 @@ const ApplyClassPage = ({
   return (
     <section
       className={`flex ${
-        activeView === 'list' && 'max-w-[640px]'
+        activeView === 'list' && 'mx-auto w-full max-w-[640px]'
       } flex-col bg-white px-4 py-5 text-sm text-gray-100 md:px-9 xl:mx-0 xl:px-0`}
     >
       <div className="mb-4 flex items-center justify-between border-b border-solid border-gray-700 pb-2.5 md:justify-normal">
