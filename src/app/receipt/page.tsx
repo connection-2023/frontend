@@ -1,15 +1,18 @@
 import { Fragment } from 'react';
+import { ISSUER_CODE } from '@/constants/constants';
 import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
 import { formatFullDateTime } from '@/utils/dateTimeUtils';
-import { ISSUER_CODE } from '@/constants/constants';
+
 const ReceiptPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string };
 }) => {
-  const { orderId } = searchParams;
+  const { orderId, type: searchType } = searchParams;
   const receiptData = await getReceipt(orderId);
   if (receiptData instanceof Error) return;
+
+  const type = searchType === 'pass' ? '패스권' : '클래스';
 
   const {
     orderName,
@@ -23,7 +26,7 @@ const ReceiptPage = async ({
   // 무통장, 패스권일 때 로직 추가 예정
   const paymentDetails = [
     {
-      type: '클래스명',
+      type: `${type}명`,
       content: orderName,
     },
     {
@@ -47,7 +50,7 @@ const ReceiptPage = async ({
     },
 
     {
-      type: '클래스 금액',
+      type: `${type} 금액`,
       content: `${originalPrice.toLocaleString()} 원`,
     },
   ];

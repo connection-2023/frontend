@@ -1,5 +1,6 @@
 import {
   IPaymentInfo,
+  IPaymentInfoResponse,
   IVirtualAccountInfo,
   PaymentPassInfoParam,
 } from '@/types/payment';
@@ -87,7 +88,9 @@ export const getAccountInfo = async (
   }
 };
 
-export const postPassPaymentInfo = async (data: PaymentPassInfoParam) => {
+export const postPassPaymentInfo = async (
+  data: PaymentPassInfoParam,
+): Promise<IPaymentInfoResponse> => {
   try {
     const response = await fetch(`/api/payment/pass`, {
       method: 'POST',
@@ -106,7 +109,7 @@ export const postPassPaymentInfo = async (data: PaymentPassInfoParam) => {
     }
 
     const responseData = await response.json();
-    return responseData;
+    return responseData.data.passPaymentInfo;
   } catch (error) {
     console.error('패스권 결제 정보 생성 오류', error);
     throw error;

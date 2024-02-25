@@ -40,7 +40,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">
             {/* <h3 className="text-lg font-semibold">결제 방법 선택</h3> */}
             {/* 페이 버튼 */}
-            <PaymentType price={111} />
+            <PaymentType price={2222} />
           </section>
         </section>
 

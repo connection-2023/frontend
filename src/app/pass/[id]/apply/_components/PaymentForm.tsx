@@ -37,23 +37,24 @@ const PaymentForm = () => {
       console.log(paymentInfo);
       const { orderId, orderName } = paymentInfo;
 
-      // if (orderId && orderName) {
-      //   await paymentWidget?.requestPayment({
-      //     orderId,
-      //     orderName,
-      //     customerName: representative,
-      //     customerEmail: '',
-      //     successUrl: `${window.location.origin}/class/${postId}/apply/complete`,
-      //     failUrl: `${window.location.origin}/fail`,
-      //   });
-      // } else {
-      //   toast.error(paymentInfo);
-      // }
+      if (orderId && orderName) {
+        await paymentWidget?.requestPayment({
+          orderId,
+          orderName,
+          customerName: authUser.name,
+          customerEmail: authUser.email,
+          successUrl: `${window.location.origin}/pass/11/apply/complete`,
+          failUrl: `${window.location.origin}/fail`,
+        });
+      } else {
+        // toast.error(paymentInfo);
+      }
     } catch (error) {
-      // if (error instanceof Error && error.message) {
-      //   postPaymentCancel(orderId);
-      //   toast.error(error.message);
-      // }
+      console.error(error);
+      if (error instanceof Error && error.message) {
+        // postPaymentCancel(orderId);
+        toast.error(error.message);
+      }
     }
   };
 
