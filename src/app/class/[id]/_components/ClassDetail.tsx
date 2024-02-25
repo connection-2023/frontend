@@ -14,7 +14,7 @@ import ReadMore from './ReadMore';
 import Notice from '@/components/ClassNotice/Notice';
 import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 
 const ClassDetail = async ({ id }: { id: string }) => {
@@ -60,13 +60,16 @@ const ClassDetail = async ({ id }: { id: string }) => {
         />
         {/* 프로필 */}
         <div className="mb-10 mt-[1.81rem] flex w-full items-center justify-between">
-          <div className="text-lg font-bold">
+          <Link
+            href={`/instructor/${lecturer.id}`}
+            className="cursor-pointer text-lg font-bold"
+          >
             <ProfileImage
               src={lecturer.profileCardImageUrl}
               nickname={lecturer.nickname}
               size="medium"
             />
-          </div>
+          </Link>
           <div className="flex h-[1.8rem] w-[12.5rem] items-center gap-[0.81rem] whitespace-nowrap text-sm font-normal">
             <Link
               href={`/instructor/${lecturer.id}`}
@@ -137,7 +140,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
         {/* <section id="location-section" className="mb-14 scroll-mt-16">
       <h2 className={h2Style}>진행 장소</h2>
       <span className="mb-[0.62rem] mt-2 flex items-center gap-[0.13rem]">
-        <LocationSVG /> {detailAddress}
+        <LocationSVG width={21} height={21} className="fill-sub-color1" /> {detailAddress}
       </span>
       <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
         <Map address={locationDetail} studioName={studioName} />

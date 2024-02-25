@@ -38,15 +38,32 @@ const LoginButtons = () => {
         isLoading: false,
         autoClose: 1500,
       });
-
       router.replace('/');
       router.refresh();
     } else if (status === 201) {
+      toast.update(toastId, {
+        render: (
+          <p>
+            회원이 아닙니다. <br />
+            회원가입 페이지로 이동합니다.
+          </p>
+        ),
+        type: 'info',
+        isLoading: false,
+        autoClose: 2500,
+      });
       const { authEmail, signUpType } = data;
-
       router.replace(
         `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
+        { scroll: false },
       );
+    } else {
+      toast.update(toastId, {
+        render: '로그인에 실패하였습니다.',
+        type: 'error',
+        isLoading: false,
+        autoClose: 1500,
+      });
     }
   };
 

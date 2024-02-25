@@ -1,0 +1,39 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+
+<Meta title="Colors" />
+
+<ColorPalette>
+
+  <ColorItem
+    title="Primary Accent Colors"
+    subtitle="가장 강조/중요한 요소(클래스 등록, 결제 등)에 사용되는 색상"
+    colors={{ HotPink: '#FF3E9A', LightPink: '#FF3E9A1A' }}
+  />
+  <ColorItem
+    title="Secondary Accent Colors"
+    subtitle="비교적 강조가 필요한 요소(별점, 체크박스 등)에 사용되는 색상"
+    colors={{ DeepPurple: '#8338EC', LightPurple: '#8338EC1A' }}
+  />
+    <ColorItem
+    title="Neutral Greyscale Colors"
+    subtitle="기본 색상 및 눈에 덜 띄게 표현해야 할 요소에 사용되는 회색 계열 색상"
+    colors={{
+      Black: '#000000',
+      Charcoal: '#414141',
+      MediumGray: '#969696',
+      LightGray1: '#B6B6B6',
+      LightGray2: '#D9D9D9',
+      LightGray3: '#F5F5F5',
+    }}
+  />
+  <ColorItem
+    title="Calendar Event Colors"
+    subtitle="전체 일정 달력에서만 사용하는 색상"
+    colors={{
+      Orange: '#FF9E2D',
+      LightOrange: '#FF961B1A',
+      Red: '#E92C2C',
+      LightRed: '#E92C2C1A',
+    }}
+  />
+</ColorPalette>

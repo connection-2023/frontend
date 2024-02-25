@@ -4,7 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof ApplyButton> = {
   title: 'Components/Buttons/ApplyButton',
   component: ApplyButton,
-  parameters: {},
+  parameters: {
+    docs: {
+      description: {
+        component: '클래스 신청 버튼',
+      },
+    },
+  },
   tags: ['autodocs'],
   argTypes: {
     label: {

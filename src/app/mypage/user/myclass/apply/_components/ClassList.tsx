@@ -6,7 +6,7 @@ import { formatShortDate } from '@/utils/dateTimeUtils';
 import CancelModal from './CancelModal';
 import DeclineModal from './DeclineModal';
 import UniqueButton from '@/components/Button/UniqueButton';
-import ProfileImage from '@/components/ProfileImage/ProfileImage';
+import ProfileImage from '@/components/Profile/ProfileImage';
 import { IUserClassResponse } from '@/types/class';
 
 interface IClassList extends IUserClassResponse {

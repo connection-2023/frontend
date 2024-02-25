@@ -7,15 +7,12 @@ export const metadata: Metadata = {
 
 export default function ApplyCompleteLayout({
   children,
-  modal,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }) {
   return (
     <>
       <main className="mx-auto max-w-[40rem]">{children}</main>
-      {modal}
     </>
   );
 }

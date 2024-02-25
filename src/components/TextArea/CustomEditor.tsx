@@ -1,16 +1,21 @@
+'use client';
+import dynamic from 'next/dynamic';
 import { useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import SunEditorCore, { fileInfo } from 'suneditor/src/lib/core';
-import SunEditor from 'suneditor-react';
 import {
   UploadBeforeHandler,
   UploadBeforeReturn,
   UploadInfo,
 } from 'suneditor-react/dist/types/upload';
-import { QUILL_DEFAULT_VALUE, TOOLBAR } from '@/constants/constants';
+import { TOOLBAR } from '@/constants/constants';
 import 'suneditor/dist/css/suneditor.min.css';
 import { postSingleImage } from '@/lib/apis/imageApi';
 import { toast } from 'react-toastify';
+
+const SunEditor = dynamic(() => import('suneditor-react'), {
+  ssr: false,
+});
 
 interface CustomEditorProps {
   title: string;
@@ -138,7 +143,8 @@ const CustomEditor = ({
         )}
       </label>
 
-      <div className="w-full max-w-[calc(95vw)] sm:max-w-[40rem]">
+      {/* max-w-[calc(95vw)] sm:max-w-[40rem] */}
+      <div className="w-full">
         <Controller
           name={dataName}
           control={control}

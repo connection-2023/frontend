@@ -51,7 +51,7 @@ export const getClassDetail = async (
         'Content-Type': 'application/json',
       };
 
-  const response = await fetch(`${END_POINT}/lectures/${lectureId}/details`, {
+  const response = await fetch(`${END_POINT}/lectures/${lectureId}/detail`, {
     method: 'GET',
     credentials: 'include',
     headers,

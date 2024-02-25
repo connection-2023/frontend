@@ -12,7 +12,7 @@ import { ArrowRightSVG } from '@/icons/svg';
 import formatDate from '@/utils/formatDate';
 import Button from '@/components/Button/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
-import ProfileImg from '@/components/ProfileImage/ProfileImage';
+import ProfileImg from '@/components/Profile/ProfileImage';
 import { IpassData, IpassTable } from '@/types/pass';
 
 interface PassDetailProps {
@@ -31,8 +31,14 @@ const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
         cell: ({ getValue }) => {
           const { img, nickname } = getValue();
           return (
-            <div className="max-w-[8.5rem] truncate lg:max-w-[17rem]">
-              <ProfileImg src={img} nickname={nickname} size="small" />
+            <div className="flex max-w-[8.5rem] items-center lg:max-w-[17rem]">
+              <ProfileImg
+                src={img}
+                nickname={nickname}
+                size="small"
+                label={false}
+              />
+              <span className="flex-grow truncate">{nickname}</span>
             </div>
           );
         },
