@@ -562,9 +562,11 @@ export interface searchClass {
 
 export interface IMonthlyClassSchedules extends IClassSchedule {
   lecture: {
+    id: string;
     title: string;
     isGroup: boolean;
     maxCapacity: number;
+    lectureMethod: { name: string };
   };
 }
 
@@ -578,29 +580,44 @@ export interface IEditStartDateTime {
   editable: boolean;
 }
 
+export interface ILectureSchedule {
+  id: number;
+  lectureId: number;
+  day: number;
+  startDateTime: string;
+  endDateTime: string;
+  numberOfParticipants: number;
+}
+
+export interface IRegularSchedule {
+  id: number;
+  day: number;
+  startDateTime: string;
+  endDateTime: string;
+}
 export interface IUserApplyClass {
   id: number;
   lecture: {
     id: number;
-    lectureImage: [
-      {
-        id: number;
-        lectureId: number;
-        imageUrl: string;
-      },
-      {
-        id: number;
-        lectureId: number;
-        imageUrl: string;
-      },
-    ];
+    lectureImage: {
+      id: number;
+      lectureId: number;
+      imageUrl: string;
+    }[];
+
     lectureMethod: {
       id: number;
       name: string;
     };
     title: string;
   };
-  schedules: string[];
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string | null;
+  };
+  lectureSchedule?: ILectureSchedule;
+  regularLectureSchedule?: IRegularSchedule[];
 }
 export interface IApplyListResponse {
   totalItemCount: number;
@@ -612,13 +629,7 @@ export interface IReservation {
   phoneNumber: string;
   participants: number;
   requests: string;
-  lectureSchedule: {
-    id: number;
-    lectureId: number;
-    startDateTime: string;
-    endDateTime: string;
-    numberOfParticipants: number;
-  };
+  lectureSchedule: ILectureSchedule;
 }
 
 export interface searchBestClassData {
@@ -761,38 +772,23 @@ interface IApplyDetailResponse {
       buildingName: string;
     };
     region?: IRegion[];
+    locationDescription: string | null;
   };
-
   lecturer: {
     id: number;
     nickname: string;
     profileCardImageUrl: string | null;
   };
-
-  lectureSchedule?: {
-    id: number;
-    startDateTime: string;
-    endDateTime: string;
-    numberOfParticipants: number;
-    lecture: {
-      id: number;
-      title: string;
-    };
-  };
-
-  regularLectureSchedule?: [
-    {
-      id: 0;
-      day: 0;
-      startDateTime: string;
-      endDateTime: string;
-    },
-  ];
+  lectureSchedule?: ILectureSchedule;
+  regularLectureSchedule?: IRegularSchedule[];
   representative: string;
   phoneNumber: string;
   payment: {
     id: number;
     finalPrice: number;
+    paymentMethod: { name: string };
+    orderId: string;
   };
   request?: string;
+  isCompleted: boolean;
 }

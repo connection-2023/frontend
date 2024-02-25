@@ -294,5 +294,6 @@ export const getUserSchedulesCalendar = async (
   }
 
   const resData = await response.json();
-  return resData.data.schedules;
+  
+  return resData.data.enrollSchedules;
 };
