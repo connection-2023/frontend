@@ -1,35 +1,12 @@
 import ClassInfoSummary from './ClassInfoSummary';
+import { formatSchedule } from '../_utils/formatRegularClass';
 import { IApplyDetailResponse } from '@/types/class';
 
-const timeTable = [
-  {
-    date: '23.10.20 (수)',
-    time: '17:00-18:00',
-  },
-  {
-    date: '23.10.20 (수)',
-    time: '17:00-18:00',
-  },
-  {
-    date: '23.10.20 (수)',
-    time: '17:00-18:00',
-  },
-  {
-    date: '23.10.20 (수)',
-    time: '17:00-18:00',
-  },
-  {
-    date: '23.10.20 (수)',
-    time: '17:00-18:00',
-  },
-  {
-    date: '23.10.20 (수)',
-    time: '17:00-18:00',
-  },
-];
-
 const RegularClass = (props: IApplyDetailResponse) => {
-  const { request } = props;
+  const { regularLectureSchedule, request } = props;
+  if (!regularLectureSchedule) throw new Error('정기 클래스 일정이 없습니다.');
+
+  const timeTable = formatSchedule(regularLectureSchedule);
 
   return (
     <div className="grid min-h-[20.5rem] grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2 md:px-0">
@@ -60,7 +37,9 @@ const RegularClass = (props: IApplyDetailResponse) => {
             {timeTable.map((table, index) => (
               <tr
                 key={table.date + index}
-                className="h-[2.2rem] w-full border-b border-solid border-gray-700"
+                className={`h-[2.2rem] w-full border-b border-solid border-gray-700 ${
+                  table.isbefore && 'text-gray-300'
+                }`}
               >
                 <td className="pl-4">{table.date}</td>
                 <td>{table.time}</td>
