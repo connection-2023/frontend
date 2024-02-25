@@ -1,5 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { BasicCalendarSVG } from '@/icons/svg';
 import CalendarView from './_components/CalendarView';
@@ -8,11 +9,25 @@ const ListView = dynamic(() => import('./_components/ListView'), {
   ssr: false,
 });
 
-const ClassListView = () => {
-  const [activeView, setActiveView] = useState<'calendar' | 'list'>('calendar');
+const ApplyClassPage = ({
+  searchParams,
+}: {
+  searchParams: { view: 'calendar' | 'list' | undefined };
+}) => {
+  const { view } = searchParams;
+  const [activeView, setActiveView] = useState<'calendar' | 'list'>(
+    view || 'calendar',
+  );
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  if (!view) replace(`${pathname}?view=calendar`);
 
   const handleActiveView = (view: 'calendar' | 'list') => {
-    if (activeView !== view) setActiveView(view);
+    if (activeView !== view) {
+      replace(`${pathname}?view=${view}`);
+      setActiveView(view);
+    }
   };
 
   const getButtonStyle = (view: 'calendar' | 'list') =>
@@ -21,7 +36,11 @@ const ClassListView = () => {
       : 'flex items-center justify-center rounded-md border border-solid border-black bg-white h-9 gap-2 px-2 py-1 text-gray-100 font-medium';
 
   return (
-    <section className="flex flex-col bg-white px-4 py-5 text-sm text-gray-100 md:px-9 xl:mx-0 xl:px-0">
+    <section
+      className={`flex ${
+        activeView === 'list' && 'max-w-[640px]'
+      } flex-col bg-white px-4 py-5 text-sm text-gray-100 md:px-9 xl:mx-0 xl:px-0`}
+    >
       <div className="mb-4 flex items-center justify-between border-b border-solid border-gray-700 pb-2.5 md:justify-normal">
         <h1 className="text-2xl font-bold">신청한 클래스</h1>
 
@@ -70,4 +89,4 @@ const ClassListView = () => {
   );
 };
 
-export default ClassListView;
+export default ApplyClassPage;
