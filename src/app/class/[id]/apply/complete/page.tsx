@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { IPaymentConfirmRequest } from '@/types/payment';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
 import { patchPaymentConfirm } from '@/lib/apis/serverApis/paymentsApis';
 import {
@@ -8,6 +7,7 @@ import {
   formatFullDateTime,
   formatDateTimeNoSec,
 } from '@/utils/dateTimeUtils';
+import { IPaymentConfirmRequest } from '@/types/payment';
 
 const ApplyCompletePage = async ({
   params,

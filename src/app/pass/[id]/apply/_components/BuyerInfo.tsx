@@ -10,7 +10,9 @@ const BuyerInfo = () => {
   return (
     <div className="mt-4 rounded-md px-4 py-4 shadow-vertical">
       <section className="w-full whitespace-nowrap">
-        <h3 className="text-lg font-semibold">구매자 정보</h3>
+        <h3 className="text-lg font-semibold" id="buyerInfo">
+          구매자 정보
+        </h3>
         <ul className="mt-4 flex flex-col gap-2 text-sm font-semibold text-gray-100 ">
           <li className="flex items-center gap-4 py-[0.31rem]">
             <label className="flex items-center gap-[30px]">

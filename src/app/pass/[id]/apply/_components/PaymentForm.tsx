@@ -1,23 +1,47 @@
 'use client';
 import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ArrowUpSVG } from '@/icons/svg';
-import { postPassPaymentInfo } from '@/lib/apis/paymentApis';
+import { postPassPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { usePaymentStore, useUserStore } from '@/store';
 import ApplyButton from '@/components/Button/ApplyButton';
+import { IPassInfoForIdData } from '@/types/pass';
 
-const PaymentForm = () => {
+interface PaymentFormProps {
+  passInfo: IPassInfoForIdData;
+}
+
+const PaymentForm = ({ passInfo }: PaymentFormProps) => {
+  const router = useRouter();
+
   const { authUser } = useUserStore((state) => ({
     authUser: state.authUser,
   }));
 
-  const { paymentWidget, paymentMethodsWidget } = usePaymentStore((state) => ({
+  const { paymentWidget } = usePaymentStore((state) => ({
     paymentWidget: state.paymentWidget,
-    paymentMethodsWidget: state.paymentMethodsWidget,
   }));
 
   const handlePayment = async () => {
+    if (!authUser) {
+      if (
+        confirm(
+          '로그인이 필요한 서비스 입니다. 로그인 화면으로 이동 하시겠습니까?',
+        )
+      ) {
+        router.push('/login');
+      }
+      return;
+    }
+
     if (!authUser?.name && !authUser?.phoneNumber) {
+      const element = document.getElementById('buyerInfo');
+
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
       toast.error('구매자 정보를 입력해주세요!');
       return;
     }
@@ -26,15 +50,14 @@ const PaymentForm = () => {
 
     const paymentData = {
       orderId,
-      passId: 11,
-      orderName: 'qqq',
-      originalPrice: 2222,
-      finalPrice: 2222,
+      passId: passInfo.id,
+      orderName: passInfo.title,
+      originalPrice: passInfo.price,
+      finalPrice: passInfo.price,
     };
 
     try {
       const paymentInfo = await postPassPaymentInfo(paymentData);
-      console.log(paymentInfo);
       const { orderId, orderName } = paymentInfo;
 
       if (orderId && orderName) {
@@ -47,12 +70,12 @@ const PaymentForm = () => {
           failUrl: `${window.location.origin}/fail`,
         });
       } else {
-        // toast.error(paymentInfo);
+        throw new Error('undefined paymentInfo');
       }
     } catch (error) {
       console.error(error);
       if (error instanceof Error && error.message) {
-        // postPaymentCancel(orderId);
+        postPaymentCancel(orderId);
         toast.error(error.message);
       }
     }
@@ -93,7 +116,7 @@ const PaymentForm = () => {
             <>
               <p className="hidden lg:block">결제하기</p>
               <p className="lg:hidden">
-                {'100000'.toLocaleString()}원 결제하기
+                {passInfo.price.toLocaleString()}원 결제하기
               </p>
             </>
           }

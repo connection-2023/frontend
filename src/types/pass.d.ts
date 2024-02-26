@@ -29,6 +29,16 @@ export interface IpassData {
   }[];
 }
 
+export interface IPassInfoForIdData extends IpassData {
+  createdAt: string;
+  updatedAt: string;
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string;
+  };
+}
+
 export interface IcreatePass {
   title: string;
   lectureIds: {

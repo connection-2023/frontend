@@ -1,9 +1,16 @@
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import PaymentType from '@/app/class/[id]/apply/_components/PaymentType';
 import { PassSVG } from '@/icons/svg';
+import { getPassInfoForId } from '@/lib/apis/serverApis/passApis';
 import BuyerInfo from './_components/BuyerInfo';
 import PaymentForm from './_components/PaymentForm';
+import ProfileImg from '@/components/Profile/ProfileImage';
 
 const page = async ({ params }: { params: { id: string } }) => {
+  const passInfo = await getPassInfoForId(params.id);
+  if (!passInfo) redirect('/404');
+
   return (
     <>
       <h1 className="mx-auto mb-6 flex w-full items-center justify-center border-b border-solid border-gray-700 py-4 text-2xl font-bold">
@@ -16,21 +23,32 @@ const page = async ({ params }: { params: { id: string } }) => {
         <section className="w-full lg:max-w-[40rem]">
           <h2 className="flex w-full items-center gap-2 whitespace-pre-line break-keep border-b-[3px] border-solid border-black py-3.5 text-2xl font-bold">
             <PassSVG width="21" height="21" className="mr-1 fill-sub-color1" />
-            제목
+            {passInfo.title}
           </h2>
 
           <section className="mt-5 rounded-md px-4 py-4 shadow-vertical">
             <div className="w-full whitespace-nowrap">
               <h3 className="mb-3 text-lg font-semibold">패스권 정보</h3>
               <dl className="grid grid-cols-[4rem,1fr] gap-x-3 gap-y-2 text-sm [&>dt]:font-semibold [&>dt]:text-gray-500">
-                <dt>이용기간</dt>
-                <dd>1개월</dd>
-                <dt>횟수</dt>
-                <dd>10회</dd>
-                <dt>가격</dt>
-                <dd>60000원</dd>
                 <dt>강사</dt>
-                <dd>10회</dd>
+                <dd>
+                  <Link
+                    className="flex w-fit"
+                    href={`/instructor/${passInfo.lecturer.id}`}
+                  >
+                    <ProfileImg
+                      size="small"
+                      src={passInfo.lecturer.profileCardImageUrl}
+                    />
+                    {passInfo.lecturer.nickname}
+                  </Link>
+                </dd>
+                <dt>가격</dt>
+                <dd>{passInfo.price}원</dd>
+                <dt>횟수</dt>
+                <dd>{passInfo.maxUsageCount}회</dd>
+                <dt>이용기간</dt>
+                <dd>{passInfo.availableMonths}개월</dd>
               </dl>
             </div>
           </section>
@@ -38,9 +56,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           <BuyerInfo />
 
           <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">
-            {/* <h3 className="text-lg font-semibold">결제 방법 선택</h3> */}
-            {/* 페이 버튼 */}
-            <PaymentType price={2222} />
+            <PaymentType price={passInfo.price} />
           </section>
         </section>
 
@@ -51,7 +67,7 @@ const page = async ({ params }: { params: { id: string } }) => {
               <li className="flex items-center justify-between">
                 주문 금액
                 <span className="min-w-[1.25rem]">
-                  {'100000'.toLocaleString()}원
+                  {passInfo.price.toLocaleString()}원
                 </span>
               </li>
             </ul>
@@ -59,11 +75,11 @@ const page = async ({ params }: { params: { id: string } }) => {
             <div className="mb-2 flex items-center justify-between font-bold">
               <p>최종 결제 금액</p>
               <span className="min-w-[2rem] text-2xl text-black">
-                {'100000'.toLocaleString()}원
+                {passInfo.price.toLocaleString()}원
               </span>
             </div>
 
-            <PaymentForm />
+            <PaymentForm passInfo={passInfo} />
           </section>
         </aside>
       </div>
