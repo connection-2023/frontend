@@ -4,9 +4,11 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ArrowUpSVG } from '@/icons/svg';
 import { postPassPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePaymentStore, useUserStore } from '@/store';
 import ApplyButton from '@/components/Button/ApplyButton';
 import { IPassInfoForIdData } from '@/types/pass';
+import { FetchError } from '@/types/types';
 
 interface PaymentFormProps {
   passInfo: IPassInfoForIdData;
@@ -22,6 +24,32 @@ const PaymentForm = ({ passInfo }: PaymentFormProps) => {
   const { paymentWidget } = usePaymentStore((state) => ({
     paymentWidget: state.paymentWidget,
   }));
+
+  const paymentAction = async (orderId: string) => {
+    const paymentData = {
+      orderId,
+      passId: passInfo.id,
+      orderName: passInfo.title,
+      originalPrice: passInfo.price,
+      finalPrice: passInfo.price,
+    };
+
+    const paymentInfo = await postPassPaymentInfo(paymentData);
+    const { orderId: reqOrderId, orderName } = paymentInfo;
+
+    if (reqOrderId && orderName) {
+      await paymentWidget?.requestPayment({
+        orderName,
+        orderId: reqOrderId,
+        customerName: authUser!.name,
+        customerEmail: authUser!.email,
+        successUrl: `${window.location.origin}/pass/11/apply/complete`,
+        failUrl: `${window.location.origin}/fail`,
+      });
+    } else {
+      throw new Error('undefined paymentInfo');
+    }
+  };
 
   const handlePayment = async () => {
     if (!authUser) {
@@ -48,35 +76,23 @@ const PaymentForm = ({ passInfo }: PaymentFormProps) => {
 
     const orderId = nanoid();
 
-    const paymentData = {
-      orderId,
-      passId: passInfo.id,
-      orderName: passInfo.title,
-      originalPrice: passInfo.price,
-      finalPrice: passInfo.price,
-    };
-
     try {
-      const paymentInfo = await postPassPaymentInfo(paymentData);
-      const { orderId, orderName } = paymentInfo;
-
-      if (orderId && orderName) {
-        await paymentWidget?.requestPayment({
-          orderId,
-          orderName,
-          customerName: authUser.name,
-          customerEmail: authUser.email,
-          successUrl: `${window.location.origin}/pass/11/apply/complete`,
-          failUrl: `${window.location.origin}/fail`,
-        });
-      } else {
-        throw new Error('undefined paymentInfo');
-      }
+      await paymentAction(orderId);
     } catch (error) {
-      console.error(error);
-      if (error instanceof Error && error.message) {
-        postPaymentCancel(orderId);
-        toast.error(error.message);
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await paymentAction(orderId);
+          } catch (error) {
+            postPaymentCancel(orderId);
+            console.error(error);
+          }
+        } else {
+          postPaymentCancel(orderId);
+          toast.error(error.message);
+        }
       }
     }
   };
