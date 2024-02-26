@@ -1,10 +1,10 @@
 import { eachDayOfInterval, isSameDay } from 'date-fns';
 import dynamic from 'next/dynamic';
 import { useEffect, useId, useReducer, useMemo } from 'react';
+import { DateTimeList } from '@/types/class';
 import { useClassScheduleStore } from '@/store';
 import { formatDateWithDay } from '@/utils/dateTimeUtils';
 import { specificDateReducer } from '@/utils/specificDateReducer';
-import { DateTimeList } from '@/types/class';
 
 const InputClassDates = dynamic(
   () => import('@/components/Calendar/SingleCalendar'),
@@ -181,9 +181,9 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
         *달력에서 날짜를 클릭 후 수업 시간을 추가해주세요.
       </p>
       {state.selectableDates && (
-        <div className="flex w-full justify-between">
+        <div className="flex w-full flex-col md:flex-row md:justify-between">
           {state.selectableDates && (
-            <div className="w-fit">
+            <div className="mx-auto w-fit">
               <InputClassDates
                 mode="specific"
                 clickableDates={state.selectableDates}
@@ -192,9 +192,9 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
             </div>
           )}
           {state.selectedDate && (
-            <div className="ml-2 flex flex-col">
+            <div className="mt-2 flex flex-col md:ml-2 md:mt-0">
               {/* Time 리스트 위 */}
-              <div className="flex w-full">
+              <div className="flex w-full justify-between">
                 {/* 선택 날짜 리스트 */}
                 <div className="flex w-[300px] flex-wrap gap-x-2 text-base font-bold">
                   <span>

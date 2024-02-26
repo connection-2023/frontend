@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import ClassDay from './ClassSchedule/ClassDay/ClassDay';
+import ClassRange from './ClassSchedule/ClassRange/ClassRange';
+import DayOff from './ClassSchedule/DayOff/DayOff';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import { DayTimeList, DateTimeList } from '@/types/class';
 import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import {
   formatDateWithHyphens,
   parseHyphenatedDate,
 } from '@/utils/dateTimeUtils';
-import ClassDay from './ClassSchedule/ClassDay/ClassDay';
-import ClassRange from './ClassSchedule/ClassRange/ClassRange';
-import DayOff from './ClassSchedule/DayOff/DayOff';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import { DayTimeList, DateTimeList } from '@/types/class';
 
 const ClassSchedule = () => {
   const {
@@ -102,11 +102,9 @@ const ClassSchedule = () => {
                   setClassDuration(Number(e.target.value));
                   field.onChange(Number(e.target.value));
                 }}
-                className="h-7 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1 focus:outline-sub-color1"
+                className="h-7 w-12 rounded-md border border-solid border-gray-500 px-3.5 py-1 focus:outline-sub-color1"
               />
-              <span className="ml-[0.38rem] text-sm font-bold text-gray-100">
-                분
-              </span>
+              <span className="ml-1.5 text-sm font-bold text-gray-100">분</span>
             </div>
           </Section>
         )}
@@ -172,7 +170,7 @@ const ClassSchedule = () => {
             error={!!errors.reservationDeadline?.message}
             id={field.name}
           >
-            <div className="ml-[0.38rem] text-sm font-medium text-gray-100">
+            <div className="ml-1.5 text-sm font-medium text-gray-100">
               <span>수업 시작</span>
               <input
                 type="number"
@@ -180,7 +178,7 @@ const ClassSchedule = () => {
                 onChange={(e) => {
                   field.onChange(Number(e.target.value));
                 }}
-                className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1 focus:outline-sub-color1"
+                className="ml-5 mr-1.5 h-8 w-12 rounded-md border border-solid border-gray-500 px-3.5 py-1 focus:outline-sub-color1"
               />
               <span>시간 전</span>
             </div>
@@ -194,7 +192,7 @@ const ClassSchedule = () => {
         classNum={classNum}
       >
         <div className="max-w-[37.4rem]">
-          {classDates && (
+          {filteredDates && (
             <ScheduleView
               maxCapacity={maxCapacitity}
               duration={duration}
@@ -242,13 +240,14 @@ const Section = ({
       id={id}
       className="max-w-[675px] border-b border-solid border-gray-700 py-6"
     >
-      <h2 className="mb-4 flex items-center text-lg font-bold">
+      <h2 className="mb-4 flex flex-col-reverse text-lg font-bold md:flex-row md:items-center">
         <p className={`${error && 'animate-vibration text-main-color'}`}>
           {title}
+          {IsAddedClass && classNum && classNum > 0 ? ` (${classNum}개)` : null}
         </p>
-        {IsAddedClass && classNum && classNum > 0 ? ` (${classNum}개)` : null}
+
         {Isfixed && (
-          <span className="ml-2 flex flex-col text-sm font-bold text-main-color">
+          <span className="flex flex-col text-sm font-bold text-main-color md:ml-2">
             *등록 후 수정 불가
           </span>
         )}

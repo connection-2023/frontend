@@ -2,9 +2,9 @@ import { eachDayOfInterval, getDay } from 'date-fns';
 import dynamic from 'next/dynamic';
 import { useState, useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
+import { day, DayTimeList } from '@/types/class';
 import { FILTER_WEEK } from '@/constants/constants';
 import { useClassScheduleStore } from '@/store';
-import { day, DayTimeList } from '@/types/class';
 
 const TimeList = dynamic(() => import('./TimeList'), {
   ssr: false,
@@ -12,6 +12,7 @@ const TimeList = dynamic(() => import('./TimeList'), {
 
 interface DayByDayProps {
   lectureMethod?: string;
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: DayTimeList[]) => void;
   defaultValue: DayTimeList[];
 }
@@ -216,18 +217,23 @@ const DayByDay = ({
     <>
       <div className="flex flex-col gap-5">
         {dayTimeLists.map((list, listIndex) => (
-          <div key={listIndex} className="flex w-full justify-between">
+          <div
+            key={listIndex}
+            className="flex w-full flex-col justify-between md:flex-row"
+          >
             <div
               className={`flex w-full flex-col gap-3 ${
-                isRegularClass && 'mb-8'
+                isRegularClass && 'md:mb-8'
               }`}
             >
               {isRegularClass && (
-                <div className="flex items-center gap-3.5 text-lg font-medium">
+                <div className="flex h-7 items-center gap-3.5 text-lg font-medium">
                   <span>{list.day.join('')}</span>
-                  <span className="text-sub-color1">
-                    {selectedDaysCountList[listIndex]}회
-                  </span>
+                  {selectedDaysCountList[listIndex] > 0 && (
+                    <span className="text-sub-color1">
+                      {selectedDaysCountList[listIndex]}회
+                    </span>
+                  )}
                 </div>
               )}
               <ul key={listIndex} className="flex gap-3">
@@ -243,7 +249,11 @@ const DayByDay = ({
               </ul>
             </div>
 
-            <div className={`flex flex-col ${isRegularClass && 'mt-8'}`}>
+            <div
+              className={`mt-2.5 flex flex-col ${
+                isRegularClass ? 'md:mt-8' : 'md:mt-0'
+              }`}
+            >
               <ul className="flex flex-col gap-2">
                 {list.startDateTime.map((timeslot, timeslotIndex) => (
                   <TimeList
@@ -263,7 +273,7 @@ const DayByDay = ({
 
               <button
                 onClick={() => addNewTimeSlot(listIndex)}
-                className="mt-2 flex w-full justify-end text-sm font-bold text-gray-500"
+                className="mt-2 flex w-full justify-end whitespace-nowrap text-sm font-bold text-gray-500"
               >
                 + 시간 추가
               </button>
@@ -293,7 +303,7 @@ const getButtonClass = (
   allSelectedDays: string[],
 ) => {
   const baseClass =
-    'mt-[0.88rem] flex h-10 w-full items-center justify-center rounded-[0.3125rem] text-lg font-semibold shadow-float';
+    'mt-3.5 flex h-10 w-full items-center justify-center rounded-md text-lg font-semibold shadow-float';
 
   const isDisabled =
     !isEveryListHasDay || FILTER_WEEK.length === allSelectedDays.length;

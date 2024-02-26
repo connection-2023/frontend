@@ -5,6 +5,7 @@ import { calculateEndTime } from '@/utils/parseUtils';
 
 interface TimeListProps {
   startTime: string;
+  // eslint-disable-next-line no-unused-vars
   onChange: (newStartTime: string) => void;
   onRemove?: () => void;
 }
@@ -41,7 +42,7 @@ const TimeList = ({ startTime, onChange, onRemove }: TimeListProps) => {
         width={19}
         height={19}
         onClick={onRemove}
-        className="absolute right-0 top-0 -translate-y-2 translate-x-2 cursor-pointer fill-gray-500"
+        className="absolute right-0 top-0 -translate-y-2 translate-x-2 cursor-pointer fill-gray-500 stroke-white stroke-2"
       />
     </li>
   );

@@ -92,25 +92,23 @@ const DayOff = ({
           <h3 className="mt-7 text-lg font-bold font-semibold">
             아래 달력에서 휴무일을 선택해주세요
           </h3>
-          <div className="mt-5 flex w-full px-5">
+          <div className="mt-5 flex w-full flex-col px-5 md:flex-row">
             {!isDisabled && (
               <>
-                <div className="w-fit">
+                <div className="mx-auto w-fit">
                   <DayOffCalendar
                     mode="dayoff"
                     selectableDates={initDates}
                     handleSelected={handleUnselected}
                   />
                 </div>
-                <div className="ml-[3.75rem] flex w-full flex-col">
-                  <p className="mb-[0.87rem] text-sm font-semibold">
-                    선택한 휴무일
-                  </p>
+                <div className="mt-7 flex w-full flex-col md:ml-[3.75rem] md:mt-0">
+                  <p className="mb-3.5 text-sm font-semibold">선택한 휴무일</p>
                   <div className="flex h-fit w-fit flex-wrap gap-x-2 gap-y-3 text-sm font-medium text-gray-100">
                     {unselectedDates.map((date) => (
                       <p
                         key={date.toLocaleDateString()}
-                        className="h-fit rounded-[0.3125rem] border border-solid border-gray-500 px-[0.69rem] py-[0.31rem]"
+                        className="h-fit rounded-md border border-solid border-gray-500 px-2.5 py-1.5"
                       >
                         {formatDateWithDay(date)}
                       </p>

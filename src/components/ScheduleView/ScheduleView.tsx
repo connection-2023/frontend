@@ -44,7 +44,7 @@ const ScheduleView = ({
         />
       </div>
 
-      <ul className="flex flex-col items-center gap-2.5 overflow-y-auto md:w-72">
+      <ul className="flex w-full flex-col items-center gap-2.5 overflow-y-auto md:w-72">
         {lectureSchedule.length > 0 && lectureSchedule[0] instanceof Date
           ? (lectureSchedule as Date[]).map((date, index) => (
               <FormatCreateSchedule
