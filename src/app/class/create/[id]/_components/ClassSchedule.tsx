@@ -5,8 +5,7 @@ import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 import { DayTimeList, DateTimeList } from '@/types/class';
-import { useClassScheduleStore } from '@/store';
-import { useClassCreateStore } from '@/store/classCreate';
+import { useClassScheduleStore, useClassCreateStore } from '@/store';
 import {
   formatDateWithHyphens,
   parseHyphenatedDate,
@@ -26,13 +25,10 @@ const ClassSchedule = () => {
 
   const duration = watch('duration') || classData?.duration;
   const lectureMethod = watch('lectureMethod') || classData?.lectureMethod;
-  const setClassDuration = useClassScheduleStore(
-    (state) => state.setClassDuration,
-  );
-  const classDates = useClassScheduleStore((state) => state.filteredDates);
-  const classNum = classDates?.length;
   const maxCapacitity = watch('max')?.value || classData?.max;
-  const filteredDates = useClassScheduleStore((state) => state.filteredDates);
+
+  const { setClassDuration, finalDates } = useClassScheduleStore();
+  const classNum = finalDates?.length;
 
   useEffect(() => {
     setClassDuration(duration);
@@ -114,7 +110,7 @@ const ClassSchedule = () => {
       <Controller
         name="schedules"
         control={control}
-        defaultValue={classData?.schedules ?? []}
+        defaultValue={classData?.schedules || []}
         rules={{
           required: '운영 일정',
           validate: (schedules) => {
@@ -148,10 +144,13 @@ const ClassSchedule = () => {
       <Controller
         name="holidays"
         control={control}
-        defaultValue={classData?.holidays ?? []}
+        defaultValue={classData?.holidays}
         render={({ field }) => (
           <Section title="휴무일이 있나요?" id={field.name}>
-            <DayOff onChange={field.onChange} defaultValue={field.value} />
+            <DayOff
+              onChange={field.onChange}
+              defaultValue={classData?.holidays}
+            />
           </Section>
         )}
       />
@@ -192,11 +191,11 @@ const ClassSchedule = () => {
         classNum={classNum}
       >
         <div className="max-w-[37.4rem]">
-          {filteredDates && (
+          {finalDates && (
             <ScheduleView
               maxCapacity={maxCapacitity}
               duration={duration}
-              lectureSchedule={filteredDates || []}
+              lectureSchedule={finalDates || []}
             />
           )}
         </div>

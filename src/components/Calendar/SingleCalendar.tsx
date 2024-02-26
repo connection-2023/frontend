@@ -32,8 +32,7 @@ const SingleCalendar = ({
   handleClickDate,
 }: SingleCalendarProps) => {
   const store = dashboardStore();
-  const classDates =
-    useClassScheduleStore((state) => state.filteredDates) || [];
+  const classDates = useClassScheduleStore((state) => state.finalDates) || [];
   const initSelected =
     (mode === 'dashboard' ? store.selectedDate : initialSelected) || undefined;
 

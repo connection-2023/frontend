@@ -22,29 +22,28 @@ const DayByDay = ({
   defaultValue,
   onChange,
 }: DayByDayProps) => {
-  const initialValue =
-    defaultValue.length && !Object.keys(defaultValue[0]).includes('day')
-      ? [{ day: [], startDateTime: [''] }]
-      : defaultValue.length > 0
-      ? defaultValue
-      : [{ day: [], startDateTime: [''] }];
+  const initialValue = (() => {
+    if (defaultValue.length && !Object.keys(defaultValue[0]).includes('day')) {
+      return [{ day: [], startDateTime: [''] }];
+    } else if (defaultValue.length > 0) {
+      return defaultValue;
+    } else {
+      return [{ day: [], startDateTime: [''] }];
+    }
+  })();
+
   const isRegularClass = lectureMethod !== '원데이 레슨';
   const [dayTimeLists, setDayTimeLists] = useState<DayTimeList[]>(initialValue);
-  const [selectedDaysCountList, setSelectedDaysCountList] = useState<number[]>( // 정기 클래스 일때만 사용
+  // 정기 클래스 일때만 사용
+  const [selectedDaysCountList, setSelectedDaysCountList] = useState<number[]>(
     [],
   );
-  const classRange = useClassScheduleStore((state) => state.classRange);
-  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
-  const setSelectedDates = useClassScheduleStore(
-    (state) => state.setClassDates,
-  );
+  const { classRange, setFinalDate, setClassDates } = useClassScheduleStore();
+
   const isEveryListHasDay = dayTimeLists.every((list) => list.day.length > 0);
   const allSelectedDays = useMemo(
     () => dayTimeLists.flatMap((list) => list.day),
     [dayTimeLists],
-  );
-  const setClassSchedules = useClassScheduleStore(
-    (state) => state.setClassSchedules,
   );
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const DayByDay = ({
       end: classRange.to,
     });
 
-    const selectedDaysCountList = dayTimeLists.map((list) => {
+    const newSelectedDaysCountList = dayTimeLists.map((list) => {
       const daysInThisList = allDatesInRange.filter((date) => {
         const dayIndex = (getDay(date) + 6) % 7;
         return list.day.includes(FILTER_WEEK[dayIndex]);
@@ -64,34 +63,39 @@ const DayByDay = ({
       return daysInThisList.length;
     });
 
-    setSelectedDaysCountList(selectedDaysCountList);
+    setSelectedDaysCountList(newSelectedDaysCountList);
 
-    const selectedDays = allDatesInRange.filter((date) => {
-      const dayIndex = (getDay(date) + 6) % 7;
-      return allSelectedDays.includes(FILTER_WEEK[dayIndex]);
-    });
+    const getDayOfWeek = (date: Date) => (getDay(date) + 6) % 7;
+    const convertTimeToDate = (date: Date, time: string): Date | null => {
+      const [hours, minutes] = time.split(':').map(Number);
+      if (!hours || !minutes) return null;
 
-    setClassDates(selectedDays);
-    setSelectedDates(selectedDays);
+      const newDate = new Date(date);
+      newDate.setHours(hours, minutes);
+      return newDate;
+    };
+    const convertDayTimeListToDate = (date: Date, obj: DayTimeList): Date[] => {
+      const dayOfWeek = FILTER_WEEK[getDayOfWeek(date)];
+      if (!obj.day.includes(dayOfWeek)) return [];
 
-    const classSchedules = allDatesInRange.flatMap((date) => {
-      const dayOfWeek = (getDay(date) + 6) % 7;
+      return obj.startDateTime
+        .map((t) => convertTimeToDate(date, t))
+        .filter(Boolean) as Date[];
+    };
+    const convertAllDatesToDate = (
+      allDatesInRange: Date[],
+      dayTimeLists: DayTimeList[],
+    ): Date[] => {
+      return allDatesInRange.flatMap((date) =>
+        dayTimeLists.flatMap((obj) => convertDayTimeListToDate(date, obj)),
+      );
+    };
 
-      return dayTimeLists.flatMap((obj) => {
-        if (obj.day.includes(FILTER_WEEK[dayOfWeek])) {
-          return obj.startDateTime.map((t) => {
-            const [hours, minutes] = t.split(':').map(Number);
-            if (!hours || !minutes) [];
-            const newDate = new Date(date);
-            newDate.setHours(hours, minutes);
-            return newDate;
-          });
-        }
-        return [];
-      });
-    });
-    setClassSchedules(classSchedules);
-  }, [dayTimeLists, classRange, allSelectedDays, setClassDates]);
+    const classSchedules = convertAllDatesToDate(allDatesInRange, dayTimeLists);
+
+    setFinalDate(classSchedules);
+    setClassDates(classSchedules);
+  }, [dayTimeLists, classRange, allSelectedDays, setFinalDate]);
 
   const toggleDaySelection = (day: string, listIndex: number) => {
     const newDaytimeLists = dayTimeLists.map((list, index) =>
@@ -188,31 +192,6 @@ const DayByDay = ({
     updateTimeslots(listIndex, updatedTimeslots);
   };
 
-  const getDayStyle = (day: string, list: DayTimeList) => {
-    const baseClass =
-      'flex h-[34px] w-[34px] items-center justify-center rounded-full border border-solid text-sm  text-gray-500';
-    const styles = {
-      selected: 'cursor-pointer bg-sub-color1 font-bold text-white',
-      clickable: 'cursor-pointer font-medium',
-      default: 'cursor-default font-medium',
-    };
-
-    let styleKey: keyof typeof styles;
-
-    if (list.day.includes(day as day)) {
-      styleKey = 'selected';
-    } else if (
-      !allSelectedDays.includes(day as day) ||
-      list.day.includes(day as day)
-    ) {
-      styleKey = 'clickable';
-    } else {
-      styleKey = 'default';
-    }
-
-    return `${baseClass} ${styles[styleKey]}`;
-  };
-
   return (
     <>
       <div className="flex flex-col gap-5">
@@ -241,7 +220,7 @@ const DayByDay = ({
                   <li
                     key={listIndex + day}
                     onClick={() => handleDayClick(day, listIndex)}
-                    className={getDayStyle(day, list)}
+                    className={getDayStyle(allSelectedDays, day, list)}
                   >
                     {day}
                   </li>
@@ -310,4 +289,33 @@ const getButtonClass = (
   const colorClass = isDisabled ? 'text-gray-500' : 'black';
 
   return `${baseClass} ${colorClass}`;
+};
+
+const getDayStyle = (
+  allSelectedDays: day[],
+  day: string,
+  list: DayTimeList,
+) => {
+  const baseClass =
+    'flex h-[34px] w-[34px] items-center justify-center rounded-full border border-solid text-sm  text-gray-500';
+  const styles = {
+    selected: 'cursor-pointer bg-sub-color1 font-bold text-white',
+    clickable: 'cursor-pointer font-medium',
+    default: 'cursor-default font-medium',
+  };
+
+  let styleKey: keyof typeof styles;
+
+  if (list.day.includes(day as day)) {
+    styleKey = 'selected';
+  } else if (
+    !allSelectedDays.includes(day as day) ||
+    list.day.includes(day as day)
+  ) {
+    styleKey = 'clickable';
+  } else {
+    styleKey = 'default';
+  }
+
+  return `${baseClass} ${styles[styleKey]}`;
 };

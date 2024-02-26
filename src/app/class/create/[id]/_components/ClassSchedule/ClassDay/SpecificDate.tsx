@@ -18,33 +18,31 @@ const TimeList = dynamic(() => import('./TimeList'), {
 });
 
 interface SpecificDateProps {
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: DateTimeList[]) => void;
   defaultValue: DateTimeList[];
 }
 
 const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
-  const initialDates =
-    defaultValue.length && Object.keys(defaultValue[0]).includes('date')
-      ? defaultValue.map((value) => ({
-          date: new Date(value.date),
-          startDateTime: [...value.startDateTime],
-        }))
-      : [];
-
+  const initialDates = (() => {
+    if (defaultValue.length && Object.keys(defaultValue[0]).includes('date')) {
+      return defaultValue.map((value) => ({
+        date: new Date(value.date),
+        startDateTime: [...value.startDateTime],
+      }));
+    } else {
+      return [];
+    }
+  })();
   const initialState = {
     selected: [...initialDates] as DateTimeList[],
     selectableDates: [],
     selectedDate: null,
   };
-  const classRange = useClassScheduleStore((state) => state.classRange);
-  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
-  const setClassSchedules = useClassScheduleStore(
-    (state) => state.setClassSchedules,
-  );
+  const { classRange, setFinalDate } = useClassScheduleStore();
   const [state, dispatch] = useReducer(specificDateReducer, initialState);
 
-  const updateState = () => {
-    const dates = state.selected.map((item) => item.date);
+  useEffect(() => {
     const classSchedules = state.selected.flatMap((schedule) => {
       return schedule.startDateTime.map((time) => {
         const date = new Date(schedule.date);
@@ -53,15 +51,9 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
         return date;
       });
     });
-
-    setClassSchedules(classSchedules);
-    setClassDates(dates);
+    setFinalDate(classSchedules);
     onChange(state.selected);
-  };
-
-  useEffect(() => {
-    updateState();
-  }, []);
+  }, [state.selected.length]);
 
   useEffect(() => {
     if (classRange && classRange.from && classRange.to) {
@@ -112,7 +104,6 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
         });
       }
     }
-    updateState();
   };
 
   const handleStartTimeChange = (index: number, newStartTime: string) => {
@@ -151,8 +142,6 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
         });
       }
     }
-
-    updateState();
   };
 
   const clearTimeSlot = () => {
@@ -163,8 +152,6 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
     if (selectedIndex !== -1) {
       dispatch({ type: 'REMOVE_SELECTED', index: selectedIndex });
     }
-
-    updateState();
   };
 
   const selectedItem = useMemo(() => {
@@ -191,33 +178,35 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
               />
             </div>
           )}
-          {state.selectedDate && (
-            <div className="mt-2 flex flex-col md:ml-2 md:mt-0">
-              {/* Time 리스트 위 */}
-              <div className="flex w-full justify-between">
-                {/* 선택 날짜 리스트 */}
-                <div className="flex w-[300px] flex-wrap gap-x-2 text-base font-bold">
-                  <span>
-                    {state.selectedDate &&
-                      formatDateWithDay(state.selectedDate)}
-                  </span>
+          <div className="mt-2 flex w-[352px] flex-col md:ml-2 md:mt-0">
+            {state.selectedDate && (
+              <>
+                {/* Time 리스트 위 */}
+                <div className="flex w-full justify-between">
+                  {/* 선택 날짜 리스트 */}
+                  <div className="flex w-[300px] flex-wrap gap-x-2 text-base font-bold">
+                    <span>
+                      {state.selectedDate &&
+                        formatDateWithDay(state.selectedDate)}
+                    </span>
+                  </div>
+                  <button
+                    onClick={clearTimeSlot}
+                    className="flex items-start whitespace-nowrap text-sm font-semibold text-gray-500 underline"
+                  >
+                    전체 삭제
+                  </button>
                 </div>
-                <button
-                  onClick={clearTimeSlot}
-                  className="flex items-start whitespace-nowrap text-sm font-semibold text-gray-500 underline"
-                >
-                  전체 삭제
-                </button>
-              </div>
-              {/* 시간 리스트 */}
-              <TimeSlotManager
-                selectedItem={selectedItem}
-                handleStartTimeChange={handleStartTimeChange}
-                addTimeSlot={addTimeSlot}
-                removeTimeSlot={removeTimeSlot}
-              />
-            </div>
-          )}
+                {/* 시간 리스트 */}
+                <TimeSlotManager
+                  selectedItem={selectedItem}
+                  handleStartTimeChange={handleStartTimeChange}
+                  addTimeSlot={addTimeSlot}
+                  removeTimeSlot={removeTimeSlot}
+                />
+              </>
+            )}
+          </div>
         </div>
       )}
     </>

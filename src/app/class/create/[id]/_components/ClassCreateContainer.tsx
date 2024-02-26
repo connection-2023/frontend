@@ -4,6 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import ClassCreate from './ClassCreate';
+import ClassCreateNav from './ClassCreateNav';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { classCreateData } from '@/types/class';
+import { ErrorMessage, FetchError } from '@/types/types';
 import {
   BasicCalendarSVG,
   EditSVG,
@@ -20,11 +25,6 @@ import {
   classOutputDataProcess,
   formToClassDataProcess,
 } from '@/utils/apiDataProcessor';
-import ClassCreate from './ClassCreate';
-import ClassCreateNav from './ClassCreateNav';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { classCreateData } from '@/types/class';
-import { ErrorMessage, FetchError } from '@/types/types';
 
 const ClassCategory = dynamic(() => import('./ClassCategory'));
 
@@ -94,7 +94,7 @@ const ClassCreateContainer = ({
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit, clearErrors, reset } = formMethods;
 
-  const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
+  const finalSchedule = useClassScheduleStore((state) => state.finalDates);
 
   const { classData, setProcessedClassData } = useClassCreateStore((state) => ({
     classData: state.classData,
