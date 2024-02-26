@@ -72,20 +72,23 @@ const IncomeDataViewer = () => {
   });
 
   useEffect(() => {
-    if (incomeHistory && incomeHistory.length > 0) {
+    if (incomeHistory && incomeHistory.lecturerPaymentList.length > 0) {
+      const { lecturerPaymentList } = incomeHistory;
+
       setItemsId({
-        firstItemId: incomeHistory[0].id,
-        lastItemId: incomeHistory[incomeHistory.length - 1].id,
+        firstItemId: lecturerPaymentList[0].id,
+        lastItemId: lecturerPaymentList[lecturerPaymentList.length - 1].id,
       });
     }
   }, [incomeHistory]);
 
-  if (!incomeHistory || historyLoading) return <IncomeDataViewerLoading />;
+  if (!incomeHistory || historyLoading || !classList)
+    return <IncomeDataViewerLoading />;
 
   const { totalItemCount, lecturerPaymentList } = incomeHistory;
   const pageCount = Math.floor(totalItemCount / displayCount);
 
-  const myClassList: OptionType[] = classList?.data.lecture.map(
+  const myClassList: OptionType[] = classList.data.lecture.map(
     ({ id, title }: ILecture) => ({
       value: id,
       label: title,
