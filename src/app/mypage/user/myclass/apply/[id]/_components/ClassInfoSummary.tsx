@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
-import { formatPhoneNumber } from '@/utils/parseUtils';
 import InstructorProfileMenu from '@/components/Profile/InstructorProfileMenu';
 import { IApplyDetailResponse } from '@/types/class';
+import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
+import { formatPhoneNumber } from '@/utils/parseUtils';
 
 interface IClassInfoSummaryProps extends IApplyDetailResponse {
   type: '원데이' | '정기';
@@ -13,6 +13,7 @@ const ClassInfoSummary = (props: IClassInfoSummaryProps) => {
     type,
     lecturer,
     representative,
+    participants,
     phoneNumber,
     payment,
     lectureSchedule,
@@ -39,8 +40,7 @@ const ClassInfoSummary = (props: IClassInfoSummaryProps) => {
       <p>대표자</p>
       <p className="font-normal">{representative}</p>
       <p>신청인원</p>
-      {/* API 데이터 반환 변경 후 변경 예정 */}
-      <p className="font-normal">{lectureSchedule?.numberOfParticipants}명</p>
+      <p className="font-normal">{participants}명</p>
       <p>대표 연락처</p>
       <p className="font-normal">{formatPhoneNumber(phoneNumber)}</p>
 

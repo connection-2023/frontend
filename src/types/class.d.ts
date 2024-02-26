@@ -790,5 +790,6 @@ interface IApplyDetailResponse {
     orderId: string;
   };
   request?: string;
+  participants: number;
   isCompleted: boolean;
 }
