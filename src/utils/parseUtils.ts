@@ -2,7 +2,6 @@ import {
   format,
   addMinutes,
   parseISO,
-  compareAsc,
   isBefore,
   isAfter,
   isEqual,
@@ -280,4 +279,19 @@ export const getLectureProgress = (data: IMonthlyClassSchedules[]) => {
       color: '',
     },
   ];
+};
+
+export const calculateUnSelectedDate = (
+  allDates: Date[],
+  unselected: Date[],
+) => {
+  return allDates.filter(
+    (date) => !unselected.some((date2) => isSameDay(date, date2)),
+  );
+};
+
+export const calculateSelectedDate = (allDates: Date[], selected: Date[]) => {
+  return allDates.filter((date) =>
+    selected.some((date2) => isSameDay(date, date2)),
+  );
 };
