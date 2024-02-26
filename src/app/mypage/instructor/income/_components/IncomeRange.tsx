@@ -33,7 +33,7 @@ const IncomeRange = ({ handleSetRange }: IncomeRangeProps) => {
     if (fromValue && toValue) {
       handleSetRange({ from: new Date(fromValue), to: new Date(toValue) });
     }
-  }, [fromValue, toValue, handleSetRange]);
+  }, [fromValue, toValue]);
 
   useClickAway(ref, () => {
     setIsCalendarVisible(false);
