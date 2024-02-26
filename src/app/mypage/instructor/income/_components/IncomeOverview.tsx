@@ -16,6 +16,7 @@ import { Bar, Line } from 'react-chartjs-2';
 import { ArrowUpSVG } from '@/icons/svg';
 import { getIncomeStatics } from '@/lib/apis/incomeApis';
 import AccountInfo from './AccountInfo';
+import IncomeOverviewLoading from './Loading/IncomeOverviewLoading';
 import PaymentRange from './PaymentRange';
 import {
   getMonthlyData,
@@ -48,12 +49,13 @@ const IncomeOverview = ({
   handleApply,
 }: IncomeOverviewProps) => {
   const [chartView, setChartView] = useState<'MONTHLY' | 'DAILY'>('MONTHLY');
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['stat', chartView],
     queryFn: () => getIncomeStatics(chartView),
   });
 
-  if (!data || data instanceof Error) return null;
+  if (!data || isLoading || data instanceof Error)
+    return <IncomeOverviewLoading />;
 
   const chartData =
     chartView === 'MONTHLY' ? getMonthlyData(data) : getDailyData(data);

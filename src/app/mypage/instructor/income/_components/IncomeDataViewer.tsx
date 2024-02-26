@@ -5,6 +5,7 @@ import { getMyLecture } from '@/lib/apis/classApi';
 import { getTotalIncome, getIncomeHistory } from '@/lib/apis/incomeApis';
 import IncomeRange from './IncomeRange';
 import IncomeTable from './IncomeTable';
+import IncomeDataViewerLoading from './Loading/IncomeDataViewerLoading';
 import { initialDateObject } from '../_lib/initialDate';
 import Pagination from '@/components/Pagination/Pagination';
 
@@ -79,7 +80,7 @@ const IncomeDataViewer = () => {
     }
   }, [incomeHistory]);
 
-  if (!incomeHistory) return null;
+  if (!incomeHistory || historyLoading) return <IncomeDataViewerLoading />;
 
   const { totalItemCount, lecturerPaymentList } = incomeHistory;
   const pageCount = Math.floor(totalItemCount / displayCount);

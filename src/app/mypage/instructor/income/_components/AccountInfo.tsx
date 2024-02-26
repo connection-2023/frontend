@@ -59,7 +59,7 @@ const AccountInfo = ({ view, handleApply }: AccountInfoProps) => {
         </Button>
       </section>
 
-      <section className="flex h-fit w-full flex-col rounded-lg bg-white shadow-float shadow-float">
+      <section className="flex h-fit w-full flex-col rounded-lg bg-white shadow-float shadow-float md:h-full lg:h-fit">
         <h2 className="flex h-12 w-full items-center justify-between border-b border-solid border-gray-700 pl-[1.19rem] text-lg font-semibold text-gray-100">
           계좌 정보
           <Link
