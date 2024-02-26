@@ -69,7 +69,7 @@ export const getIncomeHistory = async (
   productType: string,
   displayCount: number,
   itemsId: { firstItemId: number; lastItemId: number },
-  lectureId?: number,
+  lectureId?: string | number,
 ): Promise<IIncomeHistoryResponse> => {
   const { firstItemId, lastItemId } = itemsId;
   const startISODate = range.from.toISOString().split('T')[0];
