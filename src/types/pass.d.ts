@@ -69,3 +69,34 @@ export interface IpassTable {
   expiration_date: string;
   expiration_date_sm: string;
 }
+
+export interface searchPass {
+  searchAfter: [number, number];
+  id: number;
+  price: number;
+  title: string;
+  lecturePassTarget: {
+    title: string;
+    lectureId: number;
+  }[];
+  lecturer: {
+    lecturerId: number;
+    nickname: string;
+    profileCardImageUrl: string;
+  };
+}
+
+export interface userPass {
+  id: number;
+  price: number;
+  title: string;
+  availableMonths: number;
+  maxUsageCount: number;
+  appliedList: {
+    id: number;
+    title: string;
+  }[];
+  lecturerId: number;
+  nickname: string;
+  profileCardImageUrl: string;
+}

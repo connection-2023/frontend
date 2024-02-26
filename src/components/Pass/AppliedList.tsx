@@ -7,7 +7,14 @@ import { IpassData } from '@/types/pass';
 
 type LecturePassTarget = IpassData['lecturePassTarget'];
 
-const AppliedList = ({ appliedList }: { appliedList: LecturePassTarget }) => {
+interface AppliedListProps {
+  appliedList: {
+    title: string;
+    id: number;
+  }[];
+}
+
+const AppliedList = ({ appliedList }: AppliedListProps) => {
   const [classListsView, setClassListsView] = useState(false);
   const classListRef = useRef(null);
 
@@ -24,17 +31,17 @@ const AppliedList = ({ appliedList }: { appliedList: LecturePassTarget }) => {
       }}
     >
       <span className="relative underline underline-offset-4">
-        적용가능한 클래스({appliedList.length})
+        적용가능 클래스({appliedList.length})
         {classListsView && appliedList.length > 0 && (
           <div className="absolute top-5 z-10 flex min-w-[16rem] flex-col border border-solid border-gray-500 bg-white text-black">
-            {appliedList.map(({ lecture }, index) => {
+            {appliedList.map(({ title, id }, index) => {
               return (
                 <Link
-                  key={lecture.id + lecture.title + String(index)}
-                  href={`/class/${lecture.id}`}
+                  key={id + title + String(index)}
+                  href={`/class/${id}`}
                   className="border-b border-solid border-gray-500 px-4 py-2 hover:bg-sub-color1-transparent"
                 >
-                  {lecture.title}
+                  {title}
                 </Link>
               );
             })}
