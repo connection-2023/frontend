@@ -4,6 +4,7 @@ import {
   IGetClassDrafts,
   Lecture,
   LikedLecture,
+  IApplyDetailResponse,
   IRecentApply,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
@@ -145,6 +146,33 @@ export const getLikesClassList = async (): Promise<
   }
 };
 
+
+export const getApplyClassDetail = async (
+  scheduleId: string | number,
+  type: string,
+): Promise<IApplyDetailResponse> => {
+  const cookieStore = cookies();
+  const authorization = cookieStore.get('userAccessToken')?.value;
+
+  const response = await fetch(
+    END_POINT + `/lectures/enroll-schedule-detail/${scheduleId}?type=${type}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Authorization: `Bearer ${authorization}`,
+      },
+    },
+  ).then((data) => data.json());
+
+  if (response.statusCode !== 200) {
+    throw new Error(`유저 신청 강의 상세 조회 에러: ${response.status}`);
+  }
+
+  return response.data;
+}
+
+
 export const getRecentApply = async (): Promise<IRecentApply[]> => {
   const cookieStore = cookies();
   const authorization = cookieStore.get('lecturerAccessToken')?.value;
@@ -174,4 +202,5 @@ export const getRecentApply = async (): Promise<IRecentApply[]> => {
   const resData = await response.json();
 
   return resData.data.myReservationList;
+
 };

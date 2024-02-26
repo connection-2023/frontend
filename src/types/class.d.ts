@@ -562,9 +562,11 @@ export interface searchClass {
 
 export interface IMonthlyClassSchedules extends IClassSchedule {
   lecture: {
+    id: string;
     title: string;
     isGroup: boolean;
     maxCapacity: number;
+    lectureMethod: { name: string };
   };
 }
 
@@ -578,42 +580,56 @@ export interface IEditStartDateTime {
   editable: boolean;
 }
 
-export interface IUserClassResponse {
+export interface ILectureSchedule {
   id: number;
-  orderId: string;
-  orderName: string;
-  reservation: {
-    lectureSchedule: {
-      startDateTime: string;
-      lecture: {
-        id: number;
-        title: string;
-        lectureImage: {
-          imageUrl: string;
-        }[];
-      };
-    };
-  }[];
-
-  lecturer: {
-    nickname: string;
-    profileCardImageUrl: string;
-  };
+  lectureId: number;
+  day: number;
+  startDateTime: string;
+  endDateTime: string;
+  numberOfParticipants: number;
 }
 
+export interface IRegularSchedule {
+  id: number;
+  day: number;
+  startDateTime: string;
+  endDateTime: string;
+}
+export interface IUserApplyClass {
+  id: number;
+  lecture: {
+    id: number;
+    lectureImage: {
+      id: number;
+      lectureId: number;
+      imageUrl: string;
+    }[];
+
+    lectureMethod: {
+      id: number;
+      name: string;
+    };
+    title: string;
+  };
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string | null;
+  };
+  lectureSchedule?: ILectureSchedule;
+  regularLectureSchedule?: IRegularSchedule[];
+}
+export interface IApplyListResponse {
+  totalItemCount: number;
+  enrollLectureList: IUserApplyClass[];
+}
 export interface IReservation {
   id: number;
   representative: string;
   phoneNumber: string;
   participants: number;
   requests: string;
-  lectureSchedule: {
-    id: number;
-    lectureId: number;
-    startDateTime: string;
-    endDateTime: string;
-    numberOfParticipants: number;
-  };
+  lectureSchedule: ILectureSchedule;
 }
 
 export interface searchBestClassData {
@@ -738,6 +754,44 @@ interface IScheduleLearnerList {
   requests: string;
   enrollmentCount: number;
   memo: null | string;
+}
+
+interface IApplyDetailResponse {
+  lecture: {
+    id: number;
+    title: string;
+    notification: {
+      id: number;
+      content: string;
+      updatedAt: string;
+    };
+    location?: {
+      id: number;
+      address: string;
+      detailAddress: string;
+      buildingName: string;
+    };
+    region?: IRegion[];
+    locationDescription: string | null;
+  };
+  lecturer: {
+    id: number;
+    nickname: string;
+    profileCardImageUrl: string | null;
+  };
+  lectureSchedule?: ILectureSchedule;
+  regularLectureSchedule?: IRegularSchedule[];
+  representative: string;
+  phoneNumber: string;
+  payment: {
+    id: number;
+    finalPrice: number;
+    paymentMethod: { name: string };
+    orderId: string;
+  };
+  request?: string;
+  participants: number;
+  isCompleted: boolean;
 }
 
 interface IRecentApply {
