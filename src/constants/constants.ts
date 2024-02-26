@@ -8,6 +8,7 @@ export const ProfileImgSize = {
   small: 34,
   medium: 59,
   large: 101,
+  mlarge: 139,
   xlarge: 176,
 };
 
@@ -492,3 +493,5 @@ export const ISSUER_CODE: Record<string, string> = {
 };
 
 export const RELOAD_TOAST_TIME = 10000;
+
+export const MEMBER_MANAGE_TAKE = 10;

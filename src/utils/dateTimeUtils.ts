@@ -55,3 +55,8 @@ export const formatDateWithHyphens = (date: Date | string) =>
 
 export const parseHyphenatedDate = (date: string) =>
   parse(date, 'yyyy-MM-dd', new Date());
+
+export const format12HourTime = (date: Date | string) =>
+  date instanceof Date
+    ? format(date, 'hh:mm aa')
+    : format(parseISO(date), 'hh:mm aa');

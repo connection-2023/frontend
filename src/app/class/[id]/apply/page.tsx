@@ -1,86 +1,79 @@
-'use client';
-import { useQueries } from '@tanstack/react-query';
-import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
-import { getOriginalClassInfo } from '@/lib/apis/classApis';
-import { getCouponLists } from '@/lib/apis/couponApis';
 import ApplySidebar from './_components/ApplySidebar';
-import CouponContainer from './_components/Coupon/CouponContainer';
+import ClassApplicationInfo from './_components/ClassApplicationInfo';
+import Coupon from './_components/Coupon';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
-import { processSelectedSchedules } from './_lib/applyScheduleUtils';
-import ApplyLoading from '@/components/Loading/ApplyLoading';
-import { IReservationInfo } from '@/types/payment';
+import type { Metadata } from 'next';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import {
+  getClassPreview,
+  getClassDetail,
+  getClassSchedules,
+} from '@/lib/apis/serverApis/classPostApis';
 
-const ClassApplyPage = ({
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> => {
+  const { id } = params;
+  const classData = await getClassPreview(id);
+
+  return {
+    title: `Connection | ${classData.title} 클래스 신청`,
+    description: `Connection | ${classData.title} 클래스 신청`,
+  };
+};
+
+const ClassApplyPage = async ({
   params: { id },
   searchParams,
 }: {
   params: { id: string };
   searchParams: { [key: string]: string };
 }) => {
-  const reqData = {
-    take: 10000, //추후 null로 변경
-    couponStatusOption: 'AVAILABLE' as 'AVAILABLE',
-    filterOption: 'LATEST' as 'LATEST',
-    lectureIds: [id],
-  };
-
   const { lectureScheduleId, count } = searchParams;
+  if (!lectureScheduleId || !count)
+    throw Error('lectureScheduleId나 count가 설정되지 않았습니다');
 
-  const [
-    { data, isLoading, error },
-    { data: couponList, isLoading: couponLoading, error: couponError },
-  ] = useQueries({
-    queries: [
-      {
-        queryKey: ['apply', id],
-        queryFn: () => getOriginalClassInfo(id),
-      },
-      {
-        queryKey: ['apply2', id],
-        queryFn: () => getCouponLists(reqData, 'user'),
-      },
-    ],
-  });
+  const classPreview = getClassPreview(id);
+  const classDetailData = getClassDetail(id);
+  const classSchedules = getClassSchedules(id);
+  const [classPreviewData, classDetail, classSchedule] = await Promise.all([
+    classPreview,
+    classDetailData,
+    classSchedules,
+  ]);
 
-  if (isLoading || couponLoading) {
-    return <ApplyLoading />;
-  }
+  const { schedule } = classSchedule;
+  const { title } = classPreviewData;
+  const { duration, maxCapacity, reservationComment, price } = classDetail;
 
-  if (error || !data || data instanceof Error || couponError || !couponList) {
-    throw Error('클래스 신청 페이지 오류');
-  }
+  const clickableDates = schedule.map((item) => new Date(item.startDateTime));
 
-  const { title, duration, maxCapacity, reservationComment, price, schedule } =
-    data;
-
-  const initialApplyData: IReservationInfo = {
-    lectureScheduleId: Number(lectureScheduleId),
-    participants: Number(count),
-  };
-
-  const processedSchedules = processSelectedSchedules(
-    schedule,
-    initialApplyData,
-    maxCapacity,
-    duration,
+  const findSelectedSchedule = schedule.find(
+    (item) => item.id === Number(lectureScheduleId),
   );
+
+  const initialClickDate = findSelectedSchedule
+    ? new Date(findSelectedSchedule.startDateTime)
+    : undefined;
 
   return (
     <>
       <h1 className="mx-auto mb-6 flex w-full items-center justify-center border-b border-solid border-gray-700 py-4 text-2xl font-bold">
         클래스 신청하기
       </h1>
-      <div className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
+      <div className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 justify-items-center gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
         {/* 임시 빈 공간 */}
         <div className="hidden xl:block" />
 
-        <section className="w-full lg:max-w-[40rem]">
+        <section className="w-full md:w-[40rem]">
           <h2 className="flex w-full items-center gap-2 whitespace-pre-line break-keep border-b-[3px] border-solid border-black py-3.5 text-2xl font-bold">
             <MusicalNoteSVG
               width="21"
               height="21"
-              className="mr-1 shrink-0 cursor-pointer stroke-black"
+              className="mr-1 shrink-0 stroke-black"
             />
             {title}
           </h2>
@@ -101,20 +94,26 @@ const ClassApplyPage = ({
             </section>
           ) : null}
 
-          {processedSchedules && (
-            <ReservationInfo
-              initialApplyData={initialApplyData}
-              processedSchedules={processedSchedules}
-            />
-          )}
+          <ClassApplicationInfo
+            lectureScheduleId={lectureScheduleId}
+            clickableDates={clickableDates}
+            findSelectedSchedule={findSelectedSchedule}
+            lectureSchedule={schedule}
+            maxCapacity={maxCapacity}
+            duration={duration}
+            applyCount={Number(count)}
+            initialClickDate={initialClickDate}
+          />
+
+          <ReservationInfo />
 
           <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
             <h3 className="flex gap-1 text-lg font-semibold">
               <CouponSVG className="h-6 w-6 fill-sub-color1" />
               쿠폰/패스권 적용
             </h3>
-            <CouponContainer couponList={couponList} price={price} />
             {/* 쿠폰 선택 */}
+            <Coupon id={id} price={price} />
           </section>
 
           <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">

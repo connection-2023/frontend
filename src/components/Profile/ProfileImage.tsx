@@ -3,7 +3,7 @@ import { ProfileImgSize } from '@/constants/constants';
 import { ProfileSVG } from '@/icons/svg';
 
 interface ProfileProps {
-  src: string | null;
+  src?: string | null;
   nickname?: string;
   size: keyof typeof ProfileImgSize;
   label?: boolean;

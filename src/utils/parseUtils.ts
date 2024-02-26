@@ -65,18 +65,10 @@ export const applyScheduleFilter = (
 ) => {
   const today = new Date();
 
-  const sortDates = (a: IClassSchedule, b: IClassSchedule) => {
-    const aStartDateTime = parseISO(a.startDateTime);
-    const bStartDateTime = parseISO(b.startDateTime);
-    return compareAsc(aStartDateTime, bStartDateTime);
-  };
-
-  const filteredAndSortedSchedule = schedule
-    .filter((item) => {
-      const itemDate = parseISO(item.startDateTime);
-      return isAfter(itemDate, today) || isEqual(itemDate, today);
-    })
-    .sort(sortDates);
+  const filteredAndSortedSchedule = schedule.filter((item) => {
+    const itemDate = parseISO(item.startDateTime);
+    return isAfter(itemDate, today) || isEqual(itemDate, today);
+  });
 
   const spaceFull = filteredAndSortedSchedule.filter(
     (space) => space.numberOfParticipants === maxCapacity,

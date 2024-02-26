@@ -116,7 +116,7 @@ const ClassPreview = async ({ id }: { id: string }) => {
         </li>
 
         <li className={CLASS_HSTYLE.h3}>
-          <TimeSVG /> {duration}분
+          <TimeSVG className="fill-sub-color1" /> {duration}분
         </li>
         <li className={CLASS_HSTYLE.h3}>
           <GroupSVG />

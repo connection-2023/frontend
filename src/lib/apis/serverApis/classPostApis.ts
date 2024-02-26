@@ -38,7 +38,7 @@ export const getClassPreview = async (
 
 export const getClassDetail = async (
   lectureId: string,
-): Promise<IClassDetailResponse | Error> => {
+): Promise<IClassDetailResponse> => {
   const cookieStore = cookies();
   const token = cookieStore.get('userAccessToken')?.value;
 
@@ -66,24 +66,20 @@ export const getClassDetail = async (
 
 export const getClassSchedules = async (
   id: string,
-): Promise<IClassScheduleResponse | Error> => {
-  try {
-    const response = await fetch(END_POINT + '/lectures/' + id + '/schedules', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      next: { tags: ['schedules'] },
-    }).then((data) => data.json());
+): Promise<IClassScheduleResponse> => {
+  const response = await fetch(END_POINT + '/lectures/' + id + '/schedules', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    next: { tags: ['schedules'] },
+  }).then((data) => data.json());
 
-    if (response.statusCode !== 200) {
-      throw new Error('클래스 스케쥴 조회 요청 에러!');
-    }
-
-    return response.data;
-  } catch (error) {
-    return new Error('잘못된 요청입니다!');
+  if (response.statusCode !== 200) {
+    throw new Error('클래스 스케쥴 조회 요청 에러!');
   }
+
+  return response.data;
 };
 
 export const getUserReservation = async (id: string): Promise<boolean> => {

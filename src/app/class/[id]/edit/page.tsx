@@ -312,7 +312,7 @@ const ClassEditPage = ({ params: { id } }: { params: { id: string } }) => {
                       }}
                     />
                     <p className="flex items-center gap-x-2">
-                      <TimeSVG /> {duration}분
+                      <TimeSVG className="fill-sub-color1" /> {duration}분
                     </p>
                   </div>
 

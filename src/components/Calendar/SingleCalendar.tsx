@@ -17,21 +17,26 @@ import '../../styles/calendar.css';
 /* eslint-disable no-unused-vars */
 interface SingleCalendarProps {
   mode: 'schedule' | 'dashboard' | 'specific';
+  initialSelected?: Date;
   clickableDates?: Date[];
+  defaultMonth?: Date;
   handleClickDate: (newDate: Date | undefined) => void;
 }
 
 /* eslint-enable no-unused-vars */
 const SingleCalendar = ({
   mode,
+  initialSelected,
   clickableDates = [],
+  defaultMonth,
   handleClickDate,
 }: SingleCalendarProps) => {
   const store = dashboardStore();
   const classDates =
     useClassScheduleStore((state) => state.filteredDates) || [];
   const initSelected =
-    mode === 'dashboard' ? store.selectedDate || undefined : undefined;
+    (mode === 'dashboard' ? store.selectedDate : initialSelected) || undefined;
+
   const [selected, setSelected] = useState<Date | undefined>(initSelected);
 
   useEffect(() => {
@@ -70,20 +75,23 @@ const SingleCalendar = ({
   );
   const modifiersClassNames = getSingleCalendarModifiersClassNames(mode);
   const classNames = getSingleCalendarClassNames(mode);
-
-  const className =
-    mode === 'schedule'
-      ? 'w-fit rounded-lg px-5 py-4 md:shadow-horizontal'
-      : mode === 'specific'
-      ? 'flex w-fit rounded-[0.625rem] px-4 py-6 shadow-horizontal'
-      : 'h-fit w-fit flex justify-center px-5 py-4';
+  const className = (() => {
+    switch (mode) {
+      case 'schedule':
+        return 'w-fit rounded-lg px-5 py-4 md:shadow-horizontal';
+      case 'specific':
+        return 'flex w-fit rounded-[0.625rem] px-4 py-6 shadow-horizontal';
+      default:
+        return 'h-fit w-fit flex justify-center px-5 py-4';
+    }
+  })();
 
   return (
     <DayPicker
       mode="single"
       locale={ko}
       showOutsideDays
-      defaultMonth={clickableDates[0]}
+      defaultMonth={defaultMonth || clickableDates[0]}
       selected={selected}
       onSelect={(newSelectedDate) => {
         if (mode === 'dashboard' && newSelectedDate) {
