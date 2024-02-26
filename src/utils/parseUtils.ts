@@ -141,7 +141,7 @@ export const calculateFinalDates = (
         const [hourStr, minuteStr] = time.split(':');
         const hour = parseInt(hourStr, 10);
         const minute = parseInt(minuteStr, 10);
-        const newDate = set(schedule.date, { hours: hour, minutes: minute });
+        const newDate = set(new Date(schedule.date), { hours: hour, minutes: minute });
 
         acc.push(newDate);
       });
