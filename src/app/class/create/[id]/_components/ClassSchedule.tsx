@@ -4,7 +4,6 @@ import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import { DayTimeList, DateTimeList } from '@/types/class';
 import { useClassScheduleStore, useClassCreateStore } from '@/store';
 import {
   formatDateWithHyphens,
@@ -113,15 +112,8 @@ const ClassSchedule = () => {
         defaultValue={classData?.schedules || []}
         rules={{
           required: '운영 일정',
-          validate: (schedules) => {
-            return schedules?.every((schedule: DayTimeList | DateTimeList) => {
-              if ('day' in schedule) {
-                return schedule.day && schedule.startDateTime;
-              } else if ('date' in schedule) {
-                return schedule.date && schedule.startDateTime;
-              }
-              return false;
-            });
+          validate: () => {
+            return (classNum && classNum > 0) || false;
           },
         }}
         render={({ field }) => (
