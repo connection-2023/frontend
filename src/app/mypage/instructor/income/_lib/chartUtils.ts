@@ -108,5 +108,10 @@ export const options = {
         drawOnChartArea: false,
       },
     },
+    y: {
+      beginAtZero: true,
+      suggestedMin: 0,
+      suggestedMax: 50000,
+    },
   },
 };
