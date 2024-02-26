@@ -26,7 +26,7 @@ const FormatSchedule = ({
     <li
       key={schedule.id}
       className={`border-box flex h-[2.8125rem] w-full items-center justify-between rounded-md border border-solid
-      border-gray-700 px-6 md:max-w-[16.8125rem] ${textStyle[mode]} text-sm font-medium`}
+      border-gray-700 px-6 ${textStyle[mode]} text-sm font-medium`}
     >
       <p>{formattedDateTime}</p>
       <p>

@@ -299,3 +299,128 @@ export interface CommonBankAccount {
 export interface bankAccount extends CommonBankAccount {
   id: number;
 }
+
+export interface GetMyMembersParameter {
+  take: number;
+  currentPage?: number;
+  targetPage?: number;
+  firstItemId?: number;
+  lastItemId?: number;
+  sortOption: 'LATEST' | 'ASC' | 'HIGHEST_APPLICANTS';
+  filterOption: 'ALL' | 'IN_PROGRESS' | 'COMPLETED';
+  lectureId?: number;
+}
+
+export interface GetMyMembersData {
+  count: number;
+  item: MemberData[];
+}
+
+export interface MemberData {
+  id: number;
+  enrollmentCount: number;
+  memo: string | null;
+  user: MemberInfo;
+  reservation: Reservation;
+}
+
+export interface Reservation {
+  id: number;
+  representative: string;
+  phoneNumber: string;
+  participants: number;
+  requests: string;
+  lectureSchedule: {
+    id: number;
+    startDateTime: string;
+    endDateTime: string;
+    numberOfParticipants: number;
+    lecture: {
+      id: number;
+      title: string;
+      imageUrl: string;
+    };
+  };
+  regularLectureStatus: {
+    id: number;
+    day: FILTER_WEEK;
+    dateTime: string[];
+    numberOfParticipants: number;
+    lecture: {
+      id: number;
+      title: string;
+    };
+    regularLectureSchedule: {
+      id: number;
+      day: number;
+      startDateTime: string;
+      endDateTime: string;
+    }[];
+  };
+}
+
+export interface MemberInfo {
+  id: number;
+  memo: string | null;
+  nickname: string;
+  phoneNumber: string;
+  userProfileImage: string;
+}
+
+export interface GetMyMemberData {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  originalPrice: number;
+  finalPrice: number;
+  paymentProductType: {
+    name: string;
+  };
+  paymentCouponUsage: {
+    couponId: number;
+    couponTitle: string;
+    couponPercentage: number;
+    couponDiscountPrice: number;
+    couponMaxDiscountPrice: number;
+    stackableCouponId: number;
+    stackableCouponTitle: string;
+    stackableCouponPercentage: number;
+    stackableCouponDiscountPrice: number;
+    stackableCouponMaxDiscountPrice: number;
+  };
+  reservation: Reservation;
+  paymentPassUsage: {
+    usedCount: number;
+    lecturePass: {
+      createdAt: string;
+      updatedAt: string;
+      id: number;
+      title: number;
+      price: number;
+      maxUsageCount: number;
+      availableMonths: number;
+    };
+  };
+  userPass: {
+    id: number;
+    remainingUses: number;
+    isEnabled: true;
+    startAt: string;
+    endAt: string;
+  };
+}
+
+export interface GetMyMemberPassesData {
+  remainingUses: number;
+  startAt: string;
+  endAt: string;
+  lecturePass: {
+    createdAt: string;
+    updatedAt: string;
+    id: number;
+    title: number;
+    price: number;
+    maxUsageCount: number;
+    availableMonths: number;
+  };
+}

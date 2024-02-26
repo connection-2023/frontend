@@ -6,6 +6,9 @@ import {
   IUpdatePaymentStatusRequestData,
   CommonBankAccount,
   bankAccount,
+  GetMyMembersParameter,
+  GetMyMembersData,
+  Reservation,
 } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
@@ -209,6 +212,75 @@ export const getBankAccount = async (): Promise<bankAccount> => {
     return resData.data.lecturerRecentBankAccount;
   } catch (error) {
     console.error('강사 닉네임 중복 검사 오류', error);
+    throw error;
+  }
+};
+
+export const getMyMembers = async (
+  data: GetMyMembersParameter,
+  signal?: AbortSignal,
+): Promise<GetMyMembersData> => {
+  try {
+    const params = new URLSearchParams();
+
+    Object.entries(data)
+      .filter(([_, v]) => v !== undefined)
+      .forEach(([k, v]) => {
+        params.append(k, String(v));
+      });
+
+    const response = await fetch(`/api/instructors/my-member?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+      signal,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    const item = resData.data.lecturerLearnerList.filter(
+      ({ reservation }: { reservation: Reservation }) => reservation,
+    ); // 백엔드 데이터 정리 후 추후 제거
+
+    return {
+      count: resData.data.totalItemCount,
+      item,
+    };
+  } catch (error) {
+    console.error('회원 불러오기 에러', error);
+    throw error;
+  }
+};
+
+export const patchMemberMemo = async (memo: string, userId: number) => {
+  try {
+    const response = await fetch(`/api/instructors/memo?userId=${userId}`, {
+      method: 'PATCH',
+      credentials: 'include',
+      body: JSON.stringify({ memo }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData;
+  } catch (error) {
+    console.error('회원 메모 수정 에러', error);
     throw error;
   }
 };

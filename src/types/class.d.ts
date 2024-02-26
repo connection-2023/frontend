@@ -793,3 +793,43 @@ interface IApplyDetailResponse {
   participants: number;
   isCompleted: boolean;
 }
+
+interface IRecentApply {
+  id: number;
+  representative: string;
+  phoneNumber: string;
+  participants: number;
+  requests: string;
+
+  lectureSchedule: {
+    id: number;
+    startDateTime: string;
+    endDateTime: string;
+    numberOfParticipants: number;
+  } | null;
+
+  regularLectureStatus: {
+    id: number;
+    day: string[];
+    dateTime: string[];
+    numberOfParticipants: number;
+    regularLectureSchedule: {
+      id: number;
+      day: number;
+      startDateTime: string;
+      endDateTime: string;
+    }[];
+  } | null;
+
+  lecture: {
+    id: number;
+    title: string;
+    maxCapacity: number;
+  };
+
+  user: {
+    id: number;
+    nickname: string;
+    profileImageUrl: string;
+  };
+}

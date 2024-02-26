@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
-import {
-  getClassPreview,
-  getClassDetail,
-  getUserReservation,
-} from '@/lib/apis/serverApis/classPostApis';
 import ClassDetail from './_components/ClassDetail';
 import ClassPreview from './_components/ClassPreview';
 import ClassDetailLoading from './_components/Loading/ClassDetailLoading';
 import ClassTopLoading from './_components/Loading/ClassTopLoading';
 import UserReservation from './_components/UserReservation';
 import type { Metadata } from 'next';
+import {
+  getClassPreview,
+  getClassDetail,
+  getUserReservation,
+} from '@/lib/apis/serverApis/classPostApis';
 
 export const generateMetadata = async ({
   params,
@@ -41,7 +41,7 @@ const ClassDetailPage = async ({
   const userReservationData = await getUserReservation(id);
 
   return (
-    <main className="border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 md:grid-cols-[3fr_1fr] md:gap-x-5 xl:grid-cols-[1fr_2fr_1fr]">
+    <main className="border-box mx-auto mt-[1.38rem] box-border grid grid-cols-1 gap-x-12 lg:grid-cols-[3fr_1fr] lg:gap-x-5 xl:grid-cols-[1fr_2fr_1fr]">
       <Suspense fallback={<ClassTopLoading />}>
         <ClassPreview id={id} />
       </Suspense>
