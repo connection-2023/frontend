@@ -43,7 +43,7 @@ const SingleCalendar = ({
     if (selected && handleClickDate) {
       handleClickDate(selected);
     }
-  }, [selected, handleClickDate]);
+  }, [selected]);
 
   useEffect(() => {
     if (mode === 'dashboard') {
