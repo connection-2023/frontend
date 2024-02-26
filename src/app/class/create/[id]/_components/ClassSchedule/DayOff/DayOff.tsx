@@ -1,9 +1,13 @@
-import isSameDay from 'date-fns/isSameDay';
 import dynamic from 'next/dynamic';
-import { useEffect, useState, memo } from 'react';
-import { useClassScheduleStore } from '@/store';
+import { useEffect, useState, useCallback, memo, useMemo } from 'react';
+import { useClassScheduleStore, useClassCreateStore } from '@/store';
 import { getDayoffClassNames } from '@/utils/classUtils';
 import { formatDateWithDay } from '@/utils/dateTimeUtils';
+import {
+  getUniqueDates,
+  calculateUnSelectedDate,
+  calculateSelectedDate,
+} from '@/utils/parseUtils';
 
 const DayOffOption = ['네, 휴무일이 있어요', '아니요, 휴무일 없어요'];
 
@@ -14,61 +18,81 @@ const DayOffCalendar = dynamic(
   },
 );
 
-const DayOff = ({
-  onChange,
-  defaultValue,
-}: {
+interface DayOffProps {
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: Date[]) => void;
-  defaultValue: Date[];
-}) => {
-  const defultOption = defaultValue.length ? 0 : null;
-  const initialValue =
-    defaultValue && defaultValue.length > 0
-      ? defaultValue.map((date) => new Date(date))
-      : [];
+  defaultValue: Date[] | undefined;
+}
+
+const DayOff = ({ onChange, defaultValue = [] }: DayOffProps) => {
+  const defultOption = defaultValue?.length ? 0 : null;
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
     defultOption,
   );
-  const store = useClassScheduleStore();
-  const [unselectedDates, setUnselectedDates] = useState<Date[]>(initialValue);
-  const classDates = store.filteredDates;
-  const classSchedules = useClassScheduleStore((state) => state.classSchedules);
-  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
-  const classType = store.classType;
-  const initDates = store.classDates;
-  const classRange = store.classRange;
-  const classTime = store.classDuration;
+  const [selectedDates, setSelectedDate] = useState<Date[] | undefined>();
+  const {
+    setFinalDate,
+    classType,
+    classRange,
+    classDuration: classTime,
+    classDates,
+  } = useClassScheduleStore();
+  const { classData } = useClassCreateStore((state) => ({
+    classData: state.classData,
+  }));
+
+  const selectableDates = classDates ? getUniqueDates(classDates) : undefined;
+  const unselectedDates = useMemo(() => {
+    if (!classDates || !selectedDates) return [];
+
+    const calculateDates = calculateUnSelectedDate(classDates, selectedDates);
+    return getUniqueDates(calculateDates);
+  }, [classDates, selectedDates]);
+
   const isDisabled =
-    !(classRange && classTime && initDates) || classType === '특정 날짜';
+    !(classRange && classTime && classDates) ||
+    (classData?.lectureMethod !== '정기클래스' && classType === '특정 날짜');
 
   useEffect(() => {
-    if (classDates && classSchedules) {
-      const newClassDates = classSchedules.filter((date) => {
-        const hasSameDay = unselectedDates.some((date2) =>
-          isSameDay(date, date2),
-        );
+    // 휴무일 필터링해서 저장하기
+    if (classDates && selectedDates) {
+      const holidays = calculateUnSelectedDate(classDates, selectedDates);
 
-        return !hasSameDay;
-      });
-      setClassDates(newClassDates);
+      onChange(holidays);
     }
-  }, [unselectedDates]);
+  }, [selectedDates?.length]);
+
+  useEffect(() => {
+    if (classDates) {
+      const selected = getUniqueDates(
+        calculateUnSelectedDate(classDates, defaultValue),
+      );
+
+      setSelectedDate(selected);
+    }
+  }, [classDates, defaultValue]);
 
   const handleOptionClick = (index: number) => {
     setSelectedOptionIndex(index);
 
-    if (index === 1) {
-      setUnselectedDates([]);
-      if (initDates) {
-        setClassDates(initDates);
-      }
+    if (index === 1 && classDates && classDates) {
+      setSelectedDate(classDates);
+      setFinalDate(classDates);
     }
   };
 
-  const handleUnselected = (unselectedDates: Date[]) => {
-    setUnselectedDates(unselectedDates);
-    onChange(unselectedDates);
-  };
+  const handleSelected = useCallback(
+    (newDates: Date[] | undefined) => {
+      setSelectedDate(newDates);
+
+      if (newDates && classDates) {
+        // 선택된 클래스 일정 저장
+        const finalClass = calculateSelectedDate(classDates, newDates);
+        setFinalDate(finalClass);
+      }
+    },
+    [classDates],
+  );
 
   return (
     <>
@@ -98,8 +122,9 @@ const DayOff = ({
                 <div className="mx-auto w-fit">
                   <DayOffCalendar
                     mode="dayoff"
-                    selectableDates={initDates}
-                    handleSelected={handleUnselected}
+                    selectableDates={selectableDates}
+                    selectedDates={selectedDates}
+                    handleSelected={handleSelected}
                   />
                 </div>
                 <div className="mt-7 flex w-full flex-col md:ml-[3.75rem] md:mt-0">
