@@ -30,7 +30,11 @@ const AppliedList = ({ appliedList }: AppliedListProps) => {
         setClassListsView((prev) => !prev);
       }}
     >
-      <span className="relative underline underline-offset-4">
+      <span
+        className={`relative underline underline-offset-4 group-hover:text-sub-color1 ${
+          classListsView ? 'text-sub-color1' : 'text-gray-300'
+        }`}
+      >
         적용가능 클래스({appliedList.length})
         {classListsView && appliedList.length > 0 && (
           <div className="absolute top-5 z-10 flex min-w-[16rem] flex-col border border-solid border-gray-500 bg-white text-black">

@@ -9,6 +9,7 @@ import {
   searchInstructor,
   searchInstructorParameters,
 } from '@/types/instructor';
+import { searchPass } from '@/types/pass';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -19,6 +20,7 @@ export const searchAll = async (
 ): Promise<{
   searchedLecturers: searchInstructor[];
   searchedLectures: searchClass[];
+  searchedPasses: searchPass[];
 }> => {
   try {
     const cookieStroe = cookies();

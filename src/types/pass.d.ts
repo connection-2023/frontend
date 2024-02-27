@@ -75,6 +75,8 @@ export interface searchPass {
   id: number;
   price: number;
   title: string;
+  availableMonths: number;
+  maxUsageCount: number;
   lecturePassTarget: {
     title: string;
     lectureId: number;

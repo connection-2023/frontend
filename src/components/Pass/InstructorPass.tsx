@@ -35,7 +35,9 @@ const InstructorPass = ({
       <dd className="mt-4 w-full truncate">{title}</dd>
       <dd>{availableMonths}개월</dd>
       <div className="flex justify-between text-gray-300">
-        <AppliedList appliedList={lecturePassTarget} />
+        <AppliedList
+          appliedList={lecturePassTarget.map(({ lecture }) => ({ ...lecture }))}
+        />
         <dd>누적 판매량:{salesCount}</dd>
       </div>
     </dl>
