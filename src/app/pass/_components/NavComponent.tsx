@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import React from 'react';
 import useChangeSearchParams from '@/hooks/useChangeSearchParams';
-import Button from '@/components/Button/Button';
 
 const NavComponent = ({
   sortOption,

@@ -89,6 +89,7 @@ export interface searchPass {
 }
 
 export interface userPass {
+  searchAfter: [number, number];
   id: number;
   price: number;
   title: string;
