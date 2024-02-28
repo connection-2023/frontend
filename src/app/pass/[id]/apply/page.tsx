@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import PaymentType from '@/app/class/[id]/apply/_components/PaymentType';
 import { PassSVG } from '@/icons/svg';
 import { getPassInfoForId } from '@/lib/apis/serverApis/passApis';
+import AppliedClassView from './_components/AppliedClassView';
 import BuyerInfo from './_components/BuyerInfo';
 import PaymentForm from './_components/PaymentForm';
 import ProfileImg from '@/components/Profile/ProfileImage';
@@ -29,11 +30,11 @@ const page = async ({ params }: { params: { id: string } }) => {
           <section className="mt-5 rounded-md px-4 py-4 shadow-vertical">
             <div className="w-full whitespace-nowrap">
               <h3 className="mb-3 text-lg font-semibold">패스권 정보</h3>
-              <dl className="grid grid-cols-[4rem,1fr] gap-x-3 gap-y-2 text-sm [&>dt]:font-semibold [&>dt]:text-gray-500">
+              <dl className="grid grid-cols-[4rem,1fr] items-center gap-x-3 gap-y-3 text-sm [&>dt]:font-semibold [&>dt]:text-gray-500">
                 <dt>강사</dt>
                 <dd>
                   <Link
-                    className="flex w-fit"
+                    className="flex w-fit items-center"
                     href={`/instructor/${passInfo.lecturer.id}`}
                   >
                     <ProfileImg
@@ -44,12 +45,22 @@ const page = async ({ params }: { params: { id: string } }) => {
                   </Link>
                 </dd>
                 <dt>가격</dt>
-                <dd>{passInfo.price}원</dd>
+                <dd>{passInfo.price.toLocaleString()}원</dd>
                 <dt>횟수</dt>
                 <dd>{passInfo.maxUsageCount}회</dd>
                 <dt>이용기간</dt>
-                <dd>{passInfo.availableMonths}개월</dd>
+                <dd className="flex gap-2">
+                  <p>{passInfo.availableMonths}개월</p>
+                  <p className="hidden text-main-color sm:block">
+                    *이용 기간은 패스권 이용 시작일로부터 차감됩니다.
+                  </p>
+                </dd>
+                <p className="col-span-2 w-full whitespace-pre-wrap text-main-color sm:hidden">
+                  *이용 기간은 패스권 이용 시작일로부터 차감됩니다.
+                </p>
               </dl>
+              <hr className="my-3 border-gray-700" />
+              <AppliedClassView appliedClassList={passInfo.lecturePassTarget} />
             </div>
           </section>
 

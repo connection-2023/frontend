@@ -137,7 +137,7 @@ const ApplyCompletePage = async ({
           결제내역 보기
         </Link>
         <Link
-          href={`/class/${searchParams.id}`}
+          href="/mypage/user/pass"
           className="flex w-full cursor-pointer items-center justify-center rounded-md bg-black text-white"
         >
           확인
