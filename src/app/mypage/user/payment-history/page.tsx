@@ -33,8 +33,8 @@ const PaymentHistory = () => {
         displayCount,
         prevPage.current,
         currentPage,
-        itemId.firstItemId || 0,
-        itemId.lastItemId || 0,
+        itemId.firstItemId,
+        itemId.lastItemId,
         selectedOption,
       ),
   });
@@ -50,7 +50,7 @@ const PaymentHistory = () => {
       setItemId(itemIds);
       prevPage.current = currentPage;
     }
-  }, [data?.userPaymentsHistory[0]?.id]);
+  }, [data?.totalItemCount, selectedOption, displayCount, currentPage]);
 
   if (isLoading || !data)
     return (
