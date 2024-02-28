@@ -147,11 +147,23 @@ export interface IMyPayment {
   };
   updatedAt: string;
   reservation: {
+    representative: string;
+    phoneNumber: string;
     participants: number;
     requests: string;
-    lectureSchedule: {
-      lectureId: number;
+    lectureSchedule?: {
       startDateTime: string;
+      lecture: {
+        id: number;
+        title: string;
+        imageUrl: string;
+      };
+    };
+    regularLectureStatus?: {
+      id: number;
+      day: string[];
+      dateTime: string[];
+      numberOfParticipants: number;
       lecture: {
         id: number;
         title: string;

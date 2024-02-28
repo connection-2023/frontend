@@ -15,20 +15,45 @@ interface PaymentListProps extends IMyPayment {
   handlePaymentDelete: (id: number) => void;
 }
 
-const PaymentList = ({
-  orderId,
-  id,
-  paymentProductType,
-  paymentStatus,
-  updatedAt,
-  orderName,
-  finalPrice,
-  reservation,
-  handlePaymentDelete,
-}: PaymentListProps) => {
+const PaymentList = (props: PaymentListProps) => {
+  const {
+    orderId,
+    id,
+    paymentProductType,
+    paymentStatus,
+    updatedAt,
+    orderName,
+    finalPrice,
+    reservation,
+    handlePaymentDelete,
+  } = props;
+  const { lectureSchedule, regularLectureStatus } = reservation;
   const [isOpened, setIsOpened] = useState(false);
   const [accountDetail, setAccountDetail] = useState<IVirtualAccountInfo>();
   const router = useRouter();
+
+  const imgSrc = (() => {
+    if (lectureSchedule) {
+      return lectureSchedule.lecture.imageUrl;
+    } else if (regularLectureStatus) {
+      return regularLectureStatus.lecture.imageUrl;
+    } else {
+      return '';
+    }
+  })();
+
+  const classTime = (() => {
+    if (lectureSchedule) {
+      return formatDateTimeNoSec(lectureSchedule.startDateTime);
+    } else if (regularLectureStatus) {
+      return `${regularLectureStatus.day.join(
+        '',
+      )} ${regularLectureStatus.dateTime[0].slice(0, 5)}`;
+    } else {
+      return '';
+    }
+  })();
+
   const isClass = paymentProductType.name === '클래스';
   const textStyles =
     paymentStatus.name === 'WAITING_FOR_DEPOSIT'
@@ -36,7 +61,13 @@ const PaymentList = ({
       : 'text-gray-300';
 
   const handleNavigateToDetail = () => {
-    router.push(`/${reservation.lectureSchedule.lectureId}`);
+    if (lectureSchedule) {
+      router.push(`/${lectureSchedule.lecture.id}`);
+    }
+
+    if (regularLectureStatus) {
+      router.push(`/${regularLectureStatus.lecture.id}`);
+    }
   };
 
   const handleModalOpened = async () => {
@@ -84,7 +115,7 @@ const PaymentList = ({
           className="flex h-28 w-[8.5rem] overflow-hidden rounded-md"
         >
           <Image
-            src={reservation.lectureSchedule.lecture.imageUrl}
+            src={imgSrc}
             width={0}
             height={0}
             sizes="(max-width: 768px) 100vw, 33vw"
@@ -98,11 +129,7 @@ const PaymentList = ({
           <li className="text-gray-300">결제일 {formatShortDate(updatedAt)}</li>
           <li>{orderName}</li>
           {isClass && reservation && (
-            <li>
-              {`${formatDateTimeNoSec(
-                reservation.lectureSchedule.startDateTime,
-              )} ${reservation.participants}명`}
-            </li>
+            <li>{`${classTime} ${reservation.participants}명`}</li>
           )}
 
           <li className={`${!isClass && 'mt-5'} flex items-center gap-2.5`}>
@@ -139,11 +166,7 @@ const PaymentList = ({
             </div>
             <section className="mt-3.5 w-full px-6">
               <h4 className="mb-1.5 font-semibold">{orderName}</h4>
-              <div>
-                {`${formatDateTimeNoSec(
-                  reservation.lectureSchedule.startDateTime,
-                )} ${reservation.participants}명`}
-              </div>
+              <div>{`${classTime} ${reservation.participants}명`}</div>
 
               <ul className="mt-4 flex w-full flex-col gap-y-2">
                 <li className="flex gap-x-5 whitespace-nowrap">
