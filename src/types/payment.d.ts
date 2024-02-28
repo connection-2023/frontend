@@ -142,6 +142,10 @@ export interface ILecturerPayment {
   paymentStatus: {
     name: PaymentStatusType;
   };
+  user: {
+    id: number;
+    nickname: string;
+  };
   paymentCouponUsage: null; // 수정 필요
 }
 

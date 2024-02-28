@@ -38,6 +38,7 @@ const IncomeTable = (props: IncomeTableProps) => {
     {
       accessorKey: 'purchase',
       header: '구매자',
+      accessorFn: (row) => row.user.nickname,
       cell: (info) => info.getValue(),
     },
     {
@@ -131,7 +132,7 @@ const IncomeTable = (props: IncomeTableProps) => {
         </div>
       </div>
 
-      <table className="min-h-72 mb-5 box-border w-full w-full border-collapse">
+      <table className="mb-5 box-border min-h-72 w-full w-full border-collapse">
         <thead className="flex w-full border-collapse text-left text-sm font-semibold">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
