@@ -98,7 +98,7 @@ const SearchInput = ({ query }: { query: string }) => {
         </button>
       </nav>
       <input
-        type="text"
+        type="search"
         value={keyword}
         onChange={handleInputChange}
         className=" w-full rounded-xl p-4 text-lg shadow-vertical focus:outline-none"

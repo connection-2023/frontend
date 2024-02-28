@@ -7,7 +7,9 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { dummyPassTableData } from '@/constants/dummy';
 import { ArrowRightSVG } from '@/icons/svg';
 import { getSalesStatusPass } from '@/lib/apis/passApis';
@@ -24,13 +26,31 @@ interface PassDetailProps {
 
 const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
   const [data, setData] = useState(dummyPassTableData);
+  const initialized = useRef(false);
 
   const { data: test, isLoading } = useQuery({
     queryKey: ['instructor', 'pass'],
     queryFn: () => getSalesStatusPass(passInfo.id),
   });
 
-  console.log(test);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!initialized.current) {
+      window.history.pushState(null, '', `${pathname}?state=pass`);
+
+      window.onpopstate = () => {
+        selectPassHandler(null);
+      };
+
+      initialized.current = true;
+      return;
+    }
+
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
 
   const columnHelper = createColumnHelper<IpassTable>();
   const columns = useMemo<ColumnDef<IpassTable, any>[]>(
@@ -128,7 +148,7 @@ const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
     <>
       <header className="mb-4 flex items-center justify-between border-b border-solid border-gray-700 p-5">
         <div className="flex text-2xl font-bold">
-          <button onClick={() => selectPassHandler(null)}>
+          <button onClick={() => window.history.back()}>
             <ArrowRightSVG className="h-8 w-8 rotate-180 stroke-black " />
           </button>
           패스권 현황
@@ -146,9 +166,18 @@ const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
           <dd className="truncate">{passInfo.title}</dd>
           <dt className="font-semibold text-gray-300">적용된 클래스</dt>
           <dd>
-            {passInfo.lecturePassTarget.map(({ lecture }) => (
-              <p key={lecture.id}>{lecture.title}</p>
-            ))}
+            <ul className="flex flex-col">
+              {passInfo.lecturePassTarget.map(({ lecture }) => (
+                <li key={lecture.id} className="group">
+                  <Link
+                    href={`/class/${lecture.id}`}
+                    className="group-hover:text-sub-color1"
+                  >
+                    {lecture.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </dd>
           <dt className="font-semibold text-gray-300">사용가능 기간</dt>
           <dd>{passInfo.availableMonths}개월</dd>
