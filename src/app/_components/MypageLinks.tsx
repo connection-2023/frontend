@@ -19,11 +19,11 @@ const MORE_ICON_STYLE = {
 };
 
 const MYPAGE_ICON_STYLE = {
-  FILL: 'mr-2.5 fill-gray-500 group-hover:fill-sub-color1 group-focus:fill-sub-color1',
+  FILL: 'mr-2.5 fill-gray-500 group-hover:fill-sub-color1 group-focus:fill-sub-color1 group-[.is-actived]:fill-sub-color1',
   STROKE:
-    'mr-2.5 stroke-gray-500 group-hover:stroke-sub-color1 group-focus:stroke-sub-color1',
+    'mr-2.5 stroke-gray-500 group-hover:stroke-sub-color1 group-focus:stroke-sub-color1 group-[.is-actived]:stroke-sub-color1',
   WSTROKE:
-    'mr-2.5 stroke-gray-500 stroke-2 group-hover:stroke-sub-color1 group-focus:stroke-sub-color1',
+    'mr-2.5 stroke-gray-500 stroke-2 group-hover:stroke-sub-color1 group-focus:stroke-sub-color1 group-[.is-actived]:fill-sub-color1 group-[.is-actived]:stroke-sub-color1',
 };
 
 export const getInstructorLinks = (mode: 'more' | 'mypage') => {
@@ -36,7 +36,7 @@ export const getInstructorLinks = (mode: 'more' | 'mypage') => {
       icon: <DashboardSVG width="21" height="21" className={style.WSTROKE} />,
     },
     {
-      path: '/mypage/instructor/manage/approval-pending',
+      path: '/mypage/instructor/manage/schedule',
       text: '내 클래스',
       icon: <BookmarkSVG width="21" height="21" className={style.FILL} />,
       submenuItems: [
@@ -124,7 +124,7 @@ export const getUserLinks = (mode: 'more' | 'mypage') => {
       icon: <CouponSVG width="21" height="21" className={style.FILL} />,
     },
     {
-      path: '/mypage/user/payment-hisotry',
+      path: '/mypage/user/payment-history',
       text: '결제 내역',
       icon: <MoneySVG width="19" height="19" className={style.FILL} />,
     },
