@@ -102,3 +102,10 @@ export interface userPass {
   nickname: string;
   profileCardImageUrl: string;
 }
+
+export interface searchPassesParameters {
+  take: number;
+  sortOption: 'LATEST' | 'POPULAR' | 'LOWEST_PRICE';
+  value?: string;
+  searchAfter?: [number, number];
+}

@@ -73,7 +73,7 @@ const Results = async ({ searchParams }: { searchParams: SearchParams }) => {
         hasResults={true}
         searchParams={searchParams}
       >
-        <div className="grid gap-y-6 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-9 md:grid-cols-3 lg:gap-x-4 xl:grid-cols-4 xl:gap-5">
+        <div className="grid gap-x-4 gap-y-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 ">
           {passesList.map((passInfo) => (
             <UserPass key={passInfo.id} passInfo={passInfo} />
           ))}
