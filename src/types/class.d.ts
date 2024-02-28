@@ -71,14 +71,14 @@ export interface IDateTime {
 
 type day = '일' | '월' | '화' | '수' | '목' | '금' | '토';
 
-export interface DayTimeList {
+export interface IDayTimeList {
   day: day[];
-  startDateTime: string[];
+  dateTime: string[];
 }
 
-export interface DateTimeList {
+export interface IDateTimeList {
   date: Date;
-  startDateTime: string[];
+  dateTime: string[];
 }
 
 export interface IGetClassDrafts {

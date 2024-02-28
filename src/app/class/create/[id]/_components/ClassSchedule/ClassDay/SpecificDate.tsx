@@ -1,7 +1,7 @@
 import { eachDayOfInterval, isSameDay } from 'date-fns';
 import dynamic from 'next/dynamic';
 import { useEffect, useId, useReducer, useMemo } from 'react';
-import { DateTimeList } from '@/types/class';
+import { IDateTimeList } from '@/types/class';
 import { useClassScheduleStore } from '@/store';
 import { formatDateWithDay } from '@/utils/dateTimeUtils';
 import { specificDateReducer } from '@/utils/specificDateReducer';
@@ -19,8 +19,8 @@ const TimeList = dynamic(() => import('./TimeList'), {
 
 interface SpecificDateProps {
   // eslint-disable-next-line no-unused-vars
-  onChange: (value: DateTimeList[]) => void;
-  defaultValue: DateTimeList[];
+  onChange: (value: IDateTimeList[]) => void;
+  defaultValue: IDateTimeList[];
 }
 
 const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
@@ -28,14 +28,14 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
     if (defaultValue.length && Object.keys(defaultValue[0]).includes('date')) {
       return defaultValue.map((value) => ({
         date: new Date(value.date),
-        startDateTime: [...value.startDateTime],
+        dateTime: [...value.dateTime],
       }));
     } else {
       return [];
     }
   })();
   const initialState = {
-    selected: [...initialDates] as DateTimeList[],
+    selected: [...initialDates] as IDateTimeList[],
     selectableDates: [],
     selectedDate: null,
   };
@@ -44,7 +44,7 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
 
   useEffect(() => {
     const classSchedules = state.selected.flatMap((schedule) => {
-      return schedule.startDateTime.map((time) => {
+      return schedule.dateTime.map((time) => {
         const date = new Date(schedule.date);
         const [hours, minutes] = time.split(':').map(Number);
         date.setHours(hours, minutes);
@@ -83,8 +83,8 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
       const updatedItem = getUpdatedItem(selectedIndex);
 
       if (newStartTime !== undefined)
-        updatedItem.startDateTime[index] = newStartTime;
-      else updatedItem.startDateTime.push('');
+        updatedItem.dateTime[index] = newStartTime;
+      else updatedItem.dateTime.push('');
 
       dispatch({
         type: 'UPDATE_SELECTED',
@@ -95,7 +95,7 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
       if (state.selectedDate && newStartTime !== undefined) {
         const newItem = {
           date: state.selectedDate,
-          startDateTime: [newStartTime],
+          dateTime: [newStartTime],
         };
 
         dispatch({
@@ -130,9 +130,9 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
 
     if (selectedIndex !== -1) {
       const updatedItem = { ...state.selected[selectedIndex] };
-      updatedItem.startDateTime.splice(indexToRemove, 1);
+      updatedItem.dateTime.splice(indexToRemove, 1);
 
-      if (updatedItem.startDateTime.length === 0) {
+      if (updatedItem.dateTime.length === 0) {
         dispatch({ type: 'REMOVE_SELECTED', index: selectedIndex });
       } else {
         dispatch({
@@ -216,9 +216,11 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
 export default SpecificDate;
 
 interface TimeSlotManagerProps {
-  selectedItem?: DateTimeList | null;
+  selectedItem?: IDateTimeList | null;
+  // eslint-disable-next-line no-unused-vars
   handleStartTimeChange: (index: number, newStartTime: string) => void;
   addTimeSlot: () => void;
+  // eslint-disable-next-line no-unused-vars
   removeTimeSlot: (indexToRemove: number) => void;
 }
 
@@ -233,7 +235,7 @@ const TimeSlotManager = ({
     <>
       <ul className="mt-2 flex w-auto flex-col gap-2">
         {selectedItem ? (
-          selectedItem.startDateTime.map((startTime, index) => (
+          selectedItem.dateTime.map((startTime, index) => (
             <TimeList
               key={index}
               startTime={startTime}

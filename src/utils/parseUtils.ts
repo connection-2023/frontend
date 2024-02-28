@@ -13,8 +13,8 @@ import {
 import ko from 'date-fns/locale/ko';
 import {
   IClassSchedule,
-  DayTimeList,
-  DateTimeList,
+  IDayTimeList,
+  IDateTimeList,
   IDaySchedule,
   IMonthlyClassSchedules,
 } from '@/types/class';
@@ -87,7 +87,7 @@ export const getUniqueDates = (dates: Date[]) =>
 export const calculateFinalDates = (
   startDate: string,
   endDate: string,
-  schedules: DayTimeList[] | DateTimeList[],
+  schedules: IDayTimeList[] | IDateTimeList[],
   holidays: {
     holiday: string;
   }[],
@@ -110,12 +110,12 @@ export const calculateFinalDates = (
   if (schedules.length === 0) return [];
 
   if ('day' in schedules[0]) {
-    const dayTimeSchedules = schedules as DayTimeList[];
+    const dayTimeSchedules = schedules as IDayTimeList[];
 
     return dayTimeSchedules.reduce((acc: Date[], schedule) => {
       const days = schedule.day.map((dayStr) => dayMapping[dayStr]);
 
-      schedule.startDateTime.forEach((time) => {
+      schedule.dateTime.forEach((time) => {
         const [hourStr, minuteStr] = time.split(':');
 
         allDates.forEach((date) => {
@@ -134,14 +134,17 @@ export const calculateFinalDates = (
       return acc;
     }, []);
   } else {
-    const dateTimeSchedules = schedules as DateTimeList[];
+    const dateTimeSchedules = schedules as IDateTimeList[];
 
     return dateTimeSchedules.reduce((acc: Date[], schedule) => {
-      schedule.startDateTime.forEach((time) => {
+      schedule.dateTime.forEach((time) => {
         const [hourStr, minuteStr] = time.split(':');
         const hour = parseInt(hourStr, 10);
         const minute = parseInt(minuteStr, 10);
-        const newDate = set(new Date(schedule.date), { hours: hour, minutes: minute });
+        const newDate = set(new Date(schedule.date), {
+          hours: hour,
+          minutes: minute,
+        });
 
         acc.push(newDate);
       });
