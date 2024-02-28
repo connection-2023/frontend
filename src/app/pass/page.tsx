@@ -39,12 +39,12 @@ const page = async ({
   } catch (error) {}
 
   return (
-    <section className="mt-4 flex flex-col gap-4 px-4 sm:px-9 xl:px-14">
+    <main className="mt-4 flex flex-col gap-4 px-4 sm:px-9 xl:px-14">
       <SearchInput query={searchParams.query ?? ''} />
 
       <NavComponent sortOption={searchData.sortOption} />
       <PassListView passList={passList} />
-    </section>
+    </main>
   );
 };
 

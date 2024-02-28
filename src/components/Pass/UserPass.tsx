@@ -19,14 +19,14 @@ const UserPass = ({ passInfo }: { passInfo: userPass }) => {
       <div className="flex flex-col gap-1.5 p-3">
         <div className="mb-2 flex justify-between text-xl font-semibold">
           <dd className="flex w-1/2">
-            <p className="truncate">3333333333</p>회
+            <p className="truncate">{passInfo.maxUsageCount}</p>회
           </dd>
           <dd className="flex w-1/2 flex-row-reverse">
             원<p className="truncate">{passInfo.price.toLocaleString()}</p>
           </dd>
         </div>
         <dt className="truncate">{passInfo.title}</dt>
-        <dd>이용기간 3개월</dd>
+        <dd>이용기간 {passInfo.availableMonths}개월</dd>
         <div className="group w-fit">
           <AppliedList appliedList={passInfo.appliedList} />
         </div>
