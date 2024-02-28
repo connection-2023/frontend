@@ -1,4 +1,13 @@
 import Link from 'next/link';
+import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
+import { CLASS_HSTYLE } from '@/constants/constants';
+import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
+import {
+  getClassDetail,
+  getClassSchedules,
+} from '@/lib/apis/serverApis/classPostApis';
+import { formatDate } from '@/utils/parseUtils';
+import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import Apply from './Apply';
 import ClassReviewSection from './ClassReviewSection';
 import ReadMore from './ReadMore';
@@ -7,15 +16,6 @@ import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
 import ProfileImage from '@/components/Profile/ProfileImage';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import { CLASS_HSTYLE } from '@/constants/constants';
-import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
-import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
-import {
-  getClassDetail,
-  getClassSchedules,
-} from '@/lib/apis/serverApis/classPostApis';
-import { formatDate } from '@/utils/parseUtils';
-import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 
 const ClassDetail = async ({ id }: { id: string }) => {
   const classDetailData = getClassDetail(id);
@@ -34,7 +34,6 @@ const ClassDetail = async ({ id }: { id: string }) => {
     startDate,
     endDate,
     reservationDeadline,
-    reservationComment,
     price,
     notification,
     introduction,
@@ -54,10 +53,12 @@ const ClassDetail = async ({ id }: { id: string }) => {
       <section className="flex flex-col px-4 md:px-10">
         <Nav sections={CLASS_SECTIONS} />
 
-        <Notice
-          content={notification.content}
-          updateDate={notification.updatedAt}
-        />
+        {notification && (
+          <Notice
+            content={notification.content}
+            updateDate={notification.updatedAt}
+          />
+        )}
         {/* 프로필 */}
         <div className="mb-10 mt-[1.81rem] flex w-full items-center justify-between">
           <Link
