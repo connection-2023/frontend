@@ -1,8 +1,11 @@
 import { cookies } from 'next/headers';
 import { PASSES_TAKE } from '@/constants/constants';
 import { searchPasses } from '@/lib/apis/serverApis/searchApis';
+import { transformSearchPasses } from '@/utils/apiDataProcessor';
 import NavComponent from './_components/NavComponent';
+import PassListView from './_components/PassListView';
 import SearchInput from '@/components/SearchInput/SearchInput';
+import { userPass } from '@/types/pass';
 
 const page = async ({
   searchParams,
@@ -15,7 +18,7 @@ const page = async ({
   const cookieStore = cookies();
   const user = cookieStore.get('userAccessToken')?.value;
 
-  console.log(searchParams);
+  let passList: userPass[] = [];
 
   const searchData = {
     take: PASSES_TAKE,
@@ -30,16 +33,17 @@ const page = async ({
   };
 
   try {
-    const test = await searchPasses(searchData, !!user);
-    console.log(test);
+    const passes = await searchPasses(searchData, !!user);
+
+    passList = transformSearchPasses(passes);
   } catch (error) {}
 
   return (
-    <section className="flex flex-col px-4 sm:px-9 xl:px-14">
-      <div className="my-4">
-        <SearchInput query="" />
-      </div>
-      <NavComponent />
+    <section className="mt-4 flex flex-col gap-4 px-4 sm:px-9 xl:px-14">
+      <SearchInput query={searchParams.query ?? ''} />
+
+      <NavComponent sortOption={searchData.sortOption} />
+      <PassListView passList={passList} />
     </section>
   );
 };
