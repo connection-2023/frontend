@@ -43,7 +43,7 @@ const page = async ({
       <SearchInput query={searchParams.query ?? ''} />
 
       <NavComponent sortOption={searchData.sortOption} />
-      <PassListView passList={passList} />
+      <PassListView passList={passList} searchData={searchData} />
     </main>
   );
 };
