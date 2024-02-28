@@ -1,12 +1,11 @@
 'use client';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
-import { NotFoundSVG, PassSVG } from '@/icons/svg';
+import { NotFoundSVG } from '@/icons/svg';
 import { getIssuedPassLists } from '@/lib/apis/passApis';
 import useCouponPassHook from '@/utils/useCouponPassHook';
-import ClassFilterSelect from './ClassFilterSelect';
-import Button from '@/components/Button/Button';
+import ClassFilterSelect from '@/components/Filter/ClassSelectFilter';
 import Pagination from '@/components/Pagination/Pagination';
 import InstructorPass from '@/components/Pass/InstructorPass';
 import Spinner from '@/components/Spinner/Spinner';
@@ -21,18 +20,15 @@ interface PassListViewProps {
   myLectureList: SelectClassType[];
   totalItemCount: number;
   passList: IpassData[];
-  couponCount: number;
-  selectPassHandler: (data: IpassData | null) => void;
 }
 
 const PassListView = ({
   myLectureList,
   totalItemCount: defaultItemCount,
   passList,
-  couponCount,
-  selectPassHandler,
 }: PassListViewProps) => {
   const [passLists, setPassLists] = useState(passList);
+  const router = useRouter();
 
   const onChangeItemList = ({ itemList, prevPage }: IonChangeItemList) => {
     if (prevPage) {
@@ -45,7 +41,6 @@ const PassListView = ({
   const getListFunctionHandler = async ({
     data,
     signal,
-    type,
   }: IgetListFunctionHandler) => {
     return await getIssuedPassLists(data, 'lecturer', signal);
   };
@@ -95,44 +90,6 @@ const PassListView = ({
 
   return (
     <>
-      <nav className="flex justify-between pb-2">
-        <div className="flex items-center gap-2 sm:gap-6">
-          <button
-            className={`flex text-xl font-bold sm:text-2xl ${
-              filterState.isInterested === 'PASS' && 'text-gray-500'
-            }`}
-            onClick={() =>
-              window.location.replace(
-                '/mypage/instructor/coupon-pass?state=coupon',
-              )
-            }
-          >
-            쿠폰({couponCount ?? 0})
-          </button>
-          <button
-            className={`text-xl font-bold sm:text-2xl ${
-              filterState.isInterested === 'COUPON' && 'text-gray-500'
-            }`}
-            disabled={true}
-          >
-            패스권({totalItemCount ?? 0})
-          </button>
-        </div>
-        <div className="w-[8rem]">
-          <Button>
-            <Link
-              href={{
-                pathname: '/mypage/instructor/coupon-pass/pass',
-              }}
-              className="flex"
-            >
-              <PassSVG className="mr-1 fill-sub-color1 group-active:fill-white" />
-              패스권 생성
-            </Link>
-          </Button>
-        </div>
-      </nav>
-
       <nav className="flex flex-wrap items-center gap-2 border-y border-solid border-gray-500 py-5">
         {options.map((option) => (
           <button key={option.id} className="flex items-center gap-1">
@@ -187,7 +144,9 @@ const PassListView = ({
                 ? lastItemElementRef
                 : undefined
             }
-            selectPassHandler={selectPassHandler}
+            selectPassHandler={() =>
+              router.push(`/mypage/instructor/pass/${pass.id}`)
+            }
           />
         ))}
       </div>

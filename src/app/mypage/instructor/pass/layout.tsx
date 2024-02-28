@@ -7,15 +7,15 @@ export const metadata: Metadata = {
 
 export default async function MyPageLayout({
   children,
-  managementModal,
+  managementPassModal,
 }: {
   children: React.ReactNode;
-  managementModal: React.ReactNode;
+  managementPassModal: React.ReactNode;
 }) {
   return (
     <>
       {children}
-      {managementModal}
+      {managementPassModal}
     </>
   );
 }
