@@ -3,6 +3,7 @@ import {
   IcreatePassReqData,
   IgetPassFunction,
   IresponsePassData,
+  passSituation,
 } from '@/types/pass';
 import { FetchError } from '@/types/types';
 
@@ -104,7 +105,9 @@ export const getPassForId = async (passId: number) => {
   }
 };
 
-export const getSalesStatusPass = async (passId: number) => {
+export const getSalesStatusPass = async (
+  passId: number,
+): Promise<passSituation[]> => {
   try {
     const response = await fetch(`/api/pass/sales?passId=${passId}`, {
       method: 'GET',
@@ -123,7 +126,7 @@ export const getSalesStatusPass = async (passId: number) => {
 
     const resData = await response.json();
 
-    return resData;
+    return resData.data?.passSituationList ?? [];
   } catch (error) {
     console.error('패스권 판매 현황조회 오류', error);
     throw error;

@@ -25,12 +25,33 @@ interface PassDetailProps {
 }
 
 const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
-  const [data, setData] = useState(dummyPassTableData);
   const initialized = useRef(false);
 
-  const { data: test, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['instructor', 'pass'],
-    queryFn: () => getSalesStatusPass(passInfo.id),
+    queryFn: async () => {
+      const passSituation = await getSalesStatusPass(passInfo.id);
+
+      if (passSituation.length === 0) {
+        return [];
+      }
+
+      return passSituation.flatMap((passInfo) => {
+        const { startAt, endAt, remainingUses, createdAt } = passInfo.userPass;
+
+        const data = {
+          ...passInfo,
+          classList:
+            passInfo.reservations?.map(({ lecture }) => lecture.title) ?? [],
+          count: remainingUses,
+          purchase_date: createdAt,
+          startAt,
+          endAt,
+        };
+
+        return data;
+      });
+    },
   });
 
   const pathname = usePathname();
@@ -76,13 +97,15 @@ const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
         header: '사용한 클래스',
         cell: ({ getValue }) => {
           const classList = getValue();
-          return (
+          return classList.length > 0 ? (
             <div className="flex items-center">
               <p className="truncate sm:max-w-[6rem] md:max-w-[14rem] lg:max-w-[22rem]">
                 {classList[0]}
               </p>
               <span>+{classList.length}</span>
             </div>
+          ) : (
+            <div>미사용</div>
           );
         },
       }),
@@ -104,42 +127,39 @@ const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
           );
         },
       }),
-      columnHelper.accessor('expiration_date', {
-        header: '만료/잔여기간',
-        cell: ({ getValue }) => {
-          const date = getValue();
+      columnHelper.accessor(
+        (d) => ({
+          startAt: d.startAt,
+          endAt: d.endAt,
+        }),
+        {
+          header: '만료/잔여기간',
+          cell: ({ getValue }) => {
+            const { startAt, endAt } = getValue();
 
-          const now = new Date();
-          const target = new Date(date);
-          const diff = target.getTime() - now.getTime();
-          const remainingDays = Math.ceil(diff / (24 * 60 * 60 * 1000));
+            if (startAt && endAt) {
+              const diffTime = Math.abs(endAt - startAt);
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-          return (
-            <div className="hidden gap-1 sm:flex">
-              {formatDate(date)}
-              <p>({remainingDays})일</p>
-            </div>
-          );
+              return (
+                <div className="hidden gap-1 sm:flex">
+                  {formatDate(endAt)}
+                  <p>({diffDays})일</p>
+                </div>
+              );
+            }
+            return <div>미사용</div>;
+          },
         },
-      }),
-      columnHelper.accessor('expiration_date_sm', {
-        header: '만료일',
-        cell: ({ getValue }) => {
-          const date = getValue();
-
-          return (
-            <div className="flex justify-center sm:hidden">
-              {formatDate(date)}
-            </div>
-          );
-        },
-      }),
+      ),
     ],
     [],
   );
 
+  const tableData = data || [];
+
   const table = useReactTable({
-    data,
+    data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -199,7 +219,7 @@ const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
           <div className="flex items-center whitespace-nowrap">
             <p className="font-semibold">총 판매량</p>
             <p className="ml-2 font-semibold sm:text-lg sm:text-main-color">
-              20매
+              {data?.length ?? 0}매
             </p>
             <div className="ml-4 flex items-center gap-1">
               <input
@@ -218,54 +238,63 @@ const PassDetail = ({ passInfo, selectPassHandler }: PassDetailProps) => {
 
           <select className="h-7 w-[5.75rem] border border-solid border-gray-500">
             <option value={10}>10개</option>
+            <option value={20}>20개</option>
+            <option value={30}>30개</option>
           </select>
         </div>
 
-        <table className="text-sm">
-          <thead className="whitespace-nowrap border-b border-solid border-gray-700">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header, index) => (
-                  <th
-                    key={header.id}
-                    className={`py-2 text-sm text-gray-300 sm:text-left ${
-                      (index === 1 || index === 4) && 'hidden sm:table-cell'
-                    } ${index === 0 && 'text-left'} ${
-                      index === 5 && 'table-cell sm:hidden'
-                    }`}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row, index) => (
-              <tr
-                key={row.id}
-                className="border-b border-solid border-gray-700"
-              >
-                {row.getVisibleCells().map((cell, index) => (
-                  <td
-                    key={cell.id}
-                    className={`${
-                      (index === 1 || index === 4) &&
-                      'hidden py-4 sm:table-cell'
-                    }`}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {isLoading && !data ? (
+          <div>기달려</div>
+        ) : (
+          <table className="text-sm">
+            <thead className="whitespace-nowrap border-b border-solid border-gray-700">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header, index) => (
+                    <th
+                      key={header.id}
+                      className={`py-2 text-sm text-gray-300 sm:text-left ${
+                        (index === 1 || index === 4) && 'hidden sm:table-cell'
+                      } ${index === 0 && 'text-left'} ${
+                        index === 5 && 'table-cell sm:hidden'
+                      }`}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row, index) => (
+                <tr
+                  key={row.id}
+                  className="border-b border-solid border-gray-700"
+                >
+                  {row.getVisibleCells().map((cell, index) => (
+                    <td
+                      key={cell.id}
+                      className={`${
+                        (index === 1 || index === 4) &&
+                        'hidden py-4 sm:table-cell'
+                      }`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </>
   );

@@ -60,14 +60,15 @@ export interface IcreatePassReqData {
 
 export interface IpassTable {
   user: {
+    id: number;
     nickname: string;
-    img: string;
+    userProfileImageUrl: string;
   };
   classList: string[];
   count: number;
   purchase_date: string;
-  expiration_date: string;
-  expiration_date_sm: string;
+  startAt: string;
+  endAt: string;
 }
 
 export interface searchPass {
@@ -109,4 +110,33 @@ export interface searchPassesParameters {
   sortOption: 'LATEST' | 'POPULAR' | 'LOWEST_PRICE';
   value?: string;
   searchAfter?: [number, number];
+}
+
+export interface passSituation {
+  user: {
+    id: number;
+    nickname: string;
+    userProfileImageUrl: string;
+  };
+  userPass: {
+    id: number;
+    remainingUses: number;
+    startAt: string;
+    endAt: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  reservations:
+    | {
+        id: number;
+        representative: string;
+        phoneNumber: string;
+        participants: number;
+        requests: string;
+        lecture: {
+          id: number;
+          title: string;
+        };
+      }[]
+    | null;
 }
