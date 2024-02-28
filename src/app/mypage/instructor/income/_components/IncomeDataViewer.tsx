@@ -1,5 +1,5 @@
 import { useQueries } from '@tanstack/react-query';
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, useRef, ChangeEvent } from 'react';
 import { MYPAGE_FILTER_OPTIONS } from '@/constants/constants';
 import { getMyLecture } from '@/lib/apis/classApi';
 import { getTotalIncome, getIncomeHistory } from '@/lib/apis/incomeApis';
@@ -31,7 +31,7 @@ const IncomeDataViewer = () => {
   );
   const [displayCount, setDisplayCount] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsId, setItemsId] = useState({
+  const itemsId = useRef({
     firstItemId: 0,
     lastItemId: 0,
   });
@@ -64,7 +64,7 @@ const IncomeDataViewer = () => {
             range,
             selectedOption,
             displayCount,
-            itemsId,
+            itemsId.current,
             selectedClass,
           ),
       },
@@ -73,14 +73,18 @@ const IncomeDataViewer = () => {
 
   useEffect(() => {
     if (incomeHistory && incomeHistory.lecturerPaymentList.length > 0) {
-      const { lecturerPaymentList } = incomeHistory;
+      const { totalItemCount, lecturerPaymentList } = incomeHistory;
 
-      setItemsId({
-        firstItemId: lecturerPaymentList[0].id,
-        lastItemId: lecturerPaymentList[lecturerPaymentList.length - 1].id,
-      });
+      if (totalItemCount > displayCount) {
+        const newIds = {
+          firstItemId: lecturerPaymentList[0].id,
+          lastItemId: lecturerPaymentList[lecturerPaymentList.length - 1].id,
+        };
+
+        itemsId.current = newIds;
+      }
     }
-  }, [incomeHistory]);
+  }, [displayCount, currentPage, incomeHistory]);
 
   if (!incomeHistory || historyLoading || !classList)
     return <IncomeDataViewerLoading />;
