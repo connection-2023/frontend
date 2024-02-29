@@ -1,10 +1,10 @@
 import { eachDayOfInterval, isSameDay } from 'date-fns';
 import dynamic from 'next/dynamic';
 import { useEffect, useId, useReducer, useMemo } from 'react';
+import { IDateTimeList } from '@/types/class';
 import { useClassScheduleStore } from '@/store';
 import { formatDateWithDay } from '@/utils/dateTimeUtils';
 import { specificDateReducer } from '@/utils/specificDateReducer';
-import { DateTimeList } from '@/types/class';
 
 const InputClassDates = dynamic(
   () => import('@/components/Calendar/SingleCalendar'),
@@ -18,50 +18,42 @@ const TimeList = dynamic(() => import('./TimeList'), {
 });
 
 interface SpecificDateProps {
-  onChange: (value: DateTimeList[]) => void;
-  defaultValue: DateTimeList[];
+  // eslint-disable-next-line no-unused-vars
+  onChange: (value: IDateTimeList[]) => void;
+  defaultValue: IDateTimeList[];
 }
 
 const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
-  const initialDates =
-    defaultValue.length && Object.keys(defaultValue[0]).includes('date')
-      ? defaultValue.map((value) => ({
-          date: new Date(value.date),
-          startDateTime: [...value.startDateTime],
-        }))
-      : [];
-
+  const initialDates = (() => {
+    if (defaultValue.length && Object.keys(defaultValue[0]).includes('date')) {
+      return defaultValue.map((value) => ({
+        date: new Date(value.date),
+        dateTime: [...value.dateTime],
+      }));
+    } else {
+      return [];
+    }
+  })();
   const initialState = {
-    selected: [...initialDates] as DateTimeList[],
+    selected: [...initialDates] as IDateTimeList[],
     selectableDates: [],
     selectedDate: null,
   };
-  const classRange = useClassScheduleStore((state) => state.classRange);
-  const setClassDates = useClassScheduleStore((state) => state.setFilteredDate);
-  const setClassSchedules = useClassScheduleStore(
-    (state) => state.setClassSchedules,
-  );
+  const { classRange, setFinalDate } = useClassScheduleStore();
   const [state, dispatch] = useReducer(specificDateReducer, initialState);
 
-  const updateState = () => {
-    const dates = state.selected.map((item) => item.date);
+  useEffect(() => {
     const classSchedules = state.selected.flatMap((schedule) => {
-      return schedule.startDateTime.map((time) => {
+      return schedule.dateTime.map((time) => {
         const date = new Date(schedule.date);
         const [hours, minutes] = time.split(':').map(Number);
         date.setHours(hours, minutes);
         return date;
       });
     });
-
-    setClassSchedules(classSchedules);
-    setClassDates(dates);
+    setFinalDate(classSchedules);
     onChange(state.selected);
-  };
-
-  useEffect(() => {
-    updateState();
-  }, []);
+  }, [state.selected.length]);
 
   useEffect(() => {
     if (classRange && classRange.from && classRange.to) {
@@ -91,8 +83,8 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
       const updatedItem = getUpdatedItem(selectedIndex);
 
       if (newStartTime !== undefined)
-        updatedItem.startDateTime[index] = newStartTime;
-      else updatedItem.startDateTime.push('');
+        updatedItem.dateTime[index] = newStartTime;
+      else updatedItem.dateTime.push('');
 
       dispatch({
         type: 'UPDATE_SELECTED',
@@ -103,7 +95,7 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
       if (state.selectedDate && newStartTime !== undefined) {
         const newItem = {
           date: state.selectedDate,
-          startDateTime: [newStartTime],
+          dateTime: [newStartTime],
         };
 
         dispatch({
@@ -112,7 +104,6 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
         });
       }
     }
-    updateState();
   };
 
   const handleStartTimeChange = (index: number, newStartTime: string) => {
@@ -139,9 +130,9 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
 
     if (selectedIndex !== -1) {
       const updatedItem = { ...state.selected[selectedIndex] };
-      updatedItem.startDateTime.splice(indexToRemove, 1);
+      updatedItem.dateTime.splice(indexToRemove, 1);
 
-      if (updatedItem.startDateTime.length === 0) {
+      if (updatedItem.dateTime.length === 0) {
         dispatch({ type: 'REMOVE_SELECTED', index: selectedIndex });
       } else {
         dispatch({
@@ -151,8 +142,6 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
         });
       }
     }
-
-    updateState();
   };
 
   const clearTimeSlot = () => {
@@ -163,8 +152,6 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
     if (selectedIndex !== -1) {
       dispatch({ type: 'REMOVE_SELECTED', index: selectedIndex });
     }
-
-    updateState();
   };
 
   const selectedItem = useMemo(() => {
@@ -181,9 +168,9 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
         *달력에서 날짜를 클릭 후 수업 시간을 추가해주세요.
       </p>
       {state.selectableDates && (
-        <div className="flex w-full justify-between">
+        <div className="flex w-full flex-col md:flex-row md:justify-between">
           {state.selectableDates && (
-            <div className="w-fit">
+            <div className="mx-auto w-fit">
               <InputClassDates
                 mode="specific"
                 clickableDates={state.selectableDates}
@@ -191,33 +178,35 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
               />
             </div>
           )}
-          {state.selectedDate && (
-            <div className="ml-2 flex flex-col">
-              {/* Time 리스트 위 */}
-              <div className="flex w-full">
-                {/* 선택 날짜 리스트 */}
-                <div className="flex w-[300px] flex-wrap gap-x-2 text-base font-bold">
-                  <span>
-                    {state.selectedDate &&
-                      formatDateWithDay(state.selectedDate)}
-                  </span>
+          <div className="mt-2 flex w-[352px] flex-col md:ml-2 md:mt-0">
+            {state.selectedDate && (
+              <>
+                {/* Time 리스트 위 */}
+                <div className="flex w-full justify-between">
+                  {/* 선택 날짜 리스트 */}
+                  <div className="flex w-[300px] flex-wrap gap-x-2 text-base font-bold">
+                    <span>
+                      {state.selectedDate &&
+                        formatDateWithDay(state.selectedDate)}
+                    </span>
+                  </div>
+                  <button
+                    onClick={clearTimeSlot}
+                    className="flex items-start whitespace-nowrap text-sm font-semibold text-gray-500 underline"
+                  >
+                    전체 삭제
+                  </button>
                 </div>
-                <button
-                  onClick={clearTimeSlot}
-                  className="flex items-start whitespace-nowrap text-sm font-semibold text-gray-500 underline"
-                >
-                  전체 삭제
-                </button>
-              </div>
-              {/* 시간 리스트 */}
-              <TimeSlotManager
-                selectedItem={selectedItem}
-                handleStartTimeChange={handleStartTimeChange}
-                addTimeSlot={addTimeSlot}
-                removeTimeSlot={removeTimeSlot}
-              />
-            </div>
-          )}
+                {/* 시간 리스트 */}
+                <TimeSlotManager
+                  selectedItem={selectedItem}
+                  handleStartTimeChange={handleStartTimeChange}
+                  addTimeSlot={addTimeSlot}
+                  removeTimeSlot={removeTimeSlot}
+                />
+              </>
+            )}
+          </div>
         </div>
       )}
     </>
@@ -227,9 +216,11 @@ const SpecificDate = ({ defaultValue, onChange }: SpecificDateProps) => {
 export default SpecificDate;
 
 interface TimeSlotManagerProps {
-  selectedItem?: DateTimeList | null;
+  selectedItem?: IDateTimeList | null;
+  // eslint-disable-next-line no-unused-vars
   handleStartTimeChange: (index: number, newStartTime: string) => void;
   addTimeSlot: () => void;
+  // eslint-disable-next-line no-unused-vars
   removeTimeSlot: (indexToRemove: number) => void;
 }
 
@@ -244,7 +235,7 @@ const TimeSlotManager = ({
     <>
       <ul className="mt-2 flex w-auto flex-col gap-2">
         {selectedItem ? (
-          selectedItem.startDateTime.map((startTime, index) => (
+          selectedItem.dateTime.map((startTime, index) => (
             <TimeList
               key={index}
               startTime={startTime}
