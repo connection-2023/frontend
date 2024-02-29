@@ -8,9 +8,9 @@ import { ChatSVG } from '@/icons/svg';
 import { getScheduleRegisterLists } from '@/lib/apis/classApis';
 import { patchMemberMemo } from '@/lib/apis/instructorApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
-import Spinner from '@/components/Loading/Spinner';
 import Modal from '@/components/Modal/Modal';
 import UserProfileMenu from '@/components/Profile/UserProfileMenu';
+import Spinner from '@/components/Spinner/Spinner';
 import { IProcessedSchedules, IScheduleLearnerList } from '@/types/class';
 
 interface EnrollmentModalProps {
@@ -68,7 +68,7 @@ const EnrollmentModal = ({
         </div>
 
         {isLoading ? (
-          <div className="mb-auto mt-5 flex h-fit items-center justify-center">
+          <div className="flex h-[20rem] items-center justify-center">
             <Spinner />
           </div>
         ) : (
