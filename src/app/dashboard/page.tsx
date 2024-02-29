@@ -1,93 +1,78 @@
-'use client';
-import { useQuery } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
-import { useState } from 'react';
-import { getMonthlyClassPlan } from '@/lib/apis/instructorApi';
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { RecentSVG, ReviewSVG, ArrowUpSVG } from '@/icons/svg';
+import { format12HourTime } from '@/utils/dateTimeUtils';
+import DashboardCalendar from './_components/DashboardCalendar';
 import RecentApply from './_components/RecentApply';
 import RecentReview from './_components/RecentReview';
 import Banner from '../_components/Banner';
-import Sidebar from '../_components/Sidebar';
-import Spinner from '@/components/Loading/Spinner';
+import Spinner from '@/components/Spinner/Spinner';
 
-const DashboardCalendar = dynamic(
-  () => import('@/components/Calendar/SingleCalendar'),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-60 w-full items-center justify-center">
-        <Spinner />
-      </div>
-    ),
-  },
-);
-
-const DayCalendar = dynamic(
-  () => import('../../components/Calendar/DayCalendar'),
-  {
-    ssr: false,
-  },
-);
 const DashboardPage = () => {
-  const [date, setDate] = useState(new Date());
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['instructor', 'monthly-Plan'],
-    queryFn: () => getMonthlyClassPlan(date.getFullYear(), date.getMonth() + 1),
-    refetchOnWindowFocus: 'always',
-  });
-
-  const clickableDates = data?.map(
-    (schedule) => new Date(schedule.startDateTime),
-  );
-
-  const handleDateChange = (newDate: Date | undefined) => {
-    if (newDate) {
-      setDate(newDate);
-    }
-  };
-
   return (
     <>
-      <div className="mb-4 mt-4 hidden w-full flex-col overflow-hidden bg-white py-4 md:col-span-2 md:row-span-3 md:rounded-lg md:shadow-float lg:col-span-1 lg:row-span-2 lg:mb-0 xl:flex">
-        <div className="mx-4 mb-4 flex overflow-hidden md:hidden lg:block lg:shadow-float xl:rounded-lg">
-          <DashboardCalendar
-            mode="dashboard"
-            clickableDates={[...new Set(clickableDates)]}
-            handleClickDate={handleDateChange}
-          />
-        </div>
+      <DashboardCalendar />
 
-        <div className="hidden md:order-1 md:block">
-          <Sidebar view="dashboard" />
-        </div>
-      </div>
-      {/* 태블릿 뷰에서만 */}
-      <div className="col-span-1 flex rounded-lg bg-white px-4 md:order-3 md:block md:shadow-float xl:col-span-3 xl:hidden">
-        <DashboardCalendar
-          mode="dashboard"
-          clickableDates={[...new Set(clickableDates)]}
-          handleClickDate={handleDateChange}
-        />
-      </div>
       <div className="order-first h-[13.5rem] overflow-hidden md:order-2 md:col-span-2 md:mt-4 md:rounded-lg lg:order-none xl:col-span-3">
         <Banner />
       </div>
 
-      <div className="col-span-1 mb-4 mt-4 box-border p-3.5 md:order-4 md:my-0 md:rounded-lg md:bg-white md:p-0 md:shadow-float lg:mb-0 lg:px-0">
-        {/* <div className="flex h-full w-full items-center justify-center">
-          <Spinner />
-        </div> */}
+      <div className="col-span-1 mb-4 w-full px-4 md:order-5 md:mb-0 md:px-0">
+        <section className="min-h-44 flex max-h-[40rem] flex-col divide-y divide-solid divide-gray-700 rounded-lg bg-white shadow-float md:h-full">
+          <h1 className="flex h-12 w-full items-center justify-between px-3.5 text-base font-bold text-gray-100">
+            <span className="flex items-center gap-1.5">
+              <RecentSVG width="24" height="24" className="fill-sub-color1" />
+              최근 신청한 수강생
+            </span>
 
-        <DayCalendar scheduleData={data || []} />
+            <span className="text-sm font-medium text-gray-500">
+              {`${format12HourTime(new Date())} 업데이트`}
+            </span>
+          </h1>
+
+          <Suspense
+            fallback={
+              <div className="flex h-full w-full items-center justify-center">
+                <Spinner />
+              </div>
+            }
+          >
+            <RecentApply />
+          </Suspense>
+        </section>
       </div>
 
-      <div className="col-span-1 mb-4 w-full px-4 md:order-5 md:px-0 lg:mb-0 lg:px-0">
-        <RecentApply />
-        {/* <div className="flex h-full w-full items-center justify-center shadow-floatrounded-lg bg-white">
-          <Spinner />
-        </div> */}
-      </div>
-      <div className="col-span-1 w-full px-4 pr-4 md:order-6 md:px-0 lg:px-0">
-        <RecentReview />
+      <div className="col-span-1 w-full px-4 pr-4 md:order-6 md:px-0">
+        <section className="min-h-44 flex h-full flex-col divide-y divide-solid divide-gray-700 rounded-lg bg-white shadow-float">
+          <h1 className="flex h-12 w-full items-center justify-between px-3.5 text-base font-bold text-gray-100">
+            <span className="flex items-center gap-1.5">
+              <ReviewSVG width="22" height="22" className="fill-sub-color1" />
+              클래스 리뷰
+            </span>
+
+            <Link
+              href="/mypage/instructor/review"
+              className="group flex cursor-pointer items-center text-sm font-medium text-gray-500 hover:text-black"
+            >
+              더 보러가기
+              <ArrowUpSVG
+                width="24"
+                height="24"
+                className="rotate-90 fill-gray-500 group-[:hover]:fill-black"
+              />
+            </Link>
+          </h1>
+
+          <Suspense
+            fallback={
+              <div className="flex h-full w-full items-center justify-center">
+                <Spinner />
+              </div>
+            }
+          >
+            <RecentReview />
+          </Suspense>
+        </section>
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import { IDateTime } from '@/types/class';
 interface ReservationItemProps extends IDateTime {
   countUpdate: (newVal: number) => void;
   onRemove: () => void;
+  borderColor?: string;
 }
 
 const ReservationItem = ({
@@ -13,6 +14,7 @@ const ReservationItem = ({
   count,
   onRemove,
   countUpdate,
+  borderColor = 'border-sub-color1',
 }: ReservationItemProps) => {
   const remainSpace = space.total - space.current;
   const onClickUp = () => {
@@ -28,7 +30,7 @@ const ReservationItem = ({
   };
 
   return (
-    <div className="w-full border-y border-solid border-sub-color1">
+    <div className={`w-full border-y border-solid ${borderColor}`}>
       <div className="mt-2 flex justify-between text-sm">
         <p>{dateTime}</p>
         <ClearSVG

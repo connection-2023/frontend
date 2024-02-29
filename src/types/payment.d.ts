@@ -131,7 +131,6 @@ export interface PaymentCoupon {
   stackableCouponId: null | number;
 }
 
-// Income
 
 export interface ILecturerPayment {
   id: number;
@@ -152,4 +151,10 @@ export interface ILecturerPayment {
 export interface IIncomeHistoryResponse {
   totalItemCount: number;
   lecturerPaymentList: ILecturerPayment[];
+}
+
+export interface IRefundRequest {
+  cancelReason: string;
+  refundAmount: number;
+  userBankAccountId?: number;
 }

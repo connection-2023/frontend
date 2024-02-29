@@ -10,8 +10,10 @@ import {
 } from '@/utils/dateTimeUtils';
 
 const ApplyCompletePage = async ({
+  params,
   searchParams,
 }: {
+  params: { id: string };
   searchParams: { [key: string]: string };
 }) => {
   const { orderId, paymentKey, amount } = searchParams;
@@ -148,7 +150,7 @@ const ApplyCompletePage = async ({
           결제내역 보기
         </Link>
         <Link
-          href={`/class/${searchParams.id}`}
+          href={`/class/${params.id}`}
           className="flex w-full cursor-pointer items-center justify-center rounded-md bg-black text-white"
         >
           확인

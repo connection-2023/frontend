@@ -38,7 +38,7 @@ const ResponsiveScheduleView = ({
     [selectedEvent],
   );
 
-  return schedules.length ? (
+  return (
     <ul className="flex max-h-40 flex-col gap-2 overflow-y-auto">
       {schedules.map((schedule) => (
         <li key={nanoid()} className="flex text-sm">
@@ -52,15 +52,11 @@ const ResponsiveScheduleView = ({
           </p>
           <Link href={`/class/${schedule.lectureId}`} className="font-medium">
             {schedule.title}
-            <span className="text-gray-300">{` (${schedule.numberOfParticipants}/${schedule.maxCapacity})`}</span>
+            {/* <span className="text-gray-300">{` (${schedule.numberOfParticipants}/${schedule.maxCapacity})`}</span> */}
           </Link>
         </li>
       ))}
     </ul>
-  ) : (
-    <p className="flex h-40 w-full items-center justify-center">
-      클래스 일정이 없습니다.
-    </p>
   );
 };
 

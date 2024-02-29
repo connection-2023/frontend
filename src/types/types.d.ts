@@ -44,6 +44,7 @@ export interface IFullCalendarEvent {
   maxCapacity: number;
   isGroup: boolean;
   lectureId: number;
+  lectureMethod?: string;
 }
 
 export interface ErrorMessage {
