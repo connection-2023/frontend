@@ -7,6 +7,7 @@ import { NaverSVG } from '@/icons/svg';
 const NaverAuth = ({
   onSuccess,
 }: {
+  // eslint-disable-next-line no-unused-vars
   onSuccess: (idToken: string) => Promise<void>;
 }) => {
   const router = useRouter();

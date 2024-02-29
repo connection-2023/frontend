@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { KaKaoTalkSVG } from '@/icons/svg';
 import { ExtendedWindow, KakaoAuthProps } from '@/types/auth';
 
@@ -10,8 +10,6 @@ const KakaoAuth = ({
   onSuccess,
   onFail,
 }: KakaoAuthProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
@@ -39,7 +37,6 @@ const KakaoAuth = ({
     kakao.Auth[method]({
       throughTalk,
       success: function (response) {
-        setIsLoggedIn(true);
         onSuccess({ response });
       },
       fail: onFail,

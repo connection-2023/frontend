@@ -15,6 +15,7 @@ interface UserSetupProps {
   userEmail: string;
   signUpType: SignInResponse['signUpType'];
   userRegistrationForm: IRegisterForm | undefined;
+  // eslint-disable-next-line no-unused-vars
   updateUserRegistrationData: (data: IRegisterForm) => void;
 }
 
