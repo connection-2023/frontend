@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { NotFoundSVG } from '@/icons/svg';
@@ -29,7 +28,6 @@ const CouponView = ({
   totalItemCount: defaultItemCount,
   couponList,
 }: CouponViewProps) => {
-  const router = useRouter();
   const [userClassFilterView, setUserClassFilterView] = useState(false);
   const [couponLists, setCouponLists] = useState(couponList);
   const [refreshBtnView, setRefreshBtnView] = useState(false);
@@ -114,28 +112,7 @@ const CouponView = ({
   ];
 
   return (
-    <section className="z-0 col-start-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
-      <nav className="flex justify-between pb-2">
-        <div className="flex items-center gap-2 sm:gap-6">
-          <button
-            className={`flex text-xl font-bold sm:text-2xl ${
-              filterState.isInterested === 'PASS' && 'text-gray-500'
-            }`}
-            onClick={() => router.push('/mypage/user/coupon')}
-          >
-            쿠폰({totalItemCount ?? 0})
-          </button>
-          <button
-            className={`text-xl font-bold sm:text-2xl ${
-              filterState.isInterested === 'COUPON' && 'text-gray-500'
-            }`}
-            onClick={() => router.push('/mypage/user/pass')}
-          >
-            패스권
-          </button>
-        </div>
-      </nav>
-
+    <>
       <nav className="flex flex-wrap items-center gap-2 border-y border-solid border-gray-500 py-5">
         {options.map((option) => (
           <button key={option.id} className="flex items-center gap-1">
@@ -223,7 +200,7 @@ const CouponView = ({
           }이 없습니다!`}</p>
         </div>
       )}
-    </section>
+    </>
   );
 };
 

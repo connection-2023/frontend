@@ -65,7 +65,7 @@ export const getInstructorLinks = (mode: 'more' | 'mypage') => {
       ],
     },
     {
-      path: '/mypage/instructor/coupon-pass?state=coupon',
+      path: '/mypage/instructor/coupon',
       text: '패스권/쿠폰',
       icon: <CouponSVG width="21" height="21" className={style.FILL} />,
     },

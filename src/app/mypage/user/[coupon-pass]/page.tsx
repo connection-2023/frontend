@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { getCouponList } from '@/lib/apis/serverApis/couponApis';
@@ -14,29 +15,51 @@ const CouponPassPage = async ({
     redirect('/404');
   }
 
-  if (params['coupon-pass'] === 'coupon') {
-    let myClassListsOption;
-    let totalItemCount = 0;
-    let passItemCount = 0;
-    let couponList: couponGET[] = [];
+  let myClassListsOption;
+  let totalItemCount = 0;
+  let passItemCount = 0;
+  let couponList: couponGET[] = [];
 
-    const couponInfo = await getCouponInfo();
+  const couponInfo = await getCouponInfo();
 
-    myClassListsOption = couponInfo?.myClassListsOption ?? [];
-    totalItemCount = couponInfo?.totalItemCount ?? 0;
-    passItemCount = couponInfo?.passItemCount ?? 0;
-    couponList = couponInfo?.couponList ?? [];
+  myClassListsOption = couponInfo?.myClassListsOption ?? [];
+  totalItemCount = couponInfo?.totalItemCount ?? 0;
+  passItemCount = couponInfo?.passItemCount ?? 0;
+  couponList = couponInfo?.couponList ?? [];
 
-    return (
-      <CouponView
-        myLectureList={myClassListsOption ?? []}
-        couponList={couponList ?? []}
-        totalItemCount={totalItemCount}
-      />
-    );
-  }
-
-  return <div>패스권</div>;
+  return (
+    <section className="z-0 col-start-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
+      <nav className="flex justify-between pb-2">
+        <div className="flex items-center gap-2 sm:gap-6">
+          <Link
+            className={`flex text-xl font-bold sm:text-2xl ${
+              params['coupon-pass'] === 'pass' && 'text-gray-500'
+            }`}
+            href="/mypage/user/coupon"
+          >
+            쿠폰({totalItemCount ?? 0})
+          </Link>
+          <Link
+            className={`text-xl font-bold sm:text-2xl ${
+              params['coupon-pass'] === 'coupon' && 'text-gray-500'
+            }`}
+            href="/mypage/user/pass"
+          >
+            패스권({passItemCount ?? 0})
+          </Link>
+        </div>
+      </nav>
+      {params['coupon-pass'] === 'coupon' ? (
+        <CouponView
+          myLectureList={myClassListsOption ?? []}
+          couponList={couponList ?? []}
+          totalItemCount={totalItemCount}
+        />
+      ) : (
+        <div>sss</div>
+      )}
+    </section>
+  );
 };
 
 export default CouponPassPage;
