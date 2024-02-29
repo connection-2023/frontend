@@ -2,6 +2,7 @@ import { isNaN } from 'lodash';
 import { redirect } from 'next/navigation';
 import { getSalesStatusPass } from '@/lib/apis/serverApis/passApis';
 import PassDetail from './_components/PassDetail';
+import PassInfo from './_components/PassInfo';
 
 const PassDetailPage = async ({
   params,
@@ -32,7 +33,15 @@ const PassDetailPage = async ({
     return data;
   });
 
-  return <PassDetail passSituation={passSituation} />;
+  return (
+    <section className="z-0 flex w-full flex-col px-3 sm:px-6 md:px-9 xl:px-0">
+      <div className="z-0 flex w-full flex-col rounded-lg bg-white shadow-float">
+        <PassInfo id={passId} />
+        <hr className="h-2 bg-sub-color1-transparent" />
+        <PassDetail passSituation={passSituation} />
+      </div>
+    </section>
+  );
 };
 
 export default PassDetailPage;

@@ -2,6 +2,7 @@ import { IgetFunction } from '@/types/coupon';
 import {
   IcreatePassReqData,
   IgetPassFunction,
+  IpassData,
   IresponsePassData,
   passSituation,
 } from '@/types/pass';
@@ -79,7 +80,7 @@ export const createNewPass = async (data: IcreatePassReqData) => {
   }
 };
 
-export const getPassForId = async (passId: number) => {
+export const getPassForId = async (passId: number): Promise<IpassData> => {
   try {
     const response = await fetch(`/api/pass/get-id?passId=${passId}`, {
       method: 'GET',
@@ -98,7 +99,7 @@ export const getPassForId = async (passId: number) => {
 
     const resData = await response.json();
 
-    return resData;
+    return resData.data.myPass;
   } catch (error) {
     console.error('패스권 조회 오류', error);
     throw error;
