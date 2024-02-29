@@ -3,6 +3,7 @@ import {
   IPassInfoForIdData,
   IgetPassFunction,
   IresponsePassData,
+  passSituation,
 } from '@/types/pass';
 import { FetchError } from '@/types/types';
 
@@ -112,5 +113,41 @@ export const getPassInfoForId = async (
     return resData.data.pass;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const getSalesStatusPass = async (
+  passId: number,
+): Promise<passSituation[]> => {
+  try {
+    const cookieStore = cookies();
+    const authorization = cookieStore.get('lecturerAccessToken')?.value;
+
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${authorization}`,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      `${END_POINT}/lecturer-payments/passes/${passId}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers,
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw new Error(`패스권 조회 오류: ${error.status} ${error}`);
+    }
+    const resData = await response.json();
+
+    return resData.data?.passSituationList ?? [];
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

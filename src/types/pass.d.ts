@@ -66,7 +66,7 @@ export interface IpassTable {
   };
   classList: string[];
   count: number;
-  purchase_date: string;
+  purchaseDate: string;
   startAt: string;
   endAt: string;
 }

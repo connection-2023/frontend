@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { NotFoundSVG } from '@/icons/svg';
 import { getIssuedPassLists } from '@/lib/apis/passApis';
+import { usePassSelectStore } from '@/store/passSelectStore';
 import useCouponPassHook from '@/utils/useCouponPassHook';
 import ClassFilterSelect from '@/components/Filter/ClassSelectFilter';
 import Pagination from '@/components/Pagination/Pagination';
@@ -29,6 +30,10 @@ const PassListView = ({
 }: PassListViewProps) => {
   const [passLists, setPassLists] = useState(passList);
   const router = useRouter();
+
+  const { setpassInfo } = usePassSelectStore((state) => ({
+    setpassInfo: state.setpassInfo,
+  }));
 
   const onChangeItemList = ({ itemList, prevPage }: IonChangeItemList) => {
     if (prevPage) {
@@ -144,9 +149,10 @@ const PassListView = ({
                 ? lastItemElementRef
                 : undefined
             }
-            selectPassHandler={() =>
-              router.push(`/mypage/instructor/pass/${pass.id}`)
-            }
+            selectPassHandler={() => {
+              setpassInfo(pass);
+              router.push(`/mypage/instructor/pass/${pass.id}`);
+            }}
           />
         ))}
       </div>
