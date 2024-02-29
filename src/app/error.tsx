@@ -18,7 +18,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="mt-24 flex h-fit flex-col items-center justify-center">
+    <main className="flex h-fit flex-1 flex-col items-center justify-center">
       <figure className="mx-auto max-w-[9.25rem]">
         <Image
           src={errorImg}
@@ -55,6 +55,6 @@ export default function Error({
           재시도
         </button>
       </div>
-    </div>
+    </main>
   );
 }

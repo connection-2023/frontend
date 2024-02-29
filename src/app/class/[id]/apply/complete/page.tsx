@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { IPaymentConfirmRequest } from '@/types/payment';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
 import { patchPaymentConfirm } from '@/lib/apis/serverApis/paymentsApis';
 import {
@@ -8,6 +7,7 @@ import {
   formatFullDateTime,
   formatDateTimeNoSec,
 } from '@/utils/dateTimeUtils';
+import { IPaymentConfirmRequest } from '@/types/payment';
 
 const ApplyCompletePage = async ({
   params,
@@ -113,7 +113,7 @@ const ApplyCompletePage = async ({
     : [...basicPaymentInfo, ...paymentsInfo];
 
   return (
-    <div className="flex w-full flex-col items-center whitespace-nowrap">
+    <main className="flex w-full flex-1 mx-auto max-w-[40rem] flex-col items-center whitespace-nowrap">
       <ApplySuccessSVG
         className={`mb-5 mt-6 ${
           isBankTransfer ? 'fill-gray-900' : 'fill-main-color'
@@ -156,7 +156,7 @@ const ApplyCompletePage = async ({
           확인
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

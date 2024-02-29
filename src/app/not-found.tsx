@@ -4,8 +4,8 @@ import Link from 'next/link';
 import NotFoundImg from '@/images/NotFound.png';
 
 const NotFound = () => (
-  <div className="flex flex-col items-center px-4">
-    <div className="block h-fit w-4/5 max-w-[377px] sm:w-3/5">
+  <main className="flex flex-1 flex-col items-center justify-center px-4">
+    <figure className="block h-fit w-4/5 max-w-[377px] sm:w-3/5">
       <Image
         src={NotFoundImg}
         width={0}
@@ -13,13 +13,13 @@ const NotFound = () => (
         sizes="100vw"
         priority={true}
         alt="404 이미지"
-        className="mt-[5.5rem] h-auto w-full"
+        className="h-auto w-full"
       />
-    </div>
+    </figure>
 
-    <h2 className="mb-5 text-lg font-extrabold sm:text-2xl">
+    <h1 className="mb-5 text-lg font-extrabold sm:text-2xl">
       찾을 수 없는 페이지를 요청하셨습니다.
-    </h2>
+    </h1>
 
     <p className="mb-12 whitespace-pre-wrap break-keep text-center text-sm font-medium sm:text-base">
       찾으려는 페이지의 주소가 잘못 입력되었거나,
@@ -35,7 +35,7 @@ const NotFound = () => (
     >
       홈으로 가기
     </Link>
-  </div>
+  </main>
 );
 
 export default NotFound;

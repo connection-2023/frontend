@@ -12,7 +12,7 @@ const MorePage = () => {
   const isUser = lecturer === undefined;
 
   return (
-    <div>
+    <main>
       <UserProfile />
 
       <ul className="flex flex-col divide-y divide-solid divide-gray-500 px-4 text-lg font-medium text-black">
@@ -46,7 +46,7 @@ const MorePage = () => {
             ),
         )}
       </ul>
-    </div>
+    </main>
   );
 };
 

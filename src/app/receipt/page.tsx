@@ -1,7 +1,8 @@
 import { Fragment } from 'react';
+import { ISSUER_CODE } from '@/constants/constants';
 import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
 import { formatFullDateTime } from '@/utils/dateTimeUtils';
-import { ISSUER_CODE } from '@/constants/constants';
+
 const ReceiptPage = async ({
   searchParams,
 }: {
@@ -76,7 +77,7 @@ const ReceiptPage = async ({
   const receiptDetails = [...paymentDetails, couponDetails];
 
   return (
-    <div className="relative mx-auto box-border flex h-[669px] w-[388px] flex-col items-center bg-checkout-receipt px-[2.13rem] py-[3.5rem] leading-normal">
+    <main className="relative m-auto box-border flex h-[669px] w-[388px] flex-col items-center bg-checkout-receipt px-[2.13rem] py-[3.5rem] leading-normal">
       <h1 className="mb-1 text-lg font-semibold">Connection</h1>
       <p className="text-sm font-semibold text-gray-300">{orderId}</p>
       <hr className="my-4 w-full border-main-color" />
@@ -105,7 +106,7 @@ const ReceiptPage = async ({
       <button className="h-8 w-full rounded-md border border-solid border-gray-700 text-sm font-medium">
         결제취소
       </button>
-    </div>
+    </main>
   );
 };
 

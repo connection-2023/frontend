@@ -50,7 +50,7 @@ const ControlOptions = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="flex h-10 w-10 items-center justify-center rounded-full shadow-float backdrop-blur-sm"
+      className="fixed bottom-24 right-8 flex h-10 w-10 items-center justify-center rounded-full shadow-float backdrop-blur-sm"
       aria-label="위로가기"
     >
       <ScrollTopSVG />

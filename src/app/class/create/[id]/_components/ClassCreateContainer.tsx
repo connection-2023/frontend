@@ -4,11 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import ClassCreate from './ClassCreate';
-import ClassCreateNav from './ClassCreateNav';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { classCreateData } from '@/types/class';
-import { ErrorMessage, FetchError } from '@/types/types';
 import {
   BasicCalendarSVG,
   EditSVG,
@@ -24,6 +19,11 @@ import {
   classOutputDataProcess,
   formToClassDataProcess,
 } from '@/utils/apiDataProcessor';
+import ClassCreate from './ClassCreate';
+import ClassCreateNav from './ClassCreateNav';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { classCreateData } from '@/types/class';
+import { ErrorMessage, FetchError } from '@/types/types';
 
 const ClassCategory = dynamic(() => import('./ClassCategory'));
 
@@ -251,7 +251,7 @@ const ClassCreateContainer = ({
   );
 
   return (
-    <main className="mx-auto max-w-[1440px] px-4 sm:px-[2.38rem]">
+    <main className="mx-auto flex-1 px-4 sm:px-[2.38rem]">
       <h1 className="my-4 flex w-full justify-center text-lg font-bold sm:text-2xl">
         클래스 등록
       </h1>

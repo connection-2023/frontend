@@ -151,7 +151,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
   }
 
   return (
-    <section className="flex flex-col">
+    <main className="flex flex-1 flex-col">
       <div className="my-4 px-4 sm:px-9 xl:px-14">
         <SearchInput query={searchData.value ?? ''} />
       </div>
@@ -160,7 +160,7 @@ const classPage = async ({ searchParams }: { searchParams: SearchParams }) => {
       <ClassListView searchData={searchData} classList={classList}>
         <Filters type="class" filterOption={filterOptions} />
       </ClassListView>
-    </section>
+    </main>
   );
 };
 
