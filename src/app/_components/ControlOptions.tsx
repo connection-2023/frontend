@@ -20,6 +20,16 @@ const ControlOptions = () => {
     });
   };
 
+  const isButtonRendered = (() => {
+    const classDetailPattern = /^\/class\/[^\/]+$/;
+    const instructorDetailPattern = /^\/instructor\/[^\/]+$/;
+
+    return (
+      classDetailPattern.test(location.pathname) ||
+      instructorDetailPattern.test(location.pathname)
+    );
+  })();
+
   useEffect(() => {
     if (!pluginKey) return;
 
@@ -51,15 +61,15 @@ const ControlOptions = () => {
     }
   }, [userInfo, pathname]);
 
-  return (
+  return isButtonRendered ? (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-24 right-8 flex h-10 w-10 items-center justify-center rounded-full shadow-float backdrop-blur-sm"
+      className="fixed bottom-24 right-12 flex h-10 w-10 items-center justify-center rounded-full shadow-float backdrop-blur-sm"
       aria-label="위로가기"
     >
       <ScrollTopSVG />
     </button>
-  );
+  ) : null;
 };
 
 export default ControlOptions;
