@@ -13,10 +13,10 @@ const AuthLayout = ({
   modal: React.ReactNode;
 }) => {
   return (
-    <section>
+    <div>
       {children}
       {modal}
-    </section>
+    </div>
   );
 };
 
