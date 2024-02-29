@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,14 +14,16 @@ import {
 import { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { ArrowUpSVG } from '@/icons/svg';
-import {
-  options,
-  dataByMonth,
-  dataByDay,
-  chartPlugins,
-} from '@/utils/chartUtils';
+import { getIncomeStatics } from '@/lib/apis/incomeApis';
 import AccountInfo from './AccountInfo';
+import IncomeOverviewLoading from './Loading/IncomeOverviewLoading';
 import PaymentRange from './PaymentRange';
+import {
+  getMonthlyData,
+  getDailyData,
+  options,
+  chartPlugins,
+} from '../_lib/chartUtils';
 
 ChartJS.register(
   CategoryScale,
@@ -45,7 +48,17 @@ const IncomeOverview = ({
   handlePrev,
   handleApply,
 }: IncomeOverviewProps) => {
-  const [chartView, setChartView] = useState('month');
+  const [chartView, setChartView] = useState<'MONTHLY' | 'DAILY'>('MONTHLY');
+  const { data, isLoading } = useQuery({
+    queryKey: ['stat', chartView],
+    queryFn: () => getIncomeStatics(chartView),
+  });
+
+  if (!data || isLoading || data instanceof Error)
+    return <IncomeOverviewLoading />;
+
+  const chartData =
+    chartView === 'MONTHLY' ? getMonthlyData(data) : getDailyData(data);
 
   return (
     <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-[2fr,1fr]">
@@ -67,27 +80,27 @@ const IncomeOverview = ({
           <div className="border-box flex h-full w-full flex-col rounded-b-md bg-white px-9 pt-4">
             <div className="mb-2 flex gap-3 text-sm text-gray-500">
               <button
-                onClick={() => setChartView('month')}
-                className={`${chartView === 'month' ? 'text-black' : ''}`}
+                onClick={() => setChartView('MONTHLY')}
+                className={`${chartView === 'MONTHLY' ? 'text-black' : ''}`}
               >
                 월별
               </button>
               <button
-                onClick={() => setChartView('day')}
-                className={`${chartView === 'month' ? '' : 'text-black'}`}
+                onClick={() => setChartView('DAILY')}
+                className={`${chartView === 'MONTHLY' ? '' : 'text-black'}`}
               >
                 일별
               </button>
             </div>
-            {chartView === 'month' ? (
+            {chartView === 'MONTHLY' ? (
               <div>
-                <Bar options={options} data={dataByMonth} />
+                <Bar options={options} data={chartData} />
               </div>
             ) : (
               <div>
                 <Line
                   options={options}
-                  data={dataByDay}
+                  data={chartData}
                   plugins={chartPlugins}
                 />
               </div>
