@@ -12,7 +12,10 @@ import {
   postSingleImage,
 } from '@/lib/apis/imageApi';
 import { formatLocationToString } from '@/utils/parseUtils';
-import { calculateFinalDates } from './parseUtils';
+import {
+  calculateRegularFinalClass,
+  calculateFinalDates,
+} from '@/utils/scheduleDateUtils';
 import { instructorProfile, userProfile, profileInfo } from '@/types/auth';
 import {
   IprocessedDraft,
@@ -22,7 +25,6 @@ import {
   searchClass,
   searchBestClassData,
   IGetClassDraft,
-  IUpdateClassDraft,
   classProccessData,
 } from '@/types/class';
 import {
@@ -276,10 +278,7 @@ export const classOutputDataProcess = async (
   }
 };
 
-export const classCreate = async (
-  id: string,
-  finalSchedule: Date[] | undefined,
-) => {
+export const classCreate = async (id: string) => {
   const { location, temporaryLecture, schedules } = await getClassDraft(id);
   const {
     temporaryLectureToRegion,
@@ -305,18 +304,53 @@ export const classCreate = async (
     temporaryLectureCouponTarget,
   } = temporaryLecture;
 
-  const allClassDates = finalSchedule
-    ? finalSchedule
-    : startDate &&
-      endDate &&
-      schedules &&
-      temporaryLectureHoliday &&
-      calculateFinalDates(
-        startDate,
-        endDate,
-        schedules,
-        temporaryLectureHoliday,
-      );
+  const finalSchedules = (() => {
+    if (
+      !startDate ||
+      !endDate ||
+      !schedules ||
+      !temporaryLectureHoliday ||
+      !lectureMethod
+    )
+      return {};
+
+    if (lectureMethod?.name === '정기') {
+      return {
+        regularSchedules: calculateRegularFinalClass(
+          startDate,
+          endDate,
+          schedules,
+          temporaryLectureHoliday,
+        ),
+      };
+    } else {
+      // 원데이
+      if ('day' in schedules[0]) {
+        // 요일별
+        return {
+          daySchedules: schedules,
+          schedules: calculateFinalDates(
+            startDate,
+            endDate,
+            schedules,
+            temporaryLectureHoliday,
+          ),
+        };
+      } else {
+        // 특별 날짜
+        return {
+          schedules: calculateFinalDates(
+            startDate,
+            endDate,
+            schedules,
+            temporaryLectureHoliday,
+          ),
+        };
+      }
+    }
+  })();
+
+  console.log('finalSchedules: ', finalSchedules);
 
   const isLocationConfirmed = location?.address;
 
@@ -368,7 +402,7 @@ export const classCreate = async (
     coupons: temporaryLectureCouponTarget.map(
       ({ lectureCouponId }) => lectureCouponId,
     ),
-    schedules: allClassDates,
+    ...finalSchedules,
   };
 
   const newClassId = await createClass(data);
@@ -694,6 +728,7 @@ export const createCouponUtils = (
 export const classDraftsDataProcess = (
   data: IGetClassDraft,
 ): IprocessedDraft => {
+  const { schedules, temporaryLecture } = data;
   const {
     temporaryLectureToDanceGenre,
     isGroup,
@@ -707,7 +742,7 @@ export const classDraftsDataProcess = (
     temporaryLectureHoliday,
     reservationDeadline,
     temporaryLectureToRegion,
-  } = data.temporaryLecture;
+  } = temporaryLecture;
 
   const genres = temporaryLectureToDanceGenre.map((item) => {
     if (item.danceCategory.genre === '기타') {
@@ -751,6 +786,19 @@ export const classDraftsDataProcess = (
     ? {}
     : resRegions(temporaryLectureToRegion.map(({ region }) => region));
 
+  const totalClass = (() => {
+    if (startDate && endDate && schedules && temporaryLectureHoliday) {
+      const dates = calculateFinalDates(
+        startDate,
+        endDate,
+        schedules,
+        temporaryLectureHoliday,
+      );
+
+      return dates.length;
+    }
+  })();
+
   return {
     ...data.temporaryLecture,
     temporaryLectureToDanceGenre: genres,
@@ -775,7 +823,7 @@ export const classDraftsDataProcess = (
       district: data.location?.district,
     },
     schedules: data.schedules ? data.schedules : [],
-    totalClasses: data.schedules?.length,
+    totalClasses: totalClass,
   };
 };
 
@@ -850,13 +898,19 @@ export const formToClassDataProcess = (
         reservationDeadline,
       } = processData;
 
+      const totalClass = (() => {
+        if (startDate && endDate && schedules && holidays) {
+          return calculateFinalDates(startDate, endDate, schedules, holidays);
+        } else return [];
+      })();
+
       return {
         classRange: { startDate, endDate },
         duration,
         schedules,
         holidays,
         reservationDeadline,
-        totalClasses: schedules?.length,
+        totalClasses: totalClass.length,
       };
     case 3:
       const { location, locationDescription, regions } = processData;

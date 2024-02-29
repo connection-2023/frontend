@@ -4,6 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import ClassCreate from './ClassCreate';
+import ClassCreateNav from './ClassCreateNav';
+import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
+import { classCreateData } from '@/types/class';
+import { ErrorMessage, FetchError } from '@/types/types';
 import {
   BasicCalendarSVG,
   EditSVG,
@@ -13,18 +18,12 @@ import {
 } from '@/icons/svg';
 import { deleteClassDrafts, updateClassDraft } from '@/lib/apis/classApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import { useClassScheduleStore } from '@/store';
 import { useClassCreateStore } from '@/store/classCreate';
 import {
   classCreate,
   classOutputDataProcess,
   formToClassDataProcess,
 } from '@/utils/apiDataProcessor';
-import ClassCreate from './ClassCreate';
-import ClassCreateNav from './ClassCreateNav';
-import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
-import { classCreateData } from '@/types/class';
-import { ErrorMessage, FetchError } from '@/types/types';
 
 const ClassCategory = dynamic(() => import('./ClassCategory'));
 
@@ -93,8 +92,6 @@ const ClassCreateContainer = ({
   const [invalidData, setInvalidData] = useState<null | ErrorMessage[]>(null);
   const formMethods = useForm<classCreateData>({ shouldFocusError: false });
   const { handleSubmit, clearErrors, reset } = formMethods;
-
-  const finalSchedule = useClassScheduleStore((state) => state.filteredDates);
 
   const { classData, setProcessedClassData } = useClassCreateStore((state) => ({
     classData: state.classData,
@@ -220,7 +217,7 @@ const ClassCreateContainer = ({
   const createClass = async (data: classCreateData) => {
     const createClassAction = async () => {
       await updateDrafts(data);
-      const newLectureId = await classCreate(id, finalSchedule);
+      const newLectureId = await classCreate(id);
 
       toast.success('클래스 등록 완료');
 

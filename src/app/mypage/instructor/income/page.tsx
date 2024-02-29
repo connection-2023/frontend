@@ -1,14 +1,22 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
+import IncomeDataViewerLoading from './_components/Loading/IncomeDataViewerLoading';
+import IncomeOverviewLoading from './_components/Loading/IncomeOverviewLoading';
 
 const IncomeOverview = dynamic(() => import('./_components/IncomeOverview'), {
   ssr: false,
+  loading: () => <IncomeOverviewLoading />,
 });
 
 const IncomeDataViewer = dynamic(
   () => import('./_components/IncomeDataViewer'),
+  {
+    ssr: false,
+    loading: () => <IncomeDataViewerLoading />,
+  },
 );
+
 const Payment = dynamic(() => import('./_components/Payment'), {
   ssr: false,
 });

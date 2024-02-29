@@ -1,5 +1,5 @@
 import { subMonths, isValid } from 'date-fns';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { DateRange, SelectRangeEventHandler } from 'react-day-picker';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG } from '@/icons/svg';
@@ -7,18 +7,33 @@ import {
   formatDateWithHyphens,
   parseHyphenatedDate,
 } from '@/utils/dateTimeUtils';
+import { initialDateString } from '../_lib/initialDate';
 import RangeCalendar from '@/components/Calendar/RangeCalendar';
 
-const IncomeRange = () => {
-  const [fromValue, setFromValue] = useState<string | undefined>(undefined);
-  const [toValue, setToValue] = useState<string | undefined>(undefined);
+interface IncomeRangeProps {
+  // eslint-disable-next-line no-unused-vars
+  handleSetRange: (newRange: { from: Date; to: Date }) => void;
+}
+
+const IncomeRange = ({ handleSetRange }: IncomeRangeProps) => {
+  const initialDate = initialDateString();
+  const [fromValue, setFromValue] = useState<string | undefined>(
+    initialDate.from,
+  );
+  const [toValue, setToValue] = useState<string | undefined>(initialDate.to);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
-  const [activeButton, setActiveButton] = useState<number | null>(null);
+  const [activeButton, setActiveButton] = useState<number | null>(1);
   const ref = useRef(null);
   const classRange = {
     from: fromValue ? parseHyphenatedDate(fromValue) : undefined,
     to: toValue ? parseHyphenatedDate(toValue) : undefined,
   };
+
+  useEffect(() => {
+    if (fromValue && toValue) {
+      handleSetRange({ from: new Date(fromValue), to: new Date(toValue) });
+    }
+  }, [fromValue, toValue]);
 
   useClickAway(ref, () => {
     setIsCalendarVisible(false);
@@ -91,13 +106,15 @@ const IncomeRange = () => {
             />
           </span>
           {isCalendarVisible && (
-            <RangeCalendar
-              mode="income"
-              selectedRange={
-                classRange.from && classRange.to ? classRange : undefined
-              }
-              handleRangeSelect={handleRangeSelect}
-            />
+            <div className="absolute left-0 top-7 rounded-md border border-solid border-gray-500 bg-white px-3 py-4 shadow-float">
+              <RangeCalendar
+                mode="income"
+                selectedRange={
+                  classRange.from && classRange.to ? classRange : undefined
+                }
+                handleRangeSelect={handleRangeSelect}
+              />
+            </div>
           )}
         </div>
       </div>

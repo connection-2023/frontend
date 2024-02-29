@@ -1,5 +1,6 @@
 import {
   IPaymentInfo,
+  IRefundRequest,
   IPaymentInfoResponse,
   IVirtualAccountInfo,
   PaymentPassInfoParam,
@@ -114,4 +115,17 @@ export const postPassPaymentInfo = async (
     console.error('패스권 결제 정보 생성 오류', error);
     throw error;
   }
+};
+
+export const postRefund = async (id: number | string, data: IRefundRequest) => {
+  const response = await fetch(`/api/payment/refund?id=${id}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  }).then((data) => data.json());
+
+  return response;
 };

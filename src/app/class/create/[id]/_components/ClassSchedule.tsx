@@ -1,16 +1,14 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useClassScheduleStore } from '@/store';
-import { useClassCreateStore } from '@/store/classCreate';
-import {
-  formatDateWithHyphens,
-  parseHyphenatedDate,
-} from '@/utils/dateTimeUtils';
 import ClassDay from './ClassSchedule/ClassDay/ClassDay';
 import ClassRange from './ClassSchedule/ClassRange/ClassRange';
 import DayOff from './ClassSchedule/DayOff/DayOff';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import { DayTimeList, DateTimeList } from '@/types/class';
+import { useClassScheduleStore, useClassCreateStore } from '@/store';
+import {
+  formatDateWithHyphens,
+  parseHyphenatedDate,
+} from '@/utils/dateTimeUtils';
 
 const ClassSchedule = () => {
   const {
@@ -26,13 +24,10 @@ const ClassSchedule = () => {
 
   const duration = watch('duration') || classData?.duration;
   const lectureMethod = watch('lectureMethod') || classData?.lectureMethod;
-  const setClassDuration = useClassScheduleStore(
-    (state) => state.setClassDuration,
-  );
-  const classDates = useClassScheduleStore((state) => state.filteredDates);
-  const classNum = classDates?.length;
   const maxCapacitity = watch('max')?.value || classData?.max;
-  const filteredDates = useClassScheduleStore((state) => state.filteredDates);
+
+  const { setClassDuration, finalDates } = useClassScheduleStore();
+  const classNum = finalDates?.length;
 
   useEffect(() => {
     setClassDuration(duration);
@@ -102,11 +97,9 @@ const ClassSchedule = () => {
                   setClassDuration(Number(e.target.value));
                   field.onChange(Number(e.target.value));
                 }}
-                className="h-7 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1 focus:outline-sub-color1"
+                className="h-7 w-12 rounded-md border border-solid border-gray-500 px-3.5 py-1 focus:outline-sub-color1"
               />
-              <span className="ml-[0.38rem] text-sm font-bold text-gray-100">
-                분
-              </span>
+              <span className="ml-1.5 text-sm font-bold text-gray-100">분</span>
             </div>
           </Section>
         )}
@@ -116,18 +109,11 @@ const ClassSchedule = () => {
       <Controller
         name="schedules"
         control={control}
-        defaultValue={classData?.schedules ?? []}
+        defaultValue={classData?.schedules || []}
         rules={{
           required: '운영 일정',
-          validate: (schedules) => {
-            return schedules?.every((schedule: DayTimeList | DateTimeList) => {
-              if ('day' in schedule) {
-                return schedule.day && schedule.startDateTime;
-              } else if ('date' in schedule) {
-                return schedule.date && schedule.startDateTime;
-              }
-              return false;
-            });
+          validate: () => {
+            return (classNum && classNum > 0) || false;
           },
         }}
         render={({ field }) => (
@@ -150,10 +136,13 @@ const ClassSchedule = () => {
       <Controller
         name="holidays"
         control={control}
-        defaultValue={classData?.holidays ?? []}
+        defaultValue={classData?.holidays}
         render={({ field }) => (
           <Section title="휴무일이 있나요?" id={field.name}>
-            <DayOff onChange={field.onChange} defaultValue={field.value} />
+            <DayOff
+              onChange={field.onChange}
+              defaultValue={classData?.holidays}
+            />
           </Section>
         )}
       />
@@ -172,7 +161,7 @@ const ClassSchedule = () => {
             error={!!errors.reservationDeadline?.message}
             id={field.name}
           >
-            <div className="ml-[0.38rem] text-sm font-medium text-gray-100">
+            <div className="ml-1.5 text-sm font-medium text-gray-100">
               <span>수업 시작</span>
               <input
                 type="number"
@@ -180,7 +169,7 @@ const ClassSchedule = () => {
                 onChange={(e) => {
                   field.onChange(Number(e.target.value));
                 }}
-                className="ml-[1.38rem] mr-[0.38rem] h-8 w-12 rounded-md border border-solid border-gray-500 px-[0.81rem] py-1 focus:outline-sub-color1"
+                className="ml-5 mr-1.5 h-8 w-12 rounded-md border border-solid border-gray-500 px-3.5 py-1 focus:outline-sub-color1"
               />
               <span>시간 전</span>
             </div>
@@ -194,11 +183,11 @@ const ClassSchedule = () => {
         classNum={classNum}
       >
         <div className="max-w-[37.4rem]">
-          {classDates && (
+          {finalDates && (
             <ScheduleView
               maxCapacity={maxCapacitity}
               duration={duration}
-              lectureSchedule={filteredDates || []}
+              lectureSchedule={finalDates || []}
             />
           )}
         </div>
@@ -242,13 +231,14 @@ const Section = ({
       id={id}
       className="max-w-[675px] border-b border-solid border-gray-700 py-6"
     >
-      <h2 className="mb-4 flex items-center text-lg font-bold">
+      <h2 className="mb-4 flex flex-col-reverse text-lg font-bold md:flex-row md:items-center">
         <p className={`${error && 'animate-vibration text-main-color'}`}>
           {title}
+          {IsAddedClass && classNum && classNum > 0 ? ` (${classNum}개)` : null}
         </p>
-        {IsAddedClass && classNum && classNum > 0 ? ` (${classNum}개)` : null}
+
         {Isfixed && (
-          <span className="ml-2 flex flex-col text-sm font-bold text-main-color">
+          <span className="flex flex-col text-sm font-bold text-main-color md:ml-2">
             *등록 후 수정 불가
           </span>
         )}

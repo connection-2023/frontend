@@ -1,8 +1,7 @@
 'use client';
 import isSameDay from 'date-fns/isSameDay';
 import ko from 'date-fns/locale/ko';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { DayPicker, CaptionProps } from 'react-day-picker';
 import { FormattedCaption } from '../../utils/calendarUtils/CalendarCaption';
 import {
@@ -27,21 +26,12 @@ const BasicCalendar = ({
   handleSelected,
 }: ICalendarProps) => {
   const [selected, setSelected] = useState<Date[] | undefined>(selectedDates);
-  const initialSelectedDates = selectableDates;
 
   useEffect(() => {
-    if (handleSelected !== undefined && selected) {
-      if (mode === 'dayoff') {
-        const unselectedDates = initialSelectedDates.filter(
-          (date) => !selected.some((selDate) => isSameDay(selDate, date)),
-        );
-
-        handleSelected(unselectedDates);
-      } else {
-        handleSelected(selected);
-      }
+    if (handleSelected && selected) {
+      handleSelected(selected);
     }
-  }, [selected]);
+  }, [selected?.length]);
 
   useEffect(() => {
     setSelected(selectedDates);
@@ -53,7 +43,6 @@ const BasicCalendar = ({
   const modifiers = getBasicCalendarModifiers(mode, selectableDates);
   const modifiersClassNames = getBasicCalendarModifiersClassNames(mode);
   const classNames = mode === 'dayoff' ? DAY_OFF_ClassNames : undefined;
-  const className = mode === 'dayoff' ? '' : '';
   const disabled = mode === 'dayoff' ? disabledDays : undefined;
 
   return (
@@ -74,9 +63,8 @@ const BasicCalendar = ({
             displayMonth,
           }),
       }}
-      className={className}
     />
   );
 };
 
-export default React.memo(BasicCalendar);
+export default memo(BasicCalendar);

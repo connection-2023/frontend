@@ -1,15 +1,15 @@
-import { DateTimeList } from '@/types/class';
+import { IDateTimeList } from '@/types/class';
 
 interface SpecificState {
-  selected: DateTimeList[];
+  selected: IDateTimeList[];
   selectableDates: Date[];
   selectedDate: Date | null;
 }
 
 type SpecificAction =
-  | { type: 'SET_SELECTED'; payload: DateTimeList[] }
-  | { type: 'ADD_SELECTED'; payload: DateTimeList }
-  | { type: 'UPDATE_SELECTED'; index: number; item: DateTimeList }
+  | { type: 'SET_SELECTED'; payload: IDateTimeList[] }
+  | { type: 'ADD_SELECTED'; payload: IDateTimeList }
+  | { type: 'UPDATE_SELECTED'; index: number; item: IDateTimeList }
   | { type: 'REMOVE_SELECTED'; index: number }
   | { type: 'SET_SELECTABLE_DATES'; payload: Date[] }
   | { type: 'SET_SELECTED_DATE'; payload: Date | null };

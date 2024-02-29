@@ -44,6 +44,7 @@ export interface IFullCalendarEvent {
   maxCapacity: number;
   isGroup: boolean;
   lectureId: number;
+  lectureMethod?: string;
 }
 
 export interface ErrorMessage {
@@ -51,15 +52,6 @@ export interface ErrorMessage {
   type: string;
   message: string;
   ref: any;
-}
-
-export interface ITableList {
-  id: number;
-  name: string;
-  purchase: string;
-  date: string;
-  price: string;
-  status: string;
 }
 
 export interface IPaymentList {
