@@ -201,7 +201,7 @@ const ScheduleLearnerList = (props: ScheduleLearnerListProps) => {
 
       <div className="flex w-full items-center justify-end">
         {requests && isRequestOpened && (
-          <div className="speech-bubble whitespace-pre-line break-keep">
+          <div className="speech-bubble min-w-96 whitespace-pre-line break-keep">
             {requests}
           </div>
         )}
