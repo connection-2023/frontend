@@ -44,6 +44,7 @@ import { Arrow } from '@/../public/icons/svg';
  * @property {number} [carouselMoveIntervalTime = 2000] - 캐러셀 움직이는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
  * @property {number} [arrowPushMoveWaitTime = 2000] - Arrow를 누른 후 캐러셀 움직임을 멈추는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
  * @property {boolean} [movePause = false] - 캐러셀의 움직임을 true 동안 일시정지 (기본값 = false)
+ * @property {boolean} [resetIndexOnChildChange = false] - 캐러셀의 자식요소가 변하면 현재 인덱스를 0으로 최기화 시키는 선택적 플래그 (기본값 = false)
  */
 
 interface Props {
@@ -56,6 +57,7 @@ interface Props {
   carouselMoveIntervalTime?: number;
   arrowPushMoveWaitTime?: number;
   movePause?: boolean;
+  resetIndexOnChildChange?: boolean;
 }
 
 interface ChildrenProps extends Props {
@@ -82,6 +84,7 @@ const Carousel = ({
   carouselMoveIntervalTime = 2000,
   arrowPushMoveWaitTime = 2000,
   movePause = false,
+  resetIndexOnChildChange = false,
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
 
@@ -164,6 +167,14 @@ const Carousel = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [move, loadedElementCount, movePause]);
+
+  useEffect(() => {
+    if (resetIndexOnChildChange) {
+      setIsAnimating(false);
+      setCurrentIndex(0);
+      setTimeout(() => setIsAnimating(true), 100);
+    }
+  }, [children]);
 
   const changeImage = (
     event: React.MouseEvent,
