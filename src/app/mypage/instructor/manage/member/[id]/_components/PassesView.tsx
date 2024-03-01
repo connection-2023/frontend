@@ -22,7 +22,13 @@ const PassesView = ({ passes }: PassesViewProps) => {
                 gap={1}
                 showCurrentElement={false}
               >
-                {passes.map((pass) => (
+                {(passes.length < 4
+                  ? Array(Math.ceil(4 / passes.length))
+                      .fill(passes)
+                      .flat()
+                      .slice(0, 4)
+                  : passes
+                ).map((pass) => (
                   <MemberPass key={pass.lecturePass.id} pass={pass} />
                 ))}
               </Carousel>

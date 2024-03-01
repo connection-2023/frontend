@@ -1,5 +1,7 @@
 'use client';
 import { ChangeEvent, useMemo, useState } from 'react';
+import Pass from './Pass';
+import Carousel from '@/components/Carousel/Carousel';
 import { userPassList } from '@/types/pass';
 
 interface PassViewProps {
@@ -117,6 +119,35 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
             </button>
           ))}
       </nav>
+
+      {passList.length > 1 ? (
+        <div className="relative sm:px-11">
+          <div className="overflow-hidden sm:px-5">
+            <div className="w-64 px-2 py-3 sm:px-0">
+              <Carousel
+                move={true}
+                priority={4}
+                gap={1}
+                showCurrentElement={false}
+              >
+                {(passList.length < 4
+                  ? Array(Math.ceil(4 / passList.length))
+                      .fill(passList)
+                      .flat()
+                      .slice(0, 4)
+                  : passList
+                ).map((passInfo) => (
+                  <Pass key={passInfo.id} passInfo={passInfo} />
+                ))}
+              </Carousel>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-3 w-64">
+          <Pass passInfo={passList[0]} />
+        </div>
+      )}
     </>
   );
 };
