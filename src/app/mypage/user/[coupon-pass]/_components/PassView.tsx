@@ -120,7 +120,9 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
           ))}
       </nav>
 
-      {passList.length > 1 ? (
+      {passList.length === 0 ? (
+        <div>없어요</div>
+      ) : passList.length > 1 ? (
         <div className="relative sm:px-11">
           <div className="overflow-hidden sm:px-5">
             <div className="w-64 px-2 py-3 sm:px-0">
@@ -129,6 +131,8 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
                 priority={4}
                 gap={1}
                 showCurrentElement={false}
+                carouselMoveIntervalTime={3000}
+                resetIndexOnChildChange={true}
               >
                 {(passList.length < 4
                   ? Array(Math.ceil(4 / passList.length))
