@@ -2,6 +2,7 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import { NotFoundSVG } from '@/icons/svg';
 import Pass from './Pass';
+import PassDetail from './PassDetail';
 import Carousel from '@/components/Carousel/Carousel';
 import { userPassList } from '@/types/pass';
 
@@ -85,6 +86,7 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
       sort,
     }));
     setCarouselIndex(0);
+    setSelectPass(null);
   };
 
   const selectedPassChange = (pass: userPassList, index?: number) => {
@@ -179,6 +181,8 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
           />
         </div>
       )}
+
+      {selectPass && <PassDetail selectPass={selectPass} />}
     </>
   );
 };
