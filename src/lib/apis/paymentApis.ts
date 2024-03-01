@@ -53,21 +53,23 @@ export const getPaymentHistory = async (
   firstItemId: number,
   lastItemId: number,
   option: string,
-): Promise<IMyPaymentResponse | Error> => {
+): Promise<IMyPaymentResponse> => {
   const query = `displayCount=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&option=${option}`;
 
-  try {
-    const response = await fetch(`/api/payment/history?${query}`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => res.json());
+  const response = await fetch(`/api/payment/history?${query}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error('유저 결제 내역 조회 오류!');
   }
+
+  const res = await response.json();
+
+  return res.data;
 };
 
 export const getAccountInfo = async (

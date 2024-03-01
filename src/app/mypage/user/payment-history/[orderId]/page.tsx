@@ -1,10 +1,10 @@
 import Link from 'next/link';
+import Back from './Back';
 import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
 import {
   formatKoreanDateTime,
   formatFullDateTime,
 } from '@/utils/dateTimeUtils';
-import Back from './Back';
 
 const OrderDetail = async ({
   params: { orderId },
@@ -81,14 +81,14 @@ const OrderDetail = async ({
   ];
 
   return (
-    <div className="max-w-[40rem]">
+    <div className="mx-auto w-full max-w-[40rem] px-4 xl:mx-0">
       <div className="mb-4 flex items-center border-b border-gray-500 py-2">
         <Back />
         <h2 className="text-2xl font-bold text-gray-100">결제 상세</h2>
       </div>
 
-      <h3 className="mb-3.5 text-lg font-semibold">주문자 정보</h3>
-      <ul className="mb-4 flex flex-col gap-y-3 border-b border-gray-500 pb-4">
+      <h3 className="mb-3.5 pl-10 text-lg font-semibold">주문자 정보</h3>
+      <ul className="mb-4 flex flex-col gap-y-3 border-b border-gray-500 pb-4 pl-10">
         {orderInfo.map((info, index) => (
           <li key={index} className="flex items-center gap-x-5 text-sm">
             <span className="w-14 font-semibold">{info.label}</span>
@@ -97,8 +97,8 @@ const OrderDetail = async ({
         ))}
       </ul>
 
-      <h3 className="mb-3.5 text-lg font-semibold">결제 정보</h3>
-      <div className="mb-4 border-b border-gray-500 pb-4">
+      <h3 className="mb-3.5 pl-10 text-lg font-semibold">결제 정보</h3>
+      <div className="mb-4 border-b border-gray-500 pb-4 pl-10">
         <ul className="flex w-fit flex-col gap-y-3">
           {paymentInfo.map((detail, index) => (
             <li
