@@ -11,11 +11,9 @@ import NaverAuth from './NaverAuth';
 import { LoginResponse, social } from '@/types/auth';
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-const LoginButtons = () => {
-  const { setAuthUser, setUserType } = useUserStore((state) => ({
-    setAuthUser: state.setAuthUser,
-    setUserType: state.setUserType,
-  }));
+
+const AuthButtons = () => {
+  const { setAuthUser, setUserType } = useUserStore();
   const router = useRouter();
 
   const handleAuthSuccess = async (social: social, idToken: string) => {
@@ -53,6 +51,7 @@ const LoginButtons = () => {
         autoClose: 2500,
       });
       const { authEmail, signUpType } = data;
+
       router.replace(
         `/register?token=${idToken}&userEmail=${authEmail}&type=${signUpType}`,
         { scroll: false },
@@ -92,13 +91,13 @@ const LoginButtons = () => {
       />
 
       <NaverAuth onSuccess={naverOnSuccess} />
+
       {GOOGLE_CLIENT_ID && (
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
           <GoogleAuth
             onSuccess={googleOnSuccess}
             onError={(error) => {
               console.error('구글 로그인 실패:', error);
-
               toast.error('Google 로그인에 실패했습니다. 다시 시도해 주세요.');
             }}
           />
@@ -108,4 +107,4 @@ const LoginButtons = () => {
   );
 };
 
-export default LoginButtons;
+export default AuthButtons;

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { REGISTER_CONSENT_LIST } from '@/constants/constants';
@@ -7,6 +7,7 @@ import StatusButton from '@/components/Button/StatusButton';
 import { IMarketingConsent, IRegisterConsents } from '@/types/auth';
 
 interface IUserConsentForm {
+  // eslint-disable-next-line no-unused-vars
   updateUserRegistrationData: (data: IRegisterConsents) => void;
   handlePrev: () => void;
 }
@@ -29,34 +30,16 @@ const UserConsentForm = ({
   });
   const consents = watch();
 
-  const handleConsentChange = (optionId: keyof IRegisterConsents) => {
-    setValue(optionId, !getValues(optionId));
-  };
+  const selectedAll = useMemo(() => {
+    const allConsents = Object.values(consents).flat();
+    const allMarketingConsents = Object.values(consents.marketing);
+    return (
+      allConsents.every((consent) => consent) &&
+      allMarketingConsents.every((consent) => consent)
+    );
+  }, [consents]);
 
-  const handleMarketingConsentChange = (
-    subOptionId?: keyof IMarketingConsent,
-  ) => {
-    const mainOption = 'marketing';
-    const marketingValues = getValues(mainOption);
-
-    if (!subOptionId) {
-      const newValue = !Object.values(marketingValues).some((value) => value);
-      const newConsent = Object.keys(marketingValues).reduce(
-        (result, key) => ({ ...result, [key]: newValue }),
-        {} as IMarketingConsent,
-      );
-
-      setValue(mainOption, newConsent);
-      return;
-    }
-
-    const newValue = !marketingValues[subOptionId];
-    marketingValues[subOptionId] = newValue;
-
-    setValue(mainOption, { ...marketingValues });
-  };
-
-  const handleSelectAll = () => {
+  const selectAllConsents = () => {
     const newValue = !selectedAll;
     const formValues = getValues();
 
@@ -75,22 +58,44 @@ const UserConsentForm = ({
       }
     }, {} as IRegisterConsents);
 
-    reset(newConsent);
+    if (newValue !== selectedAll) {
+      reset(newConsent);
+    }
   };
 
-  const selectedAll = useMemo(() => {
-    const allConsents = Object.values(consents).flat();
-    const allMarketingConsents = Object.values(consents.marketing);
-    return (
-      allConsents.every((consent) => consent) &&
-      allMarketingConsents.every((consent) => consent)
-    );
-  }, [consents]);
+  const handleConsentChange = (optionId: keyof IRegisterConsents) => {
+    setValue(optionId, !getValues(optionId));
+  };
 
-  const areAllMarketingConsentsChecked = () => {
+  const handleMarketingConsentChange = (
+    subOptionId?: keyof IMarketingConsent,
+  ) => {
+    const mainOption = 'marketing';
+    const marketingValues = getValues(mainOption);
+
+    let newValue: boolean;
+    let newConsent: IMarketingConsent;
+
+    if (!subOptionId) {
+      newValue = !Object.values(marketingValues).some((value) => value);
+
+      newConsent = Object.keys(marketingValues).reduce(
+        (result, key) => ({ ...result, [key]: newValue }),
+        {} as IMarketingConsent,
+      );
+    } else {
+      newValue = !marketingValues[subOptionId];
+      newConsent = { ...marketingValues, [subOptionId]: newValue };
+    }
+
+    setValue(mainOption, newConsent);
+  };
+
+  const areAllMarketingConsentsSelected = () => {
     const marketingValues = getValues('marketing');
+
     return (
-      marketingValues && Object.values(marketingValues).some((value) => value)
+      marketingValues && Object.values(marketingValues).every((value) => value)
     );
   };
 
@@ -105,23 +110,30 @@ const UserConsentForm = ({
 
   return (
     <section className="flex h-full flex-col">
-      <h1 className="mb-2.5 text-lg font-semibold">마지막 단계입니다!</h1>
-      <h1 className="mb-4 text-sm font-medium">
+      <h1 className="mb-1 text-lg font-semibold">마지막 단계입니다!</h1>
+      <h2 className="mb-4 text-sm font-medium text-gray-300">
         커넥션 서비스 이용을 위해 필수 약관에 동의해주세요.
-      </h1>
+      </h2>
 
       <div
-        onClick={handleSelectAll}
+        onClick={(e) => {
+          e.stopPropagation();
+          selectAllConsents();
+        }}
         className="mb-5 flex cursor-pointer items-center gap-3 rounded-lg px-3.5 py-4 text-base text-black shadow-float"
       >
         <input
           type="checkbox"
           id="agreeAll"
+          readOnly
           checked={selectedAll}
-          onChange={handleSelectAll}
           className="h-[18px] w-[18px] cursor-pointer accent-black"
         />
-        <label htmlFor="agreeAll" className="flex-1 cursor-pointer">
+        <label
+          htmlFor="agreeAll"
+          onClick={(e) => e.stopPropagation()}
+          className="flex-1 cursor-pointer"
+        >
           전체동의
         </label>
       </div>
@@ -130,7 +142,9 @@ const UserConsentForm = ({
         {Object.values(REGISTER_CONSENT_LIST).map((option) => (
           <li key={option.id}>
             <div
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+
                 option.id === 'marketing'
                   ? handleMarketingConsentChange()
                   : handleConsentChange(option.id);
@@ -141,41 +155,47 @@ const UserConsentForm = ({
                 name={option.id}
                 control={control}
                 render={({ field }) => (
-                  <input
-                    type="checkbox"
-                    id={option.id}
-                    checked={
-                      option.id === 'marketing'
-                        ? areAllMarketingConsentsChecked()
-                        : !!field.value
-                    }
-                    onChange={() => {
-                      option.id === 'marketing'
-                        ? handleMarketingConsentChange()
-                        : handleConsentChange(option.id);
-                    }}
-                    className="h-[18px] w-[18px] accent-black"
-                  />
+                  <>
+                    <input
+                      type="checkbox"
+                      id={option.id}
+                      checked={
+                        option.id === 'marketing'
+                          ? areAllMarketingConsentsSelected()
+                          : !!field.value
+                      }
+                      onChange={(e) => {
+                        field.onChange(e);
+                      }}
+                      className="h-[18px] w-[18px] cursor-pointer accent-black"
+                    />
+                    <label
+                      htmlFor={option.id}
+                      onClick={(e) => e.stopPropagation()}
+                      className="cursor-pointer"
+                    >
+                      {option.title}
+                    </label>
+                  </>
                 )}
               />
-              <label htmlFor={option.id} className="cursor-pointer">
-                {option.title}
-              </label>
             </div>
 
             {option.id === 'marketing' && (
-              <ul className="mt-[1.12rem] flex flex-col gap-y-[0.87rem] pl-6 text-base">
+              <ul className="mt-[1.12rem] flex flex-col gap-y-3.5 pl-6 text-base">
                 {option.subOptions.map((subOption) => (
-                  <li
-                    key={subOption.id}
-                    onClick={() => handleMarketingConsentChange(subOption.id)}
-                    className="flex w-full cursor-pointer items-center gap-3"
-                  >
+                  <Fragment key={subOption.id}>
                     <Controller
                       name={`marketing.${subOption.id}`}
                       control={control}
                       render={({ field }) => (
-                        <>
+                        <li
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleMarketingConsentChange(subOption.id);
+                          }}
+                          className="flex w-full cursor-pointer items-center gap-3"
+                        >
                           <CheckMarkSVG
                             width="20"
                             className={`cursor-pointer ${
@@ -190,22 +210,21 @@ const UserConsentForm = ({
                             id={subOption.id}
                             checked={watch(`marketing.${subOption.id}`)}
                             onChange={(e) => {
-                              handleMarketingConsentChange(subOption.id);
                               field.onChange(e);
                             }}
-                            className="hidden h-[18px] w-[18px]"
+                            className="hidden"
                           />
-                        </>
+
+                          <label
+                            htmlFor={subOption.id}
+                            className="w-full flex-grow cursor-pointer"
+                          >
+                            {subOption.title}
+                          </label>
+                        </li>
                       )}
                     />
-
-                    <label
-                      htmlFor={subOption.id}
-                      className="w-full flex-grow cursor-pointer"
-                    >
-                      {subOption.title}
-                    </label>
-                  </li>
+                  </Fragment>
                 ))}
               </ul>
             )}
