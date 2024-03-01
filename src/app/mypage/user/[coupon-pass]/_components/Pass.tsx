@@ -1,11 +1,27 @@
 import formatDate from '@/utils/formatDate';
 import { userPassList } from '@/types/pass';
 
-const Pass = ({ passInfo }: { passInfo: userPassList }) => {
+interface PassProps {
+  passInfo: userPassList;
+  selectedId?: number;
+  selectedPassChange: () => void;
+}
+
+const Pass = ({ passInfo, selectedId, selectedPassChange }: PassProps) => {
   const { remainingUses, lecturePass, startAt, endAt } = passInfo;
 
+  const selected = selectedId === passInfo.id;
+
   return (
-    <dl className="flex flex-col justify-evenly gap-3 p-[10px] text-sm shadow-float ">
+    <dl
+      onClick={selectedPassChange}
+      className={`relative flex cursor-pointer flex-col justify-evenly gap-3 border p-[10px] text-sm shadow-float  hover:border-black ${
+        selected ? 'border-black' : ''
+      }  `}
+    >
+      {selectedId !== undefined && !selected && (
+        <div className="absolute h-full w-full bg-white bg-opacity-50" />
+      )}
       <div className="flex items-center justify-between text-main-color">
         <dd className="text-xl font-bold underline underline-offset-2">
           {lecturePass.maxUsageCount}회

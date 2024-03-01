@@ -1,5 +1,6 @@
 'use client';
 import { ChangeEvent, useMemo, useState } from 'react';
+import { NotFoundSVG } from '@/icons/svg';
 import Pass from './Pass';
 import Carousel from '@/components/Carousel/Carousel';
 import { userPassList } from '@/types/pass';
@@ -16,6 +17,8 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
     default: 'AVAILABLE',
     sort: 'LATEST',
   });
+  const [selectPass, setSelectPass] = useState<userPassList | null>(null);
+  const [carouselIndex, setCarouselIndex] = useState<number>();
 
   const passList = useMemo(() => {
     const passList = reqPassList.filter(({ isEnabled }) =>
@@ -81,6 +84,16 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
       ...prev,
       sort,
     }));
+    setCarouselIndex(0);
+  };
+
+  const selectedPassChange = (pass: userPassList, index?: number) => {
+    if (selectPass?.id === pass.id) {
+      setSelectPass(null);
+    } else {
+      setSelectPass(pass);
+      setCarouselIndex(index);
+    }
   };
 
   return (
@@ -121,18 +134,21 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
       </nav>
 
       {passList.length === 0 ? (
-        <div>없어요</div>
+        <div className="my-7 flex w-full flex-col items-center justify-center gap-8 text-lg font-semibold text-gray-100">
+          <NotFoundSVG />
+          <p>해당 패스권이 없습니다!</p>
+        </div>
       ) : passList.length > 1 ? (
         <div className="relative sm:px-11">
           <div className="overflow-hidden sm:px-5">
             <div className="w-64 px-2 py-3 sm:px-0">
               <Carousel
-                move={true}
+                move={!selectPass}
                 priority={4}
                 gap={1}
                 showCurrentElement={false}
                 carouselMoveIntervalTime={3000}
-                resetIndexOnChildChange={true}
+                gotoIndex={carouselIndex}
               >
                 {(passList.length < 4
                   ? Array(Math.ceil(4 / passList.length))
@@ -140,8 +156,15 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
                       .flat()
                       .slice(0, 4)
                   : passList
-                ).map((passInfo) => (
-                  <Pass key={passInfo.id} passInfo={passInfo} />
+                ).map((passInfo, index) => (
+                  <Pass
+                    key={passInfo.id}
+                    passInfo={passInfo}
+                    selectedId={selectPass?.id}
+                    selectedPassChange={() =>
+                      selectedPassChange(passInfo, index)
+                    }
+                  />
                 ))}
               </Carousel>
             </div>
@@ -149,7 +172,11 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
         </div>
       ) : (
         <div className="mt-3 w-64">
-          <Pass passInfo={passList[0]} />
+          <Pass
+            passInfo={passList[0]}
+            selectedId={selectPass?.id}
+            selectedPassChange={() => selectedPassChange(passList[0])}
+          />
         </div>
       )}
     </>
