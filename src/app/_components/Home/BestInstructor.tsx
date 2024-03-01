@@ -21,7 +21,7 @@ const BestInstructor = async () => {
       bestInstructorLists = Array(repeatCount)
         .fill(resInstructorList)
         .flat()
-        .slice(0, 9);
+        .slice(0, 8);
     }
   } catch (error) {
     console.error(error);

@@ -22,7 +22,7 @@ const BestClass = async () => {
       bestClassList = Array(repeatCount)
         .fill(resBestClassList)
         .flat()
-        .slice(0, 6);
+        .slice(0, 5);
     }
   } catch (error) {
     console.error(error);

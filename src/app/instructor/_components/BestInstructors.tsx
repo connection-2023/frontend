@@ -31,7 +31,7 @@ const BestInstructors = ({ list }: BestInstructorsProps) => {
       <Accordion isOpen={view}>
         <div className="relative px-4 sm:px-9 xl:px-16">
           <div className="overflow-hidden">
-            <ul className="h-[4.75rem] w-[4.75rem] lg:h-[9.375rem] lg:w-[9.25rem]">
+            <div className="h-[4.75rem] w-[4.75rem] lg:h-[9.375rem] lg:w-[9.25rem]">
               <Carousel
                 move={true}
                 priority={10}
@@ -40,7 +40,7 @@ const BestInstructors = ({ list }: BestInstructorsProps) => {
                 movePause={focus}
               >
                 {list.map(({ id, image, nickname }) => (
-                  <li
+                  <div
                     key={id}
                     onMouseOver={() => setFocus(true)}
                     onMouseLeave={() => setFocus(false)}
@@ -64,10 +64,10 @@ const BestInstructors = ({ list }: BestInstructorsProps) => {
                         {nickname}
                       </div>
                     </Link>
-                  </li>
+                  </div>
                 ))}
               </Carousel>
-            </ul>
+            </div>
           </div>
         </div>
       </Accordion>
