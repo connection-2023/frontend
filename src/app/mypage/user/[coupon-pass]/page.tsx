@@ -2,9 +2,12 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { getCouponList } from '@/lib/apis/serverApis/couponApis';
+import { getUserPassList } from '@/lib/apis/serverApis/passApis';
 import { mapItemToCoupon } from '@/utils/apiDataProcessor';
 import CouponView from './_components/CouponView';
+import PassView from './_components/PassView';
 import { OptionType, couponGET } from '@/types/coupon';
+import { userPassList } from '@/types/pass';
 
 const CouponPassPage = async ({
   params,
@@ -15,20 +18,16 @@ const CouponPassPage = async ({
     redirect('/404');
   }
 
-  let myClassListsOption;
-  let totalItemCount = 0;
-  let passItemCount = 0;
-  let couponList: couponGET[] = [];
+  const couponPassInfo = await getCouponPassInfo();
 
-  const couponInfo = await getCouponInfo();
-
-  myClassListsOption = couponInfo?.myClassListsOption ?? [];
-  totalItemCount = couponInfo?.totalItemCount ?? 0;
-  passItemCount = couponInfo?.passItemCount ?? 0;
-  couponList = couponInfo?.couponList ?? [];
+  const myClassListsOption = couponPassInfo?.myClassListsOption ?? [];
+  const totalItemCount = couponPassInfo?.totalItemCount ?? 0;
+  const passItemCount = couponPassInfo?.passItemCount ?? 0;
+  const couponList = couponPassInfo?.couponList ?? [];
+  const passList = couponPassInfo?.passList ?? [];
 
   return (
-    <section className="z-0 col-start-2 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
+    <section className="z-0 col-span-1 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
       <nav className="flex justify-between pb-2">
         <div className="flex items-center gap-2 sm:gap-6">
           <Link
@@ -56,7 +55,7 @@ const CouponPassPage = async ({
           totalItemCount={totalItemCount}
         />
       ) : (
-        <div>sss</div>
+        <PassView passList={passList} />
       )}
     </section>
   );
@@ -64,11 +63,12 @@ const CouponPassPage = async ({
 
 export default CouponPassPage;
 
-const getCouponInfo = async () => {
+const getCouponPassInfo = async () => {
   let myClassListsOption;
   let totalItemCount = 0;
   let passItemCount = 0;
   let couponList: couponGET[] = [];
+  let passList: userPassList[] = [];
 
   try {
     const reqData = {
@@ -102,10 +102,22 @@ const getCouponInfo = async () => {
         label: `전체 클래스(${myClassListsOption.length})`,
       });
 
-    //passItemCount 가져오는 로직 필요
-    return { totalItemCount, couponList, passItemCount, myClassListsOption };
+    const reqPassData = await getUserPassList(10000);
+
+    passItemCount = reqPassData.totalItemCount;
+
+    passList = reqPassData.userPassList;
+
+    return {
+      totalItemCount,
+      couponList,
+      passItemCount,
+      myClassListsOption,
+      passList,
+    };
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 
