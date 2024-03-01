@@ -140,3 +140,21 @@ export interface passSituation {
       }[]
     | null;
 }
+
+export interface userPassList {
+  id: number;
+  lecturePassId: number;
+  remainingUses: number;
+  isEnabled: boolean;
+  startAt: string;
+  endAt: string;
+  lecturePass: {
+    createdAt: string;
+    updatedAt: string;
+    id: number;
+    title: number;
+    price: number;
+    maxUsageCount: number;
+    availableMonths: number;
+  };
+}

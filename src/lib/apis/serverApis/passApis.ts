@@ -4,6 +4,7 @@ import {
   IgetPassFunction,
   IresponsePassData,
   passSituation,
+  userPassList,
 } from '@/types/pass';
 import { FetchError } from '@/types/types';
 
@@ -146,6 +147,48 @@ export const getSalesStatusPass = async (
     const resData = await response.json();
 
     return resData.data?.passSituationList ?? [];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getUserPassList = async (
+  take: number,
+  lastItemId?: number,
+): Promise<{ totalItemCount: number; userPassList: userPassList[] }> => {
+  try {
+    const cookieStore = cookies();
+    const authorization = cookieStore.get('userAccessToken')?.value;
+
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${authorization}`,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      `${END_POINT}/user-passes?take=${take}${
+        lastItemId ? `&lastItemId=${lastItemId}` : ''
+      }`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers,
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw new Error(
+        `유저 보유중인 패스권 조회 오류: ${error.status} ${error}`,
+      );
+    }
+
+    const resData = await response.json();
+
+    return resData.data.userPassList;
   } catch (error) {
     console.error(error);
     throw error;
