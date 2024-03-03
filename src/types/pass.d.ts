@@ -158,3 +158,45 @@ export interface userPassList {
     availableMonths: number;
   };
 }
+
+export interface userPassDetailInfo {
+  id: number;
+  lecturePassId: number;
+  remainingUses: number;
+  isEnabled: true;
+  startAt: string;
+  endAt: string;
+  lecturePass: {
+    createdAt: string;
+    updatedAt: string;
+    id: number;
+    title: number;
+    price: number;
+    maxUsageCount: number;
+    availableMonths: number;
+  };
+  reservation: reservation[];
+}
+
+export interface reservation {
+  id: number;
+  representative: string;
+  phoneNumber: string;
+  participants: number;
+  requests: string;
+  lectureSchedule: {
+    id: number;
+    startDateTime: string;
+    endDateTime: string;
+    numberOfParticipants: number;
+    lecture: {
+      id: number;
+      title: string;
+    };
+  };
+  payment: {
+    createdAt: string;
+    updatedAt: string;
+    id: number;
+  };
+}

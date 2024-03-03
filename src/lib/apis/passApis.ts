@@ -5,6 +5,7 @@ import {
   IpassData,
   IresponsePassData,
   passSituation,
+  userPassDetailInfo,
 } from '@/types/pass';
 import { FetchError } from '@/types/types';
 
@@ -136,7 +137,7 @@ export const getSalesStatusPass = async (
 
 export const getUserPassForId = async (
   passId: number,
-): Promise<passSituation[]> => {
+): Promise<userPassDetailInfo> => {
   try {
     const response = await fetch(`/api/pass/user-get-id?passId=${passId}`, {
       method: 'GET',
