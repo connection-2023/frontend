@@ -76,6 +76,7 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
       ...prev,
       default: e.target.id as 'AVAILABLE' | 'EXPIRED',
     }));
+    setSelectPass(null);
   };
 
   const sortOptionChange = (

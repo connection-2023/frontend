@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { getUserPassForId } from '@/lib/apis/passApis';
 import { userPassList } from '@/types/pass';
 
 interface PassDetailProps {
@@ -6,6 +8,13 @@ interface PassDetailProps {
 }
 
 const PassDetail = ({ selectPass }: PassDetailProps) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['pass', selectPass.lecturePassId],
+    queryFn: () => getUserPassForId(selectPass.lecturePassId),
+  });
+
+  console.log(data);
+
   return (
     <section className="flex w-full max-w-[641px] flex-col gap-2 pt-7">
       <header className=" flex justify-between">

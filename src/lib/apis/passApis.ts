@@ -133,3 +133,31 @@ export const getSalesStatusPass = async (
     throw error;
   }
 };
+
+export const getUserPassForId = async (
+  passId: number,
+): Promise<passSituation[]> => {
+  try {
+    const response = await fetch(`/api/pass/user-get-id?passId=${passId}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.userPassInfo;
+  } catch (error) {
+    console.error('유저 보유중인 패스권 디테일 조회', error);
+    throw error;
+  }
+};
