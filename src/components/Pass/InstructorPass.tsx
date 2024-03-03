@@ -38,7 +38,7 @@ const InstructorPass = ({
         <AppliedList
           appliedList={lecturePassTarget.map(({ lecture }) => ({ ...lecture }))}
         />
-        <dd>누적 판매량:{salesCount}</dd>
+        <dd>누적 판매량:{salesCount ?? 0}</dd>
       </div>
     </dl>
   );

@@ -12,8 +12,6 @@ const page = async ({ params }: { params: { id: string } }) => {
   const passInfo = await getPassInfoForId(params.id);
   if (!passInfo) redirect('/404');
 
-  console.log(passInfo);
-
   return (
     <>
       <h1 className="mx-auto mb-6 flex w-full items-center justify-center border-b border-solid border-gray-700 py-4 text-2xl font-bold">

@@ -194,3 +194,42 @@ export const getUserPassList = async (
     throw error;
   }
 };
+
+export const getLecturesPassList = async (
+  lectureId: number,
+): Promise<userPassList[]> => {
+  try {
+    const cookieStore = cookies();
+    const authorization = cookieStore.get('userAccessToken')?.value;
+
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${authorization}`,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      `${END_POINT}/user-passes/lectures/${lectureId}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers,
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw new Error(
+        `유저 강의에서 보유중인 패스권 조회 오류: ${error.status} ${error}`,
+      );
+    }
+
+    const resData = await response.json();
+
+    return resData.data.usablePassList;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

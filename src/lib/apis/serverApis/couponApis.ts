@@ -29,7 +29,7 @@ export const getCouponList = async (
   };
 
   const response = await fetch(`${END_POINT}/coupons/${type}?${params}`, {
-    cache: 'no-store',
+    cache: type === 'lecturer' ? 'no-store' : 'default',
     method: 'GET',
     credentials: 'include',
     headers,

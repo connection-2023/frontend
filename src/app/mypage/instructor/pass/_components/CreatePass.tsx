@@ -20,10 +20,23 @@ const CreatePass = () => {
   useEffect(() => {
     getMyLecture()
       .then((resData) => {
-        const options = resData.data.lecture.map(({ id, title }) => ({
-          label: title,
-          value: id,
-        }));
+        const options = resData.data.lecture.reduce(
+          (
+            acc: {
+              label: string;
+              value: number;
+            }[],
+            { lectureMethod, id, title },
+          ) => {
+            if (lectureMethod.name === '원데이')
+              acc.push({
+                label: title,
+                value: id,
+              });
+            return acc;
+          },
+          [],
+        );
         setOptions(options);
       })
       .catch((error) => console.error(error));
