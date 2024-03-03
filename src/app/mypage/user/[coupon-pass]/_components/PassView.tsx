@@ -167,6 +167,7 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
                     selectedPassChange={() =>
                       selectedPassChange(passInfo, index)
                     }
+                    expired={selectOption.default === 'EXPIRED'}
                   />
                 ))}
               </Carousel>
@@ -179,11 +180,17 @@ const PassView = ({ passList: reqPassList }: PassViewProps) => {
             passInfo={passList[0]}
             selectedId={selectPass?.id}
             selectedPassChange={() => selectedPassChange(passList[0])}
+            expired={selectOption.default === 'EXPIRED'}
           />
         </div>
       )}
 
-      {selectPass && <PassDetail selectPass={selectPass} />}
+      {selectPass && (
+        <PassDetail
+          selectPass={selectPass}
+          expired={selectOption.default === 'EXPIRED'}
+        />
+      )}
     </>
   );
 };

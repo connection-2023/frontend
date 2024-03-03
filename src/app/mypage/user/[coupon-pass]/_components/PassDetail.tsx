@@ -15,9 +15,10 @@ import { reservation, userPassDetailInfo, userPassList } from '@/types/pass';
 
 interface PassDetailProps {
   selectPass: userPassList;
+  expired: boolean;
 }
 
-const PassDetail = ({ selectPass }: PassDetailProps) => {
+const PassDetail = ({ selectPass, expired }: PassDetailProps) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['pass', selectPass.lecturePassId],
     queryFn: () => getUserPassForId(selectPass.lecturePassId),
@@ -39,13 +40,27 @@ const PassDetail = ({ selectPass }: PassDetailProps) => {
   );
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
+  const isUsed = selectPass.endAt && selectPass.startAt;
+
   return (
-    <section className="flex w-full max-w-[641px] flex-col gap-2 pt-7">
+    <section className="flex w-full max-w-[643px] flex-col gap-2 pt-7">
       <header className=" flex justify-between">
         <h1 className="text-xl font-semibold sm:text-2xl">
-          <span className="text-main-color">{diffDays}일(기간) </span>
-          내에<span className="text-main-color"> {data.remainingUses}회</span>를
-          사용해주세요
+          {expired ? (
+            <>기간이 만료된 패스권 입니다.</>
+          ) : isUsed ? (
+            <>
+              <span className="text-main-color">{diffDays}일(기간) </span>
+              내에
+              <span className="text-main-color"> {data.remainingUses}회</span>를
+              사용해주세요
+            </>
+          ) : (
+            <>
+              <span className="text-main-color"> {data.remainingUses}회 </span>
+              사용 가능한 패스권
+            </>
+          )}
         </h1>
         {/* <Link
           href="/mypage/user/payment-history"
@@ -66,20 +81,31 @@ const PassDetail = ({ selectPass }: PassDetailProps) => {
         <div className="grid grid-cols-[5.3rem,1fr] gap-y-2">
           <dt>사용기간</dt>
           <dd>
-            {selectPass.lecturePass.availableMonths}개월 (
-            {`${formatDate(selectPass.startAt)} - ${formatDate(
-              selectPass.endAt,
-            )}`}
-            )
+            {selectPass.lecturePass.availableMonths}개월
+            {isUsed &&
+              `${formatDate(selectPass.startAt)} - ${formatDate(
+                selectPass.endAt,
+              )}`}
           </dd>
 
-          <dt>잔여일수</dt>
-          <dd>{diffDays}일</dd>
+          {isUsed ? (
+            <>
+              <dt>잔여일수</dt>
+              <dd>{diffDays}일</dd>
+            </>
+          ) : (
+            <div className="col-span-2 text-main-color">
+              *이용기간은 패스권 이용 시작일로부터 차감됩니다.
+            </div>
+          )}
         </div>
       </dl>
-
-      <h2 className="text-sm font-semibold">패스권 사용내역</h2>
-      <Table data={data} />
+      {isUsed && (
+        <>
+          <h2 className="text-sm font-semibold">패스권 사용내역</h2>
+          <Table data={data} />
+        </>
+      )}
     </section>
   );
 };
