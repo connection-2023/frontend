@@ -152,7 +152,7 @@ export interface userPassList {
     createdAt: string;
     updatedAt: string;
     id: number;
-    title: number;
+    title: string;
     price: number;
     maxUsageCount: number;
     availableMonths: number;
@@ -170,7 +170,7 @@ export interface userPassDetailInfo {
     createdAt: string;
     updatedAt: string;
     id: number;
-    title: number;
+    title: string;
     price: number;
     maxUsageCount: number;
     availableMonths: number;
@@ -199,4 +199,9 @@ export interface reservation {
     updatedAt: string;
     id: number;
   };
+}
+
+export interface SelectPass {
+  value: userPassList;
+  label: string;
 }
