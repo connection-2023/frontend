@@ -63,13 +63,15 @@ const CouponClient = ({
     };
 
     setCoupon(coupon);
-    setPass(null);
+    if (normalCouponSelect.length > 0 || stackableCouponSelect.length > 0) {
+      setPass(null);
+    }
   }, [normalCouponSelect, stackableCouponSelect, price]);
 
   useEffect(() => {
     if (pass) {
-      setNormalCouponSelect([]);
-      setStackableCouponSelect([]);
+      setNormalCouponSelect((prev) => (prev.length > 0 ? [] : prev));
+      setStackableCouponSelect((prev) => (prev.length > 0 ? [] : prev));
     }
   }, [pass]);
 

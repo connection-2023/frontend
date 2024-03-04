@@ -35,7 +35,7 @@ const PassContainer = ({ passList }: PassContainerProps) => {
 
     const newValue = Array.isArray(pass) ? pass : [pass];
 
-    setPass((pass as SelectPass).value.id);
+    setPass({ ...(pass as SelectPass).value });
 
     setCoupon({
       discountPrice: null,

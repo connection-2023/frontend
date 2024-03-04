@@ -17,8 +17,9 @@ export interface IPaymentInfo extends IApplicantInfo {
   lectureSchedule: IReservationInfo;
   originalPrice: number;
   finalPrice: number;
-  couponId: number | null;
-  stackableCouponId: number | null;
+  couponId?: number | null;
+  stackableCouponId?: number | null;
+  passId?: number | null;
 }
 
 export interface IApplicantInfo {

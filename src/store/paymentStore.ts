@@ -1,5 +1,6 @@
 import { PaymentWidgetInstance } from '@tosspayments/payment-widget-sdk';
 import { create } from 'zustand';
+import { userPassList } from '@/types/pass';
 import {
   IReservationInfo,
   IApplicantInfo,
@@ -14,7 +15,7 @@ interface IPaymentStore {
   applyClass: IReservationInfo | null;
   applicant: IApplicantInfo | null;
   coupon: PaymentCoupon;
-  pass: null | number;
+  pass: null | userPassList;
   setPaymentWidget: (widget: PaymentWidgetInstance) => void;
   setPaymentMethodsWidget: (
     widget: ReturnType<PaymentWidgetInstance['renderPaymentMethods']>,
@@ -22,7 +23,7 @@ interface IPaymentStore {
   setApplyClass: (participants: IReservationInfo) => void;
   setApplicant: (applicantInfo: IApplicantInfo) => void;
   setCoupon: (coupon: PaymentCoupon) => void;
-  setPass: (pass: number | null) => void;
+  setPass: (pass: userPassList | null) => void;
 }
 
 export const usePaymentStore = create<IPaymentStore>()((set) => ({

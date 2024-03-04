@@ -10,7 +10,7 @@ export const POST = async (request: NextRequest) => {
     });
   }
 
-  const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
+  const tokenValue = request.cookies.get('userAccessToken')?.value;
   const data = await request.json();
 
   if (!tokenValue) {
@@ -28,7 +28,7 @@ export const POST = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + '/coupons/lecture', {
+  const response = await fetch(END_POINT + '/payments/pass/lecture', {
     method: 'POST',
     credentials: 'include',
     headers,

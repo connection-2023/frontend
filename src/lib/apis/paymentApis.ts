@@ -129,3 +129,29 @@ export const postRefund = async (id: number | string, data: IRefundRequest) => {
 
   return response;
 };
+
+export const postPassPaymentClassWithPass = async (data: IPaymentInfo) => {
+  try {
+    const response = await fetch(`/api/payment/class-with-pass`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const responseData = await response.json();
+    return responseData.data;
+  } catch (error) {
+    console.error('패스권으로 클래스 결제 오류 ', error);
+    throw error;
+  }
+};
