@@ -91,7 +91,7 @@ const ClassReviewSection = ({ id, stars }: ClassReviewSectionProps) => {
           />
         )}
       </div>
-      <div className="flex flex-col gap-6">
+      <div className="flex min-h-20 flex-col gap-6">
         {userReviews.map((review) => (
           <UserReview
             key={review.id}
