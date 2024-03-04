@@ -162,3 +162,28 @@ export const getUserPassForId = async (
     throw error;
   }
 };
+
+export const disabledPass = async (passId: number) => {
+  try {
+    const response = await fetch(`/api/pass/disabled?passId=${passId}`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const responseData = await response.json();
+    return responseData.data;
+  } catch (error) {
+    console.error('패스권 배포 중지 실패', error);
+    throw error;
+  }
+};

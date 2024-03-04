@@ -375,9 +375,9 @@ export const USER_NO_ACCESS = [];
 
 export const NON_ACCESSIBLE_AFTER_LOGIN = ['/register', '/login'];
 
-export const LECTURE_COUPON_TAKE = 8;
+export const LECTURE_COUPON_TAKE = 9;
 
-export const LECTURE_PASS_TAKE = 8;
+export const LECTURE_PASS_TAKE = 9;
 
 export const USER_COUPON_CLASS_LIST_TAKE = 6;
 

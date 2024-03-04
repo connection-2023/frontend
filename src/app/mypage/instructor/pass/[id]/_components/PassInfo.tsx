@@ -2,9 +2,11 @@
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
-import { getPassForId } from '@/lib/apis/passApis';
+import { disabledPass, getPassForId } from '@/lib/apis/passApis';
 import { usePassSelectStore } from '@/store/passSelectStore';
+import { reloadToast } from '@/utils/reloadMessage';
 import Button from '@/components/Button/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
 
@@ -39,6 +41,24 @@ const PassInfo = ({ id }: PassInfoProps) => {
     return <div className="h-96 w-full animate-pulse bg-gray-700" />; //추후 변경
   }
 
+  const disabledPassHandler = async () => {
+    try {
+      if (
+        confirm(`해당 패스권의 판매를 중지하시겠습니까?
+이미 판매가 완료된 패스권은 삭제되지 않습니다.
+      `)
+      ) {
+        await disabledPass(id);
+        reloadToast('패스권 판매중지 성공', 'success');
+        router.push('/mypage/instructor/pass');
+        router.refresh();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('잠시 후 다시 시도해 주세요.');
+    }
+  };
+
   return (
     <>
       <header className="mb-4 flex items-center justify-between border-b border-solid border-gray-700 p-5">
@@ -49,7 +69,7 @@ const PassInfo = ({ id }: PassInfoProps) => {
           패스권 현황
         </div>
         <div className="w-28">
-          <Button color="secondary" size="small">
+          <Button color="secondary" size="small" onClick={disabledPassHandler}>
             판매 중지
           </Button>
         </div>
