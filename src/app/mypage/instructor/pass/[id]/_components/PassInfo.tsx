@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ArrowRightSVG } from '@/icons/svg';
 import { disabledPass, getPassForId } from '@/lib/apis/passApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePassSelectStore } from '@/store/passSelectStore';
 import { reloadToast } from '@/utils/reloadMessage';
 import Button from '@/components/Button/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
+import { FetchError } from '@/types/types';
 
 interface PassInfoProps {
   id: number;
@@ -42,18 +44,35 @@ const PassInfo = ({ id }: PassInfoProps) => {
   }
 
   const disabledPassHandler = async () => {
+    const disabledAction = async () => {
+      await disabledPass(id);
+      reloadToast('패스권 판매중지 성공', 'success');
+      router.push('/mypage/instructor/pass');
+      router.refresh();
+    };
+
     try {
       if (
         confirm(`해당 패스권의 판매를 중지하시겠습니까?
 이미 판매가 완료된 패스권은 삭제되지 않습니다.
       `)
       ) {
-        await disabledPass(id);
-        reloadToast('패스권 판매중지 성공', 'success');
-        router.push('/mypage/instructor/pass');
-        router.refresh();
+        await disabledAction();
       }
     } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await disabledAction();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
       console.error(error);
       toast.error('잠시 후 다시 시도해 주세요.');
     }
