@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
+import { usePaymentStore } from '@/store';
 import PassSelect from './PassSelect';
 import UniqueButton from '@/components/Button/UniqueButton';
 import { SelectPass } from '@/types/pass';
@@ -12,6 +13,18 @@ interface PassContainerProps {
 const PassContainer = ({ passList }: PassContainerProps) => {
   const [selectPass, setSelectPass] = useState<SelectPass[]>([]);
 
+  const { setPass, setCoupon, coupon } = usePaymentStore((state) => ({
+    setPass: state.setPass,
+    setCoupon: state.setCoupon,
+    coupon: state.coupon,
+  }));
+
+  useEffect(() => {
+    if (coupon.couponId || coupon.stackableCouponId) {
+      setSelectPass([]);
+    }
+  }, [coupon]);
+
   const changeSelectPass = (
     pass: MultiValue<SelectPass> | SingleValue<SelectPass>,
   ) => {
@@ -21,10 +34,19 @@ const PassContainer = ({ passList }: PassContainerProps) => {
     }
 
     const newValue = Array.isArray(pass) ? pass : [pass];
+
+    setPass((pass as SelectPass).value.id);
+
+    setCoupon({
+      discountPrice: null,
+      couponId: null,
+      stackableCouponId: null,
+    });
     setSelectPass(newValue);
   };
 
   const cancelSelectedPass = () => {
+    setPass(null);
     setSelectPass([]);
   };
 

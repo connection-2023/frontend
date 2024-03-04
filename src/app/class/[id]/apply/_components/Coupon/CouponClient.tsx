@@ -22,7 +22,11 @@ const CouponClient = ({
   stackableCoupon = [],
   price,
 }: CouponClient) => {
-  const setCoupon = usePaymentStore((state) => state.setCoupon);
+  const { setPass, setCoupon, pass } = usePaymentStore((state) => ({
+    setPass: state.setPass,
+    setCoupon: state.setCoupon,
+    pass: state.pass,
+  }));
 
   const [normalCouponSelect, setNormalCouponSelect] = useState(normalCoupon);
   const [stackableCouponSelect, setStackableCouponSelect] =
@@ -59,7 +63,15 @@ const CouponClient = ({
     };
 
     setCoupon(coupon);
+    setPass(null);
   }, [normalCouponSelect, stackableCouponSelect, price]);
+
+  useEffect(() => {
+    if (pass) {
+      setNormalCouponSelect([]);
+      setStackableCouponSelect([]);
+    }
+  }, [pass]);
 
   const onChangeNormalCoupon = (
     coupon: MultiValue<SelectCoupon> | SingleValue<SelectCoupon>,
