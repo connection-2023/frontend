@@ -113,7 +113,7 @@ const ApplyCompletePage = async ({
     : [...basicPaymentInfo, ...paymentsInfo];
 
   return (
-    <div className="flex w-full flex-col items-center whitespace-nowrap">
+    <main className="flex w-full flex-1 mx-auto max-w-[40rem] flex-col items-center whitespace-nowrap">
       <ApplySuccessSVG
         className={`mb-5 mt-6 ${
           isBankTransfer ? 'fill-gray-900' : 'fill-main-color'
@@ -156,7 +156,7 @@ const ApplyCompletePage = async ({
           확인
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

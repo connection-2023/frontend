@@ -11,8 +11,8 @@ export default async function MyPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto mb-20 grid w-full grid-cols-1 grid-rows-[min-content_max-content] bg-main-color-transparent pb-12 md:grid-cols-2 md:gap-4 md:px-9 xl:grid-cols-4">
+    <main className="mx-auto grid w-full flex-1 grid-cols-1 grid-rows-[min-content_max-content] bg-main-color-transparent pb-12 md:grid-cols-2 md:gap-4 md:px-9 xl:grid-cols-4">
       {children}
-    </div>
+    </main>
   );
 }

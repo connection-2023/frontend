@@ -61,11 +61,11 @@ const ClassApplyPage = async ({
     : undefined;
 
   return (
-    <>
-      <h1 className="mx-auto mb-6 flex w-full items-center justify-center border-b border-solid border-gray-700 py-4 text-2xl font-bold">
+    <main className="mx-auto w-full flex-1">
+      <h1 className="mb-6 w-full border-b border-solid border-gray-700 py-4 text-center text-2xl font-bold">
         클래스 신청하기
       </h1>
-      <div className="border-box mx-auto mb-20 flex grid w-full grid-cols-1 justify-items-center gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
+      <div className="border-box mb-20 flex grid w-full grid-cols-1 justify-items-center gap-x-12 px-4 md:px-[4.5rem] lg:grid-cols-[2fr_1fr] xl:grid-cols-[1fr_2fr_1fr]">
         {/* 임시 빈 공간 */}
         <div className="hidden xl:block" />
 
@@ -135,7 +135,7 @@ const ClassApplyPage = async ({
           <ApplySidebar postId={id} title={title} price={price} />
         </aside>
       </div>
-    </>
+    </main>
   );
 };
 

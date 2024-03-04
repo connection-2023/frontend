@@ -34,7 +34,7 @@ const page = async () => {
   }
 
   return (
-    <main className="flex justify-center py-4">
+    <main className="flex flex-1 justify-center py-4">
       <section className="w-[40rem]">
         <DraftList classDrafts={classDrafts} />
       </section>

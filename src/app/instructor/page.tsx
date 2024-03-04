@@ -98,7 +98,7 @@ const instructorPage = async ({
   }
 
   return (
-    <section className="flex flex-col">
+    <main className="flex flex-1 flex-col">
       <div className="my-4 px-4 sm:px-9 xl:px-14">
         <SearchInput query={searchData.value ?? ''} />
       </div>
@@ -112,7 +112,7 @@ const instructorPage = async ({
       >
         <Filters type="instructor" filterOption={filterOptions} />
       </InstructorListView>
-    </section>
+    </main>
   );
 };
 

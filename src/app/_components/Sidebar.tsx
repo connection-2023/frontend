@@ -30,7 +30,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
 
   const getTextColorClass = (path: string) =>
     pathname.includes(path)
-      ? 'w-fit text-gray-100'
+      ? 'group w-fit text-gray-100 is-actived'
       : 'w-fit text-gray-500 hover:text-gray-100';
 
   return (
@@ -110,10 +110,7 @@ const Sidebar = ({ view = 'my' }: SidebarProps) => {
                       key={item.path}
                       className={getTextColorClass(item.path)}
                     >
-                      <Link
-                        href={item.path}
-                        className="group flex items-center"
-                      >
+                      <Link href={item.path} className="flex items-center">
                         {item.text}
                       </Link>
                     </li>

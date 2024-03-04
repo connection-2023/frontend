@@ -1,5 +1,4 @@
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { ToastContainer } from 'react-toastify';
@@ -79,12 +78,10 @@ export default async function RootLayout({
             pauseOnHover
             theme="light"
           />
-          <main className="main">
-            {children}
-            <div className="fixed bottom-24 right-8">
-              <ControlOptions />
-            </div>
-          </main>
+
+          {children}
+          <ControlOptions />
+
           <Footer />
           <MobileNav />
         </Providers>

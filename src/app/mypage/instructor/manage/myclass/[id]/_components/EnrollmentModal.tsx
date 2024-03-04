@@ -2,13 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import subHours from 'date-fns/subHours';
 import Link from 'next/link';
 import { useState } from 'react';
-import Spinner from '@/components/Loading/Spinner';
-import Modal from '@/components/Modal/Modal';
-import UserProfileMenu from '@/components/Profile/UserProfileMenu';
-import { IProcessedSchedules, IScheduleLearnerList } from '@/types/class';
+import { toast } from 'react-toastify';
+import { useDebounce } from 'react-use';
 import { ChatSVG } from '@/icons/svg';
 import { getScheduleRegisterLists } from '@/lib/apis/classApis';
+import { patchMemberMemo } from '@/lib/apis/instructorApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
+import Modal from '@/components/Modal/Modal';
+import UserProfileMenu from '@/components/Profile/UserProfileMenu';
+import Spinner from '@/components/Spinner/Spinner';
+import { IProcessedSchedules, IScheduleLearnerList } from '@/types/class';
 
 interface EnrollmentModalProps {
   isOpen: boolean;
@@ -25,14 +28,12 @@ const EnrollmentModal = ({
   maxCapacity,
   reservationDeadline,
 }: EnrollmentModalProps) => {
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const { id, index, numberOfParticipants, date, startDateTime } =
     selectedClass;
-  const {
-    data: ScheduleEnrollment,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['instructor', 'schedule', id, 'modal'],
+  const { data: ScheduleEnrollment, isLoading } = useQuery({
+    queryKey: ['instructor', 'schedule', id, 'modal', refreshKey],
     queryFn: () => getScheduleRegisterLists(id),
     refetchOnWindowFocus: 'always',
   });
@@ -40,6 +41,10 @@ const EnrollmentModal = ({
   const deadlineTime = formatDateTimeNoSec(
     subHours(new Date(startDateTime), reservationDeadline),
   );
+
+  const handleMemoUpdate = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
 
   return (
     <Modal isOpened={isOpen} handleClosed={closeModal}>
@@ -63,13 +68,17 @@ const EnrollmentModal = ({
         </div>
 
         {isLoading ? (
-          <div className="mb-auto mt-5 flex h-fit items-center justify-center">
+          <div className="flex h-[20rem] items-center justify-center">
             <Spinner />
           </div>
         ) : (
           <ul className="flex h-[20rem] flex-col gap-4 overflow-y-auto px-5 py-4">
             {ScheduleEnrollment?.map((item) => (
-              <ScheduleLearnerList key={item.userId} {...item} />
+              <ScheduleLearnerList
+                key={item.userId}
+                {...item}
+                handleMemoUpdate={handleMemoUpdate}
+              />
             ))}
           </ul>
         )}
@@ -90,18 +99,56 @@ const getButtonClass = (request: string, isClicked: boolean) => {
     : 'cursor-pointer text-black';
 };
 
-const ScheduleLearnerList = (props: IScheduleLearnerList) => {
-  const { userId, nickname, phoneNumber, userProfileImage, requests, memo } =
-    props;
-  const [isRequestOpened, setIsRequestOpened] = useState(false);
-  const [classStudentMemo, setClassStudentMemo] = useState(memo || '');
+interface ScheduleLearnerListProps extends IScheduleLearnerList {
+  handleMemoUpdate: () => void;
+}
 
-  const handleTextareaChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setClassStudentMemo(event.target.value);
-    // == 메모 업데이트 API 연결 필요 ==
-  };
+const ScheduleLearnerList = (props: ScheduleLearnerListProps) => {
+  const {
+    userId,
+    nickname,
+    phoneNumber,
+    userProfileImage,
+    requests,
+    memo,
+    handleMemoUpdate,
+  } = props;
+
+  const [isRequestOpened, setIsRequestOpened] = useState(false);
+  const [classStudentMemo, setClassStudentMemo] = useState(memo);
+
+  useDebounce(
+    () => {
+      const patchMemo = async () => {
+        if (!classStudentMemo || classStudentMemo === memo) return;
+        const toastId = toast.loading('메모 저장 중...');
+
+        try {
+          await patchMemberMemo(classStudentMemo, userId);
+
+          toast.update(toastId, {
+            render: '수강생에 대한 메모가 저장되었습니다!',
+            type: 'success',
+            isLoading: false,
+            autoClose: 1500,
+          });
+
+          handleMemoUpdate();
+        } catch (error) {
+          toast.update(toastId, {
+            render: '메모 저장에 실패하였습니다.',
+            type: 'error',
+            isLoading: false,
+            autoClose: 1500,
+          });
+        }
+      };
+
+      patchMemo();
+    },
+    800,
+    [classStudentMemo],
+  );
 
   const handleRequestClick = () => {
     setIsRequestOpened((prev) => !prev);
@@ -120,8 +167,8 @@ const ScheduleLearnerList = (props: IScheduleLearnerList) => {
           />
         </div>
         <textarea
-          value={classStudentMemo}
-          onChange={handleTextareaChange}
+          value={classStudentMemo || ''}
+          onChange={(event) => setClassStudentMemo(event.target.value)}
           placeholder={`수강생에 대한 메모를 자유롭게 입력해주세요.\n이 메모는 수강생에게는 보이지 않습니다.`}
           className="h-10 w-full max-w-[18rem] resize-none whitespace-pre-wrap break-keep rounded-[0.06rem] border border-solid border-gray-700 px-[0.44rem] py-[0.19rem] text-xs focus:outline-sub-color1"
         />
@@ -154,7 +201,7 @@ const ScheduleLearnerList = (props: IScheduleLearnerList) => {
 
       <div className="flex w-full items-center justify-end">
         {requests && isRequestOpened && (
-          <div className="speech-bubble whitespace-pre-line break-keep">
+          <div className="speech-bubble min-w-96 whitespace-pre-line break-keep">
             {requests}
           </div>
         )}

@@ -12,7 +12,7 @@ export default function ApplyCompleteLayout({
 }) {
   return (
     <>
-      <main className="mx-auto max-w-[40rem]">{children}</main>
+      {children}
     </>
   );
 }
