@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { MultiValue, SingleValue } from 'react-select';
 import { usePaymentStore } from '@/store';
+import formatDate from '@/utils/formatDate';
 import PassSelect from './PassSelect';
 import UniqueButton from '@/components/Button/UniqueButton';
 import { SelectPass } from '@/types/pass';
@@ -76,8 +77,8 @@ const PassCard = ({
   passInfo: SelectPass;
   cancelSelectedPass: () => void;
 }) => {
-  const { maxUsageCount, availableMonths, title } = passInfo.value.lecturePass;
-  const { startAt, endAt } = passInfo.value;
+  const { availableMonths, title } = passInfo.value.lecturePass;
+  const { startAt, endAt, remainingUses } = passInfo.value;
 
   return (
     <dl className="relative mt-5 rounded-md text-sm shadow-horizontal">
@@ -96,8 +97,12 @@ const PassCard = ({
             </UniqueButton>
           </div>
         </div>
-        <dd className="truncate">남은 횟수: {maxUsageCount}회</dd>
-        {startAt && endAt ? <dd>{startAt + '-' + endAt}</dd> : <dd>미사용</dd>}
+        <dd className="truncate">잔여횟수: {remainingUses}회</dd>
+        {startAt && endAt ? (
+          <dd>{`${formatDate(startAt)} - ${formatDate(endAt)}`}</dd>
+        ) : (
+          <dd>미사용</dd>
+        )}
         <dd>이용기간: {availableMonths}개월</dd>
       </div>
     </dl>

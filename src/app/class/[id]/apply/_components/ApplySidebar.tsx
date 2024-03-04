@@ -11,6 +11,7 @@ import {
 } from '@/lib/apis/paymentApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePaymentStore } from '@/store';
+import { reloadToast } from '@/utils/reloadMessage';
 import ApplyButton from '@/components/Button/ApplyButton';
 import {
   IApplicantInfo,
@@ -109,17 +110,20 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   };
 
   const payForClassWithPass = async (paymentData: IPaymentInfo) => {
-    try {
+    const action = async () => {
       await postPassPaymentClassWithPass(paymentData);
+      reloadToast('클래스 신청 완료', 'success');
       router.push('/mypage/user/myclass/apply?view=calendar');
+    };
+    try {
+      await action();
     } catch (error) {
       if (error instanceof Error) {
         const fetchError = error as FetchError;
         if (fetchError.status === 401) {
           try {
             await accessTokenReissuance();
-            await postPassPaymentClassWithPass(paymentData);
-            router.push('/mypage/user/myclass/apply?view=calendar');
+            await action();
           } catch (error) {
             console.error(error);
           }

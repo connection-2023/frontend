@@ -7,6 +7,7 @@ import Select, {
   StylesConfig,
   components,
 } from 'react-select';
+import formatDate from '@/utils/formatDate';
 import { SelectPass } from '@/types/pass';
 
 interface PassSelectProps {
@@ -56,7 +57,7 @@ const formatOptionLabel = ({ value, label }: SelectPass) => {
       <div className="flex justify-between">
         <div className="flex gap-2 text-gray-300">
           {startAt && endAt ? (
-            <dd>{startAt + '-' + endAt}</dd>
+            <dd>{`${formatDate(startAt)} - ${formatDate(endAt)}`}</dd>
           ) : (
             <dd>미사용</dd>
           )}
