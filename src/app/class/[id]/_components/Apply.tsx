@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
+import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 import SelectBox from './apply/SelectBox';
 import ApplyButton from '@/components/Button/ApplyButton';
 import { IClassSchedule, IDateTime } from '@/types/class';
-import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 
 const ReservationItem = dynamic(() => import('./apply/ReservationItem'));
 
@@ -157,7 +157,7 @@ const Apply = (props: ApplyProps) => {
         </div>
       </section>
       {/* 모바일 화면 */}
-      <section className="fixed bottom-0 z-50 w-full lg:hidden">
+      <section className="fixed bottom-0 left-0 z-50 w-full lg:hidden">
         <div
           ref={mobileScheduleListRef}
           className="flex w-full flex-col items-center rounded-t-lg bg-white px-4 py-3.5 shadow-vertical"
