@@ -1,6 +1,9 @@
 import Link from 'next/link';
-import { ButtonStyles, CLASS_SECTIONS } from '@/constants/constants';
-import { CLASS_HSTYLE } from '@/constants/constants';
+import {
+  ButtonStyles,
+  CLASS_SECTIONS,
+  CLASS_HSTYLE,
+} from '@/constants/constants';
 import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
 import {
   getClassDetail,
@@ -26,9 +29,6 @@ const ClassDetail = async ({ id }: { id: string }) => {
     classSchedules,
   ]);
 
-  if (classSchedule instanceof Error || classDetail instanceof Error) {
-    return <></>;
-  }
   const {
     lecturer,
     startDate,
@@ -38,7 +38,6 @@ const ClassDetail = async ({ id }: { id: string }) => {
     notification,
     introduction,
     curriculum,
-    reviewCount,
     locationDescription,
     location,
     maxCapacity,
@@ -134,7 +133,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
           <ScheduleView
             duration={duration}
             lectureSchedule={schedule}
-            maxCapacity={maxCapacity}
+            maxCapacity={maxCapacity || 1}
           />
         </section>
 
@@ -157,7 +156,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
         id={id}
         schedule={schedule}
         duration={duration}
-        maxCapacity={maxCapacity}
+        maxCapacity={maxCapacity || 1}
         price={price}
       />
     </>
