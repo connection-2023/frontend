@@ -494,6 +494,9 @@ export interface Lecture {
   createdAt: string;
   updatedAt: string;
   deletedAt: null | string;
+  lectureMethod: {
+    name: '원데이' | '정기';
+  };
 }
 
 interface ResponseData {
@@ -595,6 +598,7 @@ export interface IRegularSchedule {
   startDateTime: string;
   endDateTime: string;
 }
+
 export interface IUserApplyClass {
   id: number;
   lecture: {
@@ -619,10 +623,12 @@ export interface IUserApplyClass {
   lectureSchedule?: ILectureSchedule;
   regularLectureSchedule?: IRegularSchedule[];
 }
+
 export interface IApplyListResponse {
   totalItemCount: number;
   enrollLectureList: IUserApplyClass[];
 }
+
 export interface IReservation {
   id: number;
   representative: string;

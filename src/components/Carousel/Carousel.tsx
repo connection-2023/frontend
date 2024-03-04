@@ -44,6 +44,7 @@ import { Arrow } from '@/../public/icons/svg';
  * @property {number} [carouselMoveIntervalTime = 2000] - 캐러셀 움직이는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
  * @property {number} [arrowPushMoveWaitTime = 2000] - Arrow를 누른 후 캐러셀 움직임을 멈추는 시간을 ms로 지정하는 선택적 숫자 (기본값 = 2000ms)
  * @property {boolean} [movePause = false] - 캐러셀의 움직임을 true 동안 일시정지 (기본값 = false)
+ * @property {boolean} [gotoIndex = null] - 캐러셀의 인덱스를 변경 하는 선택적 플래그 (number)
  */
 
 interface Props {
@@ -56,6 +57,7 @@ interface Props {
   carouselMoveIntervalTime?: number;
   arrowPushMoveWaitTime?: number;
   movePause?: boolean;
+  gotoIndex?: number;
 }
 
 interface ChildrenProps extends Props {
@@ -82,6 +84,7 @@ const Carousel = ({
   carouselMoveIntervalTime = 2000,
   arrowPushMoveWaitTime = 2000,
   movePause = false,
+  gotoIndex,
 }: CarouselProps) => {
   const childrenArray = React.Children.toArray(children);
 
@@ -165,33 +168,48 @@ const Carousel = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [move, loadedElementCount, movePause]);
 
-  const changeImage = (
-    event: React.MouseEvent,
-    direction: 'BACKWARD' | 'FORWARD',
-  ) => {
+  useEffect(() => {
+    if (gotoIndex === undefined) return;
+    changeCarouselIndex(gotoIndex);
+  }, [gotoIndex]);
+
+  const changeCarouselIndex = (index: number) => {
     if (intervalIdRef.current) clearInterval(intervalIdRef.current);
     if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
-    event.stopPropagation();
-    event.nativeEvent.preventDefault();
 
     setIsAnimating(false);
 
-    setCurrentIndex((prev) => {
-      if (direction === 'FORWARD') {
-        return prev >= carouselLength - priority ? 0 : prev + 1;
-      } else {
-        return prev <= 0 ? carouselLength - priority : prev - 1;
-      }
-    });
+    setCurrentIndex(index);
 
     timeoutIdRef.current = setTimeout(() => {
       setIsAnimating(true);
 
-      intervalIdRef.current = setInterval(
-        updateImageIndex,
-        carouselMoveIntervalTime,
-      );
+      if (move) {
+        intervalIdRef.current = setInterval(
+          updateImageIndex,
+          carouselMoveIntervalTime,
+        );
+      }
     }, arrowPushMoveWaitTime);
+  };
+
+  const changeImage = (
+    event: React.MouseEvent,
+    direction: 'BACKWARD' | 'FORWARD',
+  ) => {
+    event.stopPropagation();
+    event.nativeEvent.preventDefault();
+
+    const index =
+      direction === 'FORWARD'
+        ? currentIndex >= carouselLength - priority
+          ? 0
+          : currentIndex + 1
+        : currentIndex <= 0
+        ? carouselLength - priority
+        : currentIndex - 1;
+
+    changeCarouselIndex(index);
   };
 
   return (

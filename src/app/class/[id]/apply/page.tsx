@@ -1,4 +1,4 @@
-import { CouponSVG, MusicalNoteSVG, NoticeSVG } from '@/icons/svg';
+import { CouponSVG, MusicalNoteSVG, NoticeSVG, PassSVG } from '@/icons/svg';
 import {
   getClassPreview,
   getClassDetail,
@@ -7,6 +7,7 @@ import {
 import ApplySidebar from './_components/ApplySidebar';
 import ClassApplicationInfo from './_components/ClassApplicationInfo';
 import Coupon from './_components/Coupon';
+import Pass from './_components/Pass';
 import PaymentType from './_components/PaymentType';
 import ReservationInfo from './_components/ReservationInfo';
 import type { Metadata } from 'next';
@@ -110,10 +111,17 @@ const ClassApplyPage = async ({
           <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
             <h3 className="flex gap-1 text-lg font-semibold">
               <CouponSVG className="h-6 w-6 fill-sub-color1" />
-              쿠폰/패스권 적용
+              쿠폰 적용
             </h3>
-            {/* 쿠폰 선택 */}
             <Coupon id={id} price={price} />
+          </section>
+
+          <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
+            <h3 className="flex gap-1 text-lg font-semibold">
+              <PassSVG className="h-6 w-6 fill-sub-color1" />
+              패스권
+            </h3>
+            <Pass id={Number(id)} />
           </section>
 
           <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">

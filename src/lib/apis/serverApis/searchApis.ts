@@ -9,6 +9,8 @@ import {
   searchInstructor,
   searchInstructorParameters,
 } from '@/types/instructor';
+import { searchPass, searchPassesParameters } from '@/types/pass';
+import { FetchError } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -19,6 +21,7 @@ export const searchAll = async (
 ): Promise<{
   searchedLecturers: searchInstructor[];
   searchedLectures: searchClass[];
+  searchedPasses: searchPass[];
 }> => {
   try {
     const cookieStroe = cookies();
@@ -206,6 +209,54 @@ export const searchClasses = async (
     const resData = await response.json();
 
     return resData.data.lectureList ?? [];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const searchPasses = async (
+  data: searchPassesParameters,
+  userState: boolean,
+): Promise<searchPass[]> => {
+  try {
+    const cookieStroe = cookies();
+    const authorization = cookieStroe.get('userAccessToken')?.value;
+
+    const params = new URLSearchParams();
+
+    Object.entries(data)
+      .filter(([_, v]) => v !== undefined)
+      .forEach(([k, v]) => {
+        if (Array.isArray(v)) {
+          v.forEach((value) => params.append(`${k}[]`, value));
+        } else {
+          params.append(k, String(v));
+        }
+      });
+
+    const headers: Record<string, string> = userState
+      ? {
+          Authorization: `Bearer ${authorization}`,
+          'Content-Type': 'application/json',
+        }
+      : { 'Content-Type': 'application/json' };
+
+    const response = await fetch(`${END_POINT}/search/pass?${params}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw new Error(`패스권 검색 오류: ${error.status} ${error}`);
+    }
+
+    const resData = await response.json();
+    return resData.data.searchedPassList ?? [];
   } catch (error) {
     console.error(error);
     throw error;

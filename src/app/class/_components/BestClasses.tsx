@@ -28,7 +28,7 @@ const BestlCasses = ({ bestClassList }: { bestClassList: ClassCardType[] }) => {
       <Accordion isOpen={view}>
         <div className="relative px-4 sm:px-9 xl:px-12">
           <div className="overflow-hidden">
-            <ul className="h-[14rem] w-[13rem]">
+            <div className="h-[14rem] w-[13rem]">
               <Carousel
                 move={true}
                 priority={6}
@@ -43,18 +43,18 @@ const BestlCasses = ({ bestClassList }: { bestClassList: ClassCardType[] }) => {
                     smallView: true,
                   };
                   return (
-                    <li
+                    <div
                       key={classData.id}
                       onMouseOver={() => setFocus(true)}
                       onMouseLeave={() => setFocus(false)}
                       className="w-full max-w-[13rem] xl:max-w-[33.7rem]"
                     >
                       <ClassPreview {...data} />
-                    </li>
+                    </div>
                   );
                 })}
               </Carousel>
-            </ul>
+            </div>
           </div>
         </div>
       </Accordion>

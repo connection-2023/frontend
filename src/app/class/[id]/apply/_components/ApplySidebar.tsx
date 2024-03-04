@@ -1,11 +1,24 @@
 'use client';
 import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import ApplyButton from '@/components/Button/ApplyButton';
 import { ArrowUpSVG } from '@/icons/svg';
-import { postPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
+import {
+  postPaymentInfo,
+  postPaymentCancel,
+  postPassPaymentClassWithPass,
+} from '@/lib/apis/paymentApis';
+import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePaymentStore } from '@/store';
+import { reloadToast } from '@/utils/reloadMessage';
+import ApplyButton from '@/components/Button/ApplyButton';
+import {
+  IApplicantInfo,
+  IPaymentInfo,
+  IReservationInfo,
+} from '@/types/payment';
+import { FetchError } from '@/types/types';
 
 interface ApplySidebarProps {
   postId: string;
@@ -18,6 +31,8 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
   const { discountPrice, couponId, stackableCouponId } = usePaymentStore(
     (state) => state.coupon,
   );
+  const router = useRouter();
+  const { pass } = usePaymentStore((state) => ({ pass: state.pass }));
   const totalPrice = price * participants;
   const finalPrice = discountPrice
     ? Math.max(0, totalPrice - discountPrice)
@@ -43,15 +58,15 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
     paymentMethodsWidget.updateAmount(totalPrice);
   }, [participants, paymentWidget]);
 
-  const handlePayment = async () => {
+  const confirmPayment = () => {
     if (!applyClass) {
       toast.error('하나 이상의 클래스를 추가해주세요!');
-      return;
+      return false;
     }
 
     if (!applicant) {
       toast.error('예약자 정보를 입력해주세요!');
-      return;
+      return false;
     }
 
     const isAllFilled = Object.entries(applicant).every(([key, value]) => {
@@ -63,25 +78,13 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
 
     if (!isAllFilled) {
       toast.error('예약자 정보를 입력해주세요!');
-      return;
+      return false;
     }
 
-    const uniqueOrderId = nanoid();
-    const { representative, phoneNumber, requests } = applicant;
-    const paymentData = {
-      lectureId: postId,
-      orderName: title,
-      orderId: uniqueOrderId,
-      lectureSchedule: applyClass,
-      originalPrice: totalPrice,
-      finalPrice,
-      representative,
-      phoneNumber,
-      requests,
-      couponId,
-      stackableCouponId,
-    };
+    return true;
+  };
 
+  const paymentClass = async (paymentData: IPaymentInfo) => {
     try {
       const paymentInfo = await postPaymentInfo(paymentData);
       const { orderId, orderName } = paymentInfo;
@@ -90,7 +93,7 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
         await paymentWidget?.requestPayment({
           orderId,
           orderName,
-          customerName: representative,
+          customerName: paymentData.representative,
           customerEmail: '',
           successUrl: `${window.location.origin}/class/${postId}/apply/complete`,
           failUrl: `${window.location.origin}/fail`,
@@ -100,10 +103,67 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
       }
     } catch (error) {
       if (error instanceof Error && error.message) {
-        postPaymentCancel(uniqueOrderId);
+        postPaymentCancel(paymentData.orderId);
         toast.error(error.message);
       }
     }
+  };
+
+  const payForClassWithPass = async (paymentData: IPaymentInfo) => {
+    const action = async () => {
+      await postPassPaymentClassWithPass(paymentData);
+      reloadToast('클래스 신청 완료', 'success');
+      router.push('/mypage/user/myclass/apply?view=calendar');
+    };
+    try {
+      await action();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await action();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          toast.error(error.message);
+        }
+      }
+    }
+  };
+
+  const handlePayment = async () => {
+    const isConfirmed = confirmPayment();
+
+    if (!isConfirmed) return;
+
+    const uniqueOrderId = nanoid();
+    const { representative, phoneNumber, requests } =
+      applicant as IApplicantInfo;
+    const paymentData: IPaymentInfo = {
+      lectureId: postId,
+      orderName: title,
+      orderId: uniqueOrderId,
+      lectureSchedule: applyClass as IReservationInfo,
+      originalPrice: totalPrice,
+      finalPrice,
+      representative,
+      phoneNumber,
+      requests,
+    };
+
+    if (pass) {
+      paymentData.passId = pass.lecturePassId;
+    } else {
+      paymentData.couponId = couponId;
+      paymentData.stackableCouponId = stackableCouponId;
+    }
+
+    pass
+      ? await payForClassWithPass(paymentData)
+      : await paymentClass(paymentData);
   };
 
   return (
@@ -121,12 +181,17 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
             ㄴ 쿠폰사용 <span>{discountPrice?.toLocaleString()}원</span>
           </li>
         )}
+        {!!pass && (
+          <li className="flex items-center justify-between pl-4 text-gray-300">
+            ㄴ 패스권사용 <span>{totalPrice.toLocaleString()}원</span>
+          </li>
+        )}
       </ul>
 
       <div className="mb-2 flex items-center justify-between font-bold">
         <p>최종 결제 금액</p>
         <span className="min-w-[2rem] text-2xl text-black">
-          {finalPrice.toLocaleString()}원
+          {!!pass ? 0 : finalPrice.toLocaleString()}원
         </span>
       </div>
 

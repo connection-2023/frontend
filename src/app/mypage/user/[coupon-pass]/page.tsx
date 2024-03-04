@@ -1,9 +1,13 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import { getCouponList } from '@/lib/apis/serverApis/couponApis';
+import { getUserPassList } from '@/lib/apis/serverApis/passApis';
 import { mapItemToCoupon } from '@/utils/apiDataProcessor';
 import CouponView from './_components/CouponView';
+import PassView from './_components/PassView';
 import { OptionType, couponGET } from '@/types/coupon';
+import { userPassList } from '@/types/pass';
 
 const CouponPassPage = async ({
   params,
@@ -14,38 +18,57 @@ const CouponPassPage = async ({
     redirect('/404');
   }
 
-  if (params['coupon-pass'] === 'coupon') {
-    let myClassListsOption;
-    let totalItemCount = 0;
-    let passItemCount = 0;
-    let couponList: couponGET[] = [];
+  const couponPassInfo = await getCouponPassInfo();
 
-    const couponInfo = await getCouponInfo();
+  const myClassListsOption = couponPassInfo?.myClassListsOption ?? [];
+  const totalItemCount = couponPassInfo?.totalItemCount ?? 0;
+  const passItemCount = couponPassInfo?.passItemCount ?? 0;
+  const couponList = couponPassInfo?.couponList ?? [];
+  const passList = couponPassInfo?.passList ?? [];
 
-    myClassListsOption = couponInfo?.myClassListsOption ?? [];
-    totalItemCount = couponInfo?.totalItemCount ?? 0;
-    passItemCount = couponInfo?.passItemCount ?? 0;
-    couponList = couponInfo?.couponList ?? [];
-
-    return (
-      <CouponView
-        myLectureList={myClassListsOption ?? []}
-        couponList={couponList ?? []}
-        totalItemCount={totalItemCount}
-      />
-    );
-  }
-
-  return <div>패스권</div>;
+  return (
+    <section className="z-0 col-span-1 flex w-full flex-col bg-white px-2 pt-5 sm:px-5">
+      <nav className="flex justify-between pb-2">
+        <div className="flex items-center gap-2 sm:gap-6">
+          <Link
+            className={`flex text-xl font-bold sm:text-2xl ${
+              params['coupon-pass'] === 'pass' && 'text-gray-500'
+            }`}
+            href="/mypage/user/coupon"
+          >
+            쿠폰({totalItemCount ?? 0})
+          </Link>
+          <Link
+            className={`text-xl font-bold sm:text-2xl ${
+              params['coupon-pass'] === 'coupon' && 'text-gray-500'
+            }`}
+            href="/mypage/user/pass"
+          >
+            패스권({passItemCount ?? 0})
+          </Link>
+        </div>
+      </nav>
+      {params['coupon-pass'] === 'coupon' ? (
+        <CouponView
+          myLectureList={myClassListsOption ?? []}
+          couponList={couponList ?? []}
+          totalItemCount={totalItemCount}
+        />
+      ) : (
+        <PassView passList={passList} />
+      )}
+    </section>
+  );
 };
 
 export default CouponPassPage;
 
-const getCouponInfo = async () => {
+const getCouponPassInfo = async () => {
   let myClassListsOption;
   let totalItemCount = 0;
   let passItemCount = 0;
   let couponList: couponGET[] = [];
+  let passList: userPassList[] = [];
 
   try {
     const reqData = {
@@ -79,10 +102,22 @@ const getCouponInfo = async () => {
         label: `전체 클래스(${myClassListsOption.length})`,
       });
 
-    //passItemCount 가져오는 로직 필요
-    return { totalItemCount, couponList, passItemCount, myClassListsOption };
+    const reqPassData = await getUserPassList(10000);
+
+    passItemCount = reqPassData.totalItemCount;
+
+    passList = reqPassData.userPassList;
+
+    return {
+      totalItemCount,
+      couponList,
+      passItemCount,
+      myClassListsOption,
+      passList,
+    };
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };
 

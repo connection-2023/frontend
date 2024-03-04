@@ -4,6 +4,7 @@ import {
   IPaymentConfirmResponse,
   IReceiptResponse,
 } from '@/types/payment';
+import { FetchError } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
@@ -24,13 +25,18 @@ export const patchPaymentConfirm = async (
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
-    }).then((data) => data.json());
+    });
 
-    if (response.statusCode !== 200) {
-      throw new Error(`결제 승인 오류: ${response.status}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw new Error(`결제 승인 오류: ${error.status} ${error}`);
     }
 
-    return response.data;
+    const resData = await response.json();
+
+    return resData.data;
   } catch (error) {
     console.error('결제 승인 오류', error);
     throw error;

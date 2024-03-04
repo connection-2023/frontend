@@ -1,9 +1,11 @@
 import {
   IPaymentInfo,
-  IVirtualAccountInfo,
   IRefundRequest,
+  IPaymentInfoResponse,
+  IVirtualAccountInfo,
+  PaymentPassInfoParam,
 } from '@/types/payment';
-import { IMyPaymentResponse } from '@/types/types';
+import { FetchError, IMyPaymentResponse } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {
@@ -89,6 +91,34 @@ export const getAccountInfo = async (
   }
 };
 
+export const postPassPaymentInfo = async (
+  data: PaymentPassInfoParam,
+): Promise<IPaymentInfoResponse> => {
+  try {
+    const response = await fetch(`/api/payment/pass`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const responseData = await response.json();
+    return responseData.data.passPaymentInfo;
+  } catch (error) {
+    console.error('패스권 결제 정보 생성 오류', error);
+    throw error;
+  }
+};
+
 export const postRefund = async (id: number | string, data: IRefundRequest) => {
   const response = await fetch(`/api/payment/refund?id=${id}`, {
     method: 'POST',
@@ -100,4 +130,30 @@ export const postRefund = async (id: number | string, data: IRefundRequest) => {
   }).then((data) => data.json());
 
   return response;
+};
+
+export const postPassPaymentClassWithPass = async (data: IPaymentInfo) => {
+  try {
+    const response = await fetch(`/api/payment/class-with-pass`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const responseData = await response.json();
+    return responseData.data;
+  } catch (error) {
+    console.error('패스권으로 클래스 결제 오류 ', error);
+    throw error;
+  }
 };

@@ -64,7 +64,9 @@ const SearchInput = ({ query }: { query: string }) => {
                 <li
                   key={path}
                   className={`h-12 border-x border-b border-solid border-black bg-white hover:bg-black hover:text-lg hover:text-white ${
-                    index === options.length - 1
+                    index ===
+                    options.length -
+                      (selectedOption?.label === '패스권' ? 2 : 1)
                       ? 'rounded-b-2xl border-b-black'
                       : 'border-b-gray-700'
                   }`}
@@ -96,7 +98,7 @@ const SearchInput = ({ query }: { query: string }) => {
         </button>
       </nav>
       <input
-        type="text"
+        type="search"
         value={keyword}
         onChange={handleInputChange}
         className=" w-full rounded-xl p-4 text-lg shadow-vertical focus:outline-none"

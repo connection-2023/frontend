@@ -35,6 +35,7 @@ import {
   userCouponGET,
 } from '@/types/coupon';
 import { searchInstructor } from '@/types/instructor';
+import { searchPass, userPass } from '@/types/pass';
 
 export const uploadImageFiles = async (
   profileImageUrls: {
@@ -565,6 +566,21 @@ export const transformSearchClass = (classList: searchClass[]) => {
       };
     },
   );
+};
+
+export const transformSearchPasses = (
+  searchedPasses: searchPass[],
+): userPass[] => {
+  return searchedPasses.map((passInfo) => {
+    const { lecturePassTarget, lecturer } = passInfo;
+
+    const appliedList = lecturePassTarget.map(({ title, lectureId }) => ({
+      title,
+      id: lectureId,
+    }));
+
+    return { ...passInfo, appliedList, ...lecturer };
+  });
 };
 
 export const transformSearchParamsLocation = (data: string[]) => {

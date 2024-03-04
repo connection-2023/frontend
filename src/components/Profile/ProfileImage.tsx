@@ -18,7 +18,7 @@ const ProfileImg = ({
   marginLeft = 3,
 }: ProfileProps) => {
   const imageSize = ProfileImgSize[size];
-  const ml = `ml-${marginLeft}`;
+  const ml = `ml-${marginLeft} group-hover:text-sub-color1`;
 
   return (
     <div className="color-inherit flex items-center">
@@ -41,7 +41,7 @@ const ProfileImg = ({
         <ProfileSVG
           width={imageSize}
           height={imageSize}
-          className="rounded-full fill-gray-500"
+          className="rounded-full fill-gray-500 "
         />
       )}
       {label && <span className={ml}>{nickname}</span>}
