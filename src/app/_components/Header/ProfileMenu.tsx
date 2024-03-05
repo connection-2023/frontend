@@ -132,7 +132,6 @@ const ProfileMenu = () => {
 
       store.reset();
       router.refresh();
-      router.push('/');
     } catch (error) {
       toast.error('로그아웃에 실패하였습니다!');
     }
