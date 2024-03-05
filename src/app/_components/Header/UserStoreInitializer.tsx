@@ -62,11 +62,6 @@ const UserStoreInitializer = ({
     }
   }, [reload]);
 
-  // useEffect(() => {
-  //   store.setAuthUser(authUser);
-  //   store.setUserType(userType);
-  // }, [authUser, userType]); // 다음 이슈에서 수정 예정
-
   useEffect(() => {
     if (userType === 'user') {
       if (likeClassList.length === 0) {

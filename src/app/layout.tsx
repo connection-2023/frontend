@@ -19,6 +19,7 @@ import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
+import SocketInitializer from './_components/SocketInitializer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -63,6 +64,7 @@ export default async function RootLayout({
       >
         <Providers>
           <UserStoreInitializer authUser={authUser} userType={userType} />
+          <SocketInitializer />
           <Header>
             <UserProfileLinks authUser={authUser} />
           </Header>
