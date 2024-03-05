@@ -26,11 +26,13 @@ const SocketInitializer = () => {
       socket.on('connect', () => {
         setIsConnected(true);
         setSocket(socket);
+        console.log('socket 연결');
       });
 
       socket.on('disconnect', () => {
         setIsConnected(false);
         setSocket(null);
+        console.log('socket 해제');
       });
 
       return () => {

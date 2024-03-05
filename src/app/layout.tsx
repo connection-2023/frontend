@@ -8,6 +8,7 @@ import {
 } from '@/lib/apis/serverApis/userApi';
 import Providers from '@/lib/provider/providers';
 import { convertToProfileInfo } from '@/utils/apiDataProcessor';
+import ChatContainer from './_components/chat/ChatContainer';
 import ControlOptions from './_components/ControlOptions';
 import Footer from './_components/Footer';
 import Header from './_components/Header/Header';
@@ -68,6 +69,7 @@ export default async function RootLayout({
           <Header>
             <UserProfileLinks authUser={authUser} />
           </Header>
+          <ChatContainer />
           <ToastContainer
             position="top-center"
             autoClose={3000}
@@ -80,7 +82,6 @@ export default async function RootLayout({
             pauseOnHover
             theme="light"
           />
-
           {children}
           <ControlOptions />
 
