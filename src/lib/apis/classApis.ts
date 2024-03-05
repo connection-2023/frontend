@@ -15,19 +15,19 @@ import { FetchError } from '@/types/types';
 export const getClassReviews = async (
   id: string,
   order: ReviewOrderType,
-): Promise<IUserReview[] | Error> => {
-  try {
-    const response = await fetch(
-      `/api/post/class/review?id=${id}&orderBy=${order}`,
-      {
-        method: 'GET',
-      },
-    ).then((data) => data.json());
+): Promise<IUserReview[]> => {
+  const response = await fetch(
+    `/api/post/class/review?id=${id}&orderBy=${order}`,
+    {
+      method: 'GET',
+    },
+  );
 
-    return response.data.review;
-  } catch (error) {
-    return new Error('잘못된 요청입니다!');
-  }
+  if (!response.ok) throw new Error('클래스 리뷰 목록 조회 오류!');
+
+  const { data } = await response.json();
+
+  return data.review;
 };
 
 export const getUserClass = async (
@@ -294,6 +294,6 @@ export const getUserSchedulesCalendar = async (
   }
 
   const resData = await response.json();
-  
+
   return resData.data.enrollSchedules;
 };
