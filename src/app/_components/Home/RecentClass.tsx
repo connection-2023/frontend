@@ -1,6 +1,6 @@
+import { getLatestClassLists } from '@/lib/apis/serverApis/classPostApis';
 import { transformBestClassSearch } from '@/utils/apiDataProcessor';
 import ClassPreview from '@/components/ClassPreview/ClassPreview';
-import { getLatestClassLists } from '@/lib/apis/serverApis/classPostApis';
 
 const RecentClass = async () => {
   const recentClassList = transformBestClassSearch(await getLatestClassLists());
