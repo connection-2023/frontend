@@ -16,6 +16,19 @@ module.exports = withBundleAnalyzer({
   images: {
     domains: ['img.freepik.com', 'connection-bucket.s3.amazonaws.com'],
   },
+  headers: async () => {
+    return [
+      {
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, private',
+          },
+        ],
+        source: '/:path*',
+      },
+    ];
+  },
   // async redirects() {
   //   return [
   //     {
