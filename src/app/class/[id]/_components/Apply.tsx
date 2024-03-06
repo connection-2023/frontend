@@ -136,6 +136,7 @@ const Apply = (props: ApplyProps) => {
               count={selectedSchedule.count}
               onRemove={removeReservationItem}
               countUpdate={updateCount}
+              borderColor="border-gray-500"
             />
           )}
 
