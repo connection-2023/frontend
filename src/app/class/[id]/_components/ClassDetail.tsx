@@ -14,10 +14,12 @@ import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
 import Apply from './Apply';
 import ClassReviewSection from './ClassReviewSection';
 import ReadMore from './ReadMore';
+import RegularApply from './RegularApply';
 import Notice from '@/components/ClassNotice/Notice';
 import Map from '@/components/Map/Map';
 import Nav from '@/components/Nav/Nav';
 import ProfileImage from '@/components/Profile/ProfileImage';
+import RegularScheduleView from '@/components/ScheduleView/RegularScheduleView';
 import ScheduleView from '@/components/ScheduleView/ScheduleView';
 
 const ClassDetail = async ({ id }: { id: string }) => {
@@ -45,7 +47,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
     stars,
   } = classDetail;
 
-  const { schedule } = classSchedule;
+  const { schedules, regularLectureStatus } = classSchedule;
 
   return (
     <>
@@ -130,11 +132,21 @@ const ClassDetail = async ({ id }: { id: string }) => {
           <p className="mb-2 text-sm font-medium text-main-color">
             *{reservationDeadline}시간 전까지 예약이 가능합니다
           </p>
-          <ScheduleView
-            duration={duration}
-            lectureSchedule={schedule}
-            maxCapacity={maxCapacity || 1}
-          />
+
+          {schedules && (
+            <ScheduleView
+              duration={duration}
+              lectureSchedule={schedules}
+              maxCapacity={maxCapacity || 1}
+            />
+          )}
+          {regularLectureStatus && (
+            <RegularScheduleView
+              duration={duration}
+              lectureSchedule={regularLectureStatus}
+              maxCapacity={maxCapacity || 1}
+            />
+          )}
         </section>
 
         {/* <section id="location-section" className="mb-14 scroll-mt-16">
@@ -152,13 +164,26 @@ const ClassDetail = async ({ id }: { id: string }) => {
         <ClassReviewSection id={id} stars={stars} />
       </section>
 
-      <Apply
-        id={id}
-        schedule={schedule}
-        duration={duration}
-        maxCapacity={maxCapacity || 1}
-        price={price}
-      />
+      {schedules && (
+        <Apply
+          id={id}
+          schedule={schedules}
+          duration={duration}
+          maxCapacity={maxCapacity || 1}
+          price={price}
+        />
+      )}
+
+      {regularLectureStatus && (
+        <RegularApply
+          id={id}
+          schedule={regularLectureStatus}
+          duration={duration}
+          maxCapacity={maxCapacity || 1}
+          price={price}
+          range={`${formatDate(startDate)}~${formatDate(endDate)}`}
+        />
+      )}
     </>
   );
 };
