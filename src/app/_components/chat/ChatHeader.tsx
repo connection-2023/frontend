@@ -31,7 +31,7 @@ const ChatHeader = () => {
       <div
         className={`${
           search.view ? 'border-b border-gray-500' : ''
-        } flex gap-1`}
+        } flex max-w-[19rem] gap-1`}
       >
         {search.view ? (
           <input

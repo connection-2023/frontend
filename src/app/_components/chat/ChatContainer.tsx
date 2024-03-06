@@ -5,6 +5,10 @@ import { useSocketStore, useUserStore } from '@/store';
 import Chat from './Chat';
 
 const ChatContainer = () => {
+  const { isConnected } = useSocketStore((state) => ({
+    isConnected: state.isConnected,
+  }));
+
   const { authUser, userType } = useUserStore((state) => ({
     authUser: state.authUser,
     userType: state.userType,
@@ -16,7 +20,7 @@ const ChatContainer = () => {
 
   const constraintsRef = useRef(null);
 
-  if (!chatView || !authUser || !userType) return null;
+  if (!chatView || !authUser || !userType || !isConnected) return null;
   return (
     <motion.article
       ref={constraintsRef}

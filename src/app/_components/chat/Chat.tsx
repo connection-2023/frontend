@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { getChatSocketRoomsId } from '@/lib/apis/chatApi';
+import { useSocketStore } from '@/store';
 import ChatHeader from './ChatHeader';
 import { userType } from '@/types/auth';
 
@@ -10,12 +11,27 @@ interface ChatProps {
 }
 
 const Chat = ({ userId, userType }: ChatProps) => {
-  const { data, isLoading, error } = useQuery({
+  const { socket } = useSocketStore((state) => ({
+    socket: state.socket,
+  }));
+
+  const {
+    data: rooms,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['socket', userType, userId],
     queryFn: () => getChatSocketRoomsId(userType, userId),
   });
 
-  console.log(data);
+  if (isLoading) return '로딩중';
+
+  console.log(rooms);
+
+  socket?.emit('login', {
+    rooms,
+    authorizedData: userType === 'user' ? { userId } : { lecturerId: userId },
+  });
 
   return <ChatHeader />;
 };
