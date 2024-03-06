@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, MouseEvent } from 'react';
 import { useClickAway } from 'react-use';
 import { CalendarSVG } from '@/icons/svg';
 import { getClassSchedules } from '@/lib/apis/classApis';
+import { getDatesFromSchedules } from '@/utils/scheduleDateUtils';
 import BasicCalendar from '../Calendar/BasicCalendar';
 
 const ClassDates = ({ id }: { id: string | number }) => {
@@ -13,12 +14,13 @@ const ClassDates = ({ id }: { id: string | number }) => {
   useEffect(() => {
     const getSchedules = async () => {
       if (showCalendar) {
-        const schedules = await getClassSchedules(String(id));
-        if (schedules instanceof Error) return null;
-        const formattedSchedules = schedules.map(
-          (schedule) => new Date(schedule.startDateTime),
+        const data = await getClassSchedules(id);
+        const { schedules, regularLectureStatus } = data;
+        const selectedDatesFromSchedule = getDatesFromSchedules(
+          schedules || regularLectureStatus,
         );
-        setSelectedDates(formattedSchedules);
+
+        setSelectedDates(selectedDatesFromSchedule);
       }
     };
 
