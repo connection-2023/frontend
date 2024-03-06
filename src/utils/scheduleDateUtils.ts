@@ -1,6 +1,11 @@
-import { eachDayOfInterval, set, getDay } from 'date-fns';
+import { eachDayOfInterval, set, getDay, parse, format, add } from 'date-fns';
 import { calculateUnSelectedDate } from './parseUtils';
-import { IDayTimeList, IDateTimeList } from '@/types/class';
+import {
+  IDayTimeList,
+  IDateTimeList,
+  IRegularClassSchedule,
+  IClassSchedule,
+} from '@/types/class';
 
 const dayMapping: {
   [key in '일' | '월' | '화' | '수' | '목' | '금' | '토']: number;
@@ -106,4 +111,24 @@ export const calculateRegularFinalClass = (
       startDateTime,
     };
   });
+};
+
+export const getDatesFromSchedules = (
+  schedules: IRegularClassSchedule[] | IClassSchedule[],
+) => {
+  if ('regularLectureSchedule' in schedules[0]) {
+    return (schedules as IRegularClassSchedule[])
+      .flatMap((schedule) => schedule.regularLectureSchedule)
+      .map((schedule) => new Date(schedule.startDateTime));
+  } else
+    return (schedules as IClassSchedule[]).map(
+      (schedule) => new Date(schedule.startDateTime),
+    );
+};
+
+export const getRegularScheduleTime = (time: string, duration: number) => {
+  const date = parse(time, 'HH:mm', new Date());
+  const newDate = add(date, { minutes: duration });
+
+  return format(newDate, 'HH:mm');
 };
