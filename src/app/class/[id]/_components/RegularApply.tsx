@@ -25,7 +25,14 @@ interface ISelectedSchedule extends IRegularClassSchedule {
 }
 
 const RegularApply = (props: ApplyProps) => {
-  const { schedule, duration, price, maxCapacity, range } = props;
+  const {
+    id: lectureId,
+    schedule,
+    duration,
+    price,
+    maxCapacity,
+    range,
+  } = props;
   const [selectedSchedule, setSelectedSchedule] = useState<ISelectedSchedule>();
   const [isMobileScheduleOpened, setIsMobileScheduleOpened] = useState(false);
   const router = useRouter();
@@ -75,7 +82,9 @@ const RegularApply = (props: ApplyProps) => {
 
     const { id, count } = selectedSchedule;
 
-    router.push(`/class/${id}/apply?lectureScheduleId=${id}&count=${count}`);
+    router.push(
+      `/class/${lectureId}/apply?lectureScheduleId=${id}&count=${count}`,
+    );
   };
 
   const handleMobileApply = () => {
