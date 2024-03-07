@@ -25,7 +25,7 @@ export const ButtonStyles = {
   default:
     'group flex w-full items-center justify-center rounded-md border border-solid border-sub-color1 bg-white text-sub-color1 hover:bg-sub-color1-transparent active:bg-sub-color1 active:text-white',
   secondary:
-    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black hover:bg-opacity-10 active:bg-black active:text-white',
+    'group flex w-full items-center justify-center rounded-md border border-solid border-black bg-white text-black hover:bg-black/10 active:bg-black active:text-white',
 };
 
 export const CLASS_HSTYLE = {
