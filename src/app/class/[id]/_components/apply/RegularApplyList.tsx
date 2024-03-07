@@ -3,6 +3,7 @@ import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
 
 interface RegularApplyListProps {
+  isApply?: boolean;
   schedule: IRegularClassSchedule[];
   duration: number;
   maxCapacity: number;
@@ -12,10 +13,21 @@ interface RegularApplyListProps {
 }
 
 const RegularApplyList = (props: RegularApplyListProps) => {
-  const { schedule, duration, maxCapacity, selectedSchedule, onSelect } = props;
+  const {
+    isApply = false,
+    schedule,
+    duration,
+    maxCapacity,
+    selectedSchedule,
+    onSelect,
+  } = props;
+
+  const ulStyle = isApply
+    ? 'grid max-h-[275px] grid-cols-1 gap-x-2 gap-y-1 overflow-y-auto p-1 md:grid-cols-2'
+    : 'max-h-[275px] space-y-2.5 overflow-y-auto border border-solid border-gray-900 px-2 py-1.5';
 
   return (
-    <ul className="max-h-[275px] space-y-2.5 overflow-y-auto border border-solid border-gray-900 px-2 py-1.5">
+    <ul className={ulStyle}>
       {schedule.map((item) => {
         const {
           id,
