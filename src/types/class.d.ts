@@ -326,7 +326,7 @@ export interface ISelectedSchedule extends IRegularClassSchedule {
 
 export interface IClassScheduleResponse {
   regularLectureStatus?: IRegularClassSchedule[];
-  schedules: IClassSchedule[];
+  schedules?: IClassSchedule[];
   holidays: string[];
   daySchedule?: IDaySchedule[];
 }
