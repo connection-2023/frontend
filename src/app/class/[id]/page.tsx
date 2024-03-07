@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
+import {
+  getClassPreview,
+  getClassDetail,
+  getUserReservation,
+} from '@/lib/apis/serverApis/classPostApis';
 import ClassDetail from './_components/ClassDetail';
 import ClassPreview from './_components/ClassPreview';
 import ClassDetailLoading from './_components/Loading/ClassDetailLoading';
 import ClassTopLoading from './_components/Loading/ClassTopLoading';
 import UserReservation from './_components/UserReservation';
 import type { Metadata } from 'next';
-import {
-  getClassPreview,
-  getClassDetail,
-  getUserReservation,
-} from '@/lib/apis/serverApis/classPostApis';
 
 export const generateMetadata = async ({
   params,
@@ -28,7 +28,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `Connection | ${classData.title}`,
+    title: classData.title,
     description: classDetailData.introduction,
   };
 };
