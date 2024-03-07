@@ -25,8 +25,8 @@ const ControlOptions = () => {
     const instructorDetailPattern = /^\/instructor\/[^\/]+$/;
 
     return (
-      classDetailPattern.test(location.pathname) ||
-      instructorDetailPattern.test(location.pathname)
+      classDetailPattern.test(pathname) ||
+      instructorDetailPattern.test(pathname)
     );
   })();
 
