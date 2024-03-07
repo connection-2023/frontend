@@ -1,16 +1,19 @@
+import ApplySidebar from './_components/ApplySidebar';
+import ClassApplicationInfo from './_components/ClassApplicationInfo';
+import Coupon from './_components/Coupon';
+import Pass from './_components/Pass';
+import PaymentType from './_components/PaymentType';
+import RegularClassApplicationInfo from './_components/RegularClassApplicationInfo';
+import ReservationInfo from './_components/ReservationInfo';
+import { IClassSchedule, IRegularClassSchedule } from '@/types/class';
+import type { Metadata } from 'next';
 import { CouponSVG, MusicalNoteSVG, NoticeSVG, PassSVG } from '@/icons/svg';
 import {
   getClassPreview,
   getClassDetail,
   getClassSchedules,
 } from '@/lib/apis/serverApis/classPostApis';
-import ApplySidebar from './_components/ApplySidebar';
-import ClassApplicationInfo from './_components/ClassApplicationInfo';
-import Coupon from './_components/Coupon';
-import Pass from './_components/Pass';
-import PaymentType from './_components/PaymentType';
-import ReservationInfo from './_components/ReservationInfo';
-import type { Metadata } from 'next';
+import { formatDate } from '@/utils/parseUtils';
 
 export const generateMetadata = async ({
   params,
@@ -48,16 +51,36 @@ const ClassApplyPage = async ({
 
   const { schedules, regularLectureStatus } = classSchedule;
   const { title } = classPreviewData;
-  const { duration, maxCapacity, reservationComment, price } = classDetail;
+  const {
+    duration,
+    maxCapacity,
+    reservationComment,
+    price,
+    startDate,
+    endDate,
+  } = classDetail;
 
-  const clickableDates = schedules?.map((item) => new Date(item.startDateTime));
+  const clickableDates =
+    schedules?.map((item) => new Date(item.startDateTime)) || [];
 
-  const findSelectedSchedule = (schedules || regularLectureStatus).find(
-    (item) => item.id === Number(lectureScheduleId),
-  );
+  if (!schedules || !regularLectureStatus)
+    throw Error('클래스 일정이 없습니다!');
 
-  const initialClickDate = findSelectedSchedule
-    ? new Date(findSelectedSchedule.startDateTime)
+  const findSelectedSchedule = (() => {
+    if (schedules) {
+      return schedules.find((item) => item.id === Number(lectureScheduleId));
+    }
+
+    if (regularLectureStatus) {
+      return regularLectureStatus.find(
+        (item) => item.id === Number(lectureScheduleId),
+      );
+    }
+  })();
+
+  const initialClickDate = (findSelectedSchedule as IClassSchedule)
+    ?.startDateTime
+    ? new Date((findSelectedSchedule as IClassSchedule).startDateTime)
     : undefined;
 
   return (
@@ -96,21 +119,36 @@ const ClassApplyPage = async ({
           ) : null}
 
           {/* 원데이 클래스 */}
-          {schedules && (
-            <ClassApplicationInfo
-              lectureScheduleId={lectureScheduleId}
-              clickableDates={clickableDates}
-              findSelectedSchedule={findSelectedSchedule}
-              lectureSchedule={schedules}
-              maxCapacity={maxCapacity}
-              duration={duration}
-              applyCount={Number(count)}
-              initialClickDate={initialClickDate}
-            />
-          )}
+          <section className="mt-4 rounded-md px-4 py-[1.31rem] shadow-vertical">
+            <h3 className="text-lg font-semibold">신청한 클래스</h3>
 
-          {/* 정기 클래스 */}
+            {schedules && (
+              <ClassApplicationInfo
+                lectureScheduleId={lectureScheduleId}
+                clickableDates={clickableDates}
+                findSelectedSchedule={findSelectedSchedule as IClassSchedule}
+                lectureSchedule={schedules}
+                maxCapacity={maxCapacity}
+                duration={duration}
+                applyCount={Number(count)}
+                initialClickDate={initialClickDate}
+              />
+            )}
 
+            {regularLectureStatus && findSelectedSchedule && (
+              <RegularClassApplicationInfo
+                schedule={regularLectureStatus}
+                initSelectedSchedule={
+                  findSelectedSchedule as IRegularClassSchedule
+                }
+                range={`${formatDate(startDate)}~${formatDate(endDate)}`}
+                duration={duration}
+                maxCapacity={maxCapacity}
+              />
+            )}
+
+            {/* 정기 클래스 */}
+          </section>
           <ReservationInfo />
 
           <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
