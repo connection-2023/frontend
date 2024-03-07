@@ -72,6 +72,7 @@ const ApplyPage = () => {
     };
 
     try {
+      await switchToInstructorAction();
     } catch (error) {
       if (error instanceof Error) {
         const fetchError = error as FetchError;
@@ -90,7 +91,7 @@ const ApplyPage = () => {
   };
 
   const submit = async (data: InstructorApplyData) => {
-    try {
+    const applyInstructorAction = async () => {
       const {
         profileImageUrls,
         emailFront,
@@ -162,9 +163,22 @@ const ApplyPage = () => {
       await instructorRegister(instructorData);
       toast.success('강사 등록 완료!');
       switchToInstructor();
+    };
+    try {
+      await applyInstructorAction();
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('잠시 후 다시 시도해 주세요');
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await applyInstructorAction();
+          } catch (error) {
+            console.error('강사 등록 오류', error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
       }
     }
   };
