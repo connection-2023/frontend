@@ -12,8 +12,6 @@ export const POST = async (request: NextRequest) => {
 
   const tokenValue = request.cookies.get('userAccessToken')?.value;
 
-  console.log(tokenValue);
-
   if (!tokenValue) {
     return NextResponse.json(
       {
