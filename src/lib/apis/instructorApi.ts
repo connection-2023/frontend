@@ -89,14 +89,14 @@ export const instructorRegister = async (data: IInstructorRegister) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(
-        `강사 등록 오류: ${errorData.message || ''}, status: ${
-          response.status
-        }`,
-      );
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
     }
 
-    return await response.json();
+    const resData = await response.json();
+
+    return resData;
   } catch (error) {
     console.error('강사 등록 오류', error);
     throw error;

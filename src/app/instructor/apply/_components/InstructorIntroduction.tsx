@@ -25,10 +25,10 @@ const InstructorIntroduction = ({
   } = useFormContext();
 
   return (
-    <div className="mb-10 flex flex-col gap-10">
+    <div className="mb-10 flex max-w-[600px] flex-col gap-10">
       <section
         id="profileImageUrls"
-        className="flex w-full flex-col border-b border-solid border-gray-500 pb-10"
+        className="flex w-full flex-col border-b border-solid border-gray-500 py-10"
       >
         <Controller
           name="profileImageUrls"
@@ -60,7 +60,7 @@ const InstructorIntroduction = ({
           defaultValue={defaultData?.region}
           rules={{
             validate: (value) => {
-              if (Object.keys(value).length === 0) {
+              if (value && Object.keys(value).length === 0) {
                 return '지역';
               }
             },

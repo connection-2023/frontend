@@ -38,9 +38,7 @@ const Nickname = ({ changeVerification, verification }: NicknameProps) => {
     } catch (error) {
       console.error('닉네임 중복 검사 중 에러 발생', error);
 
-      toast.error(
-        '닉네임 중복 검사 중 에러가 발생했습니다. 다시 시도해 주세요.',
-      );
+      toast.error('다시 시도해 주세요.');
     }
   };
 
