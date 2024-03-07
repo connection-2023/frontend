@@ -1,42 +1,37 @@
 import { ToolbarProps, View } from 'react-big-calendar';
-import { ArrowRightSVG } from '@/icons/svg';
+import { ArrowUpSVG } from '@/icons/svg';
 
+/* eslint-disable no-unused-vars */
 interface IToolbarProps extends Partial<ToolbarProps> {
   label: string;
   view: View;
   onNavigate: (action: 'PREV' | 'NEXT' | 'TODAY' | 'DATE') => void;
   onView: (view: View) => void;
 }
-
+/* eslint-enable no-unused-vars */
 const views: { label: string; value: View }[] = [
   { label: 'Month', value: 'month' },
   { label: 'Week', value: 'week' },
 ];
 
 const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
-  <div className="mb-[0.69rem] flex items-center justify-between">
-    <div className="flex h-[1.875rem] w-[8.7rem] divide-x divide-solid overflow-hidden rounded-[0.4rem] border border-solid border-gray-500">
-      <button
-        onClick={() => onNavigate('PREV')}
-        className={`origin-center rotate-180 ${NavButtonStyle}`}
-      >
-        <ArrowRightSVG className="h-[5px] w-[9px] stroke-black" />
+  <div className="mb-2.5 flex items-center justify-between">
+    <div className="grid h-[1.875rem] w-[8.7rem] grid-cols-4 divide-x divide-solid overflow-hidden rounded-md border border-solid border-gray-500">
+      <button onClick={() => onNavigate('PREV')} className={NavButtonStyle}>
+        <ArrowUpSVG className="h-7 w-full origin-center -rotate-90 fill-black" />
       </button>
       <button
         onClick={() => onNavigate('TODAY')}
-        className="flex-1 hover:bg-gray-700 "
+        className="col-span-2 hover:bg-gray-700"
       >
         Today
       </button>
-      <button
-        onClick={() => onNavigate('NEXT')}
-        className={`${NavButtonStyle}`}
-      >
-        <ArrowRightSVG className="h-[5px] w-[9px] stroke-black" />
+      <button onClick={() => onNavigate('NEXT')} className={NavButtonStyle}>
+        <ArrowUpSVG className="h-7 w-full origin-center rotate-90 fill-black" />
       </button>
     </div>
     <h2 className="text-lg font-bold text-gray-100">{label}</h2>
-    <div className="flex gap-[0.38rem] text-base font-normal">
+    <div className="flex gap-1.5 text-base font-normal">
       {views.map((item, index) => (
         <button
           key={index}
@@ -53,7 +48,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
 export default ToolBar;
 
 const NavButtonStyle =
-  'flex w-[1.875rem] items-center justify-center hover:bg-gray-700';
+  'flex w-full h-full items-center justify-center hover:bg-gray-700';
 
 const getButtonClass = (isActive: boolean) =>
   `flex h-7 w-[4.25rem] items-center justify-center rounded-md border border-solid ${
