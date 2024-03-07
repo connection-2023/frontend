@@ -25,7 +25,7 @@ const InstructorIntroduction = ({
   } = useFormContext();
 
   return (
-    <div className="mb-10 flex max-w-[40rem] flex-col gap-10">
+    <div className="mb-10 flex max-w-[600px] flex-col gap-10">
       <section
         id="profileImageUrls"
         className="flex w-full flex-col border-b border-solid border-gray-500 py-10"
