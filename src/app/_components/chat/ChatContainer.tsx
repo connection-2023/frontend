@@ -1,26 +1,24 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, useDragControls } from 'framer-motion';
 import { useRef } from 'react';
-import { useSocketStore, useUserStore } from '@/store';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import Chat from './Chat';
+import { userType } from '@/types/auth';
 
-const ChatContainer = () => {
-  const { isConnected } = useSocketStore((state) => ({
-    isConnected: state.isConnected,
-  }));
+interface ChatContainerProps {
+  userId: string;
+  userType: userType;
+}
 
-  const { authUser, userType } = useUserStore((state) => ({
-    authUser: state.authUser,
-    userType: state.userType,
-  }));
-
-  const { chatView } = useSocketStore((state) => ({
-    chatView: state.chatView,
-  }));
-
+const ChatContainer = ({ userId, userType }: ChatContainerProps) => {
+  const isSm = useMediaQuery('(min-width: 640px)');
+  const chatPositionControls = useDragControls();
   const constraintsRef = useRef(null);
 
-  if (!chatView || !authUser || !userType || !isConnected) return null;
+  const StartChatPositionDrag = (event: React.PointerEvent<HTMLElement>) => {
+    chatPositionControls.start(event);
+  };
+
   return (
     <motion.article
       ref={constraintsRef}
@@ -28,12 +26,25 @@ const ChatContainer = () => {
       className="pointer-events-none fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto flex h-screen max-h-screen w-screen items-center justify-center"
     >
       <motion.main
-        drag
+        drag={isSm}
+        dragListener={false}
+        dragControls={chatPositionControls}
         dragConstraints={constraintsRef}
-        className="pointer-events-auto z-modal h-[633px] w-[19rem] rounded-md bg-white pl-5 pr-3 pt-4 shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)]"
+        className="pointer-events-auto z-modal bg-white shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] sm:rounded-md"
         dragMomentum={false}
       >
-        <Chat userId={authUser.id} userType={userType} />
+        <div
+          className="p-2"
+          onPointerDown={() => {
+            console.log('hi');
+          }}
+        >
+          <Chat
+            userId={userId}
+            userType={userType}
+            StartChatPositionDrag={StartChatPositionDrag}
+          />
+        </div>
       </motion.main>
     </motion.article>
   );

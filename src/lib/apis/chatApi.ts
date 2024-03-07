@@ -61,7 +61,7 @@ export const getCheckTargetId = async (
 
     return resData;
   } catch (error) {
-    console.error('상대방 ', error);
+    console.error('상대방 채팅방 유무 조회 오류', error);
     throw error;
   }
 };

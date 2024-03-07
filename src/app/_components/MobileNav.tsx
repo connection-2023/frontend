@@ -9,10 +9,15 @@ import {
   UnFilledNoteSVG,
   LogInSVG,
 } from '@/icons/svg';
+import { useSocketStore } from '@/store';
 import { useUserStore } from '@/store/userStore';
 import { useActivePath } from '@/utils/hooks/useActivePath';
 
 const MobileNav = () => {
+  const { chatView } = useSocketStore((state) => ({
+    chatView: state.chatView,
+  }));
+
   const { userType } = useUserStore();
   const isUser = userType !== null;
   const isLecturer = userType === 'lecturer';
@@ -92,25 +97,27 @@ const MobileNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 z-50 h-24 w-full border-t border-solid border-gray-700 bg-white px-4 pb-10 pt-3 sm:hidden">
-      <ul className="flex justify-around">
-        {NAV_LINKS.map(({ href, icon, label }, index) => (
-          <li key={index}>
-            <Link
-              href={href}
-              className={
-                'group line-clamp-1 flex flex-col items-center justify-center gap-1.5 text-sm font-medium' +
-                ' ' +
-                getTextColor(href)
-              }
-            >
-              <div className="h-6">{icon}</div>
-              <label>{label}</label>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    !chatView && (
+      <nav className="fixed bottom-0 left-0 z-50 h-24 w-full border-t border-solid border-gray-700 bg-white px-4 pb-10 pt-3 sm:hidden">
+        <ul className="flex justify-around">
+          {NAV_LINKS.map(({ href, icon, label }, index) => (
+            <li key={index}>
+              <Link
+                href={href}
+                className={
+                  'group line-clamp-1 flex flex-col items-center justify-center gap-1.5 text-sm font-medium' +
+                  ' ' +
+                  getTextColor(href)
+                }
+              >
+                <div className="h-6">{icon}</div>
+                <label>{label}</label>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
   );
 };
 

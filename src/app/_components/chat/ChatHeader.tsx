@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { CloseSVG, SearchSVG } from '@/icons/svg';
 
-const ChatHeader = () => {
+interface ChatHeaderProps {
+  StartChatPositionDrag: (event: React.PointerEvent<HTMLElement>) => void;
+}
+
+const ChatHeader = ({ StartChatPositionDrag }: ChatHeaderProps) => {
   const [search, setSearch] = useState({ view: false, value: '' });
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -27,11 +31,14 @@ const ChatHeader = () => {
   };
 
   return (
-    <header className="flex justify-between">
+    <header
+      onPointerDown={StartChatPositionDrag}
+      className="flex cursor-move justify-between gap-2 pb-2 pl-5 pr-3 pt-4"
+    >
       <div
         className={`${
           search.view ? 'border-b border-gray-500' : ''
-        } flex max-w-[19rem] gap-1`}
+        } flex w-full gap-1 sm:max-w-[17rem]`}
       >
         {search.view ? (
           <input
@@ -53,7 +60,10 @@ const ChatHeader = () => {
         ) : (
           <h1 className="font-semibold">채팅</h1>
         )}
-        <button onClick={search.view ? searchValue : searchViewHandler}>
+        <button
+          onClick={search.view ? searchValue : searchViewHandler}
+          className="mr-2"
+        >
           <SearchSVG className="h-[21px] w-[21px] fill-gray-300" />
         </button>
       </div>
