@@ -3,8 +3,9 @@ import CountButton from '@/components/Button/CountButton';
 import { IDateTime } from '@/types/class';
 
 interface ReservationItemProps extends IDateTime {
+  // eslint-disable-next-line no-unused-vars
   countUpdate: (newVal: number) => void;
-  onRemove: () => void;
+  onRemove?: () => void;
   borderColor?: string;
 }
 
@@ -33,12 +34,14 @@ const ReservationItem = ({
     <div className={`w-full border-y border-solid ${borderColor}`}>
       <div className="mt-2 flex justify-between text-sm">
         <p>{dateTime}</p>
-        <ClearSVG
-          onClick={onRemove}
-          className="cursor-pointer fill-gray-500 stroke-white stroke-2"
-          width={18}
-          height={18}
-        />
+        {onRemove && (
+          <ClearSVG
+            onClick={onRemove}
+            className="cursor-pointer fill-gray-500 stroke-white stroke-2"
+            width={18}
+            height={18}
+          />
+        )}
       </div>
       <div className="my-3 flex items-baseline justify-between text-base font-medium">
         <div className="flex items-center text-sm text-gray-100">
