@@ -312,9 +312,18 @@ export interface IClassSchedule {
   numberOfParticipants: number;
 }
 
+export interface IRegularClassSchedule {
+  id: number;
+  day: string[];
+  dateTime: string;
+  numberOfParticipants: number;
+  regularLectureSchedule: IRegularSchedule[];
+}
+
 export interface IClassScheduleResponse {
-  schedule: IClassSchedule[];
-  holidayArr: string[];
+  regularLectureStatus?: IRegularClassSchedule[];
+  schedules: IClassSchedule[];
+  holidays: string[];
   daySchedule?: IDaySchedule[];
 }
 
@@ -817,7 +826,7 @@ interface IRecentApply {
   regularLectureStatus: {
     id: number;
     day: string[];
-    dateTime: string[];
+    dateTime: string;
     numberOfParticipants: number;
     regularLectureSchedule: {
       id: number;

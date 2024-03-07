@@ -46,13 +46,13 @@ const ClassApplyPage = async ({
     classSchedules,
   ]);
 
-  const { schedule } = classSchedule;
+  const { schedules, regularLectureStatus } = classSchedule;
   const { title } = classPreviewData;
   const { duration, maxCapacity, reservationComment, price } = classDetail;
 
-  const clickableDates = schedule.map((item) => new Date(item.startDateTime));
+  const clickableDates = schedules?.map((item) => new Date(item.startDateTime));
 
-  const findSelectedSchedule = schedule.find(
+  const findSelectedSchedule = (schedules || regularLectureStatus).find(
     (item) => item.id === Number(lectureScheduleId),
   );
 
@@ -95,16 +95,21 @@ const ClassApplyPage = async ({
             </section>
           ) : null}
 
-          <ClassApplicationInfo
-            lectureScheduleId={lectureScheduleId}
-            clickableDates={clickableDates}
-            findSelectedSchedule={findSelectedSchedule}
-            lectureSchedule={schedule}
-            maxCapacity={maxCapacity}
-            duration={duration}
-            applyCount={Number(count)}
-            initialClickDate={initialClickDate}
-          />
+          {/* 원데이 클래스 */}
+          {schedules && (
+            <ClassApplicationInfo
+              lectureScheduleId={lectureScheduleId}
+              clickableDates={clickableDates}
+              findSelectedSchedule={findSelectedSchedule}
+              lectureSchedule={schedules}
+              maxCapacity={maxCapacity}
+              duration={duration}
+              applyCount={Number(count)}
+              initialClickDate={initialClickDate}
+            />
+          )}
+
+          {/* 정기 클래스 */}
 
           <ReservationInfo />
 
