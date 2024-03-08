@@ -66,7 +66,7 @@ const ClassReviewSection = ({ id, stars }: ClassReviewSectionProps) => {
 
         <button
           onClick={openList}
-          className="flex items-center gap-4 text-sm font-medium"
+          className="flex items-center gap-2 text-sm font-medium"
           aria-label="리뷰 정렬"
         >
           {selectedOption}

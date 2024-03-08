@@ -22,7 +22,7 @@ const RecentClass = dynamic(() => import('./_components/Home/RecentClass'), {
 const Home = async () => {
   return (
     <div className="relative mx-auto mb-20 w-full">
-      <div className="h-[472px]">
+      <div className="bg-black py-5 md:py-12">
         <Banner />
       </div>
 

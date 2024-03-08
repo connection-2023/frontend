@@ -11,7 +11,7 @@ const UserReservation = ({ userReservation }: { userReservation: boolean }) => {
   };
 
   return isShow ? (
-    <div className="flex h-[2.8rem] w-full items-center justify-center gap-2.5 rounded-md bg-main-color px-2.5 text-sm text-white md:w-1/2">
+    <div className="flex h-[2.8rem] w-screen items-center justify-center gap-2.5 rounded-md bg-main-color px-2.5 text-sm text-white md:w-1/2">
       <AlarmSVG width="19" height="19" className="fill-white" />
       <p>신청 내역이 있습니다.</p>
 
@@ -27,9 +27,7 @@ const UserReservation = ({ userReservation }: { userReservation: boolean }) => {
         <CloseSVG width="21" height="21" className="stroke-white stroke-2" />
       </button>
     </div>
-  ) : (
-    <></>
-  );
+  ) : null;
 };
 
 export default UserReservation;

@@ -24,8 +24,8 @@ export const generateMetadata = async ({
   const classData = await getClassPreview(id);
 
   return {
-    title: `Connection | ${classData.title} 클래스 신청`,
-    description: `Connection | ${classData.title} 클래스 신청`,
+    title: `${classData.title} 클래스 신청`,
+    description: `${classData.title} 클래스 신청 페이지`,
   };
 };
 

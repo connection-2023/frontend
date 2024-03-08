@@ -20,6 +20,28 @@ import OptionButtons from '@/components/Button/OptionButtons';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
+import type { Metadata } from 'next';
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> => {
+  const { id } = params;
+  const profile = await getInstructor(id, false);
+
+  if (profile instanceof Error || !profile) {
+    return {
+      title: 'Connection | 강의 상세페이지',
+      description: 'Connection 강의 상세페이지',
+    };
+  }
+
+  return {
+    title: profile.nickname,
+    description: profile.introduction,
+  };
+};
 
 const h2Style = 'mb-2 text-lg font-bold';
 
