@@ -80,7 +80,7 @@ const AuthButtons = () => {
   };
 
   return (
-    <div className="flex items-center gap-6">
+    <div className="flex items-center justify-between">
       <KakaoAuth
         onSuccess={kakaoOnSuccess}
         onFail={(error) => {
