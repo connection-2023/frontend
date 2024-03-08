@@ -503,3 +503,14 @@ export const PAYMENT_STATUS = {
   DONE: '결제완료',
   CANCELED: '결제취소',
 };
+
+export const HIDE_NAV_PATH = [
+  '^/search$',
+  '^/report$',
+  '^/class/create$',
+  '^/class/edit$',
+  '^/instructor/apply$',
+  '^/class/[\\w-]+$',
+  '^/class/[\\w-]+/apply$',
+  '^/instructor/[\\w-]+/edit$',
+];
