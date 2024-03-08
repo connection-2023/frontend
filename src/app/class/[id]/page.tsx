@@ -46,7 +46,7 @@ const ClassDetailPage = async ({
         <ClassPreview id={id} />
       </Suspense>
 
-      <div className="fixed bottom-[6rem] z-modal flex w-full justify-center px-4 xl:bottom-6 ">
+      <div className="fixed bottom-24 left-0 z-modal flex w-full justify-center px-4 xl:bottom-6 ">
         <UserReservation userReservation={userReservationData} />
       </div>
 
