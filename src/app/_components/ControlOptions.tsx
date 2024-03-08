@@ -64,7 +64,7 @@ const ControlOptions = () => {
   return isButtonRendered ? (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-24 right-12 flex h-10 w-10 items-center justify-center rounded-full shadow-float backdrop-blur-sm"
+      className="fixed bottom-24 right-2 flex h-10 w-10 items-center justify-center rounded-full shadow-float backdrop-blur-sm"
       aria-label="위로가기"
     >
       <ScrollTopSVG />
