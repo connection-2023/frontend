@@ -37,10 +37,20 @@ const ClassList = ({
       className="flex w-full cursor-pointer flex-col whitespace-nowrap rounded-md border border-solid border-gray-700 py-3.5"
     >
       <div className="mb-3.5 flex items-center px-5">
-        <p className="mr-2 flex h-6 w-14 items-center justify-center border-2 border-solid border-gray-500 text-sm font-bold text-gray-100">
+        <p
+          className={`mr-2 flex h-6 w-14 items-center justify-center border-2 border-solid border-gray-500 text-sm font-bold ${
+            isProgress ? 'text-gray-100' : 'text-gray-500'
+          }`}
+        >
           {status}
         </p>
-        <span className="text-sm font-normal text-gray-100">{range}</span>
+        <span
+          className={`text-sm font-normal ${
+            isProgress ? 'text-gray-100' : 'text-gray-500'
+          }`}
+        >
+          {range}
+        </span>
         <p className="flex flex-1 items-center justify-end text-sm font-semibold text-gray-500">
           더보기
           <span className="ml-1.5 flex h-6 w-6 items-center justify-center rounded-full border border-solid border-gray-500 py-1 text-xl font-semibold text-sub-color1">
@@ -54,26 +64,29 @@ const ClassList = ({
       >
         {title}
       </h2>
-      <div className="mb-2 flex items-center border-t border-solid border-gray-700 px-5 pt-3.5 text-sm">
-        <p className="mr-3.5 text-sub-color1">
-          진행<span className="font-bold"> {completedSchedule}회</span>
-        </p>
-        <p className="text-gray-100">
-          전체<span className="font-bold"> {allSchedule}회</span>
-        </p>
-        <span className="flex flex-1 justify-end text-base font-bold">
-          {progressRate}%
-        </span>
-      </div>
-
-      <div className="px-5">
-        <div className="h-1.5 w-full bg-gray-300">
-          <div
-            className="h-full bg-sub-color1 text-right transition-all duration-1000 ease-in-out"
-            style={{ width: `${progressRate}%` }}
-          />
-        </div>
-      </div>
+      {isProgress && (
+        <>
+          <div className="mb-2 flex items-center border-t border-solid border-gray-700 px-5 pt-3.5 text-sm">
+            <p className="mr-3.5 text-sub-color1">
+              진행<span className="font-bold"> {completedSchedule}회</span>
+            </p>
+            <p className="text-gray-100">
+              전체<span className="font-bold"> {allSchedule}회</span>
+            </p>
+            <span className="flex flex-1 justify-end text-base font-bold">
+              {progressRate}%
+            </span>
+          </div>
+          <div className="px-5">
+            <div className="h-1.5 w-full bg-gray-300">
+              <div
+                className="h-full bg-sub-color1 text-right transition-all duration-1000 ease-in-out"
+                style={{ width: `${progressRate}%` }}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </li>
   );
 };
