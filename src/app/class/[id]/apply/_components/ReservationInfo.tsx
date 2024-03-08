@@ -77,8 +77,9 @@ const ReservationInfo = () => {
               인증하기
             </button>
           </li>
+
           {contactValidation && (
-            <li className="flex items-center gap-4 px-2.5 py-1.5">
+            <li className="flex items-center gap-4 py-1.5">
               <span className="w-[64.03px]" />
               <input className="h-7 rounded-md border border-solid border-gray-500 px-2.5 py-1.5 focus:outline-sub-color1" />
               <button className="h-7 w-24 cursor-pointer whitespace-nowrap rounded-md bg-gray-500 font-medium text-white">

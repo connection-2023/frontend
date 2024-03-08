@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
-import { patchPaymentConfirm } from '@/lib/apis/serverApis/paymentsApis';
+import {
+  patchPaymentConfirm,
+  getPaymentInfo,
+} from '@/lib/apis/serverApis/paymentsApis';
 import {
   formatKoreanDateTime,
   formatFullDateTime,
@@ -24,8 +27,13 @@ const ApplyCompletePage = async ({
     amount,
   };
 
-  const PaymentData = await patchPaymentConfirm(paymentInfo);
-  if (PaymentData instanceof Error) return;
+  const { statusCode, error, message } = await patchPaymentConfirm(paymentInfo);
+
+  if (statusCode !== 200 && error !== 'AlreadyApproved') throw Error(message);
+
+  const PaymentData = await getPaymentInfo(orderId);
+
+  if (!PaymentData) return;
 
   const {
     orderName,
@@ -37,6 +45,7 @@ const ApplyCompletePage = async ({
     cardPaymentInfo,
     virtualAccountPaymentInfo,
   } = PaymentData;
+
   const isBankTransfer = paymentMethod.name === '가상계좌';
 
   const basicPaymentInfo = [
@@ -113,7 +122,7 @@ const ApplyCompletePage = async ({
     : [...basicPaymentInfo, ...paymentsInfo];
 
   return (
-    <main className="flex w-full flex-1 mx-auto max-w-[40rem] flex-col items-center whitespace-nowrap">
+    <main className="mx-auto flex w-full max-w-[40rem] flex-1 flex-col items-center whitespace-nowrap">
       <ApplySuccessSVG
         className={`mb-5 mt-6 ${
           isBankTransfer ? 'fill-gray-900' : 'fill-main-color'

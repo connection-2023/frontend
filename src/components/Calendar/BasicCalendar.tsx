@@ -16,6 +16,7 @@ interface ICalendarProps {
   mode: 'preview' | 'filter' | 'dayoff';
   selectableDates?: Date[];
   selectedDates?: Date[];
+  // eslint-disable-next-line no-unused-vars
   handleSelected?: (value: Date[]) => void;
 }
 
@@ -34,8 +35,10 @@ const BasicCalendar = ({
   }, [selected?.length]);
 
   useEffect(() => {
-    setSelected(selectedDates);
-  }, [selectedDates]);
+    if (JSON.stringify(selected) !== JSON.stringify(selectedDates)) {
+      setSelected(selectedDates);
+    }
+  }, [selected, selectedDates]);
 
   const disabledDays = (date: Date) =>
     !selectedDates.some((clickableDate) => isSameDay(clickableDate, date));

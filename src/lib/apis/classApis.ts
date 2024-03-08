@@ -4,7 +4,7 @@ import {
   ILecturerClassListResonse,
   ILecturerClassDetailResonse,
   IClassEditRequest,
-  IClassSchedule,
+  IClassScheduleResponse,
   IClassEditPageData,
   IScheduleLearnerList,
   IMonthlyClassSchedules,
@@ -217,16 +217,16 @@ export const getAllRegisterLists = async (
 
 export const getClassSchedules = async (
   id: string | number,
-): Promise<IClassSchedule[] | Error> => {
-  try {
-    const response = await fetch(`/api/class/schedules?id=${id}`).then((data) =>
-      data.json(),
-    );
+): Promise<IClassScheduleResponse> => {
+  const response = await fetch(`/api/class/schedules?id=${id}`).then((data) =>
+    data.json(),
+  );
 
-    return response.data.schedule;
-  } catch (error) {
-    return new Error('강의 스케쥴 조회 요청 오류!');
+  if (response.statusCode !== 200) {
+    throw new Error('강의 스케쥴 조회 요청 오류!');
   }
+
+  return response.data;
 };
 
 export const getScheduleRegisterLists = async (

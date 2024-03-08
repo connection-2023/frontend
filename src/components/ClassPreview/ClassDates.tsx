@@ -1,29 +1,43 @@
 'use client';
-import { useState, useRef, useEffect, MouseEvent } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+import { useState, useRef, MouseEvent } from 'react';
 import { useClickAway } from 'react-use';
 import { CalendarSVG } from '@/icons/svg';
 import { getClassSchedules } from '@/lib/apis/classApis';
-import BasicCalendar from '../Calendar/BasicCalendar';
+import { getDatesFromSchedules } from '@/utils/scheduleDateUtils';
+import Spinner from '../Spinner/Spinner';
+
+const BasicCalendar = dynamic(() => import('../Calendar/BasicCalendar'), {
+  loading: () => (
+    <div className="flex h-56 w-56 items-center justify-center">
+      <Spinner />
+    </div>
+  ),
+});
 
 const ClassDates = ({ id }: { id: string | number }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const calendarRef = useRef(null);
 
-  useEffect(() => {
-    const getSchedules = async () => {
+  const { isLoading } = useQuery({
+    queryKey: ['class', id, showCalendar],
+    queryFn: async () => {
       if (showCalendar) {
-        const schedules = await getClassSchedules(String(id));
-        if (schedules instanceof Error) return null;
-        const formattedSchedules = schedules.map(
-          (schedule) => new Date(schedule.startDateTime),
+        const data = await getClassSchedules(id);
+        const { schedules, regularLectureStatus } = data;
+        if (!schedules || !regularLectureStatus) return;
+        const selectedDatesFromSchedule = getDatesFromSchedules(
+          schedules || regularLectureStatus,
         );
-        setSelectedDates(formattedSchedules);
-      }
-    };
 
-    getSchedules();
-  }, [id, showCalendar]);
+        setSelectedDates(selectedDatesFromSchedule);
+      }
+
+      return Promise.resolve([]);
+    },
+  });
 
   useClickAway(calendarRef, () => {
     setShowCalendar(false);
@@ -46,7 +60,13 @@ const ClassDates = ({ id }: { id: string | number }) => {
 
       {showCalendar && (
         <div className="absolute z-10 overflow-hidden rounded-lg bg-white p-3.5 shadow-horizontal">
-          <BasicCalendar mode="preview" selectableDates={selectedDates} />
+          {isLoading ? (
+            <div className="flex h-56 w-56 items-center justify-center">
+              <Spinner />
+            </div>
+          ) : (
+            <BasicCalendar mode="preview" selectableDates={selectedDates} />
+          )}
         </div>
       )}
     </div>

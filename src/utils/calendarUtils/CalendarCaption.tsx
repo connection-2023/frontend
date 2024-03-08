@@ -5,11 +5,15 @@ import { ArrowUpSVG } from '@/icons/svg';
 
 export const FormattedCaption = ({ displayMonth }: CaptionProps) => {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
+
   return (
     <div className="flex w-full justify-between px-3">
       <button
         disabled={!previousMonth}
-        onClick={() => previousMonth && goToMonth(previousMonth)}
+        onClick={(event) => {
+          event.stopPropagation();
+          previousMonth && goToMonth(previousMonth);
+        }}
         aria-label="prev-month"
       >
         <ArrowUpSVG
@@ -23,7 +27,10 @@ export const FormattedCaption = ({ displayMonth }: CaptionProps) => {
       </p>
       <button
         disabled={!nextMonth}
-        onClick={() => nextMonth && goToMonth(nextMonth)}
+        onClick={(event) => {
+          event.stopPropagation();
+          nextMonth && goToMonth(nextMonth);
+        }}
         aria-label="next-month"
       >
         <ArrowUpSVG

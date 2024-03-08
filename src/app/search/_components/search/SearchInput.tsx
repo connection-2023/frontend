@@ -42,7 +42,7 @@ const SearchInput = () => {
         width={21}
         height={21}
         onClick={onClickClear}
-        className="mr-1 w-[21px] cursor-pointer fill-gray-700"
+        className="cursor-pointer fill-gray-700 stroke-white stroke-2"
       />
       {keyword.trim() !== '' && (
         <div className="absolute top-[10rem] flex min-h-[450px] w-[95%] flex-col gap-3 bg-white p-2 text-lg">

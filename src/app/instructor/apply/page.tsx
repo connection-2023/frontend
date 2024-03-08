@@ -9,7 +9,7 @@ import {
   getInstructorProfile,
   instructorRegister,
 } from '@/lib/apis/instructorApi';
-import { getSwitchUserRole } from '@/lib/apis/userApi';
+import { accessTokenReissuance, getSwitchUserRole } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import {
   categorizeGenres,
@@ -22,7 +22,7 @@ import InstructorAuth from './_components/InstructorAuth';
 import InstructorIntroduction from './_components/InstructorIntroduction';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { InstructorApplyData } from '@/types/instructor';
-import { ErrorMessage } from '@/types/types';
+import { ErrorMessage, FetchError } from '@/types/types';
 
 const steps = [
   { title: '강사 인증', component: <InstructorAuth /> },
@@ -36,12 +36,12 @@ const ApplyPage = () => {
   const router = useRouter();
   const store = useUserStore();
 
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = '';
-    };
+  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    event.preventDefault();
+    event.returnValue = '';
+  };
 
+  useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
@@ -55,22 +55,43 @@ const ApplyPage = () => {
   } = formMethods;
 
   const switchToInstructor = async () => {
-    await getSwitchUserRole('lecturer');
+    const switchToInstructorAction = async () => {
+      await getSwitchUserRole('user');
 
-    const instructorProfile = await getInstructorProfile();
+      const instructorProfile = await getInstructorProfile();
 
-    if (instructorProfile) {
-      const authUser = convertToProfileInfo(instructorProfile);
-      store.setAuthUser(authUser);
-      store.setUserType('lecturer');
+      if (instructorProfile) {
+        const authUser = convertToProfileInfo(instructorProfile);
+        store.setAuthUser(authUser);
+        store.setUserType('lecturer');
+      }
+
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      router.push('/');
+      router.refresh();
+    };
+
+    try {
+      await switchToInstructorAction();
+    } catch (error) {
+      if (error instanceof Error) {
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await switchToInstructorAction();
+          } catch (error) {
+            console.error('강사로 전환 오류', error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
+      }
     }
-
-    router.push('/');
-    router.refresh();
   };
 
   const submit = async (data: InstructorApplyData) => {
-    try {
+    const applyInstructorAction = async () => {
       const {
         profileImageUrls,
         emailFront,
@@ -142,9 +163,22 @@ const ApplyPage = () => {
       await instructorRegister(instructorData);
       toast.success('강사 등록 완료!');
       switchToInstructor();
+    };
+    try {
+      await applyInstructorAction();
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('잠시 후 다시 시도해 주세요');
+        const fetchError = error as FetchError;
+        if (fetchError.status === 401) {
+          try {
+            await accessTokenReissuance();
+            await applyInstructorAction();
+          } catch (error) {
+            console.error('강사 등록 오류', error);
+          }
+        } else {
+          toast.error('잘못된 요청입니다!');
+        }
       }
     }
   };
