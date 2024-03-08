@@ -1,3 +1,10 @@
+import { CouponSVG, MusicalNoteSVG, NoticeSVG, PassSVG } from '@/icons/svg';
+import {
+  getClassPreview,
+  getClassDetail,
+  getClassSchedules,
+} from '@/lib/apis/serverApis/classPostApis';
+import { formatDate } from '@/utils/parseUtils';
 import ApplySidebar from './_components/ApplySidebar';
 import ClassApplicationInfo from './_components/ClassApplicationInfo';
 import Coupon from './_components/Coupon';
@@ -7,13 +14,6 @@ import RegularClassApplicationInfo from './_components/RegularClassApplicationIn
 import ReservationInfo from './_components/ReservationInfo';
 import { IClassSchedule, IRegularClassSchedule } from '@/types/class';
 import type { Metadata } from 'next';
-import { CouponSVG, MusicalNoteSVG, NoticeSVG, PassSVG } from '@/icons/svg';
-import {
-  getClassPreview,
-  getClassDetail,
-  getClassSchedules,
-} from '@/lib/apis/serverApis/classPostApis';
-import { formatDate } from '@/utils/parseUtils';
 
 export const generateMetadata = async ({
   params,
@@ -63,7 +63,7 @@ const ClassApplyPage = async ({
   const clickableDates =
     schedules?.map((item) => new Date(item.startDateTime)) || [];
 
-  if (!schedules || !regularLectureStatus)
+  if (!schedules && !regularLectureStatus)
     throw Error('클래스 일정이 없습니다!');
 
   const findSelectedSchedule = (() => {
@@ -159,13 +159,15 @@ const ClassApplyPage = async ({
             <Coupon id={id} price={price} />
           </section>
 
-          <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
-            <h3 className="flex gap-1 text-lg font-semibold">
-              <PassSVG className="h-6 w-6 fill-sub-color1" />
-              패스권
-            </h3>
-            <Pass id={Number(id)} />
-          </section>
+          {schedules && (
+            <section className="mt-4 px-4 py-[1.31rem] shadow-vertical">
+              <h3 className="flex gap-1 text-lg font-semibold">
+                <PassSVG className="h-6 w-6 fill-sub-color1" />
+                패스권
+              </h3>
+              <Pass id={Number(id)} />
+            </section>
+          )}
 
           <section className="mt-4 min-h-[447px] overflow-hidden rounded-md shadow-vertical">
             {/* <h3 className="text-lg font-semibold">결제 방법 선택</h3> */}
