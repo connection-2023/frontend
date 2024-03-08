@@ -112,7 +112,7 @@ export const postPassPaymentInfo = async (
     }
 
     const responseData = await response.json();
-    return responseData.data.passPaymentInfo;
+    return responseData.data.pendingPaymentInfo;
   } catch (error) {
     console.error('패스권 결제 정보 생성 오류', error);
     throw error;
