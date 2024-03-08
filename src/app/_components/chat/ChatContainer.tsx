@@ -3,14 +3,8 @@ import { motion, useDragControls } from 'framer-motion';
 import { useRef } from 'react';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import Chat from './Chat';
-import { userType } from '@/types/auth';
 
-interface ChatContainerProps {
-  userId: string;
-  userType: userType;
-}
-
-const ChatContainer = ({ userId, userType }: ChatContainerProps) => {
+const ChatContainer = () => {
   const isSm = useMediaQuery('(min-width: 640px)');
   const chatPositionControls = useDragControls();
   const constraintsRef = useRef(null);
@@ -39,11 +33,7 @@ const ChatContainer = ({ userId, userType }: ChatContainerProps) => {
             console.log('hi');
           }}
         >
-          <Chat
-            userId={userId}
-            userType={userType}
-            StartChatPositionDrag={StartChatPositionDrag}
-          />
+          <Chat StartChatPositionDrag={StartChatPositionDrag} />
         </div>
       </motion.main>
     </motion.article>

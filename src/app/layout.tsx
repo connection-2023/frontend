@@ -2,13 +2,14 @@ import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { ToastContainer } from 'react-toastify';
+import { getChatSocketRoomsId } from '@/lib/apis/serverApis/chatApi';
 import {
   getInstructorProfile,
   getMyProfile,
 } from '@/lib/apis/serverApis/userApi';
 import Providers from '@/lib/provider/providers';
 import { convertToProfileInfo } from '@/utils/apiDataProcessor';
-import ChatContainer from './_components/chat/ChatContainer';
+import ChatModal from './_components/chat/ChatModal';
 import ControlOptions from './_components/ControlOptions';
 import Footer from './_components/Footer';
 import Header from './_components/Header/Header';
@@ -39,6 +40,7 @@ export default async function RootLayout({
   const lecturer = cookieStore.get('lecturerAccessToken')?.value;
   let authUser: profileInfo | null = null;
   let userType: userType | null = null;
+  let socketRooms: string[] | null = null;
 
   try {
     if (user) {
@@ -51,6 +53,10 @@ export default async function RootLayout({
       const instructorProfile = await getInstructorProfile();
       authUser = convertToProfileInfo(instructorProfile);
       userType = 'lecturer';
+    }
+
+    if (userType && authUser) {
+      socketRooms = await getChatSocketRoomsId(userType, authUser.id);
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -65,11 +71,15 @@ export default async function RootLayout({
       >
         <Providers>
           <UserStoreInitializer authUser={authUser} userType={userType} />
-          <SocketInitializer />
+          <SocketInitializer
+            userType={userType}
+            userId={authUser?.id}
+            rooms={socketRooms}
+          />
           <Header>
             <UserProfileLinks authUser={authUser} />
           </Header>
-          <ChatContainer />
+          <ChatModal />
           <ToastContainer
             position="top-center"
             autoClose={3000}

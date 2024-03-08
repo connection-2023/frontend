@@ -2,14 +2,21 @@
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useSocketStore, useUserStore } from '@/store';
+import { userType } from '@/types/auth';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';
 
-const SocketInitializer = () => {
-  const { authUser } = useUserStore((state) => ({
-    authUser: state.authUser,
-  }));
+interface SocketInitializerProps {
+  userType: userType | null;
+  rooms: string[] | null;
+  userId?: string;
+}
 
+const SocketInitializer = ({
+  userType,
+  rooms,
+  userId,
+}: SocketInitializerProps) => {
   const { socket, isConnected, setSocket, setIsConnected } = useSocketStore(
     (state) => ({
       socket: state.socket,
@@ -20,8 +27,8 @@ const SocketInitializer = () => {
   );
 
   useEffect(() => {
-    if (authUser && !isConnected) {
-      const socket = io(END_POINT);
+    if (userType && !isConnected) {
+      const socket = io(`${END_POINT}/chatroom1`);
 
       socket.on('connect', () => {
         setIsConnected(true);
@@ -35,15 +42,19 @@ const SocketInitializer = () => {
         console.log('socket 해제');
       });
 
+      socket.emit('login', {
+        rooms,
+        authorizedData:
+          userType === 'user' ? { userId } : { lecturerId: userId },
+      });
+
       return () => {
         socket.disconnect();
       };
-    } else {
-      if (isConnected) {
-        socket?.disconnect();
-      }
+    } else if (!userType && socket) {
+      socket.disconnect();
     }
-  }, [authUser]);
+  }, [userType]);
 
   return null;
 };
