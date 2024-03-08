@@ -2,15 +2,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TransFormSVG } from '@/icons/svg';
-import { getInstructorProfile } from '@/lib/apis/instructorApi';
 import {
   getSwitchUserRole,
   getLogout,
-  getMyProfile,
   accessTokenReissuance,
 } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
-import { convertToProfileInfo } from '@/utils/apiDataProcessor';
+import { reloadToast } from '@/utils/reloadMessage';
 import { userType } from '@/types/auth';
 
 const USER_MENU = [
@@ -39,47 +37,21 @@ const ProfileMenu = () => {
     const res = await getSwitchUserRole(userType);
 
     if (res.status === 200) {
-      await handleSuccessfulSwitch(userType, toastId);
+      await handleSuccessfulSwitch(userType);
     } else {
       await handleUnsuccessfulSwitch(res, toastId);
     }
   };
 
-  const handleSuccessfulSwitch = async (
-    userType: userType,
-    toastId: number | string,
-  ) => {
-    const profile =
-      userType === 'user' ? await getInstructorProfile() : await getMyProfile();
+  const handleSuccessfulSwitch = async (userType: userType) => {
+    window.location.reload();
 
-    if (!profile) {
-      toast.update(toastId, {
-        render:
-          userType === 'user'
-            ? '강사 프로필을 불러오는데 실패하였습니다'
-            : '유저 프로필을 불러오는데 실패하였습니다',
-        type: 'error',
-        isLoading: false,
-        autoClose: 1500,
-      });
-      return;
-    }
-
-    const authUser = convertToProfileInfo(profile);
-    store.setAuthUser(authUser);
-    store.setUserType(userType === 'user' ? 'lecturer' : 'user');
-    router.push('/');
-    router.refresh();
-
-    toast.update(toastId, {
-      render:
-        userType === 'user'
-          ? '강사로 전환되었습니다!'
-          : '일반 유저로 전환되었습니다!',
-      type: 'success',
-      isLoading: false,
-      autoClose: 1500,
-    });
+    reloadToast(
+      userType === 'user'
+        ? '강사로 전환되었습니다!'
+        : '일반 유저로 전환되었습니다!',
+      'success',
+    );
   };
 
   const handleUnsuccessfulSwitch = async (
