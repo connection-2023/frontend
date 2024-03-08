@@ -1,22 +1,18 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { getLecturerClassList } from '@/lib/apis/classApis';
 import ClassList from './_components/ClassList';
-import Spinner from '@/components/Loading/Spinner';
+import Spinner from '@/components/Spinner/Spinner';
 
 const MyClassPage = () => {
   const [isProgress, setIsProgress] = useState(true);
   const status = isProgress ? '진행중' : '마감된 클래스';
-  const router = useRouter();
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['instructor', 'myclass', status],
     queryFn: () => getLecturerClassList(status),
     refetchOnWindowFocus: 'always',
   });
-
-  if (data instanceof Error || error) return router.push('/error');
 
   const handleOptions = () => {
     setIsProgress(!isProgress);
@@ -48,7 +44,7 @@ const MyClassPage = () => {
       </div>
 
       {isLoading ? (
-        <div className="mb-auto mt-5 flex h-fit items-center justify-center">
+        <div className="mb-auto mt-5 flex h-80 items-center justify-center">
           <Spinner />
         </div>
       ) : (
