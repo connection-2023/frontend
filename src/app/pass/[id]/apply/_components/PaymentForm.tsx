@@ -91,7 +91,13 @@ const PaymentForm = ({ passInfo }: PaymentFormProps) => {
           }
         } else {
           postPaymentCancel(orderId);
-          toast.error(error.message);
+
+          toast.error(
+            fetchError.status === 400 || fetchError.status === 404
+              ? error.message
+              : '잘못된 요청 입니다.',
+          );
+          console.error(error);
         }
       }
     }
