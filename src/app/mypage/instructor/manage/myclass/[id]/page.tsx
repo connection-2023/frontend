@@ -1,15 +1,20 @@
 'use client';
-import { isPast, isFuture } from 'date-fns';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import RegularClassTable from './_components/RegularClassTable';
+import {
+  filterSchedulesByDate,
+  processedScheduleData,
+} from './_utils/formatSchedule';
+import Notice from '@/components/ClassNotice/Notice';
+import { ILecturerClassDetailResonse } from '@/types/class';
 import { ButtonStyles } from '@/constants/constants';
 import { ArrowUpSVG, EditSVG } from '@/icons/svg';
 import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
-import Notice from '@/components/ClassNotice/Notice';
-import { ILecturerClassDetailResonse } from '@/types/class';
+import { getDatesFromSchedules } from '@/utils/scheduleDateUtils';
 
 const EditDayOff = dynamic(() => import('./_components/EditDayOff'), {
   ssr: false,
@@ -36,14 +41,13 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
     ILecturerClassDetailResonse | undefined
   >(undefined);
   const [selectedClass, setSelectedClass] = useState<{
-    index: number | null;
+    label: string | null;
     id: number | null;
-  }>({ index: null, id: null });
+  }>({ label: null, id: null });
 
   useEffect(() => {
     const fetchClassDetailData = async () => {
       const data = await getLecturerClassDetail(id);
-      if (data instanceof Error) return router.push('/error');
 
       setClassData(data);
     };
@@ -53,11 +57,11 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
   if (!classData) return null;
 
-  const handleSelectClassId = (index: number | null, id: number | null) => {
+  const handleSelectClassId = (label: string | null, id: number | null) => {
     if (selectedClass.id === id) {
-      setSelectedClass({ index: null, id: null });
+      setSelectedClass({ label: null, id: null });
     } else {
-      setSelectedClass({ index, id });
+      setSelectedClass({ label, id });
     }
   };
 
@@ -102,20 +106,25 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
     }
   };
 
-  const processedScheduleData = classData.schedule.map((schedule, idx) => {
-    const date = new Date(schedule.startDateTime);
+  const { notification, schedules, regularLectureStatus } = classData;
+  if (!schedules && !regularLectureStatus) return null;
 
-    return {
-      ...schedule,
-      index: idx + 1,
-      date,
-      isPastClass: isPast(date),
-    };
-  });
+  const scheduleData = schedules && processedScheduleData(schedules);
 
-  const futureScheduleData = processedScheduleData.filter((item) =>
-    isFuture(item.date),
-  );
+  const futureScheduleData =
+    scheduleData && filterSchedulesByDate(false, scheduleData);
+
+  const scheduleDates = (() => {
+    if (schedules) {
+      return getDatesFromSchedules(schedules);
+    }
+
+    if (regularLectureStatus) {
+      return getDatesFromSchedules(regularLectureStatus);
+    }
+
+    return [];
+  })();
 
   return (
     <div className="grid grid-cols-1 gap-4 px-4 md:px-9 xl:grid-cols-[2fr,1fr] xl:px-0">
@@ -155,19 +164,21 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
         <div className="flex w-full gap-4 px-4">
           <section className="flex w-full flex-col">
             <div className="mt-4">
-              <Notice
-                isEditMode={true}
-                content={classData.notification.content}
-                updateDate={classData.notification.updatedAt}
-                updateNotice={updateData}
-              />
+              {notification && (
+                <Notice
+                  isEditMode={true}
+                  content={notification.content}
+                  updateDate={notification.updatedAt}
+                  updateNotice={updateData}
+                />
+              )}
             </div>
             <AccordionSection
               title="휴무일"
               component={
                 <EditDayOff
                   updateHolidays={updateData}
-                  schedules={classData.schedule}
+                  schedules={scheduleDates}
                   holidays={classData.holidays}
                 />
               }
@@ -183,20 +194,30 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
             />
 
             <div className="my-5 w-full">
-              <ClassTable
-                schedules={processedScheduleData}
-                maxCapacity={classData.maxCapacity}
-                reservationDeadline={classData.reservationDeadline}
-                handleSelectClassId={handleSelectClassId}
-              />
+              {scheduleData && (
+                <ClassTable
+                  schedules={scheduleData}
+                  maxCapacity={classData.maxCapacity || 1}
+                  reservationDeadline={classData.reservationDeadline}
+                  handleSelectClassId={handleSelectClassId}
+                />
+              )}
+              {regularLectureStatus && (
+                <RegularClassTable
+                  regularSchedules={regularLectureStatus}
+                  duration={classData.duration}
+                  maxCapacity={classData.maxCapacity || 1}
+                  handleSelectClassId={handleSelectClassId}
+                />
+              )}
             </div>
           </section>
         </div>
       </section>
       <section className="mt-4 lg:mt-0">
         <ClassOverview
-          totalClassNum={processedScheduleData.length}
-          pastClassNum={futureScheduleData.length}
+          totalClassNum={processedScheduleData?.length || 0} // 정기 클래스일 때 처리 필요
+          pastClassNum={futureScheduleData?.length || 0} // 정기 클래스일 때 처리 필요
           selectedClass={selectedClass}
           lectureId={id}
         />
