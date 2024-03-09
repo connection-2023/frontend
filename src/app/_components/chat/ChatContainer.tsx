@@ -33,18 +33,11 @@ const ChatContainer = () => {
     }) => {
       const delta = info.delta[point];
       const currentValue = target.get();
-      let newValue;
+      const newValue =
+        operation === 'subtract' ? currentValue - delta : currentValue + delta;
 
       const minValue = point === 'y' ? 103 : 281;
       const maxValue = point === 'y' ? 644 : 608;
-
-      if (operation === 'add') {
-        newValue = currentValue + delta;
-      } else if (operation === 'subtract') {
-        newValue = currentValue - delta;
-      } else {
-        newValue = currentValue + delta;
-      }
 
       if (newValue > minValue && newValue < maxValue) {
         target.set(newValue);
@@ -71,32 +64,36 @@ const ChatContainer = () => {
         className="pointer-events-auto z-modal flex flex-col bg-white shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] sm:rounded-md"
         dragMomentum={false}
       >
-        <YHandle
+        <DragHandle
           handleDrag={handleResizableDrag}
           target={mHeight}
           operation="subtract"
+          point="y"
         />
         <div className="flex items-stretch">
-          <XHandle
+          <DragHandle
             handleDrag={handleResizableDrag}
             target={mWidth}
             operation="subtract"
+            point="x"
           />
           <Chat
             mHeight={mHeight}
             mWidth={mWidth}
             StartChatPositionDrag={StartChatPositionDrag}
           />
-          <XHandle
+          <DragHandle
             handleDrag={handleResizableDrag}
             target={mWidth}
             operation="add"
+            point="x"
           />
         </div>
-        <YHandle
+        <DragHandle
           handleDrag={handleResizableDrag}
           target={mHeight}
           operation="add"
+          point="y"
         />
       </motion.main>
     </motion.article>
@@ -120,34 +117,20 @@ interface HandleProps {
     operation: 'add' | 'subtract';
   }) => void;
   operation: 'add' | 'subtract';
+  point: 'x' | 'y';
 }
 
-const XHandle = ({ handleDrag, target, operation }: HandleProps) => {
+const DragHandle = ({ handleDrag, target, operation, point }: HandleProps) => {
   return (
     <motion.div
-      drag="x"
+      drag={point}
       dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
       dragElastic={0}
       dragMomentum={false}
-      onDrag={(event, info) =>
-        handleDrag({ info, target, point: 'x', operation })
+      onDrag={(event, info) => handleDrag({ info, target, point, operation })}
+      className={
+        point === 'x' ? 'w-2 cursor-col-resize' : 'h-2 cursor-row-resize'
       }
-      className="w-2 cursor-col-resize"
-    />
-  );
-};
-
-const YHandle = ({ handleDrag, target, operation }: HandleProps) => {
-  return (
-    <motion.div
-      drag="y"
-      dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
-      dragElastic={0}
-      dragMomentum={false}
-      onDrag={(event, info) =>
-        handleDrag({ info, target, point: 'y', operation })
-      }
-      className="h-2 cursor-row-resize"
     />
   );
 };
