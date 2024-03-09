@@ -6,17 +6,25 @@ import {
   useDragControls,
   useMotionValue,
 } from 'framer-motion';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import Chat from './Chat';
 
 const ChatContainer = () => {
   const mWidth = useMotionValue(375);
   const mHeight = useMotionValue(625);
+  const [dragState, setDragState] = useState<{
+    point: null | 'x' | 'y';
+    isDragging: boolean;
+  }>({ point: null, isDragging: false });
 
   const isSm = useMediaQuery('(min-width: 640px)');
   const chatPositionControls = useDragControls();
   const constraintsRef = useRef(null);
+
+  const handleDragState = (isDragging: boolean, point: 'x' | 'y') => {
+    setDragState({ point, isDragging });
+  };
 
   const handleResizableDrag = useCallback(
     ({
@@ -66,6 +74,7 @@ const ChatContainer = () => {
       >
         <DragHandle
           handleDrag={handleResizableDrag}
+          handleDragState={handleDragState}
           target={mHeight}
           operation="subtract"
           point="y"
@@ -73,17 +82,20 @@ const ChatContainer = () => {
         <div className="flex items-stretch">
           <DragHandle
             handleDrag={handleResizableDrag}
+            handleDragState={handleDragState}
             target={mWidth}
             operation="subtract"
             point="x"
           />
           <Chat
+            dragState={dragState}
             mHeight={mHeight}
             mWidth={mWidth}
             StartChatPositionDrag={StartChatPositionDrag}
           />
           <DragHandle
             handleDrag={handleResizableDrag}
+            handleDragState={handleDragState}
             target={mWidth}
             operation="add"
             point="x"
@@ -91,6 +103,7 @@ const ChatContainer = () => {
         </div>
         <DragHandle
           handleDrag={handleResizableDrag}
+          handleDragState={handleDragState}
           target={mHeight}
           operation="add"
           point="y"
@@ -118,9 +131,16 @@ interface HandleProps {
   }) => void;
   operation: 'add' | 'subtract';
   point: 'x' | 'y';
+  handleDragState: (isDragging: boolean, point: 'x' | 'y') => void;
 }
 
-const DragHandle = ({ handleDrag, target, operation, point }: HandleProps) => {
+const DragHandle = ({
+  handleDrag,
+  target,
+  operation,
+  point,
+  handleDragState,
+}: HandleProps) => {
   return (
     <motion.div
       drag={point}
@@ -131,6 +151,12 @@ const DragHandle = ({ handleDrag, target, operation, point }: HandleProps) => {
       className={
         point === 'x' ? 'w-2 cursor-col-resize' : 'h-2 cursor-row-resize'
       }
+      onDragEnd={() => {
+        handleDragState(false, point);
+      }}
+      onDragStart={() => {
+        handleDragState(true, point);
+      }}
     />
   );
 };
