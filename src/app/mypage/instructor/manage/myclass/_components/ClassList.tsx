@@ -18,9 +18,7 @@ const ClassList = ({
   const router = useRouter();
   const status = isProgress ? '모집중' : '마감';
   const range = `${formatShortDate(startDate)} - ${formatShortDate(endDate)}`;
-  const progressRate = (
-    Math.floor(completedSchedule / allSchedule) * 100
-  ).toFixed(1);
+  const progressRate = Math.floor((completedSchedule / allSchedule) * 100);
 
   const handleTitleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
