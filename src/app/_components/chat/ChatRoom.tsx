@@ -1,20 +1,14 @@
-import { useMotionValue } from 'framer-motion';
-import { useCallback } from 'react';
+import { MotionValue, motion } from 'framer-motion';
 
-const ChatRoom = () => {
-  const mWidth = useMotionValue(375);
+interface ChatRoomProps {
+  mWidth: MotionValue<number>;
+}
 
-  const handleDrag = useCallback((event, info) => {
-    let newHeight = mWidth.get() + info.delta.w;
-    if (newHeight > 200 && newHeight < 400) {
-      mWidth.set(mWidth.get() + info.delta.w);
-    }
-  }, []);
-
+const ChatRoom = ({ mWidth }: ChatRoomProps) => {
   return (
-    <section className="sm:min-w-[375px]" style={{ width: mWidth.get() }}>
+    <motion.section style={{ width: mWidth }}>
       <div>대화</div>
-    </section>
+    </motion.section>
   );
 };
 
