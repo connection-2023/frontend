@@ -42,6 +42,8 @@ export { default as ClearSVG } from './common/button/clear.svg';
 
 export { default as CloseSVG } from './common/button/close.svg';
 
+export { default as BanSVG } from './common/button/ban.svg';
+
 export { default as ConnectionLogoSVG } from './logo/connectionLogo.svg';
 
 export { default as CopySVG } from './common/button/copy.svg';

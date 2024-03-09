@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
+import {
+  getClassPreview,
+  getClassDetail,
+  getUserReservation,
+} from '@/lib/apis/serverApis/classPostApis';
 import ClassDetail from './_components/ClassDetail';
 import ClassPreview from './_components/ClassPreview';
 import ClassDetailLoading from './_components/Loading/ClassDetailLoading';
 import ClassTopLoading from './_components/Loading/ClassTopLoading';
 import UserReservation from './_components/UserReservation';
 import type { Metadata } from 'next';
-import {
-  getClassPreview,
-  getClassDetail,
-  getUserReservation,
-} from '@/lib/apis/serverApis/classPostApis';
 
 export const generateMetadata = async ({
   params,
@@ -28,7 +28,7 @@ export const generateMetadata = async ({
   }
 
   return {
-    title: `Connection | ${classData.title}`,
+    title: classData.title,
     description: classDetailData.introduction,
   };
 };
@@ -46,7 +46,7 @@ const ClassDetailPage = async ({
         <ClassPreview id={id} />
       </Suspense>
 
-      <div className="fixed bottom-[6rem] z-modal flex w-full justify-center px-4 xl:bottom-6 ">
+      <div className="fixed bottom-24 left-0 z-modal flex w-full justify-center px-4 xl:bottom-6 ">
         <UserReservation userReservation={userReservationData} />
       </div>
 

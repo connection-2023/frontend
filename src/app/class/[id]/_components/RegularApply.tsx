@@ -6,8 +6,9 @@ import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
 import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
+import RegularApplyList from './apply/RegularApplyList';
 import ApplyButton from '@/components/Button/ApplyButton';
-import { IRegularClassSchedule } from '@/types/class';
+import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
 
 const ReservationItem = dynamic(() => import('./apply/ReservationItem'));
 
@@ -18,10 +19,6 @@ interface ApplyProps {
   maxCapacity: number;
   duration: number;
   range: string;
-}
-
-interface ISelectedSchedule extends IRegularClassSchedule {
-  count: number;
 }
 
 const RegularApply = (props: ApplyProps) => {
@@ -99,18 +96,13 @@ const RegularApply = (props: ApplyProps) => {
     <>
       <section className="hidden min-w-[264px] max-w-[17rem] flex-col bg-white lg:flex">
         <div className="sticky top-24 mt-5 flex w-full flex-col whitespace-nowrap pr-2">
-          <ul className="mb-3 max-h-[275px] space-y-2.5 overflow-y-auto border border-solid border-gray-900 px-2 py-1.5">
-            {schedule.map((item) => (
-              <ApplyList
-                key={item.id}
-                {...item}
-                maxCapacity={maxCapacity}
-                duration={duration}
-                selectedSchedule={selectedSchedule}
-                onSelect={() => onSelect(item)}
-              />
-            ))}
-          </ul>
+          <RegularApplyList
+            schedule={schedule}
+            duration={duration}
+            maxCapacity={maxCapacity}
+            selectedSchedule={selectedSchedule}
+            onSelect={onSelect}
+          />
 
           {formatDateTime && selectedSchedule && (
             <ReservationItem
@@ -166,18 +158,14 @@ const RegularApply = (props: ApplyProps) => {
                   <TimeSVG className="mr-2 fill-sub-color1" /> {duration}분 수업
                 </span>
               </div>
-              <ul className="max-h-[275px] space-y-2.5 overflow-y-auto border border-solid border-gray-900 px-2 py-1.5">
-                {schedule.map((item) => (
-                  <ApplyList
-                    key={item.id}
-                    {...item}
-                    maxCapacity={maxCapacity}
-                    duration={duration}
-                    selectedSchedule={selectedSchedule}
-                    onSelect={() => onSelect(item)}
-                  />
-                ))}
-              </ul>
+
+              <RegularApplyList
+                schedule={schedule}
+                duration={duration}
+                maxCapacity={maxCapacity}
+                selectedSchedule={selectedSchedule}
+                onSelect={onSelect}
+              />
             </div>
           )}
 
@@ -225,65 +213,3 @@ const RegularApply = (props: ApplyProps) => {
 };
 
 export default RegularApply;
-
-interface ApplyListProps extends IRegularClassSchedule {
-  duration: number;
-  maxCapacity: number;
-  selectedSchedule?: ISelectedSchedule;
-  onSelect: (newValue: IRegularClassSchedule) => void;
-}
-
-const ApplyList = (props: ApplyListProps) => {
-  const {
-    id,
-    day,
-    dateTime,
-    duration,
-    maxCapacity,
-    numberOfParticipants,
-    regularLectureSchedule,
-    selectedSchedule,
-    onSelect,
-  } = props;
-  const time = getRegularScheduleTime(dateTime, duration);
-  const isChecked = selectedSchedule?.id === id;
-
-  return (
-    <li
-      className={`h-[90px] cursor-pointer rounded-md ${
-        isChecked && 'border border-2 border-solid border-main-color'
-      } px-4 py-3 text-sm text-gray-100 shadow-float`}
-      onClick={() =>
-        onSelect({
-          id,
-          day,
-          dateTime,
-          numberOfParticipants,
-          regularLectureSchedule,
-        })
-      }
-    >
-      <p className="mb-3 flex items-center font-bold">
-        <BasicCalendarSVG
-          width="21"
-          height="21"
-          className="mr-2 fill-gray-100"
-        />
-        {`${day.join(',')} ${dateTime}-${time}`}
-      </p>
-
-      <div className="flex items-center gap-x-2">
-        <input
-          type="radio"
-          checked={isChecked}
-          className="w-4 accent-main-color"
-          readOnly
-        />
-        <span className="text-base font-bold">
-          {regularLectureSchedule.length}회
-        </span>
-        <span>{`(${numberOfParticipants}/${maxCapacity}명)`}</span>
-      </div>
-    </li>
-  );
-};

@@ -70,7 +70,11 @@ const HeaderMenu = () => {
           />
         </button>
 
-        <Link href="/" aria-label="홈으로 이동">
+        <Link
+          href="/"
+          aria-label="홈으로 이동"
+          className="flex h-8 items-center"
+        >
           <ConnectionLogoSVG className="mr-6 block h-4 w-36 translate-y-1 sm:hidden md:block md:h-[1.375rem] md:w-[12.6875rem] md:translate-y-0" />
           <SmallLogoSVG
             width="44"

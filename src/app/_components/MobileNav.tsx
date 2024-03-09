@@ -1,5 +1,8 @@
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { HIDE_NAV_PATH } from '@/constants/constants';
 import {
   HamburgerSVG,
   BookmarkSVG,
@@ -13,11 +16,20 @@ import { useUserStore } from '@/store/userStore';
 import { useActivePath } from '@/utils/hooks/useActivePath';
 
 const MobileNav = () => {
+  const [showNav, setShowNav] = useState(true);
+  const pathname = usePathname();
   const { userType } = useUserStore();
   const isUser = userType !== null;
   const isLecturer = userType === 'lecturer';
-
   const checkActivePath = useActivePath();
+
+  useEffect(() => {
+    const shouldHideNav = HIDE_NAV_PATH.some((path) =>
+      new RegExp(path).test(pathname),
+    );
+
+    setShowNav(!shouldHideNav);
+  }, [pathname]);
 
   const getTextColor = (path: string) =>
     checkActivePath(path) ? 'text-black' : 'text-gray-300  hover:text-black';
@@ -91,8 +103,8 @@ const MobileNav = () => {
     },
   ];
 
-  return (
-    <nav className="fixed bottom-0 left-0 z-50 h-24 w-full border-t border-solid border-gray-700 bg-white px-4 pb-10 pt-3 sm:hidden">
+  return showNav ? (
+    <nav className="fixed bottom-0 left-0 z-40 h-24 w-full border-t border-solid border-gray-700 bg-white px-4 pb-10 pt-3 sm:hidden">
       <ul className="flex justify-around">
         {NAV_LINKS.map(({ href, icon, label }, index) => (
           <li key={index}>
@@ -111,7 +123,7 @@ const MobileNav = () => {
         ))}
       </ul>
     </nav>
-  );
+  ) : null;
 };
 
 export default MobileNav;

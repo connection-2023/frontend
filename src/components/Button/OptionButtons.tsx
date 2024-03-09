@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
-import { ReportSVG, EditSVG, ShareSVG, OptionSVG } from '@/icons/svg';
+import { ReportSVG, EditSVG, ShareSVG, OptionSVG, BanSVG } from '@/icons/svg';
 import {
   instructorsBlock,
   instructorsLikeCancel,
@@ -117,7 +117,7 @@ const OptionButtons = ({
                 </Link>
               </li>
               <li className={liStyles} onClick={instructorBlockHandler}>
-                <ReportSVG
+                <BanSVG
                   width="15px"
                   height="15px"
                   className="fill-sub-color1"

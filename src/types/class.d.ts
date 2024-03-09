@@ -320,9 +320,13 @@ export interface IRegularClassSchedule {
   regularLectureSchedule: IRegularSchedule[];
 }
 
+export interface ISelectedSchedule extends IRegularClassSchedule {
+  count: number;
+}
+
 export interface IClassScheduleResponse {
   regularLectureStatus?: IRegularClassSchedule[];
-  schedules: IClassSchedule[];
+  schedules?: IClassSchedule[];
   holidays: string[];
   daySchedule?: IDaySchedule[];
 }
