@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'react-toastify';
-import { getCheckTargetId } from '@/lib/apis/chatApi';
+import { createNewChatRoom, getCheckTargetId } from '@/lib/apis/chatApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import { userType } from '@/types/auth';
@@ -55,18 +55,20 @@ interface IstartChat {
 
 const startChat = async (info: IstartChat) => {
   try {
-    const chatInfo = await checkChat(info);
+    const chatInfo = await checkChatRoom(info);
 
     if (chatInfo) {
+      console.log(chatInfo);
       // 있을때 로직
     } else {
+      await createChatRoom(info);
     }
   } catch (error) {
     toast.error('잠시 후 다시 시도해주세요.');
   }
 };
 
-const checkChat = async ({ userType, id, targetId }: IstartChat) => {
+const checkChatRoom = async ({ userType, id, targetId }: IstartChat) => {
   try {
     return await getCheckTargetId(userType, id, targetId);
   } catch (error) {
@@ -90,5 +92,14 @@ const checkChat = async ({ userType, id, targetId }: IstartChat) => {
       console.error(error);
       throw new Error('채팅 존재 여부 확인 오류');
     }
+  }
+};
+
+const createChatRoom = async ({ userType, id, targetId }: IstartChat) => {
+  try {
+    await createNewChatRoom(userType, id, targetId);
+  } catch (error) {
+    console.error(error);
+    throw new Error('채팅방 생성 오류');
   }
 };

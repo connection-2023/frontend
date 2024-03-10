@@ -10,7 +10,12 @@ export const POST = async (request: NextRequest) => {
     });
   }
 
-  const tokenValue = request.cookies.get('lecturerAccessToken')?.value;
+  const id = request.nextUrl.searchParams.get('id');
+  const userType = request.nextUrl.searchParams.get('userType');
+  const tokenName =
+    userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
+
+  const tokenValue = request.cookies.get(tokenName)?.value;
   const data = await request.json();
 
   if (!tokenValue) {
@@ -28,7 +33,7 @@ export const POST = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + '/passes/lecture', {
+  const response = await fetch(`${END_POINT}/chat-rooms/${id}`, {
     method: 'POST',
     credentials: 'include',
     headers,

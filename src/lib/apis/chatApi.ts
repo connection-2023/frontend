@@ -1,4 +1,5 @@
 import { userType } from '@/types/auth';
+import { ChatRoom } from '@/types/chat';
 import { FetchError } from '@/types/types';
 
 export const getChatSocketRoomsId = async (
@@ -37,7 +38,7 @@ export const getCheckTargetId = async (
   userType: userType,
   id: number | string,
   targetId: number | string,
-) => {
+): Promise<ChatRoom> => {
   try {
     const response = await fetch(
       `/api/chat/check-room?userType=${userType}&id=${id}&targetId=${targetId}`,
@@ -59,9 +60,42 @@ export const getCheckTargetId = async (
 
     const resData = await response.json();
 
-    return resData;
+    return resData.data.chatRoom;
   } catch (error) {
     console.error('상대방 채팅방 유무 조회 오류', error);
+    throw error;
+  }
+};
+
+export const createNewChatRoom = async (
+  userType: userType,
+  id: number | string,
+  targetId: number | string,
+): Promise<ChatRoom> => {
+  try {
+    const response = await fetch(
+      `/api/chat/create-chat-room?userType=${userType}&id=${id}`,
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ targetId }),
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data.chatRoom;
+  } catch (error) {
+    console.error('채팅방 생성 오류', error);
     throw error;
   }
 };
