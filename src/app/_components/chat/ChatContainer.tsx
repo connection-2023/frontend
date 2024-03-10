@@ -72,42 +72,50 @@ const ChatContainer = () => {
         className="pointer-events-auto z-modal flex flex-col bg-white shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] sm:rounded-md"
         dragMomentum={false}
       >
-        <DragHandle
-          handleDrag={handleResizableDrag}
-          handleDragState={handleDragState}
-          target={mHeight}
-          operation="subtract"
-          point="y"
-        />
-        <div className="flex items-stretch">
+        {isSm && (
           <DragHandle
             handleDrag={handleResizableDrag}
             handleDragState={handleDragState}
-            target={mWidth}
+            target={mHeight}
             operation="subtract"
-            point="x"
+            point="y"
           />
+        )}
+        <div className="flex items-stretch">
+          {isSm && (
+            <DragHandle
+              handleDrag={handleResizableDrag}
+              handleDragState={handleDragState}
+              target={mWidth}
+              operation="subtract"
+              point="x"
+            />
+          )}
           <Chat
             dragState={dragState}
-            mHeight={mHeight}
-            mWidth={mWidth}
+            mHeight={isSm ? mHeight : null}
+            mWidth={isSm ? mWidth : null}
             StartChatPositionDrag={StartChatPositionDrag}
           />
+          {isSm && (
+            <DragHandle
+              handleDrag={handleResizableDrag}
+              handleDragState={handleDragState}
+              target={mWidth}
+              operation="add"
+              point="x"
+            />
+          )}
+        </div>
+        {isSm && (
           <DragHandle
             handleDrag={handleResizableDrag}
             handleDragState={handleDragState}
-            target={mWidth}
+            target={mHeight}
             operation="add"
-            point="x"
+            point="y"
           />
-        </div>
-        <DragHandle
-          handleDrag={handleResizableDrag}
-          handleDragState={handleDragState}
-          target={mHeight}
-          operation="add"
-          point="y"
-        />
+        )}
       </motion.main>
     </motion.article>
   );
