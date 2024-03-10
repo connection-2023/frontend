@@ -35,8 +35,8 @@ export const getChatSocketRoomsId = async (
 
 export const getCheckTargetId = async (
   userType: userType,
-  id: number,
-  targetId: number,
+  id: number | string,
+  targetId: number | string,
 ) => {
   try {
     const response = await fetch(

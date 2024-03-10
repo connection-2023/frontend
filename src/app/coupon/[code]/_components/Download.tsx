@@ -28,7 +28,7 @@ const Download = ({ code }: { code: string }) => {
 로그인 화면으로 이동하시겠습니까?
         `)
         )
-          router.push('/my/user/coupon-pass?state=coupon');
+          router.push('/login');
       }
     } catch (error) {
       if (error instanceof Error) {
