@@ -1,5 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { getChatRoomList } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import ChatHeader from './ChatHeader';
 import ChatList from './ChatList';
@@ -27,6 +31,7 @@ const Chat = ({
   userType,
   StartChatPositionDrag,
 }: ChatProps) => {
+  const router = useRouter();
   const { selectChatRoom, setChatRoomSelect } = useChatStore((state) => ({
     selectChatRoom: state.selectChatRoom,
     setChatRoomSelect: state.setChatRoomSelect,
@@ -42,6 +47,22 @@ const Chat = ({
       document.body.style.cursor = 'default';
     }
   }, [dragState]);
+
+  const {
+    data: chatRoomList,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['chat', id],
+    queryFn: () => getChatRoomList(userType, id),
+    refetchOnWindowFocus: 'always',
+  });
+
+  if (chatRoomList instanceof Error || error) {
+    toast.error('다시 시도 해 주세요.');
+    router.refresh();
+    return;
+  }
 
   const chatSelectHandler = (chatRoom: ChatRoomList | null) => {
     setChatRoomSelect(chatRoom);
@@ -62,14 +83,19 @@ const Chat = ({
         className="sm:flex sm:gap-3"
         style={{ height: isSm ? '100%' : mHeight }}
       >
-        {(!isSm || !selectChatRoom) && (
-          <ChatList
-            id={id}
-            userType={userType}
-            chatSelectHandler={chatSelectHandler}
-          />
-        )}
-        {selectChatRoom && !isSm && (
+        {(!isSm || !selectChatRoom) &&
+          (isLoading ? (
+            <div className="flex h-full flex-col overflow-y-scroll px-4 sm:w-72 sm:px-0 sm:pr-0">
+              로딩중
+            </div>
+          ) : (
+            <ChatList
+              id={id}
+              chatRoomList={chatRoomList ?? []}
+              chatSelectHandler={chatSelectHandler}
+            />
+          ))}
+        {selectChatRoom && (
           <ChatRoom
             mWidth={mWidth}
             selectChatRoom={selectChatRoom}

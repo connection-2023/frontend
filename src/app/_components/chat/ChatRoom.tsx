@@ -45,7 +45,10 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
   );
 
   return (
-    <motion.section style={{ width: mWidth ? mWidth : '100%' }}>
+    <motion.section
+      className="flex flex-col"
+      style={{ width: mWidth ? mWidth : '100%' }}
+    >
       {headerIsLoading ? (
         <div>로딩</div>
       ) : (

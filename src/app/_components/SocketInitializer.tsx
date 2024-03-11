@@ -27,7 +27,7 @@ const SocketInitializer = ({
     }));
 
   useEffect(() => {
-    if (userType && userId && !isConnected) {
+    if (userType && !isConnected) {
       const socket = io(`${END_POINT}/chatroom1`);
 
       socket.on('connect', () => {
@@ -42,12 +42,22 @@ const SocketInitializer = ({
         console.log('socket 해제');
       });
 
-      socket.on('joinUser', () => {
-        setOnlineList({ type: userType, id: userId });
+      socket.on('joinUser', (data) => {
+        const { lecturerId, userId } = data;
+
+        const id = userId ? userId : lecturerId;
+        const type = userId ? 'user' : 'lecturer';
+
+        setOnlineList({ type, id });
       });
 
-      socket.on('exitUser', () => {
-        setOnlineList({ type: userType, id: userId, join: false });
+      socket.on('exitUser', (data) => {
+        const { lecturerId, userId } = data;
+
+        const id = userId ? userId : lecturerId;
+        const type = userId ? 'user' : 'lecturer';
+
+        setOnlineList({ type, id, join: false });
       });
 
       socket.emit('login', {
