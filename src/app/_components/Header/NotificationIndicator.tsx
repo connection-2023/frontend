@@ -2,12 +2,12 @@
 import { motion } from 'framer-motion';
 import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, ChatSVG } from '@/icons/svg';
-import { useSocketStore } from '@/store';
+import { useChatStore } from '@/store';
 
 const NotificationIndicator = () => {
   const { alarmCount, commentCount } = dummyUserInfo;
 
-  const { setChatView, chatView } = useSocketStore((state) => ({
+  const { setChatView, chatView } = useChatStore((state) => ({
     setChatView: state.setChatView,
     chatView: state.chatView,
   }));

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRightSVG, CloseSVG, SearchSVG } from '@/icons/svg';
 
 interface ChatHeaderProps {
-  chatSelect: number | null;
+  selectChatRoom: number | null;
   isSm: boolean;
   chatSelectHandler: (id: number | null) => void;
   StartChatPositionDrag: (event: React.PointerEvent<HTMLElement>) => void;
@@ -10,7 +10,7 @@ interface ChatHeaderProps {
 
 const ChatHeader = ({
   isSm,
-  chatSelect,
+  selectChatRoom,
   StartChatPositionDrag,
   chatSelectHandler,
 }: ChatHeaderProps) => {
@@ -44,7 +44,7 @@ const ChatHeader = ({
       className="relative flex h-16 cursor-move items-center justify-between gap-2 px-4 pt-6 sm:h-10 sm:items-start sm:bg-[#414141] sm:pb-2 sm:pl-3 sm:pr-1 sm:pt-2 sm:text-white"
     >
       <div className="pointer-events-none absolute -left-2 -top-2 -z-10 hidden h-[calc(100%+0.5rem)] w-[calc(100%+1rem)] rounded-t-md bg-[#414141] sm:block" />
-      {!isSm || !chatSelect ? (
+      {!isSm || !selectChatRoom ? (
         <div
           className={`${
             search.view ? 'border-b border-gray-500' : ''

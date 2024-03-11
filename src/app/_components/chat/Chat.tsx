@@ -1,5 +1,6 @@
 import { MotionValue, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
+import { useChatStore } from '@/store';
 import ChatHeader from './ChatHeader';
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
@@ -22,7 +23,10 @@ const Chat = ({
   dragState,
   StartChatPositionDrag,
 }: ChatProps) => {
-  const [chatSelect, setchatSelect] = useState<number | null>(null);
+  const { selectChatRoom, setChatRoomSelect } = useChatStore((state) => ({
+    selectChatRoom: state.selectChatRoom,
+    setChatRoomSelect: state.setChatRoomSelect,
+  }));
   const isSm = mWidth === null || mHeight === null;
 
   useEffect(() => {
@@ -35,8 +39,8 @@ const Chat = ({
     }
   }, [dragState]);
 
-  const chatSelectHandler = (id: number | null) => {
-    setchatSelect(id);
+  const chatSelectHandler = (id: any | null) => {
+    setChatRoomSelect(id);
   };
 
   return (
@@ -45,7 +49,7 @@ const Chat = ({
       className="h-screen w-screen sm:h-auto sm:w-auto"
     >
       <ChatHeader
-        chatSelect={chatSelect}
+        selectChatRoom={selectChatRoom}
         chatSelectHandler={chatSelectHandler}
         isSm={isSm}
         StartChatPositionDrag={StartChatPositionDrag}
@@ -55,8 +59,8 @@ const Chat = ({
         style={{ height: isSm ? '100%' : mHeight }}
       >
         {!isSm && <ChatList id={id} chatSelectHandler={chatSelectHandler} />}
-        {chatSelect && <ChatRoom mWidth={mWidth} />}
-        {isSm && !chatSelect && (
+        {selectChatRoom && <ChatRoom mWidth={mWidth} />}
+        {isSm && !selectChatRoom && (
           <ChatList id={id} chatSelectHandler={chatSelectHandler} />
         )}
       </motion.div>

@@ -7,7 +7,6 @@ interface socketStore {
   chatView: boolean;
   setSocket: (socket: Socket | null) => void;
   setIsConnected: (state: boolean) => void;
-  setChatView: (state: boolean) => void;
 }
 
 export const useSocketStore = create<socketStore>((set) => ({
@@ -16,5 +15,4 @@ export const useSocketStore = create<socketStore>((set) => ({
   chatView: false,
   setSocket: (socket) => set({ socket }),
   setIsConnected: (state) => set({ isConnected: state }),
-  setChatView: (state) => set({ chatView: state }),
 }));

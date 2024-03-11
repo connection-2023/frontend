@@ -12,7 +12,6 @@ import {
   UnFilledNoteSVG,
   LogInSVG,
 } from '@/icons/svg';
-import { useSocketStore } from '@/store';
 import { useUserStore } from '@/store/userStore';
 import { useActivePath } from '@/utils/hooks/useActivePath';
 

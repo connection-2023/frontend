@@ -1,6 +1,6 @@
 'use client';
 
-import { useSocketStore, useUserStore } from '@/store';
+import { useChatStore, useSocketStore, useUserStore } from '@/store';
 import ChatContainer from './ChatContainer';
 
 const ChatModal = () => {
@@ -13,7 +13,7 @@ const ChatModal = () => {
     userType: state.userType,
   }));
 
-  const { chatView } = useSocketStore((state) => ({
+  const { chatView } = useChatStore((state) => ({
     chatView: state.chatView,
   }));
 
