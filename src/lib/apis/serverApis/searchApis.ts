@@ -10,9 +10,35 @@ import {
   searchInstructorParameters,
 } from '@/types/instructor';
 import { searchPass, searchPassesParameters } from '@/types/pass';
-import { FetchError } from '@/types/types';
+import { FetchError, IUserSearchKeywords } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
+
+export const getRecentHistory = async (): Promise<IUserSearchKeywords[]> => {
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
+  const lecturer = cookieStore.get('lecturerAccessToken')?.value;
+  const authorization = user || lecturer;
+
+  if (!authorization) return [];
+
+  const response = await fetch(`${END_POINT}/search/history?take=100`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${authorization}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`내 검색어 조회 오류: ${response.status}`);
+  }
+
+  const resData = await response.json();
+
+  return resData.data.searchHistoryList;
+};
 
 export const searchAll = async (
   query: string,

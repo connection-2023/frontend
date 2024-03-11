@@ -272,3 +272,8 @@ export type FilterKey =
   | '인원'
   | '진행 방식'
   | '요일/시간대';
+
+export interface IUserSearchKeywords {
+  id: number;
+  searchTerm: string;
+}
