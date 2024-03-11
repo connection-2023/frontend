@@ -5,6 +5,7 @@ import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
 
 interface ChatProps {
+  id: string;
   dragState: {
     point: null | 'x' | 'y';
     isDragging: boolean;
@@ -15,10 +16,11 @@ interface ChatProps {
 }
 
 const Chat = ({
-  StartChatPositionDrag,
+  id,
   mWidth,
   mHeight,
   dragState,
+  StartChatPositionDrag,
 }: ChatProps) => {
   const [chatSelect, setchatSelect] = useState<number | null>(null);
   const isSm = mWidth === null || mHeight === null;
@@ -52,10 +54,10 @@ const Chat = ({
         className="sm:flex sm:gap-3"
         style={{ height: isSm ? '100%' : mHeight }}
       >
-        {!isSm && <ChatList chatSelectHandler={chatSelectHandler} />}
+        {!isSm && <ChatList id={id} chatSelectHandler={chatSelectHandler} />}
         {chatSelect && <ChatRoom mWidth={mWidth} />}
         {isSm && !chatSelect && (
-          <ChatList chatSelectHandler={chatSelectHandler} />
+          <ChatList id={id} chatSelectHandler={chatSelectHandler} />
         )}
       </motion.div>
     </div>

@@ -19,7 +19,7 @@ const ChatModal = () => {
 
   if (!chatView || !authUser || !userType || !isConnected) return null;
 
-  return <ChatContainer />;
+  return <ChatContainer id={authUser.id} />;
 };
 
 export default ChatModal;

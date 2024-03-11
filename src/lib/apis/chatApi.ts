@@ -99,3 +99,35 @@ export const createNewChatRoom = async (
     throw error;
   }
 };
+
+export const getChatRoomList = async (
+  userType: userType,
+  id: string,
+): Promise<ChatRoom[]> => {
+  try {
+    const response = await fetch(
+      `/api/chat/get-chat-rooms?userType=${userType}&id=${id}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.chatRoom;
+  } catch (error) {
+    console.error('채팅방 목록 조회 에러', error);
+    throw error;
+  }
+};
