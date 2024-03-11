@@ -1,28 +1,56 @@
 import { useQueries } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
 import { getCheckOnlineList } from '@/lib/apis/chatApi';
+import { useSocketStore } from '@/store';
+import ChatRoomHeader from './ChatRoomHeader';
+import { userType } from '@/types/auth';
 import { ChatRoomList } from '@/types/chat';
 
 interface ChatRoomProps {
   selectChatRoom: ChatRoomList;
+  userType: userType;
   mWidth: MotionValue<number> | null;
 }
 
-const ChatRoom = ({ mWidth, selectChatRoom }: ChatRoomProps) => {
-  const [{ data }] = useQueries({
+const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
+  const { onlineList, setOnlineList } = useSocketStore((state) => ({
+    onlineList: state.onlineList,
+    setOnlineList: state.setOnlineList,
+  }));
+
+  const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
+
+  const [{ isLoading: headerIsLoading, error }] = useQueries({
     queries: [
       {
         queryKey: ['onlineList', selectChatRoom.id],
-        queryFn: () => getCheckOnlineList(selectChatRoom.id),
+        queryFn: async () => {
+          const onlineState = await getCheckOnlineList(selectChatRoom.id);
+
+          if (onlineState[opponentType]) {
+            setOnlineList({
+              type: userType === 'user' ? 'lecturer' : 'user',
+              id: onlineState[opponentType]!,
+            });
+          }
+
+          return '';
+        },
       },
     ],
   });
 
-  console.log(data);
+  const isOnline = onlineList[opponentType].includes(
+    selectChatRoom[opponentType],
+  );
 
   return (
     <motion.section style={{ width: mWidth ? mWidth : '100%' }}>
-      <div>대화</div>
+      {headerIsLoading ? (
+        <div>로딩</div>
+      ) : (
+        !error && <ChatRoomHeader isOnline={isOnline} />
+      )}
     </motion.section>
   );
 };

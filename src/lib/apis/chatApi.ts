@@ -1,5 +1,5 @@
 import { userType } from '@/types/auth';
-import { ChatRoom, ChatRoomList } from '@/types/chat';
+import { ChatRoom, ChatRoomList, onlineList } from '@/types/chat';
 import { FetchError } from '@/types/types';
 
 export const getChatSocketRoomsId = async (
@@ -132,7 +132,7 @@ export const getChatRoomList = async (
   }
 };
 
-export const getCheckOnlineList = async (id: number) => {
+export const getCheckOnlineList = async (id: number): Promise<onlineList> => {
   try {
     const response = await fetch(`/api/chat/online-list?id=${id}`, {
       method: 'GET',
@@ -151,7 +151,7 @@ export const getCheckOnlineList = async (id: number) => {
 
     const resData = await response.json();
 
-    return resData.data;
+    return resData.data.onlineList;
   } catch (error) {
     console.error('접속자 조회 에러', error);
     throw error;

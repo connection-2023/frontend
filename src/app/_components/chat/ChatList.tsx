@@ -35,7 +35,7 @@ const ChatList = ({ id, chatSelectHandler, userType }: ChatLsitProps) => {
   }
 
   return (
-    <section className="flex h-full flex-col overflow-y-scroll px-4 sm:w-[19rem] sm:pl-5 sm:pr-0">
+    <section className="flex h-full flex-col overflow-y-scroll px-4 sm:w-72 sm:px-0 sm:pr-0">
       {chatRoomList.map((chatRoom) => (
         <button
           key={id}

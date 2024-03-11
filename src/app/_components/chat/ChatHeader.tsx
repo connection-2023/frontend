@@ -3,7 +3,7 @@ import { ArrowRightSVG, CloseSVG, SearchSVG } from '@/icons/svg';
 import { ChatRoomList } from '@/types/chat';
 
 interface ChatHeaderProps {
-  selectChatRoom: number | null;
+  selectChatRoom: ChatRoomList | null;
   isSm: boolean;
   chatSelectHandler: (chatRoom: ChatRoomList | null) => void;
   StartChatPositionDrag: (event: React.PointerEvent<HTMLElement>) => void;

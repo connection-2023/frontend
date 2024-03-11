@@ -62,21 +62,18 @@ const Chat = ({
         className="sm:flex sm:gap-3"
         style={{ height: isSm ? '100%' : mHeight }}
       >
-        {!isSm && (
+        {(!isSm || !selectChatRoom) && (
           <ChatList
             id={id}
             userType={userType}
             chatSelectHandler={chatSelectHandler}
           />
         )}
-        {selectChatRoom && (
-          <ChatRoom mWidth={mWidth} selectChatRoom={selectChatRoom} />
-        )}
-        {isSm && !selectChatRoom && (
-          <ChatList
-            id={id}
+        {selectChatRoom && !isSm && (
+          <ChatRoom
+            mWidth={mWidth}
+            selectChatRoom={selectChatRoom}
             userType={userType}
-            chatSelectHandler={chatSelectHandler}
           />
         )}
       </motion.div>

@@ -17,17 +17,17 @@ const SocketInitializer = ({
   rooms,
   userId,
 }: SocketInitializerProps) => {
-  const { socket, isConnected, setSocket, setIsConnected } = useSocketStore(
-    (state) => ({
+  const { socket, isConnected, setSocket, setIsConnected, setOnlineList } =
+    useSocketStore((state) => ({
       socket: state.socket,
       isConnected: state.isConnected,
       setSocket: state.setSocket,
       setIsConnected: state.setIsConnected,
-    }),
-  );
+      setOnlineList: state.setOnlineList,
+    }));
 
   useEffect(() => {
-    if (userType && !isConnected) {
+    if (userType && userId && !isConnected) {
       const socket = io(`${END_POINT}/chatroom1`);
 
       socket.on('connect', () => {
@@ -40,6 +40,14 @@ const SocketInitializer = ({
         setIsConnected(false);
         setSocket(null);
         console.log('socket 해제');
+      });
+
+      socket.on('joinUser', () => {
+        setOnlineList({ type: userType, id: userId });
+      });
+
+      socket.on('exitUser', () => {
+        setOnlineList({ type: userType, id: userId, join: false });
       });
 
       socket.emit('login', {

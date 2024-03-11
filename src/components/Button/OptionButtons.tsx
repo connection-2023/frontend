@@ -72,12 +72,13 @@ const OptionButtons = ({
 
   return (
     <div ref={optionButtonRef} className="relative flex items-center gap-2">
-      <OptionSVG
-        onClick={() => setIsOptionMenuOpened((prev) => !prev)}
-        className={`peer cursor-pointer hover:fill-black ${
-          isOptionMenuOpened ? 'fill-black' : 'fill-gray-500'
-        }`}
-      />
+      <button onClick={() => setIsOptionMenuOpened((prev) => !prev)}>
+        <OptionSVG
+          className={`peer cursor-pointer hover:fill-black ${
+            isOptionMenuOpened ? 'fill-black' : 'fill-gray-500'
+          }`}
+        />
+      </button>
 
       {isOptionMenuOpened && (
         <ul className="absolute right-0 top-6 w-24 overflow-hidden whitespace-nowrap rounded-md bg-white text-sm font-medium text-black shadow-float">
