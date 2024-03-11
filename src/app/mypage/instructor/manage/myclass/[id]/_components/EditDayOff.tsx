@@ -1,15 +1,14 @@
-import { isSameDay, compareAsc } from 'date-fns';
+import { compareAsc } from 'date-fns';
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { formatDateWithDay } from '@/utils/dateTimeUtils';
-import { getUniqueDates } from '@/utils/parseUtils';
 import Button from '@/components/Button/Button';
 import UniqueButton from '@/components/Button/UniqueButton';
 import DayOffCalendar from '@/components/Calendar/BasicCalendar';
-import { IClassSchedule } from '@/types/class';
+import { formatDateWithDay } from '@/utils/dateTimeUtils';
+import { getUniqueDates, calculateUnSelectedDate } from '@/utils/parseUtils';
 
 /* eslint-disable no-unused-vars */
 interface EditDayOffProps {
-  schedules: IClassSchedule[];
+  schedules: Date[];
   holidays: string[];
   updateHolidays: (
     key: 'notification' | 'reservationComment' | 'holidays',
@@ -17,15 +16,8 @@ interface EditDayOffProps {
   ) => void;
 }
 /* eslint-enable no-unused-vars */
-const EditDayOff = ({
-  schedules,
-  holidays,
-  updateHolidays,
-}: EditDayOffProps) => {
-  const parsedSchedules = useMemo(
-    () => schedules.map((schedule) => new Date(schedule.startDateTime)),
-    [schedules],
-  );
+const EditDayOff = (props: EditDayOffProps) => {
+  const { schedules, holidays, updateHolidays } = props;
 
   const parsedHolidays = useMemo(
     () => holidays.map((holiday) => new Date(holiday)),
@@ -33,42 +25,40 @@ const EditDayOff = ({
   );
 
   const allDays = useMemo(
-    () => [...parsedSchedules, ...parsedHolidays],
-    [parsedSchedules, parsedHolidays],
+    () => [...schedules, ...parsedHolidays],
+    [schedules.length, parsedHolidays.length],
   );
+
   const initialUnselectedDates = useRef(parsedHolidays);
   const [unselectedDates, setUnselectedDates] =
     useState<Date[]>(parsedHolidays);
 
   useEffect(() => {
     initialUnselectedDates.current = parsedHolidays;
-  }, [parsedHolidays]);
+  }, [parsedHolidays.length]);
 
   const uniqueSelectableDates = useMemo(
     () => getUniqueDates(allDays),
-    [allDays],
+    [allDays.length],
   );
 
   const uniqueScheduleDates = useMemo(
-    () => getUniqueDates(parsedSchedules),
-    [parsedSchedules],
+    () => getUniqueDates(schedules),
+    [schedules.length],
   );
 
   const uniqueUnselectedDates = useMemo(
     () => getUniqueDates(unselectedDates),
-    [unselectedDates],
+    [unselectedDates.length],
   ).sort(compareAsc);
 
-  if (!schedules || !holidays) return null;
-
-  const handleUnselected = (unselectedDates: Date[]) => {
-    const filteredunselectedDates = allDays.filter((schedule) =>
-      unselectedDates.some((unselectedDate) =>
-        isSameDay(schedule, unselectedDate),
-      ),
+  const handleUnselected = (newselectedDates: Date[]) => {
+    const newUnselectedDates = calculateUnSelectedDate(
+      allDays,
+      newselectedDates,
     );
 
-    setUnselectedDates(filteredunselectedDates);
+    setUnselectedDates(newUnselectedDates);
   };
 
   const handleChangeCancel = () => {
@@ -83,7 +73,7 @@ const EditDayOff = ({
 
   return (
     <div className="mb-[1.38rem] grid w-full grid-cols-1 gap-7 border-t border-solid border-gray-700 py-4 md:grid-cols-[max-content_1fr] md:border-none md:py-0">
-      <div className="justify-self-center rounded-lg px-3 py-2 lg:w-64 lg:shadow-horizontal">
+      <div className="h-fit justify-self-center rounded-lg px-3 py-2 lg:w-64 lg:shadow-horizontal">
         <DayOffCalendar
           mode="dayoff"
           selectableDates={uniqueSelectableDates}
@@ -93,13 +83,13 @@ const EditDayOff = ({
       </div>
 
       <div className="flex w-full flex-col border-t border-solid border-gray-700 pt-3 md:border-none">
-        <p className="mb-[0.87rem] text-sm font-semibold">선택한 휴무일</p>
+        <p className="mb-3.5 text-sm font-semibold">선택한 휴무일</p>
 
         <ul className="flex min-h-[45px] w-fit flex-wrap gap-x-2 gap-y-3 overflow-y-auto text-sm font-medium text-gray-100">
           {uniqueUnselectedDates.map((date) => (
             <li
               key={date.toLocaleDateString()}
-              className="h-fit rounded-[0.3125rem] border border-solid border-gray-500 px-[0.69rem] py-[0.31rem]"
+              className="h-fit rounded-md border border-solid border-gray-500 px-2.5 py-1.5"
             >
               {formatDateWithDay(date)}
             </li>

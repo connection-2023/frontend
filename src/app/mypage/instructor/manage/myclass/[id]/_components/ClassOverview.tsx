@@ -13,7 +13,7 @@ import {
 interface ClassOverViewProps {
   totalClassNum: number;
   pastClassNum: number;
-  selectedClass: { index: number | null; id: number | null };
+  selectedClass: { label: string | null; id: number | null };
   lectureId: string;
 }
 
@@ -67,9 +67,9 @@ const ClassOverview = ({
       </div>
       <div className="flex flex-col px-[1.31rem] py-[0.81rem]">
         <h3 className="flex items-center justify-between text-lg font-semibold">
-          {selectedClass.index === null
+          {selectedClass.label === null
             ? '전체 수강생 리스트'
-            : `${selectedClass.index}회차 수강생 리스트`}
+            : `${selectedClass.label}`}
 
           <button
             aria-label="전체 채팅"
@@ -98,13 +98,14 @@ const ClassOverview = ({
 export default ClassOverview;
 
 const LearnerList = (props: IScheduleLearnerList) => {
-  const { userId, nickname, userProfileImage, enrollmentCount } = props;
+  const { userId, nickname, userProfileImage, phoneNumber, enrollmentCount } =
+    props;
 
   return (
     <li className="flex w-full items-center justify-between text-sm font-medium">
       <div className="flex cursor-pointer items-center">
         <UserProfileMenu
-          contact="" // api 변경 후 추가 예정
+          contact={phoneNumber}
           userId={userId}
           profileImg={userProfileImage}
           name={nickname}

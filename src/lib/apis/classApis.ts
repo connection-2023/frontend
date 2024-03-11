@@ -122,25 +122,27 @@ export const deleteReviewLikes = async (id: number) => {
 
 export const getLecturerClassList = async (
   progressType: string,
-): Promise<ILecturerClassListResonse[] | Error> => {
-  try {
-    const response = await fetch(
-      `/api/class/myclass/lecturer?progressType=${progressType}`,
-      {
-        credentials: 'include',
-        method: 'GET',
-      },
-    ).then((data) => data.json());
+): Promise<ILecturerClassListResonse[]> => {
+  const response = await fetch(
+    `/api/class/myclass/lecturer?progressType=${progressType}`,
+    {
+      credentials: 'include',
+      method: 'GET',
+    },
+  );
 
-    return response.data.lectureProgress;
-  } catch (error) {
-    return new Error('잘못된 요청입니다!');
+  if (!response.ok) {
+    throw Error(`${progressType} 데이터 불러오기 오류`);
   }
+
+  const resData = await response.json();
+
+  return resData.data.lectureProgress;
 };
 
 export const getLecturerClassDetail = async (
   id: string,
-): Promise<ILecturerClassDetailResonse | Error> => {
+): Promise<ILecturerClassDetailResonse> => {
   try {
     const [classInfoResponse, classDetailReponse, ScheduleResponse] =
       await Promise.all([
@@ -157,8 +159,9 @@ export const getLecturerClassDetail = async (
         }).then((data) => data.json()),
       ]);
 
-    const { title, maxCapacity } = classInfoResponse.data.lecturePreview;
-    const { schedule, holidayArr } = ScheduleResponse.data;
+    const { title, maxCapacity, duration } =
+      classInfoResponse.data.lecturePreview;
+    const { schedules, regularLectureStatus, holidays } = ScheduleResponse.data;
     const { notification, reservationComment, reservationDeadline } =
       classDetailReponse.data.lectureDetail;
 
@@ -166,13 +169,15 @@ export const getLecturerClassDetail = async (
       title,
       notification,
       reservationComment,
+      duration,
       maxCapacity,
       reservationDeadline,
-      schedule,
-      holidays: holidayArr,
+      schedules,
+      regularLectureStatus,
+      holidays,
     };
   } catch (error) {
-    return new Error('강사 클래스 관리 상세 요청 에러!');
+    throw Error('강사 클래스 관리 상세 요청 에러!');
   }
 };
 
@@ -204,7 +209,7 @@ export const getAllRegisterLists = async (
   lectureId: string,
   displayCount: number,
   lastItemId: number,
-): Promise<IScheduleLearnerList[] | Error> => {
+): Promise<IScheduleLearnerList[]> => {
   const response = await fetch(
     `/api/class/myclass/learners?lectureId=${lectureId}&displayCount=${displayCount}&lastItemId=${lastItemId}`,
   ).then((data) => data.json());
@@ -230,8 +235,10 @@ export const getClassSchedules = async (
 };
 
 export const getScheduleRegisterLists = async (
-  scheduleId: number,
+  scheduleId?: number,
 ): Promise<IScheduleLearnerList[]> => {
+  if (!scheduleId) return [];
+
   const response = await fetch(
     `/api/class/myclass/schedule-learners?scheduleId=${scheduleId}`,
   ).then((data) => data.json());
@@ -244,7 +251,7 @@ export const getScheduleRegisterLists = async (
 
 export const getOriginalClassInfo = async (
   id: string,
-): Promise<IClassEditPageData | Error> => {
+): Promise<IClassEditPageData> => {
   try {
     const [classInfoResponse, classDetailResponse, scheduleResponse] =
       await Promise.all([
@@ -273,7 +280,7 @@ export const getOriginalClassInfo = async (
       holidayArr: formatHoliday,
     };
   } catch (error) {
-    return new Error('클래스 수정 기본 정보 요청 에러!');
+    throw new Error('클래스 수정 기본 정보 요청 에러!');
   }
 };
 
