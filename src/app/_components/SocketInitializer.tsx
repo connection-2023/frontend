@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { useSocketStore, useUserStore } from '@/store';
+import { useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';

@@ -9,8 +9,14 @@ import {
 import { useCallback, useRef, useState } from 'react';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import Chat from './Chat';
+import { userType } from '@/types/auth';
 
-const ChatContainer = ({ id }: { id: string }) => {
+interface ChatContsinerProps {
+  id: string;
+  userType: userType;
+}
+
+const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
   const mWidth = useMotionValue(375);
   const mHeight = useMotionValue(625);
   const [dragState, setDragState] = useState<{
@@ -96,6 +102,7 @@ const ChatContainer = ({ id }: { id: string }) => {
             dragState={dragState}
             mHeight={isSm ? mHeight : null}
             mWidth={isSm ? mWidth : null}
+            userType={userType}
             StartChatPositionDrag={StartChatPositionDrag}
           />
           {isSm && (

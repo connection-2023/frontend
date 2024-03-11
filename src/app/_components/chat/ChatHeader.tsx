@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRightSVG, CloseSVG, SearchSVG } from '@/icons/svg';
+import { ChatRoomList } from '@/types/chat';
 
 interface ChatHeaderProps {
   selectChatRoom: number | null;
   isSm: boolean;
-  chatSelectHandler: (id: number | null) => void;
+  chatSelectHandler: (chatRoom: ChatRoomList | null) => void;
   StartChatPositionDrag: (event: React.PointerEvent<HTMLElement>) => void;
 }
 

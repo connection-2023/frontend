@@ -4,6 +4,8 @@ import { useChatStore } from '@/store';
 import ChatHeader from './ChatHeader';
 import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
+import { userType } from '@/types/auth';
+import { ChatRoomList } from '@/types/chat';
 
 interface ChatProps {
   id: string;
@@ -13,6 +15,7 @@ interface ChatProps {
   };
   mWidth: MotionValue<number> | null;
   mHeight: MotionValue<number> | null;
+  userType: userType;
   StartChatPositionDrag: (event: React.PointerEvent<HTMLElement>) => void;
 }
 
@@ -21,6 +24,7 @@ const Chat = ({
   mWidth,
   mHeight,
   dragState,
+  userType,
   StartChatPositionDrag,
 }: ChatProps) => {
   const { selectChatRoom, setChatRoomSelect } = useChatStore((state) => ({
@@ -39,8 +43,8 @@ const Chat = ({
     }
   }, [dragState]);
 
-  const chatSelectHandler = (id: any | null) => {
-    setChatRoomSelect(id);
+  const chatSelectHandler = (chatRoom: ChatRoomList | null) => {
+    setChatRoomSelect(chatRoom);
   };
 
   return (
@@ -58,10 +62,22 @@ const Chat = ({
         className="sm:flex sm:gap-3"
         style={{ height: isSm ? '100%' : mHeight }}
       >
-        {!isSm && <ChatList id={id} chatSelectHandler={chatSelectHandler} />}
-        {selectChatRoom && <ChatRoom mWidth={mWidth} />}
+        {!isSm && (
+          <ChatList
+            id={id}
+            userType={userType}
+            chatSelectHandler={chatSelectHandler}
+          />
+        )}
+        {selectChatRoom && (
+          <ChatRoom mWidth={mWidth} selectChatRoom={selectChatRoom} />
+        )}
         {isSm && !selectChatRoom && (
-          <ChatList id={id} chatSelectHandler={chatSelectHandler} />
+          <ChatList
+            id={id}
+            userType={userType}
+            chatSelectHandler={chatSelectHandler}
+          />
         )}
       </motion.div>
     </div>

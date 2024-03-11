@@ -2,14 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { getChatRoomList } from '@/lib/apis/chatApi';
-import { reloadToast } from '@/utils/reloadMessage';
+import { userType } from '@/types/auth';
+import { ChatRoomList } from '@/types/chat';
 
 interface ChatLsitProps {
   id: string;
-  chatSelectHandler: (id: number) => void;
+  chatSelectHandler: (chatRoom: ChatRoomList | null) => void;
+  userType: userType;
 }
 
-const ChatList = ({ id, chatSelectHandler }: ChatLsitProps) => {
+const ChatList = ({ id, chatSelectHandler, userType }: ChatLsitProps) => {
   const router = useRouter();
 
   const {
@@ -18,7 +20,7 @@ const ChatList = ({ id, chatSelectHandler }: ChatLsitProps) => {
     error,
   } = useQuery({
     queryKey: ['chat', id],
-    queryFn: () => getChatRoomList('user', id),
+    queryFn: () => getChatRoomList(userType, id),
     refetchOnWindowFocus: 'always',
   });
 
@@ -34,13 +36,13 @@ const ChatList = ({ id, chatSelectHandler }: ChatLsitProps) => {
 
   return (
     <section className="flex h-full flex-col overflow-y-scroll px-4 sm:w-[19rem] sm:pl-5 sm:pr-0">
-      {chatRoomList.map(({ id }) => (
+      {chatRoomList.map((chatRoom) => (
         <button
           key={id}
-          onClick={() => chatSelectHandler(id)}
+          onClick={() => chatSelectHandler(chatRoom)}
           className="h-52 flex-shrink-0 bg-slate-400"
         >
-          id
+          {chatRoom.roomId}
         </button>
       ))}
     </section>

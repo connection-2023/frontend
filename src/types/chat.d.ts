@@ -6,3 +6,5 @@ export interface ChatRoom {
   lastChatDateTime: string;
   unreadCount: number;
 }
+
+export interface ChatRoomList extends ChatRoom {}
