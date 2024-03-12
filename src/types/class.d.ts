@@ -320,9 +320,13 @@ export interface IRegularClassSchedule {
   regularLectureSchedule: IRegularSchedule[];
 }
 
+export interface ISelectedSchedule extends IRegularClassSchedule {
+  count: number;
+}
+
 export interface IClassScheduleResponse {
   regularLectureStatus?: IRegularClassSchedule[];
-  schedules: IClassSchedule[];
+  schedules?: IClassSchedule[];
   holidays: string[];
   daySchedule?: IDaySchedule[];
 }
@@ -340,11 +344,11 @@ export interface IDaySchedule {
   dateTime: string[];
 }
 
-export interface IProcessedSchedules extends IClassSchedule {
+export type IProcessedSchedules = (IClassSchedule | IRegularSchedule) & {
   index: number;
   date: Date;
   isPastClass: boolean;
-}
+};
 
 export interface IClassPreviewResponse {
   id: number;
@@ -454,11 +458,13 @@ export interface ILecturerClassListResonse {
 
 export interface ILecturerClassDetailResonse {
   title: string;
-  notification: IClassNotification;
+  notification?: IClassNotification;
   reservationComment: string;
+  duration: number;
   maxCapacity: number;
   reservationDeadline: number;
-  schedule: IClassSchedule[];
+  schedules?: IClassSchedule[];
+  regularLectureStatus?: IRegularClassSchedule[];
   holidays: string[];
 }
 

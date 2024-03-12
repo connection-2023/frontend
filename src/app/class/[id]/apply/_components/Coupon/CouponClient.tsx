@@ -20,13 +20,16 @@ const CouponClient = ({
   stackableOptions,
   normalCoupon = [],
   stackableCoupon = [],
-  price,
+  price: originalPrice,
 }: CouponClient) => {
+  const applyClass = usePaymentStore((state) => state.applyClass);
   const { setPass, setCoupon, pass } = usePaymentStore((state) => ({
     setPass: state.setPass,
     setCoupon: state.setCoupon,
     pass: state.pass,
   }));
+
+  const price = originalPrice * (applyClass?.participants ?? 1);
 
   const [normalCouponSelect, setNormalCouponSelect] = useState(normalCoupon);
   const [stackableCouponSelect, setStackableCouponSelect] =

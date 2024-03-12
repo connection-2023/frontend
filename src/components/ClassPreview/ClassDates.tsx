@@ -27,6 +27,7 @@ const ClassDates = ({ id }: { id: string | number }) => {
       if (showCalendar) {
         const data = await getClassSchedules(id);
         const { schedules, regularLectureStatus } = data;
+        if (!schedules || !regularLectureStatus) return;
         const selectedDatesFromSchedule = getDatesFromSchedules(
           schedules || regularLectureStatus,
         );

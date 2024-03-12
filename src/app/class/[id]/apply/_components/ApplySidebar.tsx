@@ -104,7 +104,8 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
     } catch (error) {
       if (error instanceof Error && error.message) {
         postPaymentCancel(paymentData.orderId);
-        toast.error(error.message);
+        toast.error('잘못된 요청 입니다');
+        console.error(error.message);
       }
     }
   };

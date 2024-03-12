@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
-import { patchPaymentConfirm } from '@/lib/apis/serverApis/paymentsApis';
+import {
+  getPaymentInfo,
+  patchPaymentConfirm,
+} from '@/lib/apis/serverApis/paymentsApis';
 import { formatFullDateTime, formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import { IPaymentConfirmRequest } from '@/types/payment';
 
@@ -18,8 +21,13 @@ const ApplyCompletePage = async ({
     amount,
   };
 
-  const PaymentData = await patchPaymentConfirm(paymentInfo);
-  if (PaymentData instanceof Error) return;
+  const { statusCode, error, message } = await patchPaymentConfirm(paymentInfo);
+
+  if (statusCode !== 200 && error !== 'AlreadyApproved') throw Error(message);
+
+  const PaymentData = await getPaymentInfo(orderId);
+
+  if (!PaymentData) return;
 
   const {
     orderName,

@@ -4,43 +4,82 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'react-use';
+import Modal from '@/components/Modal/Modal';
+import UserProfileMenu from '@/components/Profile/UserProfileMenu';
+import Spinner from '@/components/Spinner/Spinner';
+import {
+  IProcessedSchedules,
+  IScheduleLearnerList,
+  IRegularClassSchedule,
+} from '@/types/class';
 import { ChatSVG } from '@/icons/svg';
 import { getScheduleRegisterLists } from '@/lib/apis/classApis';
 import { patchMemberMemo } from '@/lib/apis/instructorApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
-import Modal from '@/components/Modal/Modal';
-import UserProfileMenu from '@/components/Profile/UserProfileMenu';
-import Spinner from '@/components/Spinner/Spinner';
-import { IProcessedSchedules, IScheduleLearnerList } from '@/types/class';
+import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 
 interface EnrollmentModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  selectedClass: IProcessedSchedules;
+  selectedClass?: IProcessedSchedules;
+  selectedRegularClass?: IRegularClassSchedule;
   maxCapacity: number;
-  reservationDeadline: number;
+  reservationDeadline?: number;
+  duration?: number;
+  numberOfParticipants?: number;
 }
 
-const EnrollmentModal = ({
-  isOpen,
-  closeModal,
-  selectedClass,
-  maxCapacity,
-  reservationDeadline,
-}: EnrollmentModalProps) => {
-  const [refreshKey, setRefreshKey] = useState(0);
+const EnrollmentModal = (props: EnrollmentModalProps) => {
+  let classParticipants: number | undefined;
 
-  const { id, index, numberOfParticipants, date, startDateTime } =
-    selectedClass;
+  const {
+    isOpen,
+    selectedClass,
+    selectedRegularClass,
+    maxCapacity,
+    reservationDeadline,
+    duration,
+    closeModal,
+  } = props;
+
+  const { id: classId, index, date, startDateTime } = selectedClass || {};
+
+  const {
+    id: regularClassId,
+    day,
+    dateTime,
+    numberOfParticipants: regularClassParticipants,
+  } = selectedRegularClass || {};
+
+  const id = classId || regularClassId;
+
+  if (selectedClass && 'numberOfParticipants' in selectedClass) {
+    classParticipants = selectedClass.numberOfParticipants;
+  }
+
+  const [refreshKey, setRefreshKey] = useState(0);
   const { data: ScheduleEnrollment, isLoading } = useQuery({
     queryKey: ['instructor', 'schedule', id, 'modal', refreshKey],
     queryFn: () => getScheduleRegisterLists(id),
     refetchOnWindowFocus: 'always',
   });
 
-  const deadlineTime = formatDateTimeNoSec(
-    subHours(new Date(startDateTime), reservationDeadline),
-  );
+  const classTime = (() => {
+    if (date) {
+      return formatDateTimeNoSec(date);
+    } else if (day && dateTime && duration) {
+      return `${day.join(',')} ${dateTime}-${getRegularScheduleTime(
+        dateTime,
+        duration,
+      )}`;
+    }
+    return '';
+  })();
+
+  const deadlineTime =
+    reservationDeadline &&
+    startDateTime &&
+    formatDateTimeNoSec(subHours(new Date(startDateTime), reservationDeadline));
 
   const handleMemoUpdate = () => {
     setRefreshKey((prev) => prev + 1);
@@ -51,20 +90,26 @@ const EnrollmentModal = ({
       <section className="flex w-[40rem] flex-col py-4">
         <div className="w-full border-b border-solid border-gray-700 px-5">
           <p className="mb-3.5 text-base">
-            <span className="mr-3.5 text-lg font-bold">{index}회차</span>
-            {numberOfParticipants}/{maxCapacity}명
+            <span className="mr-3.5 text-lg font-bold">
+              {selectedClass ? `${index}회차` : classTime}
+            </span>
+            {regularClassParticipants || classParticipants}/{maxCapacity}명
           </p>
-          <ul className="mb-4 flex w-11/12 justify-between text-base font-semibold text-gray-100">
-            <li>
-              수업일자
-              <span className="ml-4 font-normal">
-                {formatDateTimeNoSec(date)}
-              </span>
-            </li>
-            <li>
-              신청마감일<span className="ml-4 font-normal">{deadlineTime}</span>
-            </li>
-          </ul>
+
+          {selectedClass && (
+            <ul className="mb-4 flex w-11/12 justify-between text-base font-semibold text-gray-100">
+              <li>
+                수업일자
+                <span className="ml-4 font-normal">{classTime}</span>
+              </li>
+              {deadlineTime && (
+                <li>
+                  신청마감일
+                  <span className="ml-4 font-normal">{deadlineTime}</span>
+                </li>
+              )}
+            </ul>
+          )}
         </div>
 
         {isLoading ? (
