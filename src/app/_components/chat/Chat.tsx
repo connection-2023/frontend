@@ -80,7 +80,7 @@ const Chat = ({
         StartChatPositionDrag={StartChatPositionDrag}
       />
       <motion.div
-        className="sm:flex "
+        className="sm:flex"
         style={{ height: isSm ? '100%' : mHeight }}
       >
         {(!isSm || !selectChatRoom) &&

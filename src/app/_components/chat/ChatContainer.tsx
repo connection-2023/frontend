@@ -50,7 +50,7 @@ const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
       const newValue =
         operation === 'subtract' ? currentValue - delta : currentValue + delta;
 
-      const minValue = point === 'y' ? 103 : 281;
+      const minValue = point === 'y' ? 242 : 281;
       const maxValue = point === 'y' ? 644 : 608;
 
       if (newValue > minValue && newValue < maxValue) {

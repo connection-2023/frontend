@@ -44,7 +44,7 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
 
   return (
     <motion.section
-      className="flex flex-col"
+      className="grid h-full grid-rows-[auto_1fr]"
       style={{ width: mWidth ? mWidth : '100%' }}
     >
       {headerIsLoading ? (
