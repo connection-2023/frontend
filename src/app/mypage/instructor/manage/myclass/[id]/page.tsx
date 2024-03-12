@@ -216,7 +216,7 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       </section>
       <section className="mt-4 lg:mt-0">
         <ClassOverview
-          totalClassNum={processedScheduleData?.length || 0} // 정기 클래스일 때 처리 필요
+          totalClassNum={scheduleData?.length || 0} // 정기 클래스일 때 처리 필요
           pastClassNum={futureScheduleData?.length || 0} // 정기 클래스일 때 처리 필요
           selectedClass={selectedClass}
           lectureId={id}
