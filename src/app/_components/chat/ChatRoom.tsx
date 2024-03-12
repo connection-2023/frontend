@@ -1,8 +1,9 @@
-import { useQueries } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
-import { getCheckOnlineList } from '@/lib/apis/chatApi';
+import { getChat, getCheckOnlineList } from '@/lib/apis/chatApi';
 import { useSocketStore } from '@/store';
 import ChatRoomHeader from './ChatRoomHeader';
+import ChatRoomMain from './ChatRoomMain';
 import { userType } from '@/types/auth';
 import { ChatRoomList } from '@/types/chat';
 
@@ -20,24 +21,21 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
 
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
 
-  const [{ isLoading: headerIsLoading, error }] = useQueries({
-    queries: [
-      {
-        queryKey: ['onlineList', selectChatRoom.id],
-        queryFn: async () => {
-          const onlineState = await getCheckOnlineList(selectChatRoom.id);
+  const { isLoading: headerIsLoading, error: headerError } = useQuery({
+    queryKey: ['onlineList', selectChatRoom.id],
+    queryFn: async () => {
+      const onlineState = await getCheckOnlineList(selectChatRoom.id);
 
-          if (onlineState[opponentType]) {
-            setOnlineList({
-              type: userType === 'user' ? 'lecturer' : 'user',
-              id: onlineState[opponentType]!,
-            });
-          }
+      if (onlineState[opponentType]) {
+        setOnlineList({
+          type: userType === 'user' ? 'lecturer' : 'user',
+          id: onlineState[opponentType]!,
+        });
+      }
 
-          return '';
-        },
-      },
-    ],
+      return '';
+    },
+    refetchOnWindowFocus: 'always',
   });
 
   const isOnline = onlineList[opponentType].includes(
@@ -52,8 +50,9 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
       {headerIsLoading ? (
         <div>로딩</div>
       ) : (
-        !error && <ChatRoomHeader isOnline={isOnline} />
+        !headerError && <ChatRoomHeader isOnline={isOnline} />
       )}
+      <ChatRoomMain />
     </motion.section>
   );
 };

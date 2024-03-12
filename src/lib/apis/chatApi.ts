@@ -157,3 +157,35 @@ export const getCheckOnlineList = async (id: number): Promise<onlineList> => {
     throw error;
   }
 };
+
+export const getChat = async (
+  id: number,
+  pageSize: number,
+  lastItemId: string | null,
+): Promise<onlineList> => {
+  try {
+    const response = await fetch(
+      `/api/chat/get-chat?chatRoomId=${id}&lastItemId=${lastItemId}&pageSize=${pageSize}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data;
+  } catch (error) {
+    console.error('채팅 조회 에러', error);
+    throw error;
+  }
+};
