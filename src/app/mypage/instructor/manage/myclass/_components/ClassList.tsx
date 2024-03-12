@@ -9,8 +9,8 @@ interface ClassListProps extends ILecturerClassListResonse {
 const ClassList = ({
   isProgress,
   id,
-  allSchedule,
-  completedSchedule,
+  schedulesCount,
+  completedSchedulesCount,
   startDate,
   endDate,
   title,
@@ -18,7 +18,9 @@ const ClassList = ({
   const router = useRouter();
   const status = isProgress ? '모집중' : '마감';
   const range = `${formatShortDate(startDate)} - ${formatShortDate(endDate)}`;
-  const progressRate = Math.floor((completedSchedule / allSchedule) * 100);
+  const progressRate = Math.floor(
+    (completedSchedulesCount / schedulesCount) * 100,
+  );
 
   const handleTitleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -66,10 +68,11 @@ const ClassList = ({
         <>
           <div className="mb-2 flex items-center border-t border-solid border-gray-700 px-5 pt-3.5 text-sm">
             <p className="mr-3.5 text-sub-color1">
-              진행<span className="font-bold"> {completedSchedule}회</span>
+              진행
+              <span className="font-bold"> {completedSchedulesCount}회</span>
             </p>
             <p className="text-gray-100">
-              전체<span className="font-bold"> {allSchedule}회</span>
+              전체<span className="font-bold"> {schedulesCount}회</span>
             </p>
             <span className="flex flex-1 justify-end text-base font-bold">
               {progressRate}%
