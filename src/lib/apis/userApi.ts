@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { userProfile, userType, userProfileupdate } from '@/types/auth';
-import { IRegisterForm } from '@/types/form';
 import { social } from '@/types/auth';
+import { IRegisterForm } from '@/types/form';
 import { FetchError } from '@/types/types';
 
 export const checkUserNickname = async (nickname: string) => {
@@ -139,7 +139,7 @@ export const accessTokenReissuance = async () => {
       window.location.href = response.url;
     }
 
-    return response;
+    return await response.json();
   } catch (error) {
     console.error('엑세스 토큰 재발급 오류', error);
     throw error;

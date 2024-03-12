@@ -31,7 +31,6 @@ const Chat = ({
   userType,
   StartChatPositionDrag,
 }: ChatProps) => {
-  const router = useRouter();
   const { selectChatRoom, setChatRoomSelect } = useChatStore((state) => ({
     selectChatRoom: state.selectChatRoom,
     setChatRoomSelect: state.setChatRoomSelect,
@@ -48,21 +47,11 @@ const Chat = ({
     }
   }, [dragState]);
 
-  const {
-    data: chatRoomList,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: chatRoomList, isLoading } = useQuery({
     queryKey: ['chat', id],
     queryFn: () => getChatRoomList(userType, id),
     refetchOnWindowFocus: 'always',
   });
-
-  if (chatRoomList instanceof Error || error) {
-    toast.error('다시 시도 해 주세요.');
-    router.refresh();
-    return;
-  }
 
   const chatSelectHandler = (chatRoom: ChatRoomList | null) => {
     setChatRoomSelect(chatRoom);
