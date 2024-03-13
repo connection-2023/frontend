@@ -69,7 +69,6 @@ module.exports = withSentryConfig(
     silent: true,
     org: 'connection',
     project: 'javascript-nextjs',
-    dryRun: process.env.NODE_ENV === 'development',
   },
   {
     // For all available options, see:

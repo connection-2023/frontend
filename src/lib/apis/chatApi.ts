@@ -1,5 +1,10 @@
 import { userType } from '@/types/auth';
-import { ChatRoom, ChatRoomList, onlineList } from '@/types/chat';
+import {
+  ChatRoom,
+  ChatRoomList,
+  onlineList,
+  sendChatParams,
+} from '@/types/chat';
 import { FetchError } from '@/types/types';
 
 export const getChatSocketRoomsId = async (
@@ -186,6 +191,33 @@ export const getChat = async (
     return resData.data;
   } catch (error) {
     console.error('채팅 조회 에러', error);
+    throw error;
+  }
+};
+
+export const sendChat = async (data: sendChatParams, userType: userType) => {
+  try {
+    console.log(userType);
+    const response = await fetch(`/api/chat/send-chat?userType=${userType}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data;
+  } catch (error) {
+    console.error('채팅 전송 오류', error);
     throw error;
   }
 };

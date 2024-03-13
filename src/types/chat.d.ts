@@ -13,3 +13,9 @@ export interface onlineList {
   lecturerId?: number;
   userId?: number;
 }
+
+export interface sendChatParams {
+  chatRoomId: number;
+  receiverId: number;
+  content: string;
+}

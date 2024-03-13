@@ -52,7 +52,7 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
       ) : (
         !headerError && <ChatRoomHeader isOnline={isOnline} />
       )}
-      <ChatRoomMain />
+      <ChatRoomMain selectChatRoom={selectChatRoom} userType={userType} />
     </motion.section>
   );
 };

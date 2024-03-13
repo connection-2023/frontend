@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const GET = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {
   if (!END_POINT) {
     return NextResponse.json({
       status: 500,
@@ -10,23 +10,12 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const id = request.nextUrl.searchParams.get('id');
-  const targetId = request.nextUrl.searchParams.get('targetId');
   const userType = request.nextUrl.searchParams.get('userType');
   const tokenName =
     userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
 
   const tokenValue = request.cookies.get(tokenName)?.value;
-
-  if (!id || !targetId) {
-    return NextResponse.json(
-      {
-        status: 400,
-        message: '필요 값이 존재하지 않습니다.',
-      },
-      { status: 400 },
-    );
-  }
+  const data = await request.json();
 
   if (!tokenValue) {
     return NextResponse.json(
@@ -43,14 +32,12 @@ export const GET = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(
-    `${END_POINT}/chat-rooms/${id}/targets/${targetId}`,
-    {
-      method: 'GET',
-      credentials: 'include',
-      headers,
-    },
-  );
+  const response = await fetch(END_POINT + '/passes/lecture', {
+    method: 'POST',
+    credentials: 'include',
+    headers,
+    body: JSON.stringify(data),
+  });
 
   if (!response.ok) {
     const errorData = await response.json();
