@@ -4,7 +4,7 @@ import {
   CLASS_SECTIONS,
   CLASS_HSTYLE,
 } from '@/constants/constants';
-import { TimeSVG, BasicCalendarSVG, ChatSVG } from '@/icons/svg';
+import { TimeSVG, BasicCalendarSVG, ChatSVG, LocationSVG } from '@/icons/svg';
 import {
   getClassDetail,
   getClassSchedules,
@@ -149,16 +149,17 @@ const ClassDetail = async ({ id }: { id: string }) => {
           )}
         </section>
 
-        {/* <section id="location-section" className="mb-14 scroll-mt-16">
-      <h2 className={h2Style}>진행 장소</h2>
-      <span className="mb-[0.62rem] mt-2 flex items-center gap-[0.13rem]">
-        <LocationSVG width={21} height={21} className="fill-sub-color1" /> {detailAddress}
-      </span>
-      <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
-        <Map address={locationDetail} studioName={studioName} />
-      </div>
-      <p className="text-sm font-normal">{locationDescription}</p>
-    </section> */}
+        <section id="location-section" className="mb-14 scroll-mt-16">
+          <h2 className={CLASS_HSTYLE.h2}>진행 장소</h2>
+          <span className="mb-2 mt-2 flex items-center gap-0.5">
+            <LocationSVG width={21} height={21} className="fill-sub-color1" />{' '}
+            {/* detailAddress*/}
+          </span>
+          <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
+            {/* <Map address={locationDetail} studioName={studioName} /> */}
+          </div>
+          <p className="text-sm font-normal">{locationDescription}</p>
+        </section>
 
         {/* 클래스 후기 */}
         <ClassReviewSection id={id} stars={stars} />
