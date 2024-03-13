@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { ButtonStyles } from '@/constants/constants';
 import { getApplyClassDetail } from '@/lib/apis/serverApis/classApi';
-import Back from './_components/Back';
 import CancelApplicationButton from './_components/CancelApplicationButton';
 import ClassLocation from './_components/ClassLocation';
 import OneDayClass from './_components/OneDayClass';
 import RegularClass from './_components/RegularClass';
+import BackButton from '@/components/Button/BackButton';
 import Notice from '@/components/ClassNotice/Notice';
 
 const ApplyDetailPage = async ({
@@ -27,7 +27,7 @@ const ApplyDetailPage = async ({
     <section className="mb-18 mx-auto flex h-full w-full max-w-[40rem] flex-col rounded-lg px-4 text-sm md:px-0 xl:mx-0">
       <div className="mb-2 flex flex-col items-center whitespace-nowrap border-solid border-gray-500 py-3 md:mb-3 md:flex-row md:border-b">
         <div className="mb-2.5 flex w-full border-b border-solid border-gray-500 py-3 md:mb-0 md:border-none md:py-0">
-          <Back />
+          <BackButton />
           <p className="text-2xl font-bold">{lecture.title}</p>
         </div>
 
