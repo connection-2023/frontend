@@ -11,7 +11,12 @@ interface chatStore {
 export const useChatStore = create<chatStore>((set) => ({
   selectChatRoom: null,
   chatView: false,
-  setChatView: (state) => set({ chatView: state }),
+  setChatView: (state) => {
+    if (!state) {
+      set({ selectChatRoom: null });
+    }
+    set({ chatView: state });
+  },
   setChatRoomSelect: (chatRoom: ChatRoomList) =>
     set({ selectChatRoom: chatRoom }),
 }));

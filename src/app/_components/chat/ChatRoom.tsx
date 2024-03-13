@@ -1,6 +1,6 @@
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
-import { getChat, getCheckOnlineList } from '@/lib/apis/chatApi';
+import { getCheckOnlineList } from '@/lib/apis/chatApi';
 import { useSocketStore } from '@/store';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomMain from './ChatRoomMain';

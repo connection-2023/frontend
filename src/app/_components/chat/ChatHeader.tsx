@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRightSVG, CloseSVG, SearchSVG } from '@/icons/svg';
+import { useChatStore } from '@/store';
 import { ChatRoomList } from '@/types/chat';
 
 interface ChatHeaderProps {
@@ -15,6 +16,9 @@ const ChatHeader = ({
   StartChatPositionDrag,
   chatSelectHandler,
 }: ChatHeaderProps) => {
+  const { setChatView } = useChatStore((state) => ({
+    setChatView: state.setChatView,
+  }));
   const [search, setSearch] = useState({ view: false, value: '' });
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -87,7 +91,7 @@ const ChatHeader = ({
           채팅목록
         </button>
       )}
-      <button>
+      <button onClick={() => setChatView(false)}>
         <CloseSVG className="size-[21px] stroke-gray-300 stroke-2 sm:stroke-white" />
       </button>
     </header>
