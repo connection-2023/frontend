@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
-import { toast } from 'react-toastify';
+import React, { Fragment, useEffect } from 'react';
 import { getChatRoomList } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import ChatHeader from './ChatHeader';
@@ -69,14 +67,12 @@ const Chat = ({
         StartChatPositionDrag={StartChatPositionDrag}
       />
       <motion.div
-        className="sm:flex"
+        className="overflow-hidden sm:flex"
         style={{ height: isSm ? '100%' : mHeight }}
       >
         {(!isSm || !selectChatRoom) &&
           (isLoading ? (
-            <div className="flex h-full flex-col overflow-y-scroll px-4 sm:w-72 sm:px-0 sm:pr-0">
-              로딩중
-            </div>
+            <ChatListLoading />
           ) : (
             <ChatList
               id={id}
@@ -97,3 +93,18 @@ const Chat = ({
 };
 
 export default Chat;
+
+const ChatListLoading = () => {
+  return (
+    <div className="mt-4 flex h-full flex-col items-center gap-3 px-4 sm:w-72 sm:px-0 sm:pr-0">
+      {Array(8)
+        .fill(0)
+        .map((_, index) => (
+          <Fragment key={index}>
+            <div className="h-16 w-11/12 animate-pulse rounded-lg bg-gray-700" />
+            {index !== 7 && <hr className="w-11/12 animate-pulse border-2" />}
+          </Fragment>
+        ))}
+    </div>
+  );
+};
