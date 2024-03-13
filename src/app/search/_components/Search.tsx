@@ -1,66 +1,57 @@
 import { dummySearchData } from '@/constants/dummy';
+import { getRecentHistory } from '@/lib/apis/serverApis/searchApis';
 import Close from './search/Close';
-import ListItem from './search/ListItem';
 import MyKeyword from './search/MyKeyword';
 import SearchInput from './search/SearchInput';
 
+export const dynamic = 'force-dynamic';
+
+const H1_STYLE = 'text-black mb-3.5 text-lg font-bold';
+
 const Search = async () => {
+  const userKeywordsData = await getRecentHistory();
+
   return (
-    <div className="border-box mx-auto w-full max-w-[50rem] overflow-hidden px-[30px]">
-      <nav className="mb-10 mt-[1.69rem] flex w-full justify-end">
+    <div className="border-box mx-auto w-full max-w-[50rem] overflow-hidden px-7">
+      <nav className="mb-10 mt-6 flex w-full justify-end">
         <Close />
       </nav>
 
       <main className="grid-auto-rows-4 border-box grid grid-cols-2">
-        <section className="col-span-2 mb-[1.56rem] block h-[3rem] w-full border-b border-solid border-sub-color1">
+        <section className="col-span-2 mb-6 block h-12 w-full border-b border-solid border-sub-color1">
           <SearchInput />
         </section>
 
-        <section className="col-span-2 mb-[2.25rem] w-full">
-          <MyKeyword userKeywords={dummySearchData.userKeywords} />
+        <section className="col-span-2 mb-9 w-full">
+          <MyKeyword userKeywords={userKeywordsData} />
         </section>
 
-        <Section title="이런 검색어는 어떠세요?">
+        {/* <section className="col-span-2 mb-10 md:col-span-1 md:mb-0">
+          <h1 className={H1_STYLE}>이런 검색어는 어떠세요?</h1>
           <ul className="flex flex-wrap gap-2">
             {dummySearchData.suggestion.map((keyword, index) => (
               <ListItem key={index} label={keyword} />
             ))}
           </ul>
-        </Section>
+        </section> */}
 
-        <Section title="인기 검색어">
+        <section>
+          <h1 className={H1_STYLE}>인기 검색어</h1>
           <ul className="flex flex-col divide-y divide-solid divide-gray-700">
             {dummySearchData.popular.map((keyword, i) => (
               <li
                 key={i}
-                className="ml-[7px] flex h-[2.62rem] cursor-pointer items-center whitespace-nowrap text-base"
+                className="ml-2 flex h-10 cursor-pointer items-center whitespace-nowrap text-base"
               >
                 <span className="mr-4 font-bold text-sub-color1">{i + 1}</span>
                 {keyword}
               </li>
             ))}
           </ul>
-        </Section>
+        </section>
       </main>
     </div>
   );
 };
 
 export default Search;
-
-const Section = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => {
-  return (
-    <section>
-      <h1 className="text-[rgba(0, 0, 0, 0.90)] mb-[0.88rem] text-lg font-bold">
-        {title}
-      </h1>
-      {children}
-    </section>
-  );
-};
