@@ -1,5 +1,6 @@
 import { userType } from '@/types/auth';
 import {
+  Chat,
   ChatRoom,
   ChatRoomList,
   onlineList,
@@ -137,7 +138,7 @@ export const getChatRoomList = async (
   }
 };
 
-export const getCheckOnlineList = async (id: number): Promise<onlineList> => {
+export const getCheckOnlineList = async (id: string): Promise<onlineList> => {
   try {
     const response = await fetch(`/api/chat/online-list?id=${id}`, {
       method: 'GET',
@@ -163,21 +164,31 @@ export const getCheckOnlineList = async (id: number): Promise<onlineList> => {
   }
 };
 
-export const getChat = async (
-  id: number,
-  pageSize: number,
-  lastItemId: string | null,
-): Promise<onlineList> => {
+export const getChats = async (data: {
+  chatRoomId: string;
+  pageSize: number;
+  lastItemId?: string;
+}): Promise<Chat[]> => {
   try {
-    const response = await fetch(
-      `/api/chat/get-chat?chatRoomId=${id}&lastItemId=${lastItemId}&pageSize=${pageSize}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    console.log(data);
+    const params = new URLSearchParams();
+
+    Object.entries(data)
+      .filter(([_, v]) => v !== undefined)
+      .forEach(([k, v]) => {
+        if (Array.isArray(v)) {
+          v.forEach((value) => params.append(`${k}[]`, value));
+        } else {
+          params.append(k, String(v));
+        }
+      });
+
+    const response = await fetch(`/api/chat/get-chat?${params}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -188,7 +199,7 @@ export const getChat = async (
 
     const resData = await response.json();
 
-    return resData.data;
+    return resData.data.chats;
   } catch (error) {
     console.error('채팅 조회 에러', error);
     throw error;
@@ -197,7 +208,6 @@ export const getChat = async (
 
 export const sendChat = async (data: sendChatParams, userType: userType) => {
   try {
-    console.log(userType);
     const response = await fetch(`/api/chat/send-chat?userType=${userType}`, {
       method: 'POST',
       credentials: 'include',

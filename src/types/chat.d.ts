@@ -1,5 +1,5 @@
 export interface ChatRoom {
-  id: number;
+  id: string;
   userId: number;
   lecturerId: number;
   roomId: string;
@@ -15,7 +15,20 @@ export interface onlineList {
 }
 
 export interface sendChatParams {
-  chatRoomId: number;
+  chatRoomId: string;
   receiverId: number;
   content: string;
+}
+
+export interface Chat {
+  id: string;
+  sender: {
+    userId: number;
+  };
+  receiver: {
+    lecturerId: number;
+  };
+  content: string;
+  readedAt: string;
+  createdAt: string;
 }

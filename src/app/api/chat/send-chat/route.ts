@@ -15,6 +15,7 @@ export const POST = async (request: NextRequest) => {
     userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
 
   const tokenValue = request.cookies.get(tokenName)?.value;
+
   const data = await request.json();
 
   if (!tokenValue) {
@@ -32,7 +33,7 @@ export const POST = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(END_POINT + '/passes/lecture', {
+  const response = await fetch(`${END_POINT}/chats`, {
     method: 'POST',
     credentials: 'include',
     headers,

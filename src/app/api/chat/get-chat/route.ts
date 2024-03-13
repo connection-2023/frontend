@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   const lastItemId = request.nextUrl.searchParams.get('lastItemId');
   const pageSize = request.nextUrl.searchParams.get('pageSize');
 
-  if (!chatRoomId) {
+  if (!chatRoomId || !pageSize) {
     return NextResponse.json(
       {
         status: 400,
@@ -24,8 +24,13 @@ export const GET = async (request: NextRequest) => {
     );
   }
 
+  const queryParams = new URLSearchParams({
+    pageSize,
+    ...(lastItemId && { lastItemId }),
+  }).toString();
+
   const response = await fetch(
-    `${END_POINT}/chats/chat-rooms/${chatRoomId}?lastItemId=${lastItemId}&pageSize=${pageSize}`,
+    `${END_POINT}/chats/chat-rooms/${chatRoomId}?${queryParams}`,
     {
       method: 'GET',
       credentials: 'include',
@@ -37,7 +42,6 @@ export const GET = async (request: NextRequest) => {
 
   if (!response.ok) {
     const errorData = await response.json();
-    console.log(errorData);
     return NextResponse.json(
       {
         status: response.status,

@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
+import useChatsQuery from '@/hooks/useChatsQuery';
 import { UploadImageSVG } from '@/icons/svg';
-import { sendChat } from '@/lib/apis/chatApi';
+import { getChats, sendChat } from '@/lib/apis/chatApi';
 import ApplyButton from '@/components/Button/ApplyButton';
 import Spinner from '@/components/Spinner/Spinner';
 import { userType } from '@/types/auth';
@@ -61,6 +62,21 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
     }
   };
 
+  const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
+    getChats({
+      chatRoomId: selectChatRoom.id,
+      pageSize: 1,
+      lastItemId,
+    });
+
+  const { chats, isError, isLoading, fetchNextPage, hasNextPage } =
+    useChatsQuery({
+      chatRoomId: selectChatRoom.id,
+      queryFn: getChatsHandler,
+    });
+
+  console.log('채팅 조회 데이터:::', chats);
+
   return (
     <div className="flex flex-col">
       <div className="flex w-full flex-grow flex-col bg-gray-900" />
@@ -68,7 +84,10 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
         ref={chatArea}
         className="grid h-fit max-h-[35%] w-full grid-cols-[2rem_auto_3rem] gap-x-2 overflow-hidden px-2 py-3 sm:grid-cols-[2rem_auto_5rem] [&>*:nth-child(3)]:h-7 sm:[&>*:nth-child(3)]:h-9 "
       >
-        <button className="h-9 w-8 border-r border-gray-500">
+        <button
+          onClick={() => fetchNextPage()}
+          className="h-9 w-8 border-r border-gray-500"
+        >
           <UploadImageSVG className="size-6 fill-gray-300" />
         </button>
 

@@ -66,7 +66,7 @@ const ChatRoomHeader = ({ isOnline }: ChatRoomHeaderProps) => {
                   component: <Link href="/instructor/">신고하기</Link>,
                 },
                 {
-                  component: <button>채팅방 나가기</button>,
+                  component: <div>채팅방 나가기</div>,
                 },
               ]}
             />
@@ -78,28 +78,3 @@ const ChatRoomHeader = ({ isOnline }: ChatRoomHeaderProps) => {
 };
 
 export default ChatRoomHeader;
-
-{
-  /* <Link href="/강사id">
-<ProfileImg src={null} size="small" />
-</Link>
-<dl className="flex flex-col text-sm">
-<Link href="/강사id">
-  <dt>닉네임</dt>
-</Link>
-<div className="flex items-center gap-1">
-  <div
-    className={`size-[9px] rounded-full ${
-      isOnline ? 'bg-main-color' : 'bg-gray-500'
-    }`}
-  />
-  <dd className="mr-2">{isOnline ? '활동중' : '오프라인'}</dd>
-  <dd className="flex text-main-color">
-    <div className="w-1/4 truncate">
-      클래스클래스클래스클래스클래스클래스클래스클래스클래스클래스클래스클래스
-    </div>
-    수강중
-  </dd>
-</div>
-</dl> */
-}
