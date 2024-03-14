@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { formatTimeNoSec } from '@/utils/dateTimeUtils';
@@ -10,11 +9,12 @@ const statusColor: Record<string, string> = {
   full: 'bg-sub-color2',
 };
 
-const ResponsiveScheduleView = ({
-  selectedEvent,
-}: {
+interface ResponsiveScheduleViewProps {
   selectedEvent: IMonthlyClassSchedules[];
-}) => {
+  mode?: 'dashboard';
+}
+const ResponsiveScheduleView = (props: ResponsiveScheduleViewProps) => {
+  const { selectedEvent, mode } = props;
   const schedules = useMemo(
     () =>
       selectedEvent.map((event) => {
@@ -39,9 +39,9 @@ const ResponsiveScheduleView = ({
   );
 
   return schedules.length ? (
-    <ul className="flex max-h-40 flex-col gap-2 overflow-y-auto">
-      {schedules.map((schedule) => (
-        <li key={nanoid()} className="flex text-sm">
+    <ul className="flex h-40 flex-col gap-2 overflow-y-auto">
+      {schedules.map((schedule, index) => (
+        <li key={index} className="flex text-sm">
           <p className="mb-2 flex w-28 items-center gap-1 whitespace-nowrap font-semibold">
             <span
               className={`h-[11px] w-[11px] rounded-full ${
@@ -52,7 +52,9 @@ const ResponsiveScheduleView = ({
           </p>
           <Link href={`/class/${schedule.lectureId}`} className="font-medium">
             {schedule.title}
-            <span className="text-gray-300">{` (${schedule.numberOfParticipants}/${schedule.maxCapacity})`}</span>
+            {mode === 'dashboard' && (
+              <span className="text-gray-300">{` (${schedule.numberOfParticipants}/${schedule.maxCapacity})`}</span>
+            )}
           </Link>
         </li>
       ))}

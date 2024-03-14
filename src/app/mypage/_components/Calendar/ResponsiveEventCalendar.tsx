@@ -1,9 +1,9 @@
 import isSameDay from 'date-fns/isSameDay';
 import ko from 'date-fns/locale/ko';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
 import { DayPicker, CaptionProps } from 'react-day-picker';
-import ResponsiveScheduleView from '@/app/dashboard/_components/ResponsiveScheduleView';
 import { FormattedCaption } from '@/utils/calendarUtils/CalendarCaption';
 import {
   getSingleCalendarModifiers,
@@ -16,18 +16,23 @@ import { IMonthlyClassSchedules } from '@/types/class';
 import 'react-day-picker/dist/style.css';
 import '@/styles/calendar.css';
 
+const ResponsiveScheduleView = dynamic(
+  () => import('@/components/ScheduleView/ResponsiveScheduleView'),
+  {
+    ssr: false,
+  },
+);
+
 interface ResponsiveEventCalendarProps {
   date: Date;
   // eslint-disable-next-line no-unused-vars
   handleDateChange: (newDate: Date) => void;
   scheduleData: IMonthlyClassSchedules[] | undefined;
+  mode?: 'dashboard';
 }
 
-const ResponsiveEventCalendar = ({
-  date,
-  handleDateChange,
-  scheduleData,
-}: ResponsiveEventCalendarProps) => {
+const ResponsiveEventCalendar = (props: ResponsiveEventCalendarProps) => {
+  const { date, handleDateChange, scheduleData, mode } = props;
   const [selectedDate, setSelectedDate] = useState(date);
   const classNames = getSingleCalendarClassNames('dashboard');
   const clickableDates = scheduleData?.map(
@@ -91,7 +96,8 @@ const ResponsiveEventCalendar = ({
             toolbar: DayToolBar,
           }}
         />
-        <ResponsiveScheduleView selectedEvent={selectedEvent} />
+
+        <ResponsiveScheduleView selectedEvent={selectedEvent} mode={mode} />
       </div>
     </>
   );
