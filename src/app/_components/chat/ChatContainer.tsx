@@ -8,7 +8,7 @@ import {
 } from 'framer-motion';
 import { useCallback, useRef, useState } from 'react';
 import useMediaQuery from '@/hooks/useMediaQuery';
-import Chat from './Chat';
+import ChatMain from './ChatMain';
 import { userType } from '@/types/auth';
 
 interface ChatContsinerProps {
@@ -50,7 +50,7 @@ const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
       const newValue =
         operation === 'subtract' ? currentValue - delta : currentValue + delta;
 
-      const minValue = point === 'y' ? 242 : 281;
+      const minValue = point === 'y' ? 242 : 300;
       const maxValue = point === 'y' ? 644 : 608;
 
       if (newValue > minValue && newValue < maxValue) {
@@ -97,7 +97,7 @@ const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
               point="x"
             />
           )}
-          <Chat
+          <ChatMain
             id={id}
             dragState={dragState}
             mHeight={isSm ? mHeight : null}

@@ -170,7 +170,6 @@ export const getChats = async (data: {
   lastItemId?: string;
 }): Promise<Chat[]> => {
   try {
-    console.log(data);
     const params = new URLSearchParams();
 
     Object.entries(data)
@@ -192,6 +191,9 @@ export const getChats = async (data: {
 
     if (!response.ok) {
       const errorData = await response.json();
+      if (errorData.status === 404) {
+        return [];
+      }
       const error: FetchError = new Error(errorData.message || '');
       error.status = response.status;
       throw error;
@@ -206,7 +208,10 @@ export const getChats = async (data: {
   }
 };
 
-export const sendChat = async (data: sendChatParams, userType: userType) => {
+export const sendChat = async (
+  data: sendChatParams,
+  userType: userType,
+): Promise<Chat> => {
   try {
     const response = await fetch(`/api/chat/send-chat?userType=${userType}`, {
       method: 'POST',
@@ -225,7 +230,7 @@ export const sendChat = async (data: sendChatParams, userType: userType) => {
     }
 
     const resData = await response.json();
-    return resData.data;
+    return resData.data.chat;
   } catch (error) {
     console.error('채팅 전송 오류', error);
     throw error;

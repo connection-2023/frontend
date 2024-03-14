@@ -1,8 +1,8 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
-import useChatsQuery from '@/hooks/useChatsQuery';
 import { UploadImageSVG } from '@/icons/svg';
-import { getChats, sendChat } from '@/lib/apis/chatApi';
+import { sendChat } from '@/lib/apis/chatApi';
+import Chat from './Chat';
 import ApplyButton from '@/components/Button/ApplyButton';
 import Spinner from '@/components/Spinner/Spinner';
 import { userType } from '@/types/auth';
@@ -16,6 +16,7 @@ interface ChatRoomMainProps {
 const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
   const chatArea = useRef<HTMLDivElement>(null);
   const messageArea = useRef<HTMLTextAreaElement>(null);
+  const queryClient = useQueryClient();
 
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
 
@@ -42,7 +43,10 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
 
   useEffect(() => {
     handleResizeHeight();
-  }, [chatArea.current?.parentElement?.clientHeight]);
+  }, [
+    chatArea.current?.parentElement?.clientHeight,
+    chatArea.current?.parentElement?.clientWidth,
+  ]);
 
   const { mutate: sendChatContent, isPending } = useMutation({
     mutationFn: async (content: string) => {
@@ -51,7 +55,11 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
         receiverId: selectChatRoom[opponentType],
         content,
       };
-      return await sendChat(data, userType);
+      const newChat = await sendChat(data, userType);
+      return { ...newChat, createdAt: new Date() };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['chats'] });
     },
   });
 
@@ -62,32 +70,14 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
     }
   };
 
-  const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
-    getChats({
-      chatRoomId: selectChatRoom.id,
-      pageSize: 1,
-      lastItemId,
-    });
-
-  const { chats, isError, isLoading, fetchNextPage, hasNextPage } =
-    useChatsQuery({
-      chatRoomId: selectChatRoom.id,
-      queryFn: getChatsHandler,
-    });
-
-  console.log('채팅 조회 데이터:::', chats);
-
   return (
     <div className="flex flex-col">
-      <div className="flex w-full flex-grow flex-col bg-gray-900" />
+      <Chat selectChatRoom={selectChatRoom} />
       <div
         ref={chatArea}
         className="grid h-fit max-h-[35%] w-full grid-cols-[2rem_auto_3rem] gap-x-2 overflow-hidden px-2 py-3 sm:grid-cols-[2rem_auto_5rem] [&>*:nth-child(3)]:h-7 sm:[&>*:nth-child(3)]:h-9 "
       >
-        <button
-          onClick={() => fetchNextPage()}
-          className="h-9 w-8 border-r border-gray-500"
-        >
+        <button className="h-9 w-8 border-r border-gray-500">
           <UploadImageSVG className="size-6 fill-gray-300" />
         </button>
 

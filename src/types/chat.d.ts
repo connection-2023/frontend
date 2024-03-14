@@ -29,6 +29,6 @@ export interface Chat {
     lecturerId: number;
   };
   content: string;
-  readedAt: string;
-  createdAt: string;
+  readedAt: Date;
+  createdAt: Date;
 }
