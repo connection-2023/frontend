@@ -30,6 +30,7 @@ const InstructorListView = ({
   const [largeImg, setLargeImg] = useState(true);
   const [instructors, setInstructors] = useState(instructorList);
   const [searchState, setSearchState] = useState({ ...searchData });
+  const [isLoadingInstructorList, setIsLoadingInstructorList] = useState(false);
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
@@ -71,6 +72,7 @@ const InstructorListView = ({
   };
 
   const searchInstructorsHandler = async () => {
+    setIsLoadingInstructorList(true);
     try {
       await updateSearchStateAndInstructorLists();
     } catch (error) {
@@ -83,9 +85,10 @@ const InstructorListView = ({
         console.error(error);
       }
     }
+    setIsLoadingInstructorList(false);
   };
 
-  const { ref, loading } = useIntersect(searchInstructorsHandler, options);
+  const { ref } = useIntersect(searchInstructorsHandler, options);
 
   const imgStateHandler = (state: boolean) => {
     setLargeImg(state);
@@ -134,7 +137,7 @@ const InstructorListView = ({
         <p>검색된 결과가 없습니다</p>
       </div>
 
-      {loading && (
+      {isLoadingInstructorList && (
         <div className="mb-5 flex justify-center">
           <Spinner />
         </div>

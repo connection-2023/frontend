@@ -4,22 +4,22 @@ const useIntersect = (
   onIntersect: (
     entry: IntersectionObserverEntry,
     observer: IntersectionObserver,
-  ) => void,
+  ) => Promise<void>,
   options?: IntersectionObserverInit,
 ) => {
-  const [loading, setLoading] = useState(false);
+  const isLoading = useRef(false);
 
   const ref = useRef<HTMLDivElement>(null);
   const callback = useCallback(
     (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
-      if (loading) return;
+      if (isLoading.current) return;
 
       entries.forEach(async (entry) => {
         if (entry.isIntersecting) {
-          setLoading(true);
+          isLoading.current = true;
           await onIntersect(entry, observer);
+          isLoading.current = false;
         }
-        setLoading(false);
       });
     },
     [onIntersect],
@@ -31,9 +31,9 @@ const useIntersect = (
     const observer = new IntersectionObserver(callback, options);
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [ref, options, callback, loading]);
+  }, [ref, options, callback]);
 
-  return { ref, loading };
+  return { ref };
 };
 
 export default useIntersect;

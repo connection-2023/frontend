@@ -22,6 +22,7 @@ const PassesListView = ({
 }: PassesListViewProps) => {
   const [passes, setPasses] = useState(passList);
   const [isLastItem, setIsLastItem] = useState(false);
+  const [isLoadingPassesList, setIsLoadingPassesList] = useState(false);
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
@@ -49,6 +50,7 @@ const PassesListView = ({
   };
 
   const searchPassesHandler = async () => {
+    setIsLoadingPassesList(true);
     try {
       await updateSearchPassesList();
     } catch (error) {
@@ -61,9 +63,10 @@ const PassesListView = ({
         console.error(error);
       }
     }
+    setIsLoadingPassesList(false);
   };
 
-  const { ref, loading } = useIntersect(searchPassesHandler, options);
+  const { ref } = useIntersect(searchPassesHandler, options);
 
   return (
     <>
@@ -77,7 +80,7 @@ const PassesListView = ({
           </div>
         ))}
       </section>
-      {loading && (
+      {isLoadingPassesList && (
         <div className="mb-5 flex justify-center">
           <Spinner />
         </div>

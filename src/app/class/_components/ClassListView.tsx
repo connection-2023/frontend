@@ -28,6 +28,7 @@ const ClassListView = ({
   const { changeParams } = useChangeSearchParams();
   const [classLists, setClassLists] = useState(classList);
   const [searchState, setSearchState] = useState({ ...searchData });
+  const [isLoadingClassList, setIsLoadingClassList] = useState(false);
   const { userType } = useUserStore((state) => ({
     userType: state.userType,
   }));
@@ -72,6 +73,7 @@ const ClassListView = ({
   };
 
   const searchInstructorsHandler = async () => {
+    setIsLoadingClassList(true);
     try {
       await updateSearchStateAndClassLists();
     } catch (error) {
@@ -84,9 +86,10 @@ const ClassListView = ({
         console.error(error);
       }
     }
+    setIsLoadingClassList(false);
   };
 
-  const { ref, loading } = useIntersect(searchInstructorsHandler, options);
+  const { ref } = useIntersect(searchInstructorsHandler, options);
 
   return (
     <div className="px-4 sm:px-9 xl:px-14">
@@ -146,7 +149,7 @@ const ClassListView = ({
         <p>검색된 결과가 없습니다</p>
       </div>
 
-      {loading && (
+      {isLoadingClassList && (
         <div className="mb-5 flex justify-center">
           <Spinner />
         </div>
