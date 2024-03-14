@@ -2,13 +2,13 @@
 import { useRouter } from 'next/navigation';
 import { useState, useMemo } from 'react';
 import { Calendar, View, Views } from 'react-big-calendar';
+import ToolBar from '@/utils/calendarUtils/BigCalendarToolBar';
 import {
   localizer,
   formats,
   eventStyleGetter,
   messages,
 } from '@/utils/fullCalendarUtils';
-import ToolBar from './ToolBar';
 import { IMonthlyClassSchedules } from '@/types/class';
 import { IFullCalendarEvent } from '@/types/types';
 import '@/styles/fullCalendar.css';

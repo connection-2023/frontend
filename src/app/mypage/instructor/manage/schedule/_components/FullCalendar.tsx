@@ -3,13 +3,13 @@ import isSameDay from 'date-fns/isSameDay';
 import dynamic from 'next/dynamic';
 import { useState, useMemo } from 'react';
 import { Calendar, View, Views, SlotInfo } from 'react-big-calendar';
+import ToolBar from '@/utils/calendarUtils/BigCalendarToolBar';
 import {
   localizer,
   formats,
   eventStyleGetter,
   messages,
 } from '@/utils/fullCalendarUtils';
-import ToolBar from './ToolBar';
 import { IMonthlyClassSchedules } from '@/types/class';
 import { IFullCalendarEvent } from '@/types/types';
 import '@/styles/fullCalendar.css';

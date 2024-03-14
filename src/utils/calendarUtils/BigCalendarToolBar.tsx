@@ -14,7 +14,12 @@ const views: { label: string; value: View }[] = [
   { label: 'Week', value: 'week' },
 ];
 
-const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
+const BigCalendarToolBar = ({
+  label,
+  view,
+  onNavigate,
+  onView,
+}: IToolbarProps) => (
   <div className="mb-2.5 flex items-center justify-between">
     <div className="grid h-[1.875rem] w-[8.7rem] grid-cols-4 divide-x divide-solid overflow-hidden rounded-md border border-solid border-gray-500">
       <button onClick={() => onNavigate('PREV')} className={NavButtonStyle}>
@@ -45,7 +50,7 @@ const ToolBar = ({ label, view, onNavigate, onView }: IToolbarProps) => (
   </div>
 );
 
-export default ToolBar;
+export default BigCalendarToolBar;
 
 const NavButtonStyle =
   'flex w-full h-full items-center justify-center hover:bg-gray-700';
