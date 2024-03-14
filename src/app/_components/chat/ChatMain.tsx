@@ -75,7 +75,6 @@ const ChatMain = ({
             <ChatListLoading />
           ) : (
             <ChatList
-              id={id}
               chatRoomList={chatRoomList ?? []}
               chatSelectHandler={chatSelectHandler}
             />

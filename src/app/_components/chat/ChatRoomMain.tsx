@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { UploadImageSVG } from '@/icons/svg';
 import { sendChat } from '@/lib/apis/chatApi';
+import { useChatStore } from '@/store';
 import Chat from './Chat';
 import ApplyButton from '@/components/Button/ApplyButton';
 import Spinner from '@/components/Spinner/Spinner';
@@ -16,7 +17,10 @@ interface ChatRoomMainProps {
 const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
   const chatArea = useRef<HTMLDivElement>(null);
   const messageArea = useRef<HTMLTextAreaElement>(null);
-  const queryClient = useQueryClient();
+
+  const { setNewChatsList } = useChatStore((state) => ({
+    setNewChatsList: state.setNewChatsList,
+  }));
 
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
 
@@ -58,9 +62,7 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
       const newChat = await sendChat(data, userType);
       return { ...newChat, createdAt: new Date() };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['chats'] });
-    },
+    onSuccess: (data) => setNewChatsList(data),
   });
 
   const sendMessage = () => {

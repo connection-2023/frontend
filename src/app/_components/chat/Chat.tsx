@@ -1,6 +1,8 @@
+import { useEffect, useMemo } from 'react';
 import useChatsQuery from '@/hooks/useChatsQuery';
 import useIntersect from '@/hooks/useIntersect';
 import { getChats } from '@/lib/apis/chatApi';
+import { useChatStore } from '@/store';
 import { ChatRoomList } from '@/types/chat';
 
 interface ChatProps {
@@ -8,6 +10,12 @@ interface ChatProps {
 }
 
 const Chat = ({ selectChatRoom }: ChatProps) => {
+  const { newChatsList } = useChatStore((state) => ({
+    newChatsList: state.newChatsList,
+  }));
+
+  const newChats = newChatsList?.[selectChatRoom.id] ?? [];
+
   const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
     getChats({
       chatRoomId: selectChatRoom.id,
@@ -16,7 +24,7 @@ const Chat = ({ selectChatRoom }: ChatProps) => {
     });
 
   const {
-    chats,
+    chats: prevChats,
     isError,
     isLoading,
     fetchNextPage,
@@ -27,18 +35,28 @@ const Chat = ({ selectChatRoom }: ChatProps) => {
     queryFn: getChatsHandler,
   });
 
-  const loadPrevChatHandler = () => {
-    fetchNextPage();
+  const loadPrevChatHandler = async () => {
+    if (isFetchingNextPage) return;
+    await fetchNextPage();
   };
 
-  const { ref } = useIntersect(loadPrevChatHandler);
+  const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1,
+  } as const;
+
+  const { ref } = useIntersect(loadPrevChatHandler, options);
 
   return (
     <div className="h-0 w-full flex-grow overflow-auto bg-gray-900">
-      {[...chats].reverse().map(({ id, content }, index) => (
-        <div key={id + index} ref={hasNextPage ? ref : undefined}>
+      {[...prevChats].reverse().map(({ id, content }, index) => (
+        <div key={id} ref={hasNextPage && index === 0 ? ref : undefined}>
           {content}
         </div>
+      ))}
+      {newChats.map(({ id, content }) => (
+        <div key={id}>{content}</div>
       ))}
     </div>
   );

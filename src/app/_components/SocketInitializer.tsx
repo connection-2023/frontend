@@ -1,8 +1,9 @@
 'use client';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { useSocketStore } from '@/store';
+import { useChatStore, useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
+import { Chat } from '@/types/chat';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';
 
@@ -25,6 +26,10 @@ const SocketInitializer = ({
       setIsConnected: state.setIsConnected,
       setOnlineList: state.setOnlineList,
     }));
+
+  const { setNewChatsList } = useChatStore((state) => ({
+    setNewChatsList: state.setNewChatsList,
+  }));
 
   useEffect(() => {
     if (userType && !isConnected) {
@@ -58,6 +63,10 @@ const SocketInitializer = ({
         const type = userId ? 'user' : 'lecturer';
 
         setOnlineList({ type, id, join: false });
+      });
+
+      socket.on('messageToClient', (data: Chat) => {
+        setNewChatsList({ ...data, createdAt: new Date() });
       });
 
       socket.emit('login', {

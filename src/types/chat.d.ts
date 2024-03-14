@@ -32,3 +32,7 @@ export interface Chat {
   readedAt: Date;
   createdAt: Date;
 }
+
+export interface NewChatsList {
+  [key: string]: Chat[];
+}
