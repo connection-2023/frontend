@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   getRecentHistory,
   getPopularKeywords,
@@ -49,10 +50,16 @@ const Search = async () => {
             {popularKeywordsData.map(({ searchTerm }, i) => (
               <li
                 key={i}
-                className="ml-2 flex h-10 cursor-pointer items-center whitespace-nowrap text-base"
+                className="ml-2 flex h-10 items-center whitespace-nowrap text-base"
               >
                 <span className="mr-4 font-bold text-sub-color1">{i + 1}</span>
-                {searchTerm}
+
+                <Link
+                  href={`/search?query=${searchTerm}`}
+                  className="flex-1 cursor-pointer"
+                >
+                  {searchTerm}
+                </Link>
               </li>
             ))}
           </ul>
