@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { CheckMarkSVG, PlusesSVG } from '@/icons/svg';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import MobileModal from '@/components/Modal/MobileModal';
 import { SelectClassType } from '@/types/coupon';
 

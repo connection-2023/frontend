@@ -5,7 +5,7 @@ import { PassSVG } from '@/icons/svg';
 import { createNewPass } from '@/lib/apis/passApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import CreatePass from '../../_components/CreatePass';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import RouterModal from '@/components/Modal/RouterModal';
 import { IcreatePass } from '@/types/pass';
 import { FetchError } from '@/types/types';

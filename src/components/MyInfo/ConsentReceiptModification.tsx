@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Modal from '../Modal/Modal';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 
 // 현재 동의 현황 Props로 받은 후
 const ConsentReceiptModification = () => {

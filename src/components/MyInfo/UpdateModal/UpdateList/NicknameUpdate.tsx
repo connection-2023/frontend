@@ -12,7 +12,7 @@ import {
 } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import UpdateModalContainer from '../UpdateModalContainer';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import { FetchError } from '@/types/types';
 
 interface NicknameUpdateProps {

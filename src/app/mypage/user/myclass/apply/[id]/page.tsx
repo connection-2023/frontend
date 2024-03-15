@@ -5,7 +5,7 @@ import CancelApplicationButton from './_components/CancelApplicationButton';
 import ClassLocation from './_components/ClassLocation';
 import OneDayClass from './_components/OneDayClass';
 import RegularClass from './_components/RegularClass';
-import BackButton from '@/components/Button/BackButton';
+import { BackButton } from '@/components/Button';
 import Notice from '@/components/ClassNotice/Notice';
 
 const ApplyDetailPage = async ({

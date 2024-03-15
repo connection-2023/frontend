@@ -3,7 +3,7 @@ import { useForm, FieldErrors } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { KaKaoTalkSVG, NaverSVG, GoogleSVG, CheckMarkSVG } from '@/icons/svg';
 import { checkUserNickname } from '@/lib/apis/userApi';
-import StatusButton from '@/components/Button/StatusButton';
+import { Button } from '@/components/Button';
 import { SignInResponse } from '@/types/auth';
 import { IRegisterForm } from '@/types/form';
 import { FetchError } from '@/types/types';
@@ -198,12 +198,13 @@ const UserSetup = ({
               </div>
 
               <div className="w-full max-w-[6rem]">
-                <StatusButton
+                <Button
+                  color="secondary"
                   disabled={!nickname || nickname === validatedNickname}
                   onClick={validateNickname}
                 >
                   중복확인
-                </StatusButton>
+                </Button>
               </div>
             </div>
           </li>
@@ -240,7 +241,8 @@ const UserSetup = ({
                 </div>
 
                 <div className="w-full max-w-[6rem]">
-                  <StatusButton
+                  <Button
+                    color="secondary"
                     disabled={
                       !phoneNumber ||
                       phoneNumber === validatedPhoneNumber ||
@@ -249,7 +251,7 @@ const UserSetup = ({
                     onClick={validatePhoneNumber}
                   >
                     번호인증
-                  </StatusButton>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -264,23 +266,28 @@ const UserSetup = ({
                 />
 
                 <div className="w-full max-w-[6rem]">
-                  <StatusButton
+                  <Button
+                    color="secondary"
                     disabled={
                       !numberValidation || validatedPhoneNumber === phoneNumber
                     }
                     onClick={handleNumberValidation}
                   >
                     인증하기
-                  </StatusButton>
+                  </Button>
                 </div>
               </div>
             )}
           </li>
         </ul>
         <div className="mt-auto flex justify-end">
-          <StatusButton disabled={!(name && validatedNickname)} type="submit">
+          <Button
+            color="secondary"
+            disabled={!(name && validatedNickname)}
+            type="submit"
+          >
             다음
-          </StatusButton>
+          </Button>
         </div>
       </form>
     </section>

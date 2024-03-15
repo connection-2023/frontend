@@ -7,9 +7,8 @@ import { getWriteReviews } from '@/lib/apis/reviewApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import formatDate from '@/utils/formatDate';
-import Button from '@/components/Button/Button';
-import ReviewStatistics from '@/components/Review/ReviewStatistics';
-import UserReview from '@/components/Review/UserReview';
+import { Button } from '@/components/Button';
+import { ReviewStatistics, UserReview } from '@/components/Review';
 import { ReservationDetails, WriteReview } from '@/types/review';
 import { FetchError } from '@/types/types';
 

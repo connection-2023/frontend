@@ -6,7 +6,7 @@ import { ArrowUpSVG } from '@/icons/svg';
 import { postPassPaymentInfo, postPaymentCancel } from '@/lib/apis/paymentApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePaymentStore, useUserStore } from '@/store';
-import ApplyButton from '@/components/Button/ApplyButton';
+import { ApplyButton } from '@/components/Button';
 import { IPassInfoForIdData } from '@/types/pass';
 import { FetchError } from '@/types/types';
 

@@ -4,7 +4,7 @@ import { MultiValue, SingleValue } from 'react-select';
 import { usePaymentStore } from '@/store';
 import formatDate from '@/utils/formatDate';
 import PassSelect from './PassSelect';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { UniqueButton } from '@/components/Button';
 import { SelectPass } from '@/types/pass';
 
 interface PassContainerProps {

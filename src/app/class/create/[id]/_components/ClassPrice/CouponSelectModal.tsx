@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import Coupon from '@/components/Coupon/Coupon';
 import MobileModal from '@/components/Modal/MobileModal';
 import { couponGET } from '@/types/coupon';

@@ -6,7 +6,7 @@ import BankSelect from '@/app/instructor/apply/_components/InstructorAuth/BankSe
 import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import { updateBankAccount } from '@/lib/apis/instructorApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import UpdateModalContainer from '@/components/MyInfo/UpdateModal/UpdateModalContainer';
 import {
   accountCertificationAction,

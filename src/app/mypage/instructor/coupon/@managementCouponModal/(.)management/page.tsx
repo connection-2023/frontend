@@ -11,8 +11,7 @@ import {
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { createCouponUtils } from '@/utils/apiDataProcessor';
 import { reloadToast } from '@/utils/reloadMessage';
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { Button, UniqueButton } from '@/components/Button';
 import CouponOption from '@/components/Coupon/CouponOption/CouponOption';
 import RouterModal from '@/components/Modal/RouterModal';
 import { CouponData, couponGET, createCouponData } from '@/types/coupon';

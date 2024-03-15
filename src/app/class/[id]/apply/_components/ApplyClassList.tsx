@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import CountButton from '@/components/Button/CountButton';
+import { CountButton } from '@/components/Button';
 import { IApplyClassList } from '@/types/payment';
 
 interface ApplyClassListProps extends IApplyClassList {

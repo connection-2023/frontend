@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { postLecturerReport, postUserReport } from '@/lib/apis/reportApis';
 import { useUserStore } from '@/store';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { UniqueButton } from '@/components/Button';
 import ReportCheckBox from '@/components/CheckBox/ReportCheckBox';
 import { ReportFormData, ReportType, IReportRequest } from '@/types/report.d';
 

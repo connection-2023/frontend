@@ -4,7 +4,7 @@ import {
   formatKoreanDateTime,
   formatFullDateTime,
 } from '@/utils/dateTimeUtils';
-import BackButton from '@/components/Button/BackButton';
+import { BackButton } from '@/components/Button';
 
 const OrderDetail = async ({
   params: { orderId },

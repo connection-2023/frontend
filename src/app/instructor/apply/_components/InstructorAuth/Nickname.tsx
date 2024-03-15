@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { getCheckNickname } from '@/lib/apis/instructorApi';
 import Label from './Label';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import { Verification } from '@/types/types';
 
 interface NicknameProps {

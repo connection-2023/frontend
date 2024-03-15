@@ -7,7 +7,7 @@ import { useClickAway } from 'react-use';
 import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
 import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 import RegularApplyList from './apply/RegularApplyList';
-import ApplyButton from '@/components/Button/ApplyButton';
+import { ApplyButton } from '@/components/Button';
 import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
 
 const ReservationItem = dynamic(() => import('./apply/ReservationItem'));

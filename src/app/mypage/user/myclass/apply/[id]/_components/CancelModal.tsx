@@ -1,8 +1,8 @@
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import Button from '@/components/Button/Button';
-import Modal from '@/components/Modal/Modal';
 import BankSelect from '@/app/instructor/apply/_components/InstructorAuth/BankSelect';
+import { Button } from '@/components/Button';
+import Modal from '@/components/Modal/Modal';
 
 interface IFormValues {
   bank: any;
