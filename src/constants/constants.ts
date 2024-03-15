@@ -514,3 +514,5 @@ export const HIDE_NAV_PATH = [
   '^/class/[\\w-]+/apply$',
   '^/instructor/[\\w-]+/edit$',
 ];
+
+export const SEARCH_LOCAL_STORAGE_KEY = 'searchKeys';
