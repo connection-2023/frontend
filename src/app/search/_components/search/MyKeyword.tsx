@@ -1,4 +1,6 @@
 'use client';
+import { useRouter } from 'next/navigation';
+import { deleteAllSearchKeywords } from '@/lib/apis/searchApis';
 import ListItem from './ListItem';
 import { IUserSearchKeywords } from '@/types/types';
 
@@ -7,7 +9,12 @@ const MyKeyword = ({
 }: {
   userKeywords: IUserSearchKeywords[];
 }) => {
-  const onClickRemoveAll = () => {};
+  const router = useRouter();
+
+  const onClickRemoveAll = async () => {
+    await deleteAllSearchKeywords();
+    router.refresh();
+  };
 
   return (
     <>
