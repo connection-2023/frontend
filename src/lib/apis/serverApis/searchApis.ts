@@ -10,9 +10,29 @@ import {
   searchInstructorParameters,
 } from '@/types/instructor';
 import { searchPass, searchPassesParameters } from '@/types/pass';
-import { FetchError, IUserSearchKeywords } from '@/types/types';
+import {
+  FetchError,
+  IUserSearchKeywords,
+  IPopularKeyword,
+} from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
+
+export const getPopularKeywords = async (): Promise<IPopularKeyword[]> => {
+  const response = await fetch(`${END_POINT}/search/popular-terms`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`인기 검색어 조회 오류: ${response.status}`);
+  }
+  const { data } = await response.json();
+
+  return data.popularSearchTerms.slice(0, 5);
+};
 
 export const getRecentHistory = async (): Promise<IUserSearchKeywords[]> => {
   const cookieStore = cookies();

@@ -1,5 +1,7 @@
-import { dummySearchData } from '@/constants/dummy';
-import { getRecentHistory } from '@/lib/apis/serverApis/searchApis';
+import {
+  getRecentHistory,
+  getPopularKeywords,
+} from '@/lib/apis/serverApis/searchApis';
 import Close from './search/Close';
 import MyKeyword from './search/MyKeyword';
 import SearchInput from './search/SearchInput';
@@ -10,6 +12,7 @@ const H1_STYLE = 'text-black mb-3.5 text-lg font-bold';
 
 const Search = async () => {
   const userKeywordsData = await getRecentHistory();
+  const popularKeywords = await getPopularKeywords();
 
   return (
     <div className="border-box mx-auto w-full max-w-[50rem] overflow-hidden px-7">
@@ -38,13 +41,13 @@ const Search = async () => {
         <section>
           <h1 className={H1_STYLE}>인기 검색어</h1>
           <ul className="flex flex-col divide-y divide-solid divide-gray-700">
-            {dummySearchData.popular.map((keyword, i) => (
+            {popularKeywords.map(({ searchTerm }, i) => (
               <li
                 key={i}
                 className="ml-2 flex h-10 cursor-pointer items-center whitespace-nowrap text-base"
               >
                 <span className="mr-4 font-bold text-sub-color1">{i + 1}</span>
-                {keyword}
+                {searchTerm}
               </li>
             ))}
           </ul>
