@@ -11,8 +11,13 @@ export const dynamic = 'force-dynamic';
 const H1_STYLE = 'text-black mb-3.5 text-lg font-bold';
 
 const Search = async () => {
-  const userKeywordsData = await getRecentHistory();
-  const popularKeywords = await getPopularKeywords();
+  const userKeywords = getRecentHistory();
+  const popularKeywords = getPopularKeywords();
+
+  const [userKeywordsData, popularKeywordsData] = await Promise.all([
+    userKeywords,
+    popularKeywords,
+  ]);
 
   return (
     <div className="border-box mx-auto w-full max-w-[50rem] overflow-hidden px-7">
@@ -41,7 +46,7 @@ const Search = async () => {
         <section>
           <h1 className={H1_STYLE}>인기 검색어</h1>
           <ul className="flex flex-col divide-y divide-solid divide-gray-700">
-            {popularKeywords.map(({ searchTerm }, i) => (
+            {popularKeywordsData.map(({ searchTerm }, i) => (
               <li
                 key={i}
                 className="ml-2 flex h-10 cursor-pointer items-center whitespace-nowrap text-base"
