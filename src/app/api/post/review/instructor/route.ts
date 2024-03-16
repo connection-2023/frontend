@@ -13,7 +13,7 @@ export const GET = async (request: NextRequest) => {
 
   const {
     lecturerId,
-    displayCount,
+    take,
     currentPage,
     targetPage,
     firstItemId,
@@ -21,7 +21,7 @@ export const GET = async (request: NextRequest) => {
     orderBy,
   } = Object.fromEntries(searchParams);
 
-  const query = `take=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&orderBy=${orderBy}`;
+  const query = `take=${take}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&orderBy=${orderBy}`;
 
   const headers: Record<string, string> = token
     ? {
