@@ -1,4 +1,14 @@
 import Link from 'next/link';
+import Apply from './Apply';
+import ReadMore from './ReadMore';
+import RegularApply from './RegularApply';
+import Notice from '@/components/ClassNotice/Notice';
+import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import ProfileImage from '@/components/Profile/ProfileImage';
+import RegularScheduleView from '@/components/ScheduleView/RegularScheduleView';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import ReviewSection from '@/components/uis/ReviewSection';
 import {
   ButtonStyles,
   CLASS_SECTIONS,
@@ -11,16 +21,6 @@ import {
 } from '@/lib/apis/serverApis/classPostApis';
 import { formatDate } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
-import Apply from './Apply';
-import ClassReviewSection from './ClassReviewSection';
-import ReadMore from './ReadMore';
-import RegularApply from './RegularApply';
-import Notice from '@/components/ClassNotice/Notice';
-import Map from '@/components/Map/Map';
-import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/Profile/ProfileImage';
-import RegularScheduleView from '@/components/ScheduleView/RegularScheduleView';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
 
 const ClassDetail = async ({ id }: { id: string }) => {
   const classDetailData = getClassDetail(id);
@@ -162,7 +162,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
         </section>
 
         {/* 클래스 후기 */}
-        <ClassReviewSection id={id} stars={stars} />
+        <ReviewSection stars={stars} type="class" />
       </section>
 
       {schedules && (

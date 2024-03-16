@@ -1,6 +1,7 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '../../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
-import { day, ReviewOrderType } from '@/types/class';
+import { day } from '@/types/class';
+import { ReviewOrderType } from '@/types/review';
 import { TimeOfDay } from '@/types/types';
 
 export const ProfileImgSize = {
@@ -388,6 +389,10 @@ export const CLASS_TAKE = 30;
 export const PASSES_TAKE = 8;
 
 export const REGIONS_SELECT_MAX = 30;
+
+export const DEFAULT_REVIEW_COUNT = 3;
+
+export const FETCH_REVIEW_COUNT = 5;
 
 export const INITIAL_SCHEDULE_PROGRESS = [
   {
