@@ -10,9 +10,10 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const id = request.nextUrl.searchParams.get('id');
+  const lecturerId = request.nextUrl.searchParams.get('lecturerId');
+  const userId = request.nextUrl.searchParams.get('userId');
 
-  if (!id) {
+  if (!lecturerId && !userId) {
     return NextResponse.json(
       {
         status: 400,
@@ -22,13 +23,18 @@ export const GET = async (request: NextRequest) => {
     );
   }
 
-  const response = await fetch(`${END_POINT}/chat-rooms/${id}/online-list`, {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    `${END_POINT}/events/online-map?${
+      lecturerId ? `lecturerId=${lecturerId}` : `userId=${userId}`
+    }`,
+    {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-  });
+  );
 
   if (!response.ok) {
     const errorData = await response.json();

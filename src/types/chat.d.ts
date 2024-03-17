@@ -9,9 +9,8 @@ export interface ChatRoom {
 
 export interface ChatRoomList extends ChatRoom {}
 
-export interface onlineList {
-  lecturerId?: number;
-  userId?: number;
+export interface onlineState {
+  lastLogin?: string;
 }
 
 export interface sendChatParams {

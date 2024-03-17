@@ -272,8 +272,3 @@ export type FilterKey =
   | '인원'
   | '진행 방식'
   | '요일/시간대';
-
-export type onlineList = {
-  lecturerId: number[];
-  userId: number[];
-};

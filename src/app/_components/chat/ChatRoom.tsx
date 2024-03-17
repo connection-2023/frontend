@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
-import { getCheckOnlineList } from '@/lib/apis/chatApi';
-import { useSocketStore } from '@/store';
+import { getCheckOnline } from '@/lib/apis/chatApi';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomMain from './ChatRoomMain';
 import { userType } from '@/types/auth';
@@ -14,33 +13,16 @@ interface ChatRoomProps {
 }
 
 const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
-  const { onlineList, setOnlineList } = useSocketStore((state) => ({
-    onlineList: state.onlineList,
-    setOnlineList: state.setOnlineList,
-  }));
+  const senderType = userType === 'user' ? 'lecturerId' : 'userId';
 
-  const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
-
-  const { isLoading: headerIsLoading, error: headerError } = useQuery({
-    queryKey: ['onlineList', selectChatRoom.id],
-    queryFn: async () => {
-      const onlineState = await getCheckOnlineList(selectChatRoom.id);
-
-      if (onlineState[opponentType]) {
-        setOnlineList({
-          type: userType === 'user' ? 'lecturer' : 'user',
-          id: onlineState[opponentType]!,
-        });
-      }
-
-      return '';
-    },
-    refetchOnWindowFocus: 'always',
+  const {
+    data,
+    isLoading: headerIsLoading,
+    error: headerError,
+  } = useQuery({
+    queryKey: ['onlineState', senderType, selectChatRoom[senderType]],
+    queryFn: () => getCheckOnline(senderType, selectChatRoom[senderType]),
   });
-
-  const isOnline = onlineList[opponentType].includes(
-    selectChatRoom[opponentType],
-  );
 
   return (
     <motion.section
@@ -50,7 +32,7 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
       {headerIsLoading ? (
         <div>로딩</div>
       ) : (
-        !headerError && <ChatRoomHeader isOnline={isOnline} />
+        !headerError && <ChatRoomHeader isOffline={data} />
       )}
       <ChatRoomMain selectChatRoom={selectChatRoom} userType={userType} />
     </motion.section>

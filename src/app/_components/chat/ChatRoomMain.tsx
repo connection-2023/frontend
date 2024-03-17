@@ -74,6 +74,7 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
     const message = messageArea.current?.value;
     if (message) {
       sendChatContent(message);
+      messageArea.current.value = '';
     }
   };
 
@@ -94,10 +95,16 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
           onInput={handleResizeHeight}
           placeholder="메세지를 입력하세요."
           className="resize-none overflow-auto outline-none"
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && !isPending) {
+              event.preventDefault();
+              sendMessage();
+            }
+          }}
         />
 
         <ApplyButton
-          label={isPending ? <Spinner color="main-color" /> : '전송'}
+          label={isPending ? <Spinner color="white" size={5} /> : '전송'}
           onClick={sendMessage}
           disabled={isPending}
         />

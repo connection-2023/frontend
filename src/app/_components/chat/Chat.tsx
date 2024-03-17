@@ -1,6 +1,7 @@
 import useChatsQuery from '@/hooks/useChatsQuery';
 import useIntersect from '@/hooks/useIntersect';
 import { getChats } from '@/lib/apis/chatApi';
+import { formatKorean12HourTime } from '@/utils/dateTimeUtils';
 import { ChatRoomList } from '@/types/chat';
 
 interface ChatProps {
@@ -46,11 +47,22 @@ const Chat = ({ selectChatRoom, sendChatPreview }: ChatProps) => {
 
   return (
     <div className="h-0 w-full flex-grow overflow-auto bg-gray-900">
-      {chats.map(({ id, content }, index) => (
-        <div key={id} ref={hasNextPage && index === 0 ? ref : undefined}>
-          {content}
-        </div>
-      ))}
+      {chats.map(({ id, content, createdAt }, index) => {
+        return (
+          <div
+            className="my-2 flex w-fit max-w-[84%] items-end gap-2"
+            key={id}
+            ref={hasNextPage && index === 0 ? ref : undefined}
+          >
+            <div className="w-fit bg-main-color-transparent px-4 py-2">
+              {content}
+            </div>
+            <div className="whitespace-nowrap text-sm text-gray-300">
+              {formatKorean12HourTime(createdAt)}
+            </div>
+          </div>
+        );
+      })}
       {sendChatPreview && <div>{sendChatPreview.message}</div>}
     </div>
   );

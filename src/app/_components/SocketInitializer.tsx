@@ -19,14 +19,14 @@ const SocketInitializer = ({
   rooms,
   userId,
 }: SocketInitializerProps) => {
-  const { socket, isConnected, setSocket, setIsConnected, setOnlineList } =
-    useSocketStore((state) => ({
+  const { socket, isConnected, setSocket, setIsConnected } = useSocketStore(
+    (state) => ({
       socket: state.socket,
       isConnected: state.isConnected,
       setSocket: state.setSocket,
       setIsConnected: state.setIsConnected,
-      setOnlineList: state.setOnlineList,
-    }));
+    }),
+  );
 
   const { setNewChat } = useChatStore((state) => ({
     setNewChat: state.setNewChat,
@@ -54,18 +54,22 @@ const SocketInitializer = ({
         const { lecturerId, userId } = data;
 
         const id = userId ? userId : lecturerId;
-        const type = userId ? 'user' : 'lecturer';
+        const type = userId ? 'userId' : 'lecturerId';
 
-        setOnlineList({ type, id });
+        queryClient.setQueryData(['onlineState', type, id], () => {
+          return null;
+        });
       });
 
       socket.on('exitUser', (data) => {
         const { lecturerId, userId } = data;
 
         const id = userId ? userId : lecturerId;
-        const type = userId ? 'user' : 'lecturer';
+        const type = userId ? 'userId' : 'lecturerId';
 
-        setOnlineList({ type, id, join: false });
+        queryClient.setQueryData(['onlineState', type, id], () => {
+          return new Date(data.lastLogin);
+        });
       });
 
       socket.on('messageToClient', (newChat: Chat) => {

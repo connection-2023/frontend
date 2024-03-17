@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from 'date-fns';
+import ko from 'date-fns/locale/ko';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
@@ -6,10 +8,10 @@ import Dropdown from '@/components/Dropdown/Dropdown';
 import ProfileImg from '@/components/Profile/ProfileImage';
 
 interface ChatRoomHeaderProps {
-  isOnline: boolean;
+  isOffline?: Date;
 }
 
-const ChatRoomHeader = ({ isOnline }: ChatRoomHeaderProps) => {
+const ChatRoomHeader = ({ isOffline }: ChatRoomHeaderProps) => {
   const [optionView, setOptionView] = useState(false);
   const optionRef = useRef(null);
 
@@ -31,15 +33,20 @@ const ChatRoomHeader = ({ isOnline }: ChatRoomHeaderProps) => {
             <div className="grid w-full grid-cols-[9px_auto_1fr] items-center gap-x-1">
               <div
                 className={`size-[9px] rounded-full ${
-                  isOnline ? 'bg-main-color' : 'bg-gray-500'
+                  !isOffline ? 'bg-main-color' : 'bg-gray-500'
                 }`}
               />
               <dd
                 className={`mr-1 ${
-                  isOnline ? 'text-main-color' : 'text-gray-500'
+                  !isOffline ? 'text-main-color' : 'text-gray-500'
                 }`}
               >
-                {isOnline ? '활동중' : '오프라인'}
+                {!isOffline
+                  ? '활동중'
+                  : formatDistanceToNow(isOffline, {
+                      addSuffix: true,
+                      locale: ko,
+                    })}
               </dd>
               <dd className="grid w-full grid-cols-[auto_1fr] text-main-color">
                 <span className="truncate">{`'클래스`}</span>
