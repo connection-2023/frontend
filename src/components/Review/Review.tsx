@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { StarSVG } from '@/../public/icons/svg';
+import { StarSVG } from '../../../public/icons/svg';
 
 interface ReviewProps {
   average: number;
