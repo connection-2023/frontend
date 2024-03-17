@@ -20,6 +20,11 @@ const useChatsQuery = ({ chatRoomId, queryFn }: useChatsQueryProps) => {
     initialPageParam: '',
     queryFn,
     getNextPageParam: (lastPage) => lastPage?.at(-1)?.id,
+    refetchOnWindowFocus: false,
+    select: (data) => ({
+      pages: [...data.pages].reverse(),
+      pageParams: [...data.pageParams].reverse(),
+    }),
   });
 
   const chats = useMemo(() => {

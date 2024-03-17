@@ -14,7 +14,7 @@ const ChatList = ({ chatSelectHandler, chatRoomList }: ChatLsitProps) => {
           onClick={() => chatSelectHandler(chatRoom)}
           className="h-52 flex-shrink-0 bg-slate-400"
         >
-          {chatRoom.roomId}
+          {chatRoom.id}
         </button>
       ))}
     </section>

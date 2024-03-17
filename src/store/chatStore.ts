@@ -6,14 +6,14 @@ interface chatStore {
   setChatRoomSelect: (chat: any) => void;
   chatView: boolean;
   setChatView: (state: boolean) => void;
-  newChatsList: NewChatsList | null;
-  setNewChatsList: (newChat: Chat) => void;
+  newChat: Chat | null;
+  setNewChat: (newChat: Chat) => void;
 }
 
-export const useChatStore = create<chatStore>((set, get) => ({
+export const useChatStore = create<chatStore>((set) => ({
   selectChatRoom: null,
   chatView: false,
-  newChatsList: null,
+  newChat: null,
   setChatView: (state) => {
     if (!state) {
       set({ selectChatRoom: null });
@@ -22,18 +22,5 @@ export const useChatStore = create<chatStore>((set, get) => ({
   },
   setChatRoomSelect: (chatRoom: ChatRoomList) =>
     set({ selectChatRoom: chatRoom }),
-  setNewChatsList: (newChat) => {
-    const { newChatsList } = get();
-
-    console.log(newChatsList);
-
-    set({
-      newChatsList: {
-        ...newChatsList,
-        [newChat.id]: newChatsList
-          ? [newChat, ...newChatsList[newChat.id]]
-          : [newChat],
-      },
-    });
-  },
+  setNewChat: (newChat) => set({ newChat }),
 }));

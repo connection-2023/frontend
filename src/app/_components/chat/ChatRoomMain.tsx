@@ -1,8 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { UploadImageSVG } from '@/icons/svg';
 import { sendChat } from '@/lib/apis/chatApi';
-import { useChatStore } from '@/store';
 import Chat from './Chat';
 import ApplyButton from '@/components/Button/ApplyButton';
 import Spinner from '@/components/Spinner/Spinner';
@@ -17,10 +16,10 @@ interface ChatRoomMainProps {
 const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
   const chatArea = useRef<HTMLDivElement>(null);
   const messageArea = useRef<HTMLTextAreaElement>(null);
-
-  const { setNewChatsList } = useChatStore((state) => ({
-    setNewChatsList: state.setNewChatsList,
-  }));
+  const [sendChatPreview, setSendChatPreview] = useState<{
+    message: string;
+    error: boolean;
+  } | null>(null);
 
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
 
@@ -62,7 +61,13 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
       const newChat = await sendChat(data, userType);
       return { ...newChat, createdAt: new Date() };
     },
-    onSuccess: (data) => setNewChatsList(data),
+    onSuccess: () => setSendChatPreview(null),
+    onError: () =>
+      setSendChatPreview((prev) => ({
+        message: prev?.message || '',
+        error: true,
+      })),
+    onMutate: (message) => setSendChatPreview({ error: false, message }),
   });
 
   const sendMessage = () => {
@@ -74,7 +79,7 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
 
   return (
     <div className="flex flex-col">
-      <Chat selectChatRoom={selectChatRoom} />
+      <Chat selectChatRoom={selectChatRoom} sendChatPreview={sendChatPreview} />
       <div
         ref={chatArea}
         className="grid h-fit max-h-[35%] w-full grid-cols-[2rem_auto_3rem] gap-x-2 overflow-hidden px-2 py-3 sm:grid-cols-[2rem_auto_5rem] [&>*:nth-child(3)]:h-7 sm:[&>*:nth-child(3)]:h-9 "

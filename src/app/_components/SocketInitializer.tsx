@@ -1,9 +1,10 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useChatStore, useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
-import { Chat } from '@/types/chat';
+import { Chat, ChatPagesData } from '@/types/chat';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';
 
@@ -27,9 +28,11 @@ const SocketInitializer = ({
       setOnlineList: state.setOnlineList,
     }));
 
-  const { setNewChatsList } = useChatStore((state) => ({
-    setNewChatsList: state.setNewChatsList,
+  const { setNewChat } = useChatStore((state) => ({
+    setNewChat: state.setNewChat,
   }));
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (userType && !isConnected) {
@@ -65,8 +68,30 @@ const SocketInitializer = ({
         setOnlineList({ type, id, join: false });
       });
 
-      socket.on('messageToClient', (data: Chat) => {
-        setNewChatsList({ ...data, createdAt: new Date() });
+      socket.on('messageToClient', (newChat: Chat) => {
+        // 추후 newChat.roomid로 변경
+        queryClient.setQueryData<ChatPagesData>(
+          ['chats', '65ed74f7f9f7e0a52334c7ad'],
+          (data) => {
+            if (!data) {
+              return {
+                pages: [[{ ...newChat }]],
+                pageParams: [''],
+              };
+            }
+
+            const newParams = ['', ...data.pageParams];
+            const newPages = [[{ ...newChat }], ...data.pages];
+            newParams[1] = newPages[1][0].id;
+
+            return {
+              pages: newPages,
+              pageParams: newParams,
+            };
+          },
+        );
+
+        setNewChat({ ...newChat, createdAt: new Date() });
       });
 
       socket.emit('login', {

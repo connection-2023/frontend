@@ -36,3 +36,8 @@ export interface Chat {
 export interface NewChatsList {
   [key: string]: Chat[];
 }
+
+export interface ChatPagesData {
+  pages: Chat[][];
+  pageParams: string[];
+}
