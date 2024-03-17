@@ -60,3 +60,8 @@ export const format12HourTime = (date: Date | string) =>
   date instanceof Date
     ? format(date, 'hh:mm aa')
     : format(parseISO(date), 'hh:mm aa');
+
+export const formatKorean12HourTime = (date: Date | string) =>
+  date instanceof Date
+    ? format(date, 'a hh:mm', { locale: ko })
+    : format(parseISO(date), 'a hh:mm', { locale: ko });
