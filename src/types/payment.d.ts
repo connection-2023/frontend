@@ -58,7 +58,7 @@ export interface IPaymentConfirmResponse {
     };
     regularLectureStatus: null;
   };
-
+  paymentCouponUsage: IPaymentCoupon | null;
   cardPaymentInfo: ICardPaymentInfo | null;
   virtualAccountPaymentInfo: IVirtualAccountInfo | null;
 }
