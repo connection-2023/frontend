@@ -1,25 +1,26 @@
 'use client';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ImagesViewer from './ImagesViewer';
 import { StarSVG } from '../../../public/icons/svg';
 import Like from '../Like/Like';
-import Review from '../Review/Review';
+import { Review } from '../Review';
 import { InstructorCardProps } from '@/types/types';
 
-const InstructorCard = ({
-  id,
-  name,
-  address,
-  genres,
-  imgURL,
-  average,
-  teamAffiliation,
-  href,
-  largeImg,
-  isLiked,
-  likeEvent,
-}: InstructorCardProps) => {
+const InstructorCard = (props: InstructorCardProps) => {
+  const {
+    id,
+    name,
+    address,
+    genres,
+    imgURL,
+    average,
+    teamAffiliation,
+    href,
+    largeImg,
+    isLiked,
+    likeEvent,
+  } = props;
   const [focus, setFocus] = useState(false);
 
   const onFocus = () => {

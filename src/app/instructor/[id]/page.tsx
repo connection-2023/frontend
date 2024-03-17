@@ -5,7 +5,7 @@ import InstructorCarousel from './_components/InstructorCarousel';
 import { OptionButtons } from '@/components/Button';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
-import Review from '@/components/Review/Review';
+import { Review } from '@/components/Review';
 import ReviewSection from '@/components/uis/ReviewSection';
 import type { Metadata } from 'next';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';

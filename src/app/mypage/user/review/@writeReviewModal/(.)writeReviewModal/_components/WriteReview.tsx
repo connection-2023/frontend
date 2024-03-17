@@ -5,7 +5,7 @@ import { writeReview } from '@/lib/apis/reviewApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import ClassSelect from './ClassSelect';
 import { Button } from '@/components/Button';
-import Rating from '@/components/Review/Rating';
+import { Rating } from '@/components/Review';
 import { SelectClassType, WriteReviewData } from '@/types/review';
 import { FetchError } from '@/types/types';
 
