@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
 import SocketInitializer from './_components/SocketInitializer';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -70,6 +71,7 @@ export default async function RootLayout({
         className={`${inter.className} mx-auto flex min-h-screen max-w-desktop flex-col`}
       >
         <Providers>
+          <ReactQueryDevtools initialIsOpen={false} />
           <UserStoreInitializer authUser={authUser} userType={userType} />
           <SocketInitializer
             userType={userType}
