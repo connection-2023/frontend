@@ -21,15 +21,31 @@ export interface sendChatParams {
 
 export interface Chat {
   id: string;
-  sender: {
-    userId: number;
-  };
-  receiver: {
-    lecturerId: number;
-  };
+  sender:
+    | {
+        userId: number;
+        lecturerId: null;
+      }
+    | {
+        userId: null;
+        lecturerId: number;
+      };
+  receiver:
+    | {
+        userId: number;
+        lecturerId: null;
+      }
+    | {
+        userId: null;
+        lecturerId: number;
+      };
   content: string;
   readedAt: Date;
   createdAt: Date;
+}
+
+export interface MessageToClient extends Chat {
+  chattingRoomId: string;
 }
 
 export interface NewChatsList {
@@ -37,6 +53,6 @@ export interface NewChatsList {
 }
 
 export interface ChatPagesData {
-  pages: Chat[][];
+  pages: { chats: Chat[]; totalItemCount: number }[];
   pageParams: string[];
 }

@@ -1,10 +1,15 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { CHATS_TAKE } from '@/constants/constants';
 import { Chat } from '@/types/chat';
 
 interface useChatsQueryProps {
   chatRoomId: string;
-  queryFn: ({ pageParam }: { pageParam: string }) => Promise<Chat[]>;
+  queryFn: ({
+    pageParam,
+  }: {
+    pageParam: string;
+  }) => Promise<{ chats: Chat[]; totalItemCount: number }>;
 }
 
 const useChatsQuery = ({ chatRoomId, queryFn }: useChatsQueryProps) => {
@@ -19,16 +24,18 @@ const useChatsQuery = ({ chatRoomId, queryFn }: useChatsQueryProps) => {
     queryKey: ['chats', chatRoomId],
     initialPageParam: '',
     queryFn,
-    getNextPageParam: (lastPage) => lastPage?.at(-1)?.id,
+    getNextPageParam: (lastPage, allpages) => {
+      const currentCount = allpages.length * CHATS_TAKE;
+
+      return lastPage.totalItemCount > currentCount
+        ? lastPage.chats?.at(-1)?.id
+        : undefined;
+    },
     refetchOnWindowFocus: false,
-    select: (data) => ({
-      pages: [...data.pages].reverse(),
-      pageParams: [...data.pageParams].reverse(),
-    }),
   });
 
   const chats = useMemo(() => {
-    const chatList = data?.pages.flatMap((chat) => chat) ?? [];
+    const chatList = data?.pages.flatMap(({ chats }) => chats).reverse() ?? [];
     return chatList;
   }, [data]);
 

@@ -167,7 +167,7 @@ export const getChats = async (data: {
   chatRoomId: string;
   pageSize: number;
   lastItemId?: string;
-}): Promise<Chat[]> => {
+}): Promise<{ chats: Chat[]; totalItemCount: number }> => {
   try {
     const params = new URLSearchParams();
 
@@ -190,9 +190,6 @@ export const getChats = async (data: {
 
     if (!response.ok) {
       const errorData = await response.json();
-      if (errorData.status === 404) {
-        return [];
-      }
       const error: FetchError = new Error(errorData.message || '');
       error.status = response.status;
       throw error;
@@ -200,7 +197,7 @@ export const getChats = async (data: {
 
     const resData = await response.json();
 
-    return resData.data.chats;
+    return resData.data;
   } catch (error) {
     console.error('채팅 조회 에러', error);
     throw error;

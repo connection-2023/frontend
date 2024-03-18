@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useChatStore, useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
-import { Chat, ChatPagesData } from '@/types/chat';
+import { ChatPagesData, MessageToClient } from '@/types/chat';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';
 
@@ -72,30 +72,40 @@ const SocketInitializer = ({
         });
       });
 
-      socket.on('messageToClient', (newChat: Chat) => {
-        // 추후 newChat.roomid로 변경
+      socket.on('messageToClient', (newChat: MessageToClient) => {
         queryClient.setQueryData<ChatPagesData>(
-          ['chats', '65ed74f7f9f7e0a52334c7ad'],
+          ['chats', newChat.chattingRoomId],
           (data) => {
             if (!data) {
               return {
-                pages: [[{ ...newChat }]],
+                pages: [{ chats: [{ ...newChat }], totalItemCount: 1 }],
                 pageParams: [''],
               };
             }
+            const { pages }: ChatPagesData = data;
 
-            const newParams = ['', ...data.pageParams];
-            const newPages = [[{ ...newChat }], ...data.pages];
-            newParams[1] = newPages[1][0].id;
+            const allChats = [newChat, ...pages.flatMap(({ chats }) => chats)];
+
+            const newPages = [];
+            for (let i = 0; i < allChats.length; i += 12) {
+              newPages.push({
+                chats: allChats.slice(i, i + 12),
+                totalItemCount: pages[0].totalItemCount,
+              });
+            }
+
+            const newPageParams = newPages.map((page, index) =>
+              index === 0 ? '' : page.chats[page.chats.length - 1].id,
+            );
 
             return {
               pages: newPages,
-              pageParams: newParams,
+              pageParams: newPageParams,
             };
           },
         );
 
-        setNewChat({ ...newChat, createdAt: new Date() });
+        setNewChat({ ...newChat });
       });
 
       socket.emit('login', {
