@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { MouseEvent } from 'react';
 import { ButtonStyles } from '@/constants/constants';
 import { formatShortDate } from '@/utils/dateTimeUtils';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { UniqueButton } from '@/components/Button';
 import ProfileImage from '@/components/Profile/ProfileImage';
 import { IUserApplyClass } from '@/types/class';
 

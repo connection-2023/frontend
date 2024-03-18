@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import Back from './Back';
 import { getReceipt } from '@/lib/apis/serverApis/paymentsApis';
 import {
   formatKoreanDateTime,
   formatFullDateTime,
 } from '@/utils/dateTimeUtils';
+import { BackButton } from '@/components/Button';
 
 const OrderDetail = async ({
   params: { orderId },
@@ -83,7 +83,7 @@ const OrderDetail = async ({
   return (
     <div className="mx-auto w-full max-w-[40rem] px-4 xl:mx-0">
       <div className="mb-4 flex items-center border-b border-gray-500 py-2">
-        <Back />
+        <BackButton size={40} />
         <h2 className="text-2xl font-bold text-gray-100">결제 상세</h2>
       </div>
 

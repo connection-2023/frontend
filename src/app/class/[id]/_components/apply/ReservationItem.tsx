@@ -1,5 +1,5 @@
 import { ClearSVG } from '@/icons/svg';
-import CountButton from '@/components/Button/CountButton';
+import { CountButton } from '@/components/Button';
 import { IDateTime } from '@/types/class';
 
 interface ReservationItemProps extends IDateTime {

@@ -7,7 +7,7 @@ import { TrashcanSVG } from '@/icons/svg';
 import { createClassDraft, deleteClassDrafts } from '@/lib/apis/classApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import { IGetClassDrafts } from '@/types/class';
 import { FetchError } from '@/types/types';
 

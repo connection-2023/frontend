@@ -9,10 +9,19 @@ if (!END_POINT) {
 
 export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
-  const id = searchParams.get('id');
-  const order = searchParams.get('orderBy');
-
   const token = request.cookies.get('userAccessToken')?.value;
+
+  const {
+    lectureId,
+    take,
+    currentPage,
+    targetPage,
+    firstItemId,
+    lastItemId,
+    orderBy,
+  } = Object.fromEntries(searchParams);
+
+  const query = `take=${take}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&orderBy=${orderBy}`;
 
   const headers: Record<string, string> = token
     ? {
@@ -24,7 +33,7 @@ export const GET = async (request: NextRequest) => {
       };
 
   const serverResponse = await fetch(
-    END_POINT + `/lecture-reviews/lectures/${id}?orderBy=${order}`,
+    END_POINT + `/lecture-reviews/lectures/${lectureId}?${query}`,
     {
       headers,
     },

@@ -1,5 +1,13 @@
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import ClassList from './_components/ClassList';
+import InstructorCarousel from './_components/InstructorCarousel';
+import { OptionButtons } from '@/components/Button';
+import Like from '@/components/Like/Like';
+import Nav from '@/components/Nav/Nav';
+import { Review } from '@/components/Review';
+import ReviewSection from '@/components/uis/ReviewSection';
+import type { Metadata } from 'next';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
 import {
@@ -13,14 +21,6 @@ import {
   formatGenreToString,
 } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
-import ClassList from './_components/ClassList';
-import InstructorCarousel from './_components/InstructorCarousel';
-import ReviewSection from './_components/ReviewSection';
-import OptionButtons from '@/components/Button/OptionButtons';
-import Like from '@/components/Like/Like';
-import Nav from '@/components/Nav/Nav';
-import Review from '@/components/Review/Review';
-import type { Metadata } from 'next';
 
 export const generateMetadata = async ({
   params,
@@ -92,7 +92,7 @@ const InstructorDetailPage = async ({
   });
 
   return (
-    <main className="flex w-full flex-col items-center">
+    <main className="mx-auto flex w-full max-w-[51.1rem] flex-col items-center">
       {/* 강의 상세 헤더 섹션 */}
       <section className="flex w-full flex-col items-center">
         <InstructorCarousel
@@ -211,10 +211,7 @@ const InstructorDetailPage = async ({
           </div>
         )}
       {/* 강사소개 섹션 */}
-      <section
-        id="introduction-section"
-        className="w-full max-w-[51.1rem] px-5 pt-10 sm:px-0"
-      >
+      <section id="introduction-section" className="w-full px-5 pt-10 sm:px-0">
         <h2 className={h2Style}>강사소개</h2>
         <div
           dangerouslySetInnerHTML={{ __html: sanitizeHtmlString(introduction) }}
@@ -223,7 +220,7 @@ const InstructorDetailPage = async ({
       {/* 강사 경력 섹션 */}
       <section
         id="work-experience-section"
-        className=" w-full max-w-[51.1rem] px-5 pt-20 sm:px-0"
+        className=" w-full px-5 pt-20 sm:px-0"
       >
         <h2 className={h2Style}>강사 경력</h2>
         <div
@@ -235,20 +232,21 @@ const InstructorDetailPage = async ({
         id="class-section"
         className="flex w-full flex-col items-center pt-20 "
       >
-        <div className="w-full max-w-[51.1rem] px-5 sm:px-0">
+        <div className="w-full px-5 sm:px-0">
           <h2 className={h2Style}>진행중인 강의 {classList.length}개</h2>
         </div>
         {classList.length > 0 && <ClassList classList={classList} />}
       </section>
 
-      <section className="flex w-full flex-col items-center px-5 pt-20 sm:px-0">
-        <div className="w-full max-w-[51.1rem] ">
+      <section className="mb-14 flex w-full flex-col items-center px-5 pt-20 sm:px-0">
+        <div className="w-full">
           <h2 className={h2Style}>패스권 {passListData.length}개</h2>
         </div>
-        {passListData.length > 0 && <div>asdasd</div>}
+        {passListData.length > 0 && <div>패스권 연결해주세용</div>}
         {/* 추후 패스권 컴포넌트 연결 */}
       </section>
-      <ReviewSection id={id} stars={stars} totalReviewCount={reviewCount} />
+
+      <ReviewSection stars={stars} type="instructor" />
     </main>
   );
 };

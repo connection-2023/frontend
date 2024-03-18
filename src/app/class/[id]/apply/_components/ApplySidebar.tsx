@@ -12,7 +12,7 @@ import {
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePaymentStore } from '@/store';
 import { reloadToast } from '@/utils/reloadMessage';
-import ApplyButton from '@/components/Button/ApplyButton';
+import { ApplyButton } from '@/components/Button';
 import {
   IApplicantInfo,
   IPaymentInfo,

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
 import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 import SelectBox from './apply/SelectBox';
-import ApplyButton from '@/components/Button/ApplyButton';
+import { ApplyButton } from '@/components/Button';
 import { IClassSchedule, IDateTime } from '@/types/class';
 
 const ReservationItem = dynamic(() => import('./apply/ReservationItem'));

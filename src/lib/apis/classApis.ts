@@ -1,6 +1,4 @@
 import {
-  IUserReview,
-  ReviewOrderType,
   ILecturerClassListResonse,
   ILecturerClassDetailResonse,
   IClassEditRequest,
@@ -11,24 +9,6 @@ import {
   IApplyListResponse,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
-
-export const getClassReviews = async (
-  id: string,
-  order: ReviewOrderType,
-): Promise<IUserReview[]> => {
-  const response = await fetch(
-    `/api/post/class/review?id=${id}&orderBy=${order}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  if (!response.ok) throw new Error('클래스 리뷰 목록 조회 오류!');
-
-  const { data } = await response.json();
-
-  return data.review;
-};
 
 export const getUserClass = async (
   type: '진행중/예정' | '수강 완료',

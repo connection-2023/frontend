@@ -1,3 +1,31 @@
+export type ReviewOrderType =
+  | '최신순'
+  | '좋아요순'
+  | '평점 높은순'
+  | '평점 낮은순';
+
+export interface IReviewList {
+  id: number;
+  lectureId: number;
+  userId: number;
+  reservationId: number;
+  stars: number;
+  description: string;
+  user: {
+    nickname: string;
+    profileImage: null | string;
+  };
+  lectureTitle: string;
+  startDateTime: string;
+  isLike: boolean;
+  likeCount: number;
+}
+
+export interface IReviewResponse {
+  reviews: IReviewList[];
+  totalItemCount: number;
+}
+
 export interface WriteReview {
   id: number;
   lectureId: number;

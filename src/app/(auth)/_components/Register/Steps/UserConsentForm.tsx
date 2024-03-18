@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { REGISTER_CONSENT_LIST } from '@/constants/constants';
 import { CheckMarkSVG } from '@/icons/svg';
-import StatusButton from '@/components/Button/StatusButton';
+import { Button } from '@/components/Button';
 import { IMarketingConsent, IRegisterConsents } from '@/types/auth';
 
 interface IUserConsentForm {
@@ -233,16 +233,17 @@ const UserConsentForm = ({
       </ul>
 
       <div className="mt-auto flex gap-3">
-        <StatusButton disabled={false} onClick={handlePrev}>
+        <Button color="secondary" disabled={false} onClick={handlePrev}>
           이전
-        </StatusButton>
-        <StatusButton
+        </Button>
+        <Button
+          color="secondary"
           disabled={!consents.termsOfService}
           type="submit"
           onClick={handleSubmit(onSubmit)}
         >
           다음
-        </StatusButton>
+        </Button>
       </div>
     </section>
   );

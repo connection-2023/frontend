@@ -10,18 +10,13 @@ interface ReportModalProps {
   response?: string;
 }
 
-const ReportModal = ({
-  isOpen,
-  closeModal,
-  target,
-  reportTypes,
-  reason,
-  status,
-  response,
-}: ReportModalProps) => {
+const ReportModal = (props: ReportModalProps) => {
+  const { isOpen, closeModal, target, reportTypes, reason, status, response } =
+    props;
+
   return (
     <Modal isOpened={isOpen} handleClosed={closeModal}>
-      <ul className="flex w-full min-w-[30rem] flex-col border-b border-solid border-gray-700 px-[1.13rem] py-4 text-sm font-semibold text-gray-300">
+      <ul className="flex w-full min-w-[30rem] flex-col border-b border-solid border-gray-700 p-4 text-sm font-semibold text-gray-300">
         <li className="flex gap-3">
           <p className="w-20">신고유저</p>
           <span className="font-medium">{target}</span>
@@ -39,7 +34,7 @@ const ReportModal = ({
         <li className="mt-3 flex">{reason}</li>
       </ul>
 
-      <div className="mb-3 min-h-[6rem] w-full border-b border-solid border-gray-700 px-[1.13rem] py-4 text-sm">
+      <div className="mb-3 min-h-24 w-full border-b border-solid border-gray-700 p-4 text-sm">
         <p className="mb-2 font-semibold text-gray-100">관리자 답변</p>
         {status === '처리중' ? (
           <p className="text-normal text-gray-500">신고 처리 중입니다..</p>
@@ -48,7 +43,7 @@ const ReportModal = ({
         )}
       </div>
 
-      <div className="mb-4 flex w-full gap-3 px-[1.13rem] text-sm font-semibold">
+      <div className="mb-4 flex w-full gap-3 px-4 text-sm font-semibold">
         <button className="h-7 w-1/2 rounded-md bg-gray-500 text-white">
           추가 문의하기
         </button>

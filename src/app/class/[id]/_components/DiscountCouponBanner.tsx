@@ -8,7 +8,7 @@ import { getClassCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import calculateMaxDiscount from '@/utils/calculateMaxDiscount';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import DownloadCoupon from '@/components/Coupon/DownloadCoupon';
 import Modal from '@/components/Modal/Modal';
 import { IclassCoupon } from '@/types/coupon';

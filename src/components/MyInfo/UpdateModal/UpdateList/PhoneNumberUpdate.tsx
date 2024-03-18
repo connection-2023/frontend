@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { accessTokenReissuance, updateMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
 import UpdateModalContainer from '../UpdateModalContainer';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import { certificationAction, certificationState } from '@/types/info';
 import { FetchError } from '@/types/types';
 

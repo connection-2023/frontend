@@ -6,8 +6,7 @@ import formatDate from '@/utils/formatDate';
 import usePageNation from '@/utils/usePagenation';
 import ClassFilterSelect from './ClassFilterSelect';
 import Pagination from '@/components/Pagination/Pagination';
-import ReviewStatistics from '@/components/Review/ReviewStatistics';
-import UserReview from '@/components/Review/UserReview';
+import { UserReview, ReviewStatistics } from '@/components/Review';
 import { OptionType } from '@/types/coupon';
 import { GetMyLecturersReviews, MyLecturersReviewsData } from '@/types/review';
 

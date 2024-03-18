@@ -2,14 +2,14 @@
 import { useRouter } from 'next/navigation';
 import { ArrowUpSVG } from '@/icons/svg';
 
-const Back = () => {
+const BackButton = ({ size = 34 }: { size?: number }) => {
   const router = useRouter();
 
   return (
     <button onClick={() => router.back()} className="origin-center -rotate-90">
-      <ArrowUpSVG width="34" height="34" fill="black" />
+      <ArrowUpSVG width={size} height={size} fill="black" />
     </button>
   );
 };
 
-export default Back;
+export default BackButton;

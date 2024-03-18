@@ -2,8 +2,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { CLASS_EDIT_SECTIONS } from '@/constants/constants';
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { Button, UniqueButton } from '@/components/Button';
 
 const SideNavbar = ({ onClick }: { onClick: () => void }) => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
