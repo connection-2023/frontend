@@ -78,12 +78,25 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
     }
   };
 
+  const resendMessage = () => {
+    if (sendChatPreview) {
+      sendChatContent(sendChatPreview.message);
+      setSendChatPreview(null);
+    }
+  };
+
+  const cancelMessage = () => {
+    setSendChatPreview(null);
+  };
+
   return (
     <div className="flex flex-col">
       <Chat
         selectChatRoom={selectChatRoom}
         sendChatPreview={sendChatPreview}
         opponentType={opponentType}
+        resendMessage={resendMessage}
+        cancelMessage={cancelMessage}
       />
       <div
         ref={chatArea}

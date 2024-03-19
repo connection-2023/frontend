@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useChatStore, useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
-import { ChatPagesData, MessageToClient } from '@/types/chat';
+import { ChatPagesData, Chat } from '@/types/chat';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';
 
@@ -72,7 +72,7 @@ const SocketInitializer = ({
         });
       });
 
-      socket.on('messageToClient', (newChat: MessageToClient) => {
+      socket.on('messageToClient', (newChat: Chat) => {
         queryClient.setQueryData<ChatPagesData>(
           ['chats', newChat.chattingRoomId],
           (data) => {

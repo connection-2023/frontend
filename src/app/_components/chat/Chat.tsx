@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { CHATS_TAKE } from '@/constants/constants';
 import useChatsQuery from '@/hooks/useChatsQuery';
 import useIntersect from '@/hooks/useIntersect';
+import { CloseSVG, ResetSVG } from '@/icons/svg';
 import { getChats } from '@/lib/apis/chatApi';
+import { useChatStore } from '@/store';
 import { formatKorean12HourTime } from '@/utils/dateTimeUtils';
+import Spinner from '@/components/Spinner/Spinner';
 import { ChatRoomList } from '@/types/chat';
 
 interface ChatProps {
@@ -13,10 +16,20 @@ interface ChatProps {
     error: boolean;
   } | null;
   opponentType: 'lecturerId' | 'userId';
+  resendMessage: () => void;
+  cancelMessage: () => void;
 }
 
-const Chat = ({ selectChatRoom, sendChatPreview, opponentType }: ChatProps) => {
+const Chat = ({
+  selectChatRoom,
+  sendChatPreview,
+  opponentType,
+  resendMessage,
+  cancelMessage,
+}: ChatProps) => {
   const chatRef = useRef<HTMLDivElement>(null);
+
+  const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
 
   const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
     getChats({
@@ -55,8 +68,16 @@ const Chat = ({ selectChatRoom, sendChatPreview, opponentType }: ChatProps) => {
   };
 
   useEffect(() => {
-    if (!isLoading) scrollToBottom();
-  }, [isLoading]);
+    if (newchat?.chattingRoomId === selectChatRoom.id) {
+      if (newchat.sender[opponentType]) {
+        console.log('왔음');
+      }
+    }
+  }, [newchat]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [sendChatPreview]);
 
   const { ref: lastPrevChatRef } = useIntersect(loadPrevChatHandler, options);
 
@@ -93,7 +114,25 @@ const Chat = ({ selectChatRoom, sendChatPreview, opponentType }: ChatProps) => {
           </div>
         );
       })}
-      {sendChatPreview && <div>{sendChatPreview.message}</div>}
+      {sendChatPreview && (
+        <div className="my-2 ml-auto flex w-fit max-w-[84%] items-end gap-2">
+          {sendChatPreview.error ? (
+            <div className="mb-1 flex gap-2">
+              <button onClick={resendMessage}>
+                <ResetSVG className="size-[14px]" />
+              </button>
+              <button onClick={cancelMessage}>
+                <CloseSVG className="size-[16px] stroke-gray-500 stroke-[3px]" />
+              </button>
+            </div>
+          ) : (
+            <Spinner color="gray-700" size={4} />
+          )}
+          <div className="w-fit rounded-l-lg rounded-t-lg bg-white px-4 py-2">
+            {sendChatPreview.message}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

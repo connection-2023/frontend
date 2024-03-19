@@ -42,9 +42,6 @@ export interface Chat {
   content: string;
   readedAt: Date;
   createdAt: Date;
-}
-
-export interface MessageToClient extends Chat {
   chattingRoomId: string;
 }
 
