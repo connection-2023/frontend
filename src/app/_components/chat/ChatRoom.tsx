@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
+import { ProfileImgSize } from '@/constants/constants';
 import { getCheckOnline } from '@/lib/apis/chatApi';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomMain from './ChatRoomMain';
@@ -30,7 +31,7 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
       style={{ width: mWidth ? mWidth : '100%' }}
     >
       {headerIsLoading ? (
-        <div>로딩</div>
+        <ChatRoomHeaderLoading />
       ) : (
         !headerError && <ChatRoomHeader isOffline={data} />
       )}
@@ -40,3 +41,17 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
 };
 
 export default ChatRoom;
+
+const ChatRoomHeaderLoading = () => {
+  return (
+    <header className="w-full px-[10px] py-3">
+      <div className="grid grid-cols-[34px_1fr] gap-x-2">
+        <div className="size-[34px] animate-pulse rounded-full bg-gray-700" />
+        <div className="flex flex-col justify-evenly">
+          <div className="h-1/3 w-full animate-pulse bg-gray-700" />
+          <div className="h-1/3 w-full animate-pulse bg-gray-700" />
+        </div>
+      </div>
+    </header>
+  );
+};

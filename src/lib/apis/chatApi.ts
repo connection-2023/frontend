@@ -1,4 +1,3 @@
-import { formatBackendUTC } from '@/utils/dateTimeUtils';
 import { userType } from '@/types/auth';
 import { Chat, ChatRoom, ChatRoomList, sendChatParams } from '@/types/chat';
 import { FetchError } from '@/types/types';
@@ -136,7 +135,7 @@ export const getChatRoomList = async (
 export const getCheckOnline = async (
   idType: 'lecturerId' | 'userId',
   id: number,
-): Promise<Date | undefined> => {
+): Promise<Date | string> => {
   try {
     const response = await fetch(`/api/chat/online?${idType}=${id}`, {
       method: 'GET',
@@ -156,7 +155,7 @@ export const getCheckOnline = async (
     const resData = await response.json();
 
     const utcTime = resData.data.onlineMap?.lastLogin;
-    return utcTime ? formatBackendUTC(utcTime) : undefined;
+    return utcTime ? utcTime : '';
   } catch (error) {
     console.error('접속자 조회 에러', error);
     throw error;

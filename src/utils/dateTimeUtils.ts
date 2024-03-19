@@ -65,11 +65,3 @@ export const formatKorean12HourTime = (date: Date | string) =>
   date instanceof Date
     ? format(date, 'a hh:mm', { locale: ko })
     : format(parseISO(date), 'a hh:mm', { locale: ko });
-
-export const formatBackendUTC = (dateUTC: string) => {
-  const receivedTime = new Date(dateUTC);
-  const hoursToAdd = 18 * 3600 * 1000;
-  receivedTime.setTime(receivedTime.getTime() - hoursToAdd);
-
-  return receivedTime;
-};

@@ -8,7 +8,7 @@ import Dropdown from '@/components/Dropdown/Dropdown';
 import ProfileImg from '@/components/Profile/ProfileImage';
 
 interface ChatRoomHeaderProps {
-  isOffline?: Date;
+  isOffline?: Date | string;
 }
 
 const ChatRoomHeader = ({ isOffline }: ChatRoomHeaderProps) => {
@@ -43,7 +43,7 @@ const ChatRoomHeader = ({ isOffline }: ChatRoomHeaderProps) => {
               >
                 {!isOffline
                   ? '활동중'
-                  : formatDistanceToNow(isOffline, {
+                  : formatDistanceToNow(new Date(isOffline), {
                       addSuffix: true,
                       locale: ko,
                     })}

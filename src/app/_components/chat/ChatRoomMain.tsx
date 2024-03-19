@@ -80,7 +80,11 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
 
   return (
     <div className="flex flex-col">
-      <Chat selectChatRoom={selectChatRoom} sendChatPreview={sendChatPreview} />
+      <Chat
+        selectChatRoom={selectChatRoom}
+        sendChatPreview={sendChatPreview}
+        opponentType={opponentType}
+      />
       <div
         ref={chatArea}
         className="grid h-fit max-h-[35%] w-full grid-cols-[2rem_auto_3rem] gap-x-2 overflow-hidden px-2 py-3 sm:grid-cols-[2rem_auto_5rem] [&>*:nth-child(3)]:h-7 sm:[&>*:nth-child(3)]:h-9 "
