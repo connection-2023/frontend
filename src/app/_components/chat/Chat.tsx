@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { CHATS_TAKE } from '@/constants/constants';
 import useChatsQuery from '@/hooks/useChatsQuery';
 import useIntersect from '@/hooks/useIntersect';
 import { CloseSVG, ResetSVG } from '@/icons/svg';
 import { getChats } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
-import { formatKorean12HourTime } from '@/utils/dateTimeUtils';
+import {
+  formatKorean12HourTime,
+  formatKoreanFullDate,
+} from '@/utils/dateTimeUtils';
 import Spinner from '@/components/Spinner/Spinner';
 import { ChatRoomList } from '@/types/chat';
 
@@ -81,37 +84,64 @@ const Chat = ({
 
   const { ref: lastPrevChatRef } = useIntersect(loadPrevChatHandler, options);
 
+  const isDifferentDay = (
+    previousDateString: Date,
+    currentDateString: Date,
+  ) => {
+    const previousDate = new Date(previousDateString);
+    const currentDate = new Date(currentDateString);
+
+    const isDifferent =
+      previousDate.getDate() !== currentDate.getDate() ||
+      previousDate.getMonth() !== currentDate.getMonth() ||
+      previousDate.getFullYear() !== currentDate.getFullYear();
+
+    return isDifferent;
+  };
+
   return (
     <div
       ref={chatRef}
-      className="h-0 w-full flex-grow overflow-auto bg-gray-900"
+      className="h-0 w-full flex-grow overflow-auto overflow-x-hidden bg-gray-900 "
     >
       {isLoading && <ChatLoading count={12} />}
       {isFetchingNextPage && <ChatLoading count={6} />}
       {chats.map(({ id, content, createdAt, receiver }, index) => {
         const isReceiver = !receiver[opponentType];
+        const isFirstChat = isDifferentDay(
+          chats[index - 1]?.createdAt,
+          createdAt,
+        );
 
         return (
-          <div
-            className={`my-2 flex w-fit max-w-[84%] items-end gap-2 ${
-              isReceiver ? '' : 'ml-auto flex-row-reverse'
-            }`}
-            key={id}
-            ref={hasNextPage && index === 0 ? lastPrevChatRef : undefined}
-          >
+          <Fragment key={id}>
+            {isFirstChat && (
+              <div className="my-3 flex w-full items-center gap-3 text-sm">
+                <hr className="flex-grow border-gray-500" />
+                {formatKoreanFullDate(createdAt)}
+                <hr className="flex-grow border-gray-500" />
+              </div>
+            )}
             <div
-              className={`w-fit rounded-t-lg px-4 py-2 ${
-                isReceiver
-                  ? 'rounded-r-lg bg-main-color-transparent'
-                  : 'rounded-l-lg bg-white'
+              className={`my-2 flex w-fit max-w-[84%] items-end gap-2 ${
+                isReceiver ? '' : 'ml-auto flex-row-reverse'
               }`}
+              ref={hasNextPage && index === 0 ? lastPrevChatRef : undefined}
             >
-              {content}
+              <div
+                className={`w-fit rounded-t-lg px-4 py-2 ${
+                  isReceiver
+                    ? 'ml-2 rounded-r-lg bg-main-color-transparent'
+                    : 'mr-2 rounded-l-lg bg-white'
+                }`}
+              >
+                {content}
+              </div>
+              <div className="whitespace-nowrap text-sm text-gray-300">
+                {formatKorean12HourTime(createdAt)}
+              </div>
             </div>
-            <div className="whitespace-nowrap text-sm text-gray-300">
-              {formatKorean12HourTime(createdAt)}
-            </div>
-          </div>
+          </Fragment>
         );
       })}
       {sendChatPreview && (
