@@ -4,10 +4,10 @@ import React, { Fragment, useEffect } from 'react';
 import { getChatRoomList } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import ChatHeader from './ChatHeader';
-import ChatList from './ChatList';
 import ChatRoom from './ChatRoom';
+import ChatRoomList from './ChatRoomList';
 import { userType } from '@/types/auth';
-import { ChatRoomList } from '@/types/chat';
+import { ChatRoom as IChatRoom } from '@/types/chat';
 
 interface ChatMainProps {
   id: string;
@@ -46,12 +46,11 @@ const ChatMain = ({
   }, [dragState]);
 
   const { data: chatRoomList, isLoading } = useQuery({
-    queryKey: ['chat', id],
+    queryKey: ['chatRoomList', id],
     queryFn: () => getChatRoomList(userType, id),
-    refetchOnWindowFocus: 'always',
   });
 
-  const chatSelectHandler = (chatRoom: ChatRoomList | null) => {
+  const chatSelectHandler = (chatRoom: IChatRoom | null) => {
     setChatRoomSelect(chatRoom);
   };
 
@@ -72,11 +71,12 @@ const ChatMain = ({
       >
         {(!isSm || !selectChatRoom) &&
           (isLoading ? (
-            <ChatListLoading />
+            <ChatRoomListLoading />
           ) : (
-            <ChatList
+            <ChatRoomList
               chatRoomList={chatRoomList ?? []}
               chatSelectHandler={chatSelectHandler}
+              userType={userType}
             />
           ))}
         {selectChatRoom && (
@@ -93,7 +93,7 @@ const ChatMain = ({
 
 export default ChatMain;
 
-const ChatListLoading = () => {
+const ChatRoomListLoading = () => {
   return (
     <div className="mt-4 flex h-full flex-col items-center gap-3 px-4 sm:w-72 sm:px-0 sm:pr-0">
       {Array(8)

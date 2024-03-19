@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import { Chat, ChatRoomList, NewChatsList } from '@/types/chat';
+import { Chat, ChatRoom, NewChatsList } from '@/types/chat';
 
 interface chatStore {
-  selectChatRoom: ChatRoomList | null;
+  selectChatRoom: ChatRoom | null;
   setChatRoomSelect: (chat: any) => void;
   chatView: boolean;
   setChatView: (state: boolean) => void;
@@ -20,7 +20,6 @@ export const useChatStore = create<chatStore>((set) => ({
     }
     set({ chatView: state });
   },
-  setChatRoomSelect: (chatRoom: ChatRoomList) =>
-    set({ selectChatRoom: chatRoom }),
+  setChatRoomSelect: (chatRoom: ChatRoom) => set({ selectChatRoom: chatRoom }),
   setNewChat: (newChat) => set({ newChat }),
 }));

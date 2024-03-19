@@ -10,10 +10,10 @@ import {
   formatKoreanFullDate,
 } from '@/utils/dateTimeUtils';
 import Spinner from '@/components/Spinner/Spinner';
-import { ChatRoomList } from '@/types/chat';
+import { ChatRoom } from '@/types/chat';
 
 interface ChatProps {
-  selectChatRoom: ChatRoomList;
+  selectChatRoom: ChatRoom;
   sendChatPreview: {
     message: string;
     error: boolean;

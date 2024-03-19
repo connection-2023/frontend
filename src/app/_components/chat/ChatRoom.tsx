@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
-import { ProfileImgSize } from '@/constants/constants';
 import { getCheckOnline } from '@/lib/apis/chatApi';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomMain from './ChatRoomMain';
 import { userType } from '@/types/auth';
-import { ChatRoomList } from '@/types/chat';
+import { ChatRoom } from '@/types/chat';
 
 interface ChatRoomProps {
-  selectChatRoom: ChatRoomList;
+  selectChatRoom: ChatRoom;
   userType: userType;
   mWidth: MotionValue<number> | null;
 }

@@ -44,7 +44,6 @@ export const getInstructorClassLists = async (
 
 export const getInstructor = async (
   id: string,
-  isLogin: boolean,
 ): Promise<instructorPostResponse | undefined> => {
   try {
     const cookieStroe = cookies();
@@ -58,7 +57,7 @@ export const getInstructor = async (
     const response = await fetch(`${END_POINT}/lecturers/profile/${id}`, {
       method: 'GET',
       credentials: 'include',
-      headers: isLogin
+      headers: authorization
         ? headers
         : {
             'Content-Type': 'application/json',

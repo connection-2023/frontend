@@ -1,5 +1,6 @@
 import { userType } from '@/types/auth';
-import { Chat, ChatRoom, ChatRoomList, sendChatParams } from '@/types/chat';
+import { Chat, ChatRoom, sendChatParams } from '@/types/chat';
+import { instructorPostResponse } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
 export const getChatSocketRoomsId = async (
@@ -103,7 +104,7 @@ export const createNewChatRoom = async (
 export const getChatRoomList = async (
   userType: userType,
   id: string,
-): Promise<ChatRoomList[]> => {
+): Promise<ChatRoom[]> => {
   try {
     const response = await fetch(
       `/api/chat/get-chat-rooms?userType=${userType}&id=${id}`,
@@ -228,6 +229,39 @@ export const sendChat = async (
     return resData.data.chat;
   } catch (error) {
     console.error('채팅 전송 오류', error);
+    throw error;
+  }
+};
+
+export const getOpponentInfo = async (
+  idType: 'lecturerId' | 'userId',
+  id: number,
+): Promise<instructorPostResponse | string> => {
+  const url =
+    idType === 'lecturerId'
+      ? `/api/post/instructor?id=${id}`
+      : `/api/users/get-info?userId=${id}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data;
+  } catch (error) {
+    console.error('프로필 조회 에러', error);
     throw error;
   }
 };

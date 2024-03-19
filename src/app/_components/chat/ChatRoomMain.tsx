@@ -6,10 +6,10 @@ import Chat from './Chat';
 import ApplyButton from '@/components/Button/ApplyButton';
 import Spinner from '@/components/Spinner/Spinner';
 import { userType } from '@/types/auth';
-import { ChatRoomList } from '@/types/chat';
+import { ChatRoom } from '@/types/chat';
 
 interface ChatRoomMainProps {
-  selectChatRoom: ChatRoomList;
+  selectChatRoom: ChatRoom;
   userType: userType;
 }
 

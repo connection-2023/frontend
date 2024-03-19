@@ -7,8 +7,6 @@ export interface ChatRoom {
   unreadCount: number;
 }
 
-export interface ChatRoomList extends ChatRoom {}
-
 export interface onlineState {
   lastLogin?: string;
 }

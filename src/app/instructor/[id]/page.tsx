@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
 import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
@@ -28,7 +27,7 @@ export const generateMetadata = async ({
   params: { id: string };
 }): Promise<Metadata> => {
   const { id } = params;
-  const profile = await getInstructor(id, false);
+  const profile = await getInstructor(id);
 
   if (profile instanceof Error || !profile) {
     return {
@@ -50,10 +49,7 @@ const InstructorDetailPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const cookieStore = cookies();
-  const user = cookieStore.get('userAccessToken')?.value;
-
-  const profile = getInstructor(id, !!user);
+  const profile = getInstructor(id);
   const classLists = getInstructorClassLists(id);
   const passLists = getLecturerPassList(id);
 
