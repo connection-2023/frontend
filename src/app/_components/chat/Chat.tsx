@@ -1,6 +1,6 @@
 import { Fragment, RefObject, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { CHATS_TAKE } from '@/constants/constants';
+import { CHATS_TAKE, CHAT_INTERSECT_REF_OPTIONS } from '@/constants/constants';
 import useChatsQuery from '@/hooks/useChatsQuery';
 import useIntersect from '@/hooks/useIntersect';
 import { CloseSVG, ResetSVG } from '@/icons/svg';
@@ -19,24 +19,20 @@ interface ChatProps {
     error: boolean;
   } | null;
   opponentType: 'lecturerId' | 'userId';
-  chatRef: RefObject<HTMLDivElement>;
-  isReceived: boolean;
+  newChatRef: RefObject<HTMLDivElement>;
   resendMessage: () => void;
   cancelMessage: () => void;
   chatScrollToBottom: () => void;
-  readNewChat: () => void;
 }
 
 const Chat = ({
   selectChatRoom,
   sendChatPreview,
   opponentType,
-  chatRef,
-  isReceived,
+  newChatRef,
   resendMessage,
   cancelMessage,
   chatScrollToBottom,
-  readNewChat,
 }: ChatProps) => {
   const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
     getChats({
@@ -62,15 +58,13 @@ const Chat = ({
     await fetchNextPage();
   };
 
-  const options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1,
-  } as const;
-
   useEffect(() => {
     chatScrollToBottom();
   }, [sendChatPreview]);
+
+  useEffect(() => {
+    chatScrollToBottom();
+  }, [isLoading]);
 
   useEffect(() => {
     if (isError) {
@@ -78,9 +72,10 @@ const Chat = ({
     }
   }, [isError]);
 
-  const { ref: lastPrevChatRef } = useIntersect(loadPrevChatHandler, options);
-
-  const { ref: newChatRef } = useIntersect(readNewChat, options);
+  const { ref: lastPrevChatRef } = useIntersect(
+    loadPrevChatHandler,
+    CHAT_INTERSECT_REF_OPTIONS,
+  );
 
   const isDifferentDay = (
     previousDateString: Date,
@@ -104,11 +99,8 @@ const Chat = ({
   };
 
   return (
-    <div
-      ref={chatRef}
-      className="h-0 w-full flex-grow overflow-auto overflow-x-hidden bg-gray-900 "
-    >
-      {!isLoading && <ChatLoading count={12} />}
+    <div className="h-0 w-full flex-grow overflow-auto overflow-x-hidden bg-gray-900 ">
+      {isLoading && <ChatLoading count={12} />}
       {isFetchingNextPage && <ChatLoading count={6} />}
       {chats.map(({ id, content, createdAt, receiver }, index) => {
         const isReceiver = !receiver[opponentType];
@@ -127,13 +119,13 @@ const Chat = ({
               </div>
             )}
             <div
-              className={`my-2 flex w-fit max-w-[84%] items-end gap-2 ${
+              className={`flex w-fit max-w-[84%] items-end gap-2 py-2 ${
                 isReceiver ? '' : 'ml-auto flex-row-reverse'
               }`}
               ref={
                 hasNextPage && index === 0
                   ? lastPrevChatRef
-                  : index === chats.length - 1 && isReceived
+                  : index === chats.length - 1
                   ? newChatRef
                   : undefined
               }

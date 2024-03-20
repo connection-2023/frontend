@@ -1,5 +1,7 @@
 import { UseQueryResult, useMutation } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
+import { CHAT_INTERSECT_REF_OPTIONS } from '@/constants/constants';
+import useIntersect from '@/hooks/useIntersect';
 import { UploadImageSVG } from '@/icons/svg';
 import { sendChat } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
@@ -23,7 +25,6 @@ const ChatRoomMain = ({
 }: ChatRoomMainProps) => {
   const chatArea = useRef<HTMLDivElement>(null);
   const messageArea = useRef<HTMLTextAreaElement>(null);
-  const chatRef = useRef<HTMLDivElement>(null);
 
   const [sendChatPreview, setSendChatPreview] = useState<{
     message: string;
@@ -90,11 +91,21 @@ const ChatRoomMain = ({
     onMutate: (message) => setSendChatPreview({ error: false, message }),
   });
 
+  const readNewChat = () => {
+    setIsReceived(false);
+  };
+
+  const { ref: newChatRef } = useIntersect(
+    isReceived ? readNewChat : () => {},
+    CHAT_INTERSECT_REF_OPTIONS,
+  );
+
   const sendMessage = () => {
     const message = messageArea.current?.value;
     if (message) {
       sendChatContent(message);
       messageArea.current.value = '';
+      handleResizeHeight();
     }
   };
 
@@ -110,13 +121,9 @@ const ChatRoomMain = ({
   };
 
   const chatScrollToBottom = () => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    if (newChatRef.current) {
+      newChatRef.current.scrollIntoView({ behavior: 'instant', block: 'end' });
     }
-  };
-
-  const readNewChat = () => {
-    setIsReceived(false);
   };
 
   return (
@@ -127,10 +134,8 @@ const ChatRoomMain = ({
         opponentType={opponentType}
         resendMessage={resendMessage}
         cancelMessage={cancelMessage}
-        chatRef={chatRef}
+        newChatRef={newChatRef}
         chatScrollToBottom={chatScrollToBottom}
-        readNewChat={readNewChat}
-        isReceived={isReceived}
       />
       <div
         ref={chatArea}

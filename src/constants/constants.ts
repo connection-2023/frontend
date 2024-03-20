@@ -516,3 +516,9 @@ export const HIDE_NAV_PATH = [
 ];
 
 export const CHATS_TAKE = 12 as const;
+
+export const CHAT_INTERSECT_REF_OPTIONS = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.1,
+} as const;
