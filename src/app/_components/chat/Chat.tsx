@@ -146,13 +146,13 @@ const Chat = ({
       })}
       {sendChatPreview && (
         <div className="my-2 ml-auto flex w-fit max-w-[84%] items-end gap-2">
-          {sendChatPreview.error ? (
-            <div className="mb-1 flex gap-2">
+          {!sendChatPreview.error ? (
+            <div className="mb-1 flex bg-main-color">
               <button onClick={resendMessage}>
-                <ResetSVG className="size-[14px]" />
+                <ResetSVG className="size-[14px] fill-white" />
               </button>
               <button onClick={cancelMessage}>
-                <CloseSVG className="size-[16px] stroke-gray-500 stroke-[3px]" />
+                <CloseSVG className="size-[16px] stroke-white stroke-[3px]" />
               </button>
             </div>
           ) : (

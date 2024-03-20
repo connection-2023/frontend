@@ -90,13 +90,13 @@ const FilterList = ({ filterOption, type }: FilterListProps) => {
             className="hidden items-center whitespace-nowrap text-sm font-bold text-gray-300 lg:flex"
           >
             초기화
-            <ResetSVG className="ml-1 h-[14px] w-[14px]" />
+            <ResetSVG className="ml-1 h-[14px] w-[14px] fill-gray-500" />
           </Link>
           <Link
             href={type === 'instructor' ? '/instructor' : '/class'}
             className="absolute right-0 flex h-full items-center justify-center bg-white px-2 lg:hidden"
           >
-            <ResetSVG className="ml-1 h-5 w-5" />
+            <ResetSVG className="ml-1 h-5 w-5 fill-gray-500" />
           </Link>
         </div>
       </div>

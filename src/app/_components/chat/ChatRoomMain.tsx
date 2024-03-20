@@ -61,7 +61,7 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
       const newChat = await sendChat(data, userType);
       return { ...newChat, createdAt: new Date() };
     },
-    onSuccess: () => setSendChatPreview(null),
+    // onSuccess: () => setSendChatPreview(null),
     onError: () =>
       setSendChatPreview((prev) => ({
         message: prev?.message || '',

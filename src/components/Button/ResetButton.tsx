@@ -17,7 +17,7 @@ const ResetButton = ({
   return (
     <button onClick={onClick} className={styles}>
       {children}
-      <ResetSVG className="ml-1 h-[14px] w-[14px]" />
+      <ResetSVG className="ml-1 h-[14px] w-[14px] fill-gray-500" />
     </button>
   );
 };
