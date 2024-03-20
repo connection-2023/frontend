@@ -99,6 +99,12 @@ const Chat = ({
     return isDifferent;
   };
 
+  const cancelMessageHandler = () => {
+    if (confirm('해당 메시지 전송을 취소 하시겠습니까?')) {
+      cancelMessage();
+    }
+  };
+
   return (
     <div
       ref={chatRef}
@@ -146,13 +152,19 @@ const Chat = ({
       })}
       {sendChatPreview && (
         <div className="my-2 ml-auto flex w-fit max-w-[84%] items-end gap-2">
-          {!sendChatPreview.error ? (
-            <div className="mb-1 flex bg-main-color">
-              <button onClick={resendMessage}>
-                <ResetSVG className="size-[14px] fill-white" />
+          {sendChatPreview.error ? (
+            <div className="mb-1 flex">
+              <button
+                onClick={resendMessage}
+                className="rounded-l-md border-r border-solid border-black/[.20] bg-main-color hover:bg-main-color-transparent"
+              >
+                <ResetSVG className="mx-[5px] my-[6.5px] size-[14px] fill-white" />
               </button>
-              <button onClick={cancelMessage}>
-                <CloseSVG className="size-[16px] stroke-white stroke-[3px]" />
+              <button
+                onClick={cancelMessageHandler}
+                className="rounded-r-md bg-main-color hover:bg-main-color-transparent"
+              >
+                <CloseSVG className="mx-1 my-[5px] size-[17px] stroke-white stroke-[3px]" />
               </button>
             </div>
           ) : (
