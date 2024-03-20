@@ -182,6 +182,14 @@ const Chat = ({
 export default Chat;
 
 const ChatLoading = ({ count }: { count: number }) => {
+  const lastElementRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (lastElementRef.current) {
+      lastElementRef.current.scrollIntoView({ behavior: 'instant' });
+    }
+  }, [count]);
+
   return (
     <div className="flex flex-col gap-4 py-5">
       {Array(count)
@@ -189,6 +197,7 @@ const ChatLoading = ({ count }: { count: number }) => {
         .map((_, index) => (
           <div
             key={index}
+            ref={index === count - 1 ? lastElementRef : null}
             className={`flex items-end gap-2 ${
               index % 2 === 1 ? 'flex-row-reverse' : ''
             }`}

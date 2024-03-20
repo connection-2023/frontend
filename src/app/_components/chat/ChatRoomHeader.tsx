@@ -69,7 +69,7 @@ const ChatRoomHeader = ({
           )}
           <dl className="grid flex-grow grid-rows-2 text-sm">
             {profileIsLoading || profileError ? (
-              <div className="h-3 w-full animate-pulse bg-gray-700" />
+              <div className="mb-2 h-3 w-full animate-pulse bg-gray-700" />
             ) : (
               <Link
                 className="w-full truncate"
