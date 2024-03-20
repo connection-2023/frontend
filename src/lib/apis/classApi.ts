@@ -3,6 +3,7 @@ import {
   IGetClassDraft,
   IGetClassDrafts,
   IUpdateClassDraft,
+  LastClassInfo,
   LikedLecture,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
@@ -206,6 +207,34 @@ export const getLikesClassList = async (): Promise<LikedLecture[]> => {
     return resData.data.likedLecture;
   } catch (error) {
     console.error('좋아요 강의 목록 불러오기:', error);
+    throw error;
+  }
+};
+
+export const getLastEnrolledClass = async (
+  targetId: number,
+): Promise<LastClassInfo> => {
+  try {
+    const response = await fetch(`/api/class/last-class?targetId=${targetId}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.lastRegistSchedule;
+  } catch (error) {
+    console.error('마지막 수강 클래스 조회 오류', error);
     throw error;
   }
 };

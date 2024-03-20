@@ -269,7 +269,7 @@ export const getOpponentInfo = async (
       : {
           id: resData.data.user.id,
           nickname: resData.data.user.nickname,
-          profilImg: resData.data.user.userProfileImage.imageUrl,
+          profilImg: resData.data.user.userProfileImage?.imageUrl,
         };
   } catch (error) {
     console.error('프로필 조회 에러', error);

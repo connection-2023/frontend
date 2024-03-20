@@ -852,3 +852,11 @@ interface IRecentApply {
     profileImageUrl: string;
   };
 }
+
+export interface LastClassInfo {
+  lecture: {
+    id?: number;
+    title?: string;
+  };
+  startDateTime: Date;
+}
