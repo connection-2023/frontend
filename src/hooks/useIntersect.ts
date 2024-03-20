@@ -4,7 +4,7 @@ const useIntersect = (
   onIntersect: (
     entry: IntersectionObserverEntry,
     observer: IntersectionObserver,
-  ) => Promise<void>,
+  ) => Promise<void> | void,
   options?: IntersectionObserverInit,
 ) => {
   const isLoading = useRef(false);

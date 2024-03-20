@@ -62,6 +62,11 @@ const SocketInitializer = ({
       });
 
       socket.on('exitUser', (data) => {
+        if (!data) {
+          console.error('exitUser data is null');
+          return;
+        }
+
         const { lecturerId, userId } = data;
 
         const id = userId ? userId : lecturerId;

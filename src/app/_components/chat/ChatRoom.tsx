@@ -1,4 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
+import { getOpponentInfo } from '@/lib/apis/chatApi';
 import ChatRoomHeader from './ChatRoomHeader';
 import ChatRoomMain from './ChatRoomMain';
 import { userType } from '@/types/auth';
@@ -13,6 +15,11 @@ interface ChatRoomProps {
 const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
 
+  const opponentProfile = useQuery({
+    queryKey: ['opponentProfile', opponentType, selectChatRoom[opponentType]],
+    queryFn: () => getOpponentInfo(opponentType, selectChatRoom[opponentType]),
+  });
+
   return (
     <motion.section
       className="grid h-full grid-rows-[auto_1fr]"
@@ -21,8 +28,13 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
       <ChatRoomHeader
         selectChatRoom={selectChatRoom}
         opponentType={opponentType}
+        opponentProfile={opponentProfile}
       />
-      <ChatRoomMain selectChatRoom={selectChatRoom} userType={userType} />
+      <ChatRoomMain
+        selectChatRoom={selectChatRoom}
+        userType={userType}
+        opponentProfile={opponentProfile}
+      />
     </motion.section>
   );
 };

@@ -1,24 +1,26 @@
-import { useQueries } from '@tanstack/react-query';
+import { UseQueryResult, useQueries } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import ko from 'date-fns/locale/ko';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { OptionSVG } from '@/icons/svg';
-import { getCheckOnline, getOpponentInfo } from '@/lib/apis/chatApi';
+import { getCheckOnline } from '@/lib/apis/chatApi';
 import { getLastEnrolledClass } from '@/lib/apis/classApi';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import ProfileImg from '@/components/Profile/ProfileImage';
-import { ChatRoom } from '@/types/chat';
+import { ChatRoom, OpponentInfo } from '@/types/chat';
 
 interface ChatRoomHeaderProps {
   selectChatRoom: ChatRoom;
   opponentType: 'lecturerId' | 'userId';
+  opponentProfile: UseQueryResult<OpponentInfo, Error>;
 }
 
 const ChatRoomHeader = ({
   opponentType,
   selectChatRoom,
+  opponentProfile,
 }: ChatRoomHeaderProps) => {
   const [optionView, setOptionView] = useState(false);
   const optionRef = useRef(null);
@@ -27,9 +29,14 @@ const ChatRoomHeader = ({
     setOptionView(false);
   });
 
+  const {
+    data: profileDate,
+    isLoading: profileIsLoading,
+    error: profileError,
+  } = opponentProfile;
+
   const [
     { data: onlineState, isLoading: onlineIsLoading, error: onlineError },
-    { data: profileDate, isLoading: profileIsLoading, error: profileError },
     { data: lastClass, isLoading: lastClassIsLoading, error: lastClassError },
   ] = useQueries({
     queries: [
@@ -37,11 +44,6 @@ const ChatRoomHeader = ({
         queryKey: ['onlineState', opponentType, selectChatRoom[opponentType]],
         queryFn: () =>
           getCheckOnline(opponentType, selectChatRoom[opponentType]),
-      },
-      {
-        queryKey: ['chatRoomInfo', opponentType, selectChatRoom[opponentType]],
-        queryFn: () =>
-          getOpponentInfo(opponentType, selectChatRoom[opponentType]),
       },
       {
         queryKey: ['lastClass', opponentType, selectChatRoom[opponentType]],

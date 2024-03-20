@@ -56,7 +56,7 @@ interface ChatRoomInfoProps {
 
 const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
   const { data, isLoading } = useQuery({
-    queryKey: ['chatRoomInfo', opponentType, chatRoom[opponentType]],
+    queryKey: ['opponentProfile', opponentType, chatRoom[opponentType]],
     queryFn: () => getOpponentInfo(opponentType, chatRoom[opponentType]),
   });
 

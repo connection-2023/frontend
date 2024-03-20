@@ -1,10 +1,10 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, RefObject, useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { CHATS_TAKE } from '@/constants/constants';
 import useChatsQuery from '@/hooks/useChatsQuery';
 import useIntersect from '@/hooks/useIntersect';
 import { CloseSVG, ResetSVG } from '@/icons/svg';
 import { getChats } from '@/lib/apis/chatApi';
-import { useChatStore } from '@/store';
 import {
   formatKorean12HourTime,
   formatKoreanFullDate,
@@ -19,21 +19,25 @@ interface ChatProps {
     error: boolean;
   } | null;
   opponentType: 'lecturerId' | 'userId';
+  chatRef: RefObject<HTMLDivElement>;
+  isReceived: boolean;
   resendMessage: () => void;
   cancelMessage: () => void;
+  chatScrollToBottom: () => void;
+  readNewChat: () => void;
 }
 
 const Chat = ({
   selectChatRoom,
   sendChatPreview,
   opponentType,
+  chatRef,
+  isReceived,
   resendMessage,
   cancelMessage,
+  chatScrollToBottom,
+  readNewChat,
 }: ChatProps) => {
-  const chatRef = useRef<HTMLDivElement>(null);
-
-  const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
-
   const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
     getChats({
       chatRoomId: selectChatRoom.id,
@@ -64,25 +68,19 @@ const Chat = ({
     threshold: 0.1,
   } as const;
 
-  const scrollToBottom = () => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
-  };
-
   useEffect(() => {
-    if (newchat?.chattingRoomId === selectChatRoom.id) {
-      if (newchat.sender[opponentType]) {
-        console.log('왔음');
-      }
-    }
-  }, [newchat]);
-
-  useEffect(() => {
-    scrollToBottom();
+    chatScrollToBottom();
   }, [sendChatPreview]);
 
+  useEffect(() => {
+    if (isError) {
+      toast.error('채팅 불러오기에 실패 했습니다.');
+    }
+  }, [isError]);
+
   const { ref: lastPrevChatRef } = useIntersect(loadPrevChatHandler, options);
+
+  const { ref: newChatRef } = useIntersect(readNewChat, options);
 
   const isDifferentDay = (
     previousDateString: Date,
@@ -110,7 +108,7 @@ const Chat = ({
       ref={chatRef}
       className="h-0 w-full flex-grow overflow-auto overflow-x-hidden bg-gray-900 "
     >
-      {isLoading && <ChatLoading count={12} />}
+      {!isLoading && <ChatLoading count={12} />}
       {isFetchingNextPage && <ChatLoading count={6} />}
       {chats.map(({ id, content, createdAt, receiver }, index) => {
         const isReceiver = !receiver[opponentType];
@@ -132,7 +130,13 @@ const Chat = ({
               className={`my-2 flex w-fit max-w-[84%] items-end gap-2 ${
                 isReceiver ? '' : 'ml-auto flex-row-reverse'
               }`}
-              ref={hasNextPage && index === 0 ? lastPrevChatRef : undefined}
+              ref={
+                hasNextPage && index === 0
+                  ? lastPrevChatRef
+                  : index === chats.length - 1 && isReceived
+                  ? newChatRef
+                  : undefined
+              }
             >
               <div
                 className={`w-fit rounded-t-lg px-4 py-2 ${

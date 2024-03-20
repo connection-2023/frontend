@@ -1,25 +1,37 @@
-import { useMutation } from '@tanstack/react-query';
+import { UseQueryResult, useMutation } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { UploadImageSVG } from '@/icons/svg';
 import { sendChat } from '@/lib/apis/chatApi';
+import { useChatStore } from '@/store';
 import Chat from './Chat';
 import ApplyButton from '@/components/Button/ApplyButton';
+import ProfileImg from '@/components/Profile/ProfileImage';
 import Spinner from '@/components/Spinner/Spinner';
 import { userType } from '@/types/auth';
-import { ChatRoom } from '@/types/chat';
+import { ChatRoom, OpponentInfo, Chat as NewChat } from '@/types/chat';
 
 interface ChatRoomMainProps {
   selectChatRoom: ChatRoom;
   userType: userType;
+  opponentProfile: UseQueryResult<OpponentInfo, Error>;
 }
 
-const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
+const ChatRoomMain = ({
+  selectChatRoom,
+  userType,
+  opponentProfile,
+}: ChatRoomMainProps) => {
   const chatArea = useRef<HTMLDivElement>(null);
   const messageArea = useRef<HTMLTextAreaElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
+
   const [sendChatPreview, setSendChatPreview] = useState<{
     message: string;
     error: boolean;
   } | null>(null);
+  const [isReceived, setIsReceived] = useState(false);
+
+  const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
 
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
 
@@ -45,6 +57,14 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
   };
 
   useEffect(() => {
+    if (newchat?.chattingRoomId === selectChatRoom.id) {
+      if (newchat.sender[opponentType]) {
+        setIsReceived(true);
+      }
+    }
+  }, [newchat]);
+
+  useEffect(() => {
     handleResizeHeight();
   }, [
     chatArea.current?.parentElement?.clientHeight,
@@ -61,7 +81,7 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
       const newChat = await sendChat(data, userType);
       return { ...newChat, createdAt: new Date() };
     },
-    // onSuccess: () => setSendChatPreview(null),
+    onSuccess: () => setSendChatPreview(null),
     onError: () =>
       setSendChatPreview((prev) => ({
         message: prev?.message || '',
@@ -89,6 +109,16 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
     setSendChatPreview(null);
   };
 
+  const chatScrollToBottom = () => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  };
+
+  const readNewChat = () => {
+    setIsReceived(false);
+  };
+
   return (
     <div className="flex flex-col">
       <Chat
@@ -97,11 +127,23 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
         opponentType={opponentType}
         resendMessage={resendMessage}
         cancelMessage={cancelMessage}
+        chatRef={chatRef}
+        chatScrollToBottom={chatScrollToBottom}
+        readNewChat={readNewChat}
+        isReceived={isReceived}
       />
       <div
         ref={chatArea}
-        className="grid h-fit max-h-[35%] w-full grid-cols-[2rem_auto_3rem] gap-x-2 overflow-hidden px-2 py-3 sm:grid-cols-[2rem_auto_5rem] [&>*:nth-child(3)]:h-7 sm:[&>*:nth-child(3)]:h-9 "
+        className="relative grid h-fit max-h-[35%] w-full grid-cols-[2rem_auto_3rem] gap-x-2 px-2 py-3 sm:grid-cols-[2rem_auto_5rem] [&>*:nth-child(3)]:h-7 sm:[&>*:nth-child(3)]:h-9 "
       >
+        {isReceived && newchat && (
+          <NewReceiveChatAlarm
+            opponentProfile={opponentProfile}
+            newchat={newchat}
+            chatScrollToBottom={chatScrollToBottom}
+          />
+        )}
+
         <button className="h-9 w-8 border-r border-gray-500">
           <UploadImageSVG className="size-6 fill-gray-300" />
         </button>
@@ -131,3 +173,35 @@ const ChatRoomMain = ({ selectChatRoom, userType }: ChatRoomMainProps) => {
 };
 
 export default ChatRoomMain;
+
+interface NewReceiveChatAlarmProps {
+  opponentProfile: UseQueryResult<OpponentInfo, Error>;
+  newchat: NewChat;
+  chatScrollToBottom: () => void;
+}
+
+const NewReceiveChatAlarm = ({
+  opponentProfile,
+  newchat,
+  chatScrollToBottom,
+}: NewReceiveChatAlarmProps) => {
+  const {
+    data: profileDate,
+    isLoading: profileIsLoading,
+    error: profileError,
+  } = opponentProfile;
+
+  return (
+    <button
+      onClick={chatScrollToBottom}
+      className="absolute -top-11 left-1/2 mx-auto flex h-8 w-10/12 -translate-x-1/2 items-center gap-1 rounded-full border border-main-color bg-white px-2"
+    >
+      {profileIsLoading || profileError ? (
+        <div className="mr-3 size-[22px] flex-shrink-0 animate-pulse rounded-full bg-gray-700" />
+      ) : (
+        <ProfileImg src={profileDate?.profilImg} size="xsmall" marginLeft={0} />
+      )}
+      <div className="flex-grow truncate">{newchat.content}</div>
+    </button>
+  );
+};
