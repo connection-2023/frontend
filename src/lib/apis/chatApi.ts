@@ -1,5 +1,5 @@
 import { userType } from '@/types/auth';
-import { Chat, ChatRoom, sendChatParams } from '@/types/chat';
+import { Chat, ChatRoom, OpponentInfo, sendChatParams } from '@/types/chat';
 import { instructorPostResponse } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
@@ -236,7 +236,7 @@ export const sendChat = async (
 export const getOpponentInfo = async (
   idType: 'lecturerId' | 'userId',
   id: number,
-): Promise<instructorPostResponse | string> => {
+): Promise<OpponentInfo> => {
   const url =
     idType === 'lecturerId'
       ? `/api/post/instructor?id=${id}`
@@ -259,7 +259,18 @@ export const getOpponentInfo = async (
 
     const resData = await response.json();
 
-    return resData.data;
+    return idType === 'lecturerId'
+      ? {
+          id: resData.data.lecturerProfile.id,
+          nickname: resData.data.lecturerProfile.nickname,
+          profilImg:
+            resData.data.lecturerProfile.lecturerProfileImageUrl[0].url,
+        }
+      : {
+          id: resData.data.user.id,
+          nickname: resData.data.user.nickname,
+          profilImg: resData.data.user.userProfileImage.imageUrl,
+        };
   } catch (error) {
     console.error('프로필 조회 에러', error);
     throw error;

@@ -77,6 +77,7 @@ const ChatMain = ({
               chatRoomList={chatRoomList ?? []}
               chatSelectHandler={chatSelectHandler}
               userType={userType}
+              selectChatRoomId={selectChatRoom?.id}
             />
           ))}
         {selectChatRoom && (

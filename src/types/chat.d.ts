@@ -51,3 +51,9 @@ export interface ChatPagesData {
   pages: { chats: Chat[]; totalItemCount: number }[];
   pageParams: string[];
 }
+
+export interface OpponentInfo {
+  id: number;
+  nickname: string;
+  profilImg: string;
+}
