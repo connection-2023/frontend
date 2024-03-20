@@ -104,14 +104,12 @@ const Chat = ({
       {isFetchingNextPage && <ChatLoading count={6} />}
       {chats.map(({ id, content, createdAt, receiver }, index) => {
         const isReceiver = !receiver[opponentType];
-        const isFirstChat = isDifferentDay(
-          chats[index - 1]?.createdAt,
-          createdAt,
-        );
+        const beforeChat = chats[index - 1]?.createdAt;
+        const isFirstChat = isDifferentDay(beforeChat, createdAt);
 
         return (
           <Fragment key={id}>
-            {isFirstChat && (
+            {((!beforeChat && !hasNextPage) || (beforeChat && isFirstChat)) && (
               <div className="my-3 flex w-full items-center gap-3 text-sm">
                 <hr className="flex-grow border-gray-500" />
                 {formatKoreanFullDate(createdAt)}
