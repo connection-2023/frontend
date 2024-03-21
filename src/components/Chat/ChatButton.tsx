@@ -6,8 +6,9 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { getCheckTargetId } from '@/lib/apis/chatApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import { useUserStore } from '@/store';
+import { useChatStore, useUserStore } from '@/store';
 import { reloadToast } from '@/utils/reloadMessage';
+import { SelectChatRoom } from '@/types/chat';
 import { FetchError } from '@/types/types';
 
 interface ChatButtonProps {
@@ -16,6 +17,11 @@ interface ChatButtonProps {
   btnClassName?: string;
 }
 const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
+  const { setChatRoomSelect, setChatView } = useChatStore((state) => ({
+    setChatRoomSelect: state.setChatRoomSelect,
+    setChatView: state.setChatView,
+  }));
+
   const { userType, authUser } = useUserStore((state) => ({
     userType: state.userType,
     authUser: state.authUser,
@@ -25,8 +31,9 @@ const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
   const { mutate: startChatMutation } = useMutation({
     mutationFn: ({ id, targetId }: { id: number | string; targetId: number }) =>
       getCheckTargetId(id, targetId),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: (data: SelectChatRoom) => {
+      setChatView(true);
+      setChatRoomSelect(data);
     },
     onError: async (error) => {
       if (error instanceof Error) {
@@ -44,7 +51,14 @@ const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
             }
             break;
           case 404:
-            console.log('gg');
+            setChatView(true);
+
+            setChatRoomSelect({
+              userId:
+                userType === 'user' ? parseInt(authUser!.id, 10) : targetId,
+              lecturerId:
+                userType === 'user' ? targetId : parseInt(authUser!.id, 10),
+            });
 
             break;
           default:

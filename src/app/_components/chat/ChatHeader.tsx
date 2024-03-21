@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRightSVG, CloseSVG, SearchSVG } from '@/icons/svg';
 import { useChatStore } from '@/store';
-import { ChatRoom } from '@/types/chat';
+import { ChatRoom, SelectChatRoom } from '@/types/chat';
 
 interface ChatHeaderProps {
   selectChatRoom: ChatRoom | null;

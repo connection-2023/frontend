@@ -1,10 +1,28 @@
-export interface ChatRoom {
-  id: string;
+export interface ChatRoom extends SelectChatRoom {
+  unreadCount: number;
+  lastChat: {
+    chatRoomId: string;
+    id: string;
+    sender: {
+      lecturerId: 0;
+      userId: 0;
+    };
+    receiver: {
+      lecturerId: 0;
+      userId: 0;
+    };
+    content: string;
+    imageUrl?: string;
+    readedAt: Date;
+    createdAt: Date;
+  };
+}
+
+export interface SelectChatRoom {
+  id?: string;
   userId: number;
   lecturerId: number;
-  roomId: string;
-  lastChatDateTime: string;
-  unreadCount: number;
+  roomId?: string;
 }
 
 export interface onlineState {
@@ -40,7 +58,7 @@ export interface Chat {
   content: string;
   readedAt: Date;
   createdAt: Date;
-  chattingRoomId: string;
+  chatRoomId: string;
 }
 
 export interface NewChatsList {

@@ -29,7 +29,6 @@ export const GET = async (request: NextRequest) => {
     }`,
     {
       method: 'GET',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

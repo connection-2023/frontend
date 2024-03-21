@@ -60,8 +60,9 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
     queryFn: () => getOpponentInfo(opponentType, chatRoom[opponentType]),
   });
 
-  const { lastChatDateTime, unreadCount } = chatRoom;
+  const { lastChat, unreadCount } = chatRoom;
 
+  const { createdAt, imageUrl, content } = lastChat;
   return (
     <>
       {isLoading ? (
@@ -79,12 +80,12 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
             </span>
           )}
           <span className="text-gray-300">
-            {/* {formatKorean12HourTime(lastChatDateTime)} */}
+            {formatKorean12HourTime(createdAt)}
           </span>
         </div>
         <div className="grid grid-cols-[1fr_auto] items-center gap-x-2">
-          <span className="line-clamp-2 max-h-10 text-gray-300">
-            마지막메세지메세지메세지메세지메세지메세지메세지메세지메세지메세지메세지메세지메세지메세지
+          <span className="line-clamp-2 max-h-10 text-left text-gray-300">
+            {imageUrl ? '이미지' : content}
           </span>
           {unreadCount && (
             <span className="flex max-h-[24px] min-w-[24px] items-center justify-center rounded-full bg-main-color text-white">

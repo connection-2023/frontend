@@ -168,6 +168,8 @@ export const getChats = async (data: {
   lastItemId?: string;
 }): Promise<{ chats: Chat[]; totalItemCount: number }> => {
   try {
+    if (!data.chatRoomId) return { chats: [], totalItemCount: 0 };
+
     const params = new URLSearchParams();
 
     Object.entries(data)

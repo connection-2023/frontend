@@ -858,5 +858,5 @@ export interface LastClassInfo {
     id?: number;
     title?: string;
   };
-  startDateTime: Date;
+  startDateTime?: Date;
 }

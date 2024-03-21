@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useChatStore, useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
-import { ChatPagesData, Chat } from '@/types/chat';
+import { ChatPagesData, Chat, ChatRoom } from '@/types/chat';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';
 
@@ -28,8 +28,9 @@ const SocketInitializer = ({
     }),
   );
 
-  const { setNewChat } = useChatStore((state) => ({
+  const { setNewChat, setChatRoomSelect } = useChatStore((state) => ({
     setNewChat: state.setNewChat,
+    setChatRoomSelect: state.setChatRoomSelect,
   }));
 
   const queryClient = useQueryClient();
@@ -79,7 +80,7 @@ const SocketInitializer = ({
 
       socket.on('messageToClient', (newChat: Chat) => {
         queryClient.setQueryData<ChatPagesData>(
-          ['chats', newChat.chattingRoomId],
+          ['chats', newChat.chatRoomId],
           (data) => {
             if (!data) {
               return {
@@ -109,6 +110,40 @@ const SocketInitializer = ({
             };
           },
         );
+
+        const targetChatRoomIndex = queryClient
+          .getQueryData<ChatRoom[]>(['chatRoomList'])
+          ?.findIndex((chatRoom) => chatRoom.id === newChat.chatRoomId);
+
+        if (
+          typeof targetChatRoomIndex === 'number' &&
+          targetChatRoomIndex !== -1
+        ) {
+          queryClient.setQueryData<ChatRoom[]>(['chatRoomList'], (oldData) => {
+            if (!oldData) return oldData;
+
+            const targetChatRoom = oldData[targetChatRoomIndex];
+
+            const updatedChatRoom: ChatRoom = {
+              ...targetChatRoom,
+              lastChat: targetChatRoom.lastChat
+                ? {
+                    ...targetChatRoom.lastChat,
+                    imageUrl: newChat?.imageUrl,
+                    content: newChat.content,
+                    createdAt: newChat.createdAt,
+                  }
+                : undefined,
+            };
+
+            const updatedData = [...oldData];
+            updatedData.splice(targetChatRoomIndex, 1);
+            updatedData.unshift(updatedChatRoom);
+
+            return updatedData;
+          });
+        } else {
+        }
 
         setNewChat({ ...newChat });
       });

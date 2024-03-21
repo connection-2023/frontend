@@ -58,7 +58,7 @@ const ChatRoomMain = ({
   };
 
   useEffect(() => {
-    if (newchat?.chattingRoomId === selectChatRoom.id) {
+    if (newchat && newchat?.chatRoomId === selectChatRoom.id) {
       if (newchat.sender[opponentType]) {
         setIsReceived(true);
       }
@@ -74,6 +74,10 @@ const ChatRoomMain = ({
 
   const { mutate: sendChatContent, isPending } = useMutation({
     mutationFn: async (content: string) => {
+      if (!selectChatRoom.id) {
+        return;
+      }
+
       const data = {
         chatRoomId: selectChatRoom.id,
         receiverId: selectChatRoom[opponentType],

@@ -36,7 +36,7 @@ const Chat = ({
 }: ChatProps) => {
   const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
     getChats({
-      chatRoomId: selectChatRoom.id,
+      chatRoomId: selectChatRoom.id ?? '',
       pageSize: CHATS_TAKE,
       lastItemId,
     });
@@ -49,7 +49,7 @@ const Chat = ({
     hasNextPage,
     isFetchingNextPage,
   } = useChatsQuery({
-    chatRoomId: selectChatRoom.id,
+    chatRoomId: selectChatRoom.id ?? '',
     queryFn: getChatsHandler,
   });
 
