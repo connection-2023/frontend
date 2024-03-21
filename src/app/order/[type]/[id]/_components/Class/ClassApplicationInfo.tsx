@@ -5,7 +5,7 @@ import { TimeSVG } from '@/icons/svg';
 import { usePaymentStore } from '@/store';
 import { formatTimeNoSec } from '@/utils/dateTimeUtils';
 import { formatDateTime } from '@/utils/parseUtils';
-import ReservationItem from '../../_components/apply/ReservationItem';
+import ReservationItem from './ReservationItem';
 import ScheduleCalendar from '@/components/Calendar/SingleCalendar';
 import { IClassSchedule, IDateTime } from '@/types/class';
 

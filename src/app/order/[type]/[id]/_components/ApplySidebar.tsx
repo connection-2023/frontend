@@ -24,16 +24,17 @@ interface ApplySidebarProps {
   postId: string;
   title: string;
   price: number;
+  isClass: boolean;
 }
 
-const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
+const ApplySidebar = ({ postId, title, price, isClass }: ApplySidebarProps) => {
   const [participants, setParticipants] = useState(0);
   const { discountPrice, couponId, stackableCouponId } = usePaymentStore(
     (state) => state.coupon,
   );
   const router = useRouter();
   const { pass } = usePaymentStore((state) => ({ pass: state.pass }));
-  const totalPrice = price * participants;
+  const totalPrice = isClass ? price * participants : price;
   const finalPrice = discountPrice
     ? Math.max(0, totalPrice - discountPrice)
     : totalPrice;
@@ -95,8 +96,8 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
           orderName,
           customerName: paymentData.representative,
           customerEmail: '',
-          successUrl: `${window.location.origin}/class/${postId}/apply/complete`,
-          failUrl: `${window.location.origin}/fail`,
+          successUrl: `/order/complete`,
+          failUrl: `/order/fail`,
         });
       } else {
         toast.error(paymentInfo);

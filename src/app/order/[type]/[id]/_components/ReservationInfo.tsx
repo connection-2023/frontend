@@ -2,7 +2,7 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useUserStore, usePaymentStore } from '@/store';
 
-const ReservationInfo = () => {
+const ReservationInfo = ({ isClass }: { isClass: boolean }) => {
   const [applicantInfo, setApplicantInfo] = useState({
     representative: '',
     phoneNumber: '',
@@ -23,6 +23,7 @@ const ReservationInfo = () => {
       representative: name,
       phoneNumber,
     };
+
     setApplicantInfo(newValue);
     setApplicant(newValue);
   }, [userInfo]);
@@ -43,8 +44,8 @@ const ReservationInfo = () => {
     };
 
   return (
-    <div className="mt-4 rounded-md px-4 py-[1.31rem] shadow-vertical">
-      <section className="w-full whitespace-nowrap border-b border-solid border-gray-500 pb-5">
+    <div className="mt-4 rounded-md px-4 py-5 shadow-vertical">
+      <section className="w-full whitespace-nowrap">
         <h3 className="text-lg font-semibold">예약자 정보</h3>
         <ul className="mt-4 flex flex-col gap-2 text-sm font-semibold text-gray-100 ">
           <li className="flex items-center gap-4 py-1.5">
@@ -90,23 +91,25 @@ const ReservationInfo = () => {
         </ul>
       </section>
 
-      <section className="mt-4">
-        <h3 className="mb-2 text-lg font-semibold">예약 시 요청사항</h3>
-        {/* 
+      {isClass && (
+        <section className="mt-4 border-t border-solid border-gray-500 pt-5">
+          <h3 className="mb-2 text-lg font-semibold">예약 시 요청사항</h3>
+          {/* 
             공통 컴포넌트로 대체 예정
            <TextAreaSection
             placeholder="강사에게 전달해야하는 요청사항을 적어주세요."
             maxLength={200}
             dataName="classRequest"
           /> */}
-        <textarea
-          value={applicantInfo.requests}
-          onChange={handleChange('requests')}
-          className="h-20 w-full resize-none rounded-md border border-gray-500 p-3 text-sm font-normal focus:outline-sub-color1"
-          placeholder="강사에게 전달해야하는 요청사항을 적어주세요."
-          maxLength={200}
-        />
-      </section>
+          <textarea
+            value={applicantInfo.requests}
+            onChange={handleChange('requests')}
+            className="h-20 w-full resize-none rounded-md border border-gray-500 p-3 text-sm font-normal focus:outline-sub-color1"
+            placeholder="강사에게 전달해야하는 요청사항을 적어주세요."
+            maxLength={200}
+          />
+        </section>
+      )}
     </div>
   );
 };
