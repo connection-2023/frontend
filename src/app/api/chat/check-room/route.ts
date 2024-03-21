@@ -12,11 +12,9 @@ export const GET = async (request: NextRequest) => {
 
   const id = request.nextUrl.searchParams.get('id');
   const targetId = request.nextUrl.searchParams.get('targetId');
-  const userType = request.nextUrl.searchParams.get('userType');
-  const tokenName =
-    userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
-
-  const tokenValue = request.cookies.get(tokenName)?.value;
+  const tokenValue =
+    request.cookies.get('userAccessToken')?.value ||
+    request.cookies.get('lecturerAccessToken')?.value;
 
   if (!id || !targetId) {
     return NextResponse.json(

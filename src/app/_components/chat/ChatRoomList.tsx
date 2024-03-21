@@ -79,7 +79,7 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
             </span>
           )}
           <span className="text-gray-300">
-            {formatKorean12HourTime(lastChatDateTime)}
+            {/* {formatKorean12HourTime(lastChatDateTime)} */}
           </span>
         </div>
         <div className="grid grid-cols-[1fr_auto] items-center gap-x-2">

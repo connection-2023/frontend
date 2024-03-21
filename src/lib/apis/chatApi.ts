@@ -36,13 +36,12 @@ export const getChatSocketRoomsId = async (
 };
 
 export const getCheckTargetId = async (
-  userType: userType,
   id: number | string,
   targetId: number | string,
 ): Promise<ChatRoom> => {
   try {
     const response = await fetch(
-      `/api/chat/check-room?userType=${userType}&id=${id}&targetId=${targetId}`,
+      `/api/chat/check-room?id=${id}&targetId=${targetId}`,
       {
         method: 'GET',
         credentials: 'include',
