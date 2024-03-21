@@ -11,11 +11,9 @@ export const POST = async (request: NextRequest) => {
   }
 
   const id = request.nextUrl.searchParams.get('id');
-  const userType = request.nextUrl.searchParams.get('userType');
-  const tokenName =
-    userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
-
-  const tokenValue = request.cookies.get(tokenName)?.value;
+  const tokenValue =
+    request.cookies.get('userAccessToken')?.value ||
+    request.cookies.get('lecturerAccessToken')?.value;
   const data = await request.json();
 
   if (!tokenValue) {

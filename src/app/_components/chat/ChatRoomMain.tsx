@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CHAT_INTERSECT_REF_OPTIONS } from '@/constants/constants';
 import useIntersect from '@/hooks/useIntersect';
 import { UploadImageSVG } from '@/icons/svg';
-import { sendChat } from '@/lib/apis/chatApi';
+import { createNewChatRoom, sendChat } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import Chat from './Chat';
 import ApplyButton from '@/components/Button/ApplyButton';
@@ -35,6 +35,7 @@ const ChatRoomMain = ({
   const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
 
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
+  const userId = userType === 'user' ? 'userId' : 'lecturerId';
 
   const handleResizeHeight = () => {
     if (
@@ -74,16 +75,21 @@ const ChatRoomMain = ({
 
   const { mutate: sendChatContent, isPending } = useMutation({
     mutationFn: async (content: string) => {
+      let newChatRoom: ChatRoom | null = null;
       if (!selectChatRoom.id) {
-        return;
+        newChatRoom = await createNewChatRoom(
+          selectChatRoom[userId],
+          selectChatRoom[opponentType],
+        );
       }
 
       const data = {
-        chatRoomId: selectChatRoom.id,
+        chatRoomId: selectChatRoom.id ?? newChatRoom?.id,
         receiverId: selectChatRoom[opponentType],
         content,
       };
       const newChat = await sendChat(data, userType);
+
       return { ...newChat, createdAt: new Date() };
     },
     onSuccess: () => setSendChatPreview(null),

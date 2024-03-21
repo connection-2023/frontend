@@ -1,6 +1,10 @@
-export interface ChatRoom extends SelectChatRoom {
-  unreadCount: number;
-  lastChat: {
+export interface ChatRoom {
+  id?: string;
+  userId: number;
+  lecturerId: number;
+  roomId?: string;
+  unreadCount?: number;
+  lastChat?: {
     chatRoomId: string;
     id: string;
     sender: {
@@ -18,19 +22,12 @@ export interface ChatRoom extends SelectChatRoom {
   };
 }
 
-export interface SelectChatRoom {
-  id?: string;
-  userId: number;
-  lecturerId: number;
-  roomId?: string;
-}
-
 export interface onlineState {
   lastLogin?: string;
 }
 
 export interface sendChatParams {
-  chatRoomId: string;
+  chatRoomId?: string;
   receiverId: number;
   content: string;
 }
@@ -56,6 +53,7 @@ export interface Chat {
         lecturerId: number;
       };
   content: string;
+  imageUrl?: string;
   readedAt: Date;
   createdAt: Date;
   chatRoomId: string;

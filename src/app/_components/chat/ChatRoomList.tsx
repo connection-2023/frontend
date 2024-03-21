@@ -62,7 +62,6 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
 
   const { lastChat, unreadCount } = chatRoom;
 
-  const { createdAt, imageUrl, content } = lastChat;
   return (
     <>
       {isLoading ? (
@@ -79,14 +78,18 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
               {data?.nickname}
             </span>
           )}
-          <span className="text-gray-300">
-            {formatKorean12HourTime(createdAt)}
-          </span>
+          {lastChat && (
+            <span className="text-gray-300">
+              {formatKorean12HourTime(lastChat.createdAt)}
+            </span>
+          )}
         </div>
         <div className="grid grid-cols-[1fr_auto] items-center gap-x-2">
-          <span className="line-clamp-2 max-h-10 text-left text-gray-300">
-            {imageUrl ? '이미지' : content}
-          </span>
+          {lastChat && (
+            <span className="line-clamp-2 max-h-10 text-left text-gray-300">
+              {lastChat.imageUrl ? '이미지' : lastChat.content}
+            </span>
+          )}
           {unreadCount && (
             <span className="flex max-h-[24px] min-w-[24px] items-center justify-center rounded-full bg-main-color text-white">
               {unreadCount > 99 ? '99+' : unreadCount}

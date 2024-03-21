@@ -68,22 +68,18 @@ export const getCheckTargetId = async (
 };
 
 export const createNewChatRoom = async (
-  userType: userType,
   id: number | string,
   targetId: number | string,
 ): Promise<ChatRoom> => {
   try {
-    const response = await fetch(
-      `/api/chat/create-chat-room?userType=${userType}&id=${id}`,
-      {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ targetId }),
+    const response = await fetch(`/api/chat/create-chat-room?id=${id}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify({ targetId }),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -125,7 +121,7 @@ export const getChatRoomList = async (
 
     const resData = await response.json();
 
-    return resData.data.chatRoom;
+    return resData.data.chatRoom ?? [];
   } catch (error) {
     console.error('채팅방 목록 조회 에러', error);
     throw error;
@@ -210,6 +206,10 @@ export const sendChat = async (
   userType: userType,
 ): Promise<Chat> => {
   try {
+    if (!data.chatRoomId) {
+      throw 'chatRoomId undefined';
+    }
+
     const response = await fetch(`/api/chat/send-chat?userType=${userType}`, {
       method: 'POST',
       credentials: 'include',

@@ -46,7 +46,7 @@ const ChatMain = ({
   }, [dragState]);
 
   const { data: chatRoomList, isLoading } = useQuery({
-    queryKey: ['chatRoomList', id],
+    queryKey: ['chatRoomList'],
     queryFn: () => getChatRoomList(userType, id),
   });
 

@@ -8,7 +8,6 @@ import { getCheckTargetId } from '@/lib/apis/chatApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useChatStore, useUserStore } from '@/store';
 import { reloadToast } from '@/utils/reloadMessage';
-import { SelectChatRoom } from '@/types/chat';
 import { FetchError } from '@/types/types';
 
 interface ChatButtonProps {
@@ -31,7 +30,7 @@ const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
   const { mutate: startChatMutation } = useMutation({
     mutationFn: ({ id, targetId }: { id: number | string; targetId: number }) =>
       getCheckTargetId(id, targetId),
-    onSuccess: (data: SelectChatRoom) => {
+    onSuccess: (data) => {
       setChatView(true);
       setChatRoomSelect(data);
     },
