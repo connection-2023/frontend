@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -13,7 +12,7 @@ const UserPass = ({ passInfo }: { passInfo: userPass }) => {
 
   return (
     <dl
-      onClick={() => router.push(`/pass/${passInfo.id}/apply`)}
+      onClick={() => router.push(`/order/pass/${passInfo.id}`)}
       className="cursor-pointer rounded-md text-sm shadow-horizontal"
     >
       <div className="flex flex-col gap-1.5 p-3">
@@ -40,7 +39,7 @@ const UserPass = ({ passInfo }: { passInfo: userPass }) => {
             nickname={passInfo.nickname}
           />
         </Link>
-        <Button onClick={() => router.push(`/pass/${passInfo.id}/apply`)}>
+        <Button onClick={() => router.push(`/order/pass/${passInfo.id}`)}>
           구매하기
         </Button>
       </div>

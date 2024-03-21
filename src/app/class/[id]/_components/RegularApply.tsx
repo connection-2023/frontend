@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
-import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
-import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 import RegularApplyList from './apply/RegularApplyList';
 import { ApplyButton } from '@/components/Button';
 import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
+import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
+import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 
 const ReservationItem = dynamic(() => import('./apply/ReservationItem'));
 
@@ -80,7 +80,7 @@ const RegularApply = (props: ApplyProps) => {
     const { id, count } = selectedSchedule;
 
     router.push(
-      `/class/${lectureId}/apply?lectureScheduleId=${id}&count=${count}`,
+      `/order/class/${lectureId}?lectureScheduleId=${id}&count=${count}`,
     );
   };
 

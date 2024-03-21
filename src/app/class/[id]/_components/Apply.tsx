@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
-import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 import SelectBox from './apply/SelectBox';
 import { ApplyButton } from '@/components/Button';
 import { IClassSchedule, IDateTime } from '@/types/class';
+import { formatDateTime, applyScheduleFilter } from '@/utils/parseUtils';
 
 const ReservationItem = dynamic(() => import('./apply/ReservationItem'));
 
@@ -103,7 +103,7 @@ const Apply = (props: ApplyProps) => {
     const { lectureScheduleId, count } = selectedSchedule;
 
     router.push(
-      `/class/${id}/apply?lectureScheduleId=${lectureScheduleId}&count=${count}`,
+      `/order/class/${id}?lectureScheduleId=${lectureScheduleId}&count=${count}`,
     );
   };
 
