@@ -137,9 +137,10 @@ export const accessTokenReissuance = async () => {
 
     if (response.type === 'opaqueredirect') {
       window.location.href = response.url;
+      throw '세션 종료';
     }
 
-    return await response.json();
+    return response;
   } catch (error) {
     console.error('엑세스 토큰 재발급 오류', error);
     throw error;
