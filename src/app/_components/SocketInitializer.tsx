@@ -119,6 +119,7 @@ const SocketInitializer = ({
           .getQueryData<ChatRoom[]>(['chatRoomList', userId])
           ?.findIndex((chatRoom) => chatRoom.id === newChat.chatRoomId);
 
+        console.log(userId);
         if (
           typeof targetChatRoomIndex === 'number' &&
           targetChatRoomIndex !== -1
@@ -154,6 +155,29 @@ const SocketInitializer = ({
             },
           );
         } else {
+          const newChatRoom: ChatRoom = {
+            id: newChat.chatRoomId,
+            userId:
+              newChat.receiver.userId || (newChat.sender.userId as number),
+            lecturerId:
+              newChat.receiver.lecturerId ||
+              (newChat.sender.lecturerId as number),
+            unreadCount: isReceiver ? 1 : undefined,
+            lastChat: {
+              ...newChat,
+            },
+          };
+
+          queryClient.setQueryData<ChatRoom[]>(
+            ['chatRoomList', userId],
+            (oldData) => {
+              if (!oldData) return [{ ...newChatRoom }];
+
+              return [{ ...newChatRoom }, ...oldData];
+            },
+          );
+
+          setChatRoomSelect({ ...newChatRoom });
         }
 
         setNewChat({ ...newChat });

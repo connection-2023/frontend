@@ -116,6 +116,9 @@ export const getChatRoomList = async (
       const errorData = await response.json();
       const error: FetchError = new Error(errorData.message || '');
       error.status = response.status;
+      if (error.status === 404) {
+        return [];
+      }
       throw error;
     }
 
