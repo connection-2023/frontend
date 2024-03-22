@@ -44,7 +44,7 @@ const RegularApplyList = (props: RegularApplyListProps) => {
           <li
             key={item.id}
             className={`h-[90px] cursor-pointer rounded-md ${
-              isChecked && 'border border-2 border-solid border-main-color'
+              isChecked && 'border-2 border-solid border-main-color'
             } px-4 py-3 text-sm text-gray-100 shadow-float`}
             onClick={() =>
               onSelect({
