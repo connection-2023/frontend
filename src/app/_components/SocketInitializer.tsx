@@ -119,7 +119,6 @@ const SocketInitializer = ({
           .getQueryData<ChatRoom[]>(['chatRoomList', userId])
           ?.findIndex((chatRoom) => chatRoom.id === newChat.chatRoomId);
 
-        console.log(userId);
         if (
           typeof targetChatRoomIndex === 'number' &&
           targetChatRoomIndex !== -1
@@ -133,10 +132,11 @@ const SocketInitializer = ({
 
               const updatedChatRoom: ChatRoom = {
                 ...targetChatRoom,
-                unreadCount:
-                  targetChatRoom.unreadCount && isReceiver
-                    ? targetChatRoom.unreadCount + 1
-                    : targetChatRoom.unreadCount,
+                unreadCount: !isReceiver
+                  ? targetChatRoom.unreadCount
+                  : targetChatRoom.unreadCount && targetChatRoom.unreadCount > 0
+                  ? targetChatRoom.unreadCount + 1
+                  : 1,
                 lastChat: targetChatRoom.lastChat
                   ? {
                       ...targetChatRoom.lastChat,

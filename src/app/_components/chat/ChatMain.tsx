@@ -49,7 +49,6 @@ const ChatMain = ({
     queryKey: ['chatRoomList', id],
     queryFn: () => getChatRoomList(userType, id),
     staleTime: Infinity,
-    refetchOnWindowFocus: 'always',
   });
 
   const chatSelectHandler = (chatRoom: IChatRoom | null) => {

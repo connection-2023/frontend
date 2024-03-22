@@ -90,7 +90,7 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
               {lastChat.imageUrl ? '이미지' : lastChat.content}
             </span>
           )}
-          {unreadCount && (
+          {typeof unreadCount === 'number' && unreadCount > 0 && (
             <span className="flex max-h-[24px] min-w-[24px] items-center justify-center rounded-full bg-main-color text-white">
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>

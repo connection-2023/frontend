@@ -1,9 +1,13 @@
-import { UseQueryResult, useMutation } from '@tanstack/react-query';
+import {
+  UseQueryResult,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { CHAT_INTERSECT_REF_OPTIONS } from '@/constants/constants';
 import useIntersect from '@/hooks/useIntersect';
 import { UploadImageSVG } from '@/icons/svg';
-import { createNewChatRoom, sendChat } from '@/lib/apis/chatApi';
+import { createNewChatRoom, readChat, sendChat } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import Chat from './Chat';
 import ApplyButton from '@/components/Button/ApplyButton';
@@ -34,6 +38,8 @@ const ChatRoomMain = ({
 
   const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
 
+  const queryClient = useQueryClient();
+
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
   const userId = userType === 'user' ? 'userId' : 'lecturerId';
 
@@ -58,13 +64,9 @@ const ChatRoomMain = ({
     }
   };
 
-  useEffect(() => {
-    if (newchat && newchat?.chatRoomId === selectChatRoom.id) {
-      if (newchat.sender[opponentType]) {
-        setIsReceived(true);
-      }
-    }
-  }, [newchat]);
+  const readNewChat = () => {
+    setIsReceived(false);
+  };
 
   useEffect(() => {
     handleResizeHeight();
@@ -72,6 +74,64 @@ const ChatRoomMain = ({
     chatArea.current?.parentElement?.clientHeight,
     chatArea.current?.parentElement?.clientWidth,
   ]);
+
+  const { ref: newChatRef } = useIntersect(
+    isReceived ? readNewChat : () => {},
+    CHAT_INTERSECT_REF_OPTIONS,
+  );
+
+  const chatScrollToBottom = () => {
+    if (newChatRef.current) {
+      newChatRef.current.scrollIntoView({ behavior: 'instant', block: 'end' });
+    }
+  };
+
+  const { mutate: readChatFn } = useMutation({
+    mutationFn: (chatRoomId: string) => readChat(chatRoomId),
+    onSuccess: (chatRoomId) =>
+      queryClient.setQueryData<ChatRoom[]>(
+        ['chatRoomList', selectChatRoom[userId]],
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          const targetChatRoomIndex = oldData.findIndex(
+            (chatRoom) => chatRoom.id === chatRoomId,
+          );
+
+          const targetChatRoom = oldData[targetChatRoomIndex];
+          const updatedChatRoom = {
+            ...targetChatRoom,
+            unreadCount: undefined,
+          };
+
+          const updatedData = [...oldData];
+          updatedData.splice(targetChatRoomIndex, 1);
+          updatedData.unshift(updatedChatRoom);
+
+          return updatedData;
+        },
+      ),
+  });
+
+  useEffect(() => {
+    if (newchat && newchat?.chatRoomId === selectChatRoom.id) {
+      readChatFn(selectChatRoom.id);
+      if (newchat.sender[opponentType]) {
+        setIsReceived(true);
+      }
+    }
+  }, [newchat]);
+
+  useEffect(() => {
+    // chatScrollToBottom();
+    if (
+      selectChatRoom.id &&
+      selectChatRoom.unreadCount &&
+      selectChatRoom.unreadCount > 0
+    ) {
+      readChatFn(selectChatRoom.id);
+    }
+  }, [selectChatRoom]);
 
   const { mutate: sendChatContent, isPending } = useMutation({
     mutationFn: async (content: string) => {
@@ -101,15 +161,6 @@ const ChatRoomMain = ({
     onMutate: (message) => setSendChatPreview({ error: false, message }),
   });
 
-  const readNewChat = () => {
-    setIsReceived(false);
-  };
-
-  const { ref: newChatRef } = useIntersect(
-    isReceived ? readNewChat : () => {},
-    CHAT_INTERSECT_REF_OPTIONS,
-  );
-
   const sendMessage = () => {
     const message = messageArea.current?.value;
     if (message) {
@@ -128,12 +179,6 @@ const ChatRoomMain = ({
 
   const cancelMessage = () => {
     setSendChatPreview(null);
-  };
-
-  const chatScrollToBottom = () => {
-    if (newChatRef.current) {
-      newChatRef.current.scrollIntoView({ behavior: 'instant', block: 'end' });
-    }
   };
 
   return (

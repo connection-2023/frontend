@@ -1,6 +1,5 @@
 import { userType } from '@/types/auth';
 import { Chat, ChatRoom, OpponentInfo, sendChatParams } from '@/types/chat';
-import { instructorPostResponse } from '@/types/instructor';
 import { FetchError } from '@/types/types';
 
 export const getChatSocketRoomsId = async (
@@ -277,6 +276,34 @@ export const getOpponentInfo = async (
         };
   } catch (error) {
     console.error('프로필 조회 에러', error);
+    throw error;
+  }
+};
+
+export const readChat = async (chatRoomId: string): Promise<string> => {
+  try {
+    const response = await fetch(
+      `/api/chat/read-chat?chatRoomId=${chatRoomId}`,
+      {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    // const resData = await response.json();
+    return chatRoomId;
+  } catch (error) {
+    console.error('채팅 읽음 처리 오류', error);
     throw error;
   }
 };
