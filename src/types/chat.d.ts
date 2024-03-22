@@ -7,14 +7,24 @@ export interface ChatRoom {
   lastChat?: {
     chatRoomId: string;
     id: string;
-    sender: {
-      lecturerId: 0;
-      userId: 0;
-    };
-    receiver: {
-      lecturerId: 0;
-      userId: 0;
-    };
+    sender:
+      | {
+          userId: number;
+          lecturerId: null;
+        }
+      | {
+          userId: null;
+          lecturerId: number;
+        };
+    receiver:
+      | {
+          userId: number;
+          lecturerId: null;
+        }
+      | {
+          userId: null;
+          lecturerId: number;
+        };
     content: string;
     imageUrl?: string;
     readedAt: Date;

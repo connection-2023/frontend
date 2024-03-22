@@ -1,4 +1,5 @@
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { ToastContainer } from 'react-toastify';
@@ -16,13 +17,12 @@ import Header from './_components/Header/Header';
 import UserProfileLinks from './_components/Header/UserProfileLinks';
 import UserStoreInitializer from './_components/Header/UserStoreInitializer';
 import MobileNav from './_components/MobileNav';
+import SocketInitializer from './_components/SocketInitializer';
 import { profileInfo, userType } from '@/types/auth';
 import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
-import SocketInitializer from './_components/SocketInitializer';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const inter = Inter({ subsets: ['latin'] });
 

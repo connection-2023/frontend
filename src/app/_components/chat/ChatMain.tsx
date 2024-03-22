@@ -46,8 +46,10 @@ const ChatMain = ({
   }, [dragState]);
 
   const { data: chatRoomList, isLoading } = useQuery({
-    queryKey: ['chatRoomList'],
+    queryKey: ['chatRoomList', id],
     queryFn: () => getChatRoomList(userType, id),
+    staleTime: Infinity,
+    refetchOnWindowFocus: 'always',
   });
 
   const chatSelectHandler = (chatRoom: IChatRoom | null) => {

@@ -111,37 +111,48 @@ const SocketInitializer = ({
           },
         );
 
+        const receiverId = (newChat.receiver.userId ||
+          newChat.receiver.lecturerId) as number;
+        const isReceiver = receiverId === Number(userId);
+
         const targetChatRoomIndex = queryClient
-          .getQueryData<ChatRoom[]>(['chatRoomList'])
+          .getQueryData<ChatRoom[]>(['chatRoomList', userId])
           ?.findIndex((chatRoom) => chatRoom.id === newChat.chatRoomId);
 
         if (
           typeof targetChatRoomIndex === 'number' &&
           targetChatRoomIndex !== -1
         ) {
-          queryClient.setQueryData<ChatRoom[]>(['chatRoomList'], (oldData) => {
-            if (!oldData) return oldData;
+          queryClient.setQueryData<ChatRoom[]>(
+            ['chatRoomList', userId],
+            (oldData) => {
+              if (!oldData) return oldData;
 
-            const targetChatRoom = oldData[targetChatRoomIndex];
+              const targetChatRoom = oldData[targetChatRoomIndex];
 
-            const updatedChatRoom: ChatRoom = {
-              ...targetChatRoom,
-              lastChat: targetChatRoom.lastChat
-                ? {
-                    ...targetChatRoom.lastChat,
-                    imageUrl: newChat?.imageUrl,
-                    content: newChat.content,
-                    createdAt: newChat.createdAt,
-                  }
-                : undefined,
-            };
+              const updatedChatRoom: ChatRoom = {
+                ...targetChatRoom,
+                unreadCount:
+                  targetChatRoom.unreadCount && isReceiver
+                    ? targetChatRoom.unreadCount + 1
+                    : targetChatRoom.unreadCount,
+                lastChat: targetChatRoom.lastChat
+                  ? {
+                      ...targetChatRoom.lastChat,
+                      imageUrl: newChat?.imageUrl,
+                      content: newChat.content,
+                      createdAt: newChat.createdAt,
+                    }
+                  : undefined,
+              };
 
-            const updatedData = [...oldData];
-            updatedData.splice(targetChatRoomIndex, 1);
-            updatedData.unshift(updatedChatRoom);
+              const updatedData = [...oldData];
+              updatedData.splice(targetChatRoomIndex, 1);
+              updatedData.unshift(updatedChatRoom);
 
-            return updatedData;
-          });
+              return updatedData;
+            },
+          );
         } else {
         }
 
