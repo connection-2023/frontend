@@ -4,13 +4,15 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
-import RegularApplyList from './apply/RegularApplyList';
+import RegularApplyList from '@/components/Apply/RegularApplyList';
 import { ApplyButton } from '@/components/Button';
 import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
 import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
 import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 
-const ReservationItem = dynamic(() => import('./apply/ReservationItem'));
+const ReservationItem = dynamic(
+  () => import('@/components/Apply/ReservationItem'),
+);
 
 interface ApplyProps {
   id: string | number;

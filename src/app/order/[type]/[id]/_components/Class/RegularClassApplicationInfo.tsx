@@ -3,8 +3,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
 import { usePaymentStore } from '@/store';
 import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
-import RegularApplyList from './RegularApplyList';
-import ReservationItem from './ReservationItem';
+import RegularApplyList from '@/components/Apply/RegularApplyList';
+import ReservationItem from '@/components/Apply/ReservationItem';
 import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
 
 interface RegularClassApplicationInfoProps {
