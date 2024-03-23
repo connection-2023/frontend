@@ -39,7 +39,8 @@ export interface onlineState {
 export interface sendChatParams {
   chatRoomId?: string;
   receiverId: number;
-  content: string;
+  content?: string;
+  imageUrl?: string;
 }
 
 export interface Chat {

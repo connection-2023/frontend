@@ -1,6 +1,9 @@
 import { FetchError } from '@/types/types';
 
-export const postSingleImage = async (image: File, folder: string) => {
+export const postSingleImage = async (
+  image: File,
+  folder: string,
+): Promise<string> => {
   try {
     const formData = new FormData();
     formData.append('image', image);

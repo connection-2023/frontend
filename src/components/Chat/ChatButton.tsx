@@ -34,14 +34,14 @@ const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
       setChatView(true);
       setChatRoomSelect(data);
     },
-    onError: async (error) => {
+    onError: async (error, variables) => {
       if (error instanceof Error) {
         const fetchError = error as FetchError;
         switch (fetchError.status) {
           case 401:
             try {
               await accessTokenReissuance();
-              startChatMutation({ id: authUser!.id, targetId });
+              startChatMutation(variables);
             } catch (error) {
               reloadToast(
                 '세션이 만료되었습니다. 다시 로그인해주세요.',

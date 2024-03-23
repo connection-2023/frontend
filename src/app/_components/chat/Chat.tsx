@@ -14,10 +14,18 @@ import { ChatRoom } from '@/types/chat';
 
 interface ChatProps {
   selectChatRoom: ChatRoom;
-  sendChatPreview: {
-    message: string;
-    error: boolean;
-  } | null;
+  sendChatPreview:
+    | {
+        content?: string | undefined;
+        imageUrl: string;
+        error: boolean;
+      }
+    | {
+        content: string;
+        imageUrl?: string | undefined;
+        error: boolean;
+      }
+    | null;
   opponentType: 'lecturerId' | 'userId';
   newChatRef: RefObject<HTMLDivElement>;
   resendMessage: () => void;
@@ -172,7 +180,7 @@ const Chat = ({
             <Spinner color="gray-700" size={4} />
           )}
           <div className="w-fit rounded-l-lg rounded-t-lg bg-white px-4 py-2">
-            {sendChatPreview.message}
+            {sendChatPreview.content}
           </div>
         </div>
       )}
