@@ -110,7 +110,8 @@ export interface IVirtualAccountInfo {
   accountNumber: string;
   customerName: string;
   dueDate: string;
-  bank: { code: number; name: string };
+  bankCode: string;
+  expired: boolean;
 }
 
 interface IPaymentCoupon {

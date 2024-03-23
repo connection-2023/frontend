@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import { ApplySuccessSVG } from '@/icons/svg';
 import wavyLine from '@/images/wavy.png';
 import {
@@ -75,27 +76,28 @@ const ApplyCompletePage = async ({
     },
   ];
 
-  const accoutsInfo = [
-    {
-      type: '입금금액',
-      content: `${finalPrice.toLocaleString()}원`,
-    },
-    {
-      type: '입금계좌',
-      content: `${virtualAccountPaymentInfo?.bank.name} (${virtualAccountPaymentInfo?.accountNumber})`,
-    },
-    {
-      type: '예금주',
-      content: `${virtualAccountPaymentInfo?.customerName}`,
-    },
-    {
-      type: '입금기한',
-      content: `~${
-        virtualAccountPaymentInfo &&
-        formatDateTimeNoSec(virtualAccountPaymentInfo?.dueDate)
-      }`,
-    },
-  ];
+  const accountsInfo =
+    (virtualAccountPaymentInfo && [
+      {
+        type: '입금금액',
+        content: `${finalPrice.toLocaleString()}원`,
+      },
+      {
+        type: '입금계좌',
+        content: `${BANK_CODE_TO_NAME[virtualAccountPaymentInfo.bankCode]} (${
+          virtualAccountPaymentInfo.accountNumber
+        })`,
+      },
+      {
+        type: '예금주',
+        content: `${virtualAccountPaymentInfo.customerName}`,
+      },
+      {
+        type: '입금기한',
+        content: `~${formatDateTimeNoSec(virtualAccountPaymentInfo.dueDate)}`,
+      },
+    ]) ||
+    [];
 
   const paymentsInfo = [
     {
@@ -121,7 +123,7 @@ const ApplyCompletePage = async ({
   ];
 
   const applicationDetails = isBankTransfer
-    ? [...basicPaymentInfo, ...accoutsInfo]
+    ? [...basicPaymentInfo, ...accountsInfo]
     : [...basicPaymentInfo, ...paymentsInfo];
 
   return (
