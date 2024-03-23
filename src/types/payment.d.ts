@@ -1,4 +1,5 @@
 import { PAYMENT_STATUS } from '@/constants/constants';
+import { IClassSchedule, IRegularClassSchedule } from './class';
 
 export interface IReservationInfo {
   lectureScheduleId: number;
@@ -48,15 +49,9 @@ export interface IPaymentConfirmResponse {
     phoneNumber: string;
     participants: number;
     requests: string;
-    lectureSchedule: {
-      id: number;
-      lectureId: number;
-      day: number;
-      startDateTime: string;
-      endDateTime: string;
-      numberOfParticipants: number;
-    };
-    regularLectureStatus: null;
+    lectureSchedule: IClassSchedule | null;
+    regularLectureStatus: IRegularClassSchedule | null;
+    lecture: { id: number; title: string };
   };
   paymentCouponUsage: IPaymentCoupon | null;
   cardPaymentInfo: ICardPaymentInfo | null;

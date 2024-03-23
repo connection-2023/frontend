@@ -16,10 +16,8 @@ import {
 import { IPaymentConfirmRequest } from '@/types/payment';
 
 const ApplyCompletePage = async ({
-  params,
   searchParams,
 }: {
-  params: { id: string };
   searchParams: { [key: string]: string };
 }) => {
   const { orderId, paymentKey, amount } = searchParams;
@@ -51,6 +49,8 @@ const ApplyCompletePage = async ({
 
   const isBankTransfer = paymentMethod.name === '가상계좌';
 
+  const { lectureSchedule, regularLectureStatus, lecture } = reservation;
+
   const basicPaymentInfo = [
     {
       type: '클래스',
@@ -58,9 +58,15 @@ const ApplyCompletePage = async ({
     },
     {
       type: '신청내역',
-      content: `${formatKoreanDateTime(
-        reservation.lectureSchedule.startDateTime,
-      )} ${reservation.lectureSchedule.numberOfParticipants}명`,
+      content: lectureSchedule
+        ? `${formatKoreanDateTime(lectureSchedule.startDateTime)} ${
+            lectureSchedule.numberOfParticipants
+          }명`
+        : regularLectureStatus
+        ? `${regularLectureStatus.day.join(',')} ${
+            regularLectureStatus.dateTime
+          } ${regularLectureStatus.numberOfParticipants}명`
+        : null,
     },
     {
       type: '총 금액',
@@ -164,7 +170,7 @@ const ApplyCompletePage = async ({
           결제내역 보기
         </Link>
         <Link
-          href={`/class/${params.id}`}
+          href={`/class/${lecture.id}`}
           className="flex w-full cursor-pointer items-center justify-center rounded-md bg-black text-white"
         >
           확인
