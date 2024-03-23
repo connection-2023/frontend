@@ -92,6 +92,7 @@ const ClassInfo = async ({
             range={`${formatDate(startDate)}~${formatDate(endDate)}`}
             duration={duration}
             maxCapacity={maxCapacity}
+            applyCount={Number(count)}
           />
         )}
       </section>
