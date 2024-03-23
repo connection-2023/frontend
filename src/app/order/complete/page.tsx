@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { ApplySuccessSVG, WavyLineSVG } from '@/icons/svg';
+import { ApplySuccessSVG } from '@/icons/svg';
+import wavyLine from '@/images/wavy.png';
 import {
   patchPaymentConfirm,
   getPaymentInfo,
@@ -33,7 +35,7 @@ const ApplyCompletePage = async ({
 
   const PaymentData = await getPaymentInfo(orderId);
 
-  if (!PaymentData) return;
+  if (!PaymentData) return null;
 
   const {
     orderName,
@@ -134,7 +136,7 @@ const ApplyCompletePage = async ({
           : '클래스 신청이 완료되었습니다'}
       </h1>
 
-      <WavyLineSVG />
+      <Image src={wavyLine} alt="wavy-line" />
 
       <ul className="mb-6 mt-4 grid grid-cols-[min-content_minmax(max-content,_1fr)] gap-x-4 gap-y-3 px-4 text-sm font-normal">
         {applicationDetails.map((detail, index) => (
@@ -148,9 +150,9 @@ const ApplyCompletePage = async ({
         ))}
       </ul>
 
-      <WavyLineSVG />
+      <Image src={wavyLine} alt="wavy-line" />
 
-      <div className="mt-6 flex h-10 w-full gap-4 text-lg font-semibold">
+      <div className="mt-6  flex h-10 w-full gap-4 px-4 text-lg font-semibold">
         <Link
           href="/mypage/user/payment-history"
           className="flex w-full cursor-pointer items-center justify-center rounded-md bg-gray-500 text-white"
