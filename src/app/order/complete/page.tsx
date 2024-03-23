@@ -112,6 +112,7 @@ const ApplyCompletePage = async ({
         <Link
           href={`/receipt?orderId=${orderId}`}
           className="underline underline-offset-2"
+          scroll={false}
         >
           영수증 보기
         </Link>
