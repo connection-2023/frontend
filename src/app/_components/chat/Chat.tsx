@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Fragment, RefObject, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { CHATS_TAKE, CHAT_INTERSECT_REF_OPTIONS } from '@/constants/constants';
@@ -28,6 +29,7 @@ interface ChatProps {
     | null;
   opponentType: 'lecturerId' | 'userId';
   newChatRef: RefObject<HTMLDivElement>;
+  endOfMessagesRef: RefObject<HTMLDivElement>;
   resendMessage: () => void;
   cancelMessage: () => void;
   chatScrollToBottom: () => void;
@@ -38,6 +40,7 @@ const Chat = ({
   sendChatPreview,
   opponentType,
   newChatRef,
+  endOfMessagesRef,
   resendMessage,
   cancelMessage,
   chatScrollToBottom,
@@ -109,12 +112,15 @@ const Chat = ({
   };
 
   return (
-    <div className="h-0 w-full flex-grow overflow-auto overflow-x-hidden bg-gray-900 ">
+    <div
+      ref={endOfMessagesRef}
+      className="h-0 w-full flex-grow overflow-auto overflow-x-hidden bg-gray-900 "
+    >
       {isLoading && <ChatLoading count={12} />}
       {isFetchingNextPage && scrollRef.current && (
         <ChatLoading count={6} scrollDisabled={scrollDisabled} />
       )}
-      {chats.map(({ id, content, createdAt, receiver }, index) => {
+      {chats.map(({ id, content, createdAt, receiver, imageUrl }, index) => {
         const isReceiver = !receiver[opponentType];
         const beforeChat = chats[index - 1]?.createdAt;
         const isFirstChat = isDifferentDay(beforeChat, createdAt);
@@ -141,13 +147,24 @@ const Chat = ({
               }
             >
               <div
-                className={`w-fit break-all rounded-t-lg px-4 py-2 ${
+                className={`w-fit break-all rounded-t-lg ${
+                  imageUrl ? 'p-3' : 'px-4 py-2'
+                } ${
                   isReceiver
                     ? 'ml-2 rounded-r-lg bg-main-color-transparent'
                     : 'mr-2 rounded-l-lg bg-white'
                 }`}
               >
-                {content}
+                {content ? (
+                  content
+                ) : imageUrl ? (
+                  <Image
+                    width={261}
+                    height={167}
+                    src={imageUrl}
+                    alt="커넥션 채팅 이미지"
+                  />
+                ) : null}
               </div>
               <div className="whitespace-nowrap text-sm text-gray-300">
                 {formatKorean12HourTime(createdAt)}
@@ -180,7 +197,16 @@ const Chat = ({
             <Spinner color="gray-700" size={4} />
           )}
           <div className="w-fit rounded-l-lg rounded-t-lg bg-white px-4 py-2">
-            {sendChatPreview.content}
+            {sendChatPreview.content ? (
+              sendChatPreview.content
+            ) : sendChatPreview.imageUrl ? (
+              <Image
+                width={261}
+                height={167}
+                src={sendChatPreview.imageUrl}
+                alt="커넥션 채팅 이미지"
+              />
+            ) : null}
           </div>
         </div>
       )}

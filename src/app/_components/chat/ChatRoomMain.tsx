@@ -34,6 +34,7 @@ const ChatRoomMain = ({
   const chatArea = useRef<HTMLDivElement>(null);
   const messageArea = useRef<HTMLTextAreaElement>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
   const [sendChatPreview, setSendChatPreview] = useState<
     | {
@@ -95,8 +96,9 @@ const ChatRoomMain = ({
   );
 
   const chatScrollToBottom = () => {
-    if (newChatRef.current) {
-      newChatRef.current.scrollIntoView({ behavior: 'instant', block: 'end' });
+    if (endOfMessagesRef.current) {
+      endOfMessagesRef.current.scrollTop =
+        endOfMessagesRef.current.scrollHeight + 1000;
     }
   };
 
@@ -202,7 +204,6 @@ const ChatRoomMain = ({
   const { mutate: sendImage, isPending: imageUrlPending } = useMutation({
     mutationFn: (image: File) => postSingleImage(image, 'chats'),
     onSuccess: (imageUrl) => sendChatContent({ imageUrl }),
-    onError: () => {},
   });
 
   const sendMessage = () => {
@@ -242,6 +243,7 @@ const ChatRoomMain = ({
         cancelMessage={cancelMessage}
         newChatRef={newChatRef}
         chatScrollToBottom={chatScrollToBottom}
+        endOfMessagesRef={endOfMessagesRef}
       />
       <div
         ref={chatArea}
