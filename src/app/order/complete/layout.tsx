@@ -10,5 +10,5 @@ export default function ApplyCompleteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return { children };
+  return <>{children}</>;
 }
