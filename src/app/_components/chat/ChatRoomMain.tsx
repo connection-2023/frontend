@@ -115,15 +115,15 @@ const ChatRoomMain = ({
 
   useEffect(() => {
     if (newchat && newchat?.chatRoomId === selectChatRoom.id) {
-      readChatFn(selectChatRoom.id);
       if (newchat.sender[opponentType]) {
         setIsReceived(true);
+        readChatFn(selectChatRoom.id);
       }
     }
   }, [newchat]);
 
   useEffect(() => {
-    // chatScrollToBottom();
+    chatScrollToBottom();
     if (
       selectChatRoom.id &&
       selectChatRoom.unreadCount &&

@@ -34,6 +34,7 @@ const Chat = ({
   cancelMessage,
   chatScrollToBottom,
 }: ChatProps) => {
+  const scrollRef = useRef(false);
   const getChatsHandler = ({ pageParam: lastItemId }: { pageParam: string }) =>
     getChats({
       chatRoomId: selectChatRoom.id ?? '',
@@ -55,16 +56,13 @@ const Chat = ({
 
   const loadPrevChatHandler = async () => {
     if (isFetchingNextPage) return;
+    scrollRef.current = true;
     await fetchNextPage();
   };
 
   useEffect(() => {
     chatScrollToBottom();
-  }, [sendChatPreview]);
-
-  useEffect(() => {
-    chatScrollToBottom();
-  }, [isLoading]);
+  }, [isLoading, sendChatPreview]);
 
   useEffect(() => {
     if (isError) {
@@ -98,10 +96,16 @@ const Chat = ({
     }
   };
 
+  const scrollDisabled = () => {
+    scrollRef.current = false;
+  };
+
   return (
     <div className="h-0 w-full flex-grow overflow-auto overflow-x-hidden bg-gray-900 ">
       {isLoading && <ChatLoading count={12} />}
-      {isFetchingNextPage && <ChatLoading count={6} />}
+      {isFetchingNextPage && scrollRef.current && (
+        <ChatLoading count={6} scrollDisabled={scrollDisabled} />
+      )}
       {chats.map(({ id, content, createdAt, receiver }, index) => {
         const isReceiver = !receiver[opponentType];
         const beforeChat = chats[index - 1]?.createdAt;
@@ -145,7 +149,10 @@ const Chat = ({
         );
       })}
       {sendChatPreview && (
-        <div className="my-2 ml-auto flex w-fit max-w-[84%] items-end gap-2">
+        <div
+          className="my-2 ml-auto flex w-fit max-w-[84%] items-end gap-2"
+          ref={newChatRef}
+        >
           {sendChatPreview.error ? (
             <div className="mb-1 flex">
               <button
@@ -175,14 +182,26 @@ const Chat = ({
 
 export default Chat;
 
-const ChatLoading = ({ count }: { count: number }) => {
+const ChatLoading = ({
+  count,
+  scrollDisabled,
+}: {
+  count: number;
+  scrollDisabled?: () => void;
+}) => {
   const lastElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (lastElementRef.current) {
       lastElementRef.current.scrollIntoView({ behavior: 'instant' });
+
+      return () => {
+        if (scrollDisabled) {
+          scrollDisabled();
+        }
+      };
     }
-  }, [count]);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 py-5">
