@@ -141,7 +141,7 @@ const Chat = ({
               }
             >
               <div
-                className={`w-fit rounded-t-lg px-4 py-2 ${
+                className={`w-fit break-all rounded-t-lg px-4 py-2 ${
                   isReceiver
                     ? 'ml-2 rounded-r-lg bg-main-color-transparent'
                     : 'mr-2 rounded-l-lg bg-white'
