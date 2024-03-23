@@ -516,6 +516,6 @@ export const HIDE_NAV_PATH = [
   '^/class/edit$',
   '^/instructor/apply$',
   '^/class/[\\w-]+$',
-  '^/class/[\\w-]+/apply$',
+  '^/order',
   '^/instructor/[\\w-]+/edit$',
 ];
