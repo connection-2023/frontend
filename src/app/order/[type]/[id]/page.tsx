@@ -115,6 +115,7 @@ const OrderPage = async ({
             title={orderTitle}
             price={data.price}
             isClass={isClass}
+            passInfo={isClass ? undefined : (data as IPassInfoForIdData)}
           />
         </aside>
       </div>

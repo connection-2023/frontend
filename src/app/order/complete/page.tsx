@@ -45,29 +45,31 @@ const ApplyCompletePage = async ({
     reservation,
     cardPaymentInfo,
     virtualAccountPaymentInfo,
+    paymentProductType,
   } = PaymentData;
 
+  const isClass = paymentProductType.name === '클래스';
   const isBankTransfer = paymentMethod.name === '가상계좌';
-
-  const { lectureSchedule, regularLectureStatus, lecture } = reservation;
 
   const basicPaymentInfo = [
     {
-      type: '클래스',
-      content: `${orderName}`,
+      type: isClass ? '클래스' : '패스권',
+      content: orderName,
     },
-    {
-      type: '신청내역',
-      content: lectureSchedule
-        ? `${formatKoreanDateTime(lectureSchedule.startDateTime)} ${
-            lectureSchedule.numberOfParticipants
-          }명`
-        : regularLectureStatus
-        ? `${regularLectureStatus.day.join(',')} ${
-            regularLectureStatus.dateTime
-          } ${regularLectureStatus.numberOfParticipants}명`
-        : null,
-    },
+    isClass
+      ? {
+          type: '신청내역',
+          content: reservation?.lectureSchedule
+            ? `${formatKoreanDateTime(
+                reservation?.lectureSchedule.startDateTime,
+              )} ${reservation?.lectureSchedule.numberOfParticipants}명`
+            : reservation?.regularLectureStatus
+            ? `${reservation?.regularLectureStatus.day.join(',')} ${reservation
+                ?.regularLectureStatus.dateTime} ${reservation
+                ?.regularLectureStatus.numberOfParticipants}명`
+            : null,
+        }
+      : {},
     {
       type: '총 금액',
       content: `${originalPrice.toLocaleString()}원`,
@@ -96,7 +98,7 @@ const ApplyCompletePage = async ({
       },
       {
         type: '예금주',
-        content: `${virtualAccountPaymentInfo.customerName}`,
+        content: virtualAccountPaymentInfo.customerName,
       },
       {
         type: '입금기한',
@@ -118,7 +120,11 @@ const ApplyCompletePage = async ({
       type: '영수증',
       content: (
         <Link
-          href={`/receipt?orderId=${orderId}`}
+          href={
+            isClass
+              ? `/receipt?orderId=${orderId}`
+              : `/receipt?orderId=${orderId}&type=pass`
+          }
           className="underline underline-offset-2"
           scroll={false}
         >
@@ -128,9 +134,20 @@ const ApplyCompletePage = async ({
     },
   ];
 
-  const applicationDetails = isBankTransfer
-    ? [...basicPaymentInfo, ...accountsInfo]
-    : [...basicPaymentInfo, ...paymentsInfo];
+  const additionalInfo = isBankTransfer ? accountsInfo : paymentsInfo;
+  const applicationDetails = [...basicPaymentInfo, ...additionalInfo];
+
+  const orderStatus = (() => {
+    if (isClass) {
+      return isBankTransfer
+        ? '입금 확인 후 신청이 확정됩니다'
+        : '클래스 신청이 완료되었습니다';
+    } else {
+      return isBankTransfer
+        ? '입금 확인 후 구매가 확정됩니다'
+        : '패스권 구매가 완료되었습니다';
+    }
+  })();
 
   return (
     <main className="mx-auto flex w-full max-w-[40rem] flex-1 flex-col items-center whitespace-nowrap">
@@ -139,24 +156,23 @@ const ApplyCompletePage = async ({
           isBankTransfer ? 'fill-gray-900' : 'fill-main-color'
         }`}
       />
-      <h1 className="mb-6 text-2xl font-bold">
-        {isBankTransfer
-          ? '입금 확인 후 신청이 확정됩니다'
-          : '클래스 신청이 완료되었습니다'}
-      </h1>
+      <h1 className="mb-6 text-2xl font-bold">{orderStatus}</h1>
 
       <Image src={wavyLine} alt="wavy-line" />
 
       <ul className="mb-6 mt-4 grid grid-cols-[min-content_minmax(max-content,_1fr)] gap-x-4 gap-y-3 px-4 text-sm font-normal">
-        {applicationDetails.map((detail, index) => (
-          <Fragment key={index}>
-            <li className="flex w-fit font-semibold">{detail.type}</li>
-            <li>{detail.content}</li>
-            {index === 2 || index === 4 ? (
-              <hr className="col-span-2 my-2 border-dashed border-gray-500" />
-            ) : null}
-          </Fragment>
-        ))}
+        {applicationDetails.map(
+          (detail, index) =>
+            Object.keys(detail).length > 0 && (
+              <Fragment key={index}>
+                <li className="flex w-fit font-semibold">{detail.type}</li>
+                <li>{detail.content}</li>
+                {index === 2 || index === 4 ? (
+                  <hr className="col-span-2 my-2 border-dashed border-gray-500" />
+                ) : null}
+              </Fragment>
+            ),
+        )}
       </ul>
 
       <Image src={wavyLine} alt="wavy-line" />
@@ -170,7 +186,9 @@ const ApplyCompletePage = async ({
           결제내역 보기
         </Link>
         <Link
-          href={`/class/${lecture.id}`}
+          href={
+            isClass ? `/class/${reservation?.lecture.id}` : '/mypage/user/pass'
+          }
           className="flex w-full cursor-pointer items-center justify-center rounded-md bg-black text-white"
         >
           확인
