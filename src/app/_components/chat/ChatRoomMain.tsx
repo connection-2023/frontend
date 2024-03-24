@@ -103,15 +103,26 @@ const ChatRoomMain = ({
   };
 
   const { mutate: readChatFn } = useMutation({
-    mutationFn: (chatRoomId: string) => readChat(chatRoomId),
-    onSuccess: (chatRoomId) =>
+    mutationFn: (readChatData: { chatRoomId: string; unreadCount: number }) =>
+      readChat(readChatData),
+    onSuccess: (readChatData) => {
+      console.log('readChatFn:::', readChatData.unreadCount);
+
+      queryClient.setQueryData<number>(['commentCount'], (totalCount) => {
+        return totalCount && readChatData.unreadCount
+          ? totalCount - readChatData.unreadCount < 0
+            ? 0
+            : totalCount - readChatData.unreadCount
+          : totalCount;
+      });
+
       queryClient.setQueryData<ChatRoom[]>(
         ['chatRoomList', selectChatRoom[userId]],
         (oldData) => {
           if (!oldData) return oldData;
 
           const targetChatRoomIndex = oldData.findIndex(
-            (chatRoom) => chatRoom.id === chatRoomId,
+            (chatRoom) => chatRoom.id === readChatData.chatRoomId,
           );
 
           const targetChatRoom = oldData[targetChatRoomIndex];
@@ -126,14 +137,19 @@ const ChatRoomMain = ({
 
           return updatedData;
         },
-      ),
+      );
+    },
   });
 
   useEffect(() => {
     if (newchat && newchat?.chatRoomId === selectChatRoom.id) {
       if (newchat.sender[opponentType]) {
         setIsReceived(true);
-        readChatFn(selectChatRoom.id);
+
+        readChatFn({
+          chatRoomId: selectChatRoom.id,
+          unreadCount: selectChatRoom?.unreadCount ?? 0,
+        });
       }
     }
   }, [newchat]);
@@ -145,7 +161,10 @@ const ChatRoomMain = ({
       selectChatRoom.unreadCount &&
       selectChatRoom.unreadCount > 0
     ) {
-      readChatFn(selectChatRoom.id);
+      readChatFn({
+        chatRoomId: selectChatRoom.id,
+        unreadCount: selectChatRoom?.unreadCount ?? 0,
+      });
     }
   }, [selectChatRoom]);
 

@@ -18,6 +18,7 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
   const opponentProfile = useQuery({
     queryKey: ['opponentProfile', opponentType, selectChatRoom[opponentType]],
     queryFn: () => getOpponentInfo(opponentType, selectChatRoom[opponentType]),
+    staleTime: Infinity,
   });
 
   return (

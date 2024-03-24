@@ -61,6 +61,7 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
   const { data, isLoading } = useQuery({
     queryKey: ['opponentProfile', opponentType, chatRoom[opponentType]],
     queryFn: () => getOpponentInfo(opponentType, chatRoom[opponentType]),
+    staleTime: Infinity,
   });
 
   useEffect(() => {

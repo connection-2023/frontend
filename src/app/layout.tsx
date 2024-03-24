@@ -56,8 +56,8 @@ export default async function RootLayout({
       userType = 'lecturer';
     }
 
-    if (userType && authUser) {
-      socketRooms = await getChatSocketRoomsId(userType, authUser.id);
+    if (authUser) {
+      socketRooms = await getChatSocketRoomsId(authUser.id);
     }
   } catch (error) {
     if (error instanceof Error) {

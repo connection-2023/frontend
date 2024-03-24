@@ -2,21 +2,15 @@ import { userType } from '@/types/auth';
 import { Chat, ChatRoom, OpponentInfo, sendChatParams } from '@/types/chat';
 import { FetchError } from '@/types/types';
 
-export const getChatSocketRoomsId = async (
-  userType: userType,
-  id: string,
-): Promise<string[]> => {
+export const getChatSocketRoomsId = async (id: string): Promise<string[]> => {
   try {
-    const response = await fetch(
-      `/api/chat/socket-rooms?userType=${userType}&id=${id}`,
-      {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const response = await fetch(`/api/chat/socket-rooms?id=${id}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -95,21 +89,15 @@ export const createNewChatRoom = async (
   }
 };
 
-export const getChatRoomList = async (
-  userType: userType,
-  id: string,
-): Promise<ChatRoom[]> => {
+export const getChatRoomList = async (id: string): Promise<ChatRoom[]> => {
   try {
-    const response = await fetch(
-      `/api/chat/get-chat-rooms?userType=${userType}&id=${id}`,
-      {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const response = await fetch(`/api/chat/get-chat-rooms?id=${id}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -280,10 +268,13 @@ export const getOpponentInfo = async (
   }
 };
 
-export const readChat = async (chatRoomId: string): Promise<string> => {
+export const readChat = async (readChatData: {
+  chatRoomId: string;
+  unreadCount: number;
+}): Promise<{ chatRoomId: string; unreadCount: number }> => {
   try {
     const response = await fetch(
-      `/api/chat/read-chat?chatRoomId=${chatRoomId}`,
+      `/api/chat/read-chat?chatRoomId=${readChatData.chatRoomId}`,
       {
         method: 'PATCH',
         credentials: 'include',
@@ -301,9 +292,35 @@ export const readChat = async (chatRoomId: string): Promise<string> => {
     }
 
     // const resData = await response.json();
-    return chatRoomId;
+    return readChatData;
   } catch (error) {
     console.error('채팅 읽음 처리 오류', error);
+    throw error;
+  }
+};
+
+export const getUnreadCount = async (): Promise<number> => {
+  try {
+    const response = await fetch(`/api/chat/get-unread-count`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+
+    return resData.data.totalUnreadCount;
+  } catch (error) {
+    console.error('안읽은 채팅 수 전체 조회 에러', error);
     throw error;
   }
 };

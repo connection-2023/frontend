@@ -1,16 +1,25 @@
 'use client';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { dummyUserInfo } from '@/constants/dummy';
 import { AlarmSVG, ChatSVG } from '@/icons/svg';
+import { getUnreadCount } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 
 const NotificationIndicator = () => {
-  const { alarmCount, commentCount } = dummyUserInfo;
+  const { alarmCount } = dummyUserInfo;
 
   const { setChatView, chatView } = useChatStore((state) => ({
     setChatView: state.setChatView,
     chatView: state.chatView,
   }));
+
+  const { data: chatCount } = useQuery({
+    queryKey: ['commentCount'],
+    queryFn: () => getUnreadCount(),
+    staleTime: Infinity,
+    refetchOnWindowFocus: 'always',
+  });
 
   return (
     <>
@@ -24,7 +33,7 @@ const NotificationIndicator = () => {
         <ChatSVG fill="black" width="29" height="30" />
         <motion.div layoutId="chat" />
         <span className="absolute -right-1.5 top-0 min-w-[1rem] rounded-full bg-main-color px-1 text-xs font-bold text-white">
-          {commentCount}
+          {chatCount ? (chatCount > 99 ? '99+' : chatCount) : ''}
         </span>
       </button>
     </>

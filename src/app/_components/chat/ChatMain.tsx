@@ -36,6 +36,10 @@ const ChatMain = ({
   const isSm = mWidth === null || mHeight === null;
 
   useEffect(() => {
+    console.log('선택 챗방 상태:::', selectChatRoom);
+  }, [selectChatRoom]);
+
+  useEffect(() => {
     const { isDragging, point } = dragState;
 
     if (isDragging) {
@@ -47,8 +51,9 @@ const ChatMain = ({
 
   const { data: chatRoomListData, isLoading } = useQuery({
     queryKey: ['chatRoomList', id],
-    queryFn: () => getChatRoomList(userType, id),
+    queryFn: () => getChatRoomList(id),
     staleTime: Infinity,
+    refetchOnWindowFocus: 'always',
   });
 
   const chatSelectHandler = (chatRoom: IChatRoom | null) => {

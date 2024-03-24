@@ -10,18 +10,16 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const userType = request.nextUrl.searchParams.get('userType');
   const id = request.nextUrl.searchParams.get('id');
-  const tokenName =
-    userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
+  const tokenValue =
+    request.cookies.get('userAccessToken')?.value ||
+    request.cookies.get('lecturerAccessToken')?.value;
 
-  const tokenValue = request.cookies.get(tokenName)?.value;
-
-  if (!userType || !id) {
+  if (!id) {
     return NextResponse.json(
       {
         status: 400,
-        message: '필요 값이 존재하지 않습니다.',
+        message: 'id 값이 존재하지 않습니다.',
       },
       { status: 400 },
     );

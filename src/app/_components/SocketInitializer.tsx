@@ -115,6 +115,17 @@ const SocketInitializer = ({
           newChat.receiver.lecturerId) as number;
         const isReceiver = receiverId === Number(userId);
 
+        if (isReceiver) {
+          queryClient.setQueryData<number>(['commentCount'], (totalCount) => {
+            console.log(
+              'SocketInitial 카운트 쿼리 리턴 값::::',
+              totalCount ? totalCount + 1 : 1,
+            );
+
+            return totalCount ? totalCount + 1 : 1;
+          });
+        }
+
         const targetChatRoomIndex = queryClient
           .getQueryData<ChatRoom[]>(['chatRoomList', userId])
           ?.findIndex((chatRoom) => chatRoom.id === newChat.chatRoomId);
@@ -146,6 +157,8 @@ const SocketInitializer = ({
                     }
                   : undefined,
               };
+
+              console.log('socket::::', updatedChatRoom.unreadCount);
 
               const updatedData = [...oldData];
               updatedData.splice(targetChatRoomIndex, 1);

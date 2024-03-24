@@ -10,21 +10,9 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const id = request.nextUrl.searchParams.get('id');
-
   const tokenValue =
     request.cookies.get('userAccessToken')?.value ||
     request.cookies.get('lecturerAccessToken')?.value;
-
-  if (!id) {
-    return NextResponse.json(
-      {
-        status: 400,
-        message: 'id 값이 존재하지 않습니다.',
-      },
-      { status: 400 },
-    );
-  }
 
   if (!tokenValue) {
     return NextResponse.json(
@@ -41,7 +29,7 @@ export const GET = async (request: NextRequest) => {
     'Content-Type': 'application/json',
   };
 
-  const response = await fetch(`${END_POINT}/chat-rooms/${id}`, {
+  const response = await fetch(`${END_POINT}/chats/total-unread-count`, {
     method: 'GET',
     credentials: 'include',
     headers,

@@ -1,18 +1,14 @@
 import { cookies } from 'next/headers';
-import { userType } from '@/types/auth';
 import { FetchError } from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const getChatSocketRoomsId = async (
-  userType: userType,
-  id: string,
-): Promise<string[]> => {
+export const getChatSocketRoomsId = async (id: string): Promise<string[]> => {
   try {
     const cookieStore = cookies();
-    const tokenName =
-      userType === 'user' ? 'userAccessToken' : 'lecturerAccessToken';
-    const authorization = cookieStore.get(tokenName)?.value;
+    const authorization =
+      cookieStore.get('userAccessToken')?.value ||
+      cookieStore.get('lecturerAccessToken')?.value;
 
     const response = await fetch(`${END_POINT}/chat-rooms/${id}/socket-rooms`, {
       method: 'GET',

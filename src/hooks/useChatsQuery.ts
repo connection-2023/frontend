@@ -31,7 +31,8 @@ const useChatsQuery = ({ chatRoomId, queryFn }: useChatsQueryProps) => {
         ? lastPage.chats?.at(-1)?.id
         : undefined;
     },
-    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: 'always',
   });
 
   const chats = useMemo(() => {

@@ -44,6 +44,7 @@ const ChatRoomHeader = ({
         queryKey: ['onlineState', opponentType, selectChatRoom[opponentType]],
         queryFn: () =>
           getCheckOnline(opponentType, selectChatRoom[opponentType]),
+        refetchOnWindowFocus: 'always',
       },
       {
         queryKey: ['lastClass', opponentType, selectChatRoom[opponentType]],
