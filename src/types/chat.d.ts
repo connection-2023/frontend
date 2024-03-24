@@ -30,6 +30,8 @@ export interface ChatRoom {
     readedAt: Date;
     createdAt: Date;
   };
+  nickname?: string;
+  profilImg?: string;
 }
 
 export interface onlineState {

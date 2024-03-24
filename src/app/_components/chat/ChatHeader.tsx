@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDebounce } from 'react-use';
 import { ArrowRightSVG, CloseSVG, SearchSVG } from '@/icons/svg';
 import { useChatStore } from '@/store';
 import { ChatRoom } from '@/types/chat';
@@ -8,6 +9,7 @@ interface ChatHeaderProps {
   isSm: boolean;
   chatSelectHandler: (chatRoom: ChatRoom | null) => void;
   StartChatPositionDrag: (event: React.PointerEvent<HTMLElement>) => void;
+  searchChatRoomList: (searchValue: string) => void;
 }
 
 const ChatHeader = ({
@@ -15,6 +17,7 @@ const ChatHeader = ({
   selectChatRoom,
   StartChatPositionDrag,
   chatSelectHandler,
+  searchChatRoomList,
 }: ChatHeaderProps) => {
   const { setChatView } = useChatStore((state) => ({
     setChatView: state.setChatView,
@@ -35,9 +38,10 @@ const ChatHeader = ({
   };
 
   const searchValue = () => {
-    console.log(search.value);
-    //추후 수정
+    searchChatRoomList(search.value);
   };
+
+  useDebounce(searchValue, 300, [search.value]);
 
   const searchViewHandler = () => {
     setSearch((prev) => ({ ...prev, view: true }));
@@ -62,13 +66,8 @@ const ChatHeader = ({
                 setSearch((prev) => ({ ...prev, value: e.target.value }))
               }
               ref={searchInputRef}
-              placeholder="사용자를 검색해주세요"
+              placeholder="검색"
               type="search"
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  searchValue();
-                }
-              }}
               onBlur={searchViewBlur}
               className="h-[26px] w-full bg-transparent outline-none placeholder:text-gray-500"
             />

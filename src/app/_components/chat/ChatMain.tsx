@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { getChatRoomList } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import ChatHeader from './ChatHeader';
@@ -45,7 +45,7 @@ const ChatMain = ({
     }
   }, [dragState]);
 
-  const { data: chatRoomList, isLoading } = useQuery({
+  const { data: chatRoomListData, isLoading } = useQuery({
     queryKey: ['chatRoomList', id],
     queryFn: () => getChatRoomList(userType, id),
     staleTime: Infinity,
@@ -53,6 +53,26 @@ const ChatMain = ({
 
   const chatSelectHandler = (chatRoom: IChatRoom | null) => {
     setChatRoomSelect(chatRoom);
+  };
+
+  const [chatRoomList, setChatRoomList] = useState<IChatRoom[]>([]);
+
+  useEffect(() => {
+    setChatRoomList(chatRoomListData ?? []);
+  }, [chatRoomListData]);
+
+  const searchChatRoomList = (searchValue?: string) => {
+    setChatRoomList((prev) =>
+      searchValue
+        ? prev.filter(
+            ({ nickname, lastChat }) =>
+              lastChat?.content
+                ?.toLowerCase()
+                .includes(searchValue.toLowerCase()) ||
+              nickname?.toLowerCase().includes(searchValue.toLowerCase()),
+          )
+        : chatRoomListData ?? [],
+    );
   };
 
   return (
@@ -65,6 +85,7 @@ const ChatMain = ({
         chatSelectHandler={chatSelectHandler}
         isSm={isSm}
         StartChatPositionDrag={StartChatPositionDrag}
+        searchChatRoomList={searchChatRoomList}
       />
       <motion.div
         className="overflow-hidden sm:flex"
@@ -75,7 +96,7 @@ const ChatMain = ({
             <ChatRoomListLoading />
           ) : (
             <ChatRoomList
-              chatRoomList={chatRoomList ?? []}
+              chatRoomList={chatRoomList}
               chatSelectHandler={chatSelectHandler}
               userType={userType}
               selectChatRoomId={selectChatRoom?.id}

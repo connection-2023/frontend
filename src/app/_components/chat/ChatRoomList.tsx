@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { getOpponentInfo } from '@/lib/apis/chatApi';
 import { formatKorean12HourTime } from '@/utils/dateTimeUtils';
 import ProfileImg from '@/components/Profile/ProfileImage';
@@ -55,10 +56,36 @@ interface ChatRoomInfoProps {
 }
 
 const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery({
     queryKey: ['opponentProfile', opponentType, chatRoom[opponentType]],
     queryFn: () => getOpponentInfo(opponentType, chatRoom[opponentType]),
   });
+
+  useEffect(() => {
+    if (data) {
+      const { nickname, profilImg } = data;
+
+      queryClient.setQueryData<ChatRoom[]>(
+        [
+          'chatRoomList',
+          chatRoom[opponentType === 'userId' ? 'lecturerId' : 'userId'],
+        ],
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          return oldData.map((chatRoom) => {
+            if (chatRoom[opponentType] === data.id) {
+              return { ...chatRoom, nickname, profilImg };
+            } else {
+              return { ...chatRoom };
+            }
+          });
+        },
+      );
+    }
+  }, [data]);
 
   const { lastChat, unreadCount } = chatRoom;
 
