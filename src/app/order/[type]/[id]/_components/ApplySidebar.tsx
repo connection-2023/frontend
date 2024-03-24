@@ -67,7 +67,7 @@ const ApplySidebar = (props: ApplySidebarProps) => {
     paymentMethodsWidget.updateAmount(totalPrice);
   }, [participants, paymentWidget]);
 
-  const validatePaymentInfo = (() => {
+  const validatePaymentInfo = () => {
     if (isClass && !applyClass) {
       toast.error('하나 이상의 클래스를 추가해주세요!');
       return false;
@@ -91,7 +91,7 @@ const ApplySidebar = (props: ApplySidebarProps) => {
     }
 
     return true;
-  })();
+  };
 
   const scrollToBuyerInfo = () => {
     const element = document.getElementById('buyerInfo');
@@ -175,7 +175,8 @@ const ApplySidebar = (props: ApplySidebarProps) => {
   };
 
   const handlePayment = async () => {
-    if (!validatePaymentInfo) {
+    const validation = validatePaymentInfo();
+    if (!validation) {
       scrollToBuyerInfo();
       return;
     }
