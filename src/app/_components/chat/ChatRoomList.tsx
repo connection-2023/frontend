@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { NotFoundSVG } from '@/icons/svg';
 import { getOpponentInfo } from '@/lib/apis/chatApi';
 import { formatKorean12HourTime } from '@/utils/dateTimeUtils';
 import ProfileImg from '@/components/Profile/ProfileImage';
@@ -43,6 +44,12 @@ const ChatRoomList = ({
             </button>
           );
         })}
+        {chatRoomList.length === 0 && (
+          <div className="mx-auto my-auto flex flex-col items-center gap-6 font-semibold">
+            <NotFoundSVG />
+            <p>존재하는 채팅방이 없습니다!</p>
+          </div>
+        )}
       </ul>
     </section>
   );
