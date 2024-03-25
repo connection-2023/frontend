@@ -4,8 +4,9 @@ import {
   IPaymentInfoResponse,
   IVirtualAccountInfo,
   PaymentPassInfoParam,
+  IMyPaymentResponse,
 } from '@/types/payment';
-import { FetchError, IMyPaymentResponse } from '@/types/types';
+import { FetchError } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {

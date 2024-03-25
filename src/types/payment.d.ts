@@ -77,20 +77,20 @@ export interface IReceiptResponse {
   virtualAccountPaymentInfo: IVirtualAccountInfo | null;
   paymentCouponUsage: IPaymentCoupon | null;
   reservation: {
-    id: number;
     representative: string;
-    phoneNumber: number | string;
+    phoneNumber: string;
     participants: number;
     requests: string;
-    lectureSchedule: {
-      id: number;
+    lectureSchedule?: {
       startDateTime: string;
-      endDateTime: string;
-      numberOfParticipants: number;
-      lecture: { id: number; title: string; imageUrl: string | null };
     };
-    regularLectureStatus: null;
-  };
+    regularLectureStatus?: IRegularClassSchedule;
+    lecture: {
+      id: number;
+      title: string;
+      imageUrl: string;
+    };
+  } | null;
 }
 
 interface ICardPaymentInfo {
@@ -161,4 +161,60 @@ export interface IRefundRequest {
   cancelReason: string;
   refundAmount: number;
   userBankAccountId?: number;
+}
+
+export interface IMyPayment {
+  id: number;
+  orderId: string;
+  orderName: string;
+  originalPrice: number;
+  finalPrice: number;
+  paymentProductType: {
+    name: '클래스' | '패스권';
+  };
+  paymentMethod: {
+    name: '카드' | '가상계좌';
+  };
+  paymentStatus: {
+    name: 'WAITING_FOR_DEPOSIT' | 'DONE' | 'CANCELED';
+  };
+  updatedAt: string;
+  reservation: {
+    representative: string;
+    phoneNumber: string;
+    participants: number;
+    requests: string;
+    lectureSchedule?: {
+      startDateTime: string;
+    };
+    regularLectureStatus?: IRegularClassSchedule;
+    lecture: {
+      id: number;
+      title: string;
+      imageUrl: string;
+    };
+  } | null;
+
+  userPass: {
+    id: number;
+    lecturePassId: number;
+    remainingUses: number;
+    isEnabled: false;
+    startAt: null | string;
+    endAt: null | string;
+    lecturePass: {
+      createdAt: string;
+      updatedAt: string;
+      id: number;
+      title: string;
+      price: number;
+      maxUsageCount: number;
+      availableMonths: number;
+    };
+  } | null;
+}
+
+export interface IMyPaymentResponse {
+  totalItemCount: number;
+  userPaymentsHistory: IMyPayment[];
 }
