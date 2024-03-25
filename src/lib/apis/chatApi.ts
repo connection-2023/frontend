@@ -268,13 +268,10 @@ export const getOpponentInfo = async (
   }
 };
 
-export const readChat = async (readChatData: {
-  chatRoomId: string;
-  unreadCount: number;
-}): Promise<{ chatRoomId: string; unreadCount: number }> => {
+export const readChat = async (chatRoom: ChatRoom): Promise<ChatRoom> => {
   try {
     const response = await fetch(
-      `/api/chat/read-chat?chatRoomId=${readChatData.chatRoomId}`,
+      `/api/chat/read-chat?chatRoomId=${chatRoom.id}`,
       {
         method: 'PATCH',
         credentials: 'include',
@@ -292,7 +289,7 @@ export const readChat = async (readChatData: {
     }
 
     // const resData = await response.json();
-    return readChatData;
+    return chatRoom;
   } catch (error) {
     console.error('채팅 읽음 처리 오류', error);
     throw error;

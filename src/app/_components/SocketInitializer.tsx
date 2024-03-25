@@ -2,6 +2,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
+import { CHATS_TAKE } from '@/constants/constants';
 import { useChatStore, useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
 import { ChatPagesData, Chat, ChatRoom } from '@/types/chat';
@@ -93,9 +94,9 @@ const SocketInitializer = ({
             const allChats = [newChat, ...pages.flatMap(({ chats }) => chats)];
 
             const newPages = [];
-            for (let i = 0; i < allChats.length; i += 12) {
+            for (let i = 0; i < allChats.length; i += CHATS_TAKE) {
               newPages.push({
-                chats: allChats.slice(i, i + 12),
+                chats: allChats.slice(i, i + CHATS_TAKE),
                 totalItemCount: pages[0].totalItemCount,
               });
             }
@@ -117,11 +118,6 @@ const SocketInitializer = ({
 
         if (isReceiver) {
           queryClient.setQueryData<number>(['commentCount'], (totalCount) => {
-            console.log(
-              'SocketInitial 카운트 쿼리 리턴 값::::',
-              totalCount ? totalCount + 1 : 1,
-            );
-
             return totalCount ? totalCount + 1 : 1;
           });
         }
@@ -157,8 +153,6 @@ const SocketInitializer = ({
                     }
                   : undefined,
               };
-
-              console.log('socket::::', updatedChatRoom.unreadCount);
 
               const updatedData = [...oldData];
               updatedData.splice(targetChatRoomIndex, 1);

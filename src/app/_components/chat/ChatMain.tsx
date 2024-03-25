@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
 import React, { Fragment, useEffect, useState } from 'react';
-import { getChatRoomList } from '@/lib/apis/chatApi';
+import { getChatRoomList, readChat } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import ChatHeader from './ChatHeader';
 import ChatRoom from './ChatRoom';
@@ -35,9 +35,48 @@ const ChatMain = ({
   }));
   const isSm = mWidth === null || mHeight === null;
 
-  useEffect(() => {
-    console.log('선택 챗방 상태:::', selectChatRoom);
-  }, [selectChatRoom]);
+  const queryClient = useQueryClient();
+
+  const { mutate: readChatFn } = useMutation({
+    mutationFn: (chatRoom: IChatRoom) => readChat(chatRoom),
+    onSuccess: (selectChatRoom) => {
+      queryClient.setQueryData<number>(['commentCount'], (totalCount) => {
+        return totalCount && selectChatRoom.unreadCount
+          ? selectChatRoom.unreadCount === 0
+            ? totalCount - 1
+            : totalCount - selectChatRoom.unreadCount < 0
+            ? 0
+            : totalCount - selectChatRoom.unreadCount
+          : totalCount;
+      });
+
+      queryClient.setQueryData<ChatRoom[]>(
+        [
+          'chatRoomList',
+          selectChatRoom[userType === 'user' ? 'userId' : 'lecturerId'],
+        ],
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          const targetChatRoomIndex = oldData.findIndex(
+            (chatRoom) => chatRoom.id === selectChatRoom.id,
+          );
+
+          const targetChatRoom = oldData[targetChatRoomIndex];
+          const updatedChatRoom = {
+            ...targetChatRoom,
+            unreadCount: undefined,
+          };
+
+          const updatedData = [...oldData];
+          updatedData.splice(targetChatRoomIndex, 1);
+          updatedData.unshift(updatedChatRoom);
+
+          return updatedData;
+        },
+      );
+    },
+  });
 
   useEffect(() => {
     const { isDragging, point } = dragState;
@@ -57,7 +96,8 @@ const ChatMain = ({
   });
 
   const chatSelectHandler = (chatRoom: IChatRoom | null) => {
-    setChatRoomSelect(chatRoom);
+    setChatRoomSelect(chatRoom ? { ...chatRoom, unreadCount: 0 } : null);
+    if (chatRoom) readChatFn(chatRoom);
   };
 
   const [chatRoomList, setChatRoomList] = useState<IChatRoom[]>([]);
@@ -112,6 +152,7 @@ const ChatMain = ({
             mWidth={mWidth}
             selectChatRoom={selectChatRoom}
             userType={userType}
+            readChatFn={readChatFn}
           />
         )}
       </motion.div>

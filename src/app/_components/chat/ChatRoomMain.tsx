@@ -1,4 +1,5 @@
 import {
+  UseMutateFunction,
   UseQueryResult,
   useMutation,
   useQueryClient,
@@ -7,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CHAT_INTERSECT_REF_OPTIONS } from '@/constants/constants';
 import useIntersect from '@/hooks/useIntersect';
 import { UploadImageSVG } from '@/icons/svg';
-import { createNewChatRoom, readChat, sendChat } from '@/lib/apis/chatApi';
+import { createNewChatRoom, sendChat } from '@/lib/apis/chatApi';
 import { postSingleImage } from '@/lib/apis/imageApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useChatStore } from '@/store';
@@ -24,12 +25,14 @@ interface ChatRoomMainProps {
   selectChatRoom: ChatRoom;
   userType: userType;
   opponentProfile: UseQueryResult<OpponentInfo, Error>;
+  readChatFn: UseMutateFunction<ChatRoom, Error, ChatRoom, unknown>;
 }
 
 const ChatRoomMain = ({
   selectChatRoom,
   userType,
   opponentProfile,
+  readChatFn,
 }: ChatRoomMainProps) => {
   const chatArea = useRef<HTMLDivElement>(null);
   const messageArea = useRef<HTMLTextAreaElement>(null);
@@ -52,8 +55,6 @@ const ChatRoomMain = ({
   const [isReceived, setIsReceived] = useState(false);
 
   const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
-
-  const queryClient = useQueryClient();
 
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
   const userId = userType === 'user' ? 'userId' : 'lecturerId';
@@ -102,70 +103,17 @@ const ChatRoomMain = ({
     }
   };
 
-  const { mutate: readChatFn } = useMutation({
-    mutationFn: (readChatData: { chatRoomId: string; unreadCount: number }) =>
-      readChat(readChatData),
-    onSuccess: (readChatData) => {
-      console.log('readChatFn:::', readChatData.unreadCount);
-
-      queryClient.setQueryData<number>(['commentCount'], (totalCount) => {
-        return totalCount && readChatData.unreadCount
-          ? totalCount - readChatData.unreadCount < 0
-            ? 0
-            : totalCount - readChatData.unreadCount
-          : totalCount;
-      });
-
-      queryClient.setQueryData<ChatRoom[]>(
-        ['chatRoomList', selectChatRoom[userId]],
-        (oldData) => {
-          if (!oldData) return oldData;
-
-          const targetChatRoomIndex = oldData.findIndex(
-            (chatRoom) => chatRoom.id === readChatData.chatRoomId,
-          );
-
-          const targetChatRoom = oldData[targetChatRoomIndex];
-          const updatedChatRoom = {
-            ...targetChatRoom,
-            unreadCount: undefined,
-          };
-
-          const updatedData = [...oldData];
-          updatedData.splice(targetChatRoomIndex, 1);
-          updatedData.unshift(updatedChatRoom);
-
-          return updatedData;
-        },
-      );
-    },
-  });
-
   useEffect(() => {
     if (newchat && newchat?.chatRoomId === selectChatRoom.id) {
       if (newchat.sender[opponentType]) {
         setIsReceived(true);
-
-        readChatFn({
-          chatRoomId: selectChatRoom.id,
-          unreadCount: selectChatRoom?.unreadCount ?? 0,
-        });
+        readChatFn(selectChatRoom);
       }
     }
   }, [newchat]);
 
   useEffect(() => {
     chatScrollToBottom();
-    if (
-      selectChatRoom.id &&
-      selectChatRoom.unreadCount &&
-      selectChatRoom.unreadCount > 0
-    ) {
-      readChatFn({
-        chatRoomId: selectChatRoom.id,
-        unreadCount: selectChatRoom?.unreadCount ?? 0,
-      });
-    }
   }, [selectChatRoom]);
 
   const { mutate: sendChatContent, isPending } = useMutation({

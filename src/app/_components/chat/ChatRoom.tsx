@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { UseMutateFunction, useQuery } from '@tanstack/react-query';
 import { MotionValue, motion } from 'framer-motion';
 import { getOpponentInfo } from '@/lib/apis/chatApi';
 import ChatRoomHeader from './ChatRoomHeader';
@@ -10,9 +10,15 @@ interface ChatRoomProps {
   selectChatRoom: ChatRoom;
   userType: userType;
   mWidth: MotionValue<number> | null;
+  readChatFn: UseMutateFunction<ChatRoom, Error, ChatRoom, unknown>;
 }
 
-const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
+const ChatRoom = ({
+  mWidth,
+  selectChatRoom,
+  userType,
+  readChatFn,
+}: ChatRoomProps) => {
   const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
 
   const opponentProfile = useQuery({
@@ -35,6 +41,7 @@ const ChatRoom = ({ mWidth, selectChatRoom, userType }: ChatRoomProps) => {
         selectChatRoom={selectChatRoom}
         userType={userType}
         opponentProfile={opponentProfile}
+        readChatFn={readChatFn}
       />
     </motion.section>
   );
