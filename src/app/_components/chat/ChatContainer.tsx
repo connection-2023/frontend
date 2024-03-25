@@ -6,7 +6,9 @@ import {
   useDragControls,
   useMotionValue,
 } from 'framer-motion';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useWindowSize } from 'react-use';
+import { CHAT_BOX_SIZE_LIMITS } from '@/constants/constants';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import ChatMain from './ChatMain';
 import { userType } from '@/types/auth';
@@ -17,6 +19,8 @@ interface ChatContsinerProps {
 }
 
 const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
+  const { height, width } = useWindowSize();
+
   const mWidth = useMotionValue(375);
   const mHeight = useMotionValue(625);
   const [dragState, setDragState] = useState<{
@@ -50,8 +54,14 @@ const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
       const newValue =
         operation === 'subtract' ? currentValue - delta : currentValue + delta;
 
-      const minValue = point === 'y' ? 242 : 300;
-      const maxValue = point === 'y' ? 644 : 608;
+      const minValue =
+        point === 'y'
+          ? CHAT_BOX_SIZE_LIMITS.MIN_HEIGHT
+          : CHAT_BOX_SIZE_LIMITS.MIN_WIDTH;
+      const maxValue =
+        point === 'y'
+          ? CHAT_BOX_SIZE_LIMITS.MAX_HEIGHT
+          : CHAT_BOX_SIZE_LIMITS.MAX_WIDTH;
 
       if (newValue > minValue && newValue < maxValue) {
         target.set(newValue);
@@ -59,6 +69,23 @@ const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
     },
     [],
   );
+
+  useEffect(() => {
+    const adjustSize = () => {
+      const newWidth = Math.max(width - 288, CHAT_BOX_SIZE_LIMITS.MIN_WIDTH);
+      const newHeight = Math.max(height - 64, CHAT_BOX_SIZE_LIMITS.MIN_HEIGHT);
+
+      if (mWidth.get() > newWidth) {
+        mWidth.set(newWidth);
+      }
+
+      if (mHeight.get() > newHeight) {
+        mHeight.set(newHeight);
+      }
+    };
+
+    adjustSize();
+  }, [width, height]);
 
   const StartChatPositionDrag = (event: React.PointerEvent<HTMLElement>) => {
     chatPositionControls.start(event);

@@ -133,7 +133,7 @@ const ChatMain = ({
         searchChatRoomList={searchChatRoomList}
       />
       <motion.div
-        className="overflow-hidden sm:flex"
+        className="overflow-hidden sm:flex "
         style={{ height: isSm ? '100%' : mHeight }}
       >
         {(!isSm || !selectChatRoom) &&
