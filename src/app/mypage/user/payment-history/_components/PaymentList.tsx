@@ -8,8 +8,7 @@ import { CloseSVG, ArrowUpSVG, CopySVG } from '@/icons/svg';
 import { getAccountInfo } from '@/lib/apis/paymentApis';
 import { formatShortDate, formatDateTimeNoSec } from '@/utils/dateTimeUtils';
 import Modal from '@/components/Modal/Modal';
-import { IVirtualAccountInfo } from '@/types/payment';
-import { IMyPayment } from '@/types/types';
+import { IMyPayment, IVirtualAccountInfo } from '@/types/payment';
 
 interface PaymentListProps extends IMyPayment {
   // eslint-disable-next-line no-unused-vars
@@ -20,54 +19,42 @@ const PaymentList = (props: PaymentListProps) => {
   const {
     orderId,
     id,
-    paymentProductType,
     paymentStatus,
     updatedAt,
     orderName,
     finalPrice,
     reservation,
+    userPass,
     handlePaymentDelete,
   } = props;
-  const { lectureSchedule, regularLectureStatus } = reservation;
+
   const [isOpened, setIsOpened] = useState(false);
   const [accountDetail, setAccountDetail] = useState<IVirtualAccountInfo>();
   const router = useRouter();
 
-  const imgSrc = (() => {
-    if (lectureSchedule) {
-      return lectureSchedule.lecture.imageUrl;
-    } else if (regularLectureStatus) {
-      return regularLectureStatus.lecture.imageUrl;
+  const reservationInfo = (() => {
+    if (reservation?.lectureSchedule) {
+      return `${formatDateTimeNoSec(
+        reservation?.lectureSchedule.startDateTime,
+      )} ${reservation?.participants}명`;
+    } else if (reservation?.regularLectureStatus) {
+      return `${reservation?.regularLectureStatus.day.join('')} ${reservation
+        ?.regularLectureStatus.dateTime} ${reservation?.participants}명`;
+    } else if (userPass) {
+      return `${userPass.lecturePass.availableMonths}개월 / ${userPass.lecturePass.maxUsageCount}회 (잔여 ${userPass.remainingUses}회)`;
     } else {
       return '';
     }
   })();
 
-  const classTime = (() => {
-    if (lectureSchedule) {
-      return formatDateTimeNoSec(lectureSchedule.startDateTime);
-    } else if (regularLectureStatus) {
-      return `${regularLectureStatus.day.join(
-        '',
-      )} ${regularLectureStatus.dateTime[0].slice(0, 5)}`;
-    } else {
-      return '';
-    }
-  })();
-
-  const isClass = paymentProductType.name === '클래스';
-  const textStyles =
-    paymentStatus.name === 'WAITING_FOR_DEPOSIT'
-      ? 'underline text-sub-color1 cursor-pointer'
-      : 'text-gray-300';
+  const isPendingStatus = paymentStatus.name === 'WAITING_FOR_DEPOSIT';
+  const textStyles = isPendingStatus
+    ? 'underline text-sub-color1 cursor-pointer'
+    : 'text-gray-300';
 
   const handleNavigateToDetail = () => {
-    if (lectureSchedule) {
-      router.push(`/${lectureSchedule.lecture.id}`);
-    }
-
-    if (regularLectureStatus) {
-      router.push(`/${regularLectureStatus.lecture.id}`);
+    if (reservation) {
+      router.push(`/${reservation.lecture.id}`);
     }
   };
 
@@ -104,51 +91,52 @@ const PaymentList = (props: PaymentListProps) => {
         }
         className={`mb-2.5 text-lg font-semibold ${textStyles}`}
       >
-        {paymentStatus.name === 'WAITING_FOR_DEPOSIT'
+        {isPendingStatus
           ? '입금대기'
           : paymentStatus.name === 'CANCELED'
           ? '결제취소'
           : '결제완료'}
       </p>
       <div className="flex gap-3.5 text-sm">
-        <figure
-          onClick={handleNavigateToDetail}
-          className="flex h-28 w-[8.5rem] overflow-hidden rounded-md"
-        >
-          <Image
-            src={imgSrc}
-            width={0}
-            height={0}
-            sizes="(max-width: 768px) 100vw, 33vw"
-            alt="회원 결제내역 이미지"
-            className="object-cover"
-            style={{ height: 'auto', width: '100%' }}
-          />
-        </figure>
+        {reservation && (
+          <figure
+            onClick={handleNavigateToDetail}
+            className="flex h-28 w-[8.5rem] overflow-hidden rounded-md"
+          >
+            <Image
+              src={reservation?.lecture.imageUrl}
+              width={0}
+              height={0}
+              sizes="(max-width: 768px) 100vw, 33vw"
+              alt="회원 결제내역 이미지"
+              className="object-cover"
+              style={{ height: 'auto', width: '100%' }}
+            />
+          </figure>
+        )}
 
         <ul className="flex flex-col gap-1">
           <li className="text-gray-300">결제일 {formatShortDate(updatedAt)}</li>
           <li>{orderName}</li>
-          {isClass && reservation && (
-            <li>{`${classTime} ${reservation.participants}명`}</li>
-          )}
-
-          <li className={`${!isClass && 'mt-5'} flex items-center gap-2.5`}>
+          <li>{`${reservationInfo}`}</li>
+          <li className="flex items-center gap-2.5">
             <span className="text-lg font-semibold">
               ₩{finalPrice.toLocaleString()}
             </span>
-            <Link
-              href={`/mypage/user/payment-history/${orderId}`}
-              className="flex items-center text-sub-color1"
-              prefetch={false}
-            >
-              결제상세
-              <ArrowUpSVG
-                width="17"
-                height="17"
-                className="rotate-90 fill-sub-color1"
-              />
-            </Link>
+            {!isPendingStatus && (
+              <Link
+                href={`/mypage/user/payment-history/${orderId}`}
+                className="flex items-center text-sub-color1"
+                prefetch={false}
+              >
+                결제상세
+                <ArrowUpSVG
+                  width="17"
+                  height="17"
+                  className="rotate-90 fill-sub-color1"
+                />
+              </Link>
+            )}
           </li>
         </ul>
       </div>
@@ -167,7 +155,7 @@ const PaymentList = (props: PaymentListProps) => {
             </div>
             <section className="mt-3.5 w-full px-6">
               <h4 className="mb-1.5 font-semibold">{orderName}</h4>
-              <div>{`${classTime} ${reservation.participants}명`}</div>
+              <p>{reservationInfo}</p>
 
               <ul className="mt-4 flex w-full flex-col gap-y-2">
                 <li className="flex gap-x-5 whitespace-nowrap">
