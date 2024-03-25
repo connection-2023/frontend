@@ -119,7 +119,7 @@ export const getChatRoomList = async (id: string): Promise<ChatRoom[]> => {
 };
 
 export const getCheckOnline = async (
-  idType: 'lecturerId' | 'userId',
+  idType: userType,
   id: number,
 ): Promise<Date | string> => {
   try {
@@ -225,11 +225,11 @@ export const sendChat = async (
 };
 
 export const getOpponentInfo = async (
-  idType: 'lecturerId' | 'userId',
+  userType: userType,
   id: number,
 ): Promise<OpponentInfo> => {
   const url =
-    idType === 'lecturerId'
+    userType === 'lecturer'
       ? `/api/post/instructor?id=${id}`
       : `/api/users/get-info?userId=${id}`;
 
@@ -250,7 +250,7 @@ export const getOpponentInfo = async (
 
     const resData = await response.json();
 
-    return idType === 'lecturerId'
+    return userType === 'lecturer'
       ? {
           id: resData.data.lecturerProfile.id,
           nickname: resData.data.lecturerProfile.nickname,

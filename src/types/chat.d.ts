@@ -1,7 +1,7 @@
 export interface ChatRoom {
   id?: string;
-  userId: number;
-  lecturerId: number;
+  user: { id: number; participation: boolean };
+  lecturer: { id: number; participation: boolean };
   roomId?: string;
   unreadCount?: number;
   lastChat?: {
@@ -85,4 +85,22 @@ export interface OpponentInfo {
   id: number;
   nickname: string;
   profilImg: string;
+}
+
+interface UserData {
+  createdAt: Data;
+  lecturerId: number | null;
+  userId: number | null;
+  socketId: string;
+  updatedAt: Data;
+  __v: number;
+  _id: string;
+}
+
+export interface JoinUserData extends UserData {
+  lastLogin: Data | null;
+}
+
+export interface ExitUserData extends UserData {
+  lastLogin: Data;
 }

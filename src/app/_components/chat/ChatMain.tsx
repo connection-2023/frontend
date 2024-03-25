@@ -51,10 +51,7 @@ const ChatMain = ({
       });
 
       queryClient.setQueryData<ChatRoom[]>(
-        [
-          'chatRoomList',
-          selectChatRoom[userType === 'user' ? 'userId' : 'lecturerId'],
-        ],
+        ['chatRoomList', selectChatRoom[userType].id],
         (oldData) => {
           if (!oldData) return oldData;
 

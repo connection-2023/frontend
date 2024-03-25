@@ -2,7 +2,6 @@ import {
   UseMutateFunction,
   UseQueryResult,
   useMutation,
-  useQueryClient,
 } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { CHAT_INTERSECT_REF_OPTIONS } from '@/constants/constants';
@@ -56,8 +55,8 @@ const ChatRoomMain = ({
 
   const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
 
-  const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
-  const userId = userType === 'user' ? 'userId' : 'lecturerId';
+  const opponentType = userType === 'user' ? 'lecturer' : 'user';
+  const opponentId = userType === 'user' ? 'lecturerId' : 'userId';
 
   const handleResizeHeight = () => {
     if (
@@ -105,7 +104,7 @@ const ChatRoomMain = ({
 
   useEffect(() => {
     if (newchat && newchat?.chatRoomId === selectChatRoom.id) {
-      if (newchat.sender[opponentType]) {
+      if (newchat.sender[opponentId]) {
         setIsReceived(true);
         readChatFn(selectChatRoom);
       }
@@ -113,6 +112,7 @@ const ChatRoomMain = ({
   }, [newchat]);
 
   useEffect(() => {
+    setSendChatPreview(null);
     chatScrollToBottom();
   }, [selectChatRoom]);
 
@@ -126,14 +126,14 @@ const ChatRoomMain = ({
       let newChatRoom: ChatRoom | null = null;
       if (!selectChatRoom.id) {
         newChatRoom = await createNewChatRoom(
-          selectChatRoom[userId],
-          selectChatRoom[opponentType],
+          selectChatRoom[userType].id,
+          selectChatRoom[opponentType].id,
         );
       }
 
       const data = {
         chatRoomId: selectChatRoom.id ?? newChatRoom?.id,
-        receiverId: selectChatRoom[opponentType],
+        receiverId: selectChatRoom[opponentType].id,
         content,
         imageUrl,
       };
@@ -205,7 +205,7 @@ const ChatRoomMain = ({
       <Chat
         selectChatRoom={selectChatRoom}
         sendChatPreview={sendChatPreview}
-        opponentType={opponentType}
+        opponentId={opponentId}
         resendMessage={resendMessage}
         cancelMessage={cancelMessage}
         newChatRef={newChatRef}

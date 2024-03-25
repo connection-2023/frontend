@@ -10,8 +10,8 @@ export const GET = async (request: NextRequest) => {
     });
   }
 
-  const lecturerId = request.nextUrl.searchParams.get('lecturerId');
-  const userId = request.nextUrl.searchParams.get('userId');
+  const lecturerId = request.nextUrl.searchParams.get('lecturer');
+  const userId = request.nextUrl.searchParams.get('user');
 
   if (!lecturerId && !userId) {
     return NextResponse.json(

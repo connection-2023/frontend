@@ -53,10 +53,14 @@ const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
             setChatView(true);
 
             setChatRoomSelect({
-              userId:
-                userType === 'user' ? parseInt(authUser!.id, 10) : targetId,
-              lecturerId:
-                userType === 'user' ? targetId : parseInt(authUser!.id, 10),
+              user: {
+                id: userType === 'user' ? parseInt(authUser!.id, 10) : targetId,
+                participation: false,
+              },
+              lecturer: {
+                id: userType === 'user' ? targetId : parseInt(authUser!.id, 10),
+                participation: false,
+              },
             });
 
             break;

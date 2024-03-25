@@ -20,11 +20,15 @@ const ChatRoomList = ({
   userType,
   selectChatRoomId,
 }: ChatLsitProps) => {
-  const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
+  const hasChatRoomList = chatRoomList.length > 0;
 
   return (
     <section>
-      <ul className="flex h-full flex-col overflow-y-scroll px-4 sm:w-72 sm:px-0 sm:pr-0">
+      <ul
+        className={`${
+          hasChatRoomList ? 'overflow-y-scroll' : ''
+        } flex h-full flex-col px-4 sm:w-72 sm:px-0 sm:pr-0`}
+      >
         {chatRoomList.map((chatRoom, index) => {
           return (
             <button
@@ -39,12 +43,12 @@ const ChatRoomList = ({
               } border-gray-500 py-3 hover:bg-main-color-transparent`}
             >
               <li className="flex h-14 w-full flex-shrink-0 items-center px-2 text-sm">
-                <ChatRoomInfo chatRoom={chatRoom} opponentType={opponentType} />
+                <ChatRoomInfo chatRoom={chatRoom} userType={userType} />
               </li>
             </button>
           );
         })}
-        {chatRoomList.length === 0 && (
+        {!hasChatRoomList && (
           <div className="mx-auto my-auto flex flex-col items-center gap-6 font-semibold">
             <NotFoundSVG />
             <p>존재하는 채팅방이 없습니다!</p>
@@ -59,15 +63,16 @@ export default ChatRoomList;
 
 interface ChatRoomInfoProps {
   chatRoom: ChatRoom;
-  opponentType: 'lecturerId' | 'userId';
+  userType: userType;
 }
 
-const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
+const ChatRoomInfo = ({ chatRoom, userType }: ChatRoomInfoProps) => {
   const queryClient = useQueryClient();
+  const opponentType = userType === 'user' ? 'lecturer' : 'user';
 
   const { data, isLoading } = useQuery({
-    queryKey: ['opponentProfile', opponentType, chatRoom[opponentType]],
-    queryFn: () => getOpponentInfo(opponentType, chatRoom[opponentType]),
+    queryKey: ['opponentProfile', opponentType, chatRoom[opponentType].id],
+    queryFn: () => getOpponentInfo(opponentType, chatRoom[opponentType].id),
     staleTime: Infinity,
   });
 
@@ -76,15 +81,12 @@ const ChatRoomInfo = ({ chatRoom, opponentType }: ChatRoomInfoProps) => {
       const { nickname, profilImg } = data;
 
       queryClient.setQueryData<ChatRoom[]>(
-        [
-          'chatRoomList',
-          chatRoom[opponentType === 'userId' ? 'lecturerId' : 'userId'],
-        ],
+        ['chatRoomList', chatRoom[opponentType].id],
         (oldData) => {
           if (!oldData) return oldData;
 
           return oldData.map((chatRoom) => {
-            if (chatRoom[opponentType] === data.id) {
+            if (chatRoom[opponentType].id === data.id) {
               return { ...chatRoom, nickname, profilImg };
             } else {
               return { ...chatRoom };

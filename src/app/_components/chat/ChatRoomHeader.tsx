@@ -9,11 +9,12 @@ import { getCheckOnline } from '@/lib/apis/chatApi';
 import { getLastEnrolledClass } from '@/lib/apis/classApi';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import ProfileImg from '@/components/Profile/ProfileImage';
+import { userType } from '@/types/auth';
 import { ChatRoom, OpponentInfo } from '@/types/chat';
 
 interface ChatRoomHeaderProps {
   selectChatRoom: ChatRoom;
-  opponentType: 'lecturerId' | 'userId';
+  opponentType: userType;
   opponentProfile: UseQueryResult<OpponentInfo, Error>;
 }
 
@@ -41,14 +42,18 @@ const ChatRoomHeader = ({
   ] = useQueries({
     queries: [
       {
-        queryKey: ['onlineState', opponentType, selectChatRoom[opponentType]],
+        queryKey: [
+          'onlineState',
+          opponentType,
+          selectChatRoom[opponentType].id,
+        ],
         queryFn: () =>
-          getCheckOnline(opponentType, selectChatRoom[opponentType]),
+          getCheckOnline(opponentType, selectChatRoom[opponentType].id),
         refetchOnWindowFocus: 'always',
       },
       {
-        queryKey: ['lastClass', opponentType, selectChatRoom[opponentType]],
-        queryFn: () => getLastEnrolledClass(selectChatRoom[opponentType]),
+        queryKey: ['lastClass', opponentType, selectChatRoom[opponentType].id],
+        queryFn: () => getLastEnrolledClass(selectChatRoom[opponentType].id),
       },
     ],
   });
@@ -62,9 +67,9 @@ const ChatRoomHeader = ({
           ) : (
             <Link
               href={
-                opponentType === 'lecturerId'
-                  ? `/instructor/${selectChatRoom[opponentType]}`
-                  : `/mypage/instructor/manage/member/${selectChatRoom[opponentType]}`
+                opponentType === 'lecturer'
+                  ? `/instructor/${selectChatRoom[opponentType].id}`
+                  : `/mypage/instructor/manage/member/${selectChatRoom[opponentType].id}`
               }
             >
               <ProfileImg src={profileDate?.profilImg} size="small" />
@@ -77,9 +82,9 @@ const ChatRoomHeader = ({
               <Link
                 className="w-full truncate"
                 href={
-                  opponentType === 'lecturerId'
-                    ? `/instructor/${selectChatRoom[opponentType]}`
-                    : `/mypage/instructor/manage/member/${selectChatRoom[opponentType]}`
+                  opponentType === 'lecturer'
+                    ? `/instructor/${selectChatRoom[opponentType].id}`
+                    : `/mypage/instructor/manage/member/${selectChatRoom[opponentType].id}`
                 }
               >
                 <dt>{profileDate?.nickname}</dt>

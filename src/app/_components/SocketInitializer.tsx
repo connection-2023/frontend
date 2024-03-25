@@ -5,7 +5,13 @@ import { io } from 'socket.io-client';
 import { CHATS_TAKE } from '@/constants/constants';
 import { useChatStore, useSocketStore } from '@/store';
 import { userType } from '@/types/auth';
-import { ChatPagesData, Chat, ChatRoom } from '@/types/chat';
+import {
+  ChatPagesData,
+  Chat,
+  ChatRoom,
+  JoinUserData,
+  ExitUserData,
+} from '@/types/chat';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT ?? '';
 
@@ -52,7 +58,7 @@ const SocketInitializer = ({
         console.log('socket 해제');
       });
 
-      socket.on('joinUser', (data) => {
+      socket.on('joinUser', (data: JoinUserData) => {
         const { lecturerId, userId } = data;
 
         const id = userId ? userId : lecturerId;
@@ -63,7 +69,7 @@ const SocketInitializer = ({
         });
       });
 
-      socket.on('exitUser', (data) => {
+      socket.on('exitUser', (data: ExitUserData) => {
         if (!data) {
           console.error('exitUser data is null');
           return;
@@ -164,11 +170,16 @@ const SocketInitializer = ({
         } else {
           const newChatRoom: ChatRoom = {
             id: newChat.chatRoomId,
-            userId:
-              newChat.receiver.userId || (newChat.sender.userId as number),
-            lecturerId:
-              newChat.receiver.lecturerId ||
-              (newChat.sender.lecturerId as number),
+            user: {
+              id: newChat.receiver.userId || (newChat.sender.userId as number),
+              participation: true,
+            },
+            lecturer: {
+              id:
+                newChat.receiver.lecturerId ||
+                (newChat.sender.lecturerId as number),
+              participation: true,
+            },
             unreadCount: isReceiver ? 1 : undefined,
             lastChat: {
               ...newChat,
@@ -199,8 +210,6 @@ const SocketInitializer = ({
       return () => {
         socket.disconnect();
       };
-    } else if (!userType && socket) {
-      socket.disconnect();
     }
   }, [userType]);
 

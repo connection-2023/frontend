@@ -19,11 +19,16 @@ const ChatRoom = ({
   userType,
   readChatFn,
 }: ChatRoomProps) => {
-  const opponentType = userType === 'user' ? 'lecturerId' : 'userId';
+  const opponentType = userType === 'user' ? 'lecturer' : 'user';
 
   const opponentProfile = useQuery({
-    queryKey: ['opponentProfile', opponentType, selectChatRoom[opponentType]],
-    queryFn: () => getOpponentInfo(opponentType, selectChatRoom[opponentType]),
+    queryKey: [
+      'opponentProfile',
+      opponentType,
+      selectChatRoom[opponentType].id,
+    ],
+    queryFn: () =>
+      getOpponentInfo(opponentType, selectChatRoom[opponentType].id),
     staleTime: Infinity,
   });
 

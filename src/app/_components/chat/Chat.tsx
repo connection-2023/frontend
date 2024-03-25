@@ -27,7 +27,7 @@ interface ChatProps {
         error: boolean;
       }
     | null;
-  opponentType: 'lecturerId' | 'userId';
+  opponentId: 'lecturerId' | 'userId';
   newChatRef: RefObject<HTMLDivElement>;
   endOfMessagesRef: RefObject<HTMLDivElement>;
   resendMessage: () => void;
@@ -38,7 +38,7 @@ interface ChatProps {
 const Chat = ({
   selectChatRoom,
   sendChatPreview,
-  opponentType,
+  opponentId,
   newChatRef,
   endOfMessagesRef,
   resendMessage,
@@ -121,7 +121,7 @@ const Chat = ({
         <ChatLoading count={6} scrollDisabled={scrollDisabled} />
       )}
       {chats.map(({ id, content, createdAt, receiver, imageUrl }, index) => {
-        const isReceiver = !receiver[opponentType];
+        const isReceiver = !receiver[opponentId];
         const beforeChat = chats[index - 1]?.createdAt;
         const isFirstChat = isDifferentDay(beforeChat, createdAt);
 
