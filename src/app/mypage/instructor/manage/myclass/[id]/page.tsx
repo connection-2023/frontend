@@ -126,6 +126,11 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
     return [];
   })();
 
+  const pastClassNum =
+    scheduleData &&
+    futureScheduleData &&
+    scheduleData.length - futureScheduleData.length;
+
   return (
     <div className="grid grid-cols-1 gap-4 px-4 md:px-9 xl:grid-cols-[2fr,1fr] xl:px-0">
       <section className="mb-18 flex h-full flex-col rounded-lg bg-white shadow-float">
@@ -216,8 +221,8 @@ const ClassDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       </section>
       <section className="mt-4 lg:mt-0">
         <ClassOverview
-          totalClassNum={processedScheduleData?.length || 0} // 정기 클래스일 때 처리 필요
-          pastClassNum={futureScheduleData?.length || 0} // 정기 클래스일 때 처리 필요
+          totalClassNum={scheduleData?.length}
+          pastClassNum={pastClassNum}
           selectedClass={selectedClass}
           lectureId={id}
         />

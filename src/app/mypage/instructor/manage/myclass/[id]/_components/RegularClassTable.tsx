@@ -7,6 +7,7 @@ import {
   processedScheduleData,
 } from '../_utils/formatSchedule';
 import { IRegularClassSchedule } from '@/types/class';
+import { useClassProgressStore } from '@/store';
 import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 
 const TableCellStyle = 'border border-solid border-gray-700 py-2';
@@ -25,6 +26,7 @@ const RegularClassTable = (props: ClassTableProps) => {
   const [selectedTime, setSelectedTime] = useState(0);
   const [showPastClasses, setShowPastClasses] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setTotalClass, setPastClass } = useClassProgressStore();
 
   const totalClass = processedScheduleData(
     regularSchedules[selectedTime].regularLectureSchedule,
@@ -42,6 +44,11 @@ const RegularClassTable = (props: ClassTableProps) => {
     const scheduleId =
       regularSchedules[selectedTime].regularLectureSchedule[0].id;
     handleSelectClassId(regularSchedulesList[selectedTime], scheduleId);
+
+    setTotalClass(totalClass.length);
+    const futureClass = filterSchedulesByDate(false, totalClass);
+    const pastClass = totalClass.length - futureClass.length;
+    setPastClass(pastClass);
   }, [selectedTime]);
 
   const tableSchedules = filterSchedulesByDate(showPastClasses, totalClass);
@@ -53,7 +60,7 @@ const RegularClassTable = (props: ClassTableProps) => {
 
   return (
     <>
-      <ul className="flex flex-wrap gap-x-4">
+      <ul className="flex flex-wrap gap-x-4 gap-y-2">
         {regularSchedulesList.map((list, index) => (
           <li
             key={index}

@@ -427,12 +427,12 @@ interface IImage {
 
 export interface ILecturerClassListResonse {
   id: number;
-  allSchedule: number;
-  completedSchedule: number;
+  schedulesCount: number;
+  completedSchedulesCount: number;
   startDate: string;
   endDate: string;
   title: string;
-  [key: string]: any;
+  lectureMethod: { name: string };
 }
 
 export interface ILecturerClassDetailResonse {
