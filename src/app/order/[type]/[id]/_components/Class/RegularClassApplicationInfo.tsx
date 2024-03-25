@@ -3,8 +3,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
 import { usePaymentStore } from '@/store';
 import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
-import RegularApplyList from '../../_components/apply/RegularApplyList';
-import ReservationItem from '../../_components/apply/ReservationItem';
+import RegularApplyList from '@/components/Apply/RegularApplyList';
+import ReservationItem from '@/components/Apply/ReservationItem';
 import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
 
 interface RegularClassApplicationInfoProps {
@@ -13,20 +13,27 @@ interface RegularClassApplicationInfoProps {
   duration: number;
   maxCapacity: number;
   range: string;
+  applyCount: number;
 }
 
 const RegularClassApplicationInfo = (
   props: RegularClassApplicationInfoProps,
 ) => {
-  const { schedule, duration, range, maxCapacity, initSelectedSchedule } =
-    props;
+  const {
+    schedule,
+    duration,
+    range,
+    maxCapacity,
+    initSelectedSchedule,
+    applyCount,
+  } = props;
   const [selectedSchedule, setSelectedSchedule] = useState<ISelectedSchedule>({
     ...initSelectedSchedule,
-    count: 1,
+    count: applyCount || 1,
   });
   const { setApplyClass } = usePaymentStore();
 
-  const formatedDateTime = useMemo(() => {
+  const formattedDateTime = useMemo(() => {
     if (selectedSchedule) {
       return {
         lectureScheduleId: selectedSchedule.id,
@@ -91,13 +98,13 @@ const RegularClassApplicationInfo = (
         onSelect={onSelect}
       />
 
-      {selectedSchedule && formatedDateTime && (
+      {selectedSchedule && formattedDateTime && (
         <ReservationItem
-          key={formatedDateTime.lectureScheduleId}
-          lectureScheduleId={formatedDateTime.lectureScheduleId}
-          dateTime={formatedDateTime.dateTime}
-          space={formatedDateTime.space}
-          count={formatedDateTime.count}
+          key={formattedDateTime.lectureScheduleId}
+          lectureScheduleId={formattedDateTime.lectureScheduleId}
+          dateTime={formattedDateTime.dateTime}
+          space={formattedDateTime.space}
+          count={formattedDateTime.count}
           countUpdate={updateParticipants}
           borderColor="border-gray-500"
         />

@@ -3,37 +3,46 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { ApplyButton } from '@/components/Button';
+import { IPassInfoForIdData } from '@/types/pass';
+import {
+  IApplicantInfo,
+  IPaymentInfo,
+  IReservationInfo,
+  PaymentPassInfoParam,
+} from '@/types/payment';
+import { FetchError } from '@/types/types';
 import { ArrowUpSVG } from '@/icons/svg';
 import {
   postPaymentInfo,
   postPaymentCancel,
   postPassPaymentClassWithPass,
+  postPassPaymentInfo,
 } from '@/lib/apis/paymentApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
-import { usePaymentStore } from '@/store';
+import { usePaymentStore, useUserStore } from '@/store';
 import { reloadToast } from '@/utils/reloadMessage';
-import { ApplyButton } from '@/components/Button';
-import {
-  IApplicantInfo,
-  IPaymentInfo,
-  IReservationInfo,
-} from '@/types/payment';
-import { FetchError } from '@/types/types';
 
 interface ApplySidebarProps {
   postId: string;
   title: string;
   price: number;
+  isClass: boolean;
+  passInfo?: IPassInfoForIdData;
 }
 
-const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
+const ApplySidebar = (props: ApplySidebarProps) => {
+  const { postId, title, price, isClass, passInfo } = props;
   const [participants, setParticipants] = useState(0);
   const { discountPrice, couponId, stackableCouponId } = usePaymentStore(
     (state) => state.coupon,
   );
   const router = useRouter();
+  const { authUser } = useUserStore((state) => ({
+    authUser: state.authUser,
+  }));
   const { pass } = usePaymentStore((state) => ({ pass: state.pass }));
-  const totalPrice = price * participants;
+  const totalPrice = isClass ? price * participants : price;
   const finalPrice = discountPrice
     ? Math.max(0, totalPrice - discountPrice)
     : totalPrice;
@@ -58,8 +67,8 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
     paymentMethodsWidget.updateAmount(totalPrice);
   }, [participants, paymentWidget]);
 
-  const confirmPayment = () => {
-    if (!applyClass) {
+  const validatePaymentInfo = () => {
+    if (isClass && !applyClass) {
       toast.error('하나 이상의 클래스를 추가해주세요!');
       return false;
     }
@@ -84,87 +93,134 @@ const ApplySidebar = ({ postId, title, price }: ApplySidebarProps) => {
     return true;
   };
 
-  const paymentClass = async (paymentData: IPaymentInfo) => {
-    try {
-      const paymentInfo = await postPaymentInfo(paymentData);
-      const { orderId, orderName } = paymentInfo;
+  const scrollToBuyerInfo = () => {
+    const element = document.getElementById('buyerInfo');
 
-      if (orderId && orderName) {
-        await paymentWidget?.requestPayment({
-          orderId,
-          orderName,
-          customerName: paymentData.representative,
-          customerEmail: '',
-          successUrl: `${window.location.origin}/class/${postId}/apply/complete`,
-          failUrl: `${window.location.origin}/fail`,
-        });
-      } else {
-        toast.error(paymentInfo);
-      }
-    } catch (error) {
-      if (error instanceof Error && error.message) {
-        postPaymentCancel(paymentData.orderId);
-        toast.error('잘못된 요청 입니다');
-        console.error(error.message);
-      }
+    if (element)
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const handlePaymentInfo = async (
+    paymentData: IPaymentInfo | PaymentPassInfoParam,
+  ) => {
+    const paymentInfo = isClass
+      ? await postPaymentInfo(paymentData as IPaymentInfo)
+      : await postPassPaymentInfo(paymentData as PaymentPassInfoParam);
+    const { orderId, orderName } = paymentInfo;
+
+    const customerName =
+      'representative' in paymentData
+        ? paymentData.representative
+        : authUser!.name;
+    const customerEmail =
+      'representative' in paymentData ? '' : authUser!.email;
+
+    if (orderId && orderName) {
+      await paymentWidget?.requestPayment({
+        orderId,
+        orderName,
+        customerName,
+        customerEmail,
+        successUrl: `${window.location.origin}/order/complete`,
+        failUrl: `${window.location.origin}/order/fail`,
+      });
+    } else {
+      throw new Error('undefined paymentInfo');
     }
   };
 
   const payForClassWithPass = async (paymentData: IPaymentInfo) => {
-    const action = async () => {
+    const postAction = async (paymentData: IPaymentInfo) => {
       await postPassPaymentClassWithPass(paymentData);
-      reloadToast('클래스 신청 완료', 'success');
-      router.push('/mypage/user/myclass/apply?view=calendar');
     };
+
+    await handlePaymentAction(postAction, paymentData.orderId, paymentData);
+
+    reloadToast('클래스 신청 완료', 'success');
+    router.push('/mypage/user/myclass/apply?view=calendar');
+  };
+
+  const handlePaymentAction = async (
+    paymentAction:
+      | ((paymentData: IPaymentInfo | PaymentPassInfoParam) => Promise<void>)
+      | ((paymentData: IPaymentInfo) => Promise<void>),
+    uniqueOrderId: string,
+    paymentData: IPaymentInfo | PaymentPassInfoParam,
+  ) => {
     try {
-      await action();
+      await paymentAction(paymentData as IPaymentInfo);
     } catch (error) {
       if (error instanceof Error) {
         const fetchError = error as FetchError;
         if (fetchError.status === 401) {
           try {
             await accessTokenReissuance();
-            await action();
+            await paymentAction(paymentData as IPaymentInfo);
           } catch (error) {
+            postPaymentCancel(uniqueOrderId);
             console.error(error);
           }
         } else {
-          toast.error(error.message);
+          postPaymentCancel(uniqueOrderId);
+
+          toast.error(
+            fetchError.status === 400 || fetchError.status === 404
+              ? error.message
+              : '잘못된 요청 입니다.',
+          );
+          console.error(error);
         }
       }
     }
   };
 
   const handlePayment = async () => {
-    const isConfirmed = confirmPayment();
-
-    if (!isConfirmed) return;
-
+    const validation = validatePaymentInfo();
+    if (!validation) {
+      scrollToBuyerInfo();
+      return;
+    }
     const uniqueOrderId = nanoid();
-    const { representative, phoneNumber, requests } =
-      applicant as IApplicantInfo;
-    const paymentData: IPaymentInfo = {
-      lectureId: postId,
-      orderName: title,
-      orderId: uniqueOrderId,
-      lectureSchedule: applyClass as IReservationInfo,
-      originalPrice: totalPrice,
-      finalPrice,
-      representative,
-      phoneNumber,
-      requests,
-    };
 
-    if (pass) {
-      paymentData.passId = pass.lecturePassId;
+    let paymentData: IPaymentInfo | PaymentPassInfoParam;
+
+    if (isClass) {
+      const { representative, phoneNumber, requests } =
+        applicant as IApplicantInfo;
+
+      paymentData = {
+        lectureId: postId,
+        orderName: title,
+        orderId: uniqueOrderId,
+        lectureSchedule: applyClass as IReservationInfo,
+        originalPrice: totalPrice,
+        finalPrice,
+        representative,
+        phoneNumber,
+        requests,
+      };
+
+      if (pass) {
+        paymentData.passId = pass.lecturePassId;
+      } else {
+        paymentData.couponId = couponId;
+        paymentData.stackableCouponId = stackableCouponId;
+      }
     } else {
-      paymentData.couponId = couponId;
-      paymentData.stackableCouponId = stackableCouponId;
+      const { id, title, price } = passInfo as IPassInfoForIdData;
+
+      paymentData = {
+        passId: id,
+        orderName: title,
+        orderId: uniqueOrderId,
+        originalPrice: price,
+        finalPrice: price,
+      };
     }
 
-    pass
-      ? await payForClassWithPass(paymentData)
-      : await paymentClass(paymentData);
+    const paymentAction = pass ? payForClassWithPass : handlePaymentInfo;
+
+    await handlePaymentAction(paymentAction, uniqueOrderId, paymentData);
   };
 
   return (

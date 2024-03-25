@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import { CloseSVG, ArrowUpSVG, CopySVG } from '@/icons/svg';
 import { getAccountInfo } from '@/lib/apis/paymentApis';
 import { formatShortDate, formatDateTimeNoSec } from '@/utils/dateTimeUtils';
@@ -176,11 +177,13 @@ const PaymentList = (props: PaymentListProps) => {
                 <li className="flex gap-5 whitespace-nowrap">
                   <p className="w-[3.3rem] font-semibold">입금계좌</p>
                   <div className="flex flex-col">
-                    {accountDetail.bank.name}
+                    {BANK_CODE_TO_NAME[accountDetail.bankCode]}
                     <p
                       onClick={() =>
                         handleCopyClipBoard(
-                          `${accountDetail.bank.name} ${accountDetail.accountNumber}`,
+                          `${BANK_CODE_TO_NAME[accountDetail.bankCode]} ${
+                            accountDetail.accountNumber
+                          }`,
                         )
                       }
                       className="flex cursor-pointer items-center"
