@@ -24,7 +24,10 @@ const ClassOverview = (props: ClassOverViewProps) => {
 
   const fetchRegisterList = async () => {
     if (selectedClass.id) {
-      const registerData = await getScheduleRegisterLists(selectedClass.id);
+      const registerData = await getScheduleRegisterLists(
+        Number(lectureId),
+        selectedClass.id,
+      );
       return registerData;
     } else {
       const allLearnersData = await getAllRegisterLists(lectureId, 100, 0);

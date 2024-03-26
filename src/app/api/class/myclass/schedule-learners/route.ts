@@ -12,9 +12,10 @@ export const GET = async (request: NextRequest) => {
   if (!token) return new Response('강사 권한 없음!', { status: 401 });
 
   const scheduleId = request.nextUrl.searchParams.get('scheduleId');
+  const lectureId = request.nextUrl.searchParams.get('lectureId');
 
   const serverResponse = await fetch(
-    END_POINT + `/lectures/schedules/${scheduleId}/learners`,
+    END_POINT + `/lectures/${lectureId}/schedules/${scheduleId}/learners`,
     {
       credentials: 'include',
       headers: {

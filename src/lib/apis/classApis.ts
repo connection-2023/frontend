@@ -215,12 +215,13 @@ export const getClassSchedules = async (
 };
 
 export const getScheduleRegisterLists = async (
+  lectureId: number,
   scheduleId?: number,
 ): Promise<IScheduleLearnerList[]> => {
   if (!scheduleId) return [];
 
   const response = await fetch(
-    `/api/class/myclass/schedule-learners?scheduleId=${scheduleId}`,
+    `/api/class/myclass/schedule-learners?lectureId=${lectureId}&scheduleId=${scheduleId}`,
   ).then((data) => data.json());
 
   if (response.statusCode !== 200)

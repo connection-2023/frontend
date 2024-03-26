@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import subHours from 'date-fns/subHours';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDebounce } from 'react-use';
@@ -30,6 +31,7 @@ interface EnrollmentModalProps {
 }
 
 const EnrollmentModal = (props: EnrollmentModalProps) => {
+  const params = useParams<{ id: string }>();
   let classParticipants: number | undefined;
 
   const {
@@ -42,7 +44,12 @@ const EnrollmentModal = (props: EnrollmentModalProps) => {
     closeModal,
   } = props;
 
-  const { id: classId, index, date, startDateTime } = selectedClass || {};
+  const {
+    id: selectedScheduleId,
+    index,
+    date,
+    startDateTime,
+  } = selectedClass || {};
 
   const {
     id: regularClassId,
@@ -51,7 +58,7 @@ const EnrollmentModal = (props: EnrollmentModalProps) => {
     numberOfParticipants: regularClassParticipants,
   } = selectedRegularClass || {};
 
-  const id = classId || regularClassId;
+  const lectureId = selectedScheduleId || regularClassId;
 
   if (selectedClass && 'numberOfParticipants' in selectedClass) {
     classParticipants = selectedClass.numberOfParticipants;
@@ -59,8 +66,8 @@ const EnrollmentModal = (props: EnrollmentModalProps) => {
 
   const [refreshKey, setRefreshKey] = useState(0);
   const { data: ScheduleEnrollment, isLoading } = useQuery({
-    queryKey: ['instructor', 'schedule', id, 'modal', refreshKey],
-    queryFn: () => getScheduleRegisterLists(id),
+    queryKey: ['instructor', 'schedule', lectureId, 'modal', refreshKey],
+    queryFn: () => getScheduleRegisterLists(Number(params.id), lectureId),
     refetchOnWindowFocus: 'always',
   });
 
