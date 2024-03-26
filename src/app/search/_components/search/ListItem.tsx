@@ -1,9 +1,13 @@
 import { useRouter } from 'next/navigation';
+import { SEARCH_LOCAL_STORAGE_KEY } from '@/constants/constants';
 import { CloseSVG } from '@/icons/svg';
 import { deleteSearchKeyword } from '@/lib/apis/searchApis';
+import { useUserStore } from '@/store';
 import { IUserSearchKeywords } from '@/types/types';
 
 const ListItem = ({ id, searchTerm }: IUserSearchKeywords) => {
+  const authUser = useUserStore((state) => state.authUser);
+  const localStorage = window.localStorage;
   const router = useRouter();
 
   const handleClickList = () => {
@@ -12,7 +16,24 @@ const ListItem = ({ id, searchTerm }: IUserSearchKeywords) => {
 
   const handleClickDelete = async (event: MouseEvent) => {
     event.stopPropagation();
-    await deleteSearchKeyword(id);
+    if (authUser) {
+      await deleteSearchKeyword(id);
+    } else {
+      const prevKeys = localStorage.getItem(SEARCH_LOCAL_STORAGE_KEY);
+      if (!prevKeys) return;
+
+      const newSearchKeys = prevKeys
+        .split(',')
+        .filter((item) => item !== searchTerm);
+
+      newSearchKeys.length
+        ? localStorage.setItem(
+            SEARCH_LOCAL_STORAGE_KEY,
+            newSearchKeys.join(','),
+          )
+        : localStorage.removeItem(SEARCH_LOCAL_STORAGE_KEY);
+    }
+
     router.refresh();
   };
 

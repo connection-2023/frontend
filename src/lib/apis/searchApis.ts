@@ -22,6 +22,18 @@ export const deleteSearchKeyword = async (historyId: number) => {
   return response;
 };
 
+export const deleteAllSearchKeywords = async () => {
+  const response = await fetch('/api/users/delete-all-keywords', {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
 export const searchInstructors = async (
   data: searchInstructorParameters,
   userState: boolean,
