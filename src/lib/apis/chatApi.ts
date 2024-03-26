@@ -321,3 +321,35 @@ export const getUnreadCount = async (): Promise<number> => {
     throw error;
   }
 };
+
+export const exitChatRoom = async (chatRoomId?: string): Promise<ChatRoom> => {
+  try {
+    if (!chatRoomId) {
+      throw 'chatRoomId undefined';
+    }
+
+    const response = await fetch(
+      `/api/chat/exit-chat-room?chatRoomId=${chatRoomId}`,
+      {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data.updatedChatRoom;
+  } catch (error) {
+    console.error('채팅방 나가기 오류', error);
+    throw error;
+  }
+};

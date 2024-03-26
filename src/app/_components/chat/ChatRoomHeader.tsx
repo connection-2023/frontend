@@ -1,12 +1,18 @@
-import { UseQueryResult, useQueries } from '@tanstack/react-query';
+import {
+  UseQueryResult,
+  useMutation,
+  useQueries,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import ko from 'date-fns/locale/ko';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 import { OptionSVG } from '@/icons/svg';
-import { getCheckOnline } from '@/lib/apis/chatApi';
+import { exitChatRoom, getCheckOnline } from '@/lib/apis/chatApi';
 import { getLastEnrolledClass } from '@/lib/apis/classApi';
+import { useChatStore } from '@/store';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import ProfileImg from '@/components/Profile/ProfileImage';
 import { userType } from '@/types/auth';
@@ -29,6 +35,12 @@ const ChatRoomHeader = ({
   useClickAway(optionRef, () => {
     setOptionView(false);
   });
+
+  const queryClient = useQueryClient();
+
+  const { setChatRoomSelect } = useChatStore((state) => ({
+    setChatRoomSelect: state.setChatRoomSelect,
+  }));
 
   const {
     data: profileDate,
@@ -57,6 +69,33 @@ const ChatRoomHeader = ({
       },
     ],
   });
+
+  const { mutate: exitChatRoomFn } = useMutation({
+    mutationFn: () => exitChatRoom(selectChatRoom.id),
+    onSuccess: (selectChatRoom) => {
+      queryClient.setQueryData<ChatRoom[]>(
+        [
+          'chatRoomList',
+          selectChatRoom[opponentType === 'lecturer' ? 'user' : 'lecturer'].id,
+        ],
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          return oldData.filter(
+            (chatRoom) => chatRoom.id !== selectChatRoom.id,
+          );
+        },
+      );
+
+      setChatRoomSelect(null);
+    },
+  });
+
+  const exitChatRoomHandler = () => {
+    if (confirm('채팅방을 나가시겠습니까?')) {
+      exitChatRoomFn();
+    }
+  };
 
   return (
     <header className="flex px-[10px] py-3">
@@ -152,6 +191,7 @@ const ChatRoomHeader = ({
                 },
                 {
                   component: <div>채팅방 나가기</div>,
+                  onClick: exitChatRoomHandler,
                 },
               ]}
             />
