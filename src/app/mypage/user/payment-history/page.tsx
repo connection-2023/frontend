@@ -1,6 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, useRef, ChangeEvent } from 'react';
 import { toast } from 'react-toastify';
 import { MYPAGE_FILTER_OPTIONS } from '@/constants/constants';
@@ -15,11 +16,14 @@ const PaymentList = dynamic(() => import('./_components/PaymentList'), {
 });
 
 const PaymentHistory = () => {
-  const [selectedOption, setSelectedOption] = useState(
-    MYPAGE_FILTER_OPTIONS.All,
-  );
-  const [displayCount, setDisplayCount] = useState(5);
-  const [currentPage, setCurrentPage] = useState(0);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const option = searchParams.get('option') || '전체';
+  const count = Number(searchParams.get('count')) || 5;
+  const page = Number(searchParams.get('page') || 0);
+  const selectedOption = decodeURIComponent(option) as MYPAGE_FILTER_OPTIONS;
   const [itemId, setItemId] = useState({
     firstItemId: 0,
     lastItemId: 0,
@@ -27,12 +31,12 @@ const PaymentHistory = () => {
   const prevPage = useRef<number>(0);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['user-payment', selectedOption, displayCount, currentPage],
+    queryKey: ['user-payment', selectedOption, count, page],
     queryFn: () =>
       getPaymentHistory(
-        displayCount,
+        count,
         prevPage.current,
-        currentPage,
+        page,
         itemId.firstItemId,
         itemId.lastItemId,
         selectedOption,
@@ -48,9 +52,9 @@ const PaymentHistory = () => {
       };
 
       setItemId(itemIds);
-      prevPage.current = currentPage;
+      prevPage.current = page;
     }
-  }, [data?.totalItemCount, selectedOption, displayCount, currentPage]);
+  }, [data?.totalItemCount, selectedOption, count, page]);
 
   if (isLoading || !data)
     return (
@@ -64,19 +68,53 @@ const PaymentHistory = () => {
       </div>
     );
 
-  const pageCount = Math.ceil(data.totalItemCount / displayCount);
+  const pageCount = Math.ceil(data.totalItemCount / count);
 
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const option = event.target.id as MYPAGE_FILTER_OPTIONS;
-
-    if (Object.values(MYPAGE_FILTER_OPTIONS).includes(option)) {
-      setSelectedOption(option);
+  const handleSearchParams = (params: { [key: string]: string | number }) => {
+    const currentParams = new URLSearchParams(window.location.search);
+    for (const key in params) {
+      currentParams.set(key, String(params[key]));
     }
+    router.push(`${pathname}?${currentParams.toString()}`, { scroll: false });
   };
 
   const handleDisplayCount = (event: ChangeEvent<HTMLSelectElement>) => {
-    const newValue = Number(event.target.value);
-    setDisplayCount(newValue);
+    const newCount = Number(event.target.value);
+    const queryObj = {
+      option,
+      count: newCount,
+      page,
+    };
+
+    handleSearchParams(queryObj);
+  };
+
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const newOption = event.target.id as MYPAGE_FILTER_OPTIONS;
+
+    if (Object.values(MYPAGE_FILTER_OPTIONS).includes(newOption)) {
+      const queryObj = {
+        option: newOption,
+        count,
+        page: 0,
+      };
+      handleSearchParams(queryObj);
+
+      setItemId({
+        firstItemId: 0,
+        lastItemId: 0,
+      });
+    }
+  };
+
+  const handlePageChange = async ({ selected }: { selected: number }) => {
+    const queryObj = {
+      option,
+      count,
+      page: selected,
+    };
+
+    handleSearchParams(queryObj);
   };
 
   const handlePaymentDelete = () => {
@@ -84,13 +122,9 @@ const PaymentHistory = () => {
       '삭제내역은 복구할 수 없습니다. 정말로 삭제하겠습니까?',
     );
     if (userConfirmed) {
-      // API 처리
+      // TO DO: API 처리
       toast.success('결제내역이 삭제되었습니다!');
     }
-  };
-
-  const handlePageChange = async ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
   };
 
   return (
@@ -117,7 +151,7 @@ const PaymentHistory = () => {
           ))}
         </ul>
 
-        <PageSizeSelector value={displayCount} onChange={handleDisplayCount} />
+        <PageSizeSelector value={count} onChange={handleDisplayCount} />
       </div>
 
       {data.totalItemCount > 0 ? (
@@ -137,7 +171,7 @@ const PaymentHistory = () => {
       {pageCount > 1 && (
         <Pagination
           pageCount={pageCount}
-          currentPage={currentPage}
+          currentPage={page}
           onPageChange={handlePageChange}
         />
       )}
