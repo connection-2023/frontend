@@ -95,14 +95,14 @@ const ChatContainer = ({ id, userType }: ChatContsinerProps) => {
     <motion.article
       ref={constraintsRef}
       layoutId="chat"
-      className="pointer-events-none fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto flex h-screen max-h-screen w-screen items-center justify-center"
+      className="z-chat pointer-events-none fixed bottom-0 left-0 right-0 top-0 mx-auto flex h-screen max-h-screen w-screen items-center justify-center"
     >
       <motion.main
         drag={isSm}
         dragListener={false}
         dragControls={chatPositionControls}
         dragConstraints={constraintsRef}
-        className="pointer-events-auto z-modal flex flex-col bg-white shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] sm:rounded-md"
+        className="z-chat pointer-events-auto flex flex-col bg-white shadow-[0px_0px_4px_1px_rgba(0,0,0,0.25)] sm:rounded-md"
         dragMomentum={false}
       >
         {isSm && (

@@ -179,6 +179,9 @@ export const getChats = async (data: {
       const errorData = await response.json();
       const error: FetchError = new Error(errorData.message || '');
       error.status = response.status;
+      if (error.status === 404) {
+        return { chats: [], totalItemCount: 0 };
+      }
       throw error;
     }
 

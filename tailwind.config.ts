@@ -53,6 +53,7 @@ const config: Config = {
       zIndex: {
         header: '30',
         modal: '50',
+        chat: '60',
       },
 
       animation: {

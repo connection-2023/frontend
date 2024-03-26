@@ -38,6 +38,10 @@ const ChatRoomMain = ({
   const inputFileRef = useRef<HTMLInputElement>(null);
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
+  const { setChatRoomSelect } = useChatStore((state) => ({
+    setChatRoomSelect: state.setChatRoomSelect,
+  }));
+
   const [sendChatPreview, setSendChatPreview] = useState<
     | {
         content?: string;
@@ -129,6 +133,7 @@ const ChatRoomMain = ({
           selectChatRoom[userType].id,
           selectChatRoom[opponentType].id,
         );
+        setChatRoomSelect(newChatRoom);
       }
 
       const data = {
