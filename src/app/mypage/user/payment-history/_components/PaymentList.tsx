@@ -54,7 +54,7 @@ const PaymentList = (props: PaymentListProps) => {
 
   const handleNavigateToDetail = () => {
     if (reservation) {
-      router.push(`/${reservation.lecture.id}`);
+      router.push(`/class/${reservation.lecture.id}`);
     }
   };
 
@@ -62,7 +62,7 @@ const PaymentList = (props: PaymentListProps) => {
     setIsOpened(true);
 
     const accountData = await getAccountInfo(id);
-    if (accountData instanceof Error) return;
+
     setAccountDetail(accountData);
   };
 
@@ -101,7 +101,7 @@ const PaymentList = (props: PaymentListProps) => {
         {reservation && (
           <figure
             onClick={handleNavigateToDetail}
-            className="flex h-28 w-[8.5rem] overflow-hidden rounded-md"
+            className="flex h-28 w-[8.5rem] cursor-pointer overflow-hidden rounded-md"
           >
             <Image
               src={reservation?.lecture.imageUrl}

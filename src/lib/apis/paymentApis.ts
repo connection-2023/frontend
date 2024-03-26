@@ -77,19 +77,21 @@ export const getPaymentHistory = async (
 
 export const getAccountInfo = async (
   id: number,
-): Promise<IVirtualAccountInfo | Error> => {
-  try {
-    const response = await fetch(`/api/payment/accountInfo?id=${id}`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => res.json());
+): Promise<IVirtualAccountInfo> => {
+  const response = await fetch(`/api/payment/accountInfo?id=${id}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-    return response.data.virtualAccountPaymentInfo;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error('무통장 정보 조회 오류!');
   }
+
+  const { data } = await response.json();
+
+  return data.virtualAccountDepositDetails.virtualAccountPaymentInfo;
 };
 
 export const postPassPaymentInfo = async (
