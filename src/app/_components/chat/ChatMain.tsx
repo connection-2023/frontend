@@ -50,28 +50,15 @@ const ChatMain = ({
           : totalCount;
       });
 
-      queryClient.setQueryData<ChatRoom[]>(
-        ['chatRoomList', selectChatRoom[userType].id],
-        (oldData) => {
-          if (!oldData) return oldData;
+      queryClient.setQueryData<ChatRoom[]>(['chatRoomList', id], (oldData) => {
+        if (!oldData) return oldData;
 
-          const targetChatRoomIndex = oldData.findIndex(
-            (chatRoom) => chatRoom.id === selectChatRoom.id,
-          );
-
-          const targetChatRoom = oldData[targetChatRoomIndex];
-          const updatedChatRoom = {
-            ...targetChatRoom,
-            unreadCount: undefined,
-          };
-
-          const updatedData = [...oldData];
-          updatedData.splice(targetChatRoomIndex, 1);
-          updatedData.unshift(updatedChatRoom);
-
-          return updatedData;
-        },
-      );
+        return oldData.map((chatRoom) =>
+          chatRoom.id === selectChatRoom.id
+            ? { ...chatRoom, unreadCount: undefined }
+            : { ...chatRoom },
+        );
+      });
     },
   });
 
@@ -94,7 +81,7 @@ const ChatMain = ({
 
   const chatSelectHandler = (chatRoom: IChatRoom | null) => {
     setChatRoomSelect(chatRoom ? { ...chatRoom, unreadCount: 0 } : null);
-    if (chatRoom) readChatFn(chatRoom);
+    if (chatRoom?.unreadCount) readChatFn(chatRoom);
   };
 
   const [chatRoomList, setChatRoomList] = useState<IChatRoom[]>([]);
