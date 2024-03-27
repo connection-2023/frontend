@@ -26,9 +26,8 @@ const SocketInitializer = ({
   rooms,
   userId,
 }: SocketInitializerProps) => {
-  const { socket, isConnected, setSocket, setIsConnected } = useSocketStore(
+  const { isConnected, setSocket, setIsConnected } = useSocketStore(
     (state) => ({
-      socket: state.socket,
       isConnected: state.isConnected,
       setSocket: state.setSocket,
       setIsConnected: state.setIsConnected,
@@ -82,6 +81,14 @@ const SocketInitializer = ({
 
         queryClient.setQueryData(['onlineState', type, id], () => {
           return new Date(data.lastLogin);
+        });
+      });
+
+      socket.on('handleNewChatRoom', (newChatRoomId: string) => {
+        socket.emit('login', {
+          rooms: rooms ? [...rooms, newChatRoomId] : [newChatRoomId],
+          authorizedData:
+            userType === 'user' ? { userId } : { lecturerId: userId },
         });
       });
 

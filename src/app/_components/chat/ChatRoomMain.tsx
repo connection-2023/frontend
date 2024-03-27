@@ -38,8 +38,8 @@ const ChatRoomMain = ({
   const inputFileRef = useRef<HTMLInputElement>(null);
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
-  const { setChatRoomSelect } = useChatStore((state) => ({
-    setChatRoomSelect: state.setChatRoomSelect,
+  const { newchat } = useChatStore((state) => ({
+    newchat: state.newChat,
   }));
 
   const [sendChatPreview, setSendChatPreview] = useState<
@@ -56,8 +56,6 @@ const ChatRoomMain = ({
     | null
   >(null);
   const [isReceived, setIsReceived] = useState(false);
-
-  const { newchat } = useChatStore((state) => ({ newchat: state.newChat }));
 
   const opponentType = userType === 'user' ? 'lecturer' : 'user';
   const opponentId = userType === 'user' ? 'lecturerId' : 'userId';
@@ -133,7 +131,6 @@ const ChatRoomMain = ({
           selectChatRoom[userType].id,
           selectChatRoom[opponentType].id,
         );
-        setChatRoomSelect(newChatRoom);
       }
 
       const data = {

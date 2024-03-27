@@ -20,7 +20,6 @@ export const useChatStore = create<chatStore>((set) => ({
     }
     set({ chatView: state });
   },
-  setChatRoomSelect: (chatRoom: ChatRoom | null) =>
-    set({ selectChatRoom: chatRoom }),
+  setChatRoomSelect: (chatRoom) => set({ selectChatRoom: chatRoom }),
   setNewChat: (newChat) => set({ newChat }),
 }));

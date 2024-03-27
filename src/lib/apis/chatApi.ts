@@ -48,6 +48,10 @@ export const getCheckTargetId = async (
       const errorData = await response.json();
       const error: FetchError = new Error(errorData.message || '');
       error.status = response.status;
+      if (error.status !== 404) {
+        console.error('상대방 채팅방 유무 조회 오류', error);
+      }
+
       throw error;
     }
 
@@ -55,7 +59,6 @@ export const getCheckTargetId = async (
 
     return resData.data.chatRoom;
   } catch (error) {
-    console.error('상대방 채팅방 유무 조회 오류', error);
     throw error;
   }
 };
