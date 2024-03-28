@@ -79,7 +79,7 @@ export default async function RootLayout({
             rooms={socketRooms}
           />
           <Header>
-            <UserProfileLinks authUser={authUser} />
+            <UserProfileLinks authUser={authUser} userType={userType} />
           </Header>
           <ChatModal />
           <ToastContainer

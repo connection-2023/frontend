@@ -2,15 +2,16 @@ import Link from 'next/link';
 import { SearchSVG } from '@/icons/svg';
 import NotificationIndicator from './NotificationIndicator';
 import Profile from './Profile';
-import { profileInfo } from '@/types/auth';
+import { profileInfo, userType } from '@/types/auth';
 
 interface UserProfileLinksProps {
   authUser: profileInfo | null;
+  userType: userType | null;
 }
 
-const UserProfileLinks = ({ authUser }: UserProfileLinksProps) => {
+const UserProfileLinks = ({ authUser, userType }: UserProfileLinksProps) => {
   return (
-    <div className="flex items-end gap-3">
+    <div className="relative flex items-end gap-3">
       <h2 className="text-0 overflow-hidden indent-[-9999px]">
         Connection 유저 메뉴
       </h2>
@@ -25,9 +26,9 @@ const UserProfileLinks = ({ authUser }: UserProfileLinksProps) => {
         </Link>
       )}
 
-      {authUser && (
+      {authUser && userType && (
         <>
-          <NotificationIndicator />
+          <NotificationIndicator id={authUser.id} userType={userType} />
 
           <Profile defaultProfileImg={authUser.profileImage} />
         </>
