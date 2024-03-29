@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Download from './_components/Download';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import DownloadCoupon from '@/components/Coupon/DownloadCoupon';
 import ProfileImage from '@/components/Profile/ProfileImage';
 import { profileInfo } from '@/types/auth';

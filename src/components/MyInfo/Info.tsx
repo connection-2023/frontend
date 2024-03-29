@@ -10,7 +10,7 @@ import NicknameUpdate from './UpdateModal/UpdateList/NicknameUpdate';
 import PhoneNumberUpdate from './UpdateModal/UpdateList/PhoneNumberUpdate';
 import ProfileUpdate from './UpdateModal/UpdateList/ProfileUpdate';
 import SocialUpdate from './UpdateModal/UpdateList/SocialUpdate';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import ProfileImg from '@/components/Profile/ProfileImage';
 import { social } from '@/types/auth';
 

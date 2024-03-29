@@ -9,21 +9,19 @@ if (!END_POINT) {
 
 export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
-  const lecturerId = searchParams.get('id');
-  const order = searchParams.get('orderBy');
-
   const token = request.cookies.get('userAccessToken')?.value;
 
   const {
-    displayCount,
+    lecturerId,
+    take,
     currentPage,
     targetPage,
     firstItemId,
     lastItemId,
-    lecturerReviewType,
+    orderBy,
   } = Object.fromEntries(searchParams);
 
-  const query = `take=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&lecturerReviewType=${lecturerReviewType}`;
+  const query = `take=${take}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&orderBy=${orderBy}`;
 
   const headers: Record<string, string> = token
     ? {

@@ -35,10 +35,12 @@ const BasicCalendar = ({
   }, [selected?.length]);
 
   useEffect(() => {
-    if (JSON.stringify(selected) !== JSON.stringify(selectedDates)) {
-      setSelected(selectedDates);
+    if (mode === 'preview') {
+      if (JSON.stringify(selected) !== JSON.stringify(selectedDates)) {
+        setSelected(selectedDates);
+      }
     }
-  }, [selected, selectedDates]);
+  }, [selected?.length, selectedDates.length]);
 
   const disabledDays = (date: Date) =>
     !selectedDates.some((clickableDate) => isSameDay(clickableDate, date));

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import formatDate from '@/utils/formatDate';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import MobileModal from '@/components/Modal/MobileModal';
 import { GetMyMemberData } from '@/types/instructor';
 

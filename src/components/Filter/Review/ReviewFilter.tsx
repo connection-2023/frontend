@@ -1,8 +1,8 @@
-import React from 'react';
-import Rating from '@/components/Review/Rating';
+import { Rating } from '@/components/Review';
 
 interface ReviewFilter {
   rate: number;
+  // eslint-disable-next-line no-unused-vars
   handleRate: (value: number) => void;
 }
 

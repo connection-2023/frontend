@@ -298,12 +298,6 @@ export interface IprocessedDraft {
   schedules?: DayTimeList[] | DateTimeList[];
 }
 
-export type ReviewOrderType =
-  | '최신순'
-  | '좋아요순'
-  | '평점 높은순'
-  | '평점 낮은순';
-
 export interface IClassSchedule {
   id: number;
   lectureId: number;
@@ -344,11 +338,11 @@ export interface IDaySchedule {
   dateTime: string[];
 }
 
-export interface IProcessedSchedules extends IClassSchedule {
+export type IProcessedSchedules = (IClassSchedule | IRegularSchedule) & {
   index: number;
   date: Date;
   isPastClass: boolean;
-}
+};
 
 export interface IClassPreviewResponse {
   id: number;
@@ -431,38 +425,25 @@ interface IImage {
   imageUrl: string;
 }
 
-export interface IUserReview {
-  id: number;
-  userId: number;
-  user: {
-    nickname: string;
-    userProfileImage: null | string;
-  };
-  stars: number;
-  description: string;
-  startDateTime: string;
-  lectureTitle: string;
-  isLike: boolean;
-  count: number;
-}
-
 export interface ILecturerClassListResonse {
   id: number;
-  allSchedule: number;
-  completedSchedule: number;
+  schedulesCount: number;
+  completedSchedulesCount: number;
   startDate: string;
   endDate: string;
   title: string;
-  [key: string]: any;
+  lectureMethod: { name: string };
 }
 
 export interface ILecturerClassDetailResonse {
   title: string;
-  notification: IClassNotification;
+  notification?: IClassNotification;
   reservationComment: string;
+  duration: number;
   maxCapacity: number;
   reservationDeadline: number;
-  schedule: IClassSchedule[];
+  schedules?: IClassSchedule[];
+  regularLectureStatus?: IRegularClassSchedule[];
   holidays: string[];
 }
 

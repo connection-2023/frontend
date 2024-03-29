@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { postRefund } from '@/lib/apis/paymentApis';
 import { formatClassTime } from '@/utils/dateTimeUtils';
 import CancelModal from './CancelModal';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { UniqueButton } from '@/components/Button';
 import { IApplyDetailResponse } from '@/types/class';
 
 const CancelApplicationButton = (props: IApplyDetailResponse) => {

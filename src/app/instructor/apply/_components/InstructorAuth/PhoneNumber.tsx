@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Label from './Label';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import { Verification } from '@/types/types';
 
 interface PhoneNumberProps {

@@ -1,20 +1,19 @@
+import { ComponentPropsWithoutRef } from 'react';
 import { ButtonSizes } from '../../constants/constants';
 
-interface UniqueButtonProps {
+interface UniqueButtonProps extends ComponentPropsWithoutRef<'button'> {
   size?: 'xsmall' | 'small' | 'medium' | 'large';
   color?: 'primary' | 'secondary';
-  children?: React.ReactNode;
-  type?: 'button' | 'submit';
-  onClick?: () => void;
 }
 
-const UniqueButton = ({
-  size = 'medium',
-  color = 'primary',
-  children,
-  onClick,
-  type = 'button',
-}: UniqueButtonProps) => {
+const UniqueButton = (props: UniqueButtonProps) => {
+  const {
+    size = 'medium',
+    color = 'primary',
+    children,
+    type = 'button',
+    ...rest
+  } = props;
   const buttonStyles = {
     primary:
       'hover:bg-sub-color1-transparent group flex w-full items-center justify-center rounded-md border border-solid border-gray-500 bg-white text-gray-500 active:bg-sub-color1 active:text-white',
@@ -25,11 +24,7 @@ const UniqueButton = ({
   const buttonColor = buttonStyles[color];
 
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`${buttonSize} ${buttonColor}`}
-    >
+    <button type={type} className={`${buttonSize} ${buttonColor}`} {...rest}>
       {children}
     </button>
   );

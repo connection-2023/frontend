@@ -6,6 +6,34 @@ import {
 import { searchPass, searchPassesParameters } from '@/types/pass';
 import { FetchError } from '@/types/types';
 
+export const deleteSearchKeyword = async (historyId: number) => {
+  const response = await fetch(
+    `/api/users/delete-keyword?historyId=${historyId}`,
+    {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+    },
+  );
+
+  return response;
+};
+
+export const deleteAllSearchKeywords = async () => {
+  const response = await fetch('/api/users/delete-all-keywords', {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return response;
+};
+
 export const searchInstructors = async (
   data: searchInstructorParameters,
   userState: boolean,

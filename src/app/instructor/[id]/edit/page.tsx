@@ -7,7 +7,7 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
   let processData;
 
   try {
-    const data = await getInstructor(id, false);
+    const data = await getInstructor(id);
     const { newGenres, etcGenres } = categorizeGenres(
       data?.lecturerDanceGenre.map(
         ({ danceCategory }) => danceCategory.genre,

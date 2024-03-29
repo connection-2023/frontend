@@ -45,24 +45,22 @@ export const getUserReport = async (
   firstItemId: number,
   lastItemId: number,
   type: string,
-) => {
+): Promise<IReportResponse[]> => {
   const query = `take=${displayCount}&currentPage=${currentPage}&targetPage=${targetPage}&firstItemId=${firstItemId}&lastItemId=${lastItemId}&filterOption=${type}`;
 
-  try {
-    const response = await fetch(`/api/report/user/history?${query}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((data) => data.json());
+  const response = await fetch(`/api/report/user/history?${query}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((data) => data.json());
 
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error && error.message) {
-      return error.message;
-    }
+  if (response.statusCode !== 200) {
+    throw new Error('유저 신고 목록 불러오기 요청 에러!');
   }
+
+  return response.data.reportList;
 };
 
 export const getInstructorReport = async (
@@ -83,7 +81,7 @@ export const getInstructorReport = async (
     },
   }).then((data) => data.json());
 
-  if (!response.ok) {
+  if (response.statusCode !== 200) {
     throw new Error('강사 신고 목록 불러오기 요청 에러!');
   }
 

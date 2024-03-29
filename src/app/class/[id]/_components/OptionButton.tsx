@@ -1,5 +1,5 @@
 'use client';
-import OptionButtons from '@/components/Button/OptionButtons';
+import { OptionButtons } from '@/components/Button';
 import Like from '@/components/Like/Like';
 
 interface OptionButtonProps {

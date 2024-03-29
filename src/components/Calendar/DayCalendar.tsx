@@ -17,7 +17,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '@/styles/fullCalendar.css';
 
 const ResponsiveScheduleView = dynamic(
-  () => import('@/app/dashboard/_components/ResponsiveScheduleView'),
+  () => import('@/components/ScheduleView/ResponsiveScheduleView'),
   {
     ssr: false,
   },
@@ -128,7 +128,10 @@ const DayCalendar = ({
       )}
 
       <div className="mt-2 min-h-[4rem] overflow-y-auto xl:hidden">
-        <ResponsiveScheduleView selectedEvent={selectedEvents} />
+        <ResponsiveScheduleView
+          selectedEvent={selectedEvents}
+          mode="dashboard"
+        />
       </div>
     </div>
   );

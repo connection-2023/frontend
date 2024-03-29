@@ -13,3 +13,5 @@ export { usefilterStore } from './filterStore';
 export { useSocketStore } from './soketStore';
 
 export { useChatStore } from './chatStore';
+
+export { useClassProgressStore } from './classProgressStore';

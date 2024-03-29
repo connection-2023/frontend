@@ -1,9 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { LikeSVG } from '@/icons/svg';
 import { postReviewLikes, deleteReviewLikes } from '@/lib/apis/classApis';
 import Review from './Review';
+import { LikeSVG } from '../../../public/icons/svg';
 import Profile from '../Profile/ProfileImage';
 
 interface UserReviewProps {

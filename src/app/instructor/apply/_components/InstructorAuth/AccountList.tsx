@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import BankSelect from './BankSelect';
 import Label from './Label';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import { Verification } from '@/types/types';
 
 interface AccountListProps {

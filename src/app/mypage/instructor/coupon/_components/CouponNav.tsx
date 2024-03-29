@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { CouponSVG } from '@/icons/svg';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 
 interface CouponNavProps {
   couponCount: number;

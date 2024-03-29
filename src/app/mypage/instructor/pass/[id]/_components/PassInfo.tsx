@@ -8,7 +8,7 @@ import { disabledPass, getPassForId } from '@/lib/apis/passApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePassSelectStore } from '@/store/passSelectStore';
 import { reloadToast } from '@/utils/reloadMessage';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import InstructorPass from '@/components/Pass/InstructorPass';
 import { FetchError } from '@/types/types';
 

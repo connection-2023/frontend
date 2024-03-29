@@ -26,6 +26,14 @@ const meta: Meta<typeof Button> = {
       options: ['primary', 'default', 'secondary'],
       control: { type: 'radio' },
     },
+    disabled: {
+      description: '버튼 비활성화 여부',
+      defaultValue: { summary: true },
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+      },
+    },
   },
 };
 
@@ -45,6 +53,14 @@ export const Secondary: Story = {
   render: () => (
     <Button color="secondary" size="large">
       Button
+    </Button>
+  ),
+};
+
+export const Disabled: Story = {
+  render: () => (
+    <Button color="secondary" disabled={true}>
+      비활성화 버튼
     </Button>
   ),
 };

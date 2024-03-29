@@ -4,7 +4,7 @@ import { BANK_CODE_TO_NAME } from '@/constants/constants';
 import { BigArrowSVG, MoneySVG } from '@/icons/svg';
 import { getRecentAccount, getTotalIncome } from '@/lib/apis/incomeApis';
 import { initialDateObject } from '../_lib/initialDate';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 
 interface AccountInfoProps {
   view: 'main' | 'payment';

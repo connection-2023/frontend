@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { AuthWelcomeSVG, DoubleRightSVG } from '@/icons/svg';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 
 const Welcome = ({ nickname }: { nickname: string }) => {
   const router = useRouter();

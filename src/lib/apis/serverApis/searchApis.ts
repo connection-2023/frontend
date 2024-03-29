@@ -10,9 +10,55 @@ import {
   searchInstructorParameters,
 } from '@/types/instructor';
 import { searchPass, searchPassesParameters } from '@/types/pass';
-import { FetchError } from '@/types/types';
+import {
+  FetchError,
+  IUserSearchKeywords,
+  IPopularKeyword,
+} from '@/types/types';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
+
+export const getPopularKeywords = async (): Promise<IPopularKeyword[]> => {
+  const response = await fetch(`${END_POINT}/search/popular-terms`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`인기 검색어 조회 오류: ${response.status}`);
+  }
+  const { data } = await response.json();
+
+  return data.popularSearchTerms.slice(0, 5);
+};
+
+export const getRecentHistory = async (): Promise<IUserSearchKeywords[]> => {
+  const cookieStore = cookies();
+  const user = cookieStore.get('userAccessToken')?.value;
+  const lecturer = cookieStore.get('lecturerAccessToken')?.value;
+  const authorization = user || lecturer;
+
+  if (!authorization) return [];
+
+  const response = await fetch(`${END_POINT}/search/history?take=100`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${authorization}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`내 검색어 조회 오류: ${response.status}`);
+  }
+
+  const resData = await response.json();
+
+  return resData.data.searchHistoryList;
+};
 
 export const searchAll = async (
   query: string,

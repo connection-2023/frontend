@@ -350,8 +350,6 @@ export const classCreate = async (id: string) => {
     }
   })();
 
-  console.log('finalSchedules: ', finalSchedules);
-
   const isLocationConfirmed = location?.address;
 
   const { newGenres, etcGenres } = categorizeGenres(

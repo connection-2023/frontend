@@ -1,41 +1,32 @@
+import { ComponentPropsWithoutRef } from 'react';
 import { ButtonSizes, ButtonStyles } from '../../constants/constants';
 
-interface ButtonProps {
+interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
   size?: 'small' | 'medium' | 'large' | 'full';
   color?: 'primary' | 'default' | 'secondary';
-  children?: React.ReactNode;
-  type?: 'button' | 'submit';
-  onClick?: () => void;
-  disabled?: boolean;
 }
 
-const Button = ({
-  size = 'medium',
-  color = 'default',
-  children,
-  type = 'button',
-  onClick,
-  disabled = false,
-}: ButtonProps) => {
-  const DisabledStyled = {
-    secondary:
-      'bg-gray-500 text-white group flex w-full items-center justify-center rounded-md ',
-    default: 'hover:bg-white active:text-sub-color1 active:bg-white',
-    primary:
-      'hover:text-white hover:bg-main-color active:text-white active:bg-main-color',
-  };
+const Button = (props: ButtonProps) => {
+  const {
+    size = 'medium',
+    color = 'default',
+    disabled = false,
+    children,
+    ...rest
+  } = props;
 
-  const styles = `${
-    disabled ? DisabledStyled[color] : ButtonStyles[color]
-  } group ${size === 'full' ? 'h-full' : `h-[${ButtonSizes[size]}px]`}`;
+  const styles = (() => {
+    if (disabled) {
+      return 'group flex h-[35px] w-full cursor-not-allowed items-center justify-center rounded-md border border-solid border-gray-300 bg-white text-gray-300';
+    } else {
+      return `${ButtonStyles[color]} ${
+        size === 'full' ? 'h-full' : `h-[${ButtonSizes[size]}px]`
+      }`;
+    }
+  })();
 
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={styles}
-      disabled={disabled}
-    >
+    <button {...rest} className={styles}>
       {children}
     </button>
   );

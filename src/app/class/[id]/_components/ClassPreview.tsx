@@ -1,5 +1,9 @@
 import { cookies } from 'next/headers';
 import Image from 'next/image';
+import DiscountCouponBanner from './DiscountCouponBanner';
+import OptionButton from './OptionButton';
+import Carousel from '@/components/Carousel/Carousel';
+import { Review } from '@/components/Review';
 import { CLASS_HSTYLE } from '@/constants/constants';
 import {
   LocationSVG,
@@ -14,10 +18,6 @@ import {
   formatLocationToString,
   formatGenreToString,
 } from '@/utils/parseUtils';
-import DiscountCouponBanner from './DiscountCouponBanner';
-import OptionButton from './OptionButton';
-import Carousel from '@/components/Carousel/Carousel';
-import Review from '@/components/Review/Review';
 
 const ClassPreview = async ({ id }: { id: string }) => {
   const cookieStore = cookies();

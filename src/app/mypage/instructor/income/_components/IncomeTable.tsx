@@ -11,7 +11,7 @@ import { CSVLink } from 'react-csv';
 import { PAYMENT_STATUS } from '@/constants/constants';
 import { ExcelSVG, BillSVG } from '@/icons/svg';
 import { formatShortDate } from '@/utils/dateTimeUtils';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import PageSizeSelector from '@/components/Selector/PageSizeSelector';
 import { ILecturerPayment } from '@/types/payment';
 

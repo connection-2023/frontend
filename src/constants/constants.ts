@@ -1,6 +1,7 @@
 import { InstagramSVG, LinkSVG, YoutubeSVG } from '../../public/icons/svg';
 import { ConsentListType } from '@/types/auth';
-import { day, ReviewOrderType } from '@/types/class';
+import { day } from '@/types/class';
+import { ReviewOrderType } from '@/types/review';
 import { TimeOfDay } from '@/types/types';
 
 export const ProfileImgSize = {
@@ -389,6 +390,10 @@ export const PASSES_TAKE = 8;
 
 export const REGIONS_SELECT_MAX = 30;
 
+export const DEFAULT_REVIEW_COUNT = 3;
+
+export const FETCH_REVIEW_COUNT = 5;
+
 export const INITIAL_SCHEDULE_PROGRESS = [
   {
     text: '수업 완료',
@@ -511,7 +516,7 @@ export const HIDE_NAV_PATH = [
   '^/class/edit$',
   '^/instructor/apply$',
   '^/class/[\\w-]+$',
-  '^/class/[\\w-]+/apply$',
+  '^/order',
   '^/instructor/[\\w-]+/edit$',
 ];
 
@@ -529,3 +534,5 @@ export const CHAT_BOX_SIZE_LIMITS = {
   MAX_HEIGHT: 644,
   MAX_WIDTH: 608,
 } as const;
+
+export const SEARCH_LOCAL_STORAGE_KEY = 'searchKeys';

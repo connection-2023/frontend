@@ -13,7 +13,7 @@ import {
 } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store/userStore';
 import { convertToProfileInfo } from '@/utils/apiDataProcessor';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import ProfileImg from '@/components/Profile/ProfileImage';
 import { userType } from '@/types/auth';
 

@@ -12,8 +12,7 @@ import {
   uploadImageFilesWithFallback,
 } from '@/utils/apiDataProcessor';
 import InstructorIntroduction from '../../../apply/_components/InstructorIntroduction';
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { Button, UniqueButton } from '@/components/Button';
 import Nav from '@/components/Nav/Nav';
 import ValidationMessage from '@/components/ValidationMessage/ValidationMessage';
 import { InstructorApplyData } from '@/types/instructor';

@@ -91,26 +91,35 @@ export const calculateRegularFinalClass = (
 
   const allDates = calculateUnSelectedDate(allDatesInRange, holidayDates);
 
-  return schedules.map((schedule) => {
+  const results: {
+    day: string[];
+    dateTime: string;
+    startDateTime: Date[];
+  }[] = [];
+
+  schedules.forEach((schedule) => {
     const days = schedule.day.map((dayStr) => dayMapping[dayStr]);
-    const startDateTime: Date[] = [];
 
     schedule.dateTime.forEach((time) => {
+      const startDateTime: Date[] = [];
+
       allDates.forEach((date) => {
         const day = getDay(date);
-
         if (days.includes(day)) {
           const newDate = makeNewDate(date, time);
           startDateTime.push(newDate);
         }
       });
-    });
 
-    return {
-      ...schedule,
-      startDateTime,
-    };
+      results.push({
+        day: schedule.day,
+        dateTime: time,
+        startDateTime,
+      });
+    });
   });
+
+  return results;
 };
 
 export const getDatesFromSchedules = (

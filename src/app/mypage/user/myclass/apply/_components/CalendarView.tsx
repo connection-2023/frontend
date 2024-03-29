@@ -6,17 +6,20 @@ import { getUserSchedulesCalendar } from '@/lib/apis/classApis';
 import { getLectureProgress } from '@/utils/parseUtils';
 import Spinner from '@/components/Spinner/Spinner';
 
-const FullCalendar = dynamic(() => import('./Calendar/FullCalendar'), {
-  ssr: false,
-  loading: () => (
-    <div className="mt-2 flex h-[675px] w-full max-w-[960px] items-center justify-center">
-      <Spinner />
-    </div>
-  ),
-});
+const FullCalendar = dynamic(
+  () => import('../../../../_components/Calendar/FullCalendar'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mt-2 flex h-[675px] w-full max-w-[960px] items-center justify-center">
+        <Spinner />
+      </div>
+    ),
+  },
+);
 
 const ResponsiveEventCalendar = dynamic(
-  () => import('./Calendar/ResponsiveEventCalendar'),
+  () => import('../../../../_components/Calendar/ResponsiveEventCalendar'),
   {
     ssr: false,
     loading: () => (
@@ -57,6 +60,7 @@ const CalendarView = () => {
               date={date}
               handleDateChange={handleDateChange}
               scheduleData={data}
+              type="user"
             />
           </div>
           <div className="md:hidden">

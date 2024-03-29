@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { UniqueButton } from '@/components/Button';
 
 /* eslint-disable no-unused-vars */
 interface EditReservationComment {

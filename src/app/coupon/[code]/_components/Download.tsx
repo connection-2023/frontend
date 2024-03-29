@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { getPrivateCoupon } from '@/lib/apis/couponApis';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 import { FetchError } from '@/types/types';
 
 const Download = ({ code }: { code: string }) => {

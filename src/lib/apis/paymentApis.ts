@@ -4,8 +4,9 @@ import {
   IPaymentInfoResponse,
   IVirtualAccountInfo,
   PaymentPassInfoParam,
+  IMyPaymentResponse,
 } from '@/types/payment';
-import { FetchError, IMyPaymentResponse } from '@/types/types';
+import { FetchError } from '@/types/types';
 
 export const postPaymentInfo = async (data: IPaymentInfo) => {
   try {
@@ -76,19 +77,21 @@ export const getPaymentHistory = async (
 
 export const getAccountInfo = async (
   id: number,
-): Promise<IVirtualAccountInfo | Error> => {
-  try {
-    const response = await fetch(`/api/payment/accountInfo?id=${id}`, {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => res.json());
+): Promise<IVirtualAccountInfo> => {
+  const response = await fetch(`/api/payment/accountInfo?id=${id}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-    return response.data.virtualAccountPaymentInfo;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error('무통장 정보 조회 오류!');
   }
+
+  const { data } = await response.json();
+
+  return data.virtualAccountDepositDetails.virtualAccountPaymentInfo;
 };
 
 export const postPassPaymentInfo = async (
@@ -112,7 +115,7 @@ export const postPassPaymentInfo = async (
     }
 
     const responseData = await response.json();
-    return responseData.data.passPaymentInfo;
+    return responseData.data.pendingPaymentInfo;
   } catch (error) {
     console.error('패스권 결제 정보 생성 오류', error);
     throw error;

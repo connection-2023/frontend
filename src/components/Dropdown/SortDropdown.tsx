@@ -1,6 +1,6 @@
 'use client';
 import { filterOption } from '@/constants/constants';
-import { ReviewOrderType } from '@/types/class';
+import { ReviewOrderType } from '@/types/review';
 
 interface SortDropdownProps {
   selectedOption: ReviewOrderType;

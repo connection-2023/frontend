@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getMyLecturersReviews } from '@/lib/apis/serverApis/reviewApis';
 import ProfileImg from '@/components/Profile/ProfileImage';
-import Review from '@/components/Review/Review';
+import { Review } from '@/components/Review';
 
 const RecentReview = async () => {
   const { item: reviewData } = await getMyLecturersReviews({

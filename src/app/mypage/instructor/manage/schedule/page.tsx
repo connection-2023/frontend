@@ -6,12 +6,15 @@ import { INITIAL_SCHEDULE_PROGRESS } from '@/constants/constants';
 import { getMonthlyClassPlan } from '@/lib/apis/instructorApi';
 import { getLectureProgress } from '@/utils/parseUtils';
 
-const FullCalendar = dynamic(() => import('./_components/FullCalendar'), {
-  ssr: false,
-});
+const FullCalendar = dynamic(
+  () => import('../../../_components/Calendar/FullCalendar'),
+  {
+    ssr: false,
+  },
+);
 
 const ResponsiveEventCalendar = dynamic(
-  () => import('./_components/ResponsiveEventCalendar'),
+  () => import('../../../_components/Calendar/ResponsiveEventCalendar'),
   {
     ssr: false,
   },
@@ -41,6 +44,7 @@ const SchedulePage = () => {
           date={date}
           handleDateChange={handleDateChange}
           scheduleData={data}
+          type="instructor"
         />
       </div>
 
@@ -49,6 +53,7 @@ const SchedulePage = () => {
           date={date}
           handleDateChange={handleDateChange}
           scheduleData={data}
+          mode="dashboard"
         />
       </div>
 

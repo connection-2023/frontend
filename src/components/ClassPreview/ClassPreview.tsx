@@ -7,7 +7,7 @@ import ResponsiveClassPreview from './ResponsiveClassPreview';
 import Carousel from '../Carousel/Carousel';
 import Like from '../Like/Like';
 import ProfileImage from '../Profile/ProfileImage';
-import Review from '../Review/Review';
+import { Review } from '../Review';
 import { ClassCardType } from '@/types/class';
 
 const ClassPreview = (props: ClassCardType) => {

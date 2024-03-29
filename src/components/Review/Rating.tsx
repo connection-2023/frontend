@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { BigStar, StarSVG } from '@/icons/svg';
+import { BigStar, StarSVG } from '../../../public/icons/svg';
 
 interface ReadonlyProps {
   rate: number;

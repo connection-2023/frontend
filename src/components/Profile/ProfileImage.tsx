@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { ProfileImgSize } from '@/constants/constants';
-import { ProfileSVG } from '@/icons/svg';
+import { ProfileSVG } from '../../../public/icons/svg';
 
 interface ProfileProps {
   src?: string | null;

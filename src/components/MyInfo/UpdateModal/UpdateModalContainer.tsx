@@ -1,5 +1,4 @@
-import Button from '@/components/Button/Button';
-import UniqueButton from '@/components/Button/UniqueButton';
+import { Button, UniqueButton } from '@/components/Button';
 
 interface UpdateModalContainerProps {
   title: string;

@@ -1,6 +1,5 @@
-import { useRef } from 'react';
 import { TooltipSVG } from '@/icons/svg';
-import Button from '@/components/Button/Button';
+import { Button } from '@/components/Button';
 
 interface ITooltip {
   setShow?: () => void;
