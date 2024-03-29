@@ -38,8 +38,9 @@ const ChatRoomHeader = ({
 
   const queryClient = useQueryClient();
 
-  const { setChatRoomSelect } = useChatStore((state) => ({
+  const { setChatRoomSelect, setChatView } = useChatStore((state) => ({
     setChatRoomSelect: state.setChatRoomSelect,
+    setChatView: state.setChatView,
   }));
 
   const {
@@ -187,7 +188,14 @@ const ChatRoomHeader = ({
               className="right-0 w-[8.5rem]"
               options={[
                 {
-                  component: <Link href="/instructor/">신고하기</Link>,
+                  component: (
+                    <Link
+                      href={`/report?targetUserId=${selectChatRoom[opponentType].id}`}
+                    >
+                      신고하기
+                    </Link>
+                  ),
+                  onClick: () => setChatView(false),
                 },
                 {
                   component: <div>채팅방 나가기</div>,
