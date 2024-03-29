@@ -8,14 +8,21 @@ import { getCheckTargetId } from '@/lib/apis/chatApi';
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { useChatStore, useUserStore } from '@/store';
 import { reloadToast } from '@/utils/reloadMessage';
+import { userType } from '@/types/auth';
 import { FetchError } from '@/types/types';
 
 interface ChatButtonProps {
   targetId: number;
+  targetType: userType;
   children: React.ReactNode;
   btnClassName?: string;
 }
-const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
+const ChatButton = ({
+  targetId,
+  targetType,
+  children,
+  btnClassName,
+}: ChatButtonProps) => {
   const { setChatRoomSelect, setChatView } = useChatStore((state) => ({
     setChatRoomSelect: state.setChatRoomSelect,
     setChatView: state.setChatView,
@@ -89,6 +96,8 @@ const ChatButton = ({ targetId, children, btnClassName }: ChatButtonProps) => {
       startChatMutation({ id: authUser.id, targetId });
     }
   };
+
+  if (targetType === userType) return null;
 
   return (
     <button className={btnClassName} onClick={handleChatStart}>

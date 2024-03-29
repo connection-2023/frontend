@@ -198,7 +198,7 @@ const MemberListView = ({
 
           return (
             <div className="group flex w-full justify-center">
-              <ChatButton targetId={data.id}>
+              <ChatButton targetType="user" targetId={data.id}>
                 <ChatSVG className="h-5 w-5 fill-gray-100 group-hover:fill-sub-color1" />
               </ChatButton>
             </div>

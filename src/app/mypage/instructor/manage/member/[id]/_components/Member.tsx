@@ -58,6 +58,7 @@ const Member = () => {
           <ChatButton
             targetId={memberInfo.id}
             btnClassName="flex items-center gap-1"
+            targetType="user"
           >
             <ChatSVG fill="black" width="21" height="21" /> 채팅 보내기
           </ChatButton>

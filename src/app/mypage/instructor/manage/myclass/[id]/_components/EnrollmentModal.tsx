@@ -190,7 +190,11 @@ const ScheduleLearnerList = (props: ScheduleLearnerListProps) => {
           신고
         </Link>
 
-        <ChatButton targetId={userId} aria-label="유저와 채팅">
+        <ChatButton
+          targetType="user"
+          targetId={userId}
+          aria-label="유저와 채팅"
+        >
           <ChatSVG fill="black" width="29" height="30" />
         </ChatButton>
       </div>

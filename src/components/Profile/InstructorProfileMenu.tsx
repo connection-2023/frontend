@@ -73,7 +73,7 @@ const InstructorProfileMenu = ({
         </div>
 
         {chatIcon && (
-          <ChatButton targetId={Number(instructorId)}>
+          <ChatButton targetType="lecturer" targetId={Number(instructorId)}>
             <ChatSVG
               fill="black"
               width="17"

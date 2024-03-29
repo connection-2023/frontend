@@ -84,6 +84,7 @@ const ClassDetail = async ({ id }: { id: string }) => {
             <ChatButton
               btnClassName={`h-[28px] ${ButtonStyles.secondary}`}
               targetId={lecturer.id}
+              targetType="lecturer"
             >
               <ChatSVG
                 width="17"

@@ -104,8 +104,8 @@ const InstructorDetailPage = async ({
               <Like type="instructor" id={id} isLiked={isLiked} />
             </h1>
             <div className="absolute right-0 flex gap-2">
-              <ChatButton targetId={Number(id)}>
-                <ChatSVG width="21" height="21" className="fill-gray-300" />
+              <ChatButton targetType="lecturer" targetId={Number(id)}>
+                <ChatSVG width="23" height="23" className="fill-gray-300" />
               </ChatButton>
               <OptionButtons
                 mode="instructor"

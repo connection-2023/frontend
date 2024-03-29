@@ -114,7 +114,7 @@ const LearnerList = (props: IScheduleLearnerList) => {
       <div className="flex items-center gap-4 text-sub-color1">
         {enrollmentCount && <span>{enrollmentCount}회 신청</span>}
 
-        <ChatButton targetId={userId} aria-label="개인 채팅">
+        <ChatButton targetType="user" targetId={userId} aria-label="개인 채팅">
           <ChatSVG width="29" height="30" fill="black" />
         </ChatButton>
       </div>
