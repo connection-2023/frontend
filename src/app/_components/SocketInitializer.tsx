@@ -93,37 +93,49 @@ const SocketInitializer = ({
       });
 
       socket.on('messageToClient', (newChat: Chat) => {
-        queryClient.setQueryData<ChatPagesData>(
-          ['chats', newChat.chatRoomId],
-          (data) => {
-            if (!data) {
+        setNewChat({ ...newChat });
+
+        const hasChatsQuery = queryClient.getQueryData([
+          'chats',
+          newChat.chatRoomId,
+        ]);
+
+        if (hasChatsQuery) {
+          queryClient.setQueryData<ChatPagesData>(
+            ['chats', newChat.chatRoomId],
+            (data) => {
+              if (!data) {
+                return {
+                  pages: [{ chats: [{ ...newChat }], totalItemCount: 1 }],
+                  pageParams: [''],
+                };
+              }
+              const { pages }: ChatPagesData = data;
+
+              const allChats = [
+                newChat,
+                ...pages.flatMap(({ chats }) => chats),
+              ];
+
+              const newPages = [];
+              for (let i = 0; i < allChats.length; i += CHATS_TAKE) {
+                newPages.push({
+                  chats: allChats.slice(i, i + CHATS_TAKE),
+                  totalItemCount: pages[0].totalItemCount,
+                });
+              }
+
+              const newPageParams = newPages.map((page, index) =>
+                index === 0 ? '' : page.chats[page.chats.length - 1].id,
+              );
+
               return {
-                pages: [{ chats: [{ ...newChat }], totalItemCount: 1 }],
-                pageParams: [''],
+                pages: newPages,
+                pageParams: newPageParams,
               };
-            }
-            const { pages }: ChatPagesData = data;
-
-            const allChats = [newChat, ...pages.flatMap(({ chats }) => chats)];
-
-            const newPages = [];
-            for (let i = 0; i < allChats.length; i += CHATS_TAKE) {
-              newPages.push({
-                chats: allChats.slice(i, i + CHATS_TAKE),
-                totalItemCount: pages[0].totalItemCount,
-              });
-            }
-
-            const newPageParams = newPages.map((page, index) =>
-              index === 0 ? '' : page.chats[page.chats.length - 1].id,
-            );
-
-            return {
-              pages: newPages,
-              pageParams: newPageParams,
-            };
-          },
-        );
+            },
+          );
+        }
 
         const receiverId = (newChat.receiver.userId ||
           newChat.receiver.lecturerId) as number;
@@ -133,6 +145,15 @@ const SocketInitializer = ({
           queryClient.setQueryData<number>(['commentCount'], (totalCount) => {
             return totalCount ? totalCount + 1 : 1;
           });
+        }
+
+        const hasChatListQuery = queryClient.getQueryData([
+          'chatRoomList',
+          userId,
+        ]);
+
+        if (!hasChatListQuery) {
+          return;
         }
 
         const targetChatRoomIndex = queryClient
@@ -204,8 +225,6 @@ const SocketInitializer = ({
 
           setChatRoomSelect({ ...newChatRoom });
         }
-
-        setNewChat({ ...newChat });
       });
 
       socket.emit('login', {
