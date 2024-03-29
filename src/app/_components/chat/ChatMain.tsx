@@ -41,12 +41,10 @@ const ChatMain = ({
     mutationFn: (chatRoom: IChatRoom) => readChat(chatRoom),
     onSuccess: (selectChatRoom) => {
       queryClient.setQueryData<number>(['commentCount'], (totalCount) => {
-        return totalCount && selectChatRoom.unreadCount
-          ? selectChatRoom.unreadCount === 0
-            ? totalCount - 1
-            : totalCount - selectChatRoom.unreadCount < 0
-            ? 0
-            : totalCount - selectChatRoom.unreadCount
+        return totalCount
+          ? selectChatRoom.unreadCount
+            ? totalCount - selectChatRoom.unreadCount
+            : totalCount - 1
           : totalCount;
       });
 
@@ -89,6 +87,15 @@ const ChatMain = ({
   useEffect(() => {
     setChatRoomList(chatRoomListData ?? []);
   }, [chatRoomListData]);
+
+  useEffect(() => {
+    const chatRoomInfo = chatRoomList?.find(
+      (chatRoom) => chatRoom.id === selectChatRoom?.id,
+    );
+    if (chatRoomInfo?.unreadCount) {
+      readChatFn(chatRoomInfo);
+    }
+  }, [selectChatRoom, chatRoomList]);
 
   const searchChatRoomList = (searchValue?: string) => {
     setChatRoomList((prev) =>

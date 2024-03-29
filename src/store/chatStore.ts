@@ -7,7 +7,7 @@ interface chatStore {
   chatView: boolean;
   setChatView: (state: boolean) => void;
   newChat: Chat | null;
-  setNewChat: (newChat: Chat) => void;
+  setNewChat: (newChat: Chat | null) => void;
 }
 
 export const useChatStore = create<chatStore>((set) => ({

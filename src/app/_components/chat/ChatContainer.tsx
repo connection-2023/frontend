@@ -10,7 +10,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useWindowSize } from 'react-use';
 import { CHAT_BOX_SIZE_LIMITS } from '@/constants/constants';
 import useMediaQuery from '@/hooks/useMediaQuery';
-import { useChatStore } from '@/store';
 import ChatMain from './ChatMain';
 import { userType } from '@/types/auth';
 

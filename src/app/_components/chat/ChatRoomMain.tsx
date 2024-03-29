@@ -38,8 +38,9 @@ const ChatRoomMain = ({
   const inputFileRef = useRef<HTMLInputElement>(null);
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
-  const { newchat } = useChatStore((state) => ({
+  const { newchat, setNewChat } = useChatStore((state) => ({
     newchat: state.newChat,
+    setNewChat: state.setNewChat,
   }));
 
   const [sendChatPreview, setSendChatPreview] = useState<
@@ -109,6 +110,7 @@ const ChatRoomMain = ({
       if (newchat.sender[opponentId]) {
         setIsReceived(true);
         readChatFn(selectChatRoom);
+        return () => setNewChat(null);
       }
     }
   }, [newchat]);

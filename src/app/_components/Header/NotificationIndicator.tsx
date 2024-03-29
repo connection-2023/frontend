@@ -24,14 +24,14 @@ const NotificationIndicator = ({
 
   const { alarmCount } = dummyUserInfo;
 
-  const { chatView, newChat, setChatView, setChatRoomSelect } = useChatStore(
-    (state) => ({
+  const { chatView, newChat, setChatView, setChatRoomSelect, setNewChat } =
+    useChatStore((state) => ({
       setChatView: state.setChatView,
       chatView: state.chatView,
       newChat: state.newChat,
       setChatRoomSelect: state.setChatRoomSelect,
-    }),
-  );
+      setNewChat: state.setNewChat,
+    }));
 
   const { data: chatCount } = useQuery({
     queryKey: ['commentCount'],
@@ -40,11 +40,16 @@ const NotificationIndicator = ({
     refetchOnWindowFocus: 'always',
   });
 
+  const closeChatPreview = () => {
+    setPreview(false);
+    setNewChat(null);
+  };
+
   const userIdType = userType === 'user' ? 'userId' : 'lecturerId';
   const opponentType = userType === 'user' ? 'lecturer' : 'user';
 
   const startTimer = () => {
-    timerRef.current = setTimeout(() => setPreview(false), 5000);
+    timerRef.current = setTimeout(() => closeChatPreview(), 5000);
   };
 
   const stopTimer = () => {
@@ -54,7 +59,7 @@ const NotificationIndicator = ({
   const clickChatPreviewHandler = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     if (!newChat) return;
-    setPreview(false);
+    closeChatPreview();
     setChatView(true);
 
     const newChatRoom: ChatRoom = {
@@ -84,10 +89,6 @@ const NotificationIndicator = ({
 
     return () => stopTimer();
   }, [newChat]);
-
-  const closeChatPreview = () => {
-    setPreview(false);
-  };
 
   return (
     <>

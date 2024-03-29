@@ -101,40 +101,7 @@ const SocketInitializer = ({
         ]);
 
         if (hasChatsQuery) {
-          queryClient.setQueryData<ChatPagesData>(
-            ['chats', newChat.chatRoomId],
-            (data) => {
-              if (!data) {
-                return {
-                  pages: [{ chats: [{ ...newChat }], totalItemCount: 1 }],
-                  pageParams: [''],
-                };
-              }
-              const { pages }: ChatPagesData = data;
-
-              const allChats = [
-                newChat,
-                ...pages.flatMap(({ chats }) => chats),
-              ];
-
-              const newPages = [];
-              for (let i = 0; i < allChats.length; i += CHATS_TAKE) {
-                newPages.push({
-                  chats: allChats.slice(i, i + CHATS_TAKE),
-                  totalItemCount: pages[0].totalItemCount,
-                });
-              }
-
-              const newPageParams = newPages.map((page, index) =>
-                index === 0 ? '' : page.chats[page.chats.length - 1].id,
-              );
-
-              return {
-                pages: newPages,
-                pageParams: newPageParams,
-              };
-            },
-          );
+          updateChatPagesData(newChat);
         }
 
         const receiverId = (newChat.receiver.userId ||
@@ -152,78 +119,8 @@ const SocketInitializer = ({
           userId,
         ]);
 
-        if (!hasChatListQuery) {
-          return;
-        }
-
-        const targetChatRoomIndex = queryClient
-          .getQueryData<ChatRoom[]>(['chatRoomList', userId])
-          ?.findIndex((chatRoom) => chatRoom.id === newChat.chatRoomId);
-
-        if (
-          typeof targetChatRoomIndex === 'number' &&
-          targetChatRoomIndex !== -1
-        ) {
-          queryClient.setQueryData<ChatRoom[]>(
-            ['chatRoomList', userId],
-            (oldData) => {
-              if (!oldData) return oldData;
-
-              const targetChatRoom = oldData[targetChatRoomIndex];
-
-              const updatedChatRoom: ChatRoom = {
-                ...targetChatRoom,
-                unreadCount: !isReceiver
-                  ? targetChatRoom.unreadCount
-                  : targetChatRoom.unreadCount && targetChatRoom.unreadCount > 0
-                  ? targetChatRoom.unreadCount + 1
-                  : 1,
-                lastChat: targetChatRoom.lastChat
-                  ? {
-                      ...targetChatRoom.lastChat,
-                      imageUrl: newChat?.imageUrl,
-                      content: newChat.content,
-                      createdAt: newChat.createdAt,
-                    }
-                  : undefined,
-              };
-
-              const updatedData = [...oldData];
-              updatedData.splice(targetChatRoomIndex, 1);
-              updatedData.unshift(updatedChatRoom);
-
-              return updatedData;
-            },
-          );
-        } else {
-          const newChatRoom: ChatRoom = {
-            id: newChat.chatRoomId,
-            user: {
-              id: newChat.receiver.userId || (newChat.sender.userId as number),
-              participation: true,
-            },
-            lecturer: {
-              id:
-                newChat.receiver.lecturerId ||
-                (newChat.sender.lecturerId as number),
-              participation: true,
-            },
-            unreadCount: isReceiver ? 1 : undefined,
-            lastChat: {
-              ...newChat,
-            },
-          };
-
-          queryClient.setQueryData<ChatRoom[]>(
-            ['chatRoomList', userId],
-            (oldData) => {
-              if (!oldData) return [{ ...newChatRoom }];
-
-              return [{ ...newChatRoom }, ...oldData];
-            },
-          );
-
-          setChatRoomSelect({ ...newChatRoom });
+        if (hasChatListQuery) {
+          updateChatRoomList(newChat, isReceiver);
         }
       });
 
@@ -238,6 +135,109 @@ const SocketInitializer = ({
       };
     }
   }, [userType]);
+
+  const updateChatPagesData = (newChat: Chat) => {
+    queryClient.setQueryData<ChatPagesData>(
+      ['chats', newChat.chatRoomId],
+      (data) => {
+        if (!data) {
+          return {
+            pages: [{ chats: [{ ...newChat }], totalItemCount: 1 }],
+            pageParams: [''],
+          };
+        }
+        const { pages }: ChatPagesData = data;
+
+        const allChats = [newChat, ...pages.flatMap(({ chats }) => chats)];
+
+        const newPages = [];
+        for (let i = 0; i < allChats.length; i += CHATS_TAKE) {
+          newPages.push({
+            chats: allChats.slice(i, i + CHATS_TAKE),
+            totalItemCount: pages[0].totalItemCount,
+          });
+        }
+
+        const newPageParams = newPages.map((page, index) =>
+          index === 0 ? '' : page.chats[page.chats.length - 1].id,
+        );
+
+        return {
+          pages: newPages,
+          pageParams: newPageParams,
+        };
+      },
+    );
+  };
+
+  const updateChatRoomList = (newChat: Chat, isReceiver: boolean) => {
+    const targetChatRoomIndex = queryClient
+      .getQueryData<ChatRoom[]>(['chatRoomList', userId])
+      ?.findIndex((chatRoom) => chatRoom.id === newChat.chatRoomId);
+
+    if (typeof targetChatRoomIndex === 'number' && targetChatRoomIndex !== -1) {
+      queryClient.setQueryData<ChatRoom[]>(
+        ['chatRoomList', userId],
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          const targetChatRoom = oldData[targetChatRoomIndex];
+
+          const updatedChatRoom: ChatRoom = {
+            ...targetChatRoom,
+            unreadCount: !isReceiver
+              ? targetChatRoom.unreadCount
+              : targetChatRoom.unreadCount && targetChatRoom.unreadCount > 0
+              ? targetChatRoom.unreadCount + 1
+              : 1,
+            lastChat: targetChatRoom.lastChat
+              ? {
+                  ...targetChatRoom.lastChat,
+                  imageUrl: newChat?.imageUrl,
+                  content: newChat.content,
+                  createdAt: newChat.createdAt,
+                }
+              : undefined,
+          };
+
+          const updatedData = [...oldData];
+          updatedData.splice(targetChatRoomIndex, 1);
+          updatedData.unshift(updatedChatRoom);
+
+          return updatedData;
+        },
+      );
+    } else {
+      const newChatRoom: ChatRoom = {
+        id: newChat.chatRoomId,
+        user: {
+          id: newChat.receiver.userId || (newChat.sender.userId as number),
+          participation: true,
+        },
+        lecturer: {
+          id:
+            newChat.receiver.lecturerId ||
+            (newChat.sender.lecturerId as number),
+          participation: true,
+        },
+        unreadCount: isReceiver ? 1 : undefined,
+        lastChat: {
+          ...newChat,
+        },
+      };
+
+      queryClient.setQueryData<ChatRoom[]>(
+        ['chatRoomList', userId],
+        (oldData) => {
+          if (!oldData) return [{ ...newChatRoom }];
+
+          return [{ ...newChatRoom }, ...oldData];
+        },
+      );
+
+      setChatRoomSelect({ ...newChatRoom });
+    }
+  };
 
   return null;
 };
