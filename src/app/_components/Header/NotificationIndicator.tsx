@@ -1,9 +1,9 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
+import { PanInfo, motion, useMotionValue, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { dummyUserInfo } from '@/constants/dummy';
-import { AlarmSVG, ChatSVG } from '@/icons/svg';
+import { AlarmSVG, ChatSVG, CloseSVG } from '@/icons/svg';
 import { getOpponentInfo, getUnreadCount } from '@/lib/apis/chatApi';
 import { useChatStore } from '@/store';
 import ProfileImg from '@/components/Profile/ProfileImage';
@@ -85,6 +85,10 @@ const NotificationIndicator = ({
     return () => stopTimer();
   }, [newChat]);
 
+  const closeChatPreview = () => {
+    setPreview(false);
+  };
+
   return (
     <>
       <button className="relative">
@@ -106,6 +110,7 @@ const NotificationIndicator = ({
             startTimer={startTimer}
             stopTimer={stopTimer}
             onClick={clickChatPreviewHandler}
+            closeChatPreview={closeChatPreview}
           />
         )}
       </button>
@@ -121,6 +126,7 @@ interface ChatPreviewProps {
   startTimer: () => void;
   stopTimer: () => void;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  closeChatPreview: () => void;
 }
 
 const ChatPreview = ({
@@ -129,10 +135,15 @@ const ChatPreview = ({
   startTimer,
   stopTimer,
   onClick,
+  closeChatPreview,
 }: ChatPreviewProps) => {
   const opponentId = chat.sender[
     opponentType === 'lecturer' ? 'lecturerId' : 'userId'
   ] as number;
+
+  const x = useMotionValue(0);
+
+  const opacity = useTransform(x, [-100, 0, 100], [0, 1, 0]);
 
   const { data, isLoading } = useQuery({
     queryKey: ['opponentProfile', opponentType, opponentId],
@@ -140,14 +151,33 @@ const ChatPreview = ({
     staleTime: Infinity,
   });
 
+  const closePreviewHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    closeChatPreview();
+  };
+
+  const handleDragEnd = (
+    event: PointerEvent | MouseEvent | TouchEvent,
+    info: PanInfo,
+  ) => {
+    if (Math.abs(info.offset.x) < -90 || Math.abs(info.offset.x) > 100) {
+      closeChatPreview();
+    }
+  };
+
   return (
-    <div
+    <motion.div
       onClick={onClick}
       onMouseEnter={stopTimer}
       onMouseLeave={startTimer}
       className="absolute -bottom-36 right-0 grid h-[6.5rem] w-72 grid-rows-[auto_1fr] gap-y-2 rounded-md border border-solid border-main-color bg-white/90 p-3 backdrop-blur-3xl sm:-right-20"
+      style={{ x, opacity }}
+      drag="x"
+      layoutId="chat"
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragEnd={handleDragEnd}
     >
-      <div className="grid grid-cols-[auto_1fr] items-center">
+      <div className="relative grid grid-cols-[auto_1fr] items-center">
         {isLoading ? (
           <>
             <div className="mr-3 size-[34px] flex-shrink-0 animate-pulse rounded-full bg-gray-500" />
@@ -161,10 +191,13 @@ const ChatPreview = ({
             </div>
           </>
         )}
+        <div className="absolute -right-1 -top-1" onClick={closePreviewHandler}>
+          <CloseSVG className="size-[17px] stroke-[#414141] stroke-[3px]" />
+        </div>
       </div>
       <p className="line-clamp-2 whitespace-pre-wrap text-left text-sm">
         {chat.imageUrl ? '이미지' : chat.content}
       </p>
-    </div>
+    </motion.div>
   );
 };

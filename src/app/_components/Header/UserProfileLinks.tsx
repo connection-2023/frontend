@@ -11,7 +11,7 @@ interface UserProfileLinksProps {
 
 const UserProfileLinks = ({ authUser, userType }: UserProfileLinksProps) => {
   return (
-    <div className="relative flex items-end gap-3">
+    <div className="flex items-end gap-3">
       <h2 className="text-0 overflow-hidden indent-[-9999px]">
         Connection 유저 메뉴
       </h2>
