@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import Spinner from '@/components/Loading/Spinner';
-import UserProfileMenu from '@/components/Profile/UserProfileMenu';
-import { IScheduleLearnerList } from '@/types/class';
 import ErrorFallback from '@/app/_components/Error';
 import { ChatSVG } from '@/icons/svg';
 import {
   getAllRegisterLists,
   getScheduleRegisterLists,
 } from '@/lib/apis/classApis';
+import ChatButton from '@/components/Chat/ChatButton';
+import Spinner from '@/components/Loading/Spinner';
+import UserProfileMenu from '@/components/Profile/UserProfileMenu';
+import { IScheduleLearnerList } from '@/types/class';
 
 interface ClassOverViewProps {
   totalClassNum: number;
@@ -71,13 +72,13 @@ const ClassOverview = ({
             ? '전체 수강생 리스트'
             : `${selectedClass.index}회차 수강생 리스트`}
 
-          <button
+          {/* <button
             aria-label="전체 채팅"
             className="flex h-[1.75rem] w-[5.5625rem] items-center justify-center gap-[0.13rem] rounded-[0.3125rem] bg-black text-sm text-white"
           >
             <ChatSVG width="16" height="17" fill="white" />
             전체 채팅
-          </button>
+          </button> */}
         </h3>
         {isLoading ? (
           <div className="mb-auto mt-5 flex h-fit items-center justify-center">
@@ -113,14 +114,9 @@ const LearnerList = (props: IScheduleLearnerList) => {
       <div className="flex items-center gap-4 text-sub-color1">
         {enrollmentCount && <span>{enrollmentCount}회 신청</span>}
 
-        <Link href={`/chat/${userId}`} aria-label="개인 채팅">
-          <ChatSVG
-            width="29"
-            height="30"
-            fill="black"
-            className="cursor-pointer"
-          />
-        </Link>
+        <ChatButton targetId={userId} aria-label="개인 채팅">
+          <ChatSVG width="29" height="30" fill="black" />
+        </ChatButton>
       </div>
     </li>
   );

@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { useClickAway } from 'react-use';
 import { ProfileImgSize } from '@/constants/constants';
 import { ChatSVG } from '@/icons/svg';
+import ChatButton from '../Chat/ChatButton';
 import Dropdown from '@/components/Dropdown/Dropdown';
 import ProfileImg from '@/components/Profile/ProfileImage';
 
@@ -72,14 +73,14 @@ const InstructorProfileMenu = ({
         </div>
 
         {chatIcon && (
-          <Link href={`/chat/${instructorId}`}>
+          <ChatButton targetId={Number(instructorId)}>
             <ChatSVG
               fill="black"
               width="17"
               height="17"
               className="cursor-pointer"
             />
-          </Link>
+          </ChatButton>
         )}
       </div>
     </div>

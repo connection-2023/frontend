@@ -12,6 +12,7 @@ import { useMemo } from 'react';
 import { ChatSVG, MemoSVG } from '@/icons/svg';
 import { useMemberStore } from '@/store/memberStore';
 import formatDate from '@/utils/formatDate';
+import ChatButton from '@/components/Chat/ChatButton';
 import ProfileImg from '@/components/Profile/ProfileImage';
 import { MemberData, MemberInfo } from '@/types/instructor';
 import { PagenationFilterState } from '@/types/types';
@@ -193,13 +194,13 @@ const MemberListView = ({
           return <div className="flex justify-center">채팅</div>;
         },
         cell: ({ getValue }) => {
-          const date = getValue();
+          const data = getValue();
 
           return (
             <div className="group flex w-full justify-center">
-              <button>
+              <ChatButton targetId={data.id}>
                 <ChatSVG className="h-5 w-5 fill-gray-100 group-hover:fill-sub-color1" />
-              </button>
+              </ChatButton>
             </div>
           );
         },
@@ -232,10 +233,10 @@ const MemberListView = ({
             options={takeOptions}
           />
 
-          <button className="flex h-7 items-center justify-center whitespace-nowrap rounded-md bg-gray-100 px-2 text-sm text-white">
+          {/* <ChatButton  btnClassName="flex h-7 items-center justify-center whitespace-nowrap rounded-md bg-gray-100 px-2 text-sm text-white">
             <ChatSVG className="h-5 w-5 fill-white" />
             전체 <p className="hidden sm:block">채팅</p>
-          </button>
+          </ChatButton> */}
 
           <ExcelDownload memberList={memberList} />
         </div>

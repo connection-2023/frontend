@@ -8,6 +8,7 @@ import { ChatSVG, ReportSVG } from '@/icons/svg';
 import { patchMemberMemo } from '@/lib/apis/instructorApi';
 import { useMemberStore } from '@/store/memberStore';
 import { formatPhoneNumber } from '@/utils/parseUtils';
+import ChatButton from '@/components/Chat/ChatButton';
 import ProfileImg from '@/components/Profile/ProfileImage';
 
 const Member = () => {
@@ -54,9 +55,12 @@ const Member = () => {
             {formatPhoneNumber(memberInfo.phoneNumber)}
           </dd>
 
-          <button className="flex items-center gap-1">
+          <ChatButton
+            targetId={memberInfo.id}
+            btnClassName="flex items-center gap-1"
+          >
             <ChatSVG fill="black" width="21" height="21" /> 채팅 보내기
-          </button>
+          </ChatButton>
           <Link
             href={`/report?targetUserId=${memberInfo.id}`}
             className="flex items-center gap-1"

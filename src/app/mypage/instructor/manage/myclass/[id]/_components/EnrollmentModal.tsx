@@ -8,6 +8,7 @@ import { ChatSVG } from '@/icons/svg';
 import { getScheduleRegisterLists } from '@/lib/apis/classApis';
 import { patchMemberMemo } from '@/lib/apis/instructorApi';
 import { formatDateTimeNoSec } from '@/utils/dateTimeUtils';
+import ChatButton from '@/components/Chat/ChatButton';
 import Modal from '@/components/Modal/Modal';
 import UserProfileMenu from '@/components/Profile/UserProfileMenu';
 import Spinner from '@/components/Spinner/Spinner';
@@ -189,14 +190,9 @@ const ScheduleLearnerList = (props: ScheduleLearnerListProps) => {
           신고
         </Link>
 
-        <Link
-          href={`/chat/${userId}`}
-          aria-label="유저와 채팅"
-          className="cursor-pointer"
-          prefetch={false}
-        >
+        <ChatButton targetId={userId} aria-label="유저와 채팅">
           <ChatSVG fill="black" width="29" height="30" />
-        </Link>
+        </ChatButton>
       </div>
 
       <div className="flex w-full items-center justify-end">

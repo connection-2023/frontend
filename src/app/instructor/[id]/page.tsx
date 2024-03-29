@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { INSTRUCTOR_SECTIONS } from '@/constants/constants';
-import { InstagramSVG, YoutubeSVG, LinkSVG } from '@/icons/svg';
+import { InstagramSVG, YoutubeSVG, LinkSVG, ChatSVG } from '@/icons/svg';
 import {
   getInstructor,
   getInstructorClassLists,
@@ -16,6 +16,7 @@ import ClassList from './_components/ClassList';
 import InstructorCarousel from './_components/InstructorCarousel';
 import ReviewSection from './_components/ReviewSection';
 import OptionButtons from '@/components/Button/OptionButtons';
+import ChatButton from '@/components/Chat/ChatButton';
 import Like from '@/components/Like/Like';
 import Nav from '@/components/Nav/Nav';
 import Review from '@/components/Review/Review';
@@ -102,7 +103,10 @@ const InstructorDetailPage = async ({
               {nickname}
               <Like type="instructor" id={id} isLiked={isLiked} />
             </h1>
-            <div className="absolute right-0 flex gap-3">
+            <div className="absolute right-0 flex gap-2">
+              <ChatButton targetId={Number(id)}>
+                <ChatSVG width="21" height="21" className="fill-gray-300" />
+              </ChatButton>
               <OptionButtons
                 mode="instructor"
                 title={nickname}
