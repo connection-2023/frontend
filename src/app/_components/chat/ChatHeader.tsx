@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 import { ArrowRightSVG, CloseSVG, SearchSVG } from '@/icons/svg';
 import { useChatStore } from '@/store';
@@ -22,8 +22,35 @@ const ChatHeader = ({
   const { setChatView } = useChatStore((state) => ({
     setChatView: state.setChatView,
   }));
+  const initialized = useRef(false);
   const [search, setSearch] = useState({ view: false, value: '' });
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const chatFirstRenderIsSm = useMemo(() => isSm, []);
+
+  useEffect(() => {
+    if (!initialized.current && chatFirstRenderIsSm) {
+      window.history.pushState(null, '', '');
+
+      initialized.current = true;
+      return;
+    }
+
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    window.onpopstate = () => {
+      if (selectChatRoom) {
+        chatSelectHandler(null);
+      } else {
+        setChatView(false);
+      }
+      window.onpopstate = null;
+    };
+  }, [selectChatRoom]);
 
   useEffect(() => {
     if (search.view && searchInputRef.current) {
@@ -45,6 +72,17 @@ const ChatHeader = ({
 
   const searchViewHandler = () => {
     setSearch((prev) => ({ ...prev, view: true }));
+  };
+
+  const closeChatView = () => {
+    if (chatFirstRenderIsSm) {
+      window.history.back();
+      if (selectChatRoom) {
+        window.history.back();
+      }
+    } else {
+      setChatView(false);
+    }
   };
 
   return (
@@ -82,15 +120,9 @@ const ChatHeader = ({
           </button>
         </div>
       ) : (
-        <button
-          onClick={() => chatSelectHandler(null)}
-          className="flex items-center gap-1 font-semibold"
-        >
-          <ArrowRightSVG className="size-7 rotate-180 stroke-black" />
-          채팅목록
-        </button>
+        <PrevChatListBtn />
       )}
-      <button onClick={() => setChatView(false)}>
+      <button onClick={closeChatView}>
         <CloseSVG className="size-[21px] stroke-gray-300 stroke-2 sm:stroke-white" />
       </button>
     </header>
@@ -98,3 +130,26 @@ const ChatHeader = ({
 };
 
 export default ChatHeader;
+
+const PrevChatListBtn = () => {
+  const initialized = useRef(false);
+
+  useEffect(() => {
+    if (!initialized.current) {
+      window.history.pushState(null, '', '');
+
+      initialized.current = true;
+      return;
+    }
+  }, []);
+
+  return (
+    <button
+      onClick={() => window.history.back()}
+      className="flex items-center gap-1 font-semibold"
+    >
+      <ArrowRightSVG className="size-7 rotate-180 stroke-black" />
+      채팅목록
+    </button>
+  );
+};
