@@ -375,7 +375,12 @@ export interface IClassDetailResponse {
   minCapacity: number;
   reviewCount: number;
   locationDescription: string | null;
-  location: string | null;
+  location: {
+    id: number;
+    address: string;
+    detailAddress: string;
+    buildingName: string;
+  };
   duration: number;
   stars: number;
 }

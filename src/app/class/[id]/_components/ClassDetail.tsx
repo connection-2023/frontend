@@ -1,14 +1,4 @@
 import Link from 'next/link';
-import Apply from './Apply';
-import ReadMore from './ReadMore';
-import RegularApply from './RegularApply';
-import Notice from '@/components/ClassNotice/Notice';
-import Map from '@/components/Map/Map';
-import Nav from '@/components/Nav/Nav';
-import ProfileImage from '@/components/Profile/ProfileImage';
-import RegularScheduleView from '@/components/ScheduleView/RegularScheduleView';
-import ScheduleView from '@/components/ScheduleView/ScheduleView';
-import ReviewSection from '@/components/uis/ReviewSection';
 import {
   ButtonStyles,
   CLASS_SECTIONS,
@@ -21,6 +11,16 @@ import {
 } from '@/lib/apis/serverApis/classPostApis';
 import { formatDate } from '@/utils/parseUtils';
 import { sanitizeHtmlString } from '@/utils/sanitizeHtmlString';
+import Apply from './Apply';
+import ReadMore from './ReadMore';
+import RegularApply from './RegularApply';
+import Notice from '@/components/ClassNotice/Notice';
+import Map from '@/components/Map/Map';
+import Nav from '@/components/Nav/Nav';
+import ProfileImage from '@/components/Profile/ProfileImage';
+import RegularScheduleView from '@/components/ScheduleView/RegularScheduleView';
+import ScheduleView from '@/components/ScheduleView/ScheduleView';
+import ReviewSection from '@/components/uis/ReviewSection';
 
 const ClassDetail = async ({ id }: { id: string }) => {
   const classDetailData = getClassDetail(id);
@@ -153,10 +153,13 @@ const ClassDetail = async ({ id }: { id: string }) => {
           <h2 className={CLASS_HSTYLE.h2}>진행 장소</h2>
           <span className="mb-2 mt-2 flex items-center gap-0.5">
             <LocationSVG width={21} height={21} className="fill-sub-color1" />{' '}
-            {/* detailAddress*/}
+            {location.detailAddress}
           </span>
           <div className="h-[18.25rem] max-w-[40rem] bg-slate-100">
-            {/* <Map address={locationDetail} studioName={studioName} /> */}
+            <Map
+              address={location.address}
+              studioName={location.buildingName}
+            />
           </div>
           <p className="text-sm font-normal">{locationDescription}</p>
         </section>
