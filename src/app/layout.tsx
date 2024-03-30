@@ -6,6 +6,7 @@ import {
   getInstructorProfile,
   getMyProfile,
 } from '@/lib/apis/serverApis/userApi';
+import NaverMapsProviders from '@/lib/provider/NaverMapsProviders';
 import Providers from '@/lib/provider/providers';
 import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 import ControlOptions from './_components/ControlOptions';
@@ -78,10 +79,8 @@ export default async function RootLayout({
             pauseOnHover
             theme="light"
           />
-
-          {children}
+          <NaverMapsProviders>{children}</NaverMapsProviders>
           <ControlOptions />
-
           <Footer />
           <MobileNav />
         </Providers>
