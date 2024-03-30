@@ -32,31 +32,16 @@ const ConfirmedLocation = ({
 
   useEffect(() => {
     const receiveMessage = (event: MessageEvent) => {
-      console.log('process.env.NODE_ENV::::', process.env.NODE_ENV);
-      console.log('event.data:::', event.data);
-      console.log('event.data.source:::', event.data.source);
-      console.log('window.origin:::', window.origin);
-
-      console.log(
-        'boolean:::',
-        process.env.NODE_ENV === 'development' &&
-          (event.origin !== window.origin ||
-            event.data.source === 'react-devtools-content-script' ||
-            event.data.source === 'react-devtools-backend-manager' ||
-            event.data.source === 'react-devtools-bridge'),
-      );
+      if (
+        event.origin !== window.origin ||
+        event.data.source === 'react-devtools-content-script' ||
+        event.data.source === 'react-devtools-backend-manager' ||
+        event.data.source === 'react-devtools-bridge'
+      )
+        return;
 
       onChange(event.data);
       setLocation(event.data);
-
-      if (
-        process.env.NODE_ENV === 'development' &&
-        (event.origin !== window.origin ||
-          event.data.source === 'react-devtools-content-script' ||
-          event.data.source === 'react-devtools-backend-manager' ||
-          event.data.source === 'react-devtools-bridge')
-      )
-        return console.log('hello');
     };
 
     window.addEventListener('message', receiveMessage);
