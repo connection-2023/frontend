@@ -17,7 +17,12 @@ import ApplyButton from '@/components/Button/ApplyButton';
 import ProfileImg from '@/components/Profile/ProfileImage';
 import Spinner from '@/components/Spinner/Spinner';
 import { userType } from '@/types/auth';
-import { ChatRoom, OpponentInfo, Chat as NewChat } from '@/types/chat';
+import {
+  ChatRoom,
+  OpponentInfo,
+  Chat as NewChat,
+  SendChatPreview,
+} from '@/types/chat';
 import { FetchError } from '@/types/types';
 
 interface ChatRoomMainProps {
@@ -43,19 +48,7 @@ const ChatRoomMain = ({
     setNewChat: state.setNewChat,
   }));
 
-  const [sendChatPreview, setSendChatPreview] = useState<
-    | {
-        content?: string;
-        imageUrl: string;
-        error: boolean;
-      }
-    | {
-        content: string;
-        imageUrl?: string;
-        error: boolean;
-      }
-    | null
-  >(null);
+  const [sendChatPreview, setSendChatPreview] = useState<SendChatPreview>(null);
   const [isReceived, setIsReceived] = useState(false);
 
   const opponentType = userType === 'user' ? 'lecturer' : 'user';
@@ -304,7 +297,11 @@ const NewReceiveChatAlarm = ({
       {profileIsLoading || profileError ? (
         <div className="mr-3 size-[22px] flex-shrink-0 animate-pulse rounded-full bg-gray-700" />
       ) : (
-        <ProfileImg src={profileDate?.profilImg} size="xsmall" marginLeft={0} />
+        <ProfileImg
+          src={profileDate?.profileImg}
+          size="xsmall"
+          marginLeft={0}
+        />
       )}
       <div className="flex-grow truncate">{newchat.content}</div>
     </button>

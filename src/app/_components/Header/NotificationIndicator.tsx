@@ -186,7 +186,7 @@ const ChatPreview = ({
           </>
         ) : (
           <>
-            <ProfileImg src={data?.profilImg} size="small" />
+            <ProfileImg src={data?.profileImg} size="small" />
             <div className="flex-grow truncate text-left font-bold">
               {data?.nickname}
             </div>

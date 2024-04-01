@@ -84,23 +84,37 @@ export interface ChatPagesData {
 export interface OpponentInfo {
   id: number;
   nickname: string;
-  profilImg: string;
+  profileImg: string;
 }
 
 interface UserData {
-  createdAt: Data;
+  createdAt: Date;
   lecturerId: number | null;
   userId: number | null;
   socketId: string;
-  updatedAt: Data;
+  updatedAt: Date;
   __v: number;
   _id: string;
 }
 
 export interface JoinUserData extends UserData {
-  lastLogin: Data | null;
+  lastLogin: Date | null;
 }
 
 export interface ExitUserData extends UserData {
-  lastLogin: Data;
+  lastLogin: Date;
 }
+
+interface ContentWithImage {
+  content?: string;
+  imageUrl: string;
+  error: boolean;
+}
+
+interface ImageWithContent {
+  content: string;
+  imageUrl?: string;
+  error: boolean;
+}
+
+export type SendChatPreview = ContentWithImage | ImageWithContent | null;

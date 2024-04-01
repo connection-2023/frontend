@@ -1,3 +1,4 @@
+import { isSameDay } from 'date-fns';
 import Image from 'next/image';
 import { Fragment, RefObject, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
@@ -11,22 +12,11 @@ import {
   formatKoreanFullDate,
 } from '@/utils/dateTimeUtils';
 import Spinner from '@/components/Spinner/Spinner';
-import { ChatRoom } from '@/types/chat';
+import { ChatRoom, SendChatPreview } from '@/types/chat';
 
 interface ChatProps {
   selectChatRoom: ChatRoom;
-  sendChatPreview:
-    | {
-        content?: string | undefined;
-        imageUrl: string;
-        error: boolean;
-      }
-    | {
-        content: string;
-        imageUrl?: string | undefined;
-        error: boolean;
-      }
-    | null;
+  sendChatPreview: SendChatPreview;
   opponentId: 'lecturerId' | 'userId';
   newChatRef: RefObject<HTMLDivElement>;
   endOfMessagesRef: RefObject<HTMLDivElement>;
@@ -86,21 +76,6 @@ const Chat = ({
     CHAT_INTERSECT_REF_OPTIONS,
   );
 
-  const isDifferentDay = (
-    previousDateString: Date,
-    currentDateString: Date,
-  ) => {
-    const previousDate = new Date(previousDateString);
-    const currentDate = new Date(currentDateString);
-
-    const isDifferent =
-      previousDate.getDate() !== currentDate.getDate() ||
-      previousDate.getMonth() !== currentDate.getMonth() ||
-      previousDate.getFullYear() !== currentDate.getFullYear();
-
-    return isDifferent;
-  };
-
   const cancelMessageHandler = () => {
     if (confirm('해당 메시지 전송을 취소 하시겠습니까?')) {
       cancelMessage();
@@ -123,7 +98,10 @@ const Chat = ({
       {chats.map(({ id, content, createdAt, receiver, imageUrl }, index) => {
         const isReceiver = !receiver[opponentId];
         const beforeChat = chats[index - 1]?.createdAt;
-        const isFirstChat = isDifferentDay(beforeChat, createdAt);
+        const isFirstChat = !isSameDay(
+          new Date(beforeChat),
+          new Date(createdAt),
+        );
 
         return (
           <Fragment key={id}>
@@ -155,16 +133,15 @@ const Chat = ({
                     : 'mr-2 rounded-l-lg bg-white'
                 }`}
               >
-                {content ? (
-                  content
-                ) : imageUrl ? (
-                  <Image
-                    width={261}
-                    height={167}
-                    src={imageUrl}
-                    alt="커넥션 채팅 이미지"
-                  />
-                ) : null}
+                {content ||
+                  (imageUrl && (
+                    <Image
+                      width={261}
+                      height={167}
+                      src={imageUrl}
+                      alt="커넥션 채팅 이미지"
+                    />
+                  ))}
               </div>
               <div className="whitespace-nowrap text-sm text-gray-300">
                 {formatKorean12HourTime(createdAt)}

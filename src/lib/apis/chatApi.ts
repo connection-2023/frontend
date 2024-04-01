@@ -255,19 +255,19 @@ export const getOpponentInfo = async (
     }
 
     const resData = await response.json();
+    const isLecturer = userType === 'lecturer';
+    const profileBase = isLecturer
+      ? resData.data.lecturerProfile
+      : resData.data.user;
+    const profileImg = isLecturer
+      ? profileBase.lecturerProfileImageUrl[0].url
+      : profileBase.userProfileImage?.imageUrl;
 
-    return userType === 'lecturer'
-      ? {
-          id: resData.data.lecturerProfile.id,
-          nickname: resData.data.lecturerProfile.nickname,
-          profilImg:
-            resData.data.lecturerProfile.lecturerProfileImageUrl[0].url,
-        }
-      : {
-          id: resData.data.user.id,
-          nickname: resData.data.user.nickname,
-          profilImg: resData.data.user.userProfileImage?.imageUrl,
-        };
+    return {
+      id: profileBase.id,
+      nickname: profileBase.nickname,
+      profileImg,
+    };
   } catch (error) {
     console.error('프로필 조회 에러', error);
     throw error;
@@ -294,7 +294,6 @@ export const readChat = async (chatRoom: ChatRoom): Promise<ChatRoom> => {
       throw error;
     }
 
-    // const resData = await response.json();
     return chatRoom;
   } catch (error) {
     console.error('채팅 읽음 처리 오류', error);

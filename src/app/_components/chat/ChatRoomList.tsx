@@ -78,7 +78,7 @@ const ChatRoomInfo = ({ chatRoom, userType }: ChatRoomInfoProps) => {
 
   useEffect(() => {
     if (data) {
-      const { nickname, profilImg } = data;
+      const { nickname, profileImg } = data;
 
       queryClient.setQueryData<ChatRoom[]>(
         ['chatRoomList', chatRoom[opponentType].id],
@@ -87,7 +87,7 @@ const ChatRoomInfo = ({ chatRoom, userType }: ChatRoomInfoProps) => {
 
           return oldData.map((chatRoom) => {
             if (chatRoom[opponentType].id === data.id) {
-              return { ...chatRoom, nickname, profilImg };
+              return { ...chatRoom, nickname, profileImg };
             } else {
               return { ...chatRoom };
             }
@@ -104,7 +104,7 @@ const ChatRoomInfo = ({ chatRoom, userType }: ChatRoomInfoProps) => {
       {isLoading ? (
         <div className="mr-3 size-[34px] flex-shrink-0 animate-pulse rounded-full bg-gray-700" />
       ) : (
-        <ProfileImg src={data?.profilImg} size="small" />
+        <ProfileImg src={data?.profileImg} size="small" />
       )}
       <div className="flex w-full flex-col gap-1">
         <div className="grid grid-cols-[1fr_auto] items-center gap-x-2">

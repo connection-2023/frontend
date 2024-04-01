@@ -112,7 +112,7 @@ const ChatRoomHeader = ({
                   : `/mypage/instructor/manage/member/${selectChatRoom[opponentType].id}`
               }
             >
-              <ProfileImg src={profileDate?.profilImg} size="small" />
+              <ProfileImg src={profileDate?.profileImg} size="small" />
             </Link>
           )}
           <dl className="grid flex-grow grid-rows-2 text-sm">
