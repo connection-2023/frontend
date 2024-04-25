@@ -169,3 +169,7 @@ export { default as ZoomOutSVG } from './common/button/zoomOut.svg';
 export { default as ChangeImageSVG } from './my/changeImage.svg';
 
 export { default as MemoSVG } from './my/memo.svg';
+
+export { default as ClickSVG } from './landing/click.svg';
+
+export { default as ToggleTriangleSVG } from './landing/toggle-triangle.svg';
