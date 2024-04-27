@@ -73,6 +73,9 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body
         className={`${inter.className} mx-auto flex min-h-screen max-w-desktop flex-col`}
       >
