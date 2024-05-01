@@ -102,7 +102,7 @@ export const getUserLinks = (mode: 'more' | 'mypage') => {
           icon: <BookmarkSVG width="21" height="21" className={style.FILL} />,
         },
         {
-          path: '/mypage/user/myclass/myclass',
+          path: '/mypage/user/myclass/like',
           text: '관심 클래스',
           icon: <HeartSVG width="24" height="24" className={style.WSTROKE} />,
         },

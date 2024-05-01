@@ -6,6 +6,7 @@ import {
   LikedLecture,
   IApplyDetailResponse,
   IRecentApply,
+  IClassPostResponse,
 } from '@/types/class';
 import { FetchError } from '@/types/types';
 
@@ -117,7 +118,7 @@ export const getMyLecture = async (): Promise<Lecture[]> => {
 };
 
 export const getLikesClassList = async (): Promise<
-  LikedLecture[] | undefined
+  IClassPostResponse[] | undefined
 > => {
   try {
     const cookieStroe = cookies();
@@ -140,7 +141,7 @@ export const getLikesClassList = async (): Promise<
 
     const resData = await response.json();
 
-    return resData.data.likedLecture;
+    return resData.data.likedLectures;
   } catch (error) {
     console.error(error);
   }

@@ -29,7 +29,7 @@ const UserLikesInitializer = () => {
 
       if (likeClassList.length === 0)
         getLikesClassList().then((data) =>
-          setLikeClassList(data.map(({ lectureId }) => lectureId)),
+          setLikeClassList(data.map(({ id }) => id)),
         );
     } else {
       setLikeClassList([]);

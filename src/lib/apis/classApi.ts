@@ -207,7 +207,7 @@ export const getLikesClassList = async (): Promise<LikedLecture[]> => {
 
     const resData = await response.json();
 
-    return resData.data.likedLecture;
+    return resData.data.likedLectures;
   } catch (error) {
     console.error('좋아요 강의 목록 불러오기:', error);
     throw error;

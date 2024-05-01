@@ -433,7 +433,7 @@ export const mapItemToCoupon = (item: userCouponGET | couponGET): couponGET => {
 
 export const transformToCardData = (
   data: IClassPostResponse[],
-  lecturer: { nickname: string; img: string | null; id: number },
+  commonLecturer?: { nickname: string; img: string | null; id: number },
 ): ClassCardType[] =>
   data.map((item) => {
     const {
@@ -450,6 +450,7 @@ export const transformToCardData = (
       lectureToRegion,
       lectureToDanceGenre,
       lectureImage,
+      lecturer,
     } = item;
     const date = `${format(parseISO(startDate), 'MM/dd')}~${format(
       parseISO(endDate),
@@ -459,9 +460,9 @@ export const transformToCardData = (
     const review = { average: stars, count: reviewCount };
     const type = isGroup ? '그룹레슨' : '개인레슨';
     const profile = {
-      src: lecturer.img,
-      nickname: lecturer.nickname,
-      id: lecturer.id,
+      src: commonLecturer ? commonLecturer.img : lecturer.profileCardImageUrl,
+      nickname: commonLecturer ? commonLecturer.nickname : lecturer.nickname,
+      id: commonLecturer ? commonLecturer.id : lecturer.id,
     };
     const location = formatLocationToString(lectureToRegion).split(', ');
     const genre = lectureToDanceGenre.map((genre) => genre.danceCategory.genre);
