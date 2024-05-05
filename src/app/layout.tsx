@@ -19,13 +19,13 @@ import Header from './_components/Header/Header';
 import UserProfileLinks from './_components/Header/UserProfileLinks';
 import UserStoreInitializer from './_components/Header/UserStoreInitializer';
 import MobileNav from './_components/MobileNav';
+import PWAInstallPrompt from './_components/PWAInstallPrompt';
 import SocketInitializer from './_components/SocketInitializer';
 import { profileInfo, userType } from '@/types/auth';
 import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
-import PWAInstallPrompt from './_components/PWAInstallPrompt';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -113,11 +113,13 @@ export default async function RootLayout({
             theme="light"
           />
           <NaverMapsProviders>
-          <NprogressBarProvider>{children}</NprogressBarProvider>
+            <NprogressBarProvider>
+              {children}
+              <PWAInstallPrompt
+                isMobile={device.type === 'mobile' || device.type === 'tablet'}
+              />
+            </NprogressBarProvider>
           </NaverMapsProviders>
-          <PWAInstallPrompt
-            isMobile={device.type === 'mobile' || device.type === 'tablet'}
-          />
           <ControlOptions />
           <Footer />
           <MobileNav />

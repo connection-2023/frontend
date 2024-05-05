@@ -52,11 +52,11 @@ const Header = ({ children }: { children: React.ReactNode }) => {
   return !shouldRenderHeader ? (
     <header className={getHeaderStyle(isStickyHeader, baseStyle)}>
       <div
-        className={`flex h-[5.6rem] items-end justify-between whitespace-nowrap bg-white/[.95] px-4 pb-3 backdrop-blur-sm md:h-[7.6rem] md:px-16 md:pb-5
+        className={`flex h-[3.9rem] items-end justify-between whitespace-nowrap bg-white/[.95] px-4 pb-3 backdrop-blur-sm md:h-[5.6rem] md:px-16 md:pb-5
         ${
           pathname.startsWith('/mypage') &&
           userType === 'lecturer' &&
-          'xl:relative xl:h-[6rem] xl:w-full xl:items-center xl:rounded-lg xl:bg-white xl:px-4 xl:pb-0'
+          'xl:relative xl:h-[4rem] xl:w-full xl:items-center xl:rounded-lg xl:bg-white xl:px-4 xl:pb-0'
         }`}
       >
         <HeaderMenu />
@@ -83,7 +83,7 @@ const getBaseStyle = (
   ${
     pathname.startsWith('/mypage') &&
     userType === 'lecturer' &&
-    'sticky xl:bg-sub-color1-transparent xl:px-9 xl:pb-0 xl:pt-12 xl:relative'
+    'sticky xl:bg-sub-color1-transparent xl:px-9 xl:pb-0 xl:pt xl:relative'
   } z-header top-0 duration-[300ms] mx-auto w-full`;
 
 const getHeaderStyle = (isStickyHeader: boolean, baseStyle: string) =>
