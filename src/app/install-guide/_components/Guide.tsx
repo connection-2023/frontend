@@ -19,12 +19,12 @@ const Guide = ({ guide, title, reverse }: GuideProps) => {
       <div className={`p-14 ${reverse ? 'col-start-2' : ''}`}>
         <Image src={guide[step].src} width={0} height={0} alt="AOS 다운로드" />
       </div>
-      <div className={`${reverse ? 'col-start-1' : ''}`}>
+      <div className={`${reverse ? 'col-start-1 row-start-1' : ''}`}>
         <h2 className="mb-12 text-3xl font-bold">
           <p className="text-main-color">{title}</p> 어떻게 다운로드하나요?
         </h2>
         <ul className="flex flex-col gap-5">
-          {guide.map(({ text }, index) => (
+          {guide.map(({ text, src }, index) => (
             <li
               key={text}
               className={`text-lg font-bold ${
