@@ -7,6 +7,7 @@ import {
   instructorsLikeCancel,
   instructorsLikes,
 } from '@/lib/apis/instructorLikesBlockApis';
+import LikeLoading from './LikeLoading';
 import Spinner from '../Loading/Spinner';
 
 interface LikeProps {
@@ -73,7 +74,7 @@ const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
   const isLoading = deleteLoading || postLikeLoading;
 
   return isLoading ? (
-    <Spinner size={30} />
+    <LikeLoading liked={!!liked} />
   ) : (
     <button onClick={likeHandler} aria-label="관심 표시">
       <HeartSVG width="29" height="30" className={style} />
