@@ -1,4 +1,3 @@
-import UserLikesClassInitializer from './_components/UserLikesClassInitializer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -15,7 +14,6 @@ export default async function MyPageLayout({
 }) {
   return (
     <>
-      <UserLikesClassInitializer />
       {children}
       {modal}
     </>
