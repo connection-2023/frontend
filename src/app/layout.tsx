@@ -112,7 +112,9 @@ export default async function RootLayout({
             theme="light"
           />
           <NaverMapsProviders>{children}</NaverMapsProviders>
-          <PWAInstallPrompt />
+          <PWAInstallPrompt
+            isMobile={device.type === 'mobile' || device.type === 'tablet'}
+          />
           <ControlOptions />
           <Footer />
           <MobileNav />

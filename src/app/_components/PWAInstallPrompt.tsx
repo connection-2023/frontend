@@ -1,5 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { differenceInDays } from 'date-fns';
+import Link from 'next/link';
+import React, { useEffect, useRef, useState } from 'react';
+import { useClickAway } from 'react-use';
 import { ButtonStyles } from '@/constants/constants';
 import { CloseSVG, SmallLogoSVG } from '@/icons/svg';
 
@@ -12,8 +15,14 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
-const PWAInstallPrompt = () => {
+const PWAInstallPrompt = ({ isMobile }: { isMobile: boolean }) => {
+  const modalRef = useRef(null);
+  const [view, setView] = useState(false);
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useClickAway(modalRef, () => {
+    setView(false);
+  });
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (event: Event) => {
@@ -26,6 +35,8 @@ const PWAInstallPrompt = () => {
       handleBeforeInstallPrompt as EventListener,
     );
 
+    setView(checkIfMoreThan7Days);
+
     return () => {
       window.removeEventListener(
         'beforeinstallprompt',
@@ -33,6 +44,23 @@ const PWAInstallPrompt = () => {
       );
     };
   }, []);
+
+  const checkIfMoreThan7Days = () => {
+    const dateString = localStorage.getItem('appInstallModal');
+    if (!dateString) return true;
+
+    const date = new Date(dateString);
+    const now = new Date();
+
+    const diffDays = differenceInDays(now, date);
+
+    if (diffDays > 7) {
+      localStorage.removeItem('appInstallModal');
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const handleInstallClick = () => {
     if (prompt) {
@@ -47,15 +75,26 @@ const PWAInstallPrompt = () => {
     }
   };
 
+  const handleCloseWeek = () => {
+    setView(false);
+    localStorage.setItem('appInstallModal', new Date().toString());
+  };
+
   return (
-    prompt &&
+    isMobile &&
+    view &&
     !window.matchMedia('(display-mode: standalone)').matches && (
-      <div className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto overflow-hidden bg-black/60 sm:hidden">
-        <article className="absolute bottom-[14%] left-0 right-0 mx-auto w-5/6">
+      <div className="fixed bottom-0 left-0 right-0 top-0 z-modal mx-auto overflow-hidden bg-black/60">
+        <article
+          ref={modalRef}
+          className="absolute bottom-[14%] left-0 right-0 mx-auto w-5/6"
+        >
           <section>
             <nav className="mb-1 flex justify-between text-white">
-              <button className="text-sm underline">7일동안 안볼래요</button>
-              <button>
+              <button className="text-sm underline" onClick={handleCloseWeek}>
+                7일동안 안볼래요
+              </button>
+              <button onClick={() => setView(false)}>
                 <CloseSVG className="size-6 stroke-white stroke-[3px]" />
               </button>
             </nav>
@@ -69,12 +108,18 @@ const PWAInstallPrompt = () => {
                   <p>실시간 알림과 혜택을 받아보실 수 있어요</p>
                 </div>
               </div>
-              <button
-                onClick={handleInstallClick}
-                className={`${ButtonStyles.apply} py-2`}
-              >
-                앱 설치하기
-              </button>
+              {prompt ? (
+                <button
+                  onClick={handleInstallClick}
+                  className={`${ButtonStyles.apply} py-2`}
+                >
+                  앱 설치하기
+                </button>
+              ) : (
+                <Link href="/" className={`${ButtonStyles.apply} py-2`}>
+                  자세한 설치방법 알아보기
+                </Link>
+              )}
             </div>
           </section>
         </article>
