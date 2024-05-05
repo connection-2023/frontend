@@ -1,16 +1,13 @@
 'use client';
-import { useEffect, useState, MouseEvent } from 'react';
-import { toast } from 'react-toastify';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState, MouseEvent, useEffect } from 'react';
 import { HeartSVG } from '@/../public/icons/svg';
 import { postClassLikes, deleteClassLikes } from '@/lib/apis/classApis';
 import {
   instructorsLikeCancel,
   instructorsLikes,
 } from '@/lib/apis/instructorLikesBlockApis';
-import { accessTokenReissuance } from '@/lib/apis/userApi';
-import { useUserStore } from '@/store/userStore';
 import Spinner from '../Loading/Spinner';
-import { FetchError } from '@/types/types';
 
 interface LikeProps {
   id: string | number;
@@ -20,95 +17,65 @@ interface LikeProps {
 }
 
 const Like = ({ id, type, isLiked, likeEvent }: LikeProps) => {
-  const {
-    likeClassList,
-    likeInstructorList,
-    setLikeClassList,
-    setLikeInstructorList,
-  } = useUserStore((state) => ({
-    likeClassList: state.likeClassList,
-    setLikeClassList: state.setLikeClassList,
-    likeInstructorList: state.likeInstructorList,
-    setLikeInstructorList: state.setLikeInstructorList,
-  }));
+  const queryClient = useQueryClient();
+  const likeList = queryClient.getQueryData(['like', type, 'user']);
 
-  const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(isLiked);
+
+  useEffect(() => {
+    setLiked(Array.isArray(likeList) && likeList.includes(Number(id)));
+  }, [id, likeList]);
+
   const style = liked
     ? 'fill-main-color stroke-main-color'
     : 'hover:fill-main-color hover:stroke-main-color stroke-gray-500 stroke-2';
 
-  useEffect(() => {
-    if (type === 'class') {
-      setLiked(likeClassList.includes(Number(id)));
-    } else if (type === 'instructor') {
-      setLiked(likeInstructorList.includes(Number(id)));
-    }
-  }, [likeClassList, likeInstructorList]);
-
-  const handleLike = async (event: MouseEvent) => {
-    event.stopPropagation();
-    let retryFunc: () => Promise<any> = async () => {};
-
-    try {
-      if (type === 'class') {
-        retryFunc = liked
-          ? async () => {
-              await deleteClassLikes(String(id));
-
-              setLikeClassList(
-                likeClassList.filter((classId) => Number(id) !== classId),
-              );
-            }
-          : async () => {
-              await postClassLikes(String(id));
-              setLikeClassList([...likeClassList, Number(id)]);
-            };
-        setLoading(true);
-        await retryFunc();
-        setLiked(!liked);
-        setLoading(false);
-      } else {
-        retryFunc = liked
-          ? async () => {
-              await instructorsLikeCancel(id);
-              if (likeEvent) likeEvent(id);
-
-              setLikeInstructorList(
-                likeInstructorList.filter((classId) => Number(id) !== classId),
-              );
-            }
-          : async () => {
-              await instructorsLikes(id);
-              setLikeInstructorList([...likeInstructorList, Number(id)]);
-            };
-        setLoading(true);
-        await retryFunc();
-        setLiked(!liked);
-        setLoading(false);
+  const { mutate: deleteLike, isPending: deleteLoading } = useMutation({
+    mutationFn: () => {
+      return type === 'class'
+        ? deleteClassLikes(String(id))
+        : instructorsLikeCancel(id);
+    },
+    onSuccess: () => {
+      if (likeEvent) likeEvent(id);
+      if (likeList && Array.isArray(likeList)) {
+        queryClient.setQueryData(
+          ['like', type, 'user'],
+          likeList.filter((likeId: number) => Number(id) !== likeId),
+        );
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        const fetchError = error as FetchError;
-        if (fetchError.status === 401) {
-          try {
-            await accessTokenReissuance();
-            if (retryFunc) await retryFunc();
-            setLiked(!liked);
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          toast.error('잘못된 요청입니다!');
-        }
-      }
-    }
+      setLiked(false);
+    },
+  });
+
+  const { mutate: postLike, isPending: postLikeLoading } = useMutation({
+    mutationFn: () => {
+      return type === 'class'
+        ? postClassLikes(String(id))
+        : instructorsLikes(id);
+    },
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ['like', type, 'user'],
+        likeList && Array.isArray(likeList)
+          ? [...likeList, Number(id)]
+          : [Number(id)],
+      );
+      setLiked(true);
+    },
+  });
+
+  const likeHandler = (e: MouseEvent) => {
+    e.stopPropagation();
+    liked ? deleteLike() : postLike();
   };
 
-  return loading ? (
+  const isLoading = deleteLoading || postLikeLoading;
+
+  return isLoading ? (
     <Spinner size={30} />
   ) : (
-    <button onClick={handleLike} aria-label="좋아요">
+    <button onClick={likeHandler} aria-label="관심 표시">
       <HeartSVG width="29" height="30" className={style} />
     </button>
   );

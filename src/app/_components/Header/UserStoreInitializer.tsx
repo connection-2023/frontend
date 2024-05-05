@@ -64,7 +64,7 @@ const UserStoreInitializer = ({
   }, [reload]);
 
   useQuery({
-    queryKey: ['like', 'instructor', userType],
+    queryKey: ['like', 'class', userType],
     queryFn: async () => {
       if (userType === 'user') {
         const likesInstructorList = await getLikesClassList();
