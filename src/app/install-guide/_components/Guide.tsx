@@ -1,6 +1,5 @@
-'use client';
 import Image, { StaticImageData } from 'next/image';
-import React, { useState } from 'react';
+import ClientGuide from './ClientGuide';
 
 interface GuideProps {
   guide: {
@@ -11,30 +10,29 @@ interface GuideProps {
   reverse?: boolean;
 }
 
-const Guide = ({ guide, title, reverse }: GuideProps) => {
-  const [step, setStep] = useState(0);
+const Guide = (props: GuideProps) => {
+  const { guide, title } = props;
 
   return (
-    <section className="grid grid-cols-2">
-      <div className={`p-14 ${reverse ? 'col-start-2' : ''}`}>
-        <Image src={guide[step].src} width={0} height={0} alt="AOS 다운로드" />
-      </div>
-      <div className={`${reverse ? 'col-start-1 row-start-1' : ''}`}>
-        <h2 className="mb-12 text-3xl font-bold">
+    <section className="sm:grid sm:grid-cols-2">
+      <ClientGuide {...props} />
+      <div className="w-full px-4 sm:hidden">
+        <h2 className="mb-6 text-3xl font-bold">
           <p className="text-main-color">{title}</p> 어떻게 다운로드하나요?
         </h2>
-        <ul className="flex flex-col gap-5">
+        <ul>
           {guide.map(({ text, src }, index) => (
             <li
               key={text}
-              className={`text-lg font-bold ${
-                index === step ? '' : 'text-gray-300'
-              }`}
+              className="my-3 flex flex-col border-b border-solid border-gray-700 pb-3 text-lg font-bold"
             >
-              <button className="text-left" onClick={() => setStep(index)}>
-                {index + 1}단계
-                <p className="mt-2 text-base">{text}</p>
-              </button>
+              <Image
+                src={src}
+                className="w-1/2 self-center"
+                alt={`${title} 다운로드 가이드 이미지`}
+              />
+              {index + 1}단계
+              <p className="mt-2 text-base">{text}</p>
             </li>
           ))}
         </ul>

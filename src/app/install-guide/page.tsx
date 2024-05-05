@@ -36,7 +36,7 @@ const page = () => {
   ];
 
   return (
-    <main className="mx-auto mt-7 max-w-3xl">
+    <main className="mt-7 max-w-3xl sm:mx-auto">
       <Guide guide={AOSGuide} title="안드로이드" />
       <Guide guide={IOSGuide} title="IOS" reverse={true} />
     </main>
