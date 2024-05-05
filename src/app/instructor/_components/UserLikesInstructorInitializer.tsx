@@ -1,28 +1,23 @@
 'use client';
-import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { getLikesInstructorList } from '@/lib/apis/instructorLikesBlockApis';
-import { useUserStore } from '@/store/userStore';
+import { useUserStore } from '@/store';
 
 const UserLikesInstructorInitializer = () => {
-  const { setLikeInstructorList, userType, likeInstructorList } = useUserStore(
-    (state) => ({
-      setLikeInstructorList: state.setLikeInstructorList,
-      userType: state.userType,
-      likeInstructorList: state.likeInstructorList,
-    }),
-  );
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
 
-  useEffect(() => {
-    if (userType === 'user') {
-      if (likeInstructorList.length === 0) {
-        getLikesInstructorList().then((data) =>
-          setLikeInstructorList(data.map(({ lecturerId }) => lecturerId)),
-        );
+  useQuery({
+    queryKey: ['like', 'instructor', userType],
+    queryFn: async () => {
+      if (userType === 'user') {
+        const likesInstructorList = await getLikesInstructorList();
+        return likesInstructorList.map(({ lecturerId }) => lecturerId);
       }
-    } else {
-      setLikeInstructorList([]);
-    }
-  }, [userType]);
+    },
+    staleTime: Infinity,
+  });
 
   return null;
 };

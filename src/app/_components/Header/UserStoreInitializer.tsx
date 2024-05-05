@@ -1,4 +1,5 @@
 'use client';
+import { useQuery } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
@@ -21,10 +22,6 @@ const UserStoreInitializer = ({
   isMobile,
 }: UserStoreInitializerProps) => {
   const initialized = useRef(false);
-  const { setLikeClassList, likeClassList } = useUserStore((state) => ({
-    setLikeClassList: state.setLikeClassList,
-    likeClassList: state.likeClassList,
-  }));
   const store = useUserStore();
   const pathname = usePathname();
   const router = useRouter();
@@ -66,17 +63,16 @@ const UserStoreInitializer = ({
     }
   }, [reload]);
 
-  useEffect(() => {
-    if (userType === 'user') {
-      if (likeClassList.length === 0) {
-        getLikesClassList().then((data) =>
-          setLikeClassList(data.map(({ id }) => id)),
-        );
+  useQuery({
+    queryKey: ['like', 'instructor', userType],
+    queryFn: async () => {
+      if (userType === 'user') {
+        const likesInstructorList = await getLikesClassList();
+        return likesInstructorList.map(({ id }) => id);
       }
-    } else {
-      setLikeClassList([]);
-    }
-  }, [userType]);
+    },
+    staleTime: Infinity,
+  });
 
   return null;
 };

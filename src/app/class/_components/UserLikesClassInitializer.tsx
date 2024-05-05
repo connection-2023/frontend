@@ -1,28 +1,23 @@
 'use client';
-import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { getLikesClassList } from '@/lib/apis/classApi';
 import { useUserStore } from '@/store/userStore';
 
 const UserLikesClassInitializer = () => {
-  const { setLikeClassList, userType, likeClassList } = useUserStore(
-    (state) => ({
-      setLikeClassList: state.setLikeClassList,
-      userType: state.userType,
-      likeClassList: state.likeClassList,
-    }),
-  );
+  const { userType } = useUserStore((state) => ({
+    userType: state.userType,
+  }));
 
-  useEffect(() => {
-    if (userType === 'user') {
-      if (likeClassList.length === 0) {
-        getLikesClassList().then((data) =>
-          setLikeClassList(data.map(({ id }) => id)),
-        );
+  useQuery({
+    queryKey: ['like', 'instructor', userType],
+    queryFn: async () => {
+      if (userType === 'user') {
+        const likesInstructorList = await getLikesClassList();
+        return likesInstructorList.map(({ id }) => id);
       }
-    } else {
-      setLikeClassList([]);
-    }
-  }, [userType]);
+    },
+    staleTime: Infinity,
+  });
 
   return null;
 };
