@@ -1,5 +1,8 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import InstructorCard from './InstructorCard';
+
+const queryClient = new QueryClient();
 
 describe('InstructorCard', () => {
   it('renders without crashing', () => {
@@ -21,7 +24,12 @@ describe('InstructorCard', () => {
       href: '/',
       isLiked: true,
     };
-    render(<InstructorCard {...mockdata} />);
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <InstructorCard {...mockdata} />
+      </QueryClientProvider>,
+    );
   });
 
   it('img test', () => {
@@ -44,7 +52,11 @@ describe('InstructorCard', () => {
       isLiked: true,
     };
 
-    render(<InstructorCard {...mockdata} />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <InstructorCard {...mockdata} />
+      </QueryClientProvider>,
+    );
     expect(screen.getAllByRole('img')).toHaveLength(1);
   });
 });
