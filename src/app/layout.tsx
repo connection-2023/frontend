@@ -24,6 +24,7 @@ import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
+import PWAInstallPrompt from './_components/PWAInstallPrompt';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -111,6 +112,7 @@ export default async function RootLayout({
             theme="light"
           />
           <NaverMapsProviders>{children}</NaverMapsProviders>
+          <PWAInstallPrompt />
           <ControlOptions />
           <Footer />
           <MobileNav />

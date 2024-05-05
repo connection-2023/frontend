@@ -21,6 +21,8 @@ export const ButtonSizes = {
 };
 
 export const ButtonStyles = {
+  apply:
+    'group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-main-color text-white hover:bg-main-color-transparent hover:text-black active:bg-main-color active:text-black',
   primary:
     'group flex w-full items-center justify-center rounded-md border border-solid border-main-color bg-white text-main-color hover:bg-main-color-transparent active:bg-main-color active:text-white',
   default:

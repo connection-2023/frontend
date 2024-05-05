@@ -21,7 +21,7 @@ const Banner = () => {
         </Link>
       </div>
 
-      <figure className="mr-1 min-w-48 max-w-[751px] flex-1 -rotate-3 sm:rotate-0">
+      <figure className="mr-1 max-w-[751px] flex-1 -rotate-3 sm:rotate-0">
         <Image
           src={bannerImg}
           width={0}
