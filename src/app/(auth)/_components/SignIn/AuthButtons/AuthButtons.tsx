@@ -1,6 +1,6 @@
 'use client';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { toast } from 'react-toastify';
 import { getAuth, getMyProfile } from '@/lib/apis/userApi';
 import { useUserStore } from '@/store';

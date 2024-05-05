@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { SEARCH_LOCAL_STORAGE_KEY } from '@/constants/constants';
 import { CloseSVG } from '@/icons/svg';
 import { deleteSearchKeyword } from '@/lib/apis/searchApis';

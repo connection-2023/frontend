@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';

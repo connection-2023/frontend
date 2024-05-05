@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import React from 'react';
 import AppliedList from './AppliedList';
 import Button from '../Button/Button';

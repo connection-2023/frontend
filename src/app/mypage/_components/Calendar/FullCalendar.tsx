@@ -1,7 +1,7 @@
 'use client';
 import isSameDay from 'date-fns/isSameDay';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState, useMemo } from 'react';
 import { Calendar, View, Views, SlotInfo } from 'react-big-calendar';
 import ToolBar from '@/utils/calendarUtils/BigCalendarToolBar';

@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { FieldErrors, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { CloseSVG, CouponSVG } from '@/icons/svg';

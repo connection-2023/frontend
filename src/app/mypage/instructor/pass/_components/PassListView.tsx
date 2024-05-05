@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { LECTURE_COUPON_TAKE } from '@/constants/constants';
 import usePageNation from '@/hooks/usePageNation';
 import { NotFoundSVG } from '@/icons/svg';

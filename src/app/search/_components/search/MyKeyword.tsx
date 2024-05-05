@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { SEARCH_LOCAL_STORAGE_KEY } from '@/constants/constants';
 import { deleteAllSearchKeywords } from '@/lib/apis/searchApis';
 import { useUserStore } from '@/store';

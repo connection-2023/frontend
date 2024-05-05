@@ -1,14 +1,14 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState, useRef, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { useClickAway } from 'react-use';
+import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
+import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 import RegularApplyList from '@/components/Apply/RegularApplyList';
 import { ApplyButton } from '@/components/Button';
 import { IRegularClassSchedule, ISelectedSchedule } from '@/types/class';
-import { BasicCalendarSVG, TimeSVG } from '@/icons/svg';
-import { getRegularScheduleTime } from '@/utils/scheduleDateUtils';
 
 const ReservationItem = dynamic(
   () => import('@/components/Apply/ReservationItem'),

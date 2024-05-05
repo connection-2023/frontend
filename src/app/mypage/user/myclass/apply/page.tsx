@@ -1,6 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { BasicCalendarSVG } from '@/icons/svg';
 import CalendarView from './_components/CalendarView';

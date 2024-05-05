@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { ArrowUpSVG } from '@/icons/svg';
 
 const BackButton = ({ size = 34 }: { size?: number }) => {

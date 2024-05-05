@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { AuthWelcomeSVG, DoubleRightSVG } from '@/icons/svg';
 import { Button } from '@/components/Button';
 

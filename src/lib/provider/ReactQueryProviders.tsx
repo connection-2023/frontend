@@ -11,7 +11,11 @@ import { reloadToast } from '@/utils/reloadMessage';
 import { accessTokenReissuance } from '../apis/userApi';
 import { FetchError } from '@/types/types';
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function ReactQueryProviders({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [queryClient] = useState(() => {
     const accessTokenReissuanceWrapper = (message: string) =>
       accessTokenReissuance().catch((error) => {

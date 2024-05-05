@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { getAuth, postUserRegister, getMyProfile } from '@/lib/apis/userApi';

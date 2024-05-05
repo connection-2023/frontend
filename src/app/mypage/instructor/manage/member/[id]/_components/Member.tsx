@@ -2,7 +2,7 @@
 
 import { debounce } from 'lodash';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { ChatSVG, ReportSVG } from '@/icons/svg';
 import { patchMemberMemo } from '@/lib/apis/instructorApi';

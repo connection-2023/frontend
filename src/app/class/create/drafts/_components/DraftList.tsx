@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { TrashcanSVG } from '@/icons/svg';

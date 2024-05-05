@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import React from 'react';
 import { CloseSVG } from '@/icons/svg';
 
