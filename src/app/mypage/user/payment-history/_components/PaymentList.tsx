@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { BANK_CODE_TO_NAME } from '@/constants/constants';

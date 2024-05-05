@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { NaverSVG } from '@/icons/svg';

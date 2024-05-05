@@ -9,7 +9,8 @@ import {
   getMyProfile,
 } from '@/lib/apis/serverApis/userApi';
 import NaverMapsProviders from '@/lib/provider/NaverMapsProviders';
-import Providers from '@/lib/provider/providers';
+import NprogressBarProvider from '@/lib/provider/NprogressBarProvider';
+import ReactQueryProviders from '@/lib/provider/ReactQueryProviders';
 import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 import ChatModal from './_components/chat/ChatModal';
 import ControlOptions from './_components/ControlOptions';
@@ -76,7 +77,7 @@ export default async function RootLayout({
       <body
         className={`${inter.className} mx-auto flex min-h-screen max-w-desktop flex-col`}
       >
-        <Providers>
+        <ReactQueryProviders>
           <UserStoreInitializer
             authUser={authUser}
             userType={userType}
@@ -107,11 +108,13 @@ export default async function RootLayout({
             pauseOnHover
             theme="light"
           />
-          <NaverMapsProviders>{children}</NaverMapsProviders>
+          <NaverMapsProviders>
+            <NprogressBarProvider>{children}</NprogressBarProvider>
+          </NaverMapsProviders>
           <ControlOptions />
           <Footer />
           <MobileNav />
-        </Providers>
+        </ReactQueryProviders>
         <GoogleAnalytics gaId="G-JSWE2TFJ10" />
         <GoogleTagManager gtmId="GTM-WV6RNCC9" />
       </body>

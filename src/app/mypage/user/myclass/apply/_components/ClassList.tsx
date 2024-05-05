@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { MouseEvent } from 'react';
 import { ButtonStyles } from '@/constants/constants';
 import { formatShortDate } from '@/utils/dateTimeUtils';

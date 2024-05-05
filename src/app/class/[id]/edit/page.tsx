@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState, lazy } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 import { toast } from 'react-toastify';

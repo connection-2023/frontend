@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-table';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useMemo } from 'react';
 import { AlarmSVG, ChatSVG, MemoSVG } from '@/icons/svg';
 import { useMemberStore } from '@/store/memberStore';

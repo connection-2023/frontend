@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { toast } from 'react-toastify';
 import { TransFormSVG } from '@/icons/svg';
 import {

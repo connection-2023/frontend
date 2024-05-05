@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import ClassDates from './ClassDates';
 import ResponsiveClassPreview from './ResponsiveClassPreview';

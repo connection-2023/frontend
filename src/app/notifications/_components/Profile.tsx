@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import React from 'react';
 import { getOpponentInfo } from '@/lib/apis/chatApi';
 import ProfileImg from '@/components/Profile/ProfileImage';

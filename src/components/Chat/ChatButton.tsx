@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import React from 'react';
 import { toast } from 'react-toastify';
 import { getCheckTargetId } from '@/lib/apis/chatApi';

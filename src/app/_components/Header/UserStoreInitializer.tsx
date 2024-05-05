@@ -1,6 +1,7 @@
 'use client';
 import Cookies from 'js-cookie';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { RELOAD_TOAST_TIME } from '@/constants/constants';

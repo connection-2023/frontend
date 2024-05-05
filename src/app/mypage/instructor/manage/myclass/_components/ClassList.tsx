@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { formatShortDate } from '@/utils/dateTimeUtils';
 import { ILecturerClassListResonse } from '@/types/class';
 

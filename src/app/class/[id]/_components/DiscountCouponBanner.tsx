@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { DownloadSVG, NotFoundSVG } from '@/icons/svg';

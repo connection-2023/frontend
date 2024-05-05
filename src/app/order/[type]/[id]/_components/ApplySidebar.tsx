@@ -1,17 +1,8 @@
 'use client';
 import { nanoid } from 'nanoid';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { ApplyButton } from '@/components/Button';
-import { IPassInfoForIdData } from '@/types/pass';
-import {
-  IApplicantInfo,
-  IPaymentInfo,
-  IReservationInfo,
-  PaymentPassInfoParam,
-} from '@/types/payment';
-import { FetchError } from '@/types/types';
 import { ArrowUpSVG } from '@/icons/svg';
 import {
   postPaymentInfo,
@@ -22,6 +13,15 @@ import {
 import { accessTokenReissuance } from '@/lib/apis/userApi';
 import { usePaymentStore, useUserStore } from '@/store';
 import { reloadToast } from '@/utils/reloadMessage';
+import { ApplyButton } from '@/components/Button';
+import { IPassInfoForIdData } from '@/types/pass';
+import {
+  IApplicantInfo,
+  IPaymentInfo,
+  IReservationInfo,
+  PaymentPassInfoParam,
+} from '@/types/payment';
+import { FetchError } from '@/types/types';
 
 interface ApplySidebarProps {
   postId: string;

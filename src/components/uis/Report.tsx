@@ -1,5 +1,6 @@
 'use client';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { postLecturerReport, postUserReport } from '@/lib/apis/reportApis';

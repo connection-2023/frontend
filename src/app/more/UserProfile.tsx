@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { toast } from 'react-toastify';
 import { ButtonStyles } from '@/constants/constants';
 import { TransFormSVG, EditSVG } from '@/icons/svg';

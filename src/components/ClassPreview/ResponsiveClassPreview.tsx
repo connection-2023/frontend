@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { StarSVG } from '@/icons/svg';
 import CarouselContainer from '../Carousel/CarouselContainer';

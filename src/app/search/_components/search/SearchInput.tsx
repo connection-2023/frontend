@@ -1,5 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 import { SEARCH_LOCAL_STORAGE_KEY } from '@/constants/constants';
 import { dummyUserInputSuggestion } from '@/constants/dummy';

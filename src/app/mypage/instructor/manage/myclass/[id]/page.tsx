@@ -1,9 +1,13 @@
 'use client';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { ButtonStyles } from '@/constants/constants';
+import { ArrowUpSVG, EditSVG } from '@/icons/svg';
+import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
+import { getDatesFromSchedules } from '@/utils/scheduleDateUtils';
 import RegularClassTable from './_components/RegularClassTable';
 import {
   filterSchedulesByDate,
@@ -11,10 +15,6 @@ import {
 } from './_utils/formatSchedule';
 import Notice from '@/components/ClassNotice/Notice';
 import { ILecturerClassDetailResonse } from '@/types/class';
-import { ButtonStyles } from '@/constants/constants';
-import { ArrowUpSVG, EditSVG } from '@/icons/svg';
-import { getLecturerClassDetail, updateClassData } from '@/lib/apis/classApis';
-import { getDatesFromSchedules } from '@/utils/scheduleDateUtils';
 
 const EditDayOff = dynamic(() => import('./_components/EditDayOff'), {
   ssr: false,
