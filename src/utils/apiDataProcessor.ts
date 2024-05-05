@@ -619,6 +619,7 @@ export const transformBestClassSearch = (classList: searchBestClassData[]) => {
       stars,
       price,
       lecturer,
+      isLike,
     }) => {
       let status: '모집중' | '마감';
       status = isActive ? '모집중' : '마감';
@@ -647,7 +648,7 @@ export const transformBestClassSearch = (classList: searchBestClassData[]) => {
           nickname: lecturer.nickname,
           id: lecturer.id,
         },
-        isLiked: likedLecture && likedLecture.length > 0 ? true : false,
+        isLiked: isLike,
       };
     },
   );

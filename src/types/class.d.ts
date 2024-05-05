@@ -654,6 +654,7 @@ export interface IReservation {
 }
 
 export interface searchBestClassData {
+  isLike: boolean;
   id: number;
   title: string;
   lectureImage: {
