@@ -67,9 +67,7 @@ const PWAInstallPrompt = ({ isMobile }: { isMobile: boolean }) => {
       prompt.prompt();
 
       prompt.userChoice.then((choiceResult) => {
-        console.log(
-          choiceResult.outcome === 'accepted' ? 'Accepted' : 'Cancelled',
-        );
+        setView(false);
         setPrompt(null);
       });
     }
@@ -117,6 +115,7 @@ const PWAInstallPrompt = ({ isMobile }: { isMobile: boolean }) => {
                 </button>
               ) : (
                 <Link
+                  onClick={() => setView(false)}
                   href="/install-guide"
                   className={`${ButtonStyles.apply} py-2`}
                 >
