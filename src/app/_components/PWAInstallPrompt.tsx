@@ -116,7 +116,10 @@ const PWAInstallPrompt = ({ isMobile }: { isMobile: boolean }) => {
                   앱 설치하기
                 </button>
               ) : (
-                <Link href="/" className={`${ButtonStyles.apply} py-2`}>
+                <Link
+                  href="/install-guide"
+                  className={`${ButtonStyles.apply} py-2`}
+                >
                   자세한 설치방법 알아보기
                 </Link>
               )}
