@@ -1,0 +1,32 @@
+{
+  "theme_color": "#FFECF5",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Connection",
+  "short_name": "\ucee4\ub125\uc158",
+  "description": "\ub304\uc11c\uc640 \uc218\uac15\uc0dd\uc744 \uc5f0\uacb0\ud574\uc8fc\ub294 \ud50c\ub7ab\ud3fc",
+  "icons": [
+    {
+      "src": "/icons/pwa-icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/pwa-icons/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/pwa-icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/pwa-icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
