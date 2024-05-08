@@ -26,6 +26,7 @@ import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
+import FirebaseInitializer from './_components/FirebaseInitializer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -92,6 +93,7 @@ export default async function RootLayout({
             userId={authUser?.id}
             rooms={socketRooms}
           />
+          <FirebaseInitializer />
           <Header>
             <UserProfileLinks
               authUser={authUser}
