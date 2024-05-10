@@ -21,19 +21,24 @@ const FirebaseInitializer = () => {
     return getMessaging(app);
   };
 
-  const setDeviceTokenHandler = async () => {
-    const deviceToken = await getDeviceToken();
-
-    await registerDeviceToken({ deviceToken });
-    return null;
-  };
-
   const getDeviceToken = async () => {
     const messaging = initFirebaseApp();
 
-    return await getToken(messaging, {
-      vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-    });
+    return Notification.permission === 'granted'
+      ? await getToken(messaging, {
+          vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+        })
+      : null;
+  };
+
+  const setDeviceTokenHandler = async () => {
+    const deviceToken = await getDeviceToken();
+
+    if (deviceToken) {
+      await registerDeviceToken({ deviceToken });
+    }
+
+    return null;
   };
 
   useQuery({

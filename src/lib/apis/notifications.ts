@@ -172,9 +172,6 @@ export const registerDeviceToken = async (data: { deviceToken: string }) => {
       error.status = response.status;
       throw error;
     }
-
-    const resData = await response.json();
-    return resData.data;
   } catch (error) {
     console.error('유저 fmc 기기 토큰 등록 오류', error);
     throw error;

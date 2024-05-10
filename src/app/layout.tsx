@@ -43,6 +43,7 @@ export default async function RootLayout({
   const cookieStore = cookies();
   const user = cookieStore.get('userAccessToken')?.value;
   const lecturer = cookieStore.get('lecturerAccessToken')?.value;
+  const deviceToken = cookieStore.get('deviceToken')?.value;
   let authUser: profileInfo | null = null;
   let userType: userType | null = null;
   let socketRooms: string[] | null = null;
@@ -93,7 +94,7 @@ export default async function RootLayout({
             userId={authUser?.id}
             rooms={socketRooms}
           />
-          {userType && <FirebaseInitializer />}
+          {userType && !deviceToken && <FirebaseInitializer />}
           <Header>
             <UserProfileLinks
               authUser={authUser}

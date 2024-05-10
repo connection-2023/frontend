@@ -15,6 +15,7 @@ export const POST = async (request: NextRequest) => {
   const tokenValue = lecturerToken || userToken;
 
   const data = await request.json();
+  const deviceToken = data.deviceToken;
 
   if (!tokenValue) {
     return NextResponse.json(
@@ -52,7 +53,16 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const result = await response.json();
+  const clientResponse = new NextResponse();
 
-  return NextResponse.json(result);
+  clientResponse.cookies.set({
+    name: 'deviceToken',
+    value: deviceToken,
+    httpOnly: true,
+    path: '/',
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV !== 'development',
+  });
+
+  return clientResponse;
 };
