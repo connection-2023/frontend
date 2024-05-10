@@ -154,3 +154,29 @@ export const sendNotifications = async (data: ISendNotification) => {
     throw error;
   }
 };
+
+export const registerDeviceToken = async (data: { deviceToken: string }) => {
+  try {
+    const response = await fetch('/api/notifications/register-device-token', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+
+    const resData = await response.json();
+    return resData.data;
+  } catch (error) {
+    console.error('유저 fmc 기기 토큰 등록 오류', error);
+    throw error;
+  }
+};

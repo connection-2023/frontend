@@ -14,6 +14,7 @@ import ReactQueryProviders from '@/lib/provider/ReactQueryProviders';
 import { convertToProfileInfo } from '@/utils/apiDataProcessor';
 import ChatModal from './_components/chat/ChatModal';
 import ControlOptions from './_components/ControlOptions';
+import FirebaseInitializer from './_components/FirebaseInitializer';
 import Footer from './_components/Footer';
 import Header from './_components/Header/Header';
 import UserProfileLinks from './_components/Header/UserProfileLinks';
@@ -26,7 +27,6 @@ import type { Metadata } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/toastify.css';
 import '../styles/globals.css';
-import FirebaseInitializer from './_components/FirebaseInitializer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -93,7 +93,7 @@ export default async function RootLayout({
             userId={authUser?.id}
             rooms={socketRooms}
           />
-          <FirebaseInitializer />
+          {userType && <FirebaseInitializer />}
           <Header>
             <UserProfileLinks
               authUser={authUser}

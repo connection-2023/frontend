@@ -1,8 +1,9 @@
 'use client';
+import { useQuery } from '@tanstack/react-query';
 import { initializeApp } from 'firebase/app';
 import { getMessaging } from 'firebase/messaging';
 import { getToken } from 'firebase/messaging';
-import { useEffect } from 'react';
+import { registerDeviceToken } from '@/lib/apis/notifications';
 
 const FirebaseInitializer = () => {
   const firebaseConfig = {
@@ -20,29 +21,27 @@ const FirebaseInitializer = () => {
     return getMessaging(app);
   };
 
-  useEffect(() => {
+  const setDeviceTokenHandler = async () => {
+    const deviceToken = await getDeviceToken();
+
+    await registerDeviceToken({ deviceToken });
+    return null;
+  };
+
+  const getDeviceToken = async () => {
     const messaging = initFirebaseApp();
 
-    getToken(messaging, {
+    return await getToken(messaging, {
       vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-    })
-      .then((currentToken) => {
-        if (currentToken) {
-          console.log(currentToken);
-          alert('토큰: ' + currentToken);
-          // 토큰을 서버에 전달...
-        } else {
-          // Show permission request UI
-          console.log(
-            'No registration token available. Request permission to generate one.',
-          );
-        }
-      })
-      .catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-        // ...
-      });
-  }, []);
+    });
+  };
+
+  useQuery({
+    queryKey: ['deviceToken'],
+    queryFn: setDeviceTokenHandler,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+  });
 
   return null;
 };
