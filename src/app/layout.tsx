@@ -94,7 +94,12 @@ export default async function RootLayout({
             userId={authUser?.id}
             rooms={socketRooms}
           />
-          {userType && !deviceToken && <FirebaseInitializer />}
+          {userType && (
+            <FirebaseInitializer
+              deviceToken={deviceToken}
+              userType={userType}
+            />
+          )}
           <Header>
             <UserProfileLinks
               authUser={authUser}

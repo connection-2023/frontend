@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const END_POINT = process.env.NEXT_PUBLIC_API_END_POINT;
 
-export const POST = async (request: NextRequest) => {
+export const PATCH = async (request: NextRequest) => {
   if (!END_POINT) {
     return NextResponse.json({
       status: 500,
@@ -35,7 +35,7 @@ export const POST = async (request: NextRequest) => {
   const response = await fetch(
     `${END_POINT}/notifications/notificationsId/register-device-token`,
     {
-      method: 'POST',
+      method: 'PATCH',
       credentials: 'include',
       headers,
       body: JSON.stringify(data),

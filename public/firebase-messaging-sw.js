@@ -20,19 +20,22 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function (payload) {
-  const notification = payload.notification;
+messaging.onBackgroundMessage((payload) => {
+  const { title, body } = payload.data;
 
-  console.log(
-    '[firebase-messaging-sw.js] Received background message ',
-    notification,
-  );
+  console.log(process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+  console.log(process.env.NEXT_PUBLIC_DOMAIN);
 
-  const notificationTitle = notification.title;
   const notificationOptions = {
-    body: notification.body,
-    icon: '/firebase-logo.png', // 루트 경로 기준으로 접근
+    body: body,
+    icon: '/favicon.ico',
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+
+    event.waitUntil(clients.openWindow(process.env.NEXT_PUBLIC_DOMAIN));
+  });
+
+  self.registration.showNotification(title, notificationOptions);
 });

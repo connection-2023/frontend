@@ -36,7 +36,10 @@ const FirebaseInitializer = ({
   const getDeviceToken = async () => {
     const messaging = initFirebaseApp();
 
-    if (Notification.permission === 'granted' && !deviceToken) {
+    if (
+      Notification.permission === 'default' ||
+      (Notification.permission === 'granted' && !deviceToken)
+    ) {
       return await getToken(messaging, {
         vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
       });
