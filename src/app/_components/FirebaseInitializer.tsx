@@ -53,8 +53,6 @@ const FirebaseInitializer = ({
   const setDeviceTokenHandler = async () => {
     const deviceToken = await getDeviceToken();
 
-    console.log(deviceToken);
-
     if (deviceToken) {
       await registerDeviceToken({ deviceToken });
     }

@@ -23,9 +23,6 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   const { title, body } = payload.data;
 
-  console.log(process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
-  console.log(process.env.NEXT_PUBLIC_DOMAIN);
-
   const notificationOptions = {
     body: body,
     icon: '/favicon.ico',
