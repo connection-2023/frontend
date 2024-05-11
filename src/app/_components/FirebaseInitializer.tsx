@@ -3,9 +3,21 @@ import { useQuery } from '@tanstack/react-query';
 import { initializeApp } from 'firebase/app';
 import { getMessaging } from 'firebase/messaging';
 import { getToken } from 'firebase/messaging';
-import { registerDeviceToken } from '@/lib/apis/notifications';
+import {
+  deleteDeviceToken,
+  registerDeviceToken,
+} from '@/lib/apis/notifications';
+import { userType } from '@/types/auth';
 
-const FirebaseInitializer = () => {
+interface FirebaseInitializerPorps {
+  deviceToken: string | undefined;
+  userType: userType;
+}
+
+const FirebaseInitializer = ({
+  deviceToken,
+  userType,
+}: FirebaseInitializerPorps) => {
   const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -24,15 +36,21 @@ const FirebaseInitializer = () => {
   const getDeviceToken = async () => {
     const messaging = initFirebaseApp();
 
-    return Notification.permission === 'granted'
-      ? await getToken(messaging, {
-          vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-        })
-      : null;
+    if (Notification.permission === 'granted' && !deviceToken) {
+      return await getToken(messaging, {
+        vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+      });
+    } else if (Notification.permission === 'denied' && deviceToken) {
+      await deleteDeviceToken();
+    }
+
+    return null;
   };
 
   const setDeviceTokenHandler = async () => {
     const deviceToken = await getDeviceToken();
+
+    console.log(deviceToken);
 
     if (deviceToken) {
       await registerDeviceToken({ deviceToken });
@@ -42,7 +60,7 @@ const FirebaseInitializer = () => {
   };
 
   useQuery({
-    queryKey: ['deviceToken'],
+    queryKey: ['deviceToken', userType],
     queryFn: setDeviceTokenHandler,
     staleTime: Infinity,
     refetchOnWindowFocus: false,

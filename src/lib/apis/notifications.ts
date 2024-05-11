@@ -158,7 +158,7 @@ export const sendNotifications = async (data: ISendNotification) => {
 export const registerDeviceToken = async (data: { deviceToken: string }) => {
   try {
     const response = await fetch('/api/notifications/register-device-token', {
-      method: 'POST',
+      method: 'PATCH',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
@@ -174,6 +174,28 @@ export const registerDeviceToken = async (data: { deviceToken: string }) => {
     }
   } catch (error) {
     console.error('유저 fmc 기기 토큰 등록 오류', error);
+    throw error;
+  }
+};
+
+export const deleteDeviceToken = async () => {
+  try {
+    const response = await fetch(`/api/notifications/delete-device-token`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const error: FetchError = new Error(errorData.message || '');
+      error.status = response.status;
+      throw error;
+    }
+  } catch (error) {
+    console.error('유저 fmc 기기 토큰 삭제 오류', error);
     throw error;
   }
 };
