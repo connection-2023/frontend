@@ -64,8 +64,8 @@ const ApplySidebar = (props: ApplySidebarProps) => {
       return;
     }
 
-    paymentMethodsWidget.updateAmount(totalPrice);
-  }, [participants, paymentWidget]);
+    paymentMethodsWidget.updateAmount(finalPrice);
+  }, [finalPrice, participants, paymentMethodsWidget, paymentWidget]);
 
   const validatePaymentInfo = () => {
     if (isClass && !applyClass) {
@@ -267,7 +267,7 @@ const ApplySidebar = (props: ApplySidebarProps) => {
             <>
               <p className="hidden lg:block">결제하기</p>
               <p className="lg:hidden">
-                {totalPrice.toLocaleString()}원 결제하기
+                {!!pass ? 0 : finalPrice.toLocaleString()}원 결제하기
               </p>
             </>
           }
