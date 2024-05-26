@@ -44,7 +44,7 @@ const ApplySidebar = (props: ApplySidebarProps) => {
   const { pass } = usePaymentStore((state) => ({ pass: state.pass }));
   const totalPrice = isClass ? price * participants : price;
   const finalPrice = discountPrice
-    ? Math.max(0, totalPrice - discountPrice)
+    ? Math.max(Math.max(0, totalPrice - discountPrice), 500)
     : totalPrice;
   const applyClass = usePaymentStore((state) => state.applyClass);
   const applicant = usePaymentStore((state) => state.applicant);
@@ -235,12 +235,17 @@ const ApplySidebar = (props: ApplySidebarProps) => {
         </li>
         {!!discountPrice && (
           <li className="flex items-center justify-between pl-4 text-gray-300">
-            ㄴ 쿠폰사용 <span>{discountPrice?.toLocaleString()}원</span>
+            ㄴ 쿠폰사용 <span>-{discountPrice?.toLocaleString()}원</span>
           </li>
         )}
         {!!pass && (
           <li className="flex items-center justify-between pl-4 text-gray-300">
-            ㄴ 패스권사용 <span>{totalPrice.toLocaleString()}원</span>
+            ㄴ 패스권사용 <span>-{totalPrice.toLocaleString()}원</span>
+          </li>
+        )}
+        {!!discountPrice && totalPrice - discountPrice < 500 && (
+          <li className="flex items-center justify-between pl-4 text-gray-300">
+            ㄴ 최소 결제 금액 <span>+500원</span>
           </li>
         )}
       </ul>
