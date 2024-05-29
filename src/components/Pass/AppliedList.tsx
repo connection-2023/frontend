@@ -27,6 +27,7 @@ const AppliedList = ({ appliedList }: AppliedListProps) => {
       ref={classListRef}
       onClick={(event) => {
         event.stopPropagation();
+        event.nativeEvent.preventDefault();
         setClassListsView((prev) => !prev);
       }}
     >

@@ -66,6 +66,7 @@ const ClassInfo = () => {
         defaultValue={classData?.price}
         rules={{
           required: '가격',
+          min: { value: 500, message: '올바른 가격' },
         }}
         render={({ field }) => (
           <div className="flex h-16 items-center ">
@@ -80,8 +81,9 @@ const ClassInfo = () => {
             <div>1회당</div>
             <input
               type="number"
-              className="ml-7 mr-1 h-8 w-24 rounded-md border border-solid border-sub-color4 text-right focus:outline-none"
+              className="ml-7 mr-1 h-8 w-24 rounded-md border border-solid border-sub-color4 text-right placeholder:text-sm focus:outline-none"
               defaultValue={field.value}
+              placeholder="최소금액: 500"
               onChange={field.onChange}
             />
             원

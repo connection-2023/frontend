@@ -66,7 +66,7 @@ const PassCreateModal = () => {
           {/* <div>약관 동의 컴포넌트 추가 예정</div> */}
 
           <div className="mt-5 flex justify-end gap-2">
-            <div className="mr-5 w-24 font-semibold">
+            <div className="mb-5 mr-5 w-24 font-semibold">
               <Button type="submit" size="small">
                 생성 하기
               </Button>

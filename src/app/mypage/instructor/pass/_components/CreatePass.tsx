@@ -206,6 +206,7 @@ const CreatePass = () => {
           defaultValue=""
           rules={{
             required: '판매가격을 입력 해주세요.',
+            min: { value: 500, message: '올바른 가격을 입력 해주세요.' },
           }}
           render={({ field }) => (
             <input
@@ -216,7 +217,7 @@ const CreatePass = () => {
             />
           )}
         />
-        원
+        원<p className="ml-2 self-end text-sm text-gray-500">최소금액: 500원</p>
       </div>
     </section>
   );

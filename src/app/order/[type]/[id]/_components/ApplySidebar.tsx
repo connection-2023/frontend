@@ -106,6 +106,7 @@ const ApplySidebar = (props: ApplySidebarProps) => {
     const paymentInfo = isClass
       ? await postPaymentInfo(paymentData as IPaymentInfo)
       : await postPassPaymentInfo(paymentData as PaymentPassInfoParam);
+
     const { orderId, orderName } = paymentInfo;
 
     const customerName =
