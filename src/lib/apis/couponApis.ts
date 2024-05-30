@@ -68,7 +68,7 @@ export const getCouponLists = async (
               ...coupon,
               ...coupon.lectureCoupon,
             }))
-          : resData.data.couponList,
+          : resData.data.couponList ?? [],
       count: resData.data.totalItemCount,
     };
   } catch (error) {
