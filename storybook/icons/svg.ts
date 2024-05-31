@@ -124,8 +124,6 @@ export { default as ProfileSVG } from './common/profile_default.svg';
 
 export { default as HomeSVG } from './common/home.svg';
 
-export { default as ReadMessageSVG } from './my/readMessage.svg';
-
 export { default as RecentSVG } from './class/recent.svg';
 
 export { default as ReportSVG } from './my/report.svg';
@@ -155,8 +153,6 @@ export { default as TransFormSVG } from './home/transform.svg';
 export { default as TrashcanSVG } from './common/button/trashcan.svg';
 
 export { default as TwitterSVG } from './logo/sns/twitter.svg';
-
-export { default as UnreadMessageSVG } from './my/unreadMessage.svg';
 
 export { default as UploadImageSVG } from './upload/uploadImg.svg';
 
